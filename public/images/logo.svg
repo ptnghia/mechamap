@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="50" height="50" rx="10" fill="#2563EB" fill-opacity="0.9"/>
+    <path d="M15 15H35M15 25H35M15 35H35" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="22" cy="15" r="3" fill="white"/>
+    <circle cx="28" cy="25" r="3" fill="white"/>
+    <circle cx="18" cy="35" r="3" fill="white"/>
+    <path d="M60 35V15H64.5L73.5 29H74L74 15H78V35H73.5L64.5 21H64V35H60Z" fill="#2563EB"/>
+    <path d="M82 35V15H96V18.5H86V23H95V26.5H86V31.5H96V35H82Z" fill="#2563EB"/>
+    <path d="M99 35V15H108C110.333 15 112.167 15.6667 113.5 17C114.833 18.3333 115.5 20.1667 115.5 22.5C115.5 24.8333 114.833 26.6667 113.5 28C112.167 29.3333 110.333 30 108 30H103V35H99ZM103 26.5H108C109 26.5 109.75 26.25 110.25 25.75C110.75 25.25 111 24.5 111 23.5V21.5C111 20.5 110.75 19.75 110.25 19.25C109.75 18.75 109 18.5 108 18.5H103V26.5Z" fill="#2563EB"/>
+    <path d="M118 35V15H122V23H131V15H135V35H131V26.5H122V35H118Z" fill="#2563EB"/>
+    <path d="M139 35V15H153V18.5H143V23H152V26.5H143V31.5H153V35H139Z" fill="#2563EB"/>
+    <path d="M156 35V15H160.5L169.5 29H170L170 15H174V35H169.5L160.5 21H160V35H156Z" fill="#2563EB"/>
+    <path d="M178 35V15H192V18.5H182V23H191V26.5H182V31.5H192V35H178Z" fill="#2563EB"/>
+</svg>

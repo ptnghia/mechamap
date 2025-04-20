@@ -1,0 +1,72 @@
+/* MechaMap Color Theme */
+
+/* MechaMap Custom Styles */
+.navbar-mechamap {
+  @apply bg-mechamap-cobalt text-white dark:bg-mechamap-cobalt-dark;
+}
+
+.link-mechamap {
+  @apply text-mechamap-teal hover:text-secondary-600 dark:text-mechamap-teal-dark dark:hover:text-secondary-400;
+}
+
+.bg-mechamap-light {
+  @apply bg-mechamap-light-gray dark:bg-mechamap-dark-surface;
+}
+
+.text-mechamap {
+  @apply text-mechamap-dark-gray dark:text-mechamap-light-text;
+}
+
+/* Badges */
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.badge-primary {
+  @apply bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300;
+}
+
+.badge-secondary {
+  @apply bg-secondary-100 text-secondary-800 dark:bg-secondary-900 dark:text-secondary-300;
+}
+
+.badge-accent {
+  @apply bg-accent-100 text-accent-800 dark:bg-accent-900 dark:text-accent-300;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300;
+}
+
+.badge-warning {
+  @apply bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300;
+}
+
+.badge-info {
+  @apply bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300;
+}
+
+/* Alerts */
+.alert {
+  @apply rounded-lg border p-4 mb-4;
+}
+
+.alert-info {
+  @apply bg-primary-50 text-primary-800 border-primary-200 dark:bg-primary-950 dark:text-primary-200 dark:border-primary-800 border-l-4 border-l-primary-500;
+}
+
+.alert-success {
+  @apply bg-green-50 text-green-800 border-green-200 dark:bg-green-950 dark:text-green-200 dark:border-green-800 border-l-4 border-l-green-500;
+}
+
+.alert-warning {
+  @apply bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-800 border-l-4 border-l-amber-500;
+}
+
+.alert-danger {
+  @apply bg-red-50 text-red-800 border-red-200 dark:bg-red-950 dark:text-red-200 dark:border-red-800 border-l-4 border-l-red-500;
+}

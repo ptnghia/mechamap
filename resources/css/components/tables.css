@@ -1,0 +1,75 @@
+/* Table Components */
+
+/* Base table styles */
+.table {
+  @apply w-full text-sm text-left rtl:text-right;
+}
+
+.table-container {
+  @apply overflow-x-auto relative;
+}
+
+/* Table variants */
+.table-striped tbody tr:nth-child(odd) {
+  @apply bg-mechamap-light-gray dark:bg-gray-700/30;
+}
+
+.table-hover tbody tr:hover {
+  @apply bg-gray-100 dark:bg-gray-700/50;
+}
+
+.table-bordered {
+  @apply border border-gray-200 dark:border-gray-700;
+}
+
+.table-bordered th,
+.table-bordered td {
+  @apply border border-gray-200 dark:border-gray-700;
+}
+
+.table-compact th,
+.table-compact td {
+  @apply px-3 py-2;
+}
+
+/* Table elements */
+.table th {
+  @apply px-6 py-3 font-medium text-mechamap-dark-gray dark:text-white bg-mechamap-light-gray dark:bg-gray-700;
+}
+
+.table td {
+  @apply px-6 py-4 bg-white border-b dark:bg-gray-800 dark:border-gray-700;
+}
+
+/* Table pagination */
+.pagination {
+  @apply flex items-center justify-between px-4 py-3 sm:px-6;
+}
+
+.pagination-mobile {
+  @apply flex flex-1 justify-between sm:hidden;
+}
+
+.pagination-desktop {
+  @apply hidden sm:flex sm:flex-1 sm:items-center sm:justify-between;
+}
+
+.pagination-info {
+  @apply text-sm text-gray-700 dark:text-gray-300;
+}
+
+.pagination-nav {
+  @apply relative z-0 inline-flex rounded-md shadow-sm;
+}
+
+.pagination-link {
+  @apply relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700;
+}
+
+.pagination-link-active {
+  @apply relative inline-flex items-center border border-gray-300 bg-primary-50 px-4 py-2 text-sm font-medium text-primary-600 dark:border-gray-600 dark:bg-primary-900/20 dark:text-primary-300;
+}
+
+.pagination-link-disabled {
+  @apply relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400;
+}

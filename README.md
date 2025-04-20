@@ -158,6 +158,86 @@ FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
 FACEBOOK_REDIRECT_URI=https://mechamap.test/auth/facebook/callback
 ```
 
+## Cấu trúc CSS và JS
+
+Dự án MechaMap được tổ chức với cấu trúc CSS và JS rõ ràng để dễ dàng bảo trì và mở rộng.
+
+### Cấu trúc CSS
+
+Các file CSS được tổ chức trong thư mục `resources/css` với cấu trúc như sau:
+
+```
+resources/css/
+├── app.css                # File CSS chính, import tất cả các file CSS khác
+├── components/            # Các component UI
+│   ├── buttons.css        # Các kiểu nút
+│   ├── cards.css          # Các kiểu card
+│   ├── forms.css          # Các kiểu form
+│   ├── notifications.css  # Các kiểu thông báo
+│   └── tables.css         # Các kiểu bảng
+├── layouts/               # Layout và grid
+│   └── grid.css           # Grid system
+├── pages/                 # CSS cho các trang cụ thể
+│   └── auth.css           # CSS cho trang xác thực
+└── theme/                 # Theme và style chung
+    ├── base.css           # Style cơ bản (scrollbar, animations, container)
+    ├── colors.css         # Màu sắc và các biến thể (badges, alerts)
+    └── elements.css       # Các element cơ bản (cards, buttons, inputs, tooltips)
+```
+
+#### Cách tùy chỉnh CSS
+
+1. **Thêm CSS cho component mới**: Tạo file mới trong thư mục `resources/css/components/` và import vào `app.css`
+2. **Tùy chỉnh CSS cho trang cụ thể**: Tạo file mới trong thư mục `resources/css/pages/` và import vào `app.css`
+3. **Thay đổi màu sắc và biến thể**: Chỉnh sửa file `resources/css/theme/colors.css`
+4. **Tùy chỉnh style cơ bản**: Chỉnh sửa file `resources/css/theme/base.css`
+5. **Tùy chỉnh các element cơ bản**: Chỉnh sửa file `resources/css/theme/elements.css`
+6. **Thay đổi biến màu gốc**: Chỉnh sửa biến màu trong `app.css`
+
+### Cấu trúc JS
+
+Các file JS được tổ chức trong thư mục `resources/js` với cấu trúc như sau:
+
+```
+resources/js/
+├── app.js                 # File JS chính, import tất cả các file JS khác
+├── bootstrap.js           # Bootstrap JS
+├── components/            # Các component JS
+│   └── notifications.js   # Component thông báo
+├── pages/                 # JS cho các trang cụ thể
+├── theme/                 # JS cho theme
+│   ├── darkMode.js        # Chế độ tối/sáng
+│   ├── index.js           # Khởi tạo theme
+│   ├── navigation.js      # Điều hướng và menu
+│   └── tooltips.js        # Tooltips
+└── utils/                 # Các utility function
+    ├── dom.js             # Các hàm thao tác với DOM
+    ├── helpers.js         # Các hàm helper
+    └── validation.js      # Các hàm kiểm tra dữ liệu
+```
+
+#### Cách tùy chỉnh JS
+
+1. **Thêm JS cho component mới**: Tạo file mới trong thư mục `resources/js/components/` và import vào `app.js`
+2. **Tùy chỉnh JS cho trang cụ thể**: Tạo file mới trong thư mục `resources/js/pages/` và import vào `app.js`
+3. **Tùy chỉnh theme**: Chỉnh sửa các file trong thư mục `resources/js/theme/`
+4. **Thêm utility function**:
+    - **Helper functions**: Thêm vào file `resources/js/utils/helpers.js`
+    - **DOM functions**: Thêm vào file `resources/js/utils/dom.js`
+    - **Validation functions**: Thêm vào file `resources/js/utils/validation.js`
+
+### Sử dụng hình ảnh trong CSS
+
+Hình ảnh được lưu trữ trong thư mục `resources/images/` và có thể được sử dụng trong CSS như sau:
+
+```css
+.element {
+    background-image: url("@/images/your-image.svg");
+}
+```
+
+Alias `@` sẽ được thay thế bằng đường dẫn đến thư mục `resources` trong quá trình build.
+
 ## Đóng góp
 
 Nếu bạn muốn đóng góp vào dự án, vui lòng tạo pull request hoặc báo cáo vấn đề trên GitHub.

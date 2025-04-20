@@ -1,5 +1,157 @@
+/* Import Google Fonts */
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+/* Import custom styles */
 @import 'social-login.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import components */
+@import 'components/buttons.css';
+@import 'components/forms.css';
+@import 'components/cards.css';
+@import 'components/tables.css';
+@import 'components/notifications.css';
+
+/* Import layouts */
+@import 'layouts/grid.css';
+
+/* Import theme */
+@import 'theme/base.css';
+@import 'theme/colors.css';
+@import 'theme/elements.css';
+
+/* Import pages */
+@import 'pages/auth.css';
+
+@layer base {
+  :root {
+    /* MechaMap Color Palette */
+    --mechamap-cobalt: 220 60% 50%; /* #3366CC - Màu chủ đạo */
+    --mechamap-teal: 175 75% 45%; /* #1DCABC - Màu phụ */
+    --mechamap-white: 0 0% 100%; /* #FFFFFF - Màu nền */
+    --mechamap-light-gray: 220 30% 98%; /* #F7F9FC - Màu nền phụ */
+    --mechamap-orange: 14 100% 64%; /* #FF7846 - Màu nhấn */
+    --mechamap-dark-gray: 218 23% 23%; /* #2D3748 - Màu văn bản */
+
+    /* Action Colors */
+    --mechamap-success: 142 76% 36%; /* #22C55E - Màu thành công */
+    --mechamap-danger: 0 84% 60%; /* #EF4444 - Màu nguy hiểm */
+    --mechamap-warning: 38 92% 50%; /* #F59E0B - Màu cảnh báo */
+    --mechamap-info: 220 60% 50%; /* #3366CC - Màu thông tin (giống cobalt) */
+    --mechamap-light: 220 30% 98%; /* #F7F9FC - Màu sáng (giống light-gray) */
+    --mechamap-dark: 218 23% 23%; /* #2D3748 - Màu tối (giống dark-gray) */
+
+    /* System Colors */
+    --background: var(--mechamap-white);
+    --foreground: var(--mechamap-dark-gray);
+
+    --card: var(--mechamap-white);
+    --card-foreground: var(--mechamap-dark-gray);
+
+    --popover: var(--mechamap-white);
+    --popover-foreground: var(--mechamap-dark-gray);
+
+    --primary: var(--mechamap-cobalt);
+    --primary-foreground: var(--mechamap-white);
+
+    --secondary: var(--mechamap-teal);
+    --secondary-foreground: var(--mechamap-white);
+
+    --muted: var(--mechamap-light-gray);
+    --muted-foreground: 215 16% 47%;
+
+    --accent: var(--mechamap-teal);
+    --accent-foreground: var(--mechamap-white);
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--mechamap-white);
+
+    --success: 142 76% 36%;
+    --success-foreground: var(--mechamap-white);
+
+    --warning: 38 92% 50%;
+    --warning-foreground: var(--mechamap-white);
+
+    --info: var(--mechamap-cobalt);
+    --info-foreground: var(--mechamap-white);
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: var(--mechamap-cobalt);
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* MechaMap Dark Mode Color Palette */
+    --mechamap-cobalt-dark: 220 70% 45%; /* Darker version of cobalt */
+    --mechamap-teal-dark: 175 60% 40%; /* Darker version of teal */
+    --mechamap-dark-bg: 222 20% 12%; /* Dark background */
+    --mechamap-dark-surface: 222 16% 16%; /* Dark surface */
+    --mechamap-orange-dark: 14 90% 60%; /* Darker version of orange */
+    --mechamap-light-text: 220 15% 90%; /* Light text for dark mode */
+
+    /* Action Colors - Dark Mode */
+    --mechamap-success-dark: 142 60% 30%; /* Darker version of success */
+    --mechamap-danger-dark: 0 70% 45%; /* Darker version of danger */
+    --mechamap-warning-dark: 38 80% 45%; /* Darker version of warning */
+    --mechamap-info-dark: 220 70% 45%; /* Darker version of info (same as cobalt-dark) */
+    --mechamap-light-dark: 220 15% 25%; /* Darker version of light */
+    --mechamap-dark-dark: 218 30% 15%; /* Darker version of dark */
+
+    /* System Colors - Dark Mode */
+    --background: var(--mechamap-dark-bg);
+    --foreground: var(--mechamap-light-text);
+
+    --card: var(--mechamap-dark-surface);
+    --card-foreground: var(--mechamap-light-text);
+
+    --popover: var(--mechamap-dark-surface);
+    --popover-foreground: var(--mechamap-light-text);
+
+    --primary: var(--mechamap-cobalt-dark);
+    --primary-foreground: var(--mechamap-light-text);
+
+    --secondary: var(--mechamap-teal-dark);
+    --secondary-foreground: var(--mechamap-light-text);
+
+    --muted: 217 19% 22%;
+    --muted-foreground: 215 20% 70%;
+
+    --accent: var(--mechamap-teal-dark);
+    --accent-foreground: var(--mechamap-light-text);
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: var(--mechamap-light-text);
+
+    --success: 142 60% 30%;
+    --success-foreground: var(--mechamap-light-text);
+
+    --warning: 38 92% 40%;
+    --warning-foreground: var(--mechamap-light-text);
+
+    --info: var(--mechamap-cobalt-dark);
+    --info-foreground: var(--mechamap-light-text);
+
+    --border: 217 19% 27%;
+    --input: 217 19% 27%;
+    --ring: var(--mechamap-cobalt-dark);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
