@@ -1,0 +1,173 @@
+/* Hero Banner Styles */
+.hero-banner {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 3rem 0;
+}
+
+.hero-banner h1 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.hero-banner .lead {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* Card Styles */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1rem;
+}
+
+.card-header h5 {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+/* Thread List Styles */
+.list-group-item {
+    padding: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.list-group-item h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.list-group-item h5 a {
+    color: #212529;
+    text-decoration: none;
+}
+
+.list-group-item h5 a:hover {
+    color: #007bff;
+}
+
+.project-details .badge {
+    font-weight: 500;
+}
+
+/* Featured Projects Styles */
+.featured-project {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.featured-project img {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.featured-project h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Sidebar Styles */
+.sidebar-section {
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-section h5 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Stats Styles */
+.stats-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.stats-item .stats-value {
+    font-weight: 600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .hero-banner {
+        padding: 2rem 0;
+    }
+    
+    .hero-banner h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-banner .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Dark Mode Styles */
+[data-bs-theme="dark"] .hero-banner {
+    background-color: #212529;
+    border-bottom-color: #343a40;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #2b3035;
+    border-color: #343a40;
+}
+
+[data-bs-theme="dark"] .card-header {
+    background-color: #2b3035;
+    border-bottom-color: #343a40;
+}
+
+[data-bs-theme="dark"] .list-group-item {
+    background-color: #2b3035;
+    border-color: #343a40;
+}
+
+[data-bs-theme="dark"] .list-group-item:hover {
+    background-color: #343a40;
+}
+
+[data-bs-theme="dark"] .list-group-item h5 a {
+    color: #f8f9fa;
+}
+
+[data-bs-theme="dark"] .list-group-item h5 a:hover {
+    color: #0d6efd;
+}
+
+[data-bs-theme="dark"] .badge.bg-light {
+    background-color: #343a40 !important;
+    color: #f8f9fa !important;
+}
+
+/* Animation for Load More */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+#load-more-threads:hover {
+    animation: pulse 1s infinite;
+}

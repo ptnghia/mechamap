@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600px" height="400px" viewBox="0 0 600 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>City Skyline</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#4A90E2" offset="0%"></stop>
+            <stop stop-color="#6A11CB" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="City-Skyline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Sky" fill="url(#linearGradient-1)" opacity="0.1" x="0" y="0" width="600" height="400"></rect>
+        
+        <!-- Building 1 -->
+        <rect id="Building-1" fill="#E0E0E0" x="20" y="150" width="60" height="250"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="170" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="170" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="200" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="200" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="230" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="230" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="260" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="260" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="290" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="290" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="320" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="320" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="30" y="350" width="10" height="15" rx="1"></rect>
+        <rect id="Building-1-Windows" fill="#FFFFFF" x="50" y="350" width="10" height="15" rx="1"></rect>
+        
+        <!-- Building 2 -->
+        <rect id="Building-2" fill="#D0D0D0" x="90" y="200" width="70" height="200"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="100" y="220" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="135" y="220" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="100" y="260" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="135" y="260" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="100" y="300" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="135" y="300" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="100" y="340" width="15" height="20" rx="1"></rect>
+        <rect id="Building-2-Windows" fill="#FFFFFF" x="135" y="340" width="15" height="20" rx="1"></rect>
+        
+        <!-- Building 3 (Skyscraper) -->
+        <rect id="Building-3" fill="#BDBDBD" x="170" y="50" width="80" height="350"></rect>
+        <rect id="Building-3-Top" fill="#9E9E9E" x="190" y="30" width="40" height="20"></rect>
+        <rect id="Building-3-Antenna" fill="#757575" x="205" y="10" width="10" height="20"></rect>
+        
+        <!-- Building 3 Windows -->
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="70" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="70" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="70" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="100" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="100" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="100" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="130" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="130" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="130" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="160" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="160" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="160" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="190" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="190" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="190" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="220" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="220" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="220" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="250" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="250" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="250" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="280" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="280" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="280" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="310" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="310" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="310" width="15" height="20" rx="1"></rect>
+        
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="180" y="340" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="205" y="340" width="15" height="20" rx="1"></rect>
+        <rect id="Building-3-Windows" fill="#FFFFFF" x="230" y="340" width="15" height="20" rx="1"></rect>
+        
+        <!-- Building 4 -->
+        <rect id="Building-4" fill="#E0E0E0" x="260" y="180" width="60" height="220"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="200" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="200" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="230" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="230" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="260" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="260" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="290" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="290" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="320" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="320" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="270" y="350" width="10" height="15" rx="1"></rect>
+        <rect id="Building-4-Windows" fill="#FFFFFF" x="290" y="350" width="10" height="15" rx="1"></rect>
+        
+        <!-- Building 5 (Modern Tower) -->
+        <path id="Building-5" d="M380,100 L440,100 L440,400 L380,400 Z" fill="#BDBDBD"></path>
+        <path id="Building-5-Top" d="M380,100 L410,60 L440,100 Z" fill="#9E9E9E"></path>
+        
+        <!-- Building 5 Windows -->
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="120" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="120" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="150" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="150" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="180" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="180" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="210" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="210" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="240" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="240" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="270" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="270" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="300" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="300" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="330" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="330" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="390" y="360" width="10" height="15" rx="1"></rect>
+        <rect id="Building-5-Windows" fill="#FFFFFF" x="410" y="360" width="10" height="15" rx="1"></rect>
+        
+        <!-- Building 6 -->
+        <rect id="Building-6" fill="#D0D0D0" x="450" y="150" width="70" height="250"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="460" y="170" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="495" y="170" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="460" y="210" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="495" y="210" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="460" y="250" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="495" y="250" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="460" y="290" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="495" y="290" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="460" y="330" width="15" height="20" rx="1"></rect>
+        <rect id="Building-6-Windows" fill="#FFFFFF" x="495" y="330" width="15" height="20" rx="1"></rect>
+        
+        <!-- Building 7 -->
+        <rect id="Building-7" fill="#E0E0E0" x="530" y="220" width="60" height="180"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="540" y="240" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="560" y="240" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="540" y="270" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="560" y="270" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="540" y="300" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="560" y="300" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="540" y="330" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="560" y="330" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="540" y="360" width="10" height="15" rx="1"></rect>
+        <rect id="Building-7-Windows" fill="#FFFFFF" x="560" y="360" width="10" height="15" rx="1"></rect>
+        
+        <!-- Ground -->
+        <rect id="Ground" fill="#E0E0E0" x="0" y="400" width="600" height="10"></rect>
+    </g>
+</svg>

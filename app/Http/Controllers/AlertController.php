@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Alert;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+class AlertController extends Controller
+{
+    /**
+     * Display a listing of the user's alerts.
+     */
+    public function index(): View
+    {
+        $user = Auth::user();
+        $alerts = $user->alerts()->latest()->paginate(20);
+        
+        return view('alerts.index', compact('alerts'));
+    }
+    
+    /**
+     * Mark an alert as read.
+     */
+    public function markAsRead(Alert $alert): RedirectResponse
+    {
+        // Check if the alert belongs to the authenticated user
+        if ($alert->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        $alert->update(['read_at' => now()]);
+        
+        return back()->with('success', 'Alert marked as read.');
+    }
+    
+    /**
+     * Mark all alerts as read.
+     */
+    public function markAllAsRead(): RedirectResponse
+    {
+        $user = Auth::user();
+        $user->alerts()->whereNull('read_at')->update(['read_at' => now()]);
+        
+        return back()->with('success', 'All alerts marked as read.');
+    }
+    
+    /**
+     * Remove the specified alert from storage.
+     */
+    public function destroy(Alert $alert): RedirectResponse
+    {
+        // Check if the alert belongs to the authenticated user
+        if ($alert->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        $alert->delete();
+        
+        return back()->with('success', 'Alert deleted successfully.');
+    }
+}

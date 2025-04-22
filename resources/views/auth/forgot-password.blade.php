@@ -1,5 +1,15 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+@extends('layouts.guest')
+
+@section('title', 'Page Title')
+
+@section('content')
+    @if (session('status'))
+        <div class="alert alert-success mb-4">
+            {{ session('status') }}
+        </div>
+    @endif<h2 class="text-center mb-4">{{ __('Forgot Password') }}</h2>
+
+    <div class="alert alert-info mb-4">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
 
@@ -10,16 +20,18 @@
         @csrf
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-3">
+            <label for="email" class="form-label">{{ __('Email') }}</label>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autofocus >
+            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="{{ route('login') }}" class="text-decoration-none">
+                {{ __('Back to login') }}
+            </a>
+
+            <button type="submit" class="btn btn-primary">{{ __('Email Password Reset Link') }}</button>
         </div>
     </form>
-</x-guest-layout>
+@endsection

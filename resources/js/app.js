@@ -5,6 +5,9 @@ import Alpine from 'alpinejs';
 // Import theme
 import './theme';
 
+// Import pages
+import './pages/profile';
+
 // Import utilities
 import * as helpers from './utils/helpers';
 import * as dom from './utils/dom';

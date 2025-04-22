@@ -1,3 +1,6 @@
+/* Import Bootstrap */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
 /* Import Google Fonts */
 @import '@fontsource/inter/300.css';
 @import '@fontsource/inter/400.css';
@@ -7,10 +10,6 @@
 
 /* Import custom styles */
 @import 'social-login.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Import components */
 @import 'components/buttons.css';
@@ -26,11 +25,13 @@
 @import 'theme/base.css';
 @import 'theme/colors.css';
 @import 'theme/elements.css';
+@import 'theme/dark-mode.css';
 
 /* Import pages */
 @import 'pages/auth.css';
+@import 'pages/profile-skyscraper.css';
 
-@layer base {
+/* Custom Variables */
   :root {
     /* MechaMap Color Palette */
     --mechamap-cobalt: 220 60% 50%; /* #3366CC - Màu chủ đạo */
@@ -144,14 +145,26 @@
     --input: 217 19% 27%;
     --ring: var(--mechamap-cobalt-dark);
   }
+
+
+/* Custom Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+  color: #2D3748;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground font-sans;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
+/* Dark Mode Styles */
+.dark {
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+/* Custom Utilities */
+.rounded-custom {
+  border-radius: 0.75rem;
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }

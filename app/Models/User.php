@@ -5,8 +5,12 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Showcase;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -23,7 +27,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'status',
         'avatar',
+        'about_me',
+        'website',
+        'location',
+        'signature',
+        'points',
+        'reaction_score',
+        'last_seen_at',
+        'last_activity',
+        'setup_progress',
         'email_verified_at',
     ];
 
@@ -46,6 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_seen_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -138,5 +153,203 @@ class User extends Authenticatable implements MustVerifyEmail
     public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    /**
+     * Get the threads created by the user.
+     */
+    public function threads(): HasMany
+    {
+        return $this->hasMany(Thread::class);
+    }
+
+    /**
+     * Get the posts created by the user.
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the media uploaded by the user.
+     */
+    public function media(): HasMany
+    {
+        return $this->hasMany(Media::class);
+    }
+
+    /**
+     * Get the showcase items of the user.
+     */
+    public function showcaseItems(): HasMany
+    {
+        return $this->hasMany(Showcase::class);
+    }
+
+    /**
+     * Check if the user is online.
+     */
+    public function isOnline(): bool
+    {
+        return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(5));
+    }
+
+
+
+
+
+    /**
+     * Get the profile posts created by the user.
+     */
+    public function profilePosts(): HasMany
+    {
+        return $this->hasMany(ProfilePost::class, 'user_id');
+    }
+
+    /**
+     * Get the profile posts on the user's profile.
+     */
+    public function receivedProfilePosts(): HasMany
+    {
+        return $this->hasMany(ProfilePost::class, 'profile_id');
+    }
+
+    /**
+     * Get the reactions created by the user.
+     */
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * Get the users that this user is following.
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the users that are following this user.
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id')
+            ->withTimestamps();
+    }
+
+
+
+    /**
+     * Get the activities of the user.
+     */
+    public function activities(): HasMany
+    {
+        return $this->hasMany(UserActivity::class);
+    }
+
+    /**
+     * Get the visits of the user.
+     */
+    public function visits(): HasMany
+    {
+        return $this->hasMany(UserVisit::class);
+    }
+
+    /**
+     * Get all reactions received on user's content.
+     */
+    public function receivedReactions(): MorphMany
+    {
+        return $this->morphMany(Reaction::class, 'reactable');
+    }
+
+    /**
+     * Update the user's reaction score.
+     */
+    public function updateReactionScore(): void
+    {
+        $this->reaction_score = $this->receivedReactions()->count();
+        $this->save();
+    }
+
+    /**
+     * Get the alerts for the user.
+     */
+    public function alerts(): HasMany
+    {
+        return $this->hasMany(Alert::class);
+    }
+
+    /**
+     * Get the conversations that the user is participating in.
+     */
+    public function conversations(): BelongsToMany
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->withPivot('last_read_at')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the bookmarks for the user.
+     */
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+
+
+    /**
+     * Get the comments created by the user.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the thread likes created by the user.
+     */
+    public function threadLikes(): HasMany
+    {
+        return $this->hasMany(ThreadLike::class);
+    }
+
+    /**
+     * Get the thread saves created by the user.
+     */
+    public function threadSaves(): HasMany
+    {
+        return $this->hasMany(ThreadSave::class);
+    }
+
+    /**
+     * Get the saved threads for the user.
+     */
+    public function savedThreads(): BelongsToMany
+    {
+        return $this->belongsToMany(Thread::class, 'thread_saves')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the comment likes created by the user.
+     */
+    public function commentLikes(): HasMany
+    {
+        return $this->hasMany(CommentLike::class);
+    }
+
+    /**
+     * Get the subscription for the user.
+     */
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(Subscription::class);
     }
 }

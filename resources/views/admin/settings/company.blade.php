@@ -1,0 +1,108 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Thông tin công ty')
+@section('header', 'Thông tin công ty')
+
+@section('content')
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            @include('admin.settings.partials.sidebar')
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Thông tin công ty') }}</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.settings.update-company') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="mb-3">
+                            <label for="company_name" class="form-label">{{ __('Tên công ty') }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('company_name') is-invalid @enderror" id="company_name" name="company_name" value="{{ old('company_name', $settings['company_name'] ?? config('app.name')) }}" required>
+                            <div class="form-text">{{ __('Tên đầy đủ của công ty.') }}</div>
+                            @error('company_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="company_address" class="form-label">{{ __('Địa chỉ') }}</label>
+                            <textarea class="form-control @error('company_address') is-invalid @enderror" id="company_address" name="company_address" rows="2">{{ old('company_address', $settings['company_address'] ?? '') }}</textarea>
+                            <div class="form-text">{{ __('Địa chỉ đầy đủ của công ty.') }}</div>
+                            @error('company_address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="company_phone" class="form-label">{{ __('Số điện thoại') }}</label>
+                                <input type="text" class="form-control @error('company_phone') is-invalid @enderror" id="company_phone" name="company_phone" value="{{ old('company_phone', $settings['company_phone'] ?? '') }}">
+                                <div class="form-text">{{ __('Số điện thoại liên hệ của công ty.') }}</div>
+                                @error('company_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="company_email" class="form-label">{{ __('Email') }}</label>
+                                <input type="email" class="form-control @error('company_email') is-invalid @enderror" id="company_email" name="company_email" value="{{ old('company_email', $settings['company_email'] ?? '') }}">
+                                <div class="form-text">{{ __('Địa chỉ email chính thức của công ty.') }}</div>
+                                @error('company_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="company_tax_id" class="form-label">{{ __('Mã số thuế') }}</label>
+                                <input type="text" class="form-control @error('company_tax_id') is-invalid @enderror" id="company_tax_id" name="company_tax_id" value="{{ old('company_tax_id', $settings['company_tax_id'] ?? '') }}">
+                                <div class="form-text">{{ __('Mã số thuế của công ty.') }}</div>
+                                @error('company_tax_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="company_registration_number" class="form-label">{{ __('Số đăng ký kinh doanh') }}</label>
+                                <input type="text" class="form-control @error('company_registration_number') is-invalid @enderror" id="company_registration_number" name="company_registration_number" value="{{ old('company_registration_number', $settings['company_registration_number'] ?? '') }}">
+                                <div class="form-text">{{ __('Số đăng ký kinh doanh của công ty.') }}</div>
+                                @error('company_registration_number')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="company_founded_year" class="form-label">{{ __('Năm thành lập') }}</label>
+                                <input type="number" class="form-control @error('company_founded_year') is-invalid @enderror" id="company_founded_year" name="company_founded_year" value="{{ old('company_founded_year', $settings['company_founded_year'] ?? '') }}" min="1900" max="{{ date('Y') }}">
+                                <div class="form-text">{{ __('Năm thành lập công ty.') }}</div>
+                                @error('company_founded_year')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="company_description" class="form-label">{{ __('Giới thiệu công ty') }}</label>
+                            <textarea class="form-control @error('company_description') is-invalid @enderror" id="company_description" name="company_description" rows="5">{{ old('company_description', $settings['company_description'] ?? '') }}</textarea>
+                            <div class="form-text">{{ __('Mô tả ngắn gọn về công ty.') }}</div>
+                            @error('company_description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

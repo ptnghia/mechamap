@@ -238,6 +238,97 @@ Hình ảnh được lưu trữ trong thư mục `resources/images/` và có th�
 
 Alias `@` sẽ được thay thế bằng đường dẫn đến thư mục `resources` trong quá trình build.
 
+## Sử dụng Settings Helper Functions
+
+MechaMap cung cấp các helper function để truy cập cài đặt hệ thống từ bất kỳ đâu trong ứng dụng. Các cài đặt này có thể được quản lý trong trang admin tại `/admin/settings/general`.
+
+### Các Helper Function Cơ Bản
+
+```php
+// Lấy giá trị của một cài đặt cụ thể
+setting('key', 'default_value');
+
+// Lấy tất cả cài đặt trong một nhóm
+settings_group('group_name');
+```
+
+### Các Helper Function Chuyên Biệt
+
+```php
+// Lấy URL của logo
+get_logo_url();
+
+// Lấy URL của favicon
+get_favicon_url();
+
+// Lấy thông tin công ty
+$companyInfo = get_company_info();
+// Truy cập các thông tin: $companyInfo['name'], $companyInfo['address'], $companyInfo['phone'], etc.
+
+// Lấy thông tin liên hệ
+$contactInfo = get_contact_info();
+// Truy cập các thông tin: $contactInfo['email'], $contactInfo['phone'], $contactInfo['address'], etc.
+
+// Lấy liên kết mạng xã hội
+$socialLinks = get_social_links();
+// Truy cập các liên kết: $socialLinks['facebook'], $socialLinks['twitter'], $socialLinks['instagram'], etc.
+
+// Lấy API keys
+$apiKeys = get_api_keys();
+// Truy cập các key: $apiKeys['google_client_id'], $apiKeys['facebook_app_id'], $apiKeys['recaptcha_site_key'], etc.
+
+// Lấy thông tin bản quyền
+$copyrightInfo = get_copyright_info();
+// Truy cập các thông tin: $copyrightInfo['text'], $copyrightInfo['owner'], $copyrightInfo['year'], etc.
+```
+
+### Sử dụng trong Views
+
+```php
+<!-- Sử dụng trong Blade templates -->
+<title>{{ setting('site_name', config('app.name')) }}</title>
+<link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
+
+<!-- Hiển thị thông tin bản quyền -->
+<p>{{ get_copyright_info()['text'] }}</p>
+
+<!-- Hiển thị liên kết mạng xã hội -->
+@php
+    $socialLinks = get_social_links();
+@endphp
+
+@if(!empty($socialLinks['facebook']))
+    <a href="{{ $socialLinks['facebook'] }}" target="_blank">Facebook</a>
+@endif
+```
+
+### Sử dụng trong Controllers
+
+```php
+public function index()
+{
+    $companyInfo = get_company_info();
+    $contactEmail = get_contact_info()['email'];
+
+    return view('welcome', [
+        'companyName' => $companyInfo['name'],
+        'contactEmail' => $contactEmail
+    ]);
+}
+```
+
+### Cập nhật Cài đặt
+
+```php
+use App\Models\Setting;
+
+// Cập nhật một cài đặt
+Setting::set('site_name', 'MechaMap', 'general');
+
+// Xóa cache
+Setting::clearCache();
+```
+
 ## Đóng góp
 
 Nếu bạn muốn đóng góp vào dự án, vui lòng tạo pull request hoặc báo cáo vấn đề trên GitHub.
