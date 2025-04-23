@@ -7,8 +7,18 @@
     </button>
 
     <div class="w-100 d-flex">
-        <form class="w-100 ms-3 me-3 d-none d-md-flex">
-            <input class="form-control form-control-dark" type="text" placeholder="{{ __('Search') }}" aria-label="Search">
+        <form class="w-100 ms-3 me-3 d-none d-md-flex" action="{{ route('admin.threads.index') }}" method="GET">
+            <div class="input-group">
+                <input class="form-control" type="text" name="search" placeholder="{{ __('Tìm kiếm bài đăng, bình luận...') }}" aria-label="Search" value="{{ request('search') }}">
+                <select class="form-select" name="search_type" style="max-width: 150px;">
+                    <option value="threads" {{ request('search_type') == 'threads' ? 'selected' : '' }}>{{ __('Bài đăng') }}</option>
+                    <option value="comments" {{ request('search_type') == 'comments' ? 'selected' : '' }}>{{ __('Bình luận') }}</option>
+                    <option value="users" {{ request('search_type') == 'users' ? 'selected' : '' }}>{{ __('Người dùng') }}</option>
+                </select>
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
         </form>
     </div>
 

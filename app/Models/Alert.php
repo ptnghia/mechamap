@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Comment;
+use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +51,28 @@ class Alert extends Model
     public function alertable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the comment if the alert is related to a comment.
+     */
+    public function comment()
+    {
+        if ($this->alertable_type === Comment::class) {
+            return $this->belongsTo(Comment::class, 'alertable_id');
+        }
+        return null;
+    }
+
+    /**
+     * Get the conversation if the alert is related to a conversation.
+     */
+    public function conversation()
+    {
+        if ($this->alertable_type === Conversation::class) {
+            return $this->belongsTo(Conversation::class, 'alertable_id');
+        }
+        return null;
     }
 
     /**

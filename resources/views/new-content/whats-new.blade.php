@@ -1,104 +1,134 @@
 @extends('layouts.app')
 
-@section('title', 'Page Title')
+@section('title', "What's New")
 
 @section('content')
 
-    <div class="py-5">
+    <div class="py-4">
         <div class="container">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">Forums</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">What's New</li>
+                </ol>
+            </nav>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">What's New</h1>
+                @auth
+                <a href="{{ route('forums.select') }}" class="btn btn-primary create-thread">
+                    <i class="bi bi-plus-lg"></i> <span>Create thread</span>
+                </a>
+                @endauth
+            </div>
+
             <div class="card shadow-sm rounded-3 mb-4">
-                <div class="card-header">
+                <div class="card-header bg-white">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
-                            <a class="nav-link {{ request('type') != 'posts' ? 'active' : '' }}" href="{{ route('whats-new') }}">
-                                {{ __('New Threads') }}
+                            <a class="nav-link {{ request('type') == 'posts' ? '' : 'active' }}" href="{{ route('whats-new') }}">
+                                New Posts
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request('type') == 'posts' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=posts">
-                                {{ __('New Posts') }}
+                            <a class="nav-link {{ request('type') == 'popular' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=popular">
+                                Popular
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('type') == 'showcase' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=showcase">
+                                New Showcase
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('type') == 'gallery' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=gallery">
+                                New Gallery
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('type') == 'articles' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=articles">
+                                News & Articles
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('type') == 'replies' ? 'active' : '' }}" href="{{ route('whats-new') }}?type=replies">
+                                Looking for Replies
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body">
-                    @if(request('type') != 'posts')
-                        <!-- Threads Tab -->
-                        @if($threads->count() > 0)
-                            <div class="list-group list-group-flush">
-                                @foreach($threads as $thread)
-                                    <div class="list-group-item py-3 px-0">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">
-                                                <a href="{{ $thread->forum ? route('forums.show', $thread->forum) . '#thread-' . $thread->id : '#' }}" class="text-decoration-none">
-                                                    {{ $thread->title }}
+                <div class="card-body p-0">
+                    <!-- Thread List -->
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" width="5%"></th>
+                                    <th scope="col" width="50%">Title</th>
+                                    <th scope="col" width="15%">Forum</th>
+                                    <th scope="col" width="10%" class="text-center">Replies</th>
+                                    <th scope="col" width="10%" class="text-center">Views</th>
+                                    <th scope="col" width="10%">Last Post</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($threads->count() > 0)
+                                    @foreach($threads as $thread)
+                                        <tr>
+                                            <td class="text-center">
+                                                <i class="bi bi-chat-left-text text-primary"></i>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <a href="{{ $thread->forum ? route('forums.show', $thread->forum) . '#thread-' . $thread->id : '#' }}" class="fw-bold text-decoration-none">
+                                                        {{ $thread->title }}
+                                                    </a>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    By <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">{{ $thread->user->name }}</a>
+                                                    • {{ $thread->created_at->format('M d, Y') }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="{{ $thread->forum ? route('forums.show', $thread->forum) : '#' }}" class="text-decoration-none">
+                                                    {{ $thread->forum ? $thread->forum->name : 'Unknown Forum' }}
                                                 </a>
-                                            </h5>
-                                            <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
-                                        </div>
-                                        <p class="mb-1">{{ Str::limit(strip_tags($thread->content), 200) }}</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small>
-                                                {{ __('By') }}
-                                                <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
-                                                    {{ $thread->user->name }}
-                                                </a>
-                                                {{ __('in') }}
-                                                <a href="{{ $thread->forum ? route('forums.show', $thread->forum) : '#' }}" class="text-decoration-none fw-bold">
-                                                    {{ $thread->forum ? $thread->forum->name : __('Unknown Forum') }}
-                                                </a>
-                                            </small>
-                                            <div>
-                                                <span class="badge bg-primary">{{ $thread->posts_count ?? 0 }} {{ __('replies') }}</span>
-                                                <span class="badge bg-secondary">{{ $thread->views ?? 0 }} {{ __('views') }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $thread->posts_count ?? 0 }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $thread->views ?? 0 }}
+                                            </td>
+                                            <td>
+                                                <div class="small">
+                                                    {{ $thread->updated_at->diffForHumans() }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            No threads found.
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
 
-                            <div class="d-flex justify-content-center mt-4">
-                                {{ $threads->links() }}
-                            </div>
-                        @else
-                            <div class="text-center py-5">
-                                <p class="mb-0">{{ __('No threads found.') }}</p>
-                            </div>
-                        @endif
-                    @else
-                        <!-- Posts Tab -->
-                        @if($posts->count() > 0)
-                            <div class="list-group list-group-flush">
-                                @foreach($posts as $post)
-                                    <div class="list-group-item py-3 px-0">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">
-                                                <a href="{{ ($post->thread && $post->thread->forum) ? route('forums.show', $post->thread->forum) . '#post-' . $post->id : '#' }}" class="text-decoration-none">
-                                                    {{ __('Reply to') }}: {{ $post->thread ? $post->thread->title : __('Unknown Thread') }}
-                                                </a>
-                                            </h5>
-                                            <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
-                                        </div>
-                                        <p class="mb-1">{{ Str::limit(strip_tags($post->content), 200) }}</p>
-                                        <small>
-                                            {{ __('By') }}
-                                            <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none">
-                                                {{ $post->user->name }}
-                                            </a>
-                                        </small>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <div class="d-flex justify-content-center mt-4">
-                                {{ $posts->appends(['type' => 'posts'])->links() }}
-                            </div>
-                        @else
-                            <div class="text-center py-5">
-                                <p class="mb-0">{{ __('No posts found.') }}</p>
-                            </div>
-                        @endif
-                    @endif
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                        <div>
+                            Showing 1 of {{ $threads->lastPage() }}
+                        </div>
+                        <div>
+                            {{ $threads->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

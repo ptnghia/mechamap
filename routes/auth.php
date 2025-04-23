@@ -28,6 +28,16 @@ Route::middleware('guest')->group(function () {
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 
+    // AJAX Authentication Routes
+    Route::post('ajax/login', [\App\Http\Controllers\Auth\AjaxAuthController::class, 'login'])
+        ->name('ajax.login');
+
+    Route::post('ajax/register', [\App\Http\Controllers\Auth\AjaxAuthController::class, 'register'])
+        ->name('ajax.register');
+
+    Route::post('ajax/forgot-password', [\App\Http\Controllers\Auth\AjaxAuthController::class, 'forgotPassword'])
+        ->name('ajax.forgot-password');
+
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
 

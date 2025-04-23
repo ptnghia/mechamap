@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Services\UserActivityService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,20 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /**
+     * The user activity service instance.
+     */
+    protected UserActivityService $activityService;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(UserActivityService $activityService)
+    {
+        $this->activityService = $activityService;
+    }
     /**
      * Display a listing of users.
      */
@@ -89,6 +104,7 @@ class ProfileController extends Controller
 
         // Lấy các hoạt động gần đây
         $activities = $user->activities()
+            ->with(['thread', 'comment.thread'])
             ->latest()
             ->take(10)
             ->get();
@@ -130,6 +146,9 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        // Log activity
+        $this->activityService->logProfileUpdated($request->user());
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

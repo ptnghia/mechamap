@@ -55,6 +55,18 @@
         <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
         <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
 
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+        <!-- Lightbox CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+
+        <!-- Auth Modal CSS -->
+        <link rel="stylesheet" href="{{ asset('css/auth-modal.css') }}">
+
+        <!-- Search CSS -->
+        <link rel="stylesheet" href="{{ asset('css/search.css') }}">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -69,6 +81,12 @@
         @if(Route::currentRouteName() === 'home')
             <link rel="stylesheet" href="{{ asset('css/home.css') }}">
         @endif
+
+        <!-- Activity CSS -->
+        <link rel="stylesheet" href="{{ asset('css/activity.css') }}">
+
+        <!-- Alerts CSS -->
+        <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
 
         <!-- Extra Meta Tags -->
         @if(!empty($seo['extra_meta'] ?? ''))
@@ -185,5 +203,24 @@
         @endif
 
         <!-- Theme toggle script is now handled by darkMode.js -->
+
+        <!-- Auth Modal Script -->
+        <script src="{{ asset('js/auth-modal.js') }}"></script>
+
+        <!-- Search Script -->
+        <script src="{{ asset('js/search.js') }}"></script>
+
+        <!-- Lightbox Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+        <script>
+            // Lightbox configuration
+            lightbox.option({
+                'resizeDuration': 200,
+                'wrapAround': true,
+                'albumLabel': 'Hình %1 / %2',
+                'fadeDuration': 300,
+                'imageFadeDuration': 300
+            });
+        </script>
     </body>
 </html>

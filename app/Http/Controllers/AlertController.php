@@ -13,14 +13,27 @@ class AlertController extends Controller
     /**
      * Display a listing of the user's alerts.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = Auth::user();
-        $alerts = $user->alerts()->latest()->paginate(20);
-        
-        return view('alerts.index', compact('alerts'));
+        $filter = $request->input('filter');
+
+        $query = $user->alerts();
+
+        // Apply filters
+        if ($filter === 'unread') {
+            $query->whereNull('read_at');
+        } elseif ($filter === 'read') {
+            $query->whereNotNull('read_at');
+        } elseif ($filter === 'messages') {
+            $query->where('alertable_type', 'App\\Models\\Conversation');
+        }
+
+        $alerts = $query->latest()->paginate(20)->withQueryString();
+
+        return view('alerts.index', compact('alerts', 'filter'));
     }
-    
+
     /**
      * Mark an alert as read.
      */
@@ -30,12 +43,12 @@ class AlertController extends Controller
         if ($alert->user_id !== Auth::id()) {
             abort(403);
         }
-        
+
         $alert->update(['read_at' => now()]);
-        
+
         return back()->with('success', 'Alert marked as read.');
     }
-    
+
     /**
      * Mark all alerts as read.
      */
@@ -43,10 +56,10 @@ class AlertController extends Controller
     {
         $user = Auth::user();
         $user->alerts()->whereNull('read_at')->update(['read_at' => now()]);
-        
+
         return back()->with('success', 'All alerts marked as read.');
     }
-    
+
     /**
      * Remove the specified alert from storage.
      */
@@ -56,9 +69,9 @@ class AlertController extends Controller
         if ($alert->user_id !== Auth::id()) {
             abort(403);
         }
-        
+
         $alert->delete();
-        
+
         return back()->with('success', 'Alert deleted successfully.');
     }
 }

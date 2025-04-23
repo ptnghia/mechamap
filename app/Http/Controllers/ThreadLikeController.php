@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Thread;
 use App\Models\ThreadLike;
+use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ThreadLikeController extends Controller
 {
     /**
+     * The user activity service instance.
+     */
+    protected UserActivityService $activityService;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserActivityService $activityService)
     {
         $this->middleware('auth');
+        $this->activityService = $activityService;
     }
 
     /**
@@ -42,6 +49,10 @@ class ThreadLikeController extends Controller
                 'thread_id' => $thread->id,
                 'user_id' => $user->id
             ]);
+
+            // Log activity
+            $this->activityService->logThreadLiked($user, $thread);
+
             $message = 'Đã thích bài viết.';
         }
 

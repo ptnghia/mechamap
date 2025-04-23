@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Forum;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
 
 class SearchController extends Controller
 {
@@ -18,11 +20,11 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
         $type = $request->input('type', 'all');
-        
+
         $threads = collect();
         $posts = collect();
         $users = collect();
-        
+
         if ($query) {
             // Search threads
             if ($type == 'all' || $type == 'threads') {
@@ -33,7 +35,7 @@ class SearchController extends Controller
                     ->take(10)
                     ->get();
             }
-            
+
             // Search posts
             if ($type == 'all' || $type == 'posts') {
                 $posts = Post::where('content', 'like', "%{$query}%")
@@ -42,7 +44,7 @@ class SearchController extends Controller
                     ->take(10)
                     ->get();
             }
-            
+
             // Search users
             if ($type == 'all' || $type == 'users') {
                 $users = User::where('name', 'like', "%{$query}%")
@@ -52,20 +54,20 @@ class SearchController extends Controller
                     ->get();
             }
         }
-        
+
         return view('search.index', compact('query', 'type', 'threads', 'posts', 'users'));
     }
-    
+
     /**
      * Display the advanced search form.
      */
     public function advanced(): View
     {
         $forums = Forum::all();
-        
+
         return view('search.advanced', compact('forums'));
     }
-    
+
     /**
      * Process the advanced search.
      */
@@ -80,7 +82,7 @@ class SearchController extends Controller
             'sort_by' => 'nullable|in:relevance,date,replies',
             'sort_dir' => 'nullable|in:asc,desc',
         ]);
-        
+
         $keywords = $request->input('keywords');
         $author = $request->input('author');
         $forumId = $request->input('forum_id');
@@ -88,25 +90,25 @@ class SearchController extends Controller
         $dateTo = $request->input('date_to');
         $sortBy = $request->input('sort_by', 'date');
         $sortDir = $request->input('sort_dir', 'desc');
-        
+
         // Start with a base query
         $threadsQuery = Thread::query();
         $postsQuery = Post::query();
-        
+
         // Apply keyword filter
         if ($keywords) {
-            $threadsQuery->where(function($query) use ($keywords) {
+            $threadsQuery->where(function ($query) use ($keywords) {
                 $query->where('title', 'like', "%{$keywords}%")
                     ->orWhere('content', 'like', "%{$keywords}%");
             });
-            
+
             $postsQuery->where('content', 'like', "%{$keywords}%");
         }
-        
+
         // Apply author filter
         if ($author) {
             $user = User::where('username', $author)->first();
-            
+
             if ($user) {
                 $threadsQuery->where('user_id', $user->id);
                 $postsQuery->where('user_id', $user->id);
@@ -116,26 +118,26 @@ class SearchController extends Controller
                 $postsQuery->where('user_id', 0);
             }
         }
-        
+
         // Apply forum filter
         if ($forumId) {
             $threadsQuery->where('forum_id', $forumId);
-            $postsQuery->whereHas('thread', function($query) use ($forumId) {
+            $postsQuery->whereHas('thread', function ($query) use ($forumId) {
                 $query->where('forum_id', $forumId);
             });
         }
-        
+
         // Apply date filters
         if ($dateFrom) {
             $threadsQuery->whereDate('created_at', '>=', $dateFrom);
             $postsQuery->whereDate('created_at', '>=', $dateFrom);
         }
-        
+
         if ($dateTo) {
             $threadsQuery->whereDate('created_at', '<=', $dateTo);
             $postsQuery->whereDate('created_at', '<=', $dateTo);
         }
-        
+
         // Apply sorting
         switch ($sortBy) {
             case 'relevance':
@@ -144,12 +146,12 @@ class SearchController extends Controller
                 $threadsQuery->orderBy('created_at', $sortDir);
                 $postsQuery->orderBy('created_at', $sortDir);
                 break;
-                
+
             case 'date':
                 $threadsQuery->orderBy('created_at', $sortDir);
                 $postsQuery->orderBy('created_at', $sortDir);
                 break;
-                
+
             case 'replies':
                 $threadsQuery->withCount('posts')
                     ->orderBy('posts_count', $sortDir);
@@ -157,24 +159,161 @@ class SearchController extends Controller
                 $postsQuery->orderBy('created_at', $sortDir);
                 break;
         }
-        
+
         // Get the results
         $threads = $threadsQuery->with(['user', 'forum'])->paginate(10);
         $posts = $postsQuery->with(['user', 'thread'])->paginate(10);
-        
+
         $forums = Forum::all();
-        
+
         return view('search.advanced-results', compact(
-            'threads', 
-            'posts', 
-            'keywords', 
-            'author', 
-            'forumId', 
-            'dateFrom', 
-            'dateTo', 
-            'sortBy', 
+            'threads',
+            'posts',
+            'keywords',
+            'author',
+            'forumId',
+            'dateFrom',
+            'dateTo',
+            'sortBy',
             'sortDir',
             'forums'
         ));
+    }
+
+    /**
+     * Handle AJAX search requests.
+     */
+    public function ajaxSearch(Request $request): JsonResponse
+    {
+        $query = $request->input('query');
+        $scope = $request->input('scope', 'site'); // 'thread', 'forum', 'site'
+        $threadId = $request->input('thread_id');
+        $forumId = $request->input('forum_id');
+
+        $results = [];
+
+        if (!$query || strlen($query) < 2) {
+            return response()->json(['results' => []]);
+        }
+
+        // Search based on scope
+        if ($scope === 'thread' && $threadId) {
+            // Search within a specific thread
+            $thread = Thread::find($threadId);
+            if ($thread) {
+                $results['thread'] = [
+                    'id' => $thread->id,
+                    'title' => $thread->title,
+                    'url' => route('threads.show', $thread)
+                ];
+
+                // Search posts within this thread
+                $posts = Post::where('thread_id', $threadId)
+                    ->where('content', 'like', "%{$query}%")
+                    ->with('user')
+                    ->take(5)
+                    ->get()
+                    ->map(function ($post) {
+                        return [
+                            'id' => $post->id,
+                            'content' => Str::limit(strip_tags($post->content), 100),
+                            'user' => [
+                                'name' => $post->user->name,
+                                'username' => $post->user->username
+                            ],
+                            'url' => route('threads.show', $post->thread_id) . '#post-' . $post->id
+                        ];
+                    });
+
+                $results['posts'] = $posts;
+            }
+        } elseif ($scope === 'forum' && $forumId) {
+            // Search within a specific forum
+            $forum = Forum::find($forumId);
+            if ($forum) {
+                $results['forum'] = [
+                    'id' => $forum->id,
+                    'name' => $forum->name,
+                    'url' => route('forums.show', $forum)
+                ];
+
+                // Search threads within this forum
+                $threads = Thread::where('forum_id', $forumId)
+                    ->where(function ($q) use ($query) {
+                        $q->where('title', 'like', "%{$query}%")
+                            ->orWhere('content', 'like', "%{$query}%");
+                    })
+                    ->with('user')
+                    ->take(5)
+                    ->get()
+                    ->map(function ($thread) {
+                        return [
+                            'id' => $thread->id,
+                            'title' => $thread->title,
+                            'content' => Str::limit(strip_tags($thread->content), 100),
+                            'user' => [
+                                'name' => $thread->user->name,
+                                'username' => $thread->user->username
+                            ],
+                            'url' => route('threads.show', $thread)
+                        ];
+                    });
+
+                $results['threads'] = $threads;
+            }
+        } else {
+            // Search across the entire site
+            // Search threads
+            $threads = Thread::where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%")
+                ->with(['user', 'forum'])
+                ->take(5)
+                ->get()
+                ->map(function ($thread) {
+                    return [
+                        'id' => $thread->id,
+                        'title' => $thread->title,
+                        'content' => Str::limit(strip_tags($thread->content), 100),
+                        'user' => [
+                            'name' => $thread->user->name,
+                            'username' => $thread->user->username
+                        ],
+                        'forum' => [
+                            'name' => $thread->forum->name,
+                            'url' => route('forums.show', $thread->forum)
+                        ],
+                        'url' => route('threads.show', $thread)
+                    ];
+                });
+
+            // Search posts
+            $posts = Post::where('content', 'like', "%{$query}%")
+                ->with(['user', 'thread'])
+                ->take(5)
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        'id' => $post->id,
+                        'content' => Str::limit(strip_tags($post->content), 100),
+                        'user' => [
+                            'name' => $post->user->name,
+                            'username' => $post->user->username
+                        ],
+                        'thread' => [
+                            'title' => $post->thread->title,
+                            'url' => route('threads.show', $post->thread)
+                        ],
+                        'url' => route('threads.show', $post->thread_id) . '#post-' . $post->id
+                    ];
+                });
+
+            $results['threads'] = $threads;
+            $results['posts'] = $posts;
+        }
+
+        return response()->json([
+            'results' => $results,
+            'advanced_search_url' => route('search.advanced')
+        ]);
     }
 }

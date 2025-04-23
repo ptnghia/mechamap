@@ -44,17 +44,19 @@ class Conversation extends Model
         return $this->hasOne(Message::class)->latest();
     }
 
+
+
     /**
      * Check if the conversation has unread messages for a user.
      */
     public function hasUnreadMessages(int $userId): bool
     {
         $participant = $this->participants()->where('user_id', $userId)->first();
-        
+
         if (!$participant) {
             return false;
         }
-        
+
         return $this->messages()
             ->where('created_at', '>', $participant->last_read_at ?? '1970-01-01')
             ->where('user_id', '!=', $userId)
@@ -67,11 +69,11 @@ class Conversation extends Model
     public function unreadMessagesCount(int $userId): int
     {
         $participant = $this->participants()->where('user_id', $userId)->first();
-        
+
         if (!$participant) {
             return 0;
         }
-        
+
         return $this->messages()
             ->where('created_at', '>', $participant->last_read_at ?? '1970-01-01')
             ->where('user_id', '!=', $userId)

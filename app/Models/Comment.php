@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Comment extends Model
 {
@@ -69,5 +70,13 @@ class Comment extends Model
     public function isLikedBy(User $user): bool
     {
         return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get all media attached to this comment (polymorphic).
+     */
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'mediable');
     }
 }

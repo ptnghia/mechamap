@@ -5,21 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\Thread;
 use App\Models\Category;
 use App\Models\Forum;
+use App\Models\Poll;
+use App\Models\PollOption;
+use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ThreadController extends Controller
 {
     /**
+     * The user activity service instance.
+     */
+    protected UserActivityService $activityService;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserActivityService $activityService)
     {
         $this->middleware('auth')->except(['index', 'show']);
+        $this->activityService = $activityService;
     }
 
     /**
@@ -75,14 +85,21 @@ class ThreadController extends Controller
     /**
      * Show the form for creating a new thread.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        // Kiểm tra xem có forum_id được truyền vào không
+        if (!$request->has('forum_id')) {
+            return redirect()->route('forums.select');
+        }
+
+        $forum = Forum::findOrFail($request->forum_id);
         $categories = Category::all();
         $forums = Forum::all();
 
-        return view('threads.create', compact('categories', 'forums'));
+        return view('threads.create', compact('categories', 'forums', 'forum'));
     }
 
     /**
@@ -103,37 +120,76 @@ class ThreadController extends Controller
             'floors' => 'nullable|integer|min:1',
             'status' => 'nullable|string|max:255',
             'images.*' => 'nullable|image|max:5120', // 5MB max per image
+            // Poll validation
+            'has_poll' => 'boolean',
+            'poll_question' => 'required_if:has_poll,1|string|max:255',
+            'poll_options' => 'required_if:has_poll,1|array|min:2',
+            'poll_options.*' => 'required_if:has_poll,1|string|max:255',
+            'poll_max_options' => 'required_if:has_poll,1|integer|min:1',
+            'poll_allow_change_vote' => 'boolean',
+            'poll_show_votes_publicly' => 'boolean',
+            'poll_allow_view_without_vote' => 'boolean',
+            'poll_close_after_days' => 'nullable|integer|min:1',
         ]);
 
-        $thread = Thread::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title) . '-' . Str::random(5),
-            'content' => $request->content,
-            'user_id' => Auth::id(),
-            'category_id' => $request->category_id,
-            'forum_id' => $request->forum_id,
-            'location' => $request->location,
-            'usage' => $request->usage,
-            'floors' => $request->floors,
-            'status' => $request->status,
-        ]);
+        // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+        return DB::transaction(function () use ($request) {
+            $thread = Thread::create([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title) . '-' . Str::random(5),
+                'content' => $request->content,
+                'user_id' => Auth::id(),
+                'category_id' => $request->category_id,
+                'forum_id' => $request->forum_id,
+                'location' => $request->location,
+                'usage' => $request->usage,
+                'floors' => $request->floors,
+                'status' => $request->status,
+            ]);
 
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('thread-images', 'public');
-                $thread->media()->create([
-                    'user_id' => Auth::id(),
-                    'path' => $path,
-                    'type' => 'image',
-                    'size' => $image->getSize(),
-                    'mime_type' => $image->getMimeType(),
-                ]);
+            // Handle image uploads
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('thread-images', 'public');
+                    $thread->media()->create([
+                        'user_id' => Auth::id(),
+                        'path' => $path,
+                        'type' => 'image',
+                        'size' => $image->getSize(),
+                        'mime_type' => $image->getMimeType(),
+                    ]);
+                }
             }
-        }
 
-        return redirect()->route('threads.show', $thread)
-            ->with('success', 'Bài viết đã được tạo thành công.');
+            // Create poll if requested
+            if ($request->has('has_poll') && $request->has_poll) {
+                $poll = Poll::create([
+                    'thread_id' => $thread->id,
+                    'question' => $request->poll_question,
+                    'max_options' => $request->poll_max_options,
+                    'allow_change_vote' => $request->has('poll_allow_change_vote'),
+                    'show_votes_publicly' => $request->has('poll_show_votes_publicly'),
+                    'allow_view_without_vote' => $request->has('poll_allow_view_without_vote'),
+                    'close_at' => $request->poll_close_after_days ? now()->addDays($request->poll_close_after_days) : null,
+                ]);
+
+                // Create poll options
+                foreach ($request->poll_options as $optionText) {
+                    if (!empty($optionText)) {
+                        PollOption::create([
+                            'poll_id' => $poll->id,
+                            'text' => $optionText,
+                        ]);
+                    }
+                }
+            }
+
+            // Log activity
+            $this->activityService->logThreadCreated(Auth::user(), $thread);
+
+            return redirect()->route('threads.show', $thread)
+                ->with('success', 'Bài viết đã được tạo thành công.');
+        });
     }
 
     /**
@@ -165,9 +221,10 @@ class ThreadController extends Controller
 
         $comments = $commentsQuery->paginate(20);
 
-        // Check if user has liked or saved the thread
+        // Check if user has liked, saved or followed the thread
         $isLiked = Auth::check() ? $thread->isLikedBy(Auth::user()) : false;
         $isSaved = Auth::check() ? $thread->isSavedBy(Auth::user()) : false;
+        $isFollowed = Auth::check() ? $thread->isFollowedBy(Auth::user()) : false;
 
         // Get related threads
         $relatedThreads = Thread::where('category_id', $thread->category_id)
@@ -175,7 +232,7 @@ class ThreadController extends Controller
             ->take(5)
             ->get();
 
-        return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'relatedThreads', 'sort'));
+        return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'isFollowed', 'relatedThreads', 'sort'));
     }
 
     /**

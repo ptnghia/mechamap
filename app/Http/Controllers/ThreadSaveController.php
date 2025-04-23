@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Thread;
 use App\Models\ThreadSave;
+use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ThreadSaveController extends Controller
 {
     /**
+     * The user activity service instance.
+     */
+    protected UserActivityService $activityService;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserActivityService $activityService)
     {
         $this->middleware('auth');
+        $this->activityService = $activityService;
     }
 
     /**
@@ -27,7 +34,10 @@ class ThreadSaveController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $savedThreads = $user->savedThreads()->with('user')->latest()->paginate(10);
+        $savedThreads = ThreadSave::where('user_id', $user->id)
+            ->with('thread.user')
+            ->latest()
+            ->paginate(10);
 
         return view('threads.saved', compact('savedThreads'));
     }
@@ -56,6 +66,10 @@ class ThreadSaveController extends Controller
                 'thread_id' => $thread->id,
                 'user_id' => $user->id
             ]);
+
+            // Log activity
+            $this->activityService->logThreadSaved($user, $thread);
+
             $message = 'Đã lưu bài viết.';
             $isSaved = true;
         }

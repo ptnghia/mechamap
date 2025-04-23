@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -167,5 +168,46 @@ class Thread extends Model
     public function attachments(): MorphMany
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    /**
+     * Get the poll associated with the thread.
+     */
+    public function poll(): HasMany
+    {
+        return $this->hasMany(Poll::class);
+    }
+
+    /**
+     * Check if the thread has a poll.
+     */
+    public function hasPoll(): bool
+    {
+        return $this->poll()->exists();
+    }
+
+    /**
+     * Get the follows for the thread.
+     */
+    public function follows(): HasMany
+    {
+        return $this->hasMany(ThreadFollow::class);
+    }
+
+    /**
+     * Get the users following this thread.
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'thread_follows')
+            ->withTimestamps();
+    }
+
+    /**
+     * Check if the thread is followed by the given user.
+     */
+    public function isFollowedBy(User $user): bool
+    {
+        return $this->follows()->where('user_id', $user->id)->exists();
     }
 }

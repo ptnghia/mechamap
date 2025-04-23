@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FollowingController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\ConversationController;
@@ -27,6 +28,7 @@ Route::get('/dashboard', function () {
 // Profile routes
 Route::get('/users', [ProfileController::class, 'index'])->name('users.index');
 Route::get('/users/{user:username}', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/users/{user:username}/activities', [ActivityController::class, 'index'])->name('profile.activities');
 
 Route::middleware('auth')->group(function () {
     // Profile edit routes
@@ -44,6 +46,8 @@ Route::middleware('auth')->group(function () {
     // Following routes
     Route::get('/following', [FollowingController::class, 'index'])->name('following.index');
     Route::get('/followers', [FollowingController::class, 'followers'])->name('following.followers');
+    Route::get('/followed-threads', [FollowingController::class, 'threads'])->name('following.threads');
+    Route::get('/participated-discussions', [FollowingController::class, 'participated'])->name('following.participated');
 
     // Alerts routes
     Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
@@ -90,6 +94,7 @@ Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/advanced-search', [SearchController::class, 'advanced'])->name('search.advanced');
 Route::post('/advanced-search', [SearchController::class, 'advancedSearch'])->name('search.advanced.submit');
+Route::get('/ajax-search', [SearchController::class, 'ajaxSearch'])->name('search.ajax');
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
 Route::get('/members/online', [MemberController::class, 'online'])->name('members.online');
 Route::get('/members/staff', [MemberController::class, 'staff'])->name('members.staff');
@@ -101,6 +106,8 @@ Route::post('/theme/original-view', [ThemeController::class, 'toggleOriginalView
 
 // Forum and thread routes
 Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
+Route::get('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'index'])->name('forums.select')->middleware('auth');
+Route::post('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'selectForum'])->name('forums.select.submit')->middleware('auth');
 
 // Gallery routes
 Route::middleware('auth')->group(function () {
@@ -135,6 +142,52 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         Route::put('users/{user}/toggle-ban', [\App\Http\Controllers\Admin\UserController::class, 'toggleBan'])->name('users.toggle-ban');
         Route::put('users/{user}/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPassword'])->name('users.reset-password');
+
+        // Thread management routes
+        Route::resource('threads', \App\Http\Controllers\Admin\ThreadController::class);
+        Route::put('threads/{thread}/approve', [\App\Http\Controllers\Admin\ThreadController::class, 'approve'])->name('threads.approve');
+        Route::put('threads/{thread}/reject', [\App\Http\Controllers\Admin\ThreadController::class, 'reject'])->name('threads.reject');
+        Route::get('threads-statistics', [\App\Http\Controllers\Admin\ThreadController::class, 'statistics'])->name('threads.statistics');
+
+        // Category management routes
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+        Route::post('categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
+
+        // Forum management routes
+        Route::resource('forums', \App\Http\Controllers\Admin\ForumController::class);
+        Route::post('forums/reorder', [\App\Http\Controllers\Admin\ForumController::class, 'reorder'])->name('forums.reorder');
+
+        // Comment management routes
+        Route::resource('comments', \App\Http\Controllers\Admin\CommentController::class);
+        Route::put('comments/{comment}/toggle-visibility', [\App\Http\Controllers\Admin\CommentController::class, 'toggleVisibility'])->name('comments.toggle-visibility');
+        Route::put('comments/{comment}/toggle-flag', [\App\Http\Controllers\Admin\CommentController::class, 'toggleFlag'])->name('comments.toggle-flag');
+        Route::get('comments-statistics', [\App\Http\Controllers\Admin\CommentController::class, 'statistics'])->name('comments.statistics');
+
+        // Statistics routes
+        Route::prefix('statistics')->name('statistics.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\StatisticsController::class, 'index'])->name('index');
+            Route::get('/users', [\App\Http\Controllers\Admin\StatisticsController::class, 'users'])->name('users');
+            Route::get('/content', [\App\Http\Controllers\Admin\StatisticsController::class, 'content'])->name('content');
+            Route::get('/interactions', [\App\Http\Controllers\Admin\StatisticsController::class, 'interactions'])->name('interactions');
+            Route::post('/export', [\App\Http\Controllers\Admin\StatisticsController::class, 'export'])->name('export');
+        });
+
+        // Page management routes
+        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
+        Route::resource('page-categories', \App\Http\Controllers\Admin\PageCategoryController::class);
+        Route::post('page-categories/reorder', [\App\Http\Controllers\Admin\PageCategoryController::class, 'reorder'])->name('page-categories.reorder');
+
+        // FAQ management routes
+        Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class);
+        Route::put('faqs/{faq}/toggle-status', [\App\Http\Controllers\Admin\FaqController::class, 'toggleStatus'])->name('faqs.toggle-status');
+        Route::resource('faq-categories', \App\Http\Controllers\Admin\FaqCategoryController::class);
+        Route::put('faq-categories/{faq_category}/toggle-status', [\App\Http\Controllers\Admin\FaqCategoryController::class, 'toggleStatus'])->name('faq-categories.toggle-status');
+        Route::post('faq-categories/reorder', [\App\Http\Controllers\Admin\FaqCategoryController::class, 'reorder'])->name('faq-categories.reorder');
+
+        // Media management routes
+        Route::resource('media', \App\Http\Controllers\Admin\MediaController::class);
+        Route::get('media/{media}/download', [\App\Http\Controllers\Admin\MediaController::class, 'download'])->name('media.download');
+        Route::get('media-library', [\App\Http\Controllers\Admin\MediaController::class, 'library'])->name('media.library');
 
         // SEO routes
         Route::prefix('seo')->name('seo.')->group(function () {
@@ -196,9 +249,14 @@ Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::clas
 Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
 Route::post('/comments/{comment}/like', [\App\Http\Controllers\CommentController::class, 'like'])->name('comments.like')->middleware('auth');
 
-// Thread like/save routes
+// Thread like/save/follow routes
 Route::post('/threads/{thread}/like', [\App\Http\Controllers\ThreadLikeController::class, 'toggle'])->name('threads.like')->middleware('auth');
 Route::post('/threads/{thread}/save', [\App\Http\Controllers\ThreadSaveController::class, 'toggle'])->name('threads.save')->middleware('auth');
+Route::post('/threads/{thread}/follow', [\App\Http\Controllers\ThreadFollowController::class, 'toggle'])->name('threads.follow.toggle')->middleware('auth');
 Route::get('/saved-threads', [\App\Http\Controllers\ThreadSaveController::class, 'index'])->name('threads.saved')->middleware('auth');
+
+// Poll routes
+Route::post('/threads/{thread}/polls', [\App\Http\Controllers\PollController::class, 'store'])->name('threads.polls.store')->middleware('auth');
+Route::post('/polls/{poll}/vote', [\App\Http\Controllers\PollController::class, 'vote'])->name('polls.vote')->middleware('auth');
 
 require __DIR__ . '/auth.php';

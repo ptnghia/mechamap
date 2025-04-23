@@ -5,19 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Thread;
 use App\Models\CommentLike;
+use App\Models\Media;
+use App\Services\AlertService;
+use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
+    /**
+     * The user activity service instance.
+     */
+    protected UserActivityService $activityService;
+
+    /**
+     * The alert service instance.
+     */
+    protected AlertService $alertService;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserActivityService $activityService, AlertService $alertService)
     {
         $this->middleware('auth');
+        $this->activityService = $activityService;
+        $this->alertService = $alertService;
     }
 
     /**
@@ -31,22 +48,49 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|string',
-            'parent_id' => 'nullable|exists:comments,id'
+            'parent_id' => 'nullable|exists:comments,id',
+            'images.*' => 'nullable|image|max:5120', // 5MB max per image
         ]);
 
-        $comment = new Comment([
-            'content' => $request->content,
-            'user_id' => Auth::id(),
-            'parent_id' => $request->parent_id
-        ]);
+        // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+        return DB::transaction(function () use ($request, $thread) {
+            $hasMedia = $request->hasFile('images');
 
-        $thread->comments()->save($comment);
+            $comment = new Comment([
+                'content' => $request->content,
+                'user_id' => Auth::id(),
+                'parent_id' => $request->parent_id,
+                'has_media' => $hasMedia
+            ]);
 
-        // Update participant count
-        $participantCount = $thread->comments()->select('user_id')->distinct()->count();
-        $thread->update(['participant_count' => $participantCount]);
+            $thread->comments()->save($comment);
 
-        return back()->with('success', 'Bình luận đã được đăng thành công.');
+            // Xử lý upload hình ảnh nếu có
+            if ($hasMedia) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('comment-images', 'public');
+                    $comment->attachments()->create([
+                        'user_id' => Auth::id(),
+                        'file_path' => $path,
+                        'file_name' => $image->getClientOriginalName(),
+                        'file_type' => $image->getMimeType(),
+                        'file_size' => $image->getSize(),
+                    ]);
+                }
+            }
+
+            // Update participant count
+            $participantCount = $thread->comments()->select('user_id')->distinct()->count();
+            $thread->update(['participant_count' => $participantCount]);
+
+            // Log activity
+            $this->activityService->logCommentCreated(Auth::user(), $comment);
+
+            // Tạo thông báo cho người theo dõi thread và chủ thread
+            $this->alertService->createCommentAlert(Auth::user(), $thread, $comment);
+
+            return back()->with('success', 'Bình luận đã được đăng thành công.');
+        });
     }
 
     /**
@@ -61,14 +105,35 @@ class CommentController extends Controller
         $this->authorize('update', $comment);
 
         $request->validate([
-            'content' => 'required|string'
+            'content' => 'required|string',
+            'images.*' => 'nullable|image|max:5120', // 5MB max per image
         ]);
 
-        $comment->update([
-            'content' => $request->content
-        ]);
+        // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+        return DB::transaction(function () use ($request, $comment) {
+            $hasMedia = $request->hasFile('images');
 
-        return back()->with('success', 'Bình luận đã được cập nhật.');
+            $comment->update([
+                'content' => $request->content,
+                'has_media' => $comment->has_media || $hasMedia
+            ]);
+
+            // Xử lý upload hình ảnh nếu có
+            if ($hasMedia) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('comment-images', 'public');
+                    $comment->attachments()->create([
+                        'user_id' => Auth::id(),
+                        'file_path' => $path,
+                        'file_name' => $image->getClientOriginalName(),
+                        'file_type' => $image->getMimeType(),
+                        'file_size' => $image->getSize(),
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Bình luận đã được cập nhật.');
+        });
     }
 
     /**
@@ -81,14 +146,26 @@ class CommentController extends Controller
     {
         $this->authorize('delete', $comment);
 
-        $thread = $comment->thread;
-        $comment->delete();
+        // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+        return DB::transaction(function () use ($comment) {
+            $thread = $comment->thread;
 
-        // Update participant count
-        $participantCount = $thread->comments()->select('user_id')->distinct()->count();
-        $thread->update(['participant_count' => $participantCount]);
+            // Xóa các file đính kèm nếu có
+            if ($comment->has_media) {
+                foreach ($comment->attachments as $attachment) {
+                    Storage::disk('public')->delete($attachment->file_path);
+                    $attachment->delete();
+                }
+            }
 
-        return back()->with('success', 'Bình luận đã được xóa.');
+            $comment->delete();
+
+            // Update participant count
+            $participantCount = $thread->comments()->select('user_id')->distinct()->count();
+            $thread->update(['participant_count' => $participantCount]);
+
+            return back()->with('success', 'Bình luận đã được xóa.');
+        });
     }
 
     /**

@@ -352,4 +352,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Subscription::class);
     }
+
+    /**
+     * Get the thread follows created by the user.
+     */
+    public function threadFollows(): HasMany
+    {
+        return $this->hasMany(ThreadFollow::class);
+    }
+
+    /**
+     * Get the followed threads for the user.
+     */
+    public function followedThreads(): BelongsToMany
+    {
+        return $this->belongsToMany(Thread::class, 'thread_follows')
+            ->withTimestamps();
+    }
 }

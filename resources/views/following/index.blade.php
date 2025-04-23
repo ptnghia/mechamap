@@ -17,11 +17,17 @@
                                 <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action">
                                     <i class="bi bi-person-fill me-2"></i> {{ __('Followers') }}
                                 </a>
+                                <a href="{{ route('following.threads') }}" class="list-group-item list-group-item-action">
+                                    <i class="bi bi-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                </a>
+                                <a href="{{ route('following.participated') }}" class="list-group-item list-group-item-action">
+                                    <i class="bi bi-chat-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-9">
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
@@ -51,7 +57,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                
+
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $following->links() }}
                                 </div>

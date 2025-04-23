@@ -1,0 +1,71 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Chỉnh sửa diễn đàn')
+
+@section('header', 'Chỉnh sửa diễn đàn')
+
+@section('content')
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">{{ __('Chỉnh sửa diễn đàn') }}</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.forums.update', $forum) }}" method="POST">
+                @csrf
+                @method('PUT')
+                
+                <div class="mb-3">
+                    <label for="name" class="form-label">{{ __('Tên diễn đàn') }}</label>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $forum->name) }}" required>
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">{{ __('Mô tả') }}</label>
+                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $forum->description) }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="mb-3">
+                    <label for="parent_id" class="form-label">{{ __('Diễn đàn cha') }}</label>
+                    <select class="form-select @error('parent_id') is-invalid @enderror" id="parent_id" name="parent_id">
+                        <option value="">{{ __('Không có') }}</option>
+                        @foreach($forums as $parentForum)
+                            <option value="{{ $parentForum->id }}" {{ old('parent_id', $forum->parent_id) == $parentForum->id ? 'selected' : '' }}>{{ $parentForum->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('parent_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="mb-3">
+                    <label for="order" class="form-label">{{ __('Thứ tự') }}</label>
+                    <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" value="{{ old('order', $forum->order) }}" min="0">
+                    @error('order')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="is_private" name="is_private" {{ old('is_private', $forum->is_private) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="is_private">
+                            {{ __('Diễn đàn riêng tư') }}
+                        </label>
+                        <div class="form-text">{{ __('Nếu được chọn, chỉ những người dùng được cấp quyền mới có thể truy cập diễn đàn này.') }}</div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ route('admin.forums.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
+                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection

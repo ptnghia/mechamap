@@ -2,7 +2,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">{{ __('Activity') }}</h5>
         @if(!isset($showAll))
-            <a href="#activity" class="see-all-link">{{ __('See All') }} <i class="bi bi-arrow-right"></i></a>
+            <a href="{{ route('profile.activities', $user) }}" class="see-all-link">{{ __('See All') }} <i class="bi bi-arrow-right"></i></a>
         @endif
     </div>
     <div class="card-body">
@@ -16,10 +16,40 @@
                         <div class="activity-title">
                             @switch($activity->activity_type)
                                 @case('thread_created')
-                                    {{ __('Created a new thread') }}
+                                    @if($activity->thread)
+                                        <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
+                                            {{ __('Created thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                        </a>
+                                    @else
+                                        {{ __('Created a new thread') }}
+                                    @endif
                                     @break
-                                @case('post_created')
-                                    {{ __('Replied to a thread') }}
+                                @case('comment_created')
+                                    @if($activity->comment && $activity->comment->thread)
+                                        <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
+                                            {{ __('Commented on:') }} {{ Str::limit($activity->comment->thread->title, 50) }}
+                                        </a>
+                                    @else
+                                        {{ __('Commented on a thread') }}
+                                    @endif
+                                    @break
+                                @case('thread_liked')
+                                    @if($activity->thread)
+                                        <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
+                                            {{ __('Liked thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                        </a>
+                                    @else
+                                        {{ __('Liked a thread') }}
+                                    @endif
+                                    @break
+                                @case('thread_saved')
+                                    @if($activity->thread)
+                                        <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
+                                            {{ __('Saved thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                        </a>
+                                    @else
+                                        {{ __('Saved a thread') }}
+                                    @endif
                                     @break
                                 @case('profile_updated')
                                     {{ __('Updated profile information') }}
@@ -32,7 +62,7 @@
                     </div>
                 </div>
             @endforeach
-            
+
             @if(isset($showAll) && $activities->hasPages())
                 <div class="d-flex justify-content-center mt-4">
                     {{ $activities->links() }}
