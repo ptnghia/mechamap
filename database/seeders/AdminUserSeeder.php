@@ -15,43 +15,51 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         // Tạo tài khoản admin
-        User::create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'email' => 'admin@mechamap.test',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@mechamap.test'],
+            [
+                'name' => 'Admin',
+                'username' => 'admin',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
 
         // Tạo tài khoản moderator
-        User::create([
-            'name' => 'Moderator',
-            'username' => 'moderator',
-            'email' => 'moderator@mechamap.test',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'role' => 'moderator',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'moderator@mechamap.test'],
+            [
+                'name' => 'Moderator',
+                'username' => 'moderator',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => 'moderator',
+            ]
+        );
 
         // Tạo tài khoản senior
-        User::create([
-            'name' => 'Senior',
-            'username' => 'senior',
-            'email' => 'senior@mechamap.test',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'role' => 'senior',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'senior@mechamap.test'],
+            [
+                'name' => 'Senior',
+                'username' => 'senior',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => 'senior',
+            ]
+        );
 
         // Tạo tài khoản member
-        User::create([
-            'name' => 'Member',
-            'username' => 'member',
-            'email' => 'member@mechamap.test',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'role' => 'member',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'member@mechamap.test'],
+            [
+                'name' => 'Member',
+                'username' => 'member',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => 'member',
+            ]
+        );
     }
 }

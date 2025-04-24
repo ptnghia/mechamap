@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('thread_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('thread_id');
             $table->string('question');
             $table->integer('max_options')->default(1);
             $table->boolean('allow_change_vote')->default(true);
@@ -21,21 +21,29 @@ return new class extends Migration
             $table->boolean('allow_view_without_vote')->default(true);
             $table->timestamp('close_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
         });
 
         Schema::create('poll_options', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('poll_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('poll_id');
             $table->string('text');
             $table->timestamps();
+
+            $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
         });
 
         Schema::create('poll_votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('poll_id')->constrained()->onDelete('cascade');
-            $table->foreignId('poll_option_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('poll_id');
+            $table->unsignedBigInteger('poll_option_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
+            $table->foreign('poll_option_id')->references('id')->on('poll_options')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             // Một người dùng chỉ có thể bình chọn một lần cho mỗi tùy chọn
             $table->unique(['poll_id', 'poll_option_id', 'user_id']);
