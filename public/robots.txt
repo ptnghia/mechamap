@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /login
+Disallow: /register
+Disallow: /password/
+Disallow: /email/
+
+Sitemap: https://mechamap.com/sitemap.xml
