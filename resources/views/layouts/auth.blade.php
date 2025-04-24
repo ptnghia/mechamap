@@ -21,36 +21,6 @@
             <link rel="canonical" href="{{ url()->current() }}">
         @endif
 
-        <!-- Open Graph / Facebook -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:title" content="{{ $title ?? $seo['og_title'] ?? $seo['site_title'] ?? config('app.name') }}">
-        <meta property="og:description" content="{{ $description ?? $seo['og_description'] ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
-        @if(!empty($seo['og_image'] ?? ''))
-            <meta property="og:image" content="{{ url($seo['og_image']) }}">
-        @endif
-        @if(!empty($seo['facebook_app_id'] ?? ''))
-            <meta property="fb:app_id" content="{{ $seo['facebook_app_id'] }}">
-        @endif
-
-        <!-- Twitter -->
-        <meta name="twitter:card" content="{{ $seo['twitter_card'] ?? 'summary' }}">
-        @if(!empty($seo['twitter_username'] ?? ''))
-            <meta name="twitter:site" content="@{{ $seo['twitter_username'] }}">
-            <meta name="twitter:creator" content="@{{ $seo['twitter_username'] }}">
-        @endif
-        <meta name="twitter:url" content="{{ url()->current() }}">
-        <meta name="twitter:title" content="{{ $title ?? $seo['twitter_title'] ?? $seo['site_title'] ?? config('app.name') }}">
-        <meta name="twitter:description" content="{{ $description ?? $seo['twitter_description'] ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
-        @if(!empty($seo['twitter_image'] ?? ''))
-            <meta name="twitter:image" content="{{ url($seo['twitter_image']) }}">
-        @endif
-
-        <!-- Google Search Console Verification -->
-        @if(!empty($seo['google_search_console_id'] ?? ''))
-            <meta name="google-site-verification" content="{{ $seo['google_search_console_id'] }}">
-        @endif
-
         <!-- Favicon -->
         <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
         <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
@@ -61,62 +31,17 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <!-- Lightbox CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
-
-        <!-- Auth Modal CSS -->
-        <link rel="stylesheet" href="{{ asset('css/auth-modal.css') }}">
-
         <!-- Search CSS -->
         <link rel="stylesheet" href="{{ asset('css/search.css') }}">
 
+        <!-- Custom Header CSS -->
+        <link rel="stylesheet" href="{{ asset('css/custom-header.css') }}">
+
+        <!-- Auth CSS -->
+        <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Custom CSS -->
-        @if(!empty($seo['custom_css'] ?? ''))
-            <style>
-                {!! $seo['custom_css'] !!}
-            </style>
-        @endif
-
-        <!-- Page-specific CSS -->
-        @if(Route::currentRouteName() === 'home')
-            <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-        @endif
-
-        <!-- What's New CSS -->
-        @if(str_starts_with(Route::currentRouteName(), 'whats-new'))
-            <link rel="stylesheet" href="{{ asset('css/whats-new.css') }}">
-        @endif
-
-        <!-- Activity CSS -->
-        <link rel="stylesheet" href="{{ asset('css/activity.css') }}">
-
-        <!-- Alerts CSS -->
-        <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
-
-        <!-- Sidebar CSS -->
-        <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-
-        <!-- Compact Theme CSS -->
-        <link rel="stylesheet" href="{{ asset('css/compact-theme.css') }}">
-
-        <!-- Unified Button Styles -->
-        <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-
-        <!-- Unified Form Styles -->
-        <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
-
-        <!-- Extra Meta Tags -->
-        @if(!empty($seo['extra_meta'] ?? ''))
-            {!! $seo['extra_meta'] !!}
-        @endif
-
-        <!-- Header Scripts -->
-        @if(!empty($seo['header_scripts'] ?? ''))
-            {!! $seo['header_scripts'] !!}
-        @endif
 
         <!-- Custom Styles -->
         @stack('styles')
@@ -125,61 +50,25 @@
         <div class="d-flex flex-column min-vh-100">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="sticky-top bg-white border-bottom shadow-sm">
-                    <div class="container py-3">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
             <!-- Page Content -->
-            <main class="flex-grow-1">
-                @php
-                    // Xác định các trang không hiển thị sidebar
-                    $excludedRoutes = [
-                        'threads.create',
-                        'threads.edit',
-                        'profile.edit',
-                        'profile.update',
-                        'profile.destroy',
-                        'conversations.show',
-                        'conversations.create',
-                        'bookmarks.index',
-                        'showcase.index',
-                        'subscription.index',
-                        'business.index',
-                        'business.services',
-                    ];
-
-                    // Kiểm tra route hiện tại
-                    $currentRoute = Route::currentRouteName();
-                    $showSidebar = !in_array($currentRoute, $excludedRoutes);
-                @endphp
-
-                @if(View::hasSection('full-width-content'))
-                    @yield('full-width-content')
-                @endif
-
-                @if(View::hasSection('content'))
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                @yield('content')
+            <main class="flex-grow-1 py-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="text-center mb-4">
+                                <a href="{{ route('home') }}" class="logo-link">
+                                    <img src="{{ get_logo_url() }}" alt="{{ config('app.name') }}" class="img-fluid" style="max-height: 80px;">
+                                </a>
                             </div>
-                            <div class="col-lg-4">
-                                <x-sidebar :showSidebar="$showSidebar" />
+
+                            <div class="card auth-card">
+                                <div class="card-body p-4 p-sm-5">
+                                    @yield('content')
+                                </div>
                             </div>
                         </div>
                     </div>
-                @elseif(!View::hasSection('full-width-content'))
-                    <div class="container py-4">
-                        <div class="alert alert-info">
-                            Không có nội dung để hiển thị.
-                        </div>
-                    </div>
-                @endif
+                </div>
             </main>
 
             <!-- Footer -->
@@ -249,47 +138,9 @@
         <!-- Custom Scripts -->
         @stack('scripts')
 
-        <!-- Footer Scripts -->
-        @if(!empty($seo['footer_scripts'] ?? ''))
-            {!! $seo['footer_scripts'] !!}
-        @endif
-
-        <!-- Google Analytics -->
-        @if(!empty($seo['google_analytics_id'] ?? ''))
-            <script async src="https://www.googletagmanager.com/gtag/js?id={{ $seo['google_analytics_id'] }}"></script>
-            <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '{{ $seo['google_analytics_id'] }}');
-            </script>
-        @endif
-
-        <!-- Theme toggle script is now handled by darkMode.js -->
-
-        <!-- Auth Modal Script -->
-        <script src="{{ asset('js/auth-modal.js') }}"></script>
-
         <!-- Search Script -->
         <script src="{{ asset('js/search.js') }}"></script>
 
-        <!-- Lightbox Script -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-        <script>
-            // Lightbox configuration
-            lightbox.option({
-                'resizeDuration': 200,
-                'wrapAround': true,
-                'albumLabel': 'Hình %1 / %2',
-                'fadeDuration': 300,
-                'imageFadeDuration': 300
-            });
-        </script>
-
-        <!-- CKEditor Script - Only load on pages that need it -->
-        @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))
-            <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-            <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
-        @endif
+        <!-- Theme toggle script is now handled by darkMode.js -->
     </body>
 </html>

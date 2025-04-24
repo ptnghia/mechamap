@@ -1,37 +1,38 @@
-@extends('layouts.guest')
+@extends('layouts.auth')
 
-@section('title', 'Page Title')
+@section('title', 'Quên mật khẩu')
 
 @section('content')
+    <h2 class="auth-title text-center">{{ __('Forgot Password') }}</h2>
+
     @if (session('status'))
         <div class="alert alert-success mb-4">
             {{ session('status') }}
         </div>
-    @endif<h2 class="text-center mb-4">{{ __('Forgot Password') }}</h2>
+    @endif
 
-    <div class="alert alert-info mb-4">
+    <p class="auth-subtitle text-center">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    </p>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" action="{{ route('password.email') }}" class="auth-form">
         @csrf
 
         <!-- Email Address -->
-        <div class="mb-3">
+        <div class="form-group">
             <label for="email" class="form-label">{{ __('Email') }}</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autofocus >
+            <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autofocus placeholder="Enter your email address">
             @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="{{ route('login') }}" class="text-decoration-none">
-                {{ __('Back to login') }}
+        <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+            <a href="{{ route('login') }}" class="auth-footer-link">
+                <i class="bi bi-arrow-left me-1"></i>{{ __('Back to login') }}
             </a>
 
-            <button type="submit" class="btn btn-primary">{{ __('Email Password Reset Link') }}</button>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-envelope me-2"></i>{{ __('Send Reset Link') }}
+            </button>
         </div>
     </form>
 @endsection

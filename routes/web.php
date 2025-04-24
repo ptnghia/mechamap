@@ -106,6 +106,7 @@ Route::post('/theme/original-view', [ThemeController::class, 'toggleOriginalView
 
 // Forum and thread routes
 Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
+Route::get('/categories/{category:slug}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
 Route::get('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'index'])->name('forums.select')->middleware('auth');
 Route::post('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'selectForum'])->name('forums.select.submit')->middleware('auth');
 
@@ -260,3 +261,6 @@ Route::post('/threads/{thread}/polls', [\App\Http\Controllers\PollController::cl
 Route::post('/polls/{poll}/vote', [\App\Http\Controllers\PollController::class, 'vote'])->name('polls.vote')->middleware('auth');
 
 require __DIR__ . '/auth.php';
+
+// Include What's New routes
+require __DIR__ . '/web-whats-new.php';

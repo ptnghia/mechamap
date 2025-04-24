@@ -2,147 +2,182 @@
 
 @section('title', 'Create New Thread')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/thread-form.css') }}">
+@endpush
+
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <h1 class="h4 mb-0">Create New Thread</h1>
-    </div>
-    <div class="card-body">
-                    <form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data">
+<div class="thread-form-container">
+    <div class="card thread-form-card">
+        <div class="card-header">
+            <h1>Create New Thread</h1>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data" class="thread-form">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
-                            <div class="form-text">
-                                Use format: CITY l Project Name l Floors l Status (e.g., CARACAS l Promenade Res. I 24p I E/C)
+                        <div class="thread-form-section">
+                            <div class="thread-form-section-title">
+                                <i class="bi bi-pencil-square"></i> Basic Information
                             </div>
-                            @error('title')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="category_id" class="form-label">Category</label>
-                                <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
-                                    <option value="">Select a category</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('category_id')
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Thread Title</label>
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required placeholder="Enter a descriptive title for your thread">
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle me-1"></i> Use format: CITY l Project Name l Floors l Status (e.g., CARACAS l Promenade Res. I 24p I E/C)
+                                </div>
+                                @error('title')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="forum_id" class="form-label">Forum</label>
-                                <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
-                                    <option value="">Select a forum</option>
-                                    @foreach($forums as $forum)
-                                        <option value="{{ $forum->id }}" {{ old('forum_id') == $forum->id ? 'selected' : '' }}>{{ $forum->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('forum_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="category_id" class="form-label">Category</label>
+                                    <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
+                                        <option value="">Select a category</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="forum_id" class="form-label">Forum</label>
+                                    <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
+                                        <option value="">Select a forum</option>
+                                        @foreach($forums as $forum)
+                                            <option value="{{ $forum->id }}" {{ old('forum_id') == $forum->id ? 'selected' : '' }}>{{ $forum->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('forum_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
                         <!-- Project Details -->
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5 class="mb-0">Project Details</h5>
+                        <div class="thread-form-section">
+                            <div class="thread-form-section-title">
+                                <i class="bi bi-building"></i> Project Details
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="location" class="form-label">Location</label>
-                                        <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location') }}">
-                                        <div class="form-text">E.g., Las Mercedes, Downtown, etc.</div>
-                                        @error('location')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <label for="usage" class="form-label">Usage</label>
-                                        <input type="text" class="form-control @error('usage') is-invalid @enderror" id="usage" name="usage" value="{{ old('usage') }}">
-                                        <div class="form-text">E.g., Residential, Commercial, Mixed, etc.</div>
-                                        @error('usage')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="location" class="form-label">Location</label>
+                                    <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location') }}" placeholder="E.g., Las Mercedes, Downtown">
+                                    <div class="form-text">
+                                        <i class="bi bi-geo-alt me-1"></i> Specify the location of the project
                                     </div>
+                                    @error('location')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="floors" class="form-label">Floors</label>
-                                        <input type="number" class="form-control @error('floors') is-invalid @enderror" id="floors" name="floors" value="{{ old('floors') }}" min="1">
-                                        @error('floors')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                <div class="col-md-6 mb-3">
+                                    <label for="usage" class="form-label">Usage</label>
+                                    <input type="text" class="form-control @error('usage') is-invalid @enderror" id="usage" name="usage" value="{{ old('usage') }}" placeholder="E.g., Residential, Commercial, Mixed">
+                                    <div class="form-text">
+                                        <i class="bi bi-house-door me-1"></i> Specify the purpose of the building
                                     </div>
+                                    @error('usage')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <label for="status" class="form-label">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                            <option value="">Select status</option>
-                                            <option value="Proposed" {{ old('status') == 'Proposed' ? 'selected' : '' }}>Proposed</option>
-                                            <option value="Approved" {{ old('status') == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                            <option value="Under Construction" {{ old('status') == 'Under Construction' ? 'selected' : '' }}>Under Construction (E/C)</option>
-                                            <option value="Completed" {{ old('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
-                                            <option value="On Hold" {{ old('status') == 'On Hold' ? 'selected' : '' }}>On Hold</option>
-                                            <option value="Cancelled" {{ old('status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                        </select>
-                                        @error('status')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="floors" class="form-label">Floors</label>
+                                    <input type="number" class="form-control @error('floors') is-invalid @enderror" id="floors" name="floors" value="{{ old('floors') }}" min="1" placeholder="Number of floors">
+                                    <div class="form-text">
+                                        <i class="bi bi-layers me-1"></i> Enter the number of floors in the building
                                     </div>
+                                    @error('floors')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
+                                        <option value="">Select status</option>
+                                        <option value="Proposed" {{ old('status') == 'Proposed' ? 'selected' : '' }}>Proposed</option>
+                                        <option value="Approved" {{ old('status') == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="Under Construction" {{ old('status') == 'Under Construction' ? 'selected' : '' }}>Under Construction (E/C)</option>
+                                        <option value="Completed" {{ old('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="On Hold" {{ old('status') == 'On Hold' ? 'selected' : '' }}>On Hold</option>
+                                        <option value="Cancelled" {{ old('status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    </select>
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i> Current status of the project
+                                    </div>
+                                    @error('status')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10" required>{{ old('content') }}</textarea>
-                            <div class="form-text">You can use the editor to format text, add links, and insert images.</div>
-                            @error('content')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        <div class="thread-form-section">
+                            <div class="thread-form-section-title">
+                                <i class="bi bi-file-text"></i> Thread Content
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="images" class="form-label">Images</label>
-                            <div class="custom-file-upload">
-                                <div class="input-group">
-                                    <input type="file" class="form-control @error('images') is-invalid @enderror" id="images" name="images[]" multiple accept="image/*">
-                                    <label class="input-group-text" for="images"><i class="bi bi-upload me-1"></i> Browse</label>
+                            <div class="mb-4">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="15" required>{{ old('content') }}</textarea>
+                                <div class="form-text">
+                                    <i class="bi bi-pencil me-1"></i> You can use the editor to format text, add links, and insert images.
                                 </div>
-                                <div class="form-text">You can upload multiple images. Maximum 10 images, each up to 5MB.</div>
-                                @error('images')
+                                @error('content')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                @error('images.*')
-                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                @enderror
                             </div>
-                        </div>
 
-                        <div id="image-previews" class="row mt-3 image-preview-container"></div>
-
-                        <!-- Poll Section -->
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="has_poll" name="has_poll" value="1" {{ old('has_poll') ? 'checked' : '' }}>
-                                    <label class="form-check-label fw-bold" for="has_poll">
-                                        Add a Poll
-                                    </label>
+                            <div class="mb-3">
+                                <label for="images" class="form-label">
+                                    <i class="bi bi-images me-1"></i> Upload Images
+                                </label>
+                                <div class="custom-file-upload">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control @error('images') is-invalid @enderror" id="images" name="images[]" multiple accept="image/*">
+                                        <label class="input-group-text" for="images"><i class="bi bi-upload me-1"></i> Browse</label>
+                                    </div>
+                                    <div class="form-text">
+                                        <i class="bi bi-info-circle me-1"></i> You can upload multiple images. Maximum 10 images, each up to 5MB.
+                                    </div>
+                                    @error('images')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    @error('images.*')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="card-body poll-section" style="{{ old('has_poll') ? '' : 'display: none;' }}">
+
+                            <div id="image-previews" class="row mt-3 image-preview-container"></div>
+                        </div>
+
+                        <!-- Poll Section -->
+                        <div class="thread-form-section">
+                            <div class="thread-form-section-title">
+                                <i class="bi bi-bar-chart"></i> Poll (Optional)
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="has_poll" name="has_poll" value="1" {{ old('has_poll') ? 'checked' : '' }}>
+                                <label class="form-check-label fw-bold" for="has_poll">
+                                    Add a poll to this thread
+                                </label>
+                            </div>
+
+                            <div class="poll-section" style="{{ old('has_poll') ? '' : 'display: none;' }}">
                                 <div class="mb-3">
                                     <label for="poll_question" class="form-label">Question <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('poll_question') is-invalid @enderror" id="poll_question" name="poll_question" value="{{ old('poll_question') }}">
@@ -251,9 +286,13 @@
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary me-md-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Create Thread</button>
+                        <div class="thread-form-submit">
+                            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle me-1"></i> Create Thread
+                            </button>
                         </div>
                     </form>
                 </div>
