@@ -23,10 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // Đảm bảo chạy theo thứ tự đúng
         $this->call([
-            AdminUserSeeder::class,
-            CategorySeeder::class,
-            ForumSeeder::class,
-            ThreadAndPostSeeder::class,
+            BasicDataSeeder::class,
         ]);
     }
 }

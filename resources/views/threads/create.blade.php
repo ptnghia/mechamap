@@ -3,14 +3,11 @@
 @section('title', 'Create New Thread')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="h4 mb-0">Create New Thread</h1>
-                </div>
-                <div class="card-body">
+<div class="card">
+    <div class="card-header">
+        <h1 class="h4 mb-0">Create New Thread</h1>
+    </div>
+    <div class="card-body">
                     <form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
@@ -110,6 +107,7 @@
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
                             <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10" required>{{ old('content') }}</textarea>
+                            <div class="form-text">You can use the editor to format text, add links, and insert images.</div>
                             @error('content')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -117,17 +115,22 @@
 
                         <div class="mb-3">
                             <label for="images" class="form-label">Images</label>
-                            <input type="file" class="form-control @error('images') is-invalid @enderror" id="images" name="images[]" multiple accept="image/*">
-                            <div class="form-text">You can upload multiple images. Maximum 10 images, each up to 5MB.</div>
-                            @error('images')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            @error('images.*')
-                                <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
+                            <div class="custom-file-upload">
+                                <div class="input-group">
+                                    <input type="file" class="form-control @error('images') is-invalid @enderror" id="images" name="images[]" multiple accept="image/*">
+                                    <label class="input-group-text" for="images"><i class="bi bi-upload me-1"></i> Browse</label>
+                                </div>
+                                <div class="form-text">You can upload multiple images. Maximum 10 images, each up to 5MB.</div>
+                                @error('images')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @error('images.*')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div id="image-previews" class="row mt-3"></div>
+                        <div id="image-previews" class="row mt-3 image-preview-container"></div>
 
                         <!-- Poll Section -->
                         <div class="card mb-3">
@@ -255,21 +258,59 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')
 <script>
     // Initialize rich text editor for content
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize CKEditor
         if (typeof ClassicEditor !== 'undefined') {
             ClassicEditor
-                .create(document.querySelector('#content'))
+                .create(document.querySelector('#content'), {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'imageUpload',
+                            'blockQuote',
+                            'insertTable',
+                            'mediaEmbed',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: 'vi',
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative',
+                            'imageStyle:full',
+                            'imageStyle:side'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells'
+                        ]
+                    },
+                })
                 .catch(error => {
                     console.error(error);
                 });
+        } else {
+            // Fallback if CKEditor is not loaded
+            console.warn('CKEditor not loaded. Using plain textarea instead.');
         }
 
         // Poll toggle
@@ -397,6 +438,15 @@
 
         // Add previews for each file
         const files = event.target.files;
+
+        if (files.length === 0) {
+            return;
+        }
+
+        // Show preview container
+        previewContainer.style.display = 'flex';
+        previewContainer.style.flexWrap = 'wrap';
+
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
@@ -409,27 +459,55 @@
 
             reader.onload = function(e) {
                 const previewCol = document.createElement('div');
-                previewCol.className = 'col-md-3 mb-3';
+                previewCol.className = 'col-md-3 col-sm-4 col-6 mb-3';
 
                 const previewCard = document.createElement('div');
-                previewCard.className = 'card h-100';
+                previewCard.className = 'card h-100 image-preview';
 
                 const previewImg = document.createElement('img');
                 previewImg.src = e.target.result;
                 previewImg.className = 'card-img-top';
-                previewImg.style.height = '150px';
+                previewImg.style.height = '120px';
                 previewImg.style.objectFit = 'cover';
 
                 const previewBody = document.createElement('div');
                 previewBody.className = 'card-body p-2';
 
                 const previewText = document.createElement('p');
-                previewText.className = 'card-text small text-truncate';
+                previewText.className = 'card-text small text-truncate mb-0';
+                previewText.title = file.name;
                 previewText.textContent = file.name;
 
+                // Add file size
+                const fileSizeText = document.createElement('small');
+                fileSizeText.className = 'text-muted';
+                fileSizeText.textContent = formatFileSize(file.size);
+
+                // Add remove button
+                const removeButton = document.createElement('button');
+                removeButton.className = 'btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle';
+                removeButton.innerHTML = '<i class="bi bi-x"></i>';
+                removeButton.style.width = '24px';
+                removeButton.style.height = '24px';
+                removeButton.style.padding = '0';
+                removeButton.style.fontSize = '14px';
+                removeButton.title = 'Remove image';
+                removeButton.type = 'button';
+
+                removeButton.addEventListener('click', function() {
+                    previewCol.remove();
+
+                    // If no previews left, hide container
+                    if (previewContainer.children.length === 0) {
+                        previewContainer.style.display = 'none';
+                    }
+                });
+
                 previewBody.appendChild(previewText);
+                previewBody.appendChild(fileSizeText);
                 previewCard.appendChild(previewImg);
                 previewCard.appendChild(previewBody);
+                previewCard.appendChild(removeButton);
                 previewCol.appendChild(previewCard);
                 previewContainer.appendChild(previewCol);
             };
@@ -437,5 +515,16 @@
             reader.readAsDataURL(file);
         }
     });
+
+    // Format file size
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
 </script>
 @endpush

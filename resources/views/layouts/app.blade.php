@@ -88,6 +88,18 @@
         <!-- Alerts CSS -->
         <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
 
+        <!-- Sidebar CSS -->
+        <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+
+        <!-- Compact Theme CSS -->
+        <link rel="stylesheet" href="{{ asset('css/compact-theme.css') }}">
+
+        <!-- Unified Button Styles -->
+        <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+
+        <!-- Unified Form Styles -->
+        <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+
         <!-- Extra Meta Tags -->
         @if(!empty($seo['extra_meta'] ?? ''))
             {!! $seo['extra_meta'] !!}
@@ -116,7 +128,50 @@
 
             <!-- Page Content -->
             <main class="flex-grow-1">
-                @yield('content')
+                @php
+                    // Xác định các trang không hiển thị sidebar
+                    $excludedRoutes = [
+                        'threads.create',
+                        'threads.edit',
+                        'profile.edit',
+                        'profile.update',
+                        'profile.destroy',
+                        'conversations.show',
+                        'conversations.create',
+                        'bookmarks.index',
+                        'showcase.index',
+                        'subscription.index',
+                        'business.index',
+                        'business.services',
+                    ];
+
+                    // Kiểm tra route hiện tại
+                    $currentRoute = Route::currentRouteName();
+                    $showSidebar = !in_array($currentRoute, $excludedRoutes);
+                @endphp
+
+                @if(View::hasSection('full-width-content'))
+                    @yield('full-width-content')
+                @endif
+
+                @if(View::hasSection('content'))
+                    <div class="container py-4">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                @yield('content')
+                            </div>
+                            <div class="col-lg-4">
+                                <x-sidebar :showSidebar="$showSidebar" />
+                            </div>
+                        </div>
+                    </div>
+                @elseif(!View::hasSection('full-width-content'))
+                    <div class="container py-4">
+                        <div class="alert alert-info">
+                            Không có nội dung để hiển thị.
+                        </div>
+                    </div>
+                @endif
             </main>
 
             <!-- Footer -->
@@ -222,5 +277,11 @@
                 'imageFadeDuration': 300
             });
         </script>
+
+        <!-- CKEditor Script - Only load on pages that need it -->
+        @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))
+            <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+            <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
+        @endif
     </body>
 </html>
