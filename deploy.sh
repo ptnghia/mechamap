@@ -19,10 +19,10 @@ git pull origin main
 echo "Installing PHP dependencies..."
 composer install --no-dev --optimize-autoloader
 
-# Install Node.js dependencies and build assets
-echo "Installing Node.js dependencies and building assets..."
-npm ci
-npm run build
+# Assets are pre-built and included in the repository
+# echo "Installing Node.js dependencies and building assets..."
+# npm ci
+# npm run build
 
 # Set up environment file if not exists
 if [ ! -f .env ]; then

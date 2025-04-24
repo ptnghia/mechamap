@@ -132,7 +132,7 @@
                 <!-- Like Button -->
                 <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
                     @csrf
-                    <button type="submit" class="btn btn-sm {{ $isLiked ? 'btn-primary' : 'btn-outline-primary' }}">
+                    <button type="submit" class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }}">
                         <i class="bi bi-hand-thumbs-up"></i>
                         Like
                         <span class="badge bg-secondary">{{ $thread->likes->count() }}</span>
@@ -142,9 +142,9 @@
                 <!-- Save Button -->
                 <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
                     @csrf
-                    <button type="submit" class="btn btn-sm {{ $isSaved ? 'btn-success' : 'btn-outline-success' }}">
-                        <i class="bi {{ $isSaved ? 'bi-bookmark-fill' : 'bi-bookmark' }}"></i>
-                        {{ $isSaved ? 'Saved' : 'Save' }}
+                    <button type="submit" class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }}">
+                        <i class="bi {{ Auth::check() && $isSaved ? 'bi-bookmark-fill' : 'bi-bookmark' }}"></i>
+                        {{ Auth::check() && $isSaved ? 'Saved' : 'Save' }}
                     </button>
                 </form>
 
@@ -309,7 +309,7 @@
                                 <!-- Like Button -->
                                 <form action="{{ route('comments.like', $reply) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm {{ $reply->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    <button type="submit" class="btn btn-sm {{ Auth::check() && $reply->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
                                         <i class="bi bi-hand-thumbs-up"></i>
                                         <span class="badge bg-secondary">{{ $reply->like_count }}</span>
                                     </button>
@@ -349,7 +349,7 @@
                     <!-- Like Button -->
                     <form action="{{ route('comments.like', $comment) }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="submit" class="btn btn-sm {{ $comment->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
+                        <button type="submit" class="btn btn-sm {{ Auth::check() && $comment->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
                             <i class="bi bi-hand-thumbs-up"></i>
                             <span class="badge bg-secondary">{{ $comment->like_count }}</span>
                         </button>
