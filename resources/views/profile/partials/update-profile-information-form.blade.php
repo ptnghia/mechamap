@@ -8,6 +8,44 @@
         @csrf
     </form>
 
+    <!-- Avatar Upload Form -->
+    <div class="mb-4">
+        <h4 class="mb-3">{{ __('Profile Picture') }}</h4>
+
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type="file" id="avatar-upload" form="avatar-form" name="avatar" accept=".png, .jpg, .jpeg" />
+                        <label for="avatar-upload"><i class="bi bi-pencil"></i></label>
+                    </div>
+                    <div class="avatar-preview">
+                        <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" id="avatar-preview-image">
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <form id="avatar-form" method="post" action="{{ route('profile.avatar.update') }}" enctype="multipart/form-data" class="d-none">
+                    @csrf
+                </form>
+                <p class="text-muted mb-1">{{ __('Click the edit icon to upload a new profile picture.') }}</p>
+                <p class="text-muted small">{{ __('Recommended size: 200x200 pixels. Max file size: 2MB.') }}</p>
+                @if (session('status') === 'avatar-updated')
+                    <div class="alert alert-success mt-2">
+                        {{ __('Profile picture updated successfully.') }}
+                    </div>
+                @endif
+                @error('avatar')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
     <form method="post" action="{{ route('profile.update') }}">
         @csrf
         @method('patch')

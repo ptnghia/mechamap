@@ -1,0 +1,114 @@
+/* Thread Detail Styles */
+.thread-header {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.thread-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--bs-dark);
+}
+
+.thread-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.thread-meta-item {
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.thread-meta-item i {
+    margin-right: 0.5rem;
+    font-size: 1.1em;
+}
+
+.thread-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-jump {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background-color: #fff;
+    color: #212529;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-jump:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+}
+
+.btn-jump i {
+    margin-right: 0.5rem;
+}
+
+.btn-follow {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--bs-primary);
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-follow:hover {
+    background-color: var(--bs-primary-dark, #0056b3);
+}
+
+.btn-follow i {
+    margin-right: 0.5rem;
+}
+
+/* Dark Mode Adjustments */
+[data-bs-theme="dark"] .thread-title {
+    color: var(--bs-light);
+}
+
+[data-bs-theme="dark"] .btn-jump {
+    background-color: #343a40;
+    border-color: #495057;
+    color: #e9ecef;
+}
+
+[data-bs-theme="dark"] .btn-jump:hover {
+    background-color: #495057;
+    border-color: #6c757d;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .thread-meta {
+        gap: 1rem;
+    }
+    
+    .thread-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .thread-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

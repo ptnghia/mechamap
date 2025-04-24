@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ForumSeeder::class,
             ThreadSeeder::class,
+            SeoSettingSeeder::class,
+            PageSeoSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

@@ -232,6 +232,11 @@ class ThreadController extends Controller
             ->take(5)
             ->get();
 
+        // Get last commenter and last comment time
+        $lastComment = $thread->comments()->with('user')->latest()->first();
+        $thread->lastCommenter = $lastComment ? $lastComment->user : $thread->user;
+        $thread->lastCommentAt = $lastComment ? $lastComment->created_at : null;
+
         return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'isFollowed', 'relatedThreads', 'sort'));
     }
 

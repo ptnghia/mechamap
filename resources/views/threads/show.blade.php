@@ -2,6 +2,10 @@
 
 @section('title', $thread->title)
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
+@endpush
+
 @section('content')
 <div class="container">
     <!-- Breadcrumb -->
@@ -20,12 +24,44 @@
     </nav>
 
     <!-- Thread Info -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>{{ $thread->title }}</h1>
-        <div class="thread-stats">
-            <span class="badge bg-secondary">{{ $thread->view_count }} views</span>
-            <span class="badge bg-secondary">{{ $thread->allComments->count() }} replies</span>
-            <span class="badge bg-secondary">{{ $thread->participant_count }} participants</span>
+    <div class="thread-header">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <h1 class="thread-title">{{ $thread->title }}</h1>
+
+            <div class="thread-actions">
+                <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn-jump">
+                    <i class="bi bi-arrow-right"></i> Jump to Latest
+                </a>
+
+                @php
+                    $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
+                @endphp
+                <form action="{{ route('threads.follow.toggle', $thread) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-follow">
+                        <i class="bi {{ $isFollowed ? 'bi-bell-fill' : 'bi-bell' }}"></i> {{ $isFollowed ? 'Following' : 'Follow' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="thread-meta">
+            <div class="thread-meta-item">
+                <i class="bi bi-eye"></i> {{ number_format($thread->view_count) }} views
+            </div>
+            <div class="thread-meta-item">
+                <i class="bi bi-chat"></i> {{ number_format($thread->allComments->count()) }} replies
+            </div>
+            <div class="thread-meta-item">
+                <i class="bi bi-people"></i> {{ number_format($thread->participant_count) }} participants
+            </div>
+            <div class="thread-meta-item">
+                <i class="bi bi-clock"></i> last post by
+                <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
+                    {{ $thread->lastCommenter->name ?? $thread->user->name }}
+                </a>
+                <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() : $thread->created_at->diffForHumans() }}</span>
+            </div>
         </div>
     </div>
 

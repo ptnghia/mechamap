@@ -235,6 +235,10 @@
     flex-direction: column;
 }
 
+.card .row .col-md-6 .d-flex .flex-grow-1 {
+    flex-grow: 1;
+}
+
 .card .row .col-md-6 a {
     overflow: hidden;
     display: block;
@@ -260,7 +264,8 @@
 }
 
 .card .row .col-md-6 .bg-light {
-    height: 200px;
+    min-height: 200px;
+    height: auto;
     transition: all 0.3s ease;
 }
 
@@ -407,9 +412,13 @@
         margin-bottom: 1rem;
     }
 
-    .card .row .col-md-6 img,
-    .card .row .col-md-6 .bg-light {
+    .card .row .col-md-6 img {
         height: 160px;
+    }
+
+    .card .row .col-md-6 .bg-light {
+        min-height: 160px;
+        height: auto;
     }
 }
 

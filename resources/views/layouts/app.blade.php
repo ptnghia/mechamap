@@ -108,6 +108,9 @@
         <!-- Unified Form Styles -->
         <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
 
+        <!-- Avatar Styles -->
+        <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
+
         <!-- Extra Meta Tags -->
         @if(!empty($seo['extra_meta'] ?? ''))
             {!! $seo['extra_meta'] !!}

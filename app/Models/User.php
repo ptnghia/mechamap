@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Showcase;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -144,11 +145,34 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         if ($this->avatar) {
-            return $this->avatar;
+            if (strpos($this->avatar, 'http') === 0) {
+                return $this->avatar;
+            }
+            return asset('storage/' . $this->avatar);
         }
 
         $firstLetter = strtoupper(substr($this->username ?: $this->name, 0, 1));
         return "https://ui-avatars.com/api/?name={$firstLetter}&background=random&color=fff";
+    }
+
+    /**
+     * Update user avatar
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return bool
+     */
+    public function updateAvatar($file): bool
+    {
+        // Delete old avatar if exists and not a URL
+        if ($this->avatar && strpos($this->avatar, 'http') !== 0) {
+            Storage::disk('public')->delete($this->avatar);
+        }
+
+        // Store new avatar
+        $path = $file->store('avatars', 'public');
+        $this->avatar = $path;
+
+        return $this->save();
     }
 
     /**
