@@ -5,14 +5,14 @@
 
 @section('actions')
     <div class="btn-group me-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary">
+        <button type="button" class="btn btn-sm btn-outline-secondary admin-btn admin-btn-sm">
             <i class="bi bi-share"></i> {{ __('Export') }}
         </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary">
+        <button type="button" class="btn btn-sm btn-outline-secondary admin-btn admin-btn-sm">
             <i class="bi bi-printer"></i> {{ __('Print') }}
         </button>
     </div>
-    <button type="button" class="btn btn-sm btn-outline-primary">
+    <button type="button" class="btn btn-sm btn-outline-primary admin-btn admin-btn-sm admin-btn-outline-primary">
         <i class="bi bi-calendar3"></i> {{ __('This week') }}
     </button>
 @endsection
@@ -20,18 +20,18 @@
 @section('content')
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card border-primary h-100">
+            <div class="card h-100 dashboard-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Total Users') }}</h6>
-                            <h2 class="mt-2 mb-0">{{ number_format($stats['users']) }}</h2>
+                            <h6 class="card-title mb-0">{{ __('Total Users') }}</h6>
+                            <h2 class="mt-2 mb-0 card-value">{{ number_format($stats['users']) }}</h2>
                             <p class="text-success mb-0">
                                 <i class="bi bi-arrow-up"></i> {{ $stats['new_users_today'] }} {{ __('today') }}
                             </p>
                         </div>
-                        <div class="bg-primary bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-people fs-1 text-primary"></i>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded card-icon">
+                            <i class="bi bi-people text-primary"></i>
                         </div>
                     </div>
                 </div>
@@ -39,18 +39,18 @@
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card border-success h-100">
+            <div class="card h-100 dashboard-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Total Threads') }}</h6>
-                            <h2 class="mt-2 mb-0">{{ number_format($stats['threads']) }}</h2>
+                            <h6 class="card-title mb-0">{{ __('Total Threads') }}</h6>
+                            <h2 class="mt-2 mb-0 card-value">{{ number_format($stats['threads']) }}</h2>
                             <p class="text-success mb-0">
                                 <i class="bi bi-arrow-up"></i> {{ $stats['new_threads_today'] }} {{ __('today') }}
                             </p>
                         </div>
-                        <div class="bg-success bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-chat-left-text fs-1 text-success"></i>
+                        <div class="bg-success bg-opacity-10 p-3 rounded card-icon">
+                            <i class="bi bi-chat-left-text text-success"></i>
                         </div>
                     </div>
                 </div>
@@ -58,18 +58,18 @@
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card border-info h-100">
+            <div class="card h-100 dashboard-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Total Posts') }}</h6>
-                            <h2 class="mt-2 mb-0">{{ number_format($stats['posts']) }}</h2>
+                            <h6 class="card-title mb-0">{{ __('Total Posts') }}</h6>
+                            <h2 class="mt-2 mb-0 card-value">{{ number_format($stats['posts']) }}</h2>
                             <p class="text-success mb-0">
                                 <i class="bi bi-arrow-up"></i> {{ $stats['new_posts_today'] }} {{ __('today') }}
                             </p>
                         </div>
-                        <div class="bg-info bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-chat-right-text fs-1 text-info"></i>
+                        <div class="bg-info bg-opacity-10 p-3 rounded card-icon">
+                            <i class="bi bi-chat-right-text text-info"></i>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
 
     <div class="row">
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card admin-table">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Latest Users') }}</h5>
                 </div>
@@ -130,13 +130,13 @@
                     </div>
                 </div>
                 <div class="card-footer text-end">
-                    <a href="#" class="btn btn-sm btn-primary">{{ __('View All Users') }}</a>
+                    <a href="#" class="btn btn-sm btn-primary admin-btn admin-btn-sm admin-btn-primary">{{ __('View All Users') }}</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card admin-table">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Latest Threads') }}</h5>
                 </div>
@@ -175,7 +175,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-end">
-                    <a href="#" class="btn btn-sm btn-primary">{{ __('View All Threads') }}</a>
+                    <a href="#" class="btn btn-sm btn-primary admin-btn admin-btn-sm admin-btn-primary">{{ __('View All Threads') }}</a>
                 </div>
             </div>
         </div>

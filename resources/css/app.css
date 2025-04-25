@@ -30,6 +30,7 @@
 /* Import pages */
 @import 'pages/auth.css';
 @import 'pages/profile-skyscraper.css';
+@import 'pages/admin.css';
 
 /* Custom Variables */
   :root {

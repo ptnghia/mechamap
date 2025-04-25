@@ -1,0 +1,472 @@
+/* Admin Dashboard Styles */
+
+/* General Admin Styles */
+.admin-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  min-height: calc(100vh - 56px);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  background-color: #f8f9fa;
+  padding-top: 1rem;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.2s;
+}
+
+.sidebar .nav-link.active {
+  color: #fff;
+  background-color: #3366CC;
+}
+
+.sidebar .nav-link:hover:not(.active) {
+  color: #3366CC;
+  background-color: rgba(51, 102, 204, 0.1);
+}
+
+.sidebar .nav-link i {
+  margin-right: 0.5rem;
+  width: 1.25rem;
+  text-align: center;
+}
+
+.sidebar-heading {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6c757d;
+  font-weight: 600;
+  padding: 0.75rem 1rem 0.5rem;
+  margin-bottom: 0;
+}
+
+/* Header Styles */
+.admin-header {
+  background-color: #3366CC;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header .navbar-brand {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+.admin-header .navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+}
+
+.admin-header .dropdown-menu {
+  min-width: 12rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+  border-radius: 0.375rem;
+}
+
+.admin-header .dropdown-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.admin-header .dropdown-item i {
+  margin-right: 0.5rem;
+  width: 1rem;
+  text-align: center;
+}
+
+/* Main Content Area */
+.admin-main {
+  padding: 1.5rem;
+  background-color: #f5f7fa;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card .card-body {
+  padding: 1.25rem;
+}
+
+.dashboard-card .card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-card .card-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-card .card-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+}
+
+/* Tables */
+.admin-table {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  overflow: hidden;
+}
+
+.admin-table .table {
+  margin-bottom: 0;
+}
+
+.admin-table .table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #495057;
+  border-top: none;
+  padding: 0.75rem 1rem;
+}
+
+.admin-table .table td {
+  vertical-align: middle;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.admin-table .table tbody tr:hover {
+  background-color: rgba(51, 102, 204, 0.03);
+}
+
+/* Forms */
+.admin-form .form-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-form .form-control,
+.admin-form .form-select {
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border-color: #ced4da;
+}
+
+.admin-form .form-control:focus,
+.admin-form .form-select:focus {
+  border-color: #3366CC;
+  box-shadow: 0 0 0 0.25rem rgba(51, 102, 204, 0.25);
+}
+
+.admin-form .form-text {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.admin-form .input-group-text {
+  background-color: #f8f9fa;
+  border-color: #ced4da;
+  font-size: 0.875rem;
+}
+
+/* Buttons */
+.admin-btn {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+}
+
+.admin-btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.admin-btn-primary {
+  background-color: #3366CC;
+  border-color: #3366CC;
+}
+
+.admin-btn-primary:hover {
+  background-color: #2952a3;
+  border-color: #2952a3;
+}
+
+.admin-btn-secondary {
+  background-color: #1DCABC;
+  border-color: #1DCABC;
+}
+
+.admin-btn-secondary:hover {
+  background-color: #18a89c;
+  border-color: #18a89c;
+}
+
+.admin-btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.admin-btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #bb2d3b;
+}
+
+.admin-btn-outline-primary {
+  color: #3366CC;
+  border-color: #3366CC;
+}
+
+.admin-btn-outline-primary:hover {
+  background-color: #3366CC;
+  color: #fff;
+}
+
+/* Breadcrumbs */
+.admin-breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.admin-breadcrumb .breadcrumb-item {
+  font-size: 0.875rem;
+}
+
+.admin-breadcrumb .breadcrumb-item a {
+  color: #3366CC;
+  text-decoration: none;
+}
+
+.admin-breadcrumb .breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.admin-breadcrumb .breadcrumb-item.active {
+  color: #6c757d;
+}
+
+/* Alerts */
+.admin-alert {
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.admin-alert-success {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754;
+}
+
+.admin-alert-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.admin-alert-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.admin-alert-info {
+  background-color: rgba(13, 202, 240, 0.1);
+  color: #0dcaf0;
+}
+
+/* Pagination */
+.admin-pagination {
+  margin-top: 1.5rem;
+}
+
+.admin-pagination .page-link {
+  color: #3366CC;
+  border-color: #dee2e6;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.admin-pagination .page-item.active .page-link {
+  background-color: #3366CC;
+  border-color: #3366CC;
+}
+
+.admin-pagination .page-item.disabled .page-link {
+  color: #6c757d;
+}
+
+/* Statistics Cards */
+.stats-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
+}
+
+.stats-card .card-body {
+  padding: 1.25rem;
+}
+
+.stats-card .stats-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.stats-card .stats-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.stats-card .stats-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stats-card .stats-desc {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Charts */
+.chart-container {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #343a40;
+}
+
+/* Media Library */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.media-item {
+  background-color: #fff;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.media-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.media-thumbnail {
+  position: relative;
+  padding-top: 75%;
+  background-color: #f8f9fa;
+}
+
+.media-thumbnail img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-info {
+  padding: 0.75rem;
+}
+
+.media-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.media-meta {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Footer */
+.admin-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+  .sidebar {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    width: 240px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .admin-main {
+    padding: 1rem;
+  }
+  
+  .dashboard-card .card-body {
+    padding: 1rem;
+  }
+  
+  .admin-table .table th,
+  .admin-table .table td {
+    padding: 0.5rem 0.75rem;
+  }
+}

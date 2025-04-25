@@ -1,47 +1,6 @@
 <!-- Admin CSS -->
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-    }
-    .sidebar {
-        min-height: calc(100vh - 56px);
-        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    }
-    .sidebar .nav-link {
-        color: #333;
-        padding: .75rem 1rem;
-        font-weight: 500;
-    }
-    .sidebar .nav-link.active {
-        color: #0d6efd;
-    }
-    .sidebar .nav-link:hover {
-        color: #0d6efd;
-    }
-    .sidebar .nav-link i {
-        margin-right: .5rem;
-    }
-    .navbar-brand {
-        padding-top: .75rem;
-        padding-bottom: .75rem;
-        font-size: 1rem;
-        background-color: rgba(0, 0, 0, .25);
-        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-    }
-    .footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #dee2e6;
-    }
-    .dropdown-menu {
-        min-width: 12rem;
-    }
-    .dropdown-item {
-        padding: 0.5rem 1rem;
-    }
-    .dropdown-item i {
-        width: 1rem;
-        text-align: center;
-    }
+    /* Các style bổ sung cho admin */
     .dropdown-toggle::after {
         margin-left: 0.5rem;
     }
@@ -53,5 +12,51 @@
     }
     .navbar-dark .navbar-nav .nav-link:hover {
         color: #fff;
+    }
+
+    /* Các style cho các thành phần cụ thể */
+    .table-responsive {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .card {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Các style cho các trang cụ thể */
+    .media-preview {
+        max-height: 150px;
+        object-fit: contain;
+    }
+
+    .preview-item {
+        margin-bottom: 1rem;
+    }
+
+    .preview-container {
+        position: relative;
+        padding-top: 75%;
+        background-color: #f8f9fa;
+        border-radius: 0.375rem;
+        overflow: hidden;
+    }
+
+    .preview-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* Các style cho các biểu đồ */
+    canvas {
+        max-width: 100%;
     }
 </style>
