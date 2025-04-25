@@ -1,5 +1,5 @@
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Admin JS -->
 <script>
@@ -12,9 +12,50 @@
         });
 
         // Initialize dropdowns
-        var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
-        var dropdownList = dropdownTriggerList.map(function (dropdownTriggerEl) {
-            return new bootstrap.Dropdown(dropdownTriggerEl);
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+        dropdownElementList.forEach(function(dropdownToggleEl) {
+            new bootstrap.Dropdown(dropdownToggleEl);
+        });
+
+        // Manual toggle for dropdowns (fallback)
+        document.querySelectorAll('.dropdown-toggle').forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Toggle dropdown manually
+                var dropdownMenu = this.nextElementSibling;
+                if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                    if (this.classList.contains('show')) {
+                        this.classList.remove('show');
+                        dropdownMenu.classList.remove('show');
+                    } else {
+                        // Close all other dropdowns
+                        document.querySelectorAll('.dropdown-toggle.show').forEach(function(el) {
+                            el.classList.remove('show');
+                        });
+                        document.querySelectorAll('.dropdown-menu.show').forEach(function(el) {
+                            el.classList.remove('show');
+                        });
+
+                        // Show this dropdown
+                        this.classList.add('show');
+                        dropdownMenu.classList.add('show');
+                    }
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-toggle.show').forEach(function(el) {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('.dropdown-menu.show').forEach(function(el) {
+                    el.classList.remove('show');
+                });
+            }
         });
 
         // Auto-hide alerts after 5 seconds

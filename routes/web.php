@@ -171,7 +171,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/users', [\App\Http\Controllers\Admin\StatisticsController::class, 'users'])->name('users');
             Route::get('/content', [\App\Http\Controllers\Admin\StatisticsController::class, 'content'])->name('content');
             Route::get('/interactions', [\App\Http\Controllers\Admin\StatisticsController::class, 'interactions'])->name('interactions');
-            Route::post('/export', [\App\Http\Controllers\Admin\StatisticsController::class, 'export'])->name('export');
+            Route::match(['get', 'post'], '/export', [\App\Http\Controllers\Admin\StatisticsController::class, 'export'])->name('export');
         });
 
         // Page management routes

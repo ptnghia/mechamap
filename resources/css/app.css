@@ -31,6 +31,7 @@
 @import 'pages/auth.css';
 @import 'pages/profile-skyscraper.css';
 @import 'pages/admin.css';
+@import 'pages/admin-modern.css';
 
 /* Custom Variables */
   :root {

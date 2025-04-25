@@ -3,13 +3,13 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
-                    <i class="bi bi-speedometer2"></i> {{ __('Dashboard') }}
+                    <i class="bi bi-speedometer2"></i> Bảng điều khiển
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
-                    <i class="bi bi-people"></i> {{ __('Users') }}
+                    <i class="bi bi-people"></i> Người dùng
                 </a>
             </li>
 
@@ -51,18 +51,18 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.media.*') ? 'active' : '' }}" href="{{ route('admin.media.index') }}">
-                    <i class="bi bi-image"></i> {{ __('Media') }}
+                    <i class="bi bi-image"></i> Thư viện media
                 </a>
             </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
-            <span>{{ __('Account') }}</span>
+            <span>Tài khoản</span>
         </h6>
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" href="{{ route('admin.profile.index') }}">
-                    <i class="bi bi-person"></i> {{ __('My Profile') }}
+                    <i class="bi bi-person"></i> Hồ sơ của tôi
                 </a>
             </li>
         </ul>
@@ -94,7 +94,7 @@
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
-            <span>{{ __('System') }}</span>
+            <span>Hệ thống</span>
         </h6>
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
@@ -105,19 +105,19 @@
 
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.general') }}">
-                    <i class="bi bi-gear"></i> {{ __('Settings') }}
+                    <i class="bi bi-gear"></i> Cài đặt
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}" href="#">
-                    <i class="bi bi-file-earmark-code"></i> {{ __('Logs') }}
+                    <i class="bi bi-file-earmark-code"></i> Nhật ký hệ thống
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('home') }}" target="_blank">
-                    <i class="bi bi-box-arrow-up-right"></i> {{ __('View Site') }}
+                    <i class="bi bi-box-arrow-up-right"></i> Xem trang web
                 </a>
             </li>
         </ul>
