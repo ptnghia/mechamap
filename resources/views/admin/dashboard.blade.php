@@ -304,7 +304,7 @@
     <!-- Modal xuất báo cáo -->
     <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content export-form">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exportModalLabel">{{ __('Xuất báo cáo thống kê') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -341,117 +341,7 @@
 
 @push('styles')
 <style>
-/* CSS cho form xuất báo cáo */
-.export-form {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #212529;
-}
-
-.export-form .form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  color: #212529;
-}
-
-.export-form .form-control,
-.export-form .form-select {
-  display: block;
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  height: calc(1.5em + 0.75rem + 2px);
-}
-
-.export-form .form-control:focus,
-.export-form .form-select:focus {
-  border-color: #86b7fe;
-  outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.export-form .form-text {
-  margin-top: 0.25rem;
-  font-size: 0.875em;
-  color: #6c757d;
-}
-
-.export-form .form-group {
-  margin-bottom: 1rem;
-}
-
-.export-form .btn {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.export-form .btn-primary {
-  color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-
-.export-form .btn-primary:hover {
-  color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-}
-
-.export-form .btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-.export-form .btn-secondary:hover {
-  color: #fff;
-  background-color: #5c636a;
-  border-color: #565e64;
-}
-
-.export-form .modal-title {
-  font-size: 1.25rem;
-  font-weight: 500;
-  margin-bottom: 0;
-  line-height: 1.5;
-}
-
-.export-form .modal-header,
-.export-form .modal-footer {
-  padding: 1rem;
-}
-
-.export-form .modal-body {
-  padding: 1rem;
-}
-
-.export-form .modal-content {
-  border-radius: 0.3rem;
-}
+/* Không cần CSS riêng cho form xuất báo cáo nữa vì đã có CSS chung */
 </style>
 @endpush
 
