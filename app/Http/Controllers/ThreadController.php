@@ -119,7 +119,7 @@ class ThreadController extends Controller
             'usage' => 'nullable|string|max:255',
             'floors' => 'nullable|integer|min:1',
             'status' => 'nullable|string|max:255',
-            'images.*' => 'nullable|image|max:5120', // 5MB max per image
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
             // Poll validation
             'has_poll' => 'boolean',
             'poll_question' => 'required_if:has_poll,1|string|max:255',
@@ -276,7 +276,7 @@ class ThreadController extends Controller
             'usage' => 'nullable|string|max:255',
             'floors' => 'nullable|integer|min:1',
             'status' => 'nullable|string|max:255',
-            'images.*' => 'nullable|image|max:5120', // 5MB max per image
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'exists:media,id',
         ]);

@@ -49,7 +49,7 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|string',
             'parent_id' => 'nullable|exists:comments,id',
-            'images.*' => 'nullable|image|max:5120', // 5MB max per image
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
         ]);
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
@@ -106,7 +106,7 @@ class CommentController extends Controller
 
         $request->validate([
             'content' => 'required|string',
-            'images.*' => 'nullable|image|max:5120', // 5MB max per image
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
         ]);
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu

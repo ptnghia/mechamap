@@ -8,7 +8,7 @@
         <div class="col-md-3 mb-4">
             @include('admin.settings.partials.sidebar')
         </div>
-        
+
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
@@ -18,7 +18,7 @@
                     <form action="{{ route('admin.settings.update-general') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="mb-3">
                             <label for="site_name" class="form-label">{{ __('Tên trang web') }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('site_name') is-invalid @enderror" id="site_name" name="site_name" value="{{ old('site_name', $settings['site_name'] ?? config('app.name')) }}" required>
@@ -27,7 +27,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="site_tagline" class="form-label">{{ __('Khẩu hiệu') }}</label>
                             <input type="text" class="form-control @error('site_tagline') is-invalid @enderror" id="site_tagline" name="site_tagline" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
@@ -36,7 +36,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="site_logo" class="form-label">{{ __('Logo') }}</label>
@@ -45,14 +45,14 @@
                                 @error('site_logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                
+
                                 @if(!empty($settings['site_logo'] ?? ''))
                                     <div class="mt-2">
                                         <img src="{{ $settings['site_logo'] }}" alt="Logo" class="img-thumbnail" style="max-height: 50px;">
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label for="site_favicon" class="form-label">{{ __('Favicon') }}</label>
                                 <input type="file" class="form-control @error('site_favicon') is-invalid @enderror" id="site_favicon" name="site_favicon">
@@ -60,7 +60,7 @@
                                 @error('site_favicon')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                
+
                                 @if(!empty($settings['site_favicon'] ?? ''))
                                     <div class="mt-2">
                                         <img src="{{ $settings['site_favicon'] }}" alt="Favicon" class="img-thumbnail" style="max-height: 32px;">
@@ -68,7 +68,22 @@
                                 @endif
                             </div>
                         </div>
-                        
+
+                        <div class="mb-3">
+                            <label for="site_banner" class="form-label">{{ __('Banner đầu trang') }}</label>
+                            <input type="file" class="form-control @error('site_banner') is-invalid @enderror" id="site_banner" name="site_banner">
+                            <div class="form-text">{{ __('Banner hiển thị ở đầu trang web. Kích thước đề xuất: 1920x200 pixels.') }}</div>
+                            @error('site_banner')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+
+                            @if(!empty($settings['site_banner'] ?? ''))
+                                <div class="mt-2">
+                                    <img src="{{ $settings['site_banner'] }}" alt="Banner" class="img-thumbnail" style="max-height: 100px; max-width: 100%;">
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="mb-3">
                             <label for="site_domain" class="form-label">{{ __('Tên miền') }}</label>
                             <input type="text" class="form-control @error('site_domain') is-invalid @enderror" id="site_domain" name="site_domain" value="{{ old('site_domain', $settings['site_domain'] ?? request()->getHost()) }}">
@@ -77,7 +92,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="site_language" class="form-label">{{ __('Ngôn ngữ') }}</label>
@@ -90,7 +105,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label for="site_timezone" class="form-label">{{ __('Múi giờ') }}</label>
                                 <select class="form-select @error('site_timezone') is-invalid @enderror" id="site_timezone" name="site_timezone">
@@ -103,7 +118,7 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="site_maintenance_mode" name="site_maintenance_mode" {{ old('site_maintenance_mode', $settings['site_maintenance_mode'] ?? '0') == '1' ? 'checked' : '' }}>
@@ -111,7 +126,7 @@
                             </div>
                             <div class="form-text">{{ __('Khi bật chế độ bảo trì, người dùng không thể truy cập trang web.') }}</div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="site_maintenance_message" class="form-label">{{ __('Thông báo bảo trì') }}</label>
                             <textarea class="form-control @error('site_maintenance_message') is-invalid @enderror" id="site_maintenance_message" name="site_maintenance_message" rows="3">{{ old('site_maintenance_message', $settings['site_maintenance_message'] ?? 'Trang web đang được bảo trì. Vui lòng quay lại sau.') }}</textarea>
@@ -120,7 +135,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
@@ -156,7 +171,7 @@
             reader.readAsDataURL(file);
         }
     });
-    
+
     // Preview favicon
     document.getElementById('site_favicon').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -173,6 +188,29 @@
                     img.className = 'img-thumbnail';
                     img.style.maxHeight = '32px';
                     document.getElementById('site_favicon').parentNode.appendChild(img);
+                }
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Preview banner
+    document.getElementById('site_banner').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.querySelector('img[alt="Banner"]');
+                if (preview) {
+                    preview.src = e.target.result;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Banner';
+                    img.className = 'img-thumbnail';
+                    img.style.maxHeight = '100px';
+                    img.style.maxWidth = '100%';
+                    document.getElementById('site_banner').parentNode.appendChild(img);
                 }
             }
             reader.readAsDataURL(file);

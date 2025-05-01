@@ -19,34 +19,34 @@ class MediaController extends Controller
         // Lấy các tham số lọc
         $type = $request->input('type');
         $search = $request->input('search');
-        
+
         // Khởi tạo query
         $query = Media::with('user');
-        
+
         // Áp dụng các bộ lọc
         if ($type) {
             $query->where('file_type', 'like', "{$type}/%");
         }
-        
+
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('file_name', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('file_name', 'like', "%{$search}%");
             });
         }
-        
+
         // Sắp xếp và phân trang
         $media = $query->orderBy('created_at', 'desc')->paginate(24);
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Quản lý Media', 'url' => route('admin.media.index')]
         ];
-        
+
         return view('admin.media.index', compact('media', 'breadcrumbs', 'type', 'search'));
     }
-    
+
     /**
      * Hiển thị form tải lên media mới
      */
@@ -57,10 +57,10 @@ class MediaController extends Controller
             ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
             ['title' => 'Tải lên media mới', 'url' => route('admin.media.create')]
         ];
-        
+
         return view('admin.media.create', compact('breadcrumbs'));
     }
-    
+
     /**
      * Lưu media mới
      */
@@ -68,17 +68,17 @@ class MediaController extends Controller
     {
         $request->validate([
             'files' => 'required|array',
-            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp,avif,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
-        
+
         $uploadedFiles = [];
-        
+
         foreach ($request->file('files') as $file) {
             $fileName = time() . '_' . $file->getClientOriginalName();
             $fileType = $file->getMimeType();
-            
+
             // Xác định thư mục lưu trữ dựa trên loại file
             $folder = 'other';
             if (strpos($fileType, 'image') !== false) {
@@ -90,9 +90,9 @@ class MediaController extends Controller
             } elseif (strpos($fileType, 'pdf') !== false || strpos($fileType, 'document') !== false || strpos($fileType, 'spreadsheet') !== false || strpos($fileType, 'presentation') !== false) {
                 $folder = 'documents';
             }
-            
+
             $filePath = $file->storeAs($folder, $fileName, 'public');
-            
+
             $media = new Media();
             $media->user_id = Auth::id();
             $media->file_name = $fileName;
@@ -102,30 +102,30 @@ class MediaController extends Controller
             $media->title = $request->title ?? $file->getClientOriginalName();
             $media->description = $request->description;
             $media->save();
-            
+
             $uploadedFiles[] = $media;
         }
-        
+
         return redirect()->route('admin.media.index')
             ->with('success', count($uploadedFiles) . ' file đã được tải lên thành công.');
     }
-    
+
     /**
      * Hiển thị chi tiết media
      */
     public function show(Media $media): View
     {
         $media->load('user');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
             ['title' => $media->title, 'url' => route('admin.media.show', $media)]
         ];
-        
+
         return view('admin.media.show', compact('media', 'breadcrumbs'));
     }
-    
+
     /**
      * Hiển thị form chỉnh sửa media
      */
@@ -136,10 +136,10 @@ class MediaController extends Controller
             ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
             ['title' => 'Chỉnh sửa media', 'url' => route('admin.media.edit', $media)]
         ];
-        
+
         return view('admin.media.edit', compact('media', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật media
      */
@@ -149,15 +149,15 @@ class MediaController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-        
+
         $media->title = $request->title;
         $media->description = $request->description;
         $media->save();
-        
+
         return redirect()->route('admin.media.index')
             ->with('success', 'Media đã được cập nhật thành công.');
     }
-    
+
     /**
      * Xóa media
      */
@@ -165,14 +165,14 @@ class MediaController extends Controller
     {
         // Xóa file từ storage
         Storage::disk('public')->delete($media->file_path);
-        
+
         // Xóa record từ database
         $media->delete();
-        
+
         return redirect()->route('admin.media.index')
             ->with('success', 'Media đã được xóa thành công.');
     }
-    
+
     /**
      * Tải xuống media
      */
@@ -180,7 +180,7 @@ class MediaController extends Controller
     {
         return Storage::disk('public')->download($media->file_path, $media->file_name);
     }
-    
+
     /**
      * Hiển thị thư viện media cho trình soạn thảo
      */
@@ -189,33 +189,33 @@ class MediaController extends Controller
         // Lấy các tham số lọc
         $type = $request->input('type', 'image');
         $search = $request->input('search');
-        
+
         // Khởi tạo query
         $query = Media::with('user');
-        
+
         // Áp dụng các bộ lọc
         if ($type === 'image') {
             $query->where('file_type', 'like', "image/%");
         } elseif ($type === 'document') {
-            $query->where(function($q) {
+            $query->where(function ($q) {
                 $q->where('file_type', 'like', "application/pdf")
-                  ->orWhere('file_type', 'like', "application/msword")
-                  ->orWhere('file_type', 'like', "application/vnd.openxmlformats-officedocument.%")
-                  ->orWhere('file_type', 'like', "application/vnd.ms-%");
+                    ->orWhere('file_type', 'like', "application/msword")
+                    ->orWhere('file_type', 'like', "application/vnd.openxmlformats-officedocument.%")
+                    ->orWhere('file_type', 'like', "application/vnd.ms-%");
             });
         }
-        
+
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('file_name', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('file_name', 'like', "%{$search}%");
             });
         }
-        
+
         // Sắp xếp và phân trang
         $media = $query->orderBy('created_at', 'desc')->paginate(24);
-        
+
         return response()->json([
             'media' => $media,
             'pagination' => [

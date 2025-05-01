@@ -18,16 +18,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt chung
         $settings = Setting::getGroup('general');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'Cấu hình chung', 'url' => route('admin.settings.general')]
         ];
-        
+
         return view('admin.settings.general', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình chung
      */
@@ -37,19 +37,20 @@ class SettingsController extends Controller
         $validator = Validator::make($request->all(), [
             'site_name' => ['required', 'string', 'max:255'],
             'site_tagline' => ['nullable', 'string', 'max:255'],
-            'site_logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'site_favicon' => ['nullable', 'image', 'mimes:ico,png,jpg,jpeg,gif', 'max:1024'],
+            'site_logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp,avif', 'max:2048'],
+            'site_favicon' => ['nullable', 'image', 'mimes:ico,png,jpg,jpeg,gif,webp,avif', 'max:1024'],
+            'site_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp,avif', 'max:5120'],
             'site_domain' => ['nullable', 'string', 'max:255'],
             'site_language' => ['nullable', 'string', 'max:10'],
             'site_timezone' => ['nullable', 'string', 'max:50'],
             'site_maintenance_mode' => ['boolean'],
             'site_maintenance_message' => ['nullable', 'string'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('site_name', $request->site_name, 'general');
         Setting::set('site_tagline', $request->site_tagline, 'general');
@@ -58,7 +59,7 @@ class SettingsController extends Controller
         Setting::set('site_timezone', $request->site_timezone, 'general');
         Setting::set('site_maintenance_mode', $request->has('site_maintenance_mode') ? '1' : '0', 'general');
         Setting::set('site_maintenance_message', $request->site_maintenance_message, 'general');
-        
+
         // Xử lý upload logo
         if ($request->hasFile('site_logo')) {
             // Xóa logo cũ nếu có
@@ -66,12 +67,12 @@ class SettingsController extends Controller
             if ($oldLogo && Storage::disk('public')->exists(str_replace('/storage/', '', $oldLogo))) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $oldLogo));
             }
-            
+
             // Upload logo mới
             $logoPath = $request->file('site_logo')->store('settings', 'public');
             Setting::set('site_logo', '/storage/' . $logoPath, 'general');
         }
-        
+
         // Xử lý upload favicon
         if ($request->hasFile('site_favicon')) {
             // Xóa favicon cũ nếu có
@@ -79,18 +80,31 @@ class SettingsController extends Controller
             if ($oldFavicon && Storage::disk('public')->exists(str_replace('/storage/', '', $oldFavicon))) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $oldFavicon));
             }
-            
+
             // Upload favicon mới
             $faviconPath = $request->file('site_favicon')->store('settings', 'public');
             Setting::set('site_favicon', '/storage/' . $faviconPath, 'general');
         }
-        
+
+        // Xử lý upload banner
+        if ($request->hasFile('site_banner')) {
+            // Xóa banner cũ nếu có
+            $oldBanner = Setting::get('site_banner');
+            if ($oldBanner && Storage::disk('public')->exists(str_replace('/storage/', '', $oldBanner))) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $oldBanner));
+            }
+
+            // Upload banner mới
+            $bannerPath = $request->file('site_banner')->store('settings', 'public');
+            Setting::set('site_banner', '/storage/' . $bannerPath, 'general');
+        }
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'Cấu hình chung đã được cập nhật thành công.');
     }
-    
+
     /**
      * Hiển thị trang cấu hình công ty
      */
@@ -98,16 +112,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt công ty
         $settings = Setting::getGroup('company');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'Thông tin công ty', 'url' => route('admin.settings.company')]
         ];
-        
+
         return view('admin.settings.company', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình công ty
      */
@@ -124,11 +138,11 @@ class SettingsController extends Controller
             'company_founded_year' => ['nullable', 'integer', 'min:1900', 'max:' . date('Y')],
             'company_description' => ['nullable', 'string'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('company_name', $request->company_name, 'company');
         Setting::set('company_address', $request->company_address, 'company');
@@ -138,13 +152,13 @@ class SettingsController extends Controller
         Setting::set('company_registration_number', $request->company_registration_number, 'company');
         Setting::set('company_founded_year', $request->company_founded_year, 'company');
         Setting::set('company_description', $request->company_description, 'company');
-        
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'Thông tin công ty đã được cập nhật thành công.');
     }
-    
+
     /**
      * Hiển thị trang cấu hình liên hệ
      */
@@ -152,16 +166,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt liên hệ
         $settings = Setting::getGroup('contact');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'Thông tin liên hệ', 'url' => route('admin.settings.contact')]
         ];
-        
+
         return view('admin.settings.contact', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình liên hệ
      */
@@ -177,11 +191,11 @@ class SettingsController extends Controller
             'contact_latitude' => ['nullable', 'numeric'],
             'contact_longitude' => ['nullable', 'numeric'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('contact_email', $request->contact_email, 'contact');
         Setting::set('contact_phone', $request->contact_phone, 'contact');
@@ -190,13 +204,13 @@ class SettingsController extends Controller
         Setting::set('contact_map_embed', $request->contact_map_embed, 'contact');
         Setting::set('contact_latitude', $request->contact_latitude, 'contact');
         Setting::set('contact_longitude', $request->contact_longitude, 'contact');
-        
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'Thông tin liên hệ đã được cập nhật thành công.');
     }
-    
+
     /**
      * Hiển thị trang cấu hình mạng xã hội
      */
@@ -204,16 +218,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt mạng xã hội
         $settings = Setting::getGroup('social');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'Mạng xã hội', 'url' => route('admin.settings.social')]
         ];
-        
+
         return view('admin.settings.social', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình mạng xã hội
      */
@@ -230,11 +244,11 @@ class SettingsController extends Controller
             'social_pinterest' => ['nullable', 'url', 'max:255'],
             'social_github' => ['nullable', 'url', 'max:255'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('social_facebook', $request->social_facebook, 'social');
         Setting::set('social_twitter', $request->social_twitter, 'social');
@@ -244,13 +258,13 @@ class SettingsController extends Controller
         Setting::set('social_tiktok', $request->social_tiktok, 'social');
         Setting::set('social_pinterest', $request->social_pinterest, 'social');
         Setting::set('social_github', $request->social_github, 'social');
-        
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'Liên kết mạng xã hội đã được cập nhật thành công.');
     }
-    
+
     /**
      * Hiển thị trang cấu hình API
      */
@@ -258,16 +272,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt API
         $settings = Setting::getGroup('api');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'API Keys', 'url' => route('admin.settings.api')]
         ];
-        
+
         return view('admin.settings.api', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình API
      */
@@ -282,11 +296,11 @@ class SettingsController extends Controller
             'api_recaptcha_site_key' => ['nullable', 'string', 'max:255'],
             'api_recaptcha_secret_key' => ['nullable', 'string', 'max:255'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('api_google_client_id', $request->api_google_client_id, 'api');
         Setting::set('api_google_client_secret', $request->api_google_client_secret, 'api');
@@ -294,13 +308,13 @@ class SettingsController extends Controller
         Setting::set('api_facebook_app_secret', $request->api_facebook_app_secret, 'api');
         Setting::set('api_recaptcha_site_key', $request->api_recaptcha_site_key, 'api');
         Setting::set('api_recaptcha_secret_key', $request->api_recaptcha_secret_key, 'api');
-        
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'API Keys đã được cập nhật thành công.');
     }
-    
+
     /**
      * Hiển thị trang cấu hình bản quyền
      */
@@ -308,16 +322,16 @@ class SettingsController extends Controller
     {
         // Lấy các cài đặt bản quyền
         $settings = Setting::getGroup('copyright');
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Cài đặt', 'url' => route('admin.settings.general')],
             ['title' => 'Bản quyền', 'url' => route('admin.settings.copyright')]
         ];
-        
+
         return view('admin.settings.copyright', compact('settings', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật cấu hình bản quyền
      */
@@ -329,19 +343,19 @@ class SettingsController extends Controller
             'copyright_owner' => ['nullable', 'string', 'max:255'],
             'copyright_year' => ['nullable', 'string', 'max:20'],
         ]);
-        
+
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-        
+
         // Lưu các cài đặt
         Setting::set('copyright_text', $request->copyright_text, 'copyright');
         Setting::set('copyright_owner', $request->copyright_owner, 'copyright');
         Setting::set('copyright_year', $request->copyright_year, 'copyright');
-        
+
         // Xóa cache
         Setting::clearCache();
-        
+
         return back()->with('success', 'Thông tin bản quyền đã được cập nhật thành công.');
     }
 }
