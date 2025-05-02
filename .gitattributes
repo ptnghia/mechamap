@@ -9,3 +9,9 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+.env.* export-ignore
+phpunit.xml export-ignore
+README.md export-ignore
+server-requirements.md export-ignore
+deployment-guide.md export-ignore
+deployment-guide-hosting.md export-ignore

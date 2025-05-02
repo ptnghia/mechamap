@@ -3,3 +3,31 @@ RewriteEngine On
 # Rewrite requests to /public folder
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteRule ^(.*)$ public/$1 [L]
+
+# Protect sensitive files
+<FilesMatch "^\.env|composer\.json|composer\.lock|package\.json|package-lock\.json|phpunit\.xml|README\.md|server-requirements\.md|deployment-guide\.md|deployment-guide-hosting\.md|artisan$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect .git directory
+RedirectMatch 404 /\.git
+
+# Protect storage directory
+RedirectMatch 404 /storage/.*
+
+# Protect vendor directory
+RedirectMatch 404 /vendor/.*
+
+# Protect node_modules directory
+RedirectMatch 404 /node_modules/.*
+
+# Protect bootstrap/cache directory
+RedirectMatch 404 /bootstrap/cache/.*
+
+# Protect database directory
+RedirectMatch 404 /database/.*
+
+# Force HTTPS
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
