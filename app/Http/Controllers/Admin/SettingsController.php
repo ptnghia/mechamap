@@ -64,39 +64,48 @@ class SettingsController extends Controller
         if ($request->hasFile('site_logo')) {
             // Xóa logo cũ nếu có
             $oldLogo = Setting::get('site_logo');
-            if ($oldLogo && Storage::disk('public')->exists(str_replace('/storage/', '', $oldLogo))) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $oldLogo));
+            if ($oldLogo && file_exists(public_path(ltrim($oldLogo, '/')))) {
+                unlink(public_path(ltrim($oldLogo, '/')));
             }
 
             // Upload logo mới
-            $logoPath = $request->file('site_logo')->store('settings', 'public');
-            Setting::set('site_logo', '/storage/' . $logoPath, 'general');
+            $logoFile = $request->file('site_logo');
+            $logoName = time() . '_' . uniqid() . '.' . $logoFile->getClientOriginalExtension();
+            $logoFile->move(public_path('images/settings'), $logoName);
+
+            Setting::set('site_logo', '/images/settings/' . $logoName, 'general');
         }
 
         // Xử lý upload favicon
         if ($request->hasFile('site_favicon')) {
             // Xóa favicon cũ nếu có
             $oldFavicon = Setting::get('site_favicon');
-            if ($oldFavicon && Storage::disk('public')->exists(str_replace('/storage/', '', $oldFavicon))) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $oldFavicon));
+            if ($oldFavicon && file_exists(public_path(ltrim($oldFavicon, '/')))) {
+                unlink(public_path(ltrim($oldFavicon, '/')));
             }
 
             // Upload favicon mới
-            $faviconPath = $request->file('site_favicon')->store('settings', 'public');
-            Setting::set('site_favicon', '/storage/' . $faviconPath, 'general');
+            $faviconFile = $request->file('site_favicon');
+            $faviconName = time() . '_' . uniqid() . '.' . $faviconFile->getClientOriginalExtension();
+            $faviconFile->move(public_path('images/settings'), $faviconName);
+
+            Setting::set('site_favicon', '/images/settings/' . $faviconName, 'general');
         }
 
         // Xử lý upload banner
         if ($request->hasFile('site_banner')) {
             // Xóa banner cũ nếu có
             $oldBanner = Setting::get('site_banner');
-            if ($oldBanner && Storage::disk('public')->exists(str_replace('/storage/', '', $oldBanner))) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $oldBanner));
+            if ($oldBanner && file_exists(public_path(ltrim($oldBanner, '/')))) {
+                unlink(public_path(ltrim($oldBanner, '/')));
             }
 
             // Upload banner mới
-            $bannerPath = $request->file('site_banner')->store('settings', 'public');
-            Setting::set('site_banner', '/storage/' . $bannerPath, 'general');
+            $bannerFile = $request->file('site_banner');
+            $bannerName = time() . '_' . uniqid() . '.' . $bannerFile->getClientOriginalExtension();
+            $bannerFile->move(public_path('images/settings'), $bannerName);
+
+            Setting::set('site_banner', '/images/settings/' . $bannerName, 'general');
         }
 
         // Xóa cache
