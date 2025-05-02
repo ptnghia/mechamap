@@ -39,6 +39,9 @@ class AuthController extends Controller
                     'email' => $request->email,
                     'password' => $request->password
                 ];
+
+                // Tìm user theo email
+                $user = User::where('email', $request->email)->first();
             } elseif ($request->has('username')) {
                 $request->validate([
                     'username' => 'required|string',
@@ -50,11 +53,22 @@ class AuthController extends Controller
                     'username' => $request->username,
                     'password' => $request->password
                 ];
+
+                // Tìm user theo username
+                $user = User::where('username', $request->username)->first();
             } else {
                 return response()->json([
                     'success' => false,
                     'message' => 'Vui lòng cung cấp email hoặc tên đăng nhập.'
                 ], 422);
+            }
+
+            // Kiểm tra xem user có tồn tại không
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thông tin đăng nhập không chính xác.'
+                ], 401);
             }
 
             // Attempt to authenticate
@@ -65,7 +79,8 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = $request->user();
+            // Lấy user đã xác thực
+            $user = Auth::user();
 
             // Create token
             $tokenResult = $user->createToken('Personal Access Token');
