@@ -27,14 +27,38 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            $request->validate([
-                'email' => 'required|string|email',
-                'password' => 'required|string',
-                'remember_me' => 'boolean',
-            ]);
+            // Kiểm tra xem request có chứa email hay username
+            if ($request->has('email')) {
+                $request->validate([
+                    'email' => 'required|string|email',
+                    'password' => 'required|string',
+                    'remember_me' => 'boolean',
+                ]);
+
+                $credentials = [
+                    'email' => $request->email,
+                    'password' => $request->password
+                ];
+            } elseif ($request->has('username')) {
+                $request->validate([
+                    'username' => 'required|string',
+                    'password' => 'required|string',
+                    'remember_me' => 'boolean',
+                ]);
+
+                $credentials = [
+                    'username' => $request->username,
+                    'password' => $request->password
+                ];
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng cung cấp email hoặc tên đăng nhập.'
+                ], 422);
+            }
 
             // Attempt to authenticate
-            if (!Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
+            if (!Auth::attempt($credentials, $request->boolean('remember_me'))) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Thông tin đăng nhập không chính xác.'
