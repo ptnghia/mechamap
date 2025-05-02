@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Đăng ký middleware toàn cục
         $middleware->append(\App\Http\Middleware\TrackUserActivity::class);
         $middleware->append(\App\Http\Middleware\ApplySeoSettings::class);
+        $middleware->append(\App\Http\Middleware\HandleCors::class);
 
         // Đăng ký alias cho middleware
         $middleware->alias([
