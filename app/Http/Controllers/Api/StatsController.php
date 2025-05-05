@@ -23,7 +23,7 @@ class StatsController extends Controller
         try {
             $threadCount = Thread::where('status', 'approved')->count();
             $userCount = User::where('status', 'active')->count();
-            $commentCount = Comment::where('status', 'approved')->count();
+            $commentCount = Comment::count();
             $establishedYear = config('app.established_year', 2023);
 
             return response()->json([
@@ -55,14 +55,14 @@ class StatsController extends Controller
     {
         try {
             $perPage = $request->input('per_page', 5);
-            
+
             $forums = Forum::withCount(['threads' => function ($query) {
-                    $query->where('status', 'approved');
-                }])
+                $query->where('status', 'approved');
+            }])
                 ->orderBy('threads_count', 'desc')
                 ->take($perPage)
                 ->get();
-            
+
             // Format response for pagination compatibility
             $response = [
                 'forums' => [
@@ -103,27 +103,25 @@ class StatsController extends Controller
     {
         try {
             $perPage = $request->input('per_page', 5);
-            
+
             // Get users with thread and comment counts
             $users = User::select('users.*')
                 ->where('users.status', 'active')
                 ->withCount(['threads' => function ($query) {
                     $query->where('status', 'approved');
                 }])
-                ->withCount(['comments' => function ($query) {
-                    $query->where('status', 'approved');
-                }])
+                ->withCount('comments')
                 ->orderByRaw('threads_count + comments_count DESC')
                 ->take($perPage)
                 ->get();
-            
+
             // Add avatar URL and contribution count
             $users->transform(function ($user) {
                 $user->avatar_url = $user->getAvatarUrl();
                 $user->contribution_count = $user->threads_count + $user->comments_count;
                 return $user;
             });
-            
+
             // Format response for pagination compatibility
             $response = [
                 'users' => [
@@ -164,7 +162,7 @@ class StatsController extends Controller
     {
         try {
             $perPage = $request->input('per_page', 4);
-            
+
             $threads = Thread::with(['user', 'forum', 'category'])
                 ->where('status', 'approved')
                 ->where(function ($query) {
@@ -175,25 +173,25 @@ class StatsController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->take($perPage)
                 ->get();
-            
+
             // Add user avatar URL and extract first image from content
             $threads->transform(function ($thread) {
                 if ($thread->user) {
                     $thread->user->avatar_url = $thread->user->getAvatarUrl();
                 }
-                
+
                 // Extract first image from content if available
                 if (!$thread->thumbnail_url) {
                     preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $thread->content, $image);
                     $thread->thumbnail_url = $image['src'] ?? null;
                 }
-                
+
                 // Create excerpt from content
                 $thread->excerpt = Str::limit(strip_tags($thread->content), 150);
-                
+
                 return $thread;
             });
-            
+
             // Format response for pagination compatibility
             $response = [
                 'threads' => [
