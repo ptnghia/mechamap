@@ -54,6 +54,12 @@
                     <i class="bi bi-image"></i> Thư viện media
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.showcases.*') ? 'active' : '' }}" href="{{ route('admin.showcases.index') }}">
+                    <i class="bi bi-star"></i> Quản lý Showcase
+                </a>
+            </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">

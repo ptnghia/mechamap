@@ -234,6 +234,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/copyright', [\App\Http\Controllers\Admin\SettingsController::class, 'updateCopyright'])->name('update-copyright');
         });
 
+        // Showcase management routes
+        Route::resource('showcases', \App\Http\Controllers\Admin\ShowcaseController::class)->except(['edit', 'update', 'show']);
+
         // Thêm các route admin khác ở đây
     });
 });

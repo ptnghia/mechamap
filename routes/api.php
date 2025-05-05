@@ -205,4 +205,14 @@ Route::prefix('v1')->group(function () {
             Route::delete('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'destroy']);
         });
     });
+
+    // Admin routes
+    Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        // Showcase management
+        Route::prefix('showcases')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'index']);
+            Route::post('/add', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'addToShowcase']);
+            Route::delete('/{id}', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'removeFromShowcase']);
+        });
+    });
 });
