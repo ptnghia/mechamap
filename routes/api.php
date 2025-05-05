@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Test CORS
+Route::get('/cors-test', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'message' => 'CORS test successful',
+        'origin' => $request->header('Origin'),
+        'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000')),
+    ]);
+});
+
 // API version 1
 Route::prefix('v1')->group(function () {
     // Public routes
@@ -89,7 +99,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ShowcaseController::class, 'index']);
         Route::get('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'show']);
     });
-    
+
     // Stats routes (public)
     Route::prefix('stats')->group(function () {
         Route::get('/forum', [App\Http\Controllers\Api\StatsController::class, 'getForumStats']);

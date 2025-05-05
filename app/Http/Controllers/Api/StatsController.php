@@ -21,8 +21,8 @@ class StatsController extends Controller
     public function getForumStats()
     {
         try {
-            $threadCount = Thread::where('status', 'approved')->count();
-            $userCount = User::where('status', 'active')->count();
+            $threadCount = Thread::count();
+            $userCount = User::count();
             $commentCount = Comment::count();
             $establishedYear = config('app.established_year', 2023);
 
@@ -56,9 +56,7 @@ class StatsController extends Controller
         try {
             $perPage = $request->input('per_page', 5);
 
-            $forums = Forum::withCount(['threads' => function ($query) {
-                $query->where('status', 'approved');
-            }])
+            $forums = Forum::withCount('threads')
                 ->orderBy('threads_count', 'desc')
                 ->take($perPage)
                 ->get();
@@ -106,10 +104,7 @@ class StatsController extends Controller
 
             // Get users with thread and comment counts
             $users = User::select('users.*')
-                ->where('users.status', 'active')
-                ->withCount(['threads' => function ($query) {
-                    $query->where('status', 'approved');
-                }])
+                ->withCount('threads')
                 ->withCount('comments')
                 ->orderByRaw('threads_count + comments_count DESC')
                 ->take($perPage)
@@ -164,7 +159,6 @@ class StatsController extends Controller
             $perPage = $request->input('per_page', 4);
 
             $threads = Thread::with(['user', 'forum', 'category'])
-                ->where('status', 'approved')
                 ->where(function ($query) {
                     $query->where('is_featured', true)
                         ->orWhere('is_sticky', true)
