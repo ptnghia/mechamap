@@ -109,6 +109,9 @@ Route::prefix('v1')->group(function () {
         Route::get('/threads/featured', [App\Http\Controllers\Api\StatsController::class, 'getFeaturedThreads']);
     });
 
+    // Avatar routes (public)
+    Route::get('/avatar', [App\Http\Controllers\Api\AvatarController::class, 'generate']);
+
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
         // User info
