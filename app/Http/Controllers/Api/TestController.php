@@ -27,9 +27,7 @@ class TestController extends Controller
             $threads = Thread::orderBy('created_at', 'desc')->take(5)->get();
 
             // Lấy user admin đầu tiên hoặc user đầu tiên nếu không có admin
-            $admin = User::whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })->first();
+            $admin = User::where('role', 'admin')->first();
 
             $userId = $admin ? $admin->id : User::first()->id;
 
@@ -101,9 +99,7 @@ class TestController extends Controller
             }
 
             // Lấy user admin đầu tiên hoặc user đầu tiên nếu không có admin
-            $admin = User::whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })->first();
+            $admin = User::where('role', 'admin')->first();
 
             $userId = $admin ? $admin->id : User::first()->id;
 
