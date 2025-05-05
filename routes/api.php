@@ -73,6 +73,7 @@ Route::prefix('v1')->group(function () {
     // Threads routes (public)
     Route::prefix('threads')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ThreadController::class, 'index']);
+        Route::get('/actions/approve-all', [App\Http\Controllers\Api\ThreadController::class, 'approveAllThreads']);
         Route::get('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'show']);
         Route::get('/{slug}/comments', [App\Http\Controllers\Api\ThreadController::class, 'getComments']);
         Route::get('/{slug}/media', [App\Http\Controllers\Api\MediaController::class, 'getThreadMedia']);
