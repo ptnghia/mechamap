@@ -890,4 +890,60 @@ class ThreadController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get threads that need replies (have few or no comments)
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNeedReplies(Request $request)
+    {
+        try {
+            $perPage = $request->input('per_page', 20);
+
+            // Get threads with no replies or few replies
+            $query = Thread::with(['user', 'category', 'forum'])
+                ->where('is_locked', false)
+                ->where('status', 'approved')
+                ->withCount('comments')
+                ->having('comments_count', '<', 5)
+                ->orderBy('comments_count', 'asc')
+                ->orderBy('created_at', 'desc');
+
+            // Paginate
+            $threads = $query->paginate($perPage);
+
+            // Include additional information
+            $threads->getCollection()->transform(function ($thread) {
+                // Add user avatar URL
+                if ($thread->user) {
+                    $thread->user->avatar_url = $thread->user->getAvatarUrl();
+                }
+
+                // Add like/save/follow status for authenticated user
+                if (Auth::check()) {
+                    $thread->is_liked = $thread->isLikedBy(Auth::user());
+                    $thread->is_saved = $thread->isSavedBy(Auth::user());
+                    $thread->is_followed = $thread->isFollowedBy(Auth::user());
+                }
+
+                return $thread;
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'threads' => $threads
+                ],
+                'message' => 'Lấy danh sách chủ đề cần phản hồi thành công.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi lấy danh sách chủ đề cần phản hồi.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

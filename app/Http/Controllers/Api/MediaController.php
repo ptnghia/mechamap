@@ -23,27 +23,27 @@ class MediaController extends Controller
     {
         try {
             $query = Auth::user()->media();
-            
+
             // Filter by type
             if ($request->has('type')) {
                 $query->where('file_type', $request->type);
             }
-            
+
             // Sort by
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'desc');
             $query->orderBy($sortBy, $sortOrder);
-            
+
             // Paginate
             $perPage = $request->input('per_page', 15);
             $media = $query->paginate($perPage);
-            
+
             // Add full URL to each media
             $media->getCollection()->transform(function ($item) {
                 $item->full_url = url(Storage::url($item->file_path));
                 return $item;
             });
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $media,
@@ -57,7 +57,7 @@ class MediaController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Upload a new media file
      *
@@ -74,7 +74,7 @@ class MediaController extends Controller
                 'description' => 'nullable|string',
                 'thread_id' => 'nullable|exists:threads,id',
             ]);
-            
+
             // Check if thread exists and user has permission
             if ($request->has('thread_id')) {
                 $thread = Thread::findOrFail($request->thread_id);
@@ -85,16 +85,16 @@ class MediaController extends Controller
                     ], 403);
                 }
             }
-            
+
             // Get file
             $file = $request->file('file');
-            
+
             // Generate file name
             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            
+
             // Store file
             $filePath = $file->storeAs('public/uploads/media/' . Auth::id(), $fileName);
-            
+
             // Create media record
             $media = Media::create([
                 'user_id' => Auth::id(),
@@ -107,10 +107,10 @@ class MediaController extends Controller
                 'mediable_id' => $request->thread_id,
                 'mediable_type' => $request->has('thread_id') ? Thread::class : null,
             ]);
-            
+
             // Add full URL
             $media->full_url = url(Storage::url($media->file_path));
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $media,
@@ -130,7 +130,7 @@ class MediaController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Get a media by ID
      *
@@ -141,7 +141,7 @@ class MediaController extends Controller
     {
         try {
             $media = Media::findOrFail($id);
-            
+
             // Check if user has permission
             if ($media->user_id !== Auth::id() && !Auth::user()->hasRole(['admin', 'moderator'])) {
                 // Check if media is public (attached to a thread)
@@ -152,10 +152,10 @@ class MediaController extends Controller
                     ], 403);
                 }
             }
-            
+
             // Add full URL
             $media->full_url = url(Storage::url($media->file_path));
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $media,
@@ -174,7 +174,7 @@ class MediaController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Update a media
      *
@@ -191,9 +191,9 @@ class MediaController extends Controller
                 'description' => 'nullable|string',
                 'thread_id' => 'nullable|exists:threads,id',
             ]);
-            
+
             $media = Media::findOrFail($id);
-            
+
             // Check if user has permission
             if ($media->user_id !== Auth::id() && !Auth::user()->hasRole(['admin', 'moderator'])) {
                 return response()->json([
@@ -201,7 +201,7 @@ class MediaController extends Controller
                     'message' => 'Bạn không có quyền cập nhật media này.'
                 ], 403);
             }
-            
+
             // Check if thread exists and user has permission
             if ($request->has('thread_id')) {
                 $thread = Thread::findOrFail($request->thread_id);
@@ -212,24 +212,24 @@ class MediaController extends Controller
                     ], 403);
                 }
             }
-            
+
             // Update media
             $media->fill($request->only([
                 'title',
                 'description',
             ]));
-            
+
             // Update thread association
             if ($request->has('thread_id')) {
                 $media->mediable_id = $request->thread_id;
                 $media->mediable_type = Thread::class;
             }
-            
+
             $media->save();
-            
+
             // Add full URL
             $media->full_url = url(Storage::url($media->file_path));
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $media,
@@ -254,7 +254,7 @@ class MediaController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Delete a media
      *
@@ -265,7 +265,7 @@ class MediaController extends Controller
     {
         try {
             $media = Media::findOrFail($id);
-            
+
             // Check if user has permission
             if ($media->user_id !== Auth::id() && !Auth::user()->hasRole(['admin', 'moderator'])) {
                 return response()->json([
@@ -273,13 +273,13 @@ class MediaController extends Controller
                     'message' => 'Bạn không có quyền xóa media này.'
                 ], 403);
             }
-            
+
             // Delete file
             Storage::delete($media->file_path);
-            
+
             // Delete media record
             $media->delete();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Xóa media thành công.'
@@ -297,7 +297,7 @@ class MediaController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Get media for a thread
      *
@@ -309,30 +309,30 @@ class MediaController extends Controller
     {
         try {
             $thread = Thread::where('slug', $slug)->firstOrFail();
-            
+
             $query = Media::where('mediable_id', $thread->id)
                 ->where('mediable_type', Thread::class);
-            
+
             // Filter by type
             if ($request->has('type')) {
                 $query->where('file_type', $request->type);
             }
-            
+
             // Sort by
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'desc');
             $query->orderBy($sortBy, $sortOrder);
-            
+
             // Paginate
             $perPage = $request->input('per_page', 15);
             $media = $query->paginate($perPage);
-            
+
             // Add full URL to each media
             $media->getCollection()->transform(function ($item) {
                 $item->full_url = url(Storage::url($item->file_path));
                 return $item;
             });
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $media,
@@ -347,6 +347,67 @@ class MediaController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Đã xảy ra lỗi khi lấy danh sách media của chủ đề.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get recent media (public)
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRecent(Request $request)
+    {
+        try {
+            $perPage = $request->input('per_page', 20);
+
+            // Get recent media
+            $query = Media::with(['user', 'thread.category', 'thread.forum'])
+                ->whereNotNull('mediable_id')
+                ->whereNotNull('mediable_type')
+                ->where('mediable_type', Thread::class)
+                ->whereHas('thread', function ($query) {
+                    $query->where('is_locked', false);
+                });
+
+            // Filter by type
+            if ($request->has('type')) {
+                $query->where('file_type', 'like', $request->type . '%');
+            }
+
+            // Sort by
+            $sortBy = $request->input('sort_by', 'created_at');
+            $sortOrder = $request->input('sort_order', 'desc');
+            $query->orderBy($sortBy, $sortOrder);
+
+            // Paginate
+            $media = $query->paginate($perPage);
+
+            // Add full URL to each media
+            $media->getCollection()->transform(function ($item) {
+                $item->full_url = url(Storage::url($item->file_path));
+
+                // Add user avatar URL
+                if ($item->user) {
+                    $item->user->avatar_url = $item->user->getAvatarUrl();
+                }
+
+                return $item;
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'media' => $media
+                ],
+                'message' => 'Lấy danh sách media mới nhất thành công.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi lấy danh sách media mới nhất.',
                 'error' => $e->getMessage()
             ], 500);
         }

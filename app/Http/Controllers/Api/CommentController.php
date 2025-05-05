@@ -27,22 +27,22 @@ class CommentController extends Controller
             $request->validate([
                 'content' => 'required|string',
             ]);
-            
+
             // Find thread
             $thread = Thread::where('slug', $slug)->firstOrFail();
-            
+
             // Create comment
             $comment = Comment::create([
                 'thread_id' => $thread->id,
                 'user_id' => Auth::id(),
                 'content' => $request->content,
             ]);
-            
+
             // Update thread's last_comment_at
             $thread->last_comment_at = now();
             $thread->comments_count = $thread->comments()->count();
             $thread->save();
-            
+
             // Create user activity
             UserActivity::create([
                 'user_id' => Auth::id(),
@@ -50,15 +50,15 @@ class CommentController extends Controller
                 'subject_id' => $comment->id,
                 'subject_type' => Comment::class,
             ]);
-            
+
             // Load relationships
             $comment->load(['user']);
-            
+
             // Add user avatar URL
             if ($comment->user) {
                 $comment->user->avatar_url = $comment->user->getAvatarUrl();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $comment,
@@ -83,7 +83,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Update a comment
      *
@@ -95,7 +95,7 @@ class CommentController extends Controller
     {
         try {
             $comment = Comment::findOrFail($id);
-            
+
             // Check if user is authorized to update this comment
             if (Auth::id() !== $comment->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
                 return response()->json([
@@ -103,16 +103,16 @@ class CommentController extends Controller
                     'message' => 'Bạn không có quyền cập nhật bình luận này.'
                 ], 403);
             }
-            
+
             // Validate request
             $request->validate([
                 'content' => 'required|string',
             ]);
-            
+
             // Update comment
             $comment->content = $request->content;
             $comment->save();
-            
+
             // Create user activity
             UserActivity::create([
                 'user_id' => Auth::id(),
@@ -120,15 +120,15 @@ class CommentController extends Controller
                 'subject_id' => $comment->id,
                 'subject_type' => Comment::class,
             ]);
-            
+
             // Load relationships
             $comment->load(['user']);
-            
+
             // Add user avatar URL
             if ($comment->user) {
                 $comment->user->avatar_url = $comment->user->getAvatarUrl();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $comment,
@@ -153,7 +153,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Delete a comment
      *
@@ -164,7 +164,7 @@ class CommentController extends Controller
     {
         try {
             $comment = Comment::findOrFail($id);
-            
+
             // Check if user is authorized to delete this comment
             if (Auth::id() !== $comment->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
                 return response()->json([
@@ -172,19 +172,19 @@ class CommentController extends Controller
                     'message' => 'Bạn không có quyền xóa bình luận này.'
                 ], 403);
             }
-            
+
             // Get thread to update counts
             $thread = $comment->thread;
-            
+
             // Delete comment
             $comment->delete();
-            
+
             // Update thread's comments_count
             if ($thread) {
                 $thread->comments_count = $thread->comments()->count();
                 $thread->save();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Xóa bình luận thành công.'
@@ -202,7 +202,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Like a comment
      *
@@ -213,7 +213,7 @@ class CommentController extends Controller
     {
         try {
             $comment = Comment::findOrFail($id);
-            
+
             // Check if already liked
             if ($comment->isLikedBy(Auth::user())) {
                 return response()->json([
@@ -221,13 +221,13 @@ class CommentController extends Controller
                     'message' => 'Bạn đã thích bình luận này rồi.'
                 ], 400);
             }
-            
+
             // Create like
             CommentLike::create([
                 'comment_id' => $comment->id,
                 'user_id' => Auth::id(),
             ]);
-            
+
             // Create user activity
             UserActivity::create([
                 'user_id' => Auth::id(),
@@ -235,11 +235,11 @@ class CommentController extends Controller
                 'subject_id' => $comment->id,
                 'subject_type' => Comment::class,
             ]);
-            
+
             // Update likes count
             $comment->likes_count = $comment->likes()->count();
             $comment->save();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -260,7 +260,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Unlike a comment
      *
@@ -271,7 +271,7 @@ class CommentController extends Controller
     {
         try {
             $comment = Comment::findOrFail($id);
-            
+
             // Check if not liked
             if (!$comment->isLikedBy(Auth::user())) {
                 return response()->json([
@@ -279,16 +279,16 @@ class CommentController extends Controller
                     'message' => 'Bạn chưa thích bình luận này.'
                 ], 400);
             }
-            
+
             // Delete like
             CommentLike::where('comment_id', $comment->id)
                 ->where('user_id', Auth::id())
                 ->delete();
-            
+
             // Update likes count
             $comment->likes_count = $comment->likes()->count();
             $comment->save();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -309,7 +309,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Get replies for a comment
      *
@@ -321,33 +321,33 @@ class CommentController extends Controller
     {
         try {
             $comment = Comment::findOrFail($id);
-            
+
             $query = $comment->replies();
-            
+
             // Sort by
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'asc');
             $query->orderBy($sortBy, $sortOrder);
-            
+
             // Paginate
             $perPage = $request->input('per_page', 15);
             $replies = $query->with(['user'])->paginate($perPage);
-            
+
             // Include additional information
             $replies->getCollection()->transform(function ($reply) {
                 // Add user avatar URL
                 if ($reply->user) {
                     $reply->user->avatar_url = $reply->user->getAvatarUrl();
                 }
-                
+
                 // Add like status for authenticated user
                 if (Auth::check()) {
                     $reply->is_liked = $reply->isLikedBy(Auth::user());
                 }
-                
+
                 return $reply;
             });
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $replies,
@@ -366,7 +366,7 @@ class CommentController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Create a reply for a comment
      *
@@ -381,10 +381,10 @@ class CommentController extends Controller
             $request->validate([
                 'content' => 'required|string',
             ]);
-            
+
             // Find parent comment
             $parentComment = Comment::findOrFail($id);
-            
+
             // Create reply
             $reply = Comment::create([
                 'thread_id' => $parentComment->thread_id,
@@ -392,7 +392,7 @@ class CommentController extends Controller
                 'parent_id' => $parentComment->id,
                 'content' => $request->content,
             ]);
-            
+
             // Update thread's last_comment_at
             $thread = $parentComment->thread;
             if ($thread) {
@@ -400,7 +400,7 @@ class CommentController extends Controller
                 $thread->comments_count = $thread->comments()->count();
                 $thread->save();
             }
-            
+
             // Create user activity
             UserActivity::create([
                 'user_id' => Auth::id(),
@@ -408,15 +408,15 @@ class CommentController extends Controller
                 'subject_id' => $reply->id,
                 'subject_type' => Comment::class,
             ]);
-            
+
             // Load relationships
             $reply->load(['user']);
-            
+
             // Add user avatar URL
             if ($reply->user) {
                 $reply->user->avatar_url = $reply->user->getAvatarUrl();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $reply,
@@ -437,6 +437,58 @@ class CommentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Đã xảy ra lỗi khi tạo trả lời cho bình luận.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get recent comments
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRecent(Request $request)
+    {
+        try {
+            $perPage = $request->input('per_page', 20);
+            $page = $request->input('page', 1);
+
+            // Get recent comments with their threads, ordered by creation date
+            $comments = Comment::with(['user', 'thread.category', 'thread.forum', 'thread.user'])
+                ->whereHas('thread', function ($query) {
+                    $query->where('is_locked', false);
+                })
+                ->whereNull('parent_id') // Only get top-level comments, not replies
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage);
+
+            // Add user avatar URL and format data
+            $comments->getCollection()->transform(function ($comment) {
+                // Add user avatar URL
+                if ($comment->user) {
+                    $comment->user->avatar_url = $comment->user->getAvatarUrl();
+                }
+
+                // Add like status for authenticated user
+                if (Auth::check()) {
+                    $comment->is_liked = $comment->isLikedBy(Auth::user());
+                }
+
+                return $comment;
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'comments' => $comments
+                ],
+                'message' => 'Lấy danh sách bình luận mới nhất thành công.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi lấy danh sách bình luận mới nhất.',
                 'error' => $e->getMessage()
             ], 500);
         }

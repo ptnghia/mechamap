@@ -74,6 +74,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('threads')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ThreadController::class, 'index']);
         Route::get('/actions/approve-all', [App\Http\Controllers\Api\ThreadController::class, 'approveAllThreads']);
+        Route::get('/need-replies', [App\Http\Controllers\Api\ThreadController::class, 'getNeedReplies']);
         Route::get('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'show']);
         Route::get('/{slug}/comments', [App\Http\Controllers\Api\ThreadController::class, 'getComments']);
         Route::get('/{slug}/media', [App\Http\Controllers\Api\MediaController::class, 'getThreadMedia']);
@@ -111,6 +112,12 @@ Route::prefix('v1')->group(function () {
 
     // Avatar routes (public)
     Route::get('/avatar', [App\Http\Controllers\Api\AvatarController::class, 'generate']);
+
+    // Comments routes (public)
+    Route::get('/comments/recent', [App\Http\Controllers\Api\CommentController::class, 'getRecent']);
+
+    // Media routes (public)
+    Route::get('/media/recent', [App\Http\Controllers\Api\MediaController::class, 'getRecent']);
 
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
