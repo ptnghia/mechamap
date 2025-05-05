@@ -70,6 +70,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/{slug}/forums', [App\Http\Controllers\Api\ForumController::class, 'getCategoryForums']);
     });
 
+    // Tags routes (public)
+    Route::prefix('tags')->group(function () {
+        Route::get('/', [App\Http\Controllers\Api\TagController::class, 'index']);
+        Route::get('/{slug}', [App\Http\Controllers\Api\TagController::class, 'show']);
+        Route::get('/{slug}/threads', [App\Http\Controllers\Api\TagController::class, 'getThreads']);
+    });
+
     // Threads routes (public)
     Route::prefix('threads')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ThreadController::class, 'index']);
@@ -78,6 +85,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'show']);
         Route::get('/{slug}/comments', [App\Http\Controllers\Api\ThreadController::class, 'getComments']);
         Route::get('/{slug}/media', [App\Http\Controllers\Api\MediaController::class, 'getThreadMedia']);
+        Route::get('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'getTags']);
     });
 
     // Search routes (public)
@@ -163,6 +171,9 @@ Route::prefix('v1')->group(function () {
             Route::delete('/{slug}/save', [App\Http\Controllers\Api\ThreadController::class, 'unsave']);
             Route::post('/{slug}/follow', [App\Http\Controllers\Api\ThreadController::class, 'follow']);
             Route::delete('/{slug}/follow', [App\Http\Controllers\Api\ThreadController::class, 'unfollow']);
+            Route::post('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'addTags']);
+            Route::delete('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'removeTags']);
+            Route::post('/{slug}/report', [App\Http\Controllers\Api\ReportController::class, 'reportThread']);
             Route::get('/saved', [App\Http\Controllers\Api\ThreadController::class, 'getSaved']);
             Route::get('/followed', [App\Http\Controllers\Api\ThreadController::class, 'getFollowed']);
             Route::post('/{slug}/comments', [App\Http\Controllers\Api\CommentController::class, 'store']);
@@ -174,6 +185,7 @@ Route::prefix('v1')->group(function () {
             Route::delete('/{id}', [App\Http\Controllers\Api\CommentController::class, 'destroy']);
             Route::post('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'like']);
             Route::delete('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'unlike']);
+            Route::post('/{id}/report', [App\Http\Controllers\Api\ReportController::class, 'reportComment']);
             Route::get('/{id}/replies', [App\Http\Controllers\Api\CommentController::class, 'getReplies']);
             Route::post('/{id}/replies', [App\Http\Controllers\Api\CommentController::class, 'storeReply']);
         });

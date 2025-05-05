@@ -79,4 +79,12 @@ class Comment extends Model
     {
         return $this->morphMany(Media::class, 'mediable');
     }
+
+    /**
+     * Get the reports for the comment.
+     */
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

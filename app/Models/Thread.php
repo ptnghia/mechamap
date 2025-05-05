@@ -229,4 +229,21 @@ class Thread extends Model
     {
         return $this->morphOne(Showcase::class, 'showcaseable');
     }
+
+    /**
+     * Get the tags for the thread.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'thread_tag')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the reports for the thread.
+     */
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }
