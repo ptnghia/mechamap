@@ -124,8 +124,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/articles/recent', [App\Http\Controllers\Api\ArticleController::class, 'getRecent']);
 
     // Test routes (chỉ dùng trong môi trường development)
-    if (app()->environment('local', 'development', 'staging')) {
+    if (app()->environment('local', 'development', 'staging', 'production')) { // Tạm thời cho phép trên production để test
         Route::get('/test/add-to-showcase', [App\Http\Controllers\Api\TestController::class, 'addThreadsToShowcase']);
+        Route::get('/test/add-single-to-showcase', [App\Http\Controllers\Api\TestController::class, 'addSingleThreadToShowcase']);
     }
 
     // Protected routes
