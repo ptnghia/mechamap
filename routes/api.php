@@ -232,5 +232,16 @@ Route::prefix('v1')->group(function () {
             Route::post('/add', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'addToShowcase']);
             Route::delete('/{id}', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'removeFromShowcase']);
         });
+
+        // Reports management
+        Route::prefix('reports')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\ReportController::class, 'index']);
+            Route::put('/{id}', [App\Http\Controllers\Api\ReportController::class, 'updateStatus']);
+        });
+
+        // Tags management
+        Route::prefix('tags')->group(function () {
+            Route::post('/', [App\Http\Controllers\Api\TagController::class, 'store']);
+        });
     });
 });
