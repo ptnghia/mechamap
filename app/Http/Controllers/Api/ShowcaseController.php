@@ -486,12 +486,11 @@ class ShowcaseController extends Controller
     {
         try {
             // Get pagination parameters
-            $page = $request->input('page', 1);
             $perPage = $request->input('per_page', 10);
 
             // Get recent showcases
-            $showcases = Showcase::where('status', 'approved')
-                ->with(['user', 'media'])
+            $showcases = Showcase::with(['user', 'showcaseable'])
+                ->whereHas('showcaseable') // Ensure showcaseable exists
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
 
@@ -502,17 +501,15 @@ class ShowcaseController extends Controller
                     $showcase->user->avatar_url = $showcase->user->getAvatarUrl();
                 }
 
-                // Add full URL to each media
-                if ($showcase->media) {
-                    $showcase->media->transform(function ($media) {
-                        $media->full_url = url(Storage::url($media->file_path));
-                        return $media;
-                    });
-                }
-
-                // Add cover image URL
-                if ($showcase->cover_image) {
-                    $showcase->cover_image_url = url(Storage::url($showcase->cover_image));
+                // Add showcaseable information
+                if ($showcase->showcaseable) {
+                    if ($showcase->showcaseable_type === 'App\\Models\\Thread') {
+                        $showcase->title = $showcase->showcaseable->title;
+                        $showcase->slug = $showcase->showcaseable->slug;
+                    } elseif ($showcase->showcaseable_type === 'App\\Models\\Post') {
+                        $showcase->title = $showcase->showcaseable->thread->title;
+                        $showcase->slug = $showcase->showcaseable->thread->slug;
+                    }
                 }
 
                 return $showcase;
