@@ -363,11 +363,9 @@ class MediaController extends Controller
         try {
             $perPage = $request->input('per_page', 20);
 
-            // Get recent media
+            // Get recent media (sử dụng điều kiện tương tự như trong Laravel Web Controller)
             $query = Media::with(['user', 'thread.category', 'thread.forum'])
-                ->whereNotNull('mediable_id')
-                ->whereNotNull('mediable_type')
-                ->where('mediable_type', Thread::class)
+                ->whereNotNull('thread_id')
                 ->whereHas('thread', function ($query) {
                     $query->where('is_locked', false);
                 });
