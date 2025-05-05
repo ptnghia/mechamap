@@ -99,6 +99,7 @@ Route::prefix('v1')->group(function () {
     // Showcase routes (public)
     Route::prefix('showcases')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ShowcaseController::class, 'index']);
+        Route::get('/recent', [App\Http\Controllers\Api\ShowcaseController::class, 'getRecent']);
         Route::get('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'show']);
     });
 
@@ -118,6 +119,9 @@ Route::prefix('v1')->group(function () {
 
     // Media routes (public)
     Route::get('/media/recent', [App\Http\Controllers\Api\MediaController::class, 'getRecent']);
+
+    // Articles routes (public)
+    Route::get('/articles/recent', [App\Http\Controllers\Api\ArticleController::class, 'getRecent']);
 
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
