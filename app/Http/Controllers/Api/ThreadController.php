@@ -520,13 +520,21 @@ class ThreadController extends Controller
     public function approveAllThreads()
     {
         try {
+            // Cập nhật tất cả các bài viết có trạng thái khác "approved"
             $count = Thread::where('status', '!=', 'approved')->update(['status' => 'approved']);
+
+            // Cập nhật tất cả các bài viết có trạng thái NULL
+            $nullCount = Thread::whereNull('status')->update(['status' => 'approved']);
+
+            $totalCount = $count + $nullCount;
 
             return response()->json([
                 'success' => true,
-                'message' => 'Đã cập nhật trạng thái của ' . $count . ' bài viết thành "approved".',
+                'message' => 'Đã cập nhật trạng thái của ' . $totalCount . ' bài viết thành "approved".',
                 'data' => [
-                    'updated_count' => $count
+                    'updated_count' => $totalCount,
+                    'non_approved_count' => $count,
+                    'null_status_count' => $nullCount
                 ]
             ]);
         } catch (\Exception $e) {
