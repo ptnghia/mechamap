@@ -123,6 +123,11 @@ Route::prefix('v1')->group(function () {
     // Articles routes (public)
     Route::get('/articles/recent', [App\Http\Controllers\Api\ArticleController::class, 'getRecent']);
 
+    // Test routes (chỉ dùng trong môi trường development)
+    if (app()->environment('local', 'development', 'staging')) {
+        Route::get('/test/add-to-showcase', [App\Http\Controllers\Api\TestController::class, 'addThreadsToShowcase']);
+    }
+
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
         // User info

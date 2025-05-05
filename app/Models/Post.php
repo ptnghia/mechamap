@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Post extends Model
 {
@@ -44,5 +45,13 @@ class Post extends Model
     public function reactions(): MorphMany
     {
         return $this->morphMany(Reaction::class, 'reactable');
+    }
+
+    /**
+     * Get the showcase for this post.
+     */
+    public function showcase(): MorphOne
+    {
+        return $this->morphOne(Showcase::class, 'showcaseable');
     }
 }

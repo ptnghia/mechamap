@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Thread extends Model
 {
@@ -219,5 +220,13 @@ class Thread extends Model
     public function isFollowedBy(User $user): bool
     {
         return $this->follows()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get the showcase for this thread.
+     */
+    public function showcase(): MorphOne
+    {
+        return $this->morphOne(Showcase::class, 'showcaseable');
     }
 }
