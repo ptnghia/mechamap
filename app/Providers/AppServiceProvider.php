@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Đặt độ dài mặc định cho chuỗi trong migration
         Schema::defaultStringLength(191);
+
+        // Sử dụng Bootstrap 5 cho phân trang
+        Paginator::useBootstrapFive();
     }
 }
