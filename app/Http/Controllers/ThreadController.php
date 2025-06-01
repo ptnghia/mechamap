@@ -115,9 +115,6 @@ class ThreadController extends Controller
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'forum_id' => 'required|exists:forums,id',
-            'location' => 'nullable|string|max:255',
-            'usage' => 'nullable|string|max:255',
-            'floors' => 'nullable|integer|min:1',
             'status' => 'nullable|string|max:255',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
             // Poll validation
@@ -141,9 +138,6 @@ class ThreadController extends Controller
                 'user_id' => Auth::id(),
                 'category_id' => $request->category_id,
                 'forum_id' => $request->forum_id,
-                'location' => $request->location,
-                'usage' => $request->usage,
-                'floors' => $request->floors,
                 'status' => $request->status,
             ]);
 
@@ -272,9 +266,6 @@ class ThreadController extends Controller
             'content' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'forum_id' => 'required|exists:forums,id',
-            'location' => 'nullable|string|max:255',
-            'usage' => 'nullable|string|max:255',
-            'floors' => 'nullable|integer|min:1',
             'status' => 'nullable|string|max:255',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
             'delete_images' => 'nullable|array',
@@ -286,9 +277,6 @@ class ThreadController extends Controller
             'content' => $request->content,
             'category_id' => $request->category_id,
             'forum_id' => $request->forum_id,
-            'location' => $request->location,
-            'usage' => $request->usage,
-            'floors' => $request->floors,
             'status' => $request->status,
         ]);
 

@@ -12,99 +12,95 @@
                     <i class="bi bi-arrow-left"></i> Back to Forums
                 </a>
             </div>
-            
+
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Your Saved Threads</h5>
                     <span class="badge bg-secondary">{{ $savedThreads->total() }} threads</span>
                 </div>
-                
+
                 @if($savedThreads->count() > 0)
-                    <div class="list-group list-group-flush">
-                        @foreach($savedThreads as $thread)
-                            <div class="list-group-item p-3">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <img src="{{ $thread->user->profile_photo_url }}" alt="{{ $thread->user->name }}" class="rounded-circle" width="50" height="50">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <h5 class="mb-1">
-                                                <a href="{{ route('threads.show', $thread) }}" class="text-decoration-none">{{ $thread->title }}</a>
-                                                @if($thread->is_sticky)
-                                                    <span class="badge bg-primary ms-1">Sticky</span>
-                                                @endif
-                                                @if($thread->is_locked)
-                                                    <span class="badge bg-danger ms-1">Locked</span>
-                                                @endif
-                                            </h5>
-                                            <div>
-                                                <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
-                                                <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove from saved">
-                                                        <i class="bi bi-bookmark-x"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Project Details -->
-                                        @if($thread->location || $thread->usage || $thread->floors || $thread->status)
-                                        <div class="project-details mb-2 small">
-                                            @if($thread->location)
-                                                <span class="badge bg-light text-dark me-2">Location: {{ $thread->location }}</span>
-                                            @endif
-                                            
-                                            @if($thread->usage)
-                                                <span class="badge bg-light text-dark me-2">Usage: {{ $thread->usage }}</span>
-                                            @endif
-                                            
-                                            @if($thread->floors)
-                                                <span class="badge bg-light text-dark me-2">Floors: {{ $thread->floors }}</span>
-                                            @endif
-                                            
-                                            @if($thread->status)
-                                                <span class="badge bg-light text-dark me-2">Status: {{ $thread->status }}</span>
-                                            @endif
-                                        </div>
+                <div class="list-group list-group-flush">
+                    @foreach($savedThreads as $thread)
+                    <div class="list-group-item p-3">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                                <img src="{{ $thread->user->profile_photo_url }}" alt="{{ $thread->user->name }}"
+                                    class="rounded-circle" width="50" height="50">
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h5 class="mb-1">
+                                        <a href="{{ route('threads.show', $thread) }}" class="text-decoration-none">{{
+                                            $thread->title }}</a>
+                                        @if($thread->is_sticky)
+                                        <span class="badge bg-primary ms-1">Sticky</span>
                                         @endif
-                                        
-                                        <p class="mb-1 text-muted">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
-                                        
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <div class="small">
-                                                <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
-                                                <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }} views</span>
-                                                <span class="me-3"><i class="bi bi-chat"></i> {{ $thread->allComments->count() }} replies</span>
-                                                <span><i class="bi bi-people"></i> {{ $thread->participant_count }} participants</span>
-                                            </div>
-                                            
-                                            <div>
-                                                @if($thread->category)
-                                                    <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}" class="badge bg-secondary text-decoration-none">{{ $thread->category->name }}</a>
-                                                @endif
-                                                
-                                                @if($thread->forum)
-                                                    <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}" class="badge bg-info text-decoration-none">{{ $thread->forum->name }}</a>
-                                                @endif
-                                            </div>
-                                        </div>
+                                        @if($thread->is_locked)
+                                        <span class="badge bg-danger ms-1">Locked</span>
+                                        @endif
+                                    </h5>
+                                    <div>
+                                        <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
+                                        <form action="{{ route('threads.save', $thread) }}" method="POST"
+                                            class="d-inline ms-2">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                title="Remove from saved">
+                                                <i class="bi bi-bookmark-x"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Project Details -->
+                                @if($thread->status)
+                                <div class="project-details mb-2 small">
+                                    <span class="badge bg-light text-dark me-2">Status: {{ $thread->status }}</span>
+                                </div>
+                                @endif
+
+                                <p class="mb-1 text-muted">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
+
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="small">
+                                        <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
+                                        <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }}
+                                            views</span>
+                                        <span class="me-3"><i class="bi bi-chat"></i> {{ $thread->allComments->count()
+                                            }} replies</span>
+                                        <span><i class="bi bi-people"></i> {{ $thread->participant_count }}
+                                            participants</span>
+                                    </div>
+
+                                    <div>
+                                        @if($thread->category)
+                                        <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
+                                            class="badge bg-secondary text-decoration-none">{{ $thread->category->name
+                                            }}</a>
+                                        @endif
+
+                                        @if($thread->forum)
+                                        <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
+                                            class="badge bg-info text-decoration-none">{{ $thread->forum->name }}</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
-                    
-                    <div class="card-footer">
-                        {{ $savedThreads->links() }}
-                    </div>
+                    @endforeach
+                </div>
+
+                <div class="card-footer">
+                    {{ $savedThreads->links() }}
+                </div>
                 @else
-                    <div class="card-body text-center py-5">
-                        <i class="bi bi-bookmark display-4 text-muted"></i>
-                        <p class="mt-3">You haven't saved any threads yet.</p>
-                        <a href="{{ route('threads.index') }}" class="btn btn-primary">Browse Threads</a>
-                    </div>
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-bookmark display-4 text-muted"></i>
+                    <p class="mt-3">You haven't saved any threads yet.</p>
+                    <a href="{{ route('threads.index') }}" class="btn btn-primary">Browse Threads</a>
+                </div>
                 @endif
             </div>
         </div>

@@ -14,19 +14,19 @@ class ForumSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create main categories
+        // Tạo các chuyên mục chính
         $categories = [
             [
-                'name' => 'General Discussion',
-                'description' => 'General discussion about various topics',
+                'name' => 'Thảo luận chung',
+                'description' => 'Thảo luận chung về các chủ đề cơ khí và tự động hóa',
             ],
             [
-                'name' => 'Technology',
-                'description' => 'Discussions about technology, gadgets, and software',
+                'name' => 'Công nghệ',
+                'description' => 'Thảo luận về công nghệ, thiết bị và phần mềm kỹ thuật',
             ],
             [
-                'name' => 'Community',
-                'description' => 'Community events, announcements, and feedback',
+                'name' => 'Cộng đồng',
+                'description' => 'Sự kiện cộng đồng, thông báo và phản hồi',
             ],
         ];
 
@@ -38,54 +38,54 @@ class ForumSeeder extends Seeder
                 'order' => $index,
             ]);
 
-            // Create subforums for each category
-            if ($forum->name === 'General Discussion') {
+            // Tạo chuyên mục con cho mỗi chuyên mục chính
+            if ($forum->name === 'Thảo luận chung') {
                 $this->createSubforums($forum, [
                     [
-                        'name' => 'Introductions',
-                        'description' => 'Introduce yourself to the community',
+                        'name' => 'Giới thiệu bản thân',
+                        'description' => 'Giới thiệu bản thân với cộng đồng MechaMap',
                     ],
                     [
-                        'name' => 'Off-Topic',
-                        'description' => 'Discussions that don\'t fit in other categories',
+                        'name' => 'Chủ đề tự do',
+                        'description' => 'Thảo luận các chủ đề không thuộc các chuyên mục khác',
                     ],
                     [
-                        'name' => 'News & Announcements',
-                        'description' => 'Latest news and announcements',
+                        'name' => 'Tin tức & Thông báo',
+                        'description' => 'Tin tức mới nhất và thông báo quan trọng',
                     ],
                 ]);
-            } elseif ($forum->name === 'Technology') {
+            } elseif ($forum->name === 'Công nghệ') {
                 $this->createSubforums($forum, [
                     [
-                        'name' => 'Hardware',
-                        'description' => 'Discussions about computer hardware and components',
+                        'name' => 'Phần cứng',
+                        'description' => 'Thảo luận về máy móc, thiết bị cơ khí và linh kiện',
                     ],
                     [
-                        'name' => 'Software',
-                        'description' => 'Discussions about software and applications',
+                        'name' => 'Phần mềm',
+                        'description' => 'Thảo luận về phần mềm CAD, CAM, simulation và ứng dụng kỹ thuật',
                     ],
                     [
-                        'name' => 'Programming',
-                        'description' => 'Programming languages, development, and coding',
+                        'name' => 'Lập trình',
+                        'description' => 'Lập trình PLC, HMI, SCADA và các ngôn ngữ tự động hóa',
                     ],
                     [
-                        'name' => 'Mobile',
-                        'description' => 'Mobile devices, apps, and technologies',
+                        'name' => 'IoT & Industry 4.0',
+                        'description' => 'Internet of Things, sensors và công nghệ Industry 4.0',
                     ],
                 ]);
-            } elseif ($forum->name === 'Community') {
+            } elseif ($forum->name === 'Cộng đồng') {
                 $this->createSubforums($forum, [
                     [
-                        'name' => 'Events',
-                        'description' => 'Community events and meetups',
+                        'name' => 'Sự kiện',
+                        'description' => 'Sự kiện cộng đồng và buổi gặp gỡ kỹ sư',
                     ],
                     [
-                        'name' => 'Feedback',
-                        'description' => 'Provide feedback about the community',
+                        'name' => 'Phản hồi',
+                        'description' => 'Đóng góp ý kiến về cộng đồng MechaMap',
                     ],
                     [
-                        'name' => 'Help & Support',
-                        'description' => 'Get help and support from the community',
+                        'name' => 'Hỗ trợ & Trợ giúp',
+                        'description' => 'Nhận sự trợ giúp và hỗ trợ từ cộng đồng',
                     ],
                 ]);
             }

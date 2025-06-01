@@ -1,0 +1,218 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Cấu hình diễn đàn')
+@section('header', 'Cấu hình diễn đàn')
+
+@section('content')
+<div class="row">
+    <div class="col-md-3 mb-4">
+        @include('admin.settings.partials.sidebar')
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Cấu hình diễn đàn') }}</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.settings.update-forum') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <!-- Cấu hình hiển thị -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình hiển thị') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="forum_threads_per_page" class="form-label">{{ __('Số chủ đề trên mỗi trang')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_threads_per_page') is-invalid @enderror"
+                                    id="forum_threads_per_page" name="forum_threads_per_page"
+                                    value="{{ old('forum_threads_per_page', $settings['forum_threads_per_page'] ?? '20') }}"
+                                    min="5" max="100" required>
+                                <div class="form-text">{{ __('Số lượng chủ đề hiển thị trên mỗi trang (5-100)') }}</div>
+                                @error('forum_threads_per_page')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="forum_posts_per_page" class="form-label">{{ __('Số bài viết trên mỗi trang')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_posts_per_page') is-invalid @enderror"
+                                    id="forum_posts_per_page" name="forum_posts_per_page"
+                                    value="{{ old('forum_posts_per_page', $settings['forum_posts_per_page'] ?? '15') }}"
+                                    min="5" max="100" required>
+                                <div class="form-text">{{ __('Số lượng bài viết hiển thị trên mỗi trang (5-100)') }}
+                                </div>
+                                @error('forum_posts_per_page')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="forum_hot_threshold" class="form-label">{{ __('Ngưỡng chủ đề hot')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_hot_threshold') is-invalid @enderror"
+                                    id="forum_hot_threshold" name="forum_hot_threshold"
+                                    value="{{ old('forum_hot_threshold', $settings['forum_hot_threshold'] ?? '50') }}"
+                                    min="1">
+                                <div class="form-text">{{ __('Số lượt xem tối thiểu để chủ đề được đánh dấu "hot"') }}
+                                </div>
+                                @error('forum_hot_threshold')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Cấu hình quyền truy cập -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình quyền truy cập') }}</h6>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="forum_allow_guest_view"
+                                        name="forum_allow_guest_view" {{ old('forum_allow_guest_view',
+                                        $settings['forum_allow_guest_view'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="forum_allow_guest_view">
+                                        {{ __('Cho phép khách xem diễn đàn') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Khách không đăng nhập có thể xem nội dung diễn đàn') }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="forum_require_email_verification" name="forum_require_email_verification" {{
+                                        old('forum_require_email_verification',
+                                        $settings['forum_require_email_verification'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="forum_require_email_verification">
+                                        {{ __('Yêu cầu xác thực email') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng phải xác thực email trước khi tham gia diễn
+                                    đàn') }}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="forum_enable_polls"
+                                        name="forum_enable_polls" {{ old('forum_enable_polls',
+                                        $settings['forum_enable_polls'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="forum_enable_polls">
+                                        {{ __('Cho phép tạo bình chọn') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng có thể tạo bình chọn trong chủ đề') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row">
+                        <!-- Cấu hình bình chọn -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình bình chọn') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="forum_max_poll_options" class="form-label">{{ __('Số tùy chọn tối đa')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_max_poll_options') is-invalid @enderror"
+                                    id="forum_max_poll_options" name="forum_max_poll_options"
+                                    value="{{ old('forum_max_poll_options', $settings['forum_max_poll_options'] ?? '10') }}"
+                                    min="2" max="20">
+                                <div class="form-text">{{ __('Số tùy chọn tối đa trong một bình chọn (2-20)') }}</div>
+                                @error('forum_max_poll_options')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Cấu hình file đính kèm -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình file đính kèm') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="forum_max_attachments" class="form-label">{{ __('Số file tối đa') }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_max_attachments') is-invalid @enderror"
+                                    id="forum_max_attachments" name="forum_max_attachments"
+                                    value="{{ old('forum_max_attachments', $settings['forum_max_attachments'] ?? '5') }}"
+                                    min="0" max="10">
+                                <div class="form-text">{{ __('Số file đính kèm tối đa trong một bài viết (0-10)') }}
+                                </div>
+                                @error('forum_max_attachments')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="forum_max_file_size" class="form-label">{{ __('Kích thước file tối đa (MB)')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('forum_max_file_size') is-invalid @enderror"
+                                    id="forum_max_file_size" name="forum_max_file_size"
+                                    value="{{ old('forum_max_file_size', $settings['forum_max_file_size'] ?? '5') }}"
+                                    min="1" max="10240">
+                                <div class="form-text">{{ __('Kích thước tối đa của file đính kèm (1-10240 MB)') }}
+                                </div>
+                                @error('forum_max_file_size')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="forum_allowed_file_types" class="form-label">{{ __('Loại file được phép')
+                                    }}</label>
+                                <input type="text"
+                                    class="form-control @error('forum_allowed_file_types') is-invalid @enderror"
+                                    id="forum_allowed_file_types" name="forum_allowed_file_types"
+                                    value="{{ old('forum_allowed_file_types', $settings['forum_allowed_file_types'] ?? 'jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,zip') }}"
+                                    placeholder="jpg,jpeg,png,gif,pdf">
+                                <div class="form-text">{{ __('Các phần mở rộng file được phép, cách nhau bằng dấu phẩy')
+                                    }}</div>
+                                @error('forum_allowed_file_types')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('admin.settings.general') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-1"></i> {{ __('Lưu cấu hình') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+    // Auto-format file types input
+    $('#forum_allowed_file_types').on('input', function() {
+        let value = $(this).val();
+        // Remove spaces and ensure lowercase
+        value = value.toLowerCase().replace(/\s+/g, '');
+        // Ensure comma separation
+        value = value.replace(/[;|]+/g, ',');
+        $(this).val(value);
+    });
+});
+</script>
+@endpush

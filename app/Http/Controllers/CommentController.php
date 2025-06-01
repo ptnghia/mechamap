@@ -79,10 +79,6 @@ class CommentController extends Controller
                 }
             }
 
-            // Update participant count
-            $participantCount = $thread->comments()->select('user_id')->distinct()->count();
-            $thread->update(['participant_count' => $participantCount]);
-
             // Log activity
             $this->activityService->logCommentCreated(Auth::user(), $comment);
 
@@ -159,10 +155,6 @@ class CommentController extends Controller
             }
 
             $comment->delete();
-
-            // Update participant count
-            $participantCount = $thread->comments()->select('user_id')->distinct()->count();
-            $thread->update(['participant_count' => $participantCount]);
 
             return back()->with('success', 'Bình luận đã được xóa.');
         });

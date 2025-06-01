@@ -69,8 +69,19 @@ Route::middleware('auth')->group(function () {
 
     // Showcase routes
     Route::get('/showcase', [ShowcaseController::class, 'index'])->name('showcase.index');
+    Route::get('/showcase/create', [ShowcaseController::class, 'create'])->name('showcase.create');
     Route::post('/showcase', [ShowcaseController::class, 'store'])->name('showcase.store');
+    Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');
+    Route::get('/showcase/{showcase}/edit', [ShowcaseController::class, 'edit'])->name('showcase.edit');
+    Route::put('/showcase/{showcase}', [ShowcaseController::class, 'update'])->name('showcase.update');
     Route::delete('/showcase/{showcase}', [ShowcaseController::class, 'destroy'])->name('showcase.destroy');
+    Route::post('/showcase/upload-temp', [ShowcaseController::class, 'uploadTemp'])->name('showcase.upload.temp');
+    Route::post('/showcase/{showcase}/comment', [ShowcaseController::class, 'addComment'])->name('showcase.comment');
+    Route::delete('/showcase/comment/{comment}', [ShowcaseController::class, 'deleteComment'])->name('showcase.comment.delete');
+    Route::post('/showcase/{showcase}/like', [ShowcaseController::class, 'toggleLike'])->name('showcase.toggle-like');
+    Route::post('/showcase/{showcase}/follow', [ShowcaseController::class, 'toggleFollow'])->name('showcase.toggle-follow');
+    Route::get('/showcase/attachment/{attachment}/download', [ShowcaseController::class, 'downloadAttachment'])->name('showcase.download');
+    Route::post('/showcase/{showcase}/attach-to-thread', [ShowcaseController::class, 'attachToThread'])->name('showcase.attach-to-thread');
 
     // Business routes
     Route::get('/business', [BusinessController::class, 'index'])->name('business.index');
@@ -119,126 +130,9 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/gallery/{media}', [GalleryController::class, 'show'])->name('gallery.show');
 
-// Admin routes
+// Admin routes - Sử dụng file route riêng
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Admin auth routes
-    Route::middleware('guest')->group(function () {
-        Route::get('login', [\App\Http\Controllers\Admin\AuthController::class, 'showLoginForm'])->name('login');
-        Route::post('login', [\App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login.submit');
-    });
-
-    // Admin authenticated routes
-    Route::middleware('admin.auth')->group(function () {
-        Route::post('logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
-        Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-
-        // Profile routes
-        Route::prefix('profile')->name('profile.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Admin\ProfileController::class, 'index'])->name('index');
-            Route::put('/', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('update');
-            Route::get('/password', [\App\Http\Controllers\Admin\ProfileController::class, 'showChangePasswordForm'])->name('password');
-            Route::put('/password', [\App\Http\Controllers\Admin\ProfileController::class, 'changePassword'])->name('password.update');
-        });
-
-        // User management routes
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-        Route::put('users/{user}/toggle-ban', [\App\Http\Controllers\Admin\UserController::class, 'toggleBan'])->name('users.toggle-ban');
-        Route::put('users/{user}/reset-password', [\App\Http\Controllers\Admin\UserController::class, 'resetPassword'])->name('users.reset-password');
-
-        // Thread management routes
-        Route::resource('threads', \App\Http\Controllers\Admin\ThreadController::class);
-        Route::put('threads/{thread}/approve', [\App\Http\Controllers\Admin\ThreadController::class, 'approve'])->name('threads.approve');
-        Route::put('threads/{thread}/reject', [\App\Http\Controllers\Admin\ThreadController::class, 'reject'])->name('threads.reject');
-        Route::get('threads-statistics', [\App\Http\Controllers\Admin\ThreadController::class, 'statistics'])->name('threads.statistics');
-
-        // Category management routes
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-        Route::post('categories/reorder', [\App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('categories.reorder');
-
-        // Forum management routes
-        Route::resource('forums', \App\Http\Controllers\Admin\ForumController::class);
-        Route::post('forums/reorder', [\App\Http\Controllers\Admin\ForumController::class, 'reorder'])->name('forums.reorder');
-
-        // Comment management routes
-        Route::resource('comments', \App\Http\Controllers\Admin\CommentController::class);
-        Route::put('comments/{comment}/toggle-visibility', [\App\Http\Controllers\Admin\CommentController::class, 'toggleVisibility'])->name('comments.toggle-visibility');
-        Route::put('comments/{comment}/toggle-flag', [\App\Http\Controllers\Admin\CommentController::class, 'toggleFlag'])->name('comments.toggle-flag');
-        Route::get('comments-statistics', [\App\Http\Controllers\Admin\CommentController::class, 'statistics'])->name('comments.statistics');
-
-        // Statistics routes
-        Route::prefix('statistics')->name('statistics.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Admin\StatisticsController::class, 'index'])->name('index');
-            Route::get('/users', [\App\Http\Controllers\Admin\StatisticsController::class, 'users'])->name('users');
-            Route::get('/content', [\App\Http\Controllers\Admin\StatisticsController::class, 'content'])->name('content');
-            Route::get('/interactions', [\App\Http\Controllers\Admin\StatisticsController::class, 'interactions'])->name('interactions');
-            Route::match(['get', 'post'], '/export', [\App\Http\Controllers\Admin\StatisticsController::class, 'export'])->name('export');
-        });
-
-        // Page management routes
-        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
-        Route::resource('page-categories', \App\Http\Controllers\Admin\PageCategoryController::class);
-        Route::post('page-categories/reorder', [\App\Http\Controllers\Admin\PageCategoryController::class, 'reorder'])->name('page-categories.reorder');
-
-        // FAQ management routes
-        Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class);
-        Route::put('faqs/{faq}/toggle-status', [\App\Http\Controllers\Admin\FaqController::class, 'toggleStatus'])->name('faqs.toggle-status');
-        Route::resource('faq-categories', \App\Http\Controllers\Admin\FaqCategoryController::class);
-        Route::put('faq-categories/{faq_category}/toggle-status', [\App\Http\Controllers\Admin\FaqCategoryController::class, 'toggleStatus'])->name('faq-categories.toggle-status');
-        Route::post('faq-categories/reorder', [\App\Http\Controllers\Admin\FaqCategoryController::class, 'reorder'])->name('faq-categories.reorder');
-
-        // Media management routes
-        Route::resource('media', \App\Http\Controllers\Admin\MediaController::class);
-        Route::get('media/{media}/download', [\App\Http\Controllers\Admin\MediaController::class, 'download'])->name('media.download');
-        Route::get('media-library', [\App\Http\Controllers\Admin\MediaController::class, 'library'])->name('media.library');
-
-        // SEO routes
-        Route::prefix('seo')->name('seo.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Admin\SeoController::class, 'index'])->name('index');
-            Route::put('/', [\App\Http\Controllers\Admin\SeoController::class, 'updateGeneral'])->name('update-general');
-
-            Route::get('/robots', [\App\Http\Controllers\Admin\SeoController::class, 'robots'])->name('robots');
-            Route::put('/robots', [\App\Http\Controllers\Admin\SeoController::class, 'updateRobots'])->name('update-robots');
-
-            Route::get('/sitemap', [\App\Http\Controllers\Admin\SeoController::class, 'sitemap'])->name('sitemap');
-            Route::post('/sitemap', [\App\Http\Controllers\Admin\SeoController::class, 'generateSitemap'])->name('generate-sitemap');
-            Route::delete('/sitemap', [\App\Http\Controllers\Admin\SeoController::class, 'deleteSitemap'])->name('delete-sitemap');
-
-            Route::get('/social', [\App\Http\Controllers\Admin\SeoController::class, 'social'])->name('social');
-            Route::put('/social', [\App\Http\Controllers\Admin\SeoController::class, 'updateSocial'])->name('update-social');
-
-            Route::get('/advanced', [\App\Http\Controllers\Admin\SeoController::class, 'advanced'])->name('advanced');
-            Route::put('/advanced', [\App\Http\Controllers\Admin\SeoController::class, 'updateAdvanced'])->name('update-advanced');
-        });
-
-        // Page SEO routes
-        Route::resource('page-seo', \App\Http\Controllers\Admin\PageSeoController::class);
-
-        // Settings routes
-        Route::prefix('settings')->name('settings.')->group(function () {
-            Route::get('/general', [\App\Http\Controllers\Admin\SettingsController::class, 'general'])->name('general');
-            Route::put('/general', [\App\Http\Controllers\Admin\SettingsController::class, 'updateGeneral'])->name('update-general');
-
-            Route::get('/company', [\App\Http\Controllers\Admin\SettingsController::class, 'company'])->name('company');
-            Route::put('/company', [\App\Http\Controllers\Admin\SettingsController::class, 'updateCompany'])->name('update-company');
-
-            Route::get('/contact', [\App\Http\Controllers\Admin\SettingsController::class, 'contact'])->name('contact');
-            Route::put('/contact', [\App\Http\Controllers\Admin\SettingsController::class, 'updateContact'])->name('update-contact');
-
-            Route::get('/social', [\App\Http\Controllers\Admin\SettingsController::class, 'social'])->name('social');
-            Route::put('/social', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSocial'])->name('update-social');
-
-            Route::get('/api', [\App\Http\Controllers\Admin\SettingsController::class, 'api'])->name('api');
-            Route::put('/api', [\App\Http\Controllers\Admin\SettingsController::class, 'updateApi'])->name('update-api');
-
-            Route::get('/copyright', [\App\Http\Controllers\Admin\SettingsController::class, 'copyright'])->name('copyright');
-            Route::put('/copyright', [\App\Http\Controllers\Admin\SettingsController::class, 'updateCopyright'])->name('update-copyright');
-        });
-
-        // Showcase management routes
-        Route::resource('showcases', \App\Http\Controllers\Admin\ShowcaseController::class)->except(['edit', 'update', 'show']);
-
-        // Thêm các route admin khác ở đây
-    });
+    require base_path('routes/admin.php');
 });
 
 // Social Login Routes

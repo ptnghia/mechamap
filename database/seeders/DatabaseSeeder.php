@@ -23,14 +23,49 @@ class DatabaseSeeder extends Seeder
 
         // Đảm bảo chạy theo thứ tự đúng
         $this->call([
-            AdminUserSeeder::class,
-            CategorySeeder::class,
-            ForumSeeder::class,
-            ThreadSeeder::class,
-            TagSeeder::class,
-            SeoSettingSeeder::class,
-            PageSeoSeeder::class,
-            SettingSeeder::class,
+            // Core seeders - Chạy đầu tiên
+            RolesAndPermissionsSeeder::class, // Phân quyền trước
+            AdminUserSeeder::class, // Admin users
+
+            // Structure seeders
+            CategorySeeder::class, // Forum categories
+            ForumSeeder::class, // Forums
+            TagSeeder::class, // Tags for threads
+            PageCategorySeeder::class, // Page categories
+            FaqCategorySeeder::class, // FAQ categories
+
+            // User seeders
+            UserSeeder::class, // Create diverse users với mechanical expertise
+
+            // Content seeders - Depends on users and structure
+            ThreadSeeder::class, // Forum threads
+            PostSeeder::class, // Thread replies
+            CommentSeeder::class, // Comments on threads/posts/showcases
+
+            // Showcase seeders
+            ShowcaseSeeder::class, // CAD designs and projects
+            ShowcaseCommentSeeder::class, // Showcase comments
+            ShowcaseLikeSeeder::class, // Showcase likes
+            ShowcaseFollowSeeder::class, // Showcase follows
+
+            // Interaction seeders
+            BookmarkSeeder::class, // User bookmarks
+            ReactionSeeder::class, // Likes, loves, etc.
+            PollSeeder::class, // Polls in threads
+            AlertSeeder::class, // User notifications
+            ReportSeeder::class, // Content reports
+
+            // Media seeders
+            MediaSeeder::class, // Images and files
+
+            // Page content seeders
+            PageSeeder::class, // Static pages with mechanical content
+            FaqSeeder::class, // FAQ about automation
+
+            // Settings - Keep existing (giữ nguyên theo yêu cầu)
+            SeoSettingSeeder::class, // SEO settings (giữ nguyên)
+            PageSeoSeeder::class, // Page SEO (giữ nguyên)
+            SettingSeeder::class, // Site settings (giữ nguyên)
         ]);
     }
 }

@@ -11,66 +11,57 @@
     </div>
     <div class="list-group list-group-flush" id="latest-threads">
         @foreach($latestThreads as $thread)
-            <div class="list-group-item thread-item">
-                <div class="d-flex">
-                    <div class="flex-shrink-0 me-3 d-none d-sm-block">
-                        <img src="{{ get_avatar_url($thread->user) }}" alt="{{ $thread->user->name }}" class="avatar avatar-md">
+        <div class="list-group-item thread-item">
+            <div class="d-flex">
+                <div class="flex-shrink-0 me-3 d-none d-sm-block">
+                    <img src="{{ get_avatar_url($thread->user) }}" alt="{{ $thread->user->name }}"
+                        class="avatar avatar-md">
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="thread-title">
+                            <a href="{{ route('threads.show', $thread) }}">{{ $thread->title }}</a>
+                            @if($thread->is_sticky)
+                            <span class="badge bg-primary ms-1">Sticky</span>
+                            @endif
+                            @if($thread->is_locked)
+                            <span class="badge bg-danger ms-1">Locked</span>
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
                     </div>
-                    <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="thread-title">
-                                <a href="{{ route('threads.show', $thread) }}">{{ $thread->title }}</a>
-                                @if($thread->is_sticky)
-                                    <span class="badge bg-primary ms-1">Sticky</span>
-                                @endif
-                                @if($thread->is_locked)
-                                    <span class="badge bg-danger ms-1">Locked</span>
-                                @endif
-                            </div>
-                            <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
-                        </div>
 
-                        <!-- Project Details -->
-                        @if($thread->location || $thread->usage || $thread->floors || $thread->status)
-                        <div class="project-details mb-2 small">
-                            @if($thread->location)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->location }}</span>
-                            @endif
-
-                            @if($thread->usage)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->usage }}</span>
-                            @endif
-
-                            @if($thread->floors)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->floors }} tầng</span>
-                            @endif
-
-                            @if($thread->status)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->status }}</span>
-                            @endif
-                        </div>
+                    <!-- Project Details -->
+                    @if($thread->status)
+                    <div class="project-details mb-2 small">
+                        @if($thread->status)
+                        <span class="badge bg-light text-dark me-2">{{ $thread->status }}</span>
                         @endif
+                    </div>
+                    @endif
 
-                        <div class="d-flex justify-content-between align-items-center mt-2 thread-meta">
-                            <div>
-                                <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
-                                <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }} lượt xem</span>
-                                <span><i class="bi bi-chat"></i> {{ $thread->allComments->count() }} phản hồi</span>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mt-2 thread-meta">
+                        <div>
+                            <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
+                            <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }} lượt xem</span>
+                            <span><i class="bi bi-chat"></i> {{ $thread->allComments->count() }} phản hồi</span>
+                        </div>
 
-                            <div>
-                                @if($thread->category)
-                                    <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}" class="badge bg-secondary text-decoration-none">{{ $thread->category->name }}</a>
-                                @endif
+                        <div>
+                            @if($thread->category)
+                            <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
+                                class="badge bg-secondary text-decoration-none">{{ $thread->category->name }}</a>
+                            @endif
 
-                                @if($thread->forum)
-                                    <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}" class="badge bg-info text-decoration-none">{{ $thread->forum->name }}</a>
-                                @endif
-                            </div>
+                            @if($thread->forum)
+                            <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
+                                class="badge bg-info text-decoration-none">{{ $thread->forum->name }}</a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         @endforeach
     </div>
     <div class="card-footer text-center">
@@ -86,31 +77,30 @@
     <div class="card-body p-0">
         <div class="row g-0">
             @foreach($featuredThreads as $thread)
-                <div class="col-md-6 p-3 border-bottom {{ $loop->iteration % 2 == 0 ? 'border-start' : '' }}">
-                    <div class="featured-project">
-                        <a href="{{ route('threads.show', $thread) }}" class="mb-2 d-block">
-                            @php
-                                $imagePath = $thread->media && $thread->media->first() ? 'storage/' . $thread->media->first()->path : null;
-                            @endphp
-                            <img src="{{ get_image_url($imagePath) }}" alt="{{ $thread->title }}" class="featured-project-image">
-                        </a>
-                        <h5 class="featured-project-title"><a href="{{ route('threads.show', $thread) }}">{{ $thread->title }}</a></h5>
-                        <div class="project-details mb-2 small">
-                            @if($thread->location)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->location }}</span>
-                            @endif
-
-                            @if($thread->status)
-                                <span class="badge bg-light text-dark me-2">{{ $thread->status }}</span>
-                            @endif
-                        </div>
-                        <p class="text-muted small mb-2">{{ Str::limit(strip_tags($thread->content), 80) }}</p>
-                        <div class="thread-meta">
-                            <i class="bi bi-person"></i> {{ $thread->user->name }} ·
-                            <i class="bi bi-calendar"></i> {{ $thread->created_at->format('d/m/Y') }}
-                        </div>
+            <div class="col-md-6 p-3 border-bottom {{ $loop->iteration % 2 == 0 ? 'border-start' : '' }}">
+                <div class="featured-project">
+                    <a href="{{ route('threads.show', $thread) }}" class="mb-2 d-block">
+                        @php
+                        $imagePath = $thread->media && $thread->media->first() ? 'storage/' .
+                        $thread->media->first()->path : null;
+                        @endphp
+                        <img src="{{ get_image_url($imagePath) }}" alt="{{ $thread->title }}"
+                            class="featured-project-image">
+                    </a>
+                    <h5 class="featured-project-title"><a href="{{ route('threads.show', $thread) }}">{{ $thread->title
+                            }}</a></h5>
+                    <div class="project-details mb-2 small">
+                        @if($thread->status)
+                        <span class="badge bg-light text-dark me-2">{{ $thread->status }}</span>
+                        @endif
+                    </div>
+                    <p class="text-muted small mb-2">{{ Str::limit(strip_tags($thread->content), 80) }}</p>
+                    <div class="thread-meta">
+                        <i class="bi bi-person"></i> {{ $thread->user->name }} ·
+                        <i class="bi bi-calendar"></i> {{ $thread->created_at->format('d/m/Y') }}
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
     </div>
@@ -158,25 +148,6 @@
         const createdAt = new Date(thread.created_at);
         const timeAgo = timeSince(createdAt);
 
-        // Create badges HTML
-        let badgesHtml = '';
-        if (thread.location || thread.usage || thread.floors || thread.status) {
-            badgesHtml = '<div class="project-details mb-2 small">';
-            if (thread.location) {
-                badgesHtml += `<span class="badge bg-light text-dark me-2">${thread.location}</span>`;
-            }
-            if (thread.usage) {
-                badgesHtml += `<span class="badge bg-light text-dark me-2">${thread.usage}</span>`;
-            }
-            if (thread.floors) {
-                badgesHtml += `<span class="badge bg-light text-dark me-2">${thread.floors} tầng</span>`;
-            }
-            if (thread.status) {
-                badgesHtml += `<span class="badge bg-light text-dark me-2">${thread.status}</span>`;
-            }
-            badgesHtml += '</div>';
-        }
-
         // Create category and forum badges
         let categoryForumBadges = '<div>';
         if (thread.category) {
@@ -203,8 +174,6 @@
                         </div>
                         <small class="text-muted">${timeAgo}</small>
                     </div>
-
-                    ${badgesHtml}
 
                     <div class="d-flex justify-content-between align-items-center mt-2 thread-meta">
                         <div>

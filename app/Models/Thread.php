@@ -40,11 +40,7 @@ class Thread extends Model
         'is_locked',
         'is_featured',
         'view_count',
-        'location',
-        'usage',
-        'floors',
         'status',
-        'participant_count',
     ];
 
     /**
@@ -223,11 +219,20 @@ class Thread extends Model
     }
 
     /**
-     * Get the showcase for this thread.
+     * Get the showcase for this thread (polymorphic relationship).
      */
     public function showcase(): MorphOne
     {
         return $this->morphOne(Showcase::class, 'showcaseable');
+    }
+
+    /**
+     * Get the showcases attached to this thread (many-to-many relationship).
+     */
+    public function showcases(): BelongsToMany
+    {
+        return $this->belongsToMany(Showcase::class, 'thread_showcase')
+            ->withTimestamps();
     }
 
     /**
