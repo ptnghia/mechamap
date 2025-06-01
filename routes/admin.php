@@ -17,6 +17,9 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ShowcaseController;
+use App\Http\Controllers\Admin\AlertController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\SearchController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -168,7 +171,74 @@ Route::middleware('admin.auth')->group(function () {
     });
 
     // Showcase management routes (admin và moderator có quyền)
-    Route::resource('showcases', ShowcaseController::class);
-    Route::put('showcases/{showcase}/toggle-featured', [ShowcaseController::class, 'toggleFeatured'])->name('showcases.toggle-featured');
-    Route::put('showcases/{showcase}/toggle-status', [ShowcaseController::class, 'toggleStatus'])->name('showcases.toggle-status');
+    Route::prefix('showcases')->name('showcases.')->group(function () {
+        Route::get('/', [ShowcaseController::class, 'index'])->name('index');
+        Route::get('/create', [ShowcaseController::class, 'create'])->name('create');
+        Route::post('/', [ShowcaseController::class, 'store'])->name('store');
+        Route::get('/{id}', [ShowcaseController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [ShowcaseController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ShowcaseController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ShowcaseController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/toggle-featured', [ShowcaseController::class, 'toggleFeatured'])->name('toggle-featured');
+        Route::post('/{id}/toggle-active', [ShowcaseController::class, 'toggleActive'])->name('toggle-active');
+        Route::post('/update-order', [ShowcaseController::class, 'updateOrder'])->name('update-order');
+        Route::post('/bulk-action', [ShowcaseController::class, 'bulkAction'])->name('bulk-action');
+    });
+
+    // Search management routes (chỉ admin có quyền manage_system)
+    Route::middleware(['admin.auth'])->prefix('search')->name('search.')->group(function () {
+        Route::get('/', [SearchController::class, 'index'])->name('index');
+        Route::put('/settings', [SearchController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/reindex', [SearchController::class, 'reindex'])->name('reindex');
+        Route::post('/reindex', [SearchController::class, 'performReindex'])->name('reindex.perform');
+        Route::get('/statistics', [SearchController::class, 'statistics'])->name('statistics');
+        Route::get('/test', [SearchController::class, 'test'])->name('test');
+        Route::post('/test', [SearchController::class, 'performTest'])->name('test.perform');
+        Route::post('/optimize', [SearchController::class, 'optimizeIndex'])->name('optimize');
+        Route::post('/clear-cache', [SearchController::class, 'clearCache'])->name('clear-cache');
+        Route::get('/export-statistics', [SearchController::class, 'exportStatistics'])->name('export-statistics');
+        Route::post('/rebuild-suggestions', [SearchController::class, 'rebuildSuggestions'])->name('rebuild-suggestions');
+    });
+
+    // Alerts management routes (chỉ admin có quyền manage_system)
+    Route::middleware(['admin.auth'])->prefix('alerts')->name('alerts.')->group(function () {
+        Route::get('/', [AlertController::class, 'index'])->name('index');
+        Route::put('/settings', [AlertController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/test', [AlertController::class, 'testAlert'])->name('test');
+        Route::post('/test', [AlertController::class, 'sendTestAlert'])->name('test.send');
+        Route::get('/statistics', [AlertController::class, 'statistics'])->name('statistics');
+        Route::post('/cleanup', [AlertController::class, 'cleanupOldAlerts'])->name('cleanup');
+        Route::get('/export-statistics', [AlertController::class, 'exportStatistics'])->name('export-statistics');
+    });
+
+    // Messages management routes (chỉ admin có quyền manage_system)
+    Route::middleware(['admin.auth'])->prefix('messages')->name('messages.')->group(function () {
+        Route::get('/', [MessageController::class, 'index'])->name('index');
+        Route::put('/settings', [MessageController::class, 'updateSettings'])->name('settings.update');
+        Route::get('/conversations', [MessageController::class, 'conversations'])->name('conversations');
+        Route::get('/conversations/{id}', [MessageController::class, 'showConversation'])->name('conversations.show');
+        Route::delete('/conversations/{id}', [MessageController::class, 'deleteConversation'])->name('conversations.destroy');
+        Route::get('/statistics', [MessageController::class, 'statistics'])->name('statistics');
+        Route::post('/cleanup', [MessageController::class, 'cleanup'])->name('cleanup');
+        Route::get('/export-statistics', [MessageController::class, 'exportStatistics'])->name('export-statistics');
+    });
+
+    // SEO management routes (chỉ admin có quyền manage_system)
+    Route::middleware(['admin.auth'])->prefix('seo')->name('seo.')->group(function () {
+        Route::get('/', [SeoController::class, 'index'])->name('index');
+        Route::put('/general', [SeoController::class, 'updateGeneral'])->name('general.update');
+        Route::get('/robots', [SeoController::class, 'robots'])->name('robots');
+        Route::put('/robots', [SeoController::class, 'updateRobots'])->name('robots.update');
+        Route::get('/sitemap', [SeoController::class, 'sitemap'])->name('sitemap');
+        Route::post('/sitemap/generate', [SeoController::class, 'generateSitemap'])->name('sitemap.generate');
+        Route::delete('/sitemap', [SeoController::class, 'deleteSitemap'])->name('sitemap.delete');
+        Route::get('/social', [SeoController::class, 'social'])->name('social');
+        Route::put('/social', [SeoController::class, 'updateSocial'])->name('social.update');
+        Route::get('/advanced', [SeoController::class, 'advanced'])->name('advanced');
+        Route::put('/advanced', [SeoController::class, 'updateAdvanced'])->name('advanced.update');
+        Route::get('/analytics', [SeoController::class, 'analytics'])->name('analytics');
+        Route::get('/audit', [SeoController::class, 'audit'])->name('audit');
+        Route::post('/submit-sitemap', [SeoController::class, 'submitSitemap'])->name('submit-sitemap');
+        Route::post('/check-indexing', [SeoController::class, 'checkIndexing'])->name('check-indexing');
+    });
 });
