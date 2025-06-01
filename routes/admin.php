@@ -45,6 +45,7 @@ Route::middleware('admin.auth')->group(function () {
     Route::middleware(['admin.auth'])->prefix('users')->name('users.')->group(function () {
         // Trang chủ quản lý thành viên
         Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
 
         // Quản lý thành viên quản trị (Admin và Moderator)
         Route::get('/admins', [UserController::class, 'admins'])->name('admins');
@@ -130,15 +131,7 @@ Route::middleware('admin.auth')->group(function () {
     Route::get('media/{media}/download', [MediaController::class, 'download'])->name('media.download');
     Route::get('media-library', [MediaController::class, 'library'])->name('media.library');
 
-    // SEO management routes (chỉ admin có quyền manage_system)
-    Route::middleware(['admin.auth'])->prefix('seo')->name('seo.')->group(function () {
-        Route::get('/', [SeoController::class, 'index'])->name('index');
-        Route::put('/', [SeoController::class, 'updateGeneral'])->name('update-general');
-        Route::get('/robots', [SeoController::class, 'robots'])->name('robots');
-        Route::put('/robots', [SeoController::class, 'updateRobots'])->name('update-robots');
-        Route::get('/sitemap', [SeoController::class, 'sitemap'])->name('sitemap');
-        Route::post('/sitemap', [SeoController::class, 'generateSitemap'])->name('generate-sitemap');
-    });
+    // SEO management routes được định nghĩa ở cuối file
 
     // Note: Showcase routes được định nghĩa bằng resource route ở dưới
 
