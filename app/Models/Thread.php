@@ -178,6 +178,38 @@ class Thread extends Model
     }
 
     /**
+     * Lấy featured image của thread.
+     */
+    public function getFeaturedImageAttribute(): ?string
+    {
+        // Prioritize: Tìm media đầu tiên từ polymorphic attachments
+        $featuredMedia = $this->attachments()
+            ->where('file_type', 'like', 'image/%')
+            ->first();
+
+        if (!$featuredMedia) {
+            // Fallback: Tìm media đầu tiên từ direct relationship
+            $featuredMedia = $this->media()
+                ->where('file_type', 'like', 'image/%')
+                ->first();
+        }
+
+        if ($featuredMedia) {
+            $filePath = $featuredMedia->file_path;
+
+            // Nếu là URL đầy đủ (http/https), return trực tiếp
+            if (filter_var($filePath, FILTER_VALIDATE_URL)) {
+                return $filePath;
+            }
+
+            // Nếu là relative path, tạo asset URL
+            return asset('storage/' . $filePath);
+        }
+
+        return null;
+    }
+
+    /**
      * Get the poll associated with the thread.
      */
     public function poll(): HasMany

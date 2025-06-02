@@ -81,11 +81,14 @@ class HomeController extends Controller
         $page = $request->input('page', 1);
         $perPage = 10;
 
-        $threads = Thread::with(['user', 'category', 'forum'])
+        // Tính toán offset: Page 1 = skip 10 (vì trang chủ đã show 10 đầu), Page 2 = skip 20, etc.
+        $skipAmount = ($page - 1) * $perPage + 10;
+
+        $threads = Thread::with(['user', 'category', 'forum', 'media'])
             ->withCount('allComments as comments_count')
             ->latest()
-            ->skip(($page - 1) * $perPage)
-            ->take($perPage + 1) // Take one extra to check if there are more
+            ->skip($skipAmount)
+            ->take($perPage + 1) // Lấy thêm 1 để check có còn nữa không
             ->get();
 
         $hasMore = $threads->count() > $perPage;
@@ -94,9 +97,30 @@ class HomeController extends Controller
             $threads = $threads->take($perPage);
         }
 
+        // Xử lý dữ liệu trước khi trả về
+        $threads->transform(function ($thread) {
+            // Đảm bảo user có avatar URL
+            if ($thread->user) {
+                // Sử dụng helper function có sẵn
+                $thread->user->profile_photo_url = get_avatar_url($thread->user);
+            }
+
+            // Đảm bảo featured_image được load đúng từ relationship
+            $thread->featured_image = $thread->getFeaturedImageAttribute();
+
+            // Làm sạch content để hiển thị preview
+            if ($thread->content) {
+                $thread->content = strip_tags($thread->content);
+            }
+
+            return $thread;
+        });
+
         return response()->json([
             'threads' => $threads,
-            'has_more' => $hasMore
+            'has_more' => $hasMore,
+            'current_page' => $page,
+            'total_loaded' => $skipAmount + $threads->count()
         ]);
     }
 }

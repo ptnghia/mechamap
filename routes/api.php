@@ -26,9 +26,39 @@ Route::get('/cors-test', function (Request $request) {
 
 // API version 1
 Route::prefix('v1')->group(function () {
+    // Test CORS for v1 API
+    Route::get('/cors-test', function (Request $request) {
+        return response()->json([
+            'success' => true,
+            'message' => 'CORS test successful',
+            'origin' => $request->header('Origin'),
+            'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000')),
+        ]);
+    });
+
     // Public routes
     Route::get('/settings', [App\Http\Controllers\Api\SettingsController::class, 'index']);
     Route::get('/settings/{group}', [App\Http\Controllers\Api\SettingsController::class, 'getByGroup']);
+
+    // API Monitoring & Health Check routes
+    Route::prefix('monitoring')->group(function () {
+        Route::get('/health', [App\Http\Controllers\Api\ApiMonitoringController::class, 'healthCheck']);
+        Route::get('/dashboard', [App\Http\Controllers\Api\ApiMonitoringController::class, 'dashboard']);
+        Route::get('/endpoint-metrics', [App\Http\Controllers\Api\ApiMonitoringController::class, 'endpointMetrics']);
+        Route::get('/recent-errors', [App\Http\Controllers\Api\ApiMonitoringController::class, 'recentErrors']);
+        Route::get('/export-metrics', [App\Http\Controllers\Api\ApiMonitoringController::class, 'exportMetrics']);
+        Route::post('/refresh-cache', [App\Http\Controllers\Api\ApiMonitoringController::class, 'refreshCache']);
+    });
+
+    // API Documentation routes
+    Route::prefix('docs')->group(function () {
+        Route::get('/', [App\Http\Controllers\Api\ApiDocumentationController::class, 'swaggerUi']);
+        Route::get('/explorer', [App\Http\Controllers\Api\ApiDocumentationController::class, 'apiExplorer']);
+        Route::get('/markdown', [App\Http\Controllers\Api\ApiDocumentationController::class, 'markdownDocs']);
+        Route::get('/openapi.json', [App\Http\Controllers\Api\ApiDocumentationController::class, 'openApiSpec']);
+        Route::get('/endpoints', [App\Http\Controllers\Api\ApiDocumentationController::class, 'endpointsList']);
+        Route::post('/validate-schema', [App\Http\Controllers\Api\ApiDocumentationController::class, 'validateSchema']);
+    });
     Route::get('/seo', [App\Http\Controllers\Api\SeoController::class, 'index']);
     Route::get('/seo/{group}', [App\Http\Controllers\Api\SeoController::class, 'getByGroup']);
     Route::get('/page-seo/{routeName}', [App\Http\Controllers\Api\SeoController::class, 'getPageSeoByRoute']);
