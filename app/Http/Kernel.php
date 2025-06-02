@@ -35,7 +35,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+            \App\Http\Middleware\ApiRateLimit::class,
+            \App\Http\Middleware\StandardizeApiResponse::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -62,5 +63,7 @@ class Kernel extends HttpKernel
         'admin.permission' => \App\Http\Middleware\AdminPermissionCheck::class,
         'seo' => \App\Http\Middleware\ApplySeoSettings::class,
         'verified.or.social' => \App\Http\Middleware\EnsureEmailIsVerifiedOrSocialLogin::class,
+        'api.rate.limit' => \App\Http\Middleware\ApiRateLimit::class,
+        'api.standardize' => \App\Http\Middleware\StandardizeApiResponse::class,
     ];
 }
