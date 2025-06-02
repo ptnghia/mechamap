@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ApiRateLimit
 {
@@ -94,7 +95,7 @@ class ApiRateLimit
     /**
      * Tạo response khi quá rate limit
      */
-    protected function buildTooManyAttemptsResponse(string $key, int $maxAttempts): Response
+    protected function buildTooManyAttemptsResponse(string $key, int $maxAttempts): JsonResponse
     {
         $retryAfter = RateLimiter::availableIn($key);
 
