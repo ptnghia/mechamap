@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SearchController extends Controller
@@ -978,7 +979,7 @@ class SearchController extends Controller
                     return [
                         'id' => $thread->id,
                         'title' => $thread->title,
-                        'excerpt' => \Str::limit(strip_tags($thread->content), 150),
+                        'excerpt' => Str::limit(strip_tags($thread->content), 150),
                         'author' => $thread->user->name ?? 'Unknown',
                         'category' => $thread->category->name ?? 'Uncategorized',
                         'created_at' => $thread->created_at->diffForHumans(),
@@ -998,7 +999,7 @@ class SearchController extends Controller
                 $results['comments'] = $comments->map(function ($comment) {
                     return [
                         'id' => $comment->id,
-                        'content' => \Str::limit(strip_tags($comment->content), 150),
+                        'content' => Str::limit(strip_tags($comment->content), 150),
                         'author' => $comment->user->name ?? 'Unknown',
                         'thread_title' => $comment->thread->title ?? 'Unknown Thread',
                         'created_at' => $comment->created_at->diffForHumans(),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Controller phục vụ Swagger UI để hiển thị API documentation
@@ -56,7 +57,7 @@ class ApiDocumentationController extends Controller
      */
     public function endpointsList()
     {
-        $routes = \Route::getRoutes();
+        $routes = Route::getRoutes();
         $apiRoutes = [];
 
         foreach ($routes as $route) {
