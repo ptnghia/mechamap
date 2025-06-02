@@ -51,4 +51,23 @@ class Media extends Model
     {
         return $this->belongsTo(Thread::class);
     }
+
+    /**
+     * Get the URL for the media file.
+     */
+    public function getUrlAttribute(): string
+    {
+        if ($this->file_path) {
+            // Nếu là URL đầy đủ thì trả về luôn
+            if (filter_var($this->file_path, FILTER_VALIDATE_URL)) {
+                return $this->file_path;
+            }
+
+            // Nếu là đường dẫn local thì tạo URL từ storage
+            return asset('storage/' . $this->file_path);
+        }
+
+        // Fallback về placeholder image
+        return 'https://via.placeholder.com/800x600?text=No+Image';
+    }
 }

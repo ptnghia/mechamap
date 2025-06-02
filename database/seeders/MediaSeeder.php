@@ -8,6 +8,8 @@ use App\Models\Thread;
 use App\Models\Post;
 use App\Models\Showcase;
 use App\Models\Comment;
+use App\Models\Category;
+use App\Models\Forum;
 use Illuminate\Database\Seeder;
 
 class MediaSeeder extends Seeder
@@ -22,6 +24,8 @@ class MediaSeeder extends Seeder
         $posts = Post::all();
         $showcases = Showcase::all();
         $comments = Comment::all();
+        $categories = Category::all();
+        $forums = Forum::all();
 
         // Hình ảnh liên quan đến cơ khí và tự động hóa từ internet
         $mechanicalImages = [
@@ -161,21 +165,28 @@ class MediaSeeder extends Seeder
             ]
         ];
 
-        // Tạo media cho threads
+        // Tạo media cho threads - đảm bảo TẤT CẢ threads có 1-3 ảnh
         if ($threads->count() > 0) {
-            foreach ($threads->take(15) as $index => $thread) {
-                $imageData = $mechanicalImages[$index % count($mechanicalImages)];
-                Media::create([
-                    'user_id' => $thread->user_id,
-                    'file_name' => $imageData['file_name'],
-                    'file_path' => $imageData['file_path'],
-                    'file_type' => $imageData['file_type'],
-                    'file_size' => rand(500000, 2000000), // 500KB - 2MB
-                    'title' => $imageData['title'],
-                    'description' => $imageData['description'],
-                    'mediable_id' => $thread->id,
-                    'mediable_type' => Thread::class,
-                ]);
+            foreach ($threads as $thread) {
+                $numImages = rand(1, 3); // Mỗi thread có 1-3 ảnh
+
+                for ($i = 0; $i < $numImages; $i++) {
+                    $imageIndex = ($thread->id + $i) % count($mechanicalImages);
+                    $imageData = $mechanicalImages[$imageIndex];
+
+                    Media::create([
+                        'user_id' => $thread->user_id,
+                        'file_name' => ($i === 0 ? '[Featured] ' : '') . 'thread_' . $thread->id . '_' . ($i + 1) . '_' . $imageData['file_name'],
+                        'file_path' => $imageData['file_path'],
+                        'file_type' => $imageData['file_type'],
+                        'file_size' => rand(500000, 2000000), // 500KB - 2MB
+                        'title' => ($i === 0 ? '[Featured] ' : '') . $imageData['title'],
+                        'description' => $imageData['description'] . ($i === 0 ? ' (Ảnh đại diện)' : ''),
+                        'mediable_id' => $thread->id,
+                        'mediable_type' => Thread::class,
+                        'thread_id' => $thread->id, // Để compatibility với existing structure
+                    ]);
+                }
             }
         }
 
@@ -197,21 +208,27 @@ class MediaSeeder extends Seeder
             }
         }
 
-        // Tạo media cho showcases
+        // Tạo media cho showcases - đảm bảo TẤT CẢ showcases có 1-3 ảnh
         if ($showcases->count() > 0) {
-            foreach ($showcases->take(10) as $index => $showcase) {
-                $imageData = $mechanicalImages[$index % count($mechanicalImages)];
-                Media::create([
-                    'user_id' => $showcase->user_id,
-                    'file_name' => 'showcase_' . $imageData['file_name'],
-                    'file_path' => $imageData['file_path'],
-                    'file_type' => $imageData['file_type'],
-                    'file_size' => rand(800000, 3000000), // 800KB - 3MB
-                    'title' => 'Showcase: ' . $imageData['title'],
-                    'description' => $imageData['description'],
-                    'mediable_id' => $showcase->id,
-                    'mediable_type' => Showcase::class,
-                ]);
+            foreach ($showcases as $showcase) {
+                $numImages = rand(1, 3); // Mỗi showcase có 1-3 ảnh
+
+                for ($i = 0; $i < $numImages; $i++) {
+                    $imageIndex = ($showcase->id + $i + 10) % count($mechanicalImages);
+                    $imageData = $mechanicalImages[$imageIndex];
+
+                    Media::create([
+                        'user_id' => $showcase->user_id,
+                        'file_name' => ($i === 0 ? '[Featured] ' : '') . 'showcase_' . $showcase->id . '_' . ($i + 1) . '_' . $imageData['file_name'],
+                        'file_path' => $imageData['file_path'],
+                        'file_type' => $imageData['file_type'],
+                        'file_size' => rand(800000, 3000000), // 800KB - 3MB
+                        'title' => 'Showcase: ' . $imageData['title'],
+                        'description' => $imageData['description'] . ($i === 0 ? ' (Ảnh đại diện showcase)' : ''),
+                        'mediable_id' => $showcase->id,
+                        'mediable_type' => Showcase::class,
+                    ]);
+                }
             }
         }
 
@@ -246,6 +263,46 @@ class MediaSeeder extends Seeder
                 'mediable_id' => null,
                 'mediable_type' => null,
             ]);
+        }
+
+        // Tạo representative images cho categories
+        if ($categories->count() > 0) {
+            foreach ($categories as $category) {
+                $imageIndex = ($category->id + 5) % count($mechanicalImages);
+                $imageData = $mechanicalImages[$imageIndex];
+
+                Media::create([
+                    'user_id' => $users->random()->id,
+                    'file_name' => 'category_' . $category->id . '_' . $imageData['file_name'],
+                    'file_path' => $imageData['file_path'],
+                    'file_type' => $imageData['file_type'],
+                    'file_size' => rand(400000, 1500000), // 400KB - 1.5MB
+                    'title' => 'Category: ' . $category->name . ' - ' . $imageData['title'],
+                    'description' => 'Ảnh đại diện cho danh mục ' . $category->name . '. ' . $imageData['description'],
+                    'mediable_id' => $category->id,
+                    'mediable_type' => Category::class,
+                ]);
+            }
+        }
+
+        // Tạo representative images cho forums
+        if ($forums->count() > 0) {
+            foreach ($forums as $forum) {
+                $imageIndex = ($forum->id + 15) % count($mechanicalImages);
+                $imageData = $mechanicalImages[$imageIndex];
+
+                Media::create([
+                    'user_id' => $users->random()->id,
+                    'file_name' => 'forum_' . $forum->id . '_' . $imageData['file_name'],
+                    'file_path' => $imageData['file_path'],
+                    'file_type' => $imageData['file_type'],
+                    'file_size' => rand(400000, 1500000), // 400KB - 1.5MB
+                    'title' => 'Forum: ' . $forum->name . ' - ' . $imageData['title'],
+                    'description' => 'Ảnh đại diện cho diễn đàn ' . $forum->name . '. ' . $imageData['description'],
+                    'mediable_id' => $forum->id,
+                    'mediable_type' => Forum::class,
+                ]);
+            }
         }
     }
 }

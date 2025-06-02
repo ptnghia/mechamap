@@ -398,4 +398,92 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Thread::class, 'thread_follows')
             ->withTimestamps();
     }
+
+    /**
+     * Lấy màu badge theo role
+     *
+     * @return string
+     */
+    public function getRoleColor(): string
+    {
+        return match ($this->role) {
+            'admin' => 'danger',
+            'moderator' => 'warning',
+            'senior' => 'info',
+            'member' => 'primary',
+            'guest' => 'secondary',
+            default => 'secondary'
+        };
+    }
+
+    /**
+     * Lấy tên hiển thị của role
+     *
+     * @return string
+     */
+    public function getRoleDisplayName(): string
+    {
+        return match ($this->role) {
+            'admin' => 'Admin',
+            'moderator' => 'Moderator',
+            'senior' => 'Senior Member',
+            'member' => 'Member',
+            'guest' => 'Guest',
+            default => 'Unknown'
+        };
+    }
+
+    /**
+     * Kiểm tra có permission không (tương thích với Spatie)
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission($permission): bool
+    {
+        // Admin có tất cả quyền
+        if ($this->role === 'admin') {
+            return true;
+        }
+
+        // Kiểm tra qua Spatie Permission nếu có cài đặt
+        if (method_exists($this, 'hasPermissionTo')) {
+            return $this->hasPermissionTo($permission);
+        }
+
+        // Fallback: Moderator có một số quyền cơ bản
+        if ($this->role === 'moderator') {
+            $moderatorPermissions = [
+                'view_dashboard',
+                'view_reports',
+                'manage_users',
+                'ban_users',
+                'view_user_details',
+                'manage_posts',
+                'moderate_content',
+                'manage_comments',
+                'manage_categories',
+                'send_notifications'
+            ];
+            return in_array($permission, $moderatorPermissions);
+        }
+
+        return false;
+    }
+
+    /**
+     * Lấy tất cả permissions (tương thích với Spatie)
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllPermissions()
+    {
+        // Nếu có Spatie Permission
+        if (method_exists($this, 'getPermissionsViaRoles')) {
+            return $this->getPermissionsViaRoles();
+        }
+
+        // Fallback: Trả về collection rỗng hoặc permissions mặc định
+        return collect([]);
+    }
 }

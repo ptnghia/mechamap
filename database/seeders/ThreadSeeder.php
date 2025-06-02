@@ -51,11 +51,6 @@ class ThreadSeeder extends Seeder
             $newsCategory = $categories->first();
         }
 
-        $newsForum = Forum::where('name', 'News & Announcements')->first();
-        if (!$newsForum) {
-            $newsForum = $forums->first();
-        }
-
         $newsTitles = [
             "Tin tức: Robot ABB mới ra mắt tại triển lãm Công nghiệp 2024",
             "Tin tức: Công nghệ AI được tích hợp vào hệ thống sản xuất thông minh",
@@ -87,7 +82,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $newsCategory->id,
-                'forum_id' => $newsForum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'is_sticky' => $faker->boolean(20),
                 'is_locked' => $faker->boolean(10),
                 'is_featured' => $faker->boolean(30),
@@ -110,22 +105,6 @@ class ThreadSeeder extends Seeder
         $projectCategory = Category::where('slug', 'du-an')->first();
         if (!$projectCategory) {
             $projectCategory = $categories->first();
-        }
-
-        $projectForums = [];
-        $hardware = Forum::where('name', 'Hardware')->first();
-        $software = Forum::where('name', 'Software')->first();
-
-        if ($hardware) {
-            $projectForums[] = $hardware;
-        }
-
-        if ($software) {
-            $projectForums[] = $software;
-        }
-
-        if (empty($projectForums)) {
-            $projectForums = [$forums->first()];
         }
 
         $statuses = ['Đề xuất', 'Đã phê duyệt', 'Đang xây dựng', 'Hoàn thành', 'Tạm dừng', 'Đã hủy'];
@@ -170,7 +149,6 @@ class ThreadSeeder extends Seeder
             $title = $projectTitles[$i];
             $content = $projectContents[$i];
             $user = $users->random();
-            $forum = $faker->randomElement($projectForums);
 
             $thread = Thread::create([
                 'title' => $title,
@@ -178,7 +156,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $projectCategory->id,
-                'forum_id' => $forum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'status' => $faker->randomElement($statuses),
                 'is_sticky' => $faker->boolean(20),
                 'is_locked' => $faker->boolean(10),
@@ -212,22 +190,6 @@ class ThreadSeeder extends Seeder
             $architectureCategory = $categories->first();
         }
 
-        $architectureForums = [];
-        $events = Forum::where('name', 'Events')->first();
-        $feedback = Forum::where('name', 'Feedback')->first();
-
-        if ($events) {
-            $architectureForums[] = $events;
-        }
-
-        if ($feedback) {
-            $architectureForums[] = $feedback;
-        }
-
-        if (empty($architectureForums)) {
-            $architectureForums = [$forums->first()];
-        }
-
         // Nội dung kiến trúc mẫu về nhà máy và cơ sở hạ tầng công nghiệp
         $architectureTitles = [
             "Kiến trúc: Thiết kế nhà máy sản xuất linh kiện điện tử hiện đại",
@@ -253,7 +215,6 @@ class ThreadSeeder extends Seeder
             $title = $architectureTitles[$i];
             $content = $architectureContents[$i];
             $user = $users->random();
-            $forum = $faker->randomElement($architectureForums);
 
             $thread = Thread::create([
                 'title' => $title,
@@ -261,7 +222,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $architectureCategory->id,
-                'forum_id' => $forum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'is_sticky' => $faker->boolean(20),
                 'is_locked' => $faker->boolean(10),
                 'is_featured' => $faker->boolean(30),
@@ -287,22 +248,6 @@ class ThreadSeeder extends Seeder
         $urbanPlanningCategory = Category::where('slug', 'quy-hoach-do-thi')->first();
         if (!$urbanPlanningCategory) {
             $urbanPlanningCategory = $categories->first();
-        }
-
-        $urbanPlanningForums = [];
-        $programming = Forum::where('name', 'Programming')->first();
-        $mobile = Forum::where('name', 'Mobile')->first();
-
-        if ($programming) {
-            $urbanPlanningForums[] = $programming;
-        }
-
-        if ($mobile) {
-            $urbanPlanningForums[] = $mobile;
-        }
-
-        if (empty($urbanPlanningForums)) {
-            $urbanPlanningForums = [$forums->first()];
         }
 
         // Nội dung quy hoạch mẫu về khu công nghiệp và cơ sở hạ tầng
@@ -332,7 +277,6 @@ class ThreadSeeder extends Seeder
             $title = $urbanPlanningTitles[$i];
             $content = $urbanPlanningContents[$i];
             $user = $users->random();
-            $forum = $faker->randomElement($urbanPlanningForums);
 
             $thread = Thread::create([
                 'title' => $title,
@@ -340,7 +284,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $urbanPlanningCategory->id,
-                'forum_id' => $forum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'is_sticky' => $faker->boolean(20),
                 'is_locked' => $faker->boolean(10),
                 'is_featured' => $faker->boolean(30),
@@ -368,11 +312,6 @@ class ThreadSeeder extends Seeder
         $qaCategory = Category::where('slug', 'hoi-dap')->first();
         if (!$qaCategory) {
             $qaCategory = $categories->first();
-        }
-
-        $qaForum = Forum::where('name', 'Help & Support')->first();
-        if (!$qaForum) {
-            $qaForum = $forums->first();
         }
 
         // Nội dung Q&A mẫu về kỹ thuật cơ khí
@@ -407,7 +346,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $qaCategory->id,
-                'forum_id' => $qaForum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'is_sticky' => $faker->boolean(10),
                 'is_locked' => $faker->boolean(10),
                 'is_featured' => $faker->boolean(10),
@@ -430,11 +369,6 @@ class ThreadSeeder extends Seeder
         $showcaseCategory = Category::where('slug', 'du-an')->first();
         if (!$showcaseCategory) {
             $showcaseCategory = $categories->first();
-        }
-
-        $showcaseForum = Forum::where('name', 'Introductions')->first();
-        if (!$showcaseForum) {
-            $showcaseForum = $forums->first();
         }
 
         $statuses = ['Đề xuất', 'Đã phê duyệt', 'Đang xây dựng', 'Hoàn thành', 'Tạm dừng', 'Đã hủy'];
@@ -471,7 +405,7 @@ class ThreadSeeder extends Seeder
                 'content' => $content,
                 'user_id' => $user->id,
                 'category_id' => $showcaseCategory->id,
-                'forum_id' => $showcaseForum->id,
+                'forum_id' => $forums->random()->id, // Phân phối ngẫu nhiên cho tất cả forums
                 'status' => $faker->randomElement($statuses),
                 'is_sticky' => $faker->boolean(20),
                 'is_locked' => $faker->boolean(10),

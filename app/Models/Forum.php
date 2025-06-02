@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Forum extends Model
 {
@@ -65,5 +66,21 @@ class Forum extends Model
     public function posts(): HasManyThrough
     {
         return $this->hasManyThrough(Post::class, Thread::class);
+    }
+
+    /**
+     * Get all media attached to this forum (polymorphic).
+     */
+    public function media(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'mediable');
+    }
+
+    /**
+     * Get the representative image for this forum.
+     */
+    public function getRepresentativeImageAttribute()
+    {
+        return $this->media()->first();
     }
 }
