@@ -13,8 +13,8 @@ RewriteRule ^(.*)$ public/$1 [L]
 # Protect .git directory
 RedirectMatch 404 /\.git
 
-# Protect storage directory
-RedirectMatch 404 /storage/.*
+# Protect storage directory (commented out for public storage access)
+# RedirectMatch 404 /storage/.*
 
 # Protect vendor directory
 RedirectMatch 404 /vendor/.*

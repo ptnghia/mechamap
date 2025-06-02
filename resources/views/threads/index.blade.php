@@ -184,151 +184,126 @@
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                </div>
 
+                <div class="card-footer">
+                    {{ $threads->links() }}
+                </div>
+                @else
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-search display-4 text-muted"></i>
+                    <p class="mt-3">No threads found matching your criteria.</p>
+                    <a href="{{ route('threads.index') }}" class="btn btn-outline-primary">Clear Filters</a>
+                </div>
+                @endif
+            </div>
+        </div>
 
-                    <p class="mb-1 text-muted">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
-
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <div class="small">
-                            <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
-                            <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }} views</span>
-                            <span class="me-3"><i class="bi bi-chat"></i> {{ $thread->allComments->count() }}
-                                replies</span>
-                            <span><i class="bi bi-people"></i> {{ $thread->participant_count }} participants</span>
-                        </div>
-
-                        <div>
-                            @if($thread->category)
-                            <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
-                                class="badge bg-secondary text-decoration-none">{{ $thread->category->name }}</a>
-                            @endif
-
-                            @if($thread->forum)
-                            <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
-                                class="badge bg-info text-decoration-none">{{ $thread->forum->name }}</a>
-                            @endif
-                        </div>
+        <!-- Sidebar -->
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <!-- Forum Stats -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Forum Stats</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Threads:</span>
+                        <span class="fw-bold">{{ App\Models\Thread::count() }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Comments:</span>
+                        <span class="fw-bold">{{ App\Models\Comment::count() }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Members:</span>
+                        <span class="fw-bold">{{ App\Models\User::count() }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Newest Member:</span>
+                        @php
+                        $newestUser = App\Models\User::latest()->first();
+                        @endphp
+                        <span class="fw-bold">{{ $newestUser ? $newestUser->name : 'N/A' }}</span>
                     </div>
                 </div>
             </div>
-        </div>
-        @endforeach
-    </div>
 
-    <div class="card-footer">
-        {{ $threads->links() }}
-    </div>
-    @else
-    <div class="card-body text-center py-5">
-        <i class="bi bi-search display-4 text-muted"></i>
-        <p class="mt-3">No threads found matching your criteria.</p>
-        <a href="{{ route('threads.index') }}" class="btn btn-outline-primary">Clear Filters</a>
-    </div>
-    @endif
-</div>
-</div>
+            <!-- Top Contributors -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Top Contributors This Month</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @php
+                        $topContributors = App\Models\User::withCount(['threads' => function($query) {
+                        $query->where('created_at', '>=', now()->subMonth());
+                        }, 'comments' => function($query) {
+                        $query->where('created_at', '>=', now()->subMonth());
+                        }])
+                        ->orderByRaw('threads_count + comments_count DESC')
+                        ->take(5)
+                        ->get();
+                        @endphp
 
-<!-- Sidebar -->
-<div class="col-lg-4 mt-4 mt-lg-0">
-    <!-- Forum Stats -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Forum Stats</h5>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-2">
-                <span>Total Threads:</span>
-                <span class="fw-bold">{{ App\Models\Thread::count() }}</span>
+                        @forelse($topContributors as $user)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}"
+                                    class="rounded-circle me-2" width="32" height="32">
+                                <a href="{{ route('profile.show', $user) }}" class="text-decoration-none">{{ $user->name
+                                    }}</a>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ $user->threads_count + $user->comments_count
+                                }}
+                                posts</span>
+                        </li>
+                        @empty
+                        <li class="list-group-item text-center">No contributors yet</li>
+                        @endforelse
+                    </ul>
+                </div>
             </div>
-            <div class="d-flex justify-content-between mb-2">
-                <span>Total Comments:</span>
-                <span class="fw-bold">{{ App\Models\Comment::count() }}</span>
+
+            <!-- Categories -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Categories</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @foreach($categories as $category)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ route('threads.index', ['category' => $category->id]) }}"
+                                class="text-decoration-none">{{ $category->name }}</a>
+                            <span class="badge bg-secondary rounded-pill">{{ $category->threads->count() }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
-            <div class="d-flex justify-content-between mb-2">
-                <span>Total Members:</span>
-                <span class="fw-bold">{{ App\Models\User::count() }}</span>
+
+            <!-- Forums -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Forums</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @foreach($forums as $forum)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ route('threads.index', ['forum' => $forum->id]) }}"
+                                class="text-decoration-none">{{
+                                $forum->name }}</a>
+                            <span class="badge bg-secondary rounded-pill">{{ $forum->threads->count() }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
-            <div class="d-flex justify-content-between">
-                <span>Newest Member:</span>
-                @php
-                $newestUser = App\Models\User::latest()->first();
-                @endphp
-                <span class="fw-bold">{{ $newestUser ? $newestUser->name : 'N/A' }}</span>
-            </div>
         </div>
     </div>
-
-    <!-- Top Contributors -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Top Contributors This Month</h5>
-        </div>
-        <div class="card-body p-0">
-            <ul class="list-group list-group-flush">
-                @php
-                $topContributors = App\Models\User::withCount(['threads' => function($query) {
-                $query->where('created_at', '>=', now()->subMonth());
-                }, 'comments' => function($query) {
-                $query->where('created_at', '>=', now()->subMonth());
-                }])
-                ->orderByRaw('threads_count + comments_count DESC')
-                ->take(5)
-                ->get();
-                @endphp
-
-                @forelse($topContributors as $user)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="rounded-circle me-2"
-                            width="32" height="32">
-                        <a href="{{ route('profile.show', $user) }}" class="text-decoration-none">{{ $user->name }}</a>
-                    </div>
-                    <span class="badge bg-primary rounded-pill">{{ $user->threads_count + $user->comments_count }}
-                        posts</span>
-                </li>
-                @empty
-                <li class="list-group-item text-center">No contributors yet</li>
-                @endforelse
-            </ul>
-        </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Categories</h5>
-        </div>
-        <div class="card-body p-0">
-            <ul class="list-group list-group-flush">
-                @foreach($categories as $category)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ route('threads.index', ['category' => $category->id]) }}"
-                        class="text-decoration-none">{{ $category->name }}</a>
-                    <span class="badge bg-secondary rounded-pill">{{ $category->threads->count() }}</span>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-
-    <!-- Forums -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Forums</h5>
-        </div>
-        <div class="card-body p-0">
-            <ul class="list-group list-group-flush">
-                @foreach($forums as $forum)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{{ route('threads.index', ['forum' => $forum->id]) }}" class="text-decoration-none">{{
-                        $forum->name }}</a>
-                    <span class="badge bg-secondary rounded-pill">{{ $forum->threads->count() }}</span>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-</div>
-</div>
 </div>
 @endsection

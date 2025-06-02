@@ -154,6 +154,17 @@ class Thread extends Model
     }
 
     /**
+     * Get the participant count attribute.
+     */
+    public function getParticipantCountAttribute(): int
+    {
+        return $this->allComments()
+            ->select('user_id')
+            ->distinct()
+            ->count('user_id') + 1; // +1 for the thread author
+    }
+
+    /**
      * Increment the view count.
      */
     public function incrementViewCount(): void

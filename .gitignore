@@ -29,3 +29,19 @@ composer.phar
 # Ignore system files
 .DS_Store
 Thumbs.db
+
+# Ignore temporary scripts and debug files
+check_*.php
+create_*.php
+update_*.php
+final_test.php
+simple_*.php
+test-*.html
+test.txt
+*_temp.php
+*_debug.php
+
+# Ignore temporary shell scripts
+download_*.sh
+download_*.ps1
+verification_*.sh
