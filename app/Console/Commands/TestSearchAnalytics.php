@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Schema;
 use App\Models\SearchLog;
 use App\Models\Thread;
 use App\Models\Post;
@@ -38,7 +39,7 @@ class TestSearchAnalytics extends Command
 
             // 2. Kiểm tra cấu trúc bảng
             $this->info('2. Kiểm tra cấu trúc bảng search_logs...');
-            $columns = \Schema::getColumnListing('search_logs');
+            $columns = Schema::getColumnListing('search_logs');
             $expectedColumns = ['id', 'query', 'user_id', 'ip_address', 'user_agent', 'results_count', 'response_time_ms', 'filters', 'content_type', 'created_at'];
 
             $this->info('   Các cột hiện có: ' . implode(', ', $columns));
