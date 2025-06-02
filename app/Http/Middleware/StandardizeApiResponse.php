@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use App\Services\ApiPerformanceService;
 
 class StandardizeApiResponse
@@ -59,7 +60,7 @@ class StandardizeApiResponse
             $this->performanceService->trackApiPerformance($request, $startTime, $response);
         } catch (\Exception $e) {
             // Log error nhưng không làm gián đoạn response
-            \Log::error('Performance tracking failed: ' . $e->getMessage());
+            Log::error('Performance tracking failed: ' . $e->getMessage());
         }
 
         return $response;
