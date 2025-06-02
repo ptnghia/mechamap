@@ -66,44 +66,43 @@
                             @endif
 
                             <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++)
-                            <li class="page-item">
+                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
                                 <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                </li>
+                                @endfor
 
-                            <!-- Current Page -->
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
+                                <!-- Current Page -->
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
 
-                            <!-- Pages after current -->
-                            @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                <!-- Pages after current -->
+                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
+                                    <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i
+                                        }}</a>
+                                    </li>
+                                    @endfor
 
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
+                                    <!-- Ellipsis for skipped pages -->
+                                    @if($page < $totalPages - 3) <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                        </li>
+                                        @endif
 
-                            <!-- Last Page -->
-                            @if($page < $totalPages - 2)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new.media', ['page' => $totalPages]) }}">{{ $totalPages }}</a>
-                            </li>
-                            @endif
+                                        <!-- Last Page -->
+                                        @if($page < $totalPages - 2) <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ route('whats-new.media', ['page' => $totalPages]) }}">{{
+                                                $totalPages }}</a>
+                                            </li>
+                                            @endif
 
-                            <!-- Next Page -->
-                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                            </li>
+                                            <!-- Next Page -->
+                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                </a>
+                                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -114,25 +113,32 @@
                 @foreach($mediaItems as $media)
                 <div class="col">
                     <div class="card h-100">
-                        <a href="{{ asset('storage/' . $media->file_path) }}" data-lightbox="media-gallery" data-title="{{ $media->title }}">
-                            <img src="{{ asset('storage/' . $media->file_path) }}" class="card-img-top" alt="{{ $media->title }}" style="height: 200px; object-fit: cover;">
+                        <a href="{{ $media->url }}" data-lightbox="media-gallery" data-title="{{ $media->title }}">
+                            <img src="{{ $media->url }}" class="card-img-top" alt="{{ $media->title }}"
+                                style="height: 200px; object-fit: cover;">
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{ $media->title }}</h5>
                             <p class="card-text small text-muted">{{ Str::limit($media->description, 100) }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
-                                    <a href="{{ route('threads.show', $media->thread->slug) }}" class="btn btn-sm btn-outline-primary">View Thread</a>
-                                    <a href="{{ asset('storage/' . $media->file_path) }}" download class="btn btn-sm btn-outline-secondary">Download</a>
+                                    @if($media->thread)
+                                    <a href="{{ route('threads.show', $media->thread->slug) }}"
+                                        class="btn btn-sm btn-outline-primary">View Thread</a>
+                                    @endif
+                                    <a href="{{ $media->url }}" download
+                                        class="btn btn-sm btn-outline-secondary">Download</a>
                                 </div>
                                 <small class="text-muted">{{ $media->created_at->diffForHumans() }}</small>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent">
                             <div class="d-flex align-items-center">
-                                <img src="{{ get_avatar_url($media->user) }}" alt="{{ $media->user->name }}" class="rounded-circle me-2" width="24" height="24">
+                                <img src="{{ get_avatar_url($media->user) }}" alt="{{ $media->user->name }}"
+                                    class="rounded-circle me-2" width="24" height="24">
                                 <small class="text-muted">
-                                    <a href="{{ route('profile.show', $media->user->username) }}" class="text-decoration-none">{{ $media->user->name }}</a>
+                                    <a href="{{ route('profile.show', $media->user->username) }}"
+                                        class="text-decoration-none">{{ $media->user->name }}</a>
                                 </small>
                             </div>
                         </div>
@@ -172,50 +178,50 @@
                             @endif
 
                             <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++)
-                            <li class="page-item">
+                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
                                 <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                </li>
+                                @endfor
 
-                            <!-- Current Page -->
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
+                                <!-- Current Page -->
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
 
-                            <!-- Pages after current -->
-                            @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                <!-- Pages after current -->
+                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
+                                    <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i
+                                        }}</a>
+                                    </li>
+                                    @endfor
 
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
+                                    <!-- Ellipsis for skipped pages -->
+                                    @if($page < $totalPages - 3) <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                        </li>
+                                        @endif
 
-                            <!-- Last Page -->
-                            @if($page < $totalPages - 2)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new.media', ['page' => $totalPages]) }}">{{ $totalPages }}</a>
-                            </li>
-                            @endif
+                                        <!-- Last Page -->
+                                        @if($page < $totalPages - 2) <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ route('whats-new.media', ['page' => $totalPages]) }}">{{
+                                                $totalPages }}</a>
+                                            </li>
+                                            @endif
 
-                            <!-- Next Page -->
-                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                            </li>
+                                            <!-- Next Page -->
+                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                </a>
+                                            </li>
                         </ul>
                     </nav>
 
                     <div class="pagination-goto">
                         <div class="input-group input-group-sm">
-                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}" value="{{ $page }}" placeholder="Page">
+                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
+                                value="{{ $page }}" placeholder="Page">
                             <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
                         </div>
                     </div>
@@ -349,7 +355,8 @@
             gap: 10px;
         }
 
-        .pagination-info, .pagination-goto {
+        .pagination-info,
+        .pagination-goto {
             margin-bottom: 10px;
         }
     }

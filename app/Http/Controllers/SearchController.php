@@ -6,10 +6,13 @@ use App\Models\Thread;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Forum;
+use App\Models\SearchLog;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -18,12 +21,14 @@ class SearchController extends Controller
      */
     public function index(Request $request): View
     {
+        $startTime = microtime(true);
         $query = $request->input('query');
         $type = $request->input('type', 'all');
 
         $threads = collect();
         $posts = collect();
         $users = collect();
+        $totalResults = 0;
 
         if ($query) {
             // Search threads
@@ -53,6 +58,14 @@ class SearchController extends Controller
                     ->take(10)
                     ->get();
             }
+
+            $totalResults = $threads->count() + $posts->count() + $users->count();
+
+            // Log search activity for analytics
+            $this->logSearch($query, $request, $totalResults, $startTime, [
+                'search_type' => $type,
+                'content_type' => 'general'
+            ]);
         }
 
         return view('search.index', compact('query', 'type', 'threads', 'posts', 'users'));
@@ -73,6 +86,8 @@ class SearchController extends Controller
      */
     public function advancedSearch(Request $request): View
     {
+        $startTime = microtime(true);
+
         $request->validate([
             'keywords' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
@@ -164,6 +179,22 @@ class SearchController extends Controller
         $threads = $threadsQuery->with(['user', 'forum'])->paginate(10);
         $posts = $postsQuery->with(['user', 'thread'])->paginate(10);
 
+        $totalResults = $threads->total() + $posts->total();
+
+        // Log advanced search activity for analytics
+        if ($keywords) {
+            $this->logSearch($keywords, $request, $totalResults, $startTime, [
+                'search_type' => 'advanced',
+                'content_type' => 'advanced',
+                'author' => $author,
+                'forum_id' => $forumId,
+                'date_from' => $dateFrom,
+                'date_to' => $dateTo,
+                'sort_by' => $sortBy,
+                'sort_dir' => $sortDir
+            ]);
+        }
+
         $forums = Forum::all();
 
         return view('search.advanced-results', compact(
@@ -185,12 +216,14 @@ class SearchController extends Controller
      */
     public function ajaxSearch(Request $request): JsonResponse
     {
+        $startTime = microtime(true);
         $query = $request->input('query');
         $scope = $request->input('scope', 'site'); // 'thread', 'forum', 'site'
         $threadId = $request->input('thread_id');
         $forumId = $request->input('forum_id');
 
         $results = [];
+        $totalResults = 0;
 
         if (!$query || strlen($query) < 2) {
             return response()->json(['results' => []]);
@@ -226,6 +259,7 @@ class SearchController extends Controller
                     });
 
                 $results['posts'] = $posts;
+                $totalResults = $posts->count();
             }
         } elseif ($scope === 'forum' && $forumId) {
             // Search within a specific forum
@@ -260,6 +294,7 @@ class SearchController extends Controller
                     });
 
                 $results['threads'] = $threads;
+                $totalResults = $threads->count();
             }
         } else {
             // Search across the entire site
@@ -309,11 +344,55 @@ class SearchController extends Controller
 
             $results['threads'] = $threads;
             $results['posts'] = $posts;
+            $totalResults = $threads->count() + $posts->count();
         }
+
+        // Log AJAX search activity for analytics
+        $this->logSearch($query, $request, $totalResults, $startTime, [
+            'search_type' => 'ajax',
+            'content_type' => 'ajax',
+            'scope' => $scope,
+            'thread_id' => $threadId,
+            'forum_id' => $forumId
+        ]);
 
         return response()->json([
             'results' => $results,
             'advanced_search_url' => route('search.advanced')
         ]);
+    }
+
+    /**
+     * Log search activity for analytics.
+     */
+    private function logSearch(
+        string $query,
+        Request $request,
+        int $resultsCount,
+        float $startTime,
+        array $filters = []
+    ): void {
+        try {
+            $responseTime = round((microtime(true) - $startTime) * 1000); // Convert to milliseconds
+
+            SearchLog::create([
+                'query' => $query,
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'results_count' => $resultsCount,
+                'response_time_ms' => $responseTime,
+                'filters' => $filters,
+                'content_type' => $filters['content_type'] ?? 'general',
+                'created_at' => now()
+            ]);
+        } catch (\Exception $e) {
+            // Log error nhưng không ảnh hưởng đến quá trình tìm kiếm chính
+            Log::error('Failed to log search activity: ' . $e->getMessage(), [
+                'query' => $query,
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'results_count' => $resultsCount
+            ]);
+        }
     }
 }

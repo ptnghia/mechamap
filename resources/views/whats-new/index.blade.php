@@ -66,44 +66,42 @@
                             @endif
 
                             <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++)
-                            <li class="page-item">
+                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
                                 <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                </li>
+                                @endfor
 
-                            <!-- Current Page -->
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
+                                <!-- Current Page -->
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
 
-                            <!-- Pages after current -->
-                            @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                <!-- Pages after current -->
+                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
+                                    <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
+                                    </li>
+                                    @endfor
 
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
+                                    <!-- Ellipsis for skipped pages -->
+                                    @if($page < $totalPages - 3) <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                        </li>
+                                        @endif
 
-                            <!-- Last Page -->
-                            @if($page < $totalPages - 2)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new', ['page' => $totalPages]) }}">{{ $totalPages }}</a>
-                            </li>
-                            @endif
+                                        <!-- Last Page -->
+                                        @if($page < $totalPages - 2) <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ route('whats-new', ['page' => $totalPages]) }}">{{ $totalPages
+                                                }}</a>
+                                            </li>
+                                            @endif
 
-                            <!-- Next Page -->
-                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                            </li>
+                                            <!-- Next Page -->
+                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                </a>
+                                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -117,63 +115,92 @@
                 <div class="list-group list-group-flush">
                     @foreach($posts as $post)
                     <div class="list-group-item thread-item">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0 me-3 d-none d-sm-block">
-                                <img src="{{ get_avatar_url($post->user) }}" alt="{{ $post->user->name }}" class="avatar avatar-md">
+                        <div class="row">
+                            <!-- Nội dung chính - responsive columns dựa trên việc có featured_image hay không -->
+                            <div class="{{ $post->thread->featured_image ? 'col-md-9' : 'col-12' }}">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3 d-none d-sm-block">
+                                        <img src="{{ get_avatar_url($post->user) }}" alt="{{ $post->user->name }}"
+                                            class="avatar avatar-md">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="thread-title">
+                                                <a href="{{ route('threads.show', $post->thread->slug) }}">{{
+                                                    $post->thread->title }}</a>
+                                                @if($post->thread->is_sticky)
+                                                <span class="badge bg-primary ms-1">Sticky</span>
+                                                @endif
+                                                @if($post->thread->is_locked)
+                                                <span class="badge bg-danger ms-1">Locked</span>
+                                                @endif
+                                            </div>
+                                            <small class="text-muted d-md-none">{{ $post->created_at->diffForHumans()
+                                                }}</small>
+                                        </div>
+
+                                        <!-- Project Details -->
+                                        @if($post->thread->location || $post->thread->usage || $post->thread->floors ||
+                                        $post->thread->status)
+                                        <div class="project-details mb-2 small">
+                                            @if($post->thread->location)
+                                            <span class="badge bg-light text-dark me-2">{{ $post->thread->location
+                                                }}</span>
+                                            @endif
+
+                                            @if($post->thread->usage)
+                                            <span class="badge bg-light text-dark me-2">{{ $post->thread->usage
+                                                }}</span>
+                                            @endif
+
+                                            @if($post->thread->floors)
+                                            <span class="badge bg-light text-dark me-2">{{ $post->thread->floors }}
+                                                tầng</span>
+                                            @endif @if($post->thread->status)
+                                            <span class="badge bg-light text-dark me-2">{{ $post->thread->status
+                                                }}</span>
+                                            @endif
+                                        </div>
+                                        @endif
+
+                                        <div class="d-flex justify-content-between align-items-center mt-2 thread-meta">
+                                            <div>
+                                                <span class="me-3"><i class="bi bi-person"></i> {{ $post->user->name
+                                                    }}</span>
+                                                <span class="me-3"><i class="bi bi-eye"></i> {{
+                                                    $post->thread->view_count }} lượt xem</span>
+                                                <span><i class="bi bi-chat"></i> {{ $post->thread->comment_count }} phản
+                                                    hồi</span>
+                                            </div>
+
+                                            <div>
+                                                @if($post->thread->category)
+                                                <a href="{{ route('categories.show', $post->thread->category->slug) }}"
+                                                    class="badge bg-secondary text-decoration-none">{{
+                                                    $post->thread->category->name }}</a>
+                                                @endif
+
+                                                @if($post->thread->forum)
+                                                <a href="{{ route('forums.show', $post->thread->forum->slug) }}"
+                                                    class="badge bg-info text-decoration-none">{{
+                                                    $post->thread->forum->name }}</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="thread-title">
-                                        <a href="{{ route('threads.show', $post->thread->slug) }}">{{ $post->thread->title }}</a>
-                                        @if($post->thread->is_sticky)
-                                            <span class="badge bg-primary ms-1">Sticky</span>
-                                        @endif
-                                        @if($post->thread->is_locked)
-                                            <span class="badge bg-danger ms-1">Locked</span>
-                                        @endif
-                                    </div>
-                                    <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
-                                </div>
 
-                                <!-- Project Details -->
-                                @if($post->thread->location || $post->thread->usage || $post->thread->floors || $post->thread->status)
-                                <div class="project-details mb-2 small">
-                                    @if($post->thread->location)
-                                        <span class="badge bg-light text-dark me-2">{{ $post->thread->location }}</span>
-                                    @endif
-
-                                    @if($post->thread->usage)
-                                        <span class="badge bg-light text-dark me-2">{{ $post->thread->usage }}</span>
-                                    @endif
-
-                                    @if($post->thread->floors)
-                                        <span class="badge bg-light text-dark me-2">{{ $post->thread->floors }} tầng</span>
-                                    @endif
-
-                                    @if($post->thread->status)
-                                        <span class="badge bg-light text-dark me-2">{{ $post->thread->status }}</span>
-                                    @endif
-                                </div>
-                                @endif
-
-                                <div class="d-flex justify-content-between align-items-center mt-2 thread-meta">
-                                    <div>
-                                        <span class="me-3"><i class="bi bi-person"></i> {{ $post->user->name }}</span>
-                                        <span class="me-3"><i class="bi bi-eye"></i> {{ $post->thread->view_count }} lượt xem</span>
-                                        <span><i class="bi bi-chat"></i> {{ $post->thread->comment_count }} phản hồi</span>
-                                    </div>
-
-                                    <div>
-                                        @if($post->thread->category)
-                                            <a href="{{ route('categories.show', $post->thread->category->slug) }}" class="badge bg-secondary text-decoration-none">{{ $post->thread->category->name }}</a>
-                                        @endif
-
-                                        @if($post->thread->forum)
-                                            <a href="{{ route('forums.show', $post->thread->forum->slug) }}" class="badge bg-info text-decoration-none">{{ $post->thread->forum->name }}</a>
-                                        @endif
-                                    </div>
+                            <!-- Hình ảnh - chỉ hiển thị khi có featured_image -->
+                            @if($post->thread->featured_image)
+                            <div class="col-md-3 d-none d-md-block">
+                                <div class="thread-image">
+                                    <img src="{{ $post->thread->featured_image }}" alt="{{ $post->thread->title }}"
+                                        class="img-fluid rounded"
+                                        style="max-height: 80px; width: 100%; object-fit: cover;">
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                     @endforeach
@@ -211,50 +238,49 @@
                             @endif
 
                             <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++)
-                            <li class="page-item">
+                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
                                 <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                </li>
+                                @endfor
 
-                            <!-- Current Page -->
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
+                                <!-- Current Page -->
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
 
-                            <!-- Pages after current -->
-                            @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
-                            </li>
-                            @endfor
+                                <!-- Pages after current -->
+                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
+                                    <a class="page-link" href="{{ route('whats-new', ['page' => $i]) }}">{{ $i }}</a>
+                                    </li>
+                                    @endfor
 
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
+                                    <!-- Ellipsis for skipped pages -->
+                                    @if($page < $totalPages - 3) <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                        </li>
+                                        @endif
 
-                            <!-- Last Page -->
-                            @if($page < $totalPages - 2)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new', ['page' => $totalPages]) }}">{{ $totalPages }}</a>
-                            </li>
-                            @endif
+                                        <!-- Last Page -->
+                                        @if($page < $totalPages - 2) <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ route('whats-new', ['page' => $totalPages]) }}">{{ $totalPages
+                                                }}</a>
+                                            </li>
+                                            @endif
 
-                            <!-- Next Page -->
-                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                </a>
-                            </li>
+                                            <!-- Next Page -->
+                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
+                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                </a>
+                                            </li>
                         </ul>
                     </nav>
 
                     <div class="pagination-goto">
                         <div class="input-group input-group-sm">
-                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}" value="{{ $page }}" placeholder="Page">
+                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
+                                value="{{ $page }}" placeholder="Page">
                             <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
                         </div>
                     </div>
@@ -402,7 +428,8 @@
             gap: 10px;
         }
 
-        .pagination-info, .pagination-goto {
+        .pagination-info,
+        .pagination-goto {
             margin-bottom: 10px;
         }
     }
