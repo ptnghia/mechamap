@@ -11,11 +11,11 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     @foreach($breadcrumbs as $breadcrumb)
-                        @if($loop->last)
-                            <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb['title'] }}</li>
-                        @else
-                            <li class="breadcrumb-item"><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['title'] }}</a></li>
-                        @endif
+                    @if($loop->last)
+                    <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb['title'] }}</li>
+                    @else
+                    <li class="breadcrumb-item"><a href="{{ $breadcrumb['url'] }}">{{ $breadcrumb['title'] }}</a></li>
+                    @endif
                     @endforeach
                 </ol>
             </nav>
@@ -28,7 +28,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="h3 mb-0 text-gray-800">Thống kê tương tác</h1>
                 <div>
-                    <a href="{{ route('admin.statistics.export', ['type' => 'interactions']) }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('admin.statistics.export', ['type' => 'interactions']) }}"
+                        class="btn btn-sm btn-primary">
                         <i class="fas fa-download fa-sm mr-1"></i> Xuất báo cáo
                     </a>
                 </div>
@@ -110,9 +111,10 @@
                     </div>
                     <div class="mt-4 text-center small">
                         @foreach($forumInteractions as $forum)
-                            <span class="mr-2">
-                                <i class="fas fa-circle" style="color: {{ randomColor($loop->index) }}"></i> {{ $forum->name }}: {{ $forum->total_interactions }}
-                            </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle" style="color: {{ randomColor($loop->index) }}"></i> {{ $forum->name
+                            }}: {{ $forum->total_interactions }}
+                        </span>
                         @endforeach
                     </div>
                 </div>
@@ -131,7 +133,7 @@
                             <thead>
                                 <tr>
                                     <th>Người dùng</th>
-                                    <th>Lượt xem</th>
+                                    <th>Số bài viết</th>
                                     <th>Lượt thích</th>
                                     <th>Lượt bình luận</th>
                                     <th>Tổng tương tác</th>
@@ -145,7 +147,7 @@
                                             {{ $user->name }}
                                         </a>
                                     </td>
-                                    <td>{{ $user->views_count }}</td>
+                                    <td>{{ $user->posts_count }}</td>
                                     <td>{{ $user->likes_count }}</td>
                                     <td>{{ $user->comments_count }}</td>
                                     <td>{{ $user->total_interactions }}</td>
@@ -213,13 +215,11 @@
     // Biểu đồ lượt xem
     var viewsCtx = document.getElementById("viewsChart");
     var viewsData = @json($viewsStats);
-    var viewsLabels = viewsData.map(item => getMonthName(item.month) + ' ' + item.year);
-    var viewsValues = viewsData.map(item => item.total);
-    
+
     var viewsChart = new Chart(viewsCtx, {
         type: 'line',
         data: {
-            labels: viewsLabels,
+            labels: viewsData.labels,
             datasets: [{
                 label: "Lượt xem",
                 lineTension: 0.3,
@@ -233,7 +233,7 @@
                 pointHoverBorderColor: "rgba(78, 115, 223, 1)",
                 pointHitRadius: 10,
                 pointBorderWidth: 2,
-                data: viewsValues,
+                data: viewsData.data,
             }],
         },
         options: {
@@ -247,50 +247,49 @@
                 }
             },
             scales: {
-                xAxes: [{
-                    time: {
-                        unit: 'date'
-                    },
-                    gridLines: {
+                x: {
+                    grid: {
                         display: false,
                         drawBorder: false
                     },
                     ticks: {
                         maxTicksLimit: 7
                     }
-                }],
-                yAxes: [{
+                },
+                y: {
+                    beginAtZero: true,
                     ticks: {
                         maxTicksLimit: 5,
-                        padding: 10,
-                        beginAtZero: true
+                        padding: 10
                     },
-                    gridLines: {
+                    grid: {
                         color: "rgb(234, 236, 244)",
-                        zeroLineColor: "rgb(234, 236, 244)",
                         drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
+                        borderDash: [2]
                     }
-                }],
+                }
             },
-            legend: {
-                display: false
-            },
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: 14,
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                intersect: false,
-                mode: 'index',
-                caretPadding: 10,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleColor: '#6e707e',
+                    titleFont: {
+                        size: 14
+                    },
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10
+                }
             }
         }
     });

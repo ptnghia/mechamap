@@ -58,10 +58,30 @@
             <span>Quản lý người dùng</span>
         </h6>
         <ul class="nav flex-column mb-2">
+            <!-- Quản trị viên -->
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('admin.users.admins*') ? 'active' : '' }}"
+                    href="{{ route('admin.users.admins') }}">
+                    <i class="bi bi-shield-check text-primary"></i>
+                    <span class="text-primary font-weight-bold">Quản trị viên</span>
+                </a>
+            </li>
+
+            <!-- Thành viên thường -->
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.users.members*') ? 'active' : '' }}"
+                    href="{{ route('admin.users.members') }}">
+                    <i class="bi bi-people text-success"></i>
+                    <span class="text-success">Thành viên</span>
+                </a>
+            </li>
+
+            <!-- Tổng quan tất cả -->
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
                     href="{{ route('admin.users.index') }}">
-                    <i class="bi bi-people"></i> Người dùng
+                    <i class="bi bi-list-ul text-info"></i>
+                    <span class="text-muted">Tổng quan</span>
                 </a>
             </li>
         </ul>

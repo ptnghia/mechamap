@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\Thread;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\SearchLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -196,70 +197,121 @@ class SearchController extends Controller
                     ->count(),
             ];
 
-            // Thống kê về search patterns và performance
-            $searchStats = [
-                'most_searched_content_types' => [
-                    ['type' => 'Bài viết (Threads)', 'percentage' => 65],
-                    ['type' => 'Bình luận (Comments)', 'percentage' => 25],
-                    ['type' => 'Người dùng (Users)', 'percentage' => 10],
-                ],
-                'search_efficiency' => [
-                    'average_results_per_search' => 15.7,
-                    'zero_results_percentage' => 8.3,
-                    'popular_search_length' => '3-5 từ',
-                    'peak_search_hours' => '14:00 - 16:00',
-                ],
-            ];
+            // Nếu search analytics được bật và có dữ liệu search logs
+            if ($searchAnalyticsEnabled && SearchLog::exists()) {
+                // Thống kê về search patterns từ dữ liệu thực
+                $totalSearches = SearchLog::count();
+                $searchesWithResults = SearchLog::withResults()->count();
+                $searchesWithoutResults = SearchLog::withoutResults()->count();
 
-            // Các từ khóa được tìm kiếm nhiều nhất (dữ liệu mẫu)
-            $popularSearchTerms = [
-                ['term' => 'Laravel tutorial', 'count' => 156, 'trend' => 'up'],
-                ['term' => 'PHP development', 'count' => 143, 'trend' => 'stable'],
-                ['term' => 'JavaScript frameworks', 'count' => 127, 'trend' => 'up'],
-                ['term' => 'Database design', 'count' => 98, 'trend' => 'down'],
-                ['term' => 'API development', 'count' => 89, 'trend' => 'up'],
-                ['term' => 'React components', 'count' => 76, 'trend' => 'stable'],
-                ['term' => 'Vue.js setup', 'count' => 65, 'trend' => 'up'],
-                ['term' => 'Node.js server', 'count' => 54, 'trend' => 'stable'],
-                ['term' => 'MySQL optimization', 'count' => 43, 'trend' => 'down'],
-                ['term' => 'Docker deployment', 'count' => 38, 'trend' => 'up'],
-            ];
+                // Phân bố theo loại nội dung từ dữ liệu thực
+                $contentTypeStats = SearchLog::selectRaw('content_type, COUNT(*) as count')
+                    ->groupBy('content_type')
+                    ->get()
+                    ->pluck('count', 'content_type')
+                    ->toArray();
 
-            // Thống kê theo thời gian (dữ liệu mẫu)
-            $timeBasedStats = [
-                'daily_searches' => [
-                    'today' => 245,
-                    'yesterday' => 198,
-                    'this_week' => 1456,
-                    'last_week' => 1298,
-                    'this_month' => 5670,
-                    'last_month' => 5234,
-                ],
-                'hourly_distribution' => [
-                    '00-06' => 5,
-                    '06-12' => 25,
-                    '12-18' => 45,
-                    '18-24' => 25,
-                ],
-                'weekly_trend' => [
-                    'Monday' => 18,
-                    'Tuesday' => 22,
-                    'Wednesday' => 20,
-                    'Thursday' => 16,
-                    'Friday' => 14,
-                    'Saturday' => 6,
-                    'Sunday' => 4,
-                ],
-            ];
+                $totalContentSearches = array_sum($contentTypeStats);
+                $searchStats = [
+                    'most_searched_content_types' => $totalContentSearches > 0 ? [
+                        ['type' => 'Bài viết (Threads)', 'percentage' => round(($contentTypeStats['threads'] ?? 0) / $totalContentSearches * 100, 1)],
+                        ['type' => 'Bình luận (Comments)', 'percentage' => round(($contentTypeStats['comments'] ?? 0) / $totalContentSearches * 100, 1)],
+                        ['type' => 'Người dùng (Users)', 'percentage' => round(($contentTypeStats['users'] ?? 0) / $totalContentSearches * 100, 1)],
+                    ] : [],
+                    'search_efficiency' => [
+                        'average_results_per_search' => $totalSearches > 0 ? round(SearchLog::avg('results_count'), 1) : 0,
+                        'zero_results_percentage' => $totalSearches > 0 ? round($searchesWithoutResults / $totalSearches * 100, 1) : 0,
+                        'total_searches' => $totalSearches,
+                        'successful_searches' => $searchesWithResults,
+                    ],
+                ];
 
-            // Thống kê hiệu suất search
-            $performanceStats = [
-                'average_response_time' => '120ms',
-                'cache_hit_rate' => '78%',
-                'index_size' => '45MB',
-                'last_optimization' => Setting::getValue('search', 'last_optimization_date', 'Chưa có dữ liệu'),
-                'optimization_needed' => $this->checkOptimizationNeeded(),
-            ];
+                // Từ khóa được tìm kiếm nhiều nhất từ dữ liệu thực
+                $popularSearchTerms = SearchLog::selectRaw('query, COUNT(*) as count')
+                    ->groupBy('query')
+                    ->orderByDesc('count')
+                    ->limit(10)
+                    ->get()
+                    ->map(function ($item) {
+                        return [
+                            'term' => $item->query,
+                            'count' => $item->count,
+                            'trend' => 'stable' // Có thể tính trend bằng cách so sánh với tuần trước
+                        ];
+                    })
+                    ->toArray();
+
+                // Thống kê theo thời gian từ dữ liệu thực
+                $todaySearches = SearchLog::whereDate('created_at', today())->count();
+                $yesterdaySearches = SearchLog::whereDate('created_at', today()->subDay())->count();
+                $thisWeekSearches = SearchLog::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
+                $lastWeekSearches = SearchLog::whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])->count();
+                $thisMonthSearches = SearchLog::whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year)->count();
+                $lastMonthSearches = SearchLog::whereMonth('created_at', now()->subMonth()->month)
+                    ->whereYear('created_at', now()->subMonth()->year)->count();
+
+                $timeBasedStats = [
+                    'daily_searches' => [
+                        'today' => $todaySearches,
+                        'yesterday' => $yesterdaySearches,
+                        'this_week' => $thisWeekSearches,
+                        'last_week' => $lastWeekSearches,
+                        'this_month' => $thisMonthSearches,
+                        'last_month' => $lastMonthSearches,
+                    ],
+                    'hourly_distribution' => $this->getHourlyDistribution(),
+                    'weekly_trend' => $this->getWeeklyTrend(),
+                ];
+
+                // Thống kê hiệu suất search từ dữ liệu thực
+                $avgResponseTime = SearchLog::avg('response_time_ms');
+                $performanceStats = [
+                    'average_response_time' => $avgResponseTime ? round($avgResponseTime) . 'ms' : 'Chưa có dữ liệu',
+                    'cache_hit_rate' => 'Chưa được theo dõi', // Cần implement cache tracking
+                    'index_size' => 'Đang tính toán...', // Cần implement index size calculation
+                    'last_optimization' => Setting::getValue('search', 'last_optimization_date', 'Chưa có dữ liệu'),
+                    'optimization_needed' => $this->checkOptimizationNeeded(),
+                ];
+            } else {
+                // Sử dụng dữ liệu mẫu nếu analytics chưa được bật hoặc chưa có dữ liệu
+                $searchStats = [
+                    'most_searched_content_types' => [
+                        ['type' => 'Bài viết (Threads)', 'percentage' => 0],
+                        ['type' => 'Bình luận (Comments)', 'percentage' => 0],
+                        ['type' => 'Người dùng (Users)', 'percentage' => 0],
+                    ],
+                    'search_efficiency' => [
+                        'average_results_per_search' => 0,
+                        'zero_results_percentage' => 0,
+                        'total_searches' => 0,
+                        'successful_searches' => 0,
+                    ],
+                ];
+
+                $popularSearchTerms = [];
+
+                $timeBasedStats = [
+                    'daily_searches' => [
+                        'today' => 0,
+                        'yesterday' => 0,
+                        'this_week' => 0,
+                        'last_week' => 0,
+                        'this_month' => 0,
+                        'last_month' => 0,
+                    ],
+                    'hourly_distribution' => [],
+                    'weekly_trend' => [],
+                ];
+
+                $performanceStats = [
+                    'average_response_time' => 'Chưa có dữ liệu',
+                    'cache_hit_rate' => 'Chưa có dữ liệu',
+                    'index_size' => 'Chưa có dữ liệu',
+                    'last_optimization' => Setting::getValue('search', 'last_optimization_date', 'Chưa có dữ liệu'),
+                    'optimization_needed' => $this->checkOptimizationNeeded(),
+                ];
+            }
 
             $breadcrumbs = [
                 ['title' => 'Cấu hình search', 'url' => route('admin.search.index')],
@@ -280,6 +332,72 @@ class SearchController extends Controller
 
             return back()->with('error', 'Có lỗi xảy ra khi tải thống kê search.');
         }
+    }
+
+    /**
+     * Lấy phân bố tìm kiếm theo giờ trong ngày
+     */
+    private function getHourlyDistribution(): array
+    {
+        $hourlyData = SearchLog::selectRaw('HOUR(created_at) as hour, COUNT(*) as count')
+            ->whereDate('created_at', '>=', now()->subDays(7))
+            ->groupBy('hour')
+            ->get()
+            ->pluck('count', 'hour')
+            ->toArray();
+
+        $distribution = [];
+        $ranges = [
+            '00-06' => range(0, 5),
+            '06-12' => range(6, 11),
+            '12-18' => range(12, 17),
+            '18-24' => range(18, 23),
+        ];
+
+        $totalSearches = array_sum($hourlyData) ?: 1;
+
+        foreach ($ranges as $range => $hours) {
+            $rangeCount = 0;
+            foreach ($hours as $hour) {
+                $rangeCount += $hourlyData[$hour] ?? 0;
+            }
+            $distribution[$range] = round($rangeCount / $totalSearches * 100, 1);
+        }
+
+        return $distribution;
+    }
+
+    /**
+     * Lấy xu hướng tìm kiếm theo ngày trong tuần
+     */
+    private function getWeeklyTrend(): array
+    {
+        $weeklyData = SearchLog::selectRaw('DAYNAME(created_at) as day_name, COUNT(*) as count')
+            ->whereDate('created_at', '>=', now()->subDays(7))
+            ->groupBy('day_name')
+            ->get()
+            ->pluck('count', 'day_name')
+            ->toArray();
+
+        $daysMap = [
+            'Monday' => 'Monday',
+            'Tuesday' => 'Tuesday',
+            'Wednesday' => 'Wednesday',
+            'Thursday' => 'Thursday',
+            'Friday' => 'Friday',
+            'Saturday' => 'Saturday',
+            'Sunday' => 'Sunday',
+        ];
+
+        $totalSearches = array_sum($weeklyData) ?: 1;
+        $trend = [];
+
+        foreach ($daysMap as $en => $vi) {
+            $count = $weeklyData[$en] ?? 0;
+            $trend[$vi] = round($count / $totalSearches * 100, 1);
+        }
+
+        return $trend;
     }
 
     /**
@@ -558,6 +676,382 @@ class SearchController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to rebuild search suggestions: ' . $e->getMessage());
             return back()->with('error', 'Có lỗi xảy ra khi rebuild search suggestions: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Hiển thị trang thống kê tìm kiếm
+     */
+    public function analytics(): View
+    {
+        try {
+            // Thống kê cơ bản (dữ liệu giả lập cho demo)
+            $stats = [
+                'total_searches' => 1250,
+                'searches_growth' => 15,
+                'unique_queries' => 485,
+                'avg_query_length' => 12,
+                'avg_results' => 8,
+                'zero_results_rate' => 18,
+                'top_response_time' => 120
+            ];
+
+            // Top từ khóa tìm kiếm
+            $topQueries = [
+                ['query' => 'máy cắt plasma', 'count' => 125, 'results_avg' => 12],
+                ['query' => 'cnc milling', 'count' => 98, 'results_avg' => 8],
+                ['query' => 'gia công cơ khí', 'count' => 87, 'results_avg' => 15],
+                ['query' => 'thiết kế 3d', 'count' => 76, 'results_avg' => 6],
+                ['query' => 'máy tiện', 'count' => 65, 'results_avg' => 11]
+            ];
+
+            // Từ khóa không có kết quả
+            $failedQueries = [
+                ['query' => 'máy in 3d kim loại', 'count' => 15],
+                ['query' => 'robot hàn tự động', 'count' => 12],
+                ['query' => 'cnc 5 trục', 'count' => 9],
+                ['query' => 'gia công EDM', 'count' => 7],
+                ['query' => 'laser cutting titanium', 'count' => 5]
+            ];
+
+            // Tìm kiếm gần đây
+            $recentSearches = [
+                [
+                    'created_at' => '2024-01-15 10:30:25',
+                    'query' => 'máy phay CNC',
+                    'user' => 'Nguyễn Văn A',
+                    'results_count' => 12,
+                    'response_time' => 85,
+                    'ip_address' => '192.168.1.100'
+                ],
+                [
+                    'created_at' => '2024-01-15 10:28:15',
+                    'query' => 'thiết kế khuôn mẫu',
+                    'user' => null,
+                    'results_count' => 0,
+                    'response_time' => 45,
+                    'ip_address' => '192.168.1.101'
+                ]
+            ];
+
+            $breadcrumbs = [
+                ['title' => 'Cấu hình search', 'url' => route('admin.search.index')],
+                ['title' => 'Thống kê tìm kiếm', 'url' => route('admin.search.analytics')]
+            ];
+
+            return view('admin.search.analytics', compact(
+                'stats',
+                'topQueries',
+                'failedQueries',
+                'recentSearches',
+                'breadcrumbs'
+            ));
+        } catch (\Exception $e) {
+            Log::error('Failed to load search analytics: ' . $e->getMessage());
+
+            // Dữ liệu mặc định khi có lỗi
+            $stats = [
+                'total_searches' => 0,
+                'searches_growth' => 0,
+                'unique_queries' => 0,
+                'avg_query_length' => 0,
+                'avg_results' => 0,
+                'zero_results_rate' => 0,
+                'top_response_time' => 0
+            ];
+
+            $topQueries = [];
+            $failedQueries = [];
+            $recentSearches = [];
+
+            $breadcrumbs = [
+                ['title' => 'Cấu hình search', 'url' => route('admin.search.index')],
+                ['title' => 'Thống kê tìm kiếm', 'url' => route('admin.search.analytics')]
+            ];
+
+            return view('admin.search.analytics', compact(
+                'stats',
+                'topQueries',
+                'failedQueries',
+                'recentSearches',
+                'breadcrumbs'
+            ))->with('error', 'Có lỗi xảy ra khi tải thống kê tìm kiếm: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * API để lấy dữ liệu biểu đồ thống kê
+     */
+    public function analyticsApi(Request $request)
+    {
+        try {
+            $days = $request->get('days', 7);
+
+            // Dữ liệu trends giả lập theo số ngày
+            $labels = [];
+            $data = [];
+
+            for ($i = $days; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                $labels[] = $date->format('d/m');
+                $data[] = rand(20, 80); // Dữ liệu giả lập
+            }
+
+            return response()->json([
+                'trends' => [
+                    'labels' => $labels,
+                    'data' => $data
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to load analytics API: ' . $e->getMessage());
+            return response()->json(['error' => 'Có lỗi xảy ra'], 500);
+        }
+    }
+
+    /**
+     * API để lấy các tìm kiếm gần đây
+     */
+    public function analyticsRecent()
+    {
+        try {
+            // Dữ liệu tìm kiếm gần đây giả lập
+            $searches = [
+                [
+                    'created_at' => now()->subMinutes(5)->format('d/m/Y H:i'),
+                    'query' => 'máy cắt laser',
+                    'user' => 'Trần Thị B',
+                    'results_count' => 8,
+                    'response_time' => 65,
+                    'ip_address' => '192.168.1.102'
+                ],
+                [
+                    'created_at' => now()->subMinutes(8)->format('d/m/Y H:i'),
+                    'query' => 'công nghệ gia công',
+                    'user' => null,
+                    'results_count' => 15,
+                    'response_time' => 92,
+                    'ip_address' => '192.168.1.103'
+                ]
+            ];
+
+            return response()->json(['searches' => $searches]);
+        } catch (\Exception $e) {
+            Log::error('Failed to load recent searches: ' . $e->getMessage());
+            return response()->json(['error' => 'Có lỗi xảy ra'], 500);
+        }
+    }
+
+    /**
+     * Xuất báo cáo thống kê tìm kiếm
+     */
+    public function analyticsExport(Request $request)
+    {
+        try {
+            $days = $request->get('days', 7);
+
+            // Tạo dữ liệu CSV
+            $filename = 'search_analytics_' . now()->format('Y_m_d_H_i_s') . '.csv';
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            ];
+
+            $callback = function () use ($days) {
+                $file = fopen('php://output', 'w');
+
+                // UTF-8 BOM để Excel hiển thị đúng tiếng Việt
+                fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+                // Header
+                fputcsv($file, [
+                    'Ngày',
+                    'Từ khóa tìm kiếm',
+                    'Số lần tìm',
+                    'Số kết quả TB',
+                    'Thời gian phản hồi (ms)'
+                ]);
+
+                // Dữ liệu giả lập
+                for ($i = $days; $i >= 0; $i--) {
+                    $date = now()->subDays($i)->format('d/m/Y');
+                    fputcsv($file, [
+                        $date,
+                        'máy cắt plasma',
+                        rand(10, 50),
+                        rand(5, 20),
+                        rand(50, 150)
+                    ]);
+                }
+
+                fclose($file);
+            };
+
+            Log::info('Search analytics exported', [
+                'admin' => Auth::user()->email,
+                'days' => $days
+            ]);
+
+            return response()->stream($callback, 200, $headers);
+        } catch (\Exception $e) {
+            Log::error('Failed to export search analytics: ' . $e->getMessage());
+            return back()->with('error', 'Có lỗi xảy ra khi xuất báo cáo: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Ghi log tìm kiếm (sử dụng trong frontend search)
+     */
+    public function logSearch(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'query' => 'required|string|max:255',
+            'results_count' => 'required|integer|min:0',
+            'response_time_ms' => 'required|integer|min:0',
+            'content_type' => 'nullable|string|in:threads,comments,users',
+            'filters' => 'nullable|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid data'], 400);
+        }
+
+        try {
+            // Chỉ ghi log nếu search analytics được bật
+            $searchAnalyticsEnabled = Setting::getValue('search', 'enable_search_analytics', false);
+
+            if ($searchAnalyticsEnabled) {
+                SearchLog::create([
+                    'query' => $request->input('query'),
+                    'user_id' => Auth::check() ? Auth::id() : null,
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'results_count' => $request->input('results_count'),
+                    'response_time_ms' => $request->input('response_time_ms'),
+                    'filters' => $request->input('filters'),
+                    'content_type' => $request->input('content_type'),
+                    'created_at' => now(),
+                ]);
+            }
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Error logging search: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to log search'], 500);
+        }
+    }
+
+    /**
+     * API để test search functionality
+     */
+    public function testSearch(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'query' => 'required|string|min:2|max:255',
+            'content_type' => 'nullable|string|in:threads,comments,users,all',
+            'limit' => 'nullable|integer|min:1|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $query = $request->input('query');
+            $contentType = $request->input('content_type', 'all');
+            $limit = $request->input('limit', 20);
+
+            $startTime = microtime(true);
+            $results = [];
+            $totalResults = 0;
+
+            // Search trong threads
+            if ($contentType === 'all' || $contentType === 'threads') {
+                $threads = Thread::where('title', 'LIKE', "%{$query}%")
+                    ->orWhere('content', 'LIKE', "%{$query}%")
+                    ->with(['user', 'category'])
+                    ->limit($limit)
+                    ->get();
+
+                $results['threads'] = $threads->map(function ($thread) {
+                    return [
+                        'id' => $thread->id,
+                        'title' => $thread->title,
+                        'excerpt' => \Str::limit(strip_tags($thread->content), 150),
+                        'author' => $thread->user->name ?? 'Unknown',
+                        'category' => $thread->category->name ?? 'Uncategorized',
+                        'created_at' => $thread->created_at->diffForHumans(),
+                        'url' => route('threads.show', $thread->id),
+                    ];
+                });
+                $totalResults += $threads->count();
+            }
+
+            // Search trong comments
+            if ($contentType === 'all' || $contentType === 'comments') {
+                $comments = Comment::where('content', 'LIKE', "%{$query}%")
+                    ->with(['user', 'thread'])
+                    ->limit($limit)
+                    ->get();
+
+                $results['comments'] = $comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'content' => \Str::limit(strip_tags($comment->content), 150),
+                        'author' => $comment->user->name ?? 'Unknown',
+                        'thread_title' => $comment->thread->title ?? 'Unknown Thread',
+                        'created_at' => $comment->created_at->diffForHumans(),
+                        'url' => route('threads.show', [$comment->thread_id, '#comment-' . $comment->id]),
+                    ];
+                });
+                $totalResults += $comments->count();
+            }
+
+            // Search trong users
+            if ($contentType === 'all' || $contentType === 'users') {
+                $users = User::where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('email', 'LIKE', "%{$query}%")
+                    ->limit($limit)
+                    ->get();
+
+                $results['users'] = $users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'avatar' => $user->avatar ?? '/images/default-avatar.png',
+                        'role' => $user->role ?? 'member',
+                        'created_at' => $user->created_at->diffForHumans(),
+                        'url' => route('users.show', $user->id),
+                    ];
+                });
+                $totalResults += $users->count();
+            }
+
+            $endTime = microtime(true);
+            $responseTime = round(($endTime - $startTime) * 1000); // Convert to milliseconds
+
+            // Ghi log search
+            $this->logSearch(new Request([
+                'query' => $query,
+                'results_count' => $totalResults,
+                'response_time_ms' => $responseTime,
+                'content_type' => $contentType,
+                'filters' => $request->only(['limit']),
+            ]));
+
+            return response()->json([
+                'success' => true,
+                'query' => $query,
+                'results' => $results,
+                'total_results' => $totalResults,
+                'response_time_ms' => $responseTime,
+                'content_type' => $contentType,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Search test failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Search failed'], 500);
         }
     }
 }

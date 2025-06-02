@@ -46,6 +46,7 @@ Route::middleware('admin.auth')->group(function () {
         // Trang chủ quản lý thành viên
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
 
         // Quản lý thành viên quản trị (Admin và Moderator)
         Route::get('/admins', [UserController::class, 'admins'])->name('admins');
@@ -58,11 +59,15 @@ Route::middleware('admin.auth')->group(function () {
 
         // Quản lý thành viên thường (Senior và Member)
         Route::get('/members', [UserController::class, 'members'])->name('members');
+        Route::get('/members/export', [UserController::class, 'exportMembers'])->name('members.export');
         Route::get('/members/create', [UserController::class, 'create'])->name('members.create');
         Route::post('/members', [UserController::class, 'store'])->name('members.store');
         Route::get('/members/{user}', [UserController::class, 'show'])->name('members.show');
         Route::get('/members/{user}/edit', [UserController::class, 'edit'])->name('members.edit');
         Route::put('/members/{user}', [UserController::class, 'update'])->name('members.update');
+
+        // Quản lý admin export
+        Route::get('/admins/export', [UserController::class, 'exportAdmins'])->name('admins.export');
 
         // Route chung cho cả hai loại thành viên
         Route::get('/{user}', [UserController::class, 'show'])->name('show');
@@ -73,6 +78,10 @@ Route::middleware('admin.auth')->group(function () {
 
         // Chức năng chung
         Route::put('/{user}/toggle-ban', [UserController::class, 'toggleBan'])->name('toggle-ban');
+
+        // Bulk actions và toggle status
+        Route::post('/bulk-action', [UserController::class, 'bulkAction'])->name('bulk-action');
+        Route::post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
     });
 
     // Thread management routes (admin và moderator có quyền moderate_posts)
@@ -179,6 +188,7 @@ Route::middleware('admin.auth')->group(function () {
     });
 
     // Search management routes (chỉ admin có quyền manage_system)
+    // Search management routes (chỉ admin và moderator có quyền)
     Route::middleware(['admin.auth'])->prefix('search')->name('search.')->group(function () {
         Route::get('/', [SearchController::class, 'index'])->name('index');
         Route::put('/settings', [SearchController::class, 'updateSettings'])->name('settings.update');
@@ -191,6 +201,16 @@ Route::middleware('admin.auth')->group(function () {
         Route::post('/clear-cache', [SearchController::class, 'clearCache'])->name('clear-cache');
         Route::get('/export-statistics', [SearchController::class, 'exportStatistics'])->name('export-statistics');
         Route::post('/rebuild-suggestions', [SearchController::class, 'rebuildSuggestions'])->name('rebuild-suggestions');
+
+        // Analytics routes
+        Route::get('/analytics', [SearchController::class, 'analytics'])->name('analytics');
+        Route::get('/analytics/api', [SearchController::class, 'analyticsApi'])->name('analytics.api');
+        Route::get('/analytics/recent', [SearchController::class, 'analyticsRecent'])->name('analytics.recent');
+        Route::get('/analytics/export', [SearchController::class, 'analyticsExport'])->name('analytics.export');
+
+        // API routes for search logging and testing
+        Route::post('/log', [SearchController::class, 'logSearch'])->name('log');
+        Route::post('/test-api', [SearchController::class, 'testSearch'])->name('test.api');
     });
 
     // Alerts management routes (chỉ admin có quyền manage_system)
