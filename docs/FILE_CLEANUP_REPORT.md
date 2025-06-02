@@ -1,4 +1,41 @@
-# Báo Cáo Dọn Dẹp & Tổ Chức File - MechaMap
+# Báo Cáo Dọn Dẹp & Tổ Chức File - MechaMap [CẬP NHẬT]
+
+## 🆕 Dọn Dẹp Mới Nhất (2 tháng 6, 2025)
+
+### ✅ Files Đã Di Chuyển
+
+#### Documentation → `docs/`
+- `API_COMPLETION_REPORT.md`
+- `API_DOCUMENTATION.md` 
+- `SEO-SETTINGS-INTEGRATION-REPORT.md`
+- `openapi.json`
+- `postman_collection.json`
+
+#### Test Files → `tests/Utilities/`
+- `test_featured_images.php`
+- `test_final_check.php`
+- `test_images_complete.php`
+- `test_load_more.php`
+- `test_media.php`
+- `test_search.php`
+- `test_search_analytics.php`
+
+#### Scripts → `scripts/`
+- `test_api.sh`
+
+### ❌ Files Đã Xóa (Không Cần Thiết)
+- `api_health_check.php`
+- `check_settings.php`
+- `debug_featured_images.php`
+- `enhanced_api_test.php`
+- `final_api_test.php`
+- `final_api_test_fixed.php`
+- `simple_enhanced_test.php`
+- `public/test-load-more.html`
+
+### 📊 **Kết Quả**: Root directory giờ đã sạch sẽ hoàn toàn!
+
+---
 
 ## Tổng Quan
 
