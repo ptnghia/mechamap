@@ -41,6 +41,9 @@ test.txt
 *_temp.php
 *_debug.php
 
+# Ignore frontend-nextjs directory
+/frontend-nextjs
+
 # Ignore temporary shell scripts
 download_*.sh
 download_*.ps1

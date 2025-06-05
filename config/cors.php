@@ -19,7 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000')),
+    'allowed_origins' => env('APP_ENV') === 'local'
+        ? ['http://localhost:3000', 'https://localhost:3000', 'http://127.0.0.1:3000', 'https://127.0.0.1:3000']
+        : explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000')),
 
     'allowed_origins_patterns' => [],
 

@@ -32,12 +32,13 @@ RedirectMatch 404 /database/.*
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# CORS Headers
+# CORS Headers - Updated để hỗ trợ localhost development
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "https://mechamap.com"
-    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-CSRF-TOKEN"
-    Header set Access-Control-Allow-Credentials "true"
+    # Xóa hardcoded mechamap.com, để Laravel middleware xử lý CORS
+    # Header set Access-Control-Allow-Origin "https://mechamap.com"
+    # Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    # Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-CSRF-TOKEN"
+    # Header set Access-Control-Allow-Credentials "true"
 
     # Respond to OPTIONS requests
     RewriteEngine On

@@ -18,26 +18,44 @@ class HandleCors
     {
         $response = $next($request);
 
-        // Lấy danh sách domain được phép từ cấu hình
-        $allowedOrigins = explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000'));
-
         // Lấy origin từ request
         $origin = $request->header('Origin');
 
-        // Debug
-        Log::info('CORS Request from origin: ' . $origin);
-        Log::info('Allowed origins: ' . implode(', ', $allowedOrigins));
-
-        // Nếu origin nằm trong danh sách được phép, thêm header CORS
-        if ($origin && in_array($origin, $allowedOrigins)) {
-            Log::info('Origin is allowed: ' . $origin);
+        // Trong development, cho phép tất cả localhost
+        if (app()->environment('local') && $origin && (
+            str_contains($origin, 'localhost') ||
+            str_contains($origin, '127.0.0.1') ||
+            str_contains($origin, 'mechamap.test')
+        )) {
             $response->headers->set('Access-Control-Allow-Origin', $origin);
             $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-TOKEN');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-TOKEN, Accept');
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             $response->headers->set('Access-Control-Max-Age', '86400');
+
+            Log::info('CORS: Local development - Allowed origin: ' . $origin);
+            return $response;
+        }
+
+        // Production: Sử dụng danh sách cố định (không có mechamap.com)
+        $allowedOrigins = [
+            'http://localhost:3000',
+            'https://localhost:3000',
+            'https://mechamap.test',
+            'http://mechamap.test',
+        ];
+
+        // Nếu origin nằm trong danh sách được phép
+        if ($origin && in_array($origin, $allowedOrigins)) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-CSRF-TOKEN, Accept');
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            $response->headers->set('Access-Control-Max-Age', '86400');
+
+            Log::info('CORS: Production - Allowed origin: ' . $origin);
         } else {
-            Log::info('Origin is not allowed: ' . $origin);
+            Log::info('CORS: Origin not allowed: ' . $origin . ' (Available: ' . implode(', ', $allowedOrigins) . ')');
         }
 
         return $response;

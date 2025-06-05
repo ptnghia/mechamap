@@ -14,16 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Test CORS
-Route::get('/cors-test', function (Request $request) {
-    return response()->json([
-        'success' => true,
-        'message' => 'CORS test successful',
-        'origin' => $request->header('Origin'),
-        'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000')),
-    ]);
-});
-
 // API version 1
 Route::prefix('v1')->group(function () {
     // Test CORS for v1 API
@@ -32,7 +22,7 @@ Route::prefix('v1')->group(function () {
             'success' => true,
             'message' => 'CORS test successful',
             'origin' => $request->header('Origin'),
-            'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com,http://localhost:3000')),
+            'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000')),
         ]);
     });
 
