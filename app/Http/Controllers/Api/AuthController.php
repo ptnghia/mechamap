@@ -80,9 +80,10 @@ class AuthController extends Controller
             }
 
             // Lấy user đã xác thực
+            /** @var \App\Models\User $user */
             $user = Auth::user();
 
-            // Create token
+            // Create token (method từ HasApiTokens trait của Laravel Sanctum)
             $tokenResult = $user->createToken('Personal Access Token');
             $token = $tokenResult->plainTextToken;
 
@@ -446,7 +447,7 @@ class AuthController extends Controller
                 'id' => 'social_' . Str::random(10),
                 'name' => 'Social User',
                 'email' => 'social_user_' . Str::random(5) . '@example.com',
-                'avatar' => 'https://via.placeholder.com/150',
+                'avatar' => avatar_placeholder('Social User'),
                 'token' => $request->token,
                 'refreshToken' => null,
             ];

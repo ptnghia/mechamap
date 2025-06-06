@@ -55,6 +55,32 @@ if (!function_exists('get_favicon_url')) {
     }
 }
 
+if (!function_exists('get_banner_url')) {
+    /**
+     * Get the header banner URL
+     *
+     * @param string $default
+     * @return string
+     */
+    function get_banner_url(string $default = '/images/banner.webp')
+    {
+        return setting('site_banner', $default);
+    }
+}
+
+if (!function_exists('get_site_name')) {
+    /**
+     * Get the site name
+     *
+     * @param string $default
+     * @return string
+     */
+    function get_site_name(string $default = null)
+    {
+        return setting('site_name', $default ?: config('app.name'));
+    }
+}
+
 if (!function_exists('get_company_info')) {
     /**
      * Get company information
@@ -150,5 +176,78 @@ if (!function_exists('get_copyright_info')) {
             'year' => setting('copyright_year', date('Y')),
             'domain' => setting('site_domain', request()->getHost()),
         ];
+    }
+}
+
+if (!function_exists('placeholder_image')) {
+    /**
+     * Generate local placeholder image URL
+     *
+     * @param int $width
+     * @param int $height
+     * @param string $text
+     * @param string $bgColor
+     * @param string $textColor
+     * @return string
+     */
+    function placeholder_image(int $width = 300, int $height = null, string $text = '', string $bgColor = 'cccccc', string $textColor = '666666')
+    {
+        $height = $height ?: $width; // Square by default
+        $text = $text ?: "{$width}x{$height}";
+
+        // Sử dụng service local hoặc alternative
+        $alternatives = [
+            "https://picsum.photos/{$width}/{$height}", // Lorem Picsum
+            "https://source.unsplash.com/{$width}x{$height}/?abstract", // Unsplash
+            "https://dummyimage.com/{$width}x{$height}/{$bgColor}/{$textColor}&text=" . urlencode($text), // DummyImage
+        ];
+
+        // Nếu có local placeholder generator, ưu tiên local
+        $publicPath = function_exists('public_path') ? public_path('images/placeholders') : __DIR__ . '/../../public/images/placeholders';
+        $localFile = $publicPath . "/{$width}x{$height}.png";
+
+        if (file_exists($localFile)) {
+            if (function_exists('asset')) {
+                return asset("images/placeholders/{$width}x{$height}.png");
+            } else {
+                // Fallback cho standalone script
+                return "https://mechamap.test/images/placeholders/{$width}x{$height}.png";
+            }
+        }
+
+        // Fallback về alternatives
+        return $alternatives[0];
+    }
+}
+
+if (!function_exists('avatar_placeholder')) {
+    /**
+     * Generate avatar placeholder
+     *
+     * @param string $name
+     * @param int $size
+     * @return string
+     */
+    function avatar_placeholder(string $name = '', int $size = 150)
+    {
+        if (empty($name)) {
+            $name = 'User';
+        }
+
+        // Lấy chữ cái đầu
+        $initials = strtoupper(substr($name, 0, 1));
+        if (strpos($name, ' ') !== false) {
+            $nameParts = explode(' ', $name);
+            $initials = strtoupper(substr($nameParts[0], 0, 1) . substr(end($nameParts), 0, 1));
+        }
+
+        // Sử dụng service tạo avatar từ initials
+        $alternatives = [
+            "https://ui-avatars.com/api/?name=" . urlencode($initials) . "&size={$size}&background=random",
+            "https://api.dicebear.com/7.x/initials/svg?seed=" . urlencode($name) . "&size={$size}",
+            placeholder_image($size, $size, $initials),
+        ];
+
+        return $alternatives[0];
     }
 }

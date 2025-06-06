@@ -2,7 +2,7 @@
 <header class="site-header">
     <!-- Banner Image -->
     <div class="header-banner">
-        <img src="{{ asset('images/banner.webp') }}" alt="Banner" class="banner-img">
+        <img src="{{ get_banner_url() }}" alt="Banner" class="banner-img">
     </div>
 
     <!-- Header Content with Navigation -->
@@ -11,14 +11,15 @@
             <!-- Logo -->
             <div class="logo-container">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="img-fluid">
+                    <img src="{{ get_logo_url() }}" alt="{{ get_site_name() }}" class="img-fluid">
                 </a>
             </div>
 
             <!-- Search Bar -->
             <div class="search-container">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="header-search" name="query" placeholder="Search Community" aria-label="Search">
+                    <input type="text" class="form-control" id="header-search" name="query"
+                        placeholder="Search Community" aria-label="Search">
                     <button class="btn" type="button" id="header-search-btn">
                         <i class="bi bi-search"></i>
                     </button>
@@ -55,7 +56,8 @@
 
                 <!-- More Dropdown -->
                 <div class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots"></i> More
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
@@ -94,12 +96,16 @@
                                 FAQ
                             </a>
                         </li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <div class="dropdown-item d-flex justify-content-between align-items-center">
                                 <span>Dark Mode</span>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch"
+                                        data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked'
+                                    : '' }}>
                                 </div>
                             </div>
                         </li>
@@ -108,79 +114,85 @@
 
                 <!-- User Menu or Login/Register -->
                 @auth
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-1" width="24" height="24">
-                            <span>{{ Auth::user()->name }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
-                                    <i class="bi bi-person me-2"></i> My Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('following.index') }}">
-                                    <i class="bi bi-people me-2"></i> Following
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('alerts.index') }}">
-                                    <i class="bi bi-bell me-2"></i> Alerts
-                                    @php
-                                        $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
-                                    @endphp
-                                    @if($unreadAlertsCount > 0)
-                                        <span class="badge bg-danger rounded-pill ms-2">{{ $unreadAlertsCount }}</span>
-                                    @endif
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('conversations.index') }}">
-                                    <i class="bi bi-chat-dots me-2"></i> Conversations
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
-                                    <i class="bi bi-bookmark me-2"></i> Bookmarks
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                    <i class="bi bi-image me-2"></i> My Showcase
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="bi bi-gear me-2"></i> Account Settings
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('business.index') }}">
-                                    <i class="bi bi-briefcase me-2"></i> Grow Your Business
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('subscription.index') }}">
-                                    <i class="bi bi-star me-2"></i> Upgrade your account
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">
-                                        <i class="bi bi-box-arrow-right me-2"></i> Log out
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                @else
-                    <a href="#" class="nav-link login-link">
-                        <i class="bi bi-person-circle"></i> Login / Join
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}"
+                            class="rounded-circle me-1" width="24" height="24">
+                        <span>{{ Auth::user()->name }}</span>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
+                                <i class="bi bi-person me-2"></i> My Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('following.index') }}">
+                                <i class="bi bi-people me-2"></i> Following
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('alerts.index') }}">
+                                <i class="bi bi-bell me-2"></i> Alerts
+                                @php
+                                $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
+                                @endphp
+                                @if($unreadAlertsCount > 0)
+                                <span class="badge bg-danger rounded-pill ms-2">{{ $unreadAlertsCount }}</span>
+                                @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('conversations.index') }}">
+                                <i class="bi bi-chat-dots me-2"></i> Conversations
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
+                                <i class="bi bi-bookmark me-2"></i> Bookmarks
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('showcase.index') }}">
+                                <i class="bi bi-image me-2"></i> My Showcase
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                <i class="bi bi-gear me-2"></i> Account Settings
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('business.index') }}">
+                                <i class="bi bi-briefcase me-2"></i> Grow Your Business
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('subscription.index') }}">
+                                <i class="bi bi-star me-2"></i> Upgrade your account
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Log out
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                @else
+                <a href="#" class="nav-link login-link">
+                    <i class="bi bi-person-circle"></i> Login / Join
+                </a>
                 @endauth
             </div>
         </div>

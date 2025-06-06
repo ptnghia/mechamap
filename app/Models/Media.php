@@ -68,6 +68,6 @@ class Media extends Model
         }
 
         // Fallback về placeholder image
-        return 'https://via.placeholder.com/800x600?text=No+Image';
+        return placeholder_image(800, 600, 'No Image');
     }
 }
