@@ -45,55 +45,58 @@
             <!-- Navigation Actions -->
             <div class="nav-actions">
                 <!-- New Link -->
-                <a href="{{ route('whats-new') }}" class="nav-link">
-                    <i class="bi bi-clock-history"></i> New
+                <a href="{{ route('whats-new') }}" class="nav-link" title="What's New">
+                    <i class="bi bi-clock-history"></i>
+                    <span class="nav-text">New</span>
                 </a>
 
                 <!-- Forums Link -->
-                <a href="{{ route('forums.index') }}" class="nav-link">
-                    <i class="bi bi-grid-3x3-gap"></i> Forums
+                <a href="{{ route('forums.index') }}" class="nav-link" title="Forums">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    <span class="nav-text">Forums</span>
                 </a>
 
                 <!-- More Dropdown -->
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots"></i> More
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true" title="More Options">
+                        <i class="bi bi-three-dots"></i>
+                        <span class="nav-text">More</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreDropdown">
                         <li>
                             <a class="dropdown-item" href="{{ route('whats-new') }}">
-                                What's New
+                                <i class="bi bi-clock-history me-2"></i>What's New
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('forums.listing') }}">
-                                Forum Listing
+                                <i class="bi bi-list me-2"></i>Forum Listing
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('showcase.public') }}">
-                                Showcase
+                                <i class="bi bi-image me-2"></i>Showcase
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('gallery.index') }}">
-                                Gallery
+                                <i class="bi bi-images me-2"></i>Gallery
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('search.advanced') }}">
-                                Advanced Search
+                                <i class="bi bi-search me-2"></i>Advanced Search
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('members.index') }}">
-                                Members
+                                <i class="bi bi-people me-2"></i>Members
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('faq.index') }}">
-                                FAQ
+                                <i class="bi bi-question-circle me-2"></i>FAQ
                             </a>
                         </li>
                         <li>
@@ -101,7 +104,7 @@
                         </li>
                         <li>
                             <div class="dropdown-item d-flex justify-content-between align-items-center">
-                                <span>Dark Mode</span>
+                                <span><i class="bi bi-moon me-2"></i>Dark Mode</span>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch"
                                         data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked'
@@ -116,10 +119,11 @@
                 @auth
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true"
+                        title="{{ Auth::user()->name }}">
                         <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}"
                             class="rounded-circle me-1" width="24" height="24">
-                        <span>{{ Auth::user()->name }}</span>
+                        <span class="nav-text">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
@@ -139,7 +143,7 @@
                                 $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
                                 @endphp
                                 @if($unreadAlertsCount > 0)
-                                <span class="badge bg-danger rounded-pill ms-2">{{ $unreadAlertsCount }}</span>
+                                <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadAlertsCount }}</span>
                                 @endif
                             </a>
                         </li>
@@ -190,9 +194,12 @@
                     </ul>
                 </div>
                 @else
-                <a href="#" class="nav-link login-link">
-                    <i class="bi bi-person-circle"></i> Login / Join
-                </a>
+                <div class="auth-buttons">
+                    <a href="#" class="nav-link login-link" title="Login / Join">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="nav-text">Login / Join</span>
+                    </a>
+                </div>
                 @endauth
             </div>
         </div>
@@ -201,3 +208,7 @@
 
 <!-- Include custom CSS for header -->
 <link rel="stylesheet" href="{{ asset('css/custom-header.css') }}">
+<link rel="stylesheet" href="{{ asset('css/mobile-nav.css') }}">
+
+<!-- Manual Dropdown Script -->
+<script src="{{ asset('js/manual-dropdown.js') }}"></script>

@@ -72,28 +72,30 @@
                             <div class="col-md-6 mb-4">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
-                                        <img src="{{ avatar_placeholder('ABC Architecture', 64) }}" alt="Testimonial"
-                                            class="rounded-circle">
+                                        <img src="https://ui-avatars.com/api/?name=Coteccons&size=64&background=0d6efd&color=fff&rounded=true"
+                                            alt="Coteccons Logo" class="rounded-circle">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h5>{{ __('ABC Architecture') }}</h5>
-                                        <p class="mb-1">{{ __('We saw a 200% increase in client inquiries after using
-                                            the premium listing service. The ROI has been incredible!') }}</p>
-                                        <small class="text-muted">{{ __('John Smith, CEO') }}</small>
+                                        <h5>{{ __('Coteccons Group') }}</h5>
+                                        <p class="mb-1">{{ __('Nền tảng MechaMap đã giúp chúng tôi kết nối với nhiều đối
+                                            tác thiết kế và tư vấn chất lượng cao. Dự án Landmark 81 đã được hỗ trợ
+                                            tuyệt vời từ cộng đồng chuyên gia trên đây.') }}</p>
+                                        <small class="text-muted">{{ __('Nguyễn Bá Dương, Chủ tịch HĐQT') }}</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0">
-                                        <img src="{{ avatar_placeholder('XYZ Engineering', 64) }}" alt="Testimonial"
-                                            class="rounded-circle">
+                                        <img src="https://ui-avatars.com/api/?name=VinGroup&size=64&background=dc3545&color=fff&rounded=true"
+                                            alt="VinGroup Logo" class="rounded-circle">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h5>{{ __('XYZ Engineering') }}</h5>
-                                        <p class="mb-1">{{ __('The sponsored content package helped us establish our
-                                            brand as an industry leader. We\'ve gained valuable partnerships.') }}</p>
-                                        <small class="text-muted">{{ __('Jane Doe, Marketing Director') }}</small>
+                                        <h5>{{ __('Tập đoàn Vingroup') }}</h5>
+                                        <p class="mb-1">{{ __('Thông qua MechaMap, chúng tôi đã tìm được những kiến trúc
+                                            sư và kỹ sư tài năng cho các dự án VinCity. Cộng đồng chuyên nghiệp và năng
+                                            động của nền tảng này thật sự ấn tượng.') }}</p>
+                                        <small class="text-muted">{{ __('Phạm Nhật Vượng, Chủ tịch Tập đoàn') }}</small>
                                     </div>
                                 </div>
                             </div>

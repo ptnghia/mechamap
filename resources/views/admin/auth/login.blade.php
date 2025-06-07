@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +22,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-light">
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -38,27 +40,27 @@
                     </div>
                     <div class="card-body p-4">
                         @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         @endif
 
                         @if(session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         @endif
 
                         @if(session('info'))
-                            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                <i class="bi bi-info-circle-fill me-2"></i>
-                                {{ session('info') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            {{ session('info') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         @endif
 
                         <form method="POST" action="{{ route('admin.login.submit') }}">
@@ -68,28 +70,34 @@
                                 <label for="login" class="form-label">{{ __('Username or Email') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" placeholder="admin or admin@example.com" required autofocus>
+                                    <input id="login" type="text"
+                                        class="form-control @error('login') is-invalid @enderror" name="login"
+                                        value="{{ old('login') }}" placeholder="admin hoặc admin@mechamap.vn" required
+                                        autofocus>
                                     @error('login')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                     @enderror
                                 </div>
-                                <small class="form-text text-muted">{{ __('Enter your admin username or email address') }}</small>
+                                <small class="form-text text-muted">{{ __('Enter your admin username or email address')
+                                    }}</small>
                             </div>
 
                             <div class="mb-3">
                                 <label for="password" class="form-label">{{ __('Password') }}</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        required>
                                     <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     @error('password')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
                                     @enderror
                                 </div>
                                 <small class="form-text text-muted">{{ __('Enter your admin password') }}</small>
@@ -109,7 +117,8 @@
                             <div class="mt-3">
                                 <div class="alert alert-warning" role="alert">
                                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                    <small>{{ __('Note: Only Admin and Moderator accounts can access this area. You can login with your username or email.') }}</small>
+                                    <small>{{ __('Note: Only Admin and Moderator accounts can access this area. You can
+                                        login with your username or email.') }}</small>
                                 </div>
                             </div>
                         </form>
@@ -157,4 +166,5 @@
         }, 5000);
     </script>
 </body>
+
 </html>

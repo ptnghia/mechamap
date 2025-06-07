@@ -169,43 +169,52 @@
         </div>
         <div class="card-body">
             @php
-            $relatedCommunities = [
-            [
-            'name' => 'Kiến Trúc Việt',
-            'url' => '#',
-            'members' => '25K',
-            'image' => 'https://example.com/nonexistent-image.jpg'
-            ],
-            [
-            'name' => 'Quy Hoạch Đô Thị',
-            'url' => '#',
-            'members' => '18K',
-            'image' => placeholder_image(50, 50, 'QH')
-            ],
-            [
-            'name' => 'Giao Thông Xanh',
-            'url' => '#',
-            'members' => '12K',
-            'image' => placeholder_image(50, 50, 'GT')
-            ]
-            ];
+            // Lấy các diễn đàn phổ biến nhất (có nhiều threads nhất)
+            $relatedForums = \App\Models\Forum::with(['media' => function($query) {
+            $query->where('file_type', 'like', 'image/%');
+            }])
+            ->withCount('threads')
+            ->where('parent_id', null) // Chỉ lấy forums chính, không phải sub-forums
+            ->orderBy('threads_count', 'desc')
+            ->limit(3)
+            ->get();
             @endphp
 
-            @foreach($relatedCommunities as $community)
+            @forelse($relatedForums as $forum)
             <div class="d-flex align-items-center mb-2">
-                <div class="flex-shrink-0 me-2">
-                    <img src="{{ get_image_url($community['image']) }}" alt="{{ $community['name'] }}"
-                        class="rounded shadow-sm" width="40" height="40">
+                <div class="flex-shrink-0 me-2"> @php
+                    // Lấy ảnh đại diện của forum từ media relationship
+                    $forumImage = $forum->media->first();
+                    if ($forumImage) {
+                    // Nếu file_path là URL đầy đủ thì dùng trực tiếp, ngược lại thì dùng asset
+                    $imageUrl = filter_var($forumImage->file_path, FILTER_VALIDATE_URL)
+                    ? $forumImage->file_path
+                    : asset('storage/' . $forumImage->file_path);
+                    } else {
+                    // Fallback về UI Avatars nếu không có ảnh
+                    $imageUrl = 'https://ui-avatars.com/api/?name=' . urlencode(substr($forum->name, 0, 2)) .
+                    '&background=random&color=fff&size=40';
+                    }
+                    @endphp
+                    <img src="{{ $imageUrl }}" alt="{{ $forum->name }}" class="rounded shadow-sm" width="40" height="40"
+                        style="object-fit: cover;">
                 </div>
                 <div>
                     <h6 class="mb-1">
-                        <a href="{{ $community['url'] }}" class="text-decoration-none">{{ $community['name'] }}</a>
+                        <a href="{{ route('forums.show', $forum->slug) }}" class="text-decoration-none">{{ $forum->name
+                            }}</a>
                     </h6>
-                    <p class="text-muted small mb-0"><i class="bi bi-people-fill me-1"></i>{{ $community['members'] }}
-                        thành viên</p>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-chat-text me-1"></i>{{ $forum->threads_count }}
+                        {{ $forum->threads_count == 1 ? 'chủ đề' : 'chủ đề' }}
+                    </p>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="text-center py-3">
+                <p class="text-muted mb-0 small">Chưa có diễn đàn nào.</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </div>

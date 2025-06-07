@@ -57,6 +57,7 @@ class DatabaseSeeder extends Seeder
 
             // Media seeders
             MediaSeeder::class, // Images and files
+            ForumCategoryImageSeeder::class, // Professional images for forums and categories
 
             // Page content seeders
             PageSeeder::class, // Static pages with mechanical content

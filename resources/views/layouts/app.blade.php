@@ -293,11 +293,11 @@
     </script>
     @endif
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- jQuery (Required for Lightbox) -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Theme toggle script is now handled by darkMode.js -->
 
@@ -306,6 +306,9 @@
 
     <!-- Search Script -->
     <script src="{{ asset('js/search.js') }}"></script>
+
+    <!-- Manual Dropdown Script -->
+    <script src="{{ asset('js/manual-dropdown.js') }}"></script>
 
     <!-- Lightbox Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
