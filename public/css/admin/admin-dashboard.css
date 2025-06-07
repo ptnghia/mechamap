@@ -424,11 +424,11 @@
     .admin-charts-section {
         grid-template-columns: 1fr;
     }
-    
+
     .admin-stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
-    
+
     .admin-dashboard-meta {
         flex-direction: column;
         gap: 0.5rem;
@@ -439,23 +439,23 @@
     .admin-dashboard-header {
         padding: 1.5rem;
     }
-    
+
     .admin-stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .admin-stat-card {
         padding: 1rem;
     }
-    
+
     .admin-stat-value {
         font-size: 1.5rem;
     }
-    
+
     .admin-quick-actions-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .admin-activity-item {
         padding: 0.75rem 1rem;
     }
@@ -465,12 +465,12 @@
     .admin-dashboard-title {
         font-size: 1.5rem;
     }
-    
+
     .admin-chart-body {
         padding: 1rem;
         min-height: 250px;
     }
-    
+
     .admin-activity-header,
     .admin-chart-header {
         padding: 1rem;

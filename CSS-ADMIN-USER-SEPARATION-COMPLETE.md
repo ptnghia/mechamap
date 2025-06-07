@@ -43,18 +43,18 @@ public/css/
     --admin-primary: #3366CC;
     --admin-primary-hover: #2052B3;
     --admin-secondary: #1DCABC;
-    
+
     /* Admin Status Colors */
     --admin-success: #22C55E;
     --admin-danger: #EF4444;
     --admin-warning: #F59E0B;
     --admin-info: #0EA5E9;
-    
+
     /* Admin Backgrounds */
     --admin-bg-primary: #FFFFFF;
     --admin-bg-secondary: #F8FAFC;
     --admin-bg-dark: #1E293B;
-    
+
     /* Admin Typography */
     --admin-font-family: 'Roboto', sans-serif;
     --admin-text-primary: #1E293B;
@@ -69,18 +69,18 @@ public/css/
     --user-primary: #2563EB;
     --user-primary-hover: #1D4ED8;
     --user-secondary: #10B981;
-    
+
     /* User Status Colors */
     --user-success: #059669;
     --user-danger: #DC2626;
     --user-warning: #D97706;
     --user-info: #0284C7;
-    
+
     /* User Backgrounds */
     --user-bg-primary: #FFFFFF;
     --user-bg-secondary: #F9FAFB;
     --user-bg-dark: #111827;
-    
+
     /* User Typography */
     --user-font-family: 'Inter', sans-serif;
     --user-text-primary: #111827;
@@ -175,7 +175,7 @@ main-user.css → imports core components
 
 ### Khi Phát Triển User Features:
 1. Edit file trong `public/css/views/` hoặc main-user.css
-2. CSS variables sử dụng `--user-*` prefix  
+2. CSS variables sử dụng `--user-*` prefix
 3. Test trên user layouts
 
 ### Adding New Components:
