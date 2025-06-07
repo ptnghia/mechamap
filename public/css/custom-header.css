@@ -551,38 +551,6 @@
     }
 }
 
-/* Landscape orientation optimizations */
-@media (max-height: 500px) and (orientation: landscape) {
-    .site-header {
-        height: auto;
-        min-height: 60px;
-    }
-
-    .header-content {
-        min-height: 40px;
-        padding: 2px 0;
-    }
-
-    .search-container {
-        margin: 2px 0 0 0;
-    }
-
-    .search-container .form-control,
-    .search-container .btn {
-        height: 28px;
-    }
-
-    .nav-actions .nav-link {
-        height: 28px;
-        width: 28px;
-        font-size: 9px;
-    }
-
-    .logo-container img {
-        height: 20px;
-    }
-}
-
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
     .nav-actions .nav-link {

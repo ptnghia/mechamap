@@ -1,27 +1,10 @@
 {
     "private": true,
-    "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "echo 'Development mode - sử dụng file CSS/JS trong public/'",
+        "build": "echo 'Build mode - sử dụng file CSS/JS trong public/'",
+        "watch": "echo 'Watching files - sử dụng file CSS/JS trong public/'"
     },
-    "devDependencies": {
-        "@tailwindcss/forms": "^0.5.10",
-        "alpinejs": "^3.4.2",
-        "axios": "^1.6.4",
-        "laravel-vite-plugin": "^1.0",
-        "vite": "^5.0"
-    },
-    "dependencies": {
-        "@fontsource/inter": "^5.2.5",
-        "@popperjs/core": "^2.11.8",
-        "@tailwindcss/aspect-ratio": "^0.4.2",
-        "@tailwindcss/typography": "^0.5.16",
-        "autoprefixer": "^10.4.21",
-        "bootstrap": "^5.3.5",
-        "heroicons": "^2.2.0",
-        "jquery": "^3.7.1",
-        "select2": "^4.1.0-rc.0",
-        "tailwindcss-animate": "^1.0.7"
-    }
+    "devDependencies": {},
+    "dependencies": {}
 }

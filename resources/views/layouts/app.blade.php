@@ -61,6 +61,9 @@
     <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -77,7 +80,11 @@
     <link rel="stylesheet" href="{{ asset('css/search.css') }}">
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Thay thế Vite bằng asset() truyền thống -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
 
     <!-- Custom CSS -->
     @if(!empty($seo['custom_css'] ?? ''))
@@ -299,7 +306,11 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Theme toggle script is now handled by darkMode.js -->
+    <!-- Main App JS -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Dark Mode JS -->
+    <script src="{{ asset('js/dark-mode.js') }}"></script>
 
     <!-- Auth Modal Script -->
     <script src="{{ asset('js/auth-modal.js') }}"></script>

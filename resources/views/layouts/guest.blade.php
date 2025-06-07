@@ -15,8 +15,11 @@
     <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Custom Styles -->
     @stack('styles')
@@ -60,6 +63,16 @@
 
     <!-- Custom Scripts -->
     @stack('scripts')
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/dark-mode.js') }}"></script>
+
+    <!-- Custom Scripts -->
+    @stack('scripts')
+
     <!-- Theme toggle script is now handled by darkMode.js -->
     <style>
         .max-width-md {
