@@ -16,6 +16,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\UserThreadController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -98,6 +100,60 @@ Route::middleware('auth')->group(function () {
 Route::get('/new', [NewContentController::class, 'index'])->name('new');
 Route::get('/forums', [ForumController::class, 'index'])->name('forums.index');
 
+// User Thread Routes (Public and Authenticated)
+Route::prefix('threads')->name('user.threads.')->group(function () {
+    // Public routes
+    Route::get('/', [UserThreadController::class, 'index'])->name('index');
+    Route::get('/top-rated', [UserThreadController::class, 'topRated'])->name('top-rated');
+    Route::get('/trending', [UserThreadController::class, 'trending'])->name('trending');
+    Route::get('/by-tag/{tag}', [UserThreadController::class, 'byTag'])->name('by-tag');
+    Route::get('/by-forum/{forum}', [UserThreadController::class, 'byForum'])->name('by-forum');
+    Route::get('/search', [UserThreadController::class, 'search'])->name('search');
+    Route::get('/{thread}', [UserThreadController::class, 'show'])->name('show');
+});
+
+// User Dashboard Routes (Authenticated only)
+Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+
+    // Bookmark management
+    Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
+    Route::post('/bookmarks/search', [UserDashboardController::class, 'searchBookmarks'])->name('bookmarks.search');
+    Route::post('/bookmarks/folders', [UserDashboardController::class, 'createFolder'])->name('bookmarks.folders.create');
+    Route::put('/bookmarks/folders/{folder}', [UserDashboardController::class, 'updateFolder'])->name('bookmarks.folders.update');
+    Route::delete('/bookmarks/folders/{folder}', [UserDashboardController::class, 'deleteFolder'])->name('bookmarks.folders.delete');
+
+    // Rating management
+    Route::get('/ratings', [UserDashboardController::class, 'ratings'])->name('ratings');
+
+    // My threads
+    Route::get('/my-threads', [UserDashboardController::class, 'myThreads'])->name('my-threads');
+
+    // Activity feed
+    Route::get('/activity', [UserDashboardController::class, 'activity'])->name('activity');
+
+    // Settings routes
+    Route::get('/settings', [UserDashboardController::class, 'settings'])->name('settings');
+    Route::post('/settings/profile', [UserDashboardController::class, 'updateProfile'])->name('settings.profile');
+    Route::post('/settings/password', [UserDashboardController::class, 'updatePassword'])->name('settings.password');
+    Route::post('/settings/preferences', [UserDashboardController::class, 'updatePreferences'])->name('settings.preferences');
+    Route::post('/settings/notifications', [UserDashboardController::class, 'updateNotifications'])->name('settings.notifications');
+    Route::post('/settings/privacy', [UserDashboardController::class, 'updatePrivacy'])->name('settings.privacy');
+    Route::delete('/settings/delete-account', [UserDashboardController::class, 'deleteAccount'])->name('settings.delete-account');
+});
+
+// Enhanced thread interaction routes (override existing ones)
+Route::middleware('auth')->group(function () {
+    // Thread bookmarking with folders
+    Route::post('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'store'])->name('threads.bookmark');
+    Route::delete('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'destroy'])->name('threads.bookmark.remove');
+
+    // Thread rating
+    Route::post('/threads/{thread}/rate', [\App\Http\Controllers\ThreadRatingController::class, 'store'])->name('threads.rate');
+    Route::put('/threads/{thread}/rate', [\App\Http\Controllers\ThreadRatingController::class, 'update'])->name('threads.rate.update');
+    Route::delete('/threads/{thread}/rate', [\App\Http\Controllers\ThreadRatingController::class, 'destroy'])->name('threads.rate.remove');
+});
+
 // More menu routes
 Route::get('/whats-new', [NewContentController::class, 'whatsNew'])->name('whats-new');
 Route::get('/forum-listing', [ForumController::class, 'listing'])->name('forums.listing');
@@ -158,7 +214,27 @@ Route::get('/saved-threads', [\App\Http\Controllers\ThreadSaveController::class,
 Route::post('/threads/{thread}/polls', [\App\Http\Controllers\PollController::class, 'store'])->name('threads.polls.store')->middleware('auth');
 Route::post('/polls/{poll}/vote', [\App\Http\Controllers\PollController::class, 'vote'])->name('polls.vote')->middleware('auth');
 
-require __DIR__ . '/auth.php';
+// Admin Moderation routes
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin|moderator'])->group(function () {
+    Route::prefix('moderation')->name('moderation.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\ModerationController::class, 'dashboard'])->name('dashboard');
+        Route::get('/threads', [\App\Http\Controllers\Admin\ModerationController::class, 'threads'])->name('threads');
+        Route::get('/comments', [\App\Http\Controllers\Admin\ModerationController::class, 'comments'])->name('comments');
+        Route::get('/statistics', [\App\Http\Controllers\Admin\ModerationController::class, 'statistics'])->name('statistics');
+        Route::get('/user-activity', [\App\Http\Controllers\Admin\ModerationController::class, 'userActivity'])->name('user-activity');
+
+        // Thread moderation actions
+        Route::post('/threads/{thread}/approve', [\App\Http\Controllers\Admin\ModerationController::class, 'approveThread'])->name('threads.approve');
+        Route::post('/threads/{thread}/reject', [\App\Http\Controllers\Admin\ModerationController::class, 'rejectThread'])->name('threads.reject');
+        Route::post('/threads/{thread}/flag', [\App\Http\Controllers\Admin\ModerationController::class, 'flagThread'])->name('threads.flag');
+        Route::post('/threads/bulk-action', [\App\Http\Controllers\Admin\ModerationController::class, 'bulkActionThreads'])->name('threads.bulk-action');
+
+        // Comment moderation actions
+        Route::post('/comments/{comment}/approve', [\App\Http\Controllers\Admin\ModerationController::class, 'approveComment'])->name('comments.approve');
+        Route::delete('/comments/{comment}', [\App\Http\Controllers\Admin\ModerationController::class, 'deleteComment'])->name('comments.delete');
+    });
+});
 
 // Include What's New routes
 require __DIR__ . '/web-whats-new.php';
+require __DIR__ . '/auth.php';

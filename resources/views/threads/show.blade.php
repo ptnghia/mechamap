@@ -32,7 +32,7 @@
 
             <div class="thread-actions">
                 <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn-jump">
-                    <i class="bi bi-arrow-right"></i> Jump to Latest
+                    <i class="bi bi-arrow-right"></i> {{ __('messages.jump_to_latest') }}
                 </a>
 
                 @php

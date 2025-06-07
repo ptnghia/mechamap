@@ -30,31 +30,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Api\SettingsController::class, 'index']);
     Route::get('/settings/{group}', [App\Http\Controllers\Api\SettingsController::class, 'getByGroup']);
 
-    // API Monitoring & Health Check routes
-    Route::prefix('monitoring')->group(function () {
-        Route::get('/health', [App\Http\Controllers\Api\ApiMonitoringController::class, 'healthCheck']);
-        Route::get('/dashboard', [App\Http\Controllers\Api\ApiMonitoringController::class, 'dashboard']);
-        Route::get('/endpoint-metrics', [App\Http\Controllers\Api\ApiMonitoringController::class, 'endpointMetrics']);
-        Route::get('/recent-errors', [App\Http\Controllers\Api\ApiMonitoringController::class, 'recentErrors']);
-        Route::get('/export-metrics', [App\Http\Controllers\Api\ApiMonitoringController::class, 'exportMetrics']);
-        Route::post('/refresh-cache', [App\Http\Controllers\Api\ApiMonitoringController::class, 'refreshCache']);
-    });
-
-    // API Documentation routes
-    Route::prefix('docs')->group(function () {
-        Route::get('/', [App\Http\Controllers\Api\ApiDocumentationController::class, 'swaggerUi']);
-        Route::get('/explorer', [App\Http\Controllers\Api\ApiDocumentationController::class, 'apiExplorer']);
-        Route::get('/markdown', [App\Http\Controllers\Api\ApiDocumentationController::class, 'markdownDocs']);
-        Route::get('/openapi.json', [App\Http\Controllers\Api\ApiDocumentationController::class, 'openApiSpec']);
-        Route::get('/endpoints', [App\Http\Controllers\Api\ApiDocumentationController::class, 'endpointsList']);
-        Route::post('/validate-schema', [App\Http\Controllers\Api\ApiDocumentationController::class, 'validateSchema']);
-    });
-    Route::get('/seo', [App\Http\Controllers\Api\SeoController::class, 'index']);
-    Route::get('/seo/{group}', [App\Http\Controllers\Api\SeoController::class, 'getByGroup']);
-    Route::get('/page-seo/{routeName}', [App\Http\Controllers\Api\SeoController::class, 'getPageSeoByRoute']);
-    Route::get('/page-seo/url/{urlPattern}', [App\Http\Controllers\Api\SeoController::class, 'getPageSeoByUrl']);
-    Route::get('/favicon', [App\Http\Controllers\Api\FaviconController::class, 'getFavicon']);
-
     // Auth routes (public)
     Route::prefix('auth')->group(function () {
         Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
@@ -100,168 +75,157 @@ Route::prefix('v1')->group(function () {
     // Threads routes (public)
     Route::prefix('threads')->group(function () {
         Route::get('/', [App\Http\Controllers\Api\ThreadController::class, 'index']);
-        Route::get('/actions/approve-all', [App\Http\Controllers\Api\ThreadController::class, 'approveAllThreads']);
-        Route::get('/need-replies', [App\Http\Controllers\Api\ThreadController::class, 'getNeedReplies']);
+        Route::get('/featured', [App\Http\Controllers\Api\ThreadController::class, 'getFeatured']);
+        Route::get('/trending', [App\Http\Controllers\Api\ThreadController::class, 'getTrending']);
+        Route::get('/latest', [App\Http\Controllers\Api\ThreadController::class, 'getLatest']);
         Route::get('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'show']);
         Route::get('/{slug}/comments', [App\Http\Controllers\Api\ThreadController::class, 'getComments']);
-        Route::get('/{slug}/media', [App\Http\Controllers\Api\MediaController::class, 'getThreadMedia']);
-        Route::get('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'getTags']);
+    });
+
+    // Comments routes (public)
+    Route::prefix('comments')->group(function () {
+        Route::get('/', [App\Http\Controllers\Api\CommentController::class, 'index']);
+        Route::get('/{id}', [App\Http\Controllers\Api\CommentController::class, 'show']);
+        Route::get('/{id}/replies', [App\Http\Controllers\Api\CommentController::class, 'getReplies']);
     });
 
     // Search routes (public)
     Route::prefix('search')->group(function () {
-        Route::get('/', [App\Http\Controllers\Api\SearchController::class, 'search']);
-        Route::get('/suggestions', [App\Http\Controllers\Api\SearchController::class, 'suggestions']);
+        Route::get('/threads', [App\Http\Controllers\Api\SearchController::class, 'searchThreads']);
+        Route::get('/users', [App\Http\Controllers\Api\SearchController::class, 'searchUsers']);
+        Route::get('/tags', [App\Http\Controllers\Api\SearchController::class, 'searchTags']);
+        Route::get('/forums', [App\Http\Controllers\Api\SearchController::class, 'searchForums']);
+        Route::get('/global', [App\Http\Controllers\Api\SearchController::class, 'globalSearch']);
+        Route::get('/suggestions', [App\Http\Controllers\Api\SearchController::class, 'getSearchSuggestions']);
     });
 
-    // SEO routes (public)
-    Route::prefix('seo')->group(function () {
-        Route::get('/', [App\Http\Controllers\Api\SeoController::class, 'index']);
-        Route::get('/pages/{slug}', [App\Http\Controllers\Api\SeoController::class, 'getPageSeo']);
-        Route::get('/threads/{slug}', [App\Http\Controllers\Api\SeoController::class, 'getThreadSeo']);
-        Route::get('/forums/{slug}', [App\Http\Controllers\Api\SeoController::class, 'getForumSeo']);
-        Route::get('/categories/{slug}', [App\Http\Controllers\Api\SeoController::class, 'getCategorySeo']);
-        Route::get('/users/{username}', [App\Http\Controllers\Api\SeoController::class, 'getUserSeo']);
-    });
-
-    // Showcase routes (public)
-    Route::prefix('showcases')->group(function () {
-        Route::get('/', [App\Http\Controllers\Api\ShowcaseController::class, 'index']);
-        Route::get('/recent', [App\Http\Controllers\Api\ShowcaseController::class, 'getRecent']);
-        Route::get('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'show']);
-    });
-
-    // Stats routes (public)
-    Route::prefix('stats')->group(function () {
-        Route::get('/forum', [App\Http\Controllers\Api\StatsController::class, 'getForumStats']);
-        Route::get('/forums/popular', [App\Http\Controllers\Api\StatsController::class, 'getPopularForums']);
-        Route::get('/users/active', [App\Http\Controllers\Api\StatsController::class, 'getActiveUsers']);
-        Route::get('/threads/featured', [App\Http\Controllers\Api\StatsController::class, 'getFeaturedThreads']);
-    });
-
-    // Avatar routes (public)
-    Route::get('/avatar', [App\Http\Controllers\Api\AvatarController::class, 'generate']);
-
-    // Comments routes (public)
-    Route::get('/comments/recent', [App\Http\Controllers\Api\CommentController::class, 'getRecent']);
-
-    // Media routes (public)
-    Route::get('/media/recent', [App\Http\Controllers\Api\MediaController::class, 'getRecent']);
-
-    // Articles routes (public)
-    Route::get('/articles/recent', [App\Http\Controllers\Api\ArticleController::class, 'getRecent']);
-
-    // Test routes (chỉ dùng trong môi trường development)
-    if (app()->environment('local', 'development', 'staging', 'production')) { // Tạm thời cho phép trên production để test
-        Route::get('/test/add-to-showcase', [App\Http\Controllers\Api\TestController::class, 'addThreadsToShowcase']);
-        Route::get('/test/add-single-to-showcase', [App\Http\Controllers\Api\TestController::class, 'addSingleThreadToShowcase']);
-    }
-
-    // Protected routes
+    // Protected routes (require authentication)
     Route::middleware('auth:sanctum')->group(function () {
-        // User info
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
 
-        // Auth routes (protected)
+        // Auth profile routes (protected)
         Route::prefix('auth')->group(function () {
             Route::get('/me', [App\Http\Controllers\Api\AuthController::class, 'me']);
             Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
             Route::post('/refresh', [App\Http\Controllers\Api\AuthController::class, 'refresh']);
+            Route::put('/profile', [App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
+            Route::post('/change-password', [App\Http\Controllers\Api\AuthController::class, 'changePassword']);
+            Route::post('/upload-avatar', [App\Http\Controllers\Api\AuthController::class, 'uploadAvatar']);
+            Route::delete('/delete-account', [App\Http\Controllers\Api\AuthController::class, 'deleteAccount']);
         });
 
-        // Users routes (protected)
+        // User actions routes (protected)
         Route::prefix('users')->group(function () {
-            Route::put('/{username}', [App\Http\Controllers\Api\UserController::class, 'update']);
-            Route::delete('/{username}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
             Route::post('/{username}/follow', [App\Http\Controllers\Api\UserController::class, 'follow']);
             Route::delete('/{username}/follow', [App\Http\Controllers\Api\UserController::class, 'unfollow']);
-            Route::post('/avatar', [App\Http\Controllers\Api\UserController::class, 'updateAvatar']);
+            Route::post('/{username}/block', [App\Http\Controllers\Api\UserController::class, 'block']);
+            Route::delete('/{username}/block', [App\Http\Controllers\Api\UserController::class, 'unblock']);
         });
 
-        // Threads routes (protected)
+        // Thread creation and management routes (protected)
         Route::prefix('threads')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\ThreadController::class, 'store']);
             Route::put('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'update']);
             Route::delete('/{slug}', [App\Http\Controllers\Api\ThreadController::class, 'destroy']);
             Route::post('/{slug}/like', [App\Http\Controllers\Api\ThreadController::class, 'like']);
             Route::delete('/{slug}/like', [App\Http\Controllers\Api\ThreadController::class, 'unlike']);
-            Route::post('/{slug}/save', [App\Http\Controllers\Api\ThreadController::class, 'save']);
-            Route::delete('/{slug}/save', [App\Http\Controllers\Api\ThreadController::class, 'unsave']);
-            Route::post('/{slug}/follow', [App\Http\Controllers\Api\ThreadController::class, 'follow']);
-            Route::delete('/{slug}/follow', [App\Http\Controllers\Api\ThreadController::class, 'unfollow']);
-            Route::post('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'addTags']);
-            Route::delete('/{slug}/tags', [App\Http\Controllers\Api\ThreadController::class, 'removeTags']);
-            Route::post('/{slug}/report', [App\Http\Controllers\Api\ReportController::class, 'reportThread']);
-            Route::get('/saved', [App\Http\Controllers\Api\ThreadController::class, 'getSaved']);
-            Route::get('/followed', [App\Http\Controllers\Api\ThreadController::class, 'getFollowed']);
-            Route::post('/{slug}/comments', [App\Http\Controllers\Api\CommentController::class, 'store']);
+            Route::post('/{slug}/dislike', [App\Http\Controllers\Api\ThreadController::class, 'dislike']);
+            Route::delete('/{slug}/dislike', [App\Http\Controllers\Api\ThreadController::class, 'undislike']);
+            Route::post('/{slug}/subscribe', [App\Http\Controllers\Api\ThreadController::class, 'subscribe']);
+            Route::delete('/{slug}/subscribe', [App\Http\Controllers\Api\ThreadController::class, 'unsubscribe']);
+            Route::post('/{slug}/report', [App\Http\Controllers\Api\ThreadController::class, 'report']);
         });
 
-        // Comments routes (protected)
+        // Comment management routes (protected)
         Route::prefix('comments')->group(function () {
+            Route::post('/', [App\Http\Controllers\Api\CommentController::class, 'store']);
             Route::put('/{id}', [App\Http\Controllers\Api\CommentController::class, 'update']);
             Route::delete('/{id}', [App\Http\Controllers\Api\CommentController::class, 'destroy']);
             Route::post('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'like']);
             Route::delete('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'unlike']);
-            Route::post('/{id}/report', [App\Http\Controllers\Api\ReportController::class, 'reportComment']);
-            Route::get('/{id}/replies', [App\Http\Controllers\Api\CommentController::class, 'getReplies']);
-            Route::post('/{id}/replies', [App\Http\Controllers\Api\CommentController::class, 'storeReply']);
+            Route::post('/{id}/dislike', [App\Http\Controllers\Api\CommentController::class, 'dislike']);
+            Route::delete('/{id}/dislike', [App\Http\Controllers\Api\CommentController::class, 'undislike']);
+            Route::post('/{id}/report', [App\Http\Controllers\Api\CommentController::class, 'report']);
         });
 
-        // Alerts routes (protected)
-        Route::prefix('alerts')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\AlertController::class, 'index']);
-            Route::post('/{id}/read', [App\Http\Controllers\Api\AlertController::class, 'markAsRead']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\AlertController::class, 'destroy']);
-            Route::post('/read-all', [App\Http\Controllers\Api\AlertController::class, 'markAllAsRead']);
+        // Notifications routes (protected)
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\NotificationController::class, 'index']);
+            Route::get('/unread', [App\Http\Controllers\Api\NotificationController::class, 'getUnread']);
+            Route::post('/mark-read', [App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+            Route::post('/mark-all-read', [App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+            Route::delete('/{id}', [App\Http\Controllers\Api\NotificationController::class, 'destroy']);
         });
 
-        // Conversations routes (protected)
-        Route::prefix('conversations')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\ConversationController::class, 'index']);
-            Route::post('/', [App\Http\Controllers\Api\ConversationController::class, 'store']);
-            Route::get('/{id}', [App\Http\Controllers\Api\ConversationController::class, 'show']);
-            Route::post('/{id}/messages', [App\Http\Controllers\Api\ConversationController::class, 'sendMessage']);
-            Route::post('/{id}/read', [App\Http\Controllers\Api\ConversationController::class, 'markAsRead']);
+        // Moderation routes (protected - require moderation permissions)
+        Route::prefix('moderation')->middleware(['can:moderate-content'])->group(function () {
+            // Thread moderation
+            Route::post('/threads/{thread}/flag', [App\Http\Controllers\ModerationController::class, 'flagThread']);
+            Route::delete('/threads/{thread}/flag', [App\Http\Controllers\ModerationController::class, 'unflagThread']);
+            Route::post('/threads/{thread}/spam', [App\Http\Controllers\ModerationController::class, 'markThreadAsSpam']);
+            Route::delete('/threads/{thread}/spam', [App\Http\Controllers\ModerationController::class, 'unmarkThreadAsSpam']);
+            Route::put('/threads/{thread}/moderation-status', [App\Http\Controllers\ModerationController::class, 'updateThreadModerationStatus']);
+            Route::post('/threads/{thread}/archive', [App\Http\Controllers\ModerationController::class, 'archiveThread']);
+            Route::delete('/threads/{thread}/archive', [App\Http\Controllers\ModerationController::class, 'unarchiveThread']);
+            Route::post('/threads/{thread}/hide', [App\Http\Controllers\ModerationController::class, 'hideThread']);
+            Route::delete('/threads/{thread}/hide', [App\Http\Controllers\ModerationController::class, 'unhideThread']);
+
+            // Comment moderation
+            Route::post('/comments/{comment}/flag', [App\Http\Controllers\ModerationController::class, 'flagComment']);
+            Route::delete('/comments/{comment}/flag', [App\Http\Controllers\ModerationController::class, 'unflagComment']);
+            Route::post('/comments/{comment}/spam', [App\Http\Controllers\ModerationController::class, 'markCommentAsSpam']);
+            Route::delete('/comments/{comment}/spam', [App\Http\Controllers\ModerationController::class, 'unmarkCommentAsSpam']);
+            Route::post('/comments/{comment}/solution', [App\Http\Controllers\ModerationController::class, 'markCommentAsSolution']);
+            Route::delete('/comments/{comment}/solution', [App\Http\Controllers\ModerationController::class, 'unmarkCommentAsSolution']);
+
+            // Batch operations
+            Route::post('/threads/batch', [App\Http\Controllers\ModerationController::class, 'batchModerationThreads']);
+
+            // Moderation dashboard
+            Route::get('/threads/pending', [App\Http\Controllers\ModerationController::class, 'getPendingThreads']);
+            Route::get('/comments/pending', [App\Http\Controllers\ModerationController::class, 'getPendingComments']);
         });
 
-        // Media routes (protected)
-        Route::prefix('media')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\MediaController::class, 'index']);
-            Route::post('/', [App\Http\Controllers\Api\MediaController::class, 'store']);
-            Route::get('/{id}', [App\Http\Controllers\Api\MediaController::class, 'show']);
-            Route::put('/{id}', [App\Http\Controllers\Api\MediaController::class, 'update']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\MediaController::class, 'destroy']);
+        // Thread Quality routes (protected)
+        Route::prefix('threads/{thread}')->group(function () {
+            // Rating endpoints
+            Route::post('/rate', [App\Http\Controllers\Api\ThreadQualityController::class, 'rateThread']);
+            Route::delete('/rate', [App\Http\Controllers\Api\ThreadQualityController::class, 'removeRating']);
+            Route::get('/rating', [App\Http\Controllers\Api\ThreadQualityController::class, 'getUserRating']);
+            Route::get('/ratings', [App\Http\Controllers\Api\ThreadQualityController::class, 'getThreadRatings']);
+            Route::get('/rating-stats', [App\Http\Controllers\Api\ThreadQualityController::class, 'getThreadRatingStats']);
+
+            // Bookmark endpoints
+            Route::post('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'bookmarkThread']);
+            Route::delete('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'removeBookmark']);
+            Route::put('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'updateBookmark']);
+            Route::get('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'getBookmarkStatus']);
         });
 
-        // Showcase routes (protected)
-        Route::prefix('showcases')->group(function () {
-            Route::post('/', [App\Http\Controllers\Api\ShowcaseController::class, 'store']);
-            Route::put('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'update']);
-            Route::delete('/{slug}', [App\Http\Controllers\Api\ShowcaseController::class, 'destroy']);
-        });
-    });
-
-    // Admin routes
-    Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
-        // Showcase management
-        Route::prefix('showcases')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'index']);
-            Route::post('/add', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'addToShowcase']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'removeFromShowcase']);
+        // User Quality Data routes (protected)
+        Route::prefix('user')->group(function () {
+            Route::get('/bookmarks', [App\Http\Controllers\Api\ThreadQualityController::class, 'getUserBookmarks']);
+            Route::get('/bookmark-folders', [App\Http\Controllers\Api\ThreadQualityController::class, 'getBookmarkFolders']);
         });
 
-        // Reports management
-        Route::prefix('reports')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\ReportController::class, 'index']);
-            Route::put('/{id}', [App\Http\Controllers\Api\ReportController::class, 'updateStatus']);
-        });
+        // Admin routes (protected - require admin role)
+        Route::prefix('admin')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
+            // Showcase management
+            Route::prefix('showcases')->group(function () {
+                Route::get('/', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'index']);
+                Route::post('/add', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'addToShowcase']);
+                Route::delete('/{id}', [App\Http\Controllers\Api\Admin\ShowcaseController::class, 'removeFromShowcase']);
+            });
 
-        // Tags management
-        Route::prefix('tags')->group(function () {
-            Route::post('/', [App\Http\Controllers\Api\TagController::class, 'store']);
+            // Reports management
+            Route::prefix('reports')->group(function () {
+                Route::get('/', [App\Http\Controllers\Api\ReportController::class, 'index']);
+                Route::put('/{id}', [App\Http\Controllers\Api\ReportController::class, 'updateStatus']);
+            });
+
+            // Tags management
+            Route::prefix('tags')->group(function () {
+                Route::post('/', [App\Http\Controllers\Api\TagController::class, 'store']);
+            });
         });
     });
 });

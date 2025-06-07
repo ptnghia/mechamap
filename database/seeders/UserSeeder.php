@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -14,49 +13,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Tạo các user với role khác nhau và thông tin phong phú về cơ khí
+        // Tạo các mechanical engineering experts (không trùng với AdminUserSeeder)
         $users = [
-            // Admin users
-            [
-                'name' => 'Nguyễn Văn Admin',
-                'username' => 'admin_mechamap',
-                'email' => 'admin@mechamap.com',
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
-                'status' => 'active',
-                'about_me' => 'Chuyên gia hàng đầu về tự động hóa công nghiệp tại Việt Nam với hơn 15 năm kinh nghiệm trong lĩnh vực thiết kế và triển khai hệ thống robot công nghiệp.',
-                'website' => 'https://mechaengineering.vn',
-                'location' => 'TP. Hồ Chí Minh, Việt Nam',
-                'signature' => 'Đổi mới trong Tự động hóa - Xây dựng Tương lai Sản xuất',
-                'points' => 50000,
-                'reaction_score' => 15000,
-                'email_verified_at' => now(),
-                'last_seen_at' => now(),
-            ],
-
-            // Moderator users
-            [
-                'name' => 'Trần Thị Moderator',
-                'username' => 'mod_automation',
-                'email' => 'moderator@mechamap.com',
-                'password' => Hash::make('password123'),
-                'role' => 'moderator',
-                'status' => 'active',
-                'about_me' => 'Kỹ sư cơ khí chuyên về hệ thống băng tải và automation. Có kinh nghiệm 10 năm trong ngành sản xuất ô tô và điện tử.',
-                'website' => 'https://automation-vietnam.com',
-                'location' => 'Hà Nội, Việt Nam',
-                'signature' => 'Chuyên gia Tự động hóa | Lập trình CNC | Thiết kế Công nghiệp',
-                'points' => 25000,
-                'reaction_score' => 8500,
-                'email_verified_at' => now(),
-                'last_seen_at' => now()->subHours(2),
-            ],
-
-            // Senior members
+            // Senior members - Mechanical Engineering Experts
             [
                 'name' => 'Lê Minh Expert',
                 'username' => 'cnc_master',
-                'email' => 'expert1@mechamap.com',
+                'email' => 'leminh.cnc@gmail.com',
                 'password' => Hash::make('password123'),
                 'role' => 'senior',
                 'status' => 'active',
@@ -72,7 +35,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Phạm Văn Robot',
                 'username' => 'robot_engineer',
-                'email' => 'robot.engineer@mechamap.com',
+                'email' => 'phamvan.robot@gmail.com',
                 'password' => Hash::make('password123'),
                 'role' => 'senior',
                 'status' => 'active',
@@ -86,11 +49,11 @@ class UserSeeder extends Seeder
                 'last_seen_at' => now()->subMinutes(30),
             ],
 
-            // Active members
+            // Active members - Specializations
             [
                 'name' => 'Hoàng Thị Conveyor',
                 'username' => 'conveyor_specialist',
-                'email' => 'conveyor@mechamap.com',
+                'email' => 'hoangthiconveyor@gmail.com',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -105,7 +68,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Ngô Văn PLC',
                 'username' => 'plc_programmer',
-                'email' => 'plc.pro@mechamap.com',
+                'email' => 'ngovanplc@gmail.com',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -120,7 +83,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Vũ Thị CAD',
                 'username' => 'cad_designer',
-                'email' => 'cad.design@mechamap.com',
+                'email' => 'vuthicad@gmail.com',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -136,7 +99,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Đặng Minh Hydraulic',
                 'username' => 'hydraulic_expert',
-                'email' => 'hydraulic@mechamap.com',
+                'email' => 'hydraulic@mechamap.test',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -151,7 +114,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Bùi Văn Sensor',
                 'username' => 'sensor_tech',
-                'email' => 'sensor@mechamap.com',
+                'email' => 'sensor@mechamap.test',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -166,7 +129,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Lý Thị Motor',
                 'username' => 'motor_specialist',
-                'email' => 'motor@mechamap.com',
+                'email' => 'motor@mechamap.test',
                 'password' => Hash::make('password123'),
                 'role' => 'member',
                 'status' => 'active',
@@ -178,12 +141,58 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'last_seen_at' => now()->subHours(10),
             ],
+            [
+                'name' => 'Mai Văn Quality',
+                'username' => 'quality_engineer',
+                'email' => 'quality@mechamap.test',
+                'password' => Hash::make('password123'),
+                'role' => 'member',
+                'status' => 'active',
+                'about_me' => 'Kỹ sư chất lượng với 8 năm kinh nghiệm trong ISO 9001, Six Sigma. Chuyên về kiểm tra chất lượng sản phẩm cơ khí và quy trình sản xuất.',
+                'location' => 'Bắc Giang, Việt Nam',
+                'signature' => 'Quản lý Chất lượng | Six Sigma | ISO Standards',
+                'points' => 4200,
+                'reaction_score' => 1100,
+                'email_verified_at' => now(),
+                'last_seen_at' => now()->subHours(7),
+            ],
+            [
+                'name' => 'Trương Thị Safety',
+                'username' => 'safety_engineer',
+                'email' => 'safety@mechamap.test',
+                'password' => Hash::make('password123'),
+                'role' => 'member',
+                'status' => 'active',
+                'about_me' => 'Chuyên viên an toàn lao động trong công nghiệp nặng. Có chứng chỉ OHSAS 18001 và nhiều năm kinh nghiệm đánh giá rủi ro máy móc.',
+                'location' => 'Thái Nguyên, Việt Nam',
+                'signature' => 'An toàn Lao động | Đánh giá Rủi ro | OHSAS 18001',
+                'points' => 3600,
+                'reaction_score' => 920,
+                'email_verified_at' => now(),
+                'last_seen_at' => now()->subHours(9),
+            ],
+            [
+                'name' => 'Đinh Minh Maintenance',
+                'username' => 'maintenance_expert',
+                'email' => 'maintenance@mechamap.test',
+                'password' => Hash::make('password123'),
+                'role' => 'member',
+                'status' => 'active',
+                'about_me' => 'Chuyên gia bảo trì dự đoán (Predictive Maintenance) với kinh nghiệm triển khai TPM tại nhiều nhà máy. Sử dụng AI và vibration analysis.',
+                'website' => 'https://maintenance-ai.vn',
+                'location' => 'Bình Dương, Việt Nam',
+                'signature' => 'Bảo trì Dự đoán | TPM | Phân tích Rung động',
+                'points' => 5800,
+                'reaction_score' => 1650,
+                'email_verified_at' => now(),
+                'last_seen_at' => now()->subHours(3),
+            ],
 
-            // New members
+            // New members - Students and newcomers
             [
                 'name' => 'Nguyễn Văn Newbie',
                 'username' => 'mecha_newbie',
-                'email' => 'newbie1@mechamap.com',
+                'email' => 'newbie1@mechamap.test',
                 'password' => Hash::make('password123'),
                 'role' => 'guest',
                 'status' => 'active',
@@ -198,7 +207,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Trần Thị Student',
                 'username' => 'automation_student',
-                'email' => 'student@mechamap.com',
+                'email' => 'student@mechamap.test',
                 'password' => Hash::make('password123'),
                 'role' => 'guest',
                 'status' => 'active',
@@ -213,26 +222,41 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $userData) {
-            $user = User::create($userData);
+            // Sử dụng firstOrCreate để tránh duplicate
+            $user = User::firstOrCreate(
+                ['email' => $userData['email']], // Check by email
+                $userData // Create with full data if not exists
+            );
 
-            // Gán role dựa trên thuộc tính role
-            switch ($userData['role']) {
-                case 'admin':
-                    $user->assignRole('admin');
-                    break;
-                case 'moderator':
-                    $user->assignRole('moderator');
-                    break;
-                case 'senior':
-                    $user->assignRole('senior');
-                    break;
-                case 'member':
-                    $user->assignRole('member');
-                    break;
-                case 'guest':
-                    $user->assignRole('guest');
-                    break;
+            echo "Processing: {$userData['name']} ({$userData['email']}) - ";
+
+            // Gán role dựa trên thuộc tính role nếu user vừa được tạo
+            if ($user->wasRecentlyCreated) {
+                echo "CREATED NEW - ";
+                switch ($userData['role']) {
+                    case 'admin':
+                        $user->assignRole('admin');
+                        break;
+                    case 'moderator':
+                        $user->assignRole('moderator');
+                        break;
+                    case 'senior':
+                        $user->assignRole('senior');
+                        break;
+                    case 'member':
+                        $user->assignRole('member');
+                        break;
+                    case 'guest':
+                        $user->assignRole('guest');
+                        break;
+                }
+                echo "Role assigned: {$userData['role']}\n";
+            } else {
+                echo "ALREADY EXISTS\n";
             }
         }
+
+        $newUsersCount = User::whereIn('email', collect($users)->pluck('email'))->where('created_at', '>=', now()->subMinute())->count();
+        echo "\n✅ UserSeeder completed! Created {$newUsersCount} new users out of " . count($users) . " total.\n";
     }
 }

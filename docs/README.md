@@ -9,6 +9,9 @@ Chào mừng đến với tài liệu dự án **MechaMap** - Nền tảng diễ
 
 ### 🔧 Backend (Laravel)
 - [`deployment/`](./deployment/) - Hướng dẫn triển khai
+- [`testing/`](./testing/) - Scripts testing, verification và maintenance
+- [`maintenance/`](./maintenance/) - Scripts bảo trì hệ thống
+- [`reports/`](./reports/) - Báo cáo hoàn thành các tính năng
 - [`development/`](./development/) - Tài liệu phát triển backend
 - [`guides/`](./guides/) - Hướng dẫn sử dụng API
 - [`testing/`](./testing/) - Tài liệu testing

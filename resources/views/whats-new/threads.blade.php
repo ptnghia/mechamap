@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'New Threads - MechaMap')
+@section('title', '{{ __("messages.new_threads") }} - MechaMap')
 
 @section('content')
 <div class="container mt-4">
@@ -18,19 +18,21 @@
             <div class="whats-new-tabs mb-4">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new') }}">New Posts</a>
+                        <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">Popular</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('messages.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new.threads') }}">New Threads</a>
+                        <a class="nav-link active" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads')
+                            }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.media') }}">New Media</a>
+                        <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('messages.new_media') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.replies') }}">Looking for Replies</a>
+                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
+                            __('messages.looking_for_replies') }}</a>
                     </li>
                 </ul>
             </div>
@@ -112,7 +114,7 @@
             <!-- Threads List -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">New Threads</h5>
+                    <h5 class="mb-0">{{ __('messages.new_threads') }}</h5>
                 </div>
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
@@ -131,10 +133,12 @@
                                                 <a href="{{ route('threads.show', $thread->slug) }}">{{ $thread->title
                                                     }}</a>
                                                 @if($thread->is_sticky)
-                                                <span class="badge bg-primary ms-1">Sticky</span>
+                                                <span class="badge bg-primary ms-1">{{
+                                                    __('messages.thread_status.sticky') }}</span>
                                                 @endif
                                                 @if($thread->is_locked)
-                                                <span class="badge bg-danger ms-1">Locked</span>
+                                                <span class="badge bg-danger ms-1">{{
+                                                    __('messages.thread_status.locked') }}</span>
                                                 @endif
                                             </div>
                                             <small class="text-muted d-md-none">{{ $thread->created_at->diffForHumans()

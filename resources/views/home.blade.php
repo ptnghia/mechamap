@@ -25,10 +25,10 @@
                                 <div class="thread-title">
                                     <a href="{{ route('threads.show', $thread) }}">{{ $thread->title }}</a>
                                     @if($thread->is_sticky)
-                                    <span class="badge bg-primary ms-1">Sticky</span>
+                                    <span class="badge bg-primary ms-1">{{ __('messages.thread_status.sticky') }}</span>
                                     @endif
                                     @if($thread->is_locked)
-                                    <span class="badge bg-danger ms-1">Locked</span>
+                                    <span class="badge bg-danger ms-1">{{ __('messages.thread_status.locked') }}</span>
                                     @endif
                                 </div>
                                 <small class="text-muted d-md-none">{{ $thread->created_at->diffForHumans() }}</small>
@@ -131,6 +131,12 @@
 
 @push('scripts')
 <script>
+    // Biến dịch cho JavaScript
+    const translations = {
+        sticky: '{{ __("messages.thread_status.sticky") }}',
+        locked: '{{ __("messages.thread_status.locked") }}'
+    };
+
     // Load more threads functionality
     let page = 0; // Bắt đầu từ 0, page 1 sẽ là trang đầu tiên "load more"
     const loadMoreButton = document.getElementById('load-more-threads');
@@ -138,11 +144,11 @@
     loadMoreButton.addEventListener('click', function() {
         page++;
         console.log('Loading page:', page);
-        
+
         // Hiển thị trạng thái loading
         loadMoreButton.disabled = true;
         loadMoreButton.textContent = 'Đang tải...';
-        
+
         fetch(`/api/threads?page=${page}`)
             .then(response => {
                 if (!response.ok) {
@@ -152,7 +158,7 @@
             })
             .then(data => {
                 console.log('Received data:', data);
-                
+
                 if (data.threads && data.threads.length > 0) {
                     const threadsContainer = document.getElementById('latest-threads');
 
@@ -193,12 +199,12 @@
 
         // Đảm bảo user có avatar
         const userAvatar = thread.user?.profile_photo_url || '/images/default-avatar.png';
-        
+
         // Đảm bảo thread có slug (fallback to id)
         const threadUrl = thread.slug ? `/threads/${thread.slug}` : `/threads/${thread.id}`;
-        
+
         // Xử lý content preview
-        const contentPreview = thread.content ? 
+        const contentPreview = thread.content ?
             (thread.content.length > 120 ? thread.content.substring(0, 120) + '...' : thread.content) : '';
 
         // Build the HTML với logic layout tối ưu
@@ -214,8 +220,8 @@
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="thread-title">
                                     <a href="${threadUrl}">${thread.title}</a>
-                                    ${thread.is_sticky ? '<span class="badge bg-primary ms-1">Sticky</span>' : ''}
-                                    ${thread.is_locked ? '<span class="badge bg-danger ms-1">Locked</span>' : ''}
+                                    ${thread.is_sticky ? `<span class="badge bg-primary ms-1">${translations.sticky}</span>` : ''}
+                                    ${thread.is_locked ? `<span class="badge bg-danger ms-1">${translations.locked}</span>` : ''}
                                 </div>
                                 <small class="text-muted d-md-none">${timeAgo}</small>
                             </div>

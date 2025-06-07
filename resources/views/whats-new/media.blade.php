@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'New Media - MechaMap')
+@section('title', '{{ __("messages.new_media") }} - MechaMap')
 
 @section('content')
 <div class="container mt-4">
@@ -18,19 +18,21 @@
             <div class="whats-new-tabs mb-4">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new') }}">New Posts</a>
+                        <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">Popular</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('messages.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.threads') }}">New Threads</a>
+                        <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new.media') }}">New Media</a>
+                        <a class="nav-link active" href="{{ route('whats-new.media') }}">{{ __('messages.new_media')
+                            }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.replies') }}">Looking for Replies</a>
+                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
+                            __('messages.looking_for_replies') }}</a>
                     </li>
                 </ul>
             </div>

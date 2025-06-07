@@ -34,10 +34,12 @@
                                         <a href="{{ route('threads.show', $thread) }}" class="text-decoration-none">{{
                                             $thread->title }}</a>
                                         @if($thread->is_sticky)
-                                        <span class="badge bg-primary ms-1">Sticky</span>
+                                        <span class="badge bg-primary ms-1">{{ __('messages.thread_status.sticky')
+                                            }}</span>
                                         @endif
                                         @if($thread->is_locked)
-                                        <span class="badge bg-danger ms-1">Locked</span>
+                                        <span class="badge bg-danger ms-1">{{ __('messages.thread_status.locked')
+                                            }}</span>
                                         @endif
                                     </h5>
                                     <div>
@@ -68,7 +70,7 @@
                                         <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }}
                                             views</span>
                                         <span class="me-3"><i class="bi bi-chat"></i> {{ $thread->allComments->count()
-                                            }} replies</span>
+                                            }} {{ __('messages.replies') }}</span>
                                         <span><i class="bi bi-people"></i> {{ $thread->participant_count }}
                                             participants</span>
                                     </div>

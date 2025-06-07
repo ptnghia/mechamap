@@ -25,6 +25,27 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register Gates for moderation
+        \Illuminate\Support\Facades\Gate::define('moderate-content', function ($user) {
+            return app(\App\Policies\ModerationPolicy::class)->moderateContent($user);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('flag-thread', function ($user, $thread) {
+            return app(\App\Policies\ModerationPolicy::class)->flagThread($user, $thread);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('flag-comment', function ($user, $comment) {
+            return app(\App\Policies\ModerationPolicy::class)->flagComment($user, $comment);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('mark-solution', function ($user, $comment) {
+            return app(\App\Policies\ModerationPolicy::class)->markCommentAsSolution($user, $comment);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('bump-thread', function ($user, $thread) {
+            return app(\App\Policies\ModerationPolicy::class)->bumpThread($user, $thread);
+        });
+
         // Đăng ký provider tùy chỉnh cho guard admin
         Auth::provider('admin-users', function ($app, array $config) {
             // Lấy hasher instance

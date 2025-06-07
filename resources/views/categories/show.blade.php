@@ -10,12 +10,13 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                     @if($category->parent)
-                    <li class="breadcrumb-item"><a href="{{ route('categories.show', $category->parent->slug) }}">{{ $category->parent->name }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('categories.show', $category->parent->slug) }}">{{
+                            $category->parent->name }}</a></li>
                     @endif
                     <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
                 </ol>
             </nav>
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>{{ $category->name }}</h1>
                 @auth
@@ -24,7 +25,7 @@
                 </a>
                 @endauth
             </div>
-            
+
             @if($category->description)
             <div class="card mb-4">
                 <div class="card-body">
@@ -32,7 +33,7 @@
                 </div>
             </div>
             @endif
-            
+
             @if($subcategories->count() > 0)
             <div class="card mb-4">
                 <div class="card-header bg-light">
@@ -48,12 +49,14 @@
                                 </div>
                                 <div>
                                     <h5 class="mb-1">
-                                        <a href="{{ route('categories.show', $subcategory->slug) }}" class="text-decoration-none">
+                                        <a href="{{ route('categories.show', $subcategory->slug) }}"
+                                            class="text-decoration-none">
                                             {{ $subcategory->name }}
                                         </a>
                                     </h5>
                                     @if($subcategory->description)
-                                    <p class="text-muted small mb-0">{{ Str::limit($subcategory->description, 100) }}</p>
+                                    <p class="text-muted small mb-0">{{ Str::limit($subcategory->description, 100) }}
+                                    </p>
                                     @endif
                                 </div>
                             </div>
@@ -63,18 +66,25 @@
                 </div>
             </div>
             @endif
-            
+
             <div class="card">
                 <div class="card-header bg-light d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Threads</h5>
                     <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             Sort
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}">Latest</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">Popular</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'most_viewed']) }}">Most Viewed</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}">{{
+                                    __('messages.latest') }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">{{
+                                    __('messages.popular') }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ request()->fullUrlWithQuery(['sort' => 'most_viewed']) }}">Most Viewed</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -83,7 +93,8 @@
                     <div class="list-group-item p-3">
                         <div class="d-flex">
                             <div class="flex-shrink-0 me-3">
-                                <img src="{{ $thread->user->avatar }}" alt="{{ $thread->user->name }}" class="rounded-circle" width="50" height="50">
+                                <img src="{{ $thread->user->avatar }}" alt="{{ $thread->user->name }}"
+                                    class="rounded-circle" width="50" height="50">
                             </div>
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-start">
@@ -92,32 +103,38 @@
                                         <span class="badge bg-primary me-1">Sticky</span>
                                         @endif
                                         @if($thread->is_locked)
-                                        <span class="badge bg-secondary me-1">Locked</span>
+                                        <span class="badge bg-secondary me-1">{{ __('messages.thread_status.locked')
+                                            }}</span>
                                         @endif
-                                        <a href="{{ route('threads.show', $thread->slug) }}" class="text-decoration-none">
+                                        <a href="{{ route('threads.show', $thread->slug) }}"
+                                            class="text-decoration-none">
                                             {{ $thread->title }}
                                         </a>
                                     </h5>
                                     <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
                                 </div>
                                 <p class="mb-1 text-muted small">
-                                    By <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">{{ $thread->user->name }}</a>
+                                    By <a href="{{ route('profile.show', $thread->user->username) }}"
+                                        class="text-decoration-none">{{ $thread->user->name }}</a>
                                     @if($thread->forum)
-                                    in <a href="{{ route('forums.show', $thread->forum->slug) }}" class="text-decoration-none">{{ $thread->forum->name }}</a>
+                                    in <a href="{{ route('forums.show', $thread->forum->slug) }}"
+                                        class="text-decoration-none">{{ $thread->forum->name }}</a>
                                     @endif
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div>
-                                        <span class="badge bg-secondary me-2" title="Replies">
+                                        <span class="badge bg-secondary me-2" title="{{ __('messages.replies') }}">
                                             <i class="fas fa-comment"></i> {{ $thread->comments->count() }}
                                         </span>
-                                        <span class="badge bg-secondary" title="Views">
+                                        <span class="badge bg-secondary" title="{{ __('Views') }}">
                                             <i class="fas fa-eye"></i> {{ $thread->view_count }}
                                         </span>
                                     </div>
                                     <div class="text-muted small">
                                         @if($thread->comments->count() > 0)
-                                        Last reply {{ $thread->comments->sortByDesc('created_at')->first()->created_at->diffForHumans() }}
+                                        Last reply {{
+                                        $thread->comments->sortByDesc('created_at')->first()->created_at->diffForHumans()
+                                        }}
                                         @endif
                                     </div>
                                 </div>
@@ -136,7 +153,7 @@
                     @endforelse
                 </div>
             </div>
-            
+
             <div class="mt-4">
                 {{ $threads->links() }}
             </div>

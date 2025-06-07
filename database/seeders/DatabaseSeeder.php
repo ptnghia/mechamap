@@ -55,6 +55,11 @@ class DatabaseSeeder extends Seeder
             AlertSeeder::class, // User notifications
             ReportSeeder::class, // Content reports
 
+            // Enhanced Thread States - New quality features
+            ThreadRatingSeeder::class, // Individual thread ratings (1-5 stars)
+            ThreadBookmarkSeeder::class, // Advanced bookmark với folders
+            EnhancedThreadStatesSeeder::class, // Update existing threads với enhanced states
+
             // Media seeders
             MediaSeeder::class, // Images and files
             ForumCategoryImageSeeder::class, // Professional images for forums and categories

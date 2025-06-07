@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\ShowcaseFollow;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ShowcaseFollowSeeder extends Seeder
 {
@@ -13,88 +13,60 @@ class ShowcaseFollowSeeder extends Seeder
      */
     public function run(): void
     {
-        // Sample user follows (user relationships)
-        $follows = [
-            [
-                'follower_id' => 2, // User 2 follows User 1
-                'following_id' => 1,
-                'created_at' => Carbon::now()->subDays(10),
-                'updated_at' => Carbon::now()->subDays(10),
-            ],
-            [
-                'follower_id' => 3, // User 3 follows User 1
-                'following_id' => 1,
-                'created_at' => Carbon::now()->subDays(8),
-                'updated_at' => Carbon::now()->subDays(8),
-            ],
-            [
-                'follower_id' => 4, // User 4 follows User 1
-                'following_id' => 1,
-                'created_at' => Carbon::now()->subDays(6),
-                'updated_at' => Carbon::now()->subDays(6),
-            ],
-            [
-                'follower_id' => 1, // User 1 follows User 2
-                'following_id' => 2,
-                'created_at' => Carbon::now()->subDays(7),
-                'updated_at' => Carbon::now()->subDays(7),
-            ],
-            [
-                'follower_id' => 3, // User 3 follows User 2
-                'following_id' => 2,
-                'created_at' => Carbon::now()->subDays(5),
-                'updated_at' => Carbon::now()->subDays(5),
-            ],
-            [
-                'follower_id' => 1, // User 1 follows User 3
-                'following_id' => 3,
-                'created_at' => Carbon::now()->subDays(4),
-                'updated_at' => Carbon::now()->subDays(4),
-            ],
-            [
-                'follower_id' => 2, // User 2 follows User 3
-                'following_id' => 3,
-                'created_at' => Carbon::now()->subDays(3),
-                'updated_at' => Carbon::now()->subDays(3),
-            ],
-            [
-                'follower_id' => 4, // User 4 follows User 3
-                'following_id' => 3,
-                'created_at' => Carbon::now()->subDays(2),
-                'updated_at' => Carbon::now()->subDays(2),
-            ],
-            [
-                'follower_id' => 1, // User 1 follows User 4
-                'following_id' => 4,
-                'created_at' => Carbon::now()->subDays(1),
-                'updated_at' => Carbon::now()->subDays(1),
-            ],
-            [
-                'follower_id' => 2, // User 2 follows User 4
-                'following_id' => 4,
-                'created_at' => Carbon::now()->subHours(12),
-                'updated_at' => Carbon::now()->subHours(12),
-            ],
-            [
-                'follower_id' => 5, // User 5 follows User 1
-                'following_id' => 1,
-                'created_at' => Carbon::now()->subDays(9),
-                'updated_at' => Carbon::now()->subDays(9),
-            ],
-            [
-                'follower_id' => 5, // User 5 follows User 2
-                'following_id' => 2,
-                'created_at' => Carbon::now()->subDays(4),
-                'updated_at' => Carbon::now()->subDays(4),
-            ],
-            [
-                'follower_id' => 5, // User 5 follows User 3
-                'following_id' => 3,
-                'created_at' => Carbon::now()->subDays(1),
-                'updated_at' => Carbon::now()->subDays(1),
-            ],
-        ];
+        echo "🎯 Bắt đầu tạo Showcase Follows (User Follows)...\n";
 
-        DB::table('showcase_follows')->insert($follows);
+        $users = User::all();
+
+        if ($users->count() < 2) {
+            echo "❌ Cần ít nhất 2 users để tạo follows\n";
+            return;
+        }
+
+        $createdCount = 0;
+
+        // Tạo follow relationships giữa users
+        foreach ($users as $follower) {
+            // Mỗi user follow 1-4 users khác
+            $numFollows = rand(1, 4);
+            $availableUsers = $users->filter(function ($user) use ($follower) {
+                return $user->id !== $follower->id; // Không follow chính mình
+            });
+
+            if ($availableUsers->count() === 0) {
+                continue;
+            }
+
+            $usersToFollow = $availableUsers->random(min($numFollows, $availableUsers->count()));
+
+            foreach ($usersToFollow as $userToFollow) {
+                // Kiểm tra xem đã follow chưa
+                $exists = ShowcaseFollow::where('follower_id', $follower->id)
+                    ->where('following_id', $userToFollow->id)
+                    ->exists();
+
+                if ($exists) {
+                    continue; // Bỏ qua nếu đã follow
+                }
+
+                try {
+                    $follow = ShowcaseFollow::create([
+                        'follower_id' => $follower->id,
+                        'following_id' => $userToFollow->id,
+                        'created_at' => now()->subDays(rand(1, 30))->subHours(rand(0, 23)),
+                        'updated_at' => now()->subDays(rand(0, 20))->subHours(rand(0, 23)),
+                    ]);
+
+                    if ($follow) {
+                        echo "✅ Follow #{$follow->id}: {$follower->name} follows {$userToFollow->name}\n";
+                        $createdCount++;
+                    }
+                } catch (\Exception $e) {
+                    echo "⚠️ Không thể tạo follow từ {$follower->id} đến {$userToFollow->id}: " . $e->getMessage() . "\n";
+                    continue;
+                }
+            }
+        }
+
+        echo "🎉 Hoàn thành tạo {$createdCount} user follows!\n";
     }
 }

@@ -18,19 +18,20 @@
             <div class="whats-new-tabs mb-4">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new') }}">New Posts</a>
+                        <a class="nav-link active" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">Popular</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('messages.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.threads') }}">New Threads</a>
+                        <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.media') }}">New Media</a>
+                        <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('messages.new_media') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.replies') }}">Looking for Replies</a>
+                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
+                            __('messages.looking_for_replies') }}</a>
                     </li>
                 </ul>
             </div>
@@ -129,10 +130,12 @@
                                                 <a href="{{ route('threads.show', $post->thread->slug) }}">{{
                                                     $post->thread->title }}</a>
                                                 @if($post->thread->is_sticky)
-                                                <span class="badge bg-primary ms-1">Sticky</span>
+                                                <span class="badge bg-primary ms-1">{{
+                                                    __('messages.thread_status.sticky') }}</span>
                                                 @endif
                                                 @if($post->thread->is_locked)
-                                                <span class="badge bg-danger ms-1">Locked</span>
+                                                <span class="badge bg-danger ms-1">{{
+                                                    __('messages.thread_status.locked') }}</span>
                                                 @endif
                                             </div>
                                             <small class="text-muted d-md-none">{{ $post->created_at->diffForHumans()

@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ShowcaseController;
 use App\Http\Controllers\Admin\AlertController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SearchController;
+use App\Http\Controllers\Admin\ModerationController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -90,6 +91,35 @@ Route::middleware('admin.auth')->group(function () {
         Route::put('threads/{thread}/approve', [ThreadController::class, 'approve'])->name('threads.approve');
         Route::put('threads/{thread}/reject', [ThreadController::class, 'reject'])->name('threads.reject');
         Route::get('threads-statistics', [ThreadController::class, 'statistics'])->name('threads.statistics');
+    });
+
+    // Moderation management routes (admin và moderator có quyền moderate_posts)
+    Route::middleware(['admin.auth'])->prefix('moderation')->name('moderation.')->group(function () {
+        // Dashboard tổng quan
+        Route::get('/', [ModerationController::class, 'index'])->name('index');
+        Route::get('/dashboard', [ModerationController::class, 'dashboard'])->name('dashboard');
+
+        // Quản lý threads
+        Route::get('/threads', [ModerationController::class, 'threads'])->name('threads');
+        Route::post('/threads/{thread}/approve', [ModerationController::class, 'approveThread'])->name('threads.approve');
+        Route::post('/threads/{thread}/reject', [ModerationController::class, 'rejectThread'])->name('threads.reject');
+        Route::post('/threads/{thread}/flag', [ModerationController::class, 'flagThread'])->name('threads.flag');
+        Route::post('/threads/bulk-action', [ModerationController::class, 'bulkActionThreads'])->name('threads.bulk-action');
+
+        // Quản lý comments
+        Route::get('/comments', [ModerationController::class, 'comments'])->name('comments');
+        Route::post('/comments/{comment}/approve', [ModerationController::class, 'approveComment'])->name('comments.approve');
+        Route::post('/comments/{comment}/reject', [ModerationController::class, 'rejectComment'])->name('comments.reject');
+        Route::post('/comments/{comment}/flag', [ModerationController::class, 'flagComment'])->name('comments.flag');
+        Route::post('/comments/bulk-action', [ModerationController::class, 'bulkActionComments'])->name('comments.bulk-action');
+
+        // Thống kê
+        Route::get('/statistics', [ModerationController::class, 'statistics'])->name('statistics');
+        Route::get('/user-activity', [ModerationController::class, 'userActivity'])->name('user-activity');
+
+        // AJAX endpoints
+        Route::post('/threads/{thread}/quick-action', [ModerationController::class, 'quickActionThread'])->name('threads.quick-action');
+        Route::post('/comments/{comment}/quick-action', [ModerationController::class, 'quickActionComment'])->name('comments.quick-action');
     });
 
     // Category management routes (chỉ admin có quyền manage_categories)

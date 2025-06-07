@@ -46,10 +46,10 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="sort" class="form-label">Sort By</label>
+                            <label for="sort" class="form-label">{{ __('messages.sort_by') }}</label>
                             <select class="form-select" id="sort" name="sort">
                                 <option value="latest" {{ request('sort', 'latest' )=='latest' ? 'selected' : '' }}>
-                                    Latest</option>
+                                    {{ __('messages.latest') }}</option>
                                 <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>Oldest</option>
                                 <option value="most_viewed" {{ request('sort')=='most_viewed' ? 'selected' : '' }}>Most
                                     Viewed</option>
@@ -97,10 +97,12 @@
                                                 <a href="{{ route('threads.show', $thread) }}"
                                                     class="text-decoration-none">{{ $thread->title }}</a>
                                                 @if($thread->is_sticky)
-                                                <span class="badge bg-primary ms-1">Sticky</span>
+                                                <span class="badge bg-primary ms-1">{{
+                                                    __('messages.thread_status.sticky') }}</span>
                                                 @endif
                                                 @if($thread->is_locked)
-                                                <span class="badge bg-danger ms-1">Locked</span>
+                                                <span class="badge bg-danger ms-1">{{
+                                                    __('messages.thread_status.locked') }}</span>
                                                 @endif
                                             </h5>
                                             <small class="text-muted d-md-none">{{ $thread->created_at->diffForHumans()
@@ -142,7 +144,7 @@
                                                 <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }}
                                                     views</span>
                                                 <span class="me-3"><i class="bi bi-chat"></i> {{
-                                                    $thread->allComments->count() }} replies</span>
+                                                    $thread->allComments->count() }} {{ __('messages.replies') }}</span>
                                                 <span class="me-3"><i class="bi bi-people"></i> {{
                                                     $thread->participant_count }} participants</span>
                                                 <span class="d-none d-md-inline text-muted">{{

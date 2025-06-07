@@ -28,14 +28,14 @@
                         <div class="dropdown me-2">
                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
                                 id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('Sort by') }}: {{ request('sort', 'latest') == 'latest' ? __('Latest') : __('Most
-                                Replies') }}
+                                {{ __('messages.sort_by') }}: {{ request('sort', 'latest') == 'latest' ?
+                                __('messages.latest') : __('messages.most_replies') }}
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                                 <li><a class="dropdown-item" href="{{ route('forums.show', $forum) }}?sort=latest">{{
-                                        __('Latest') }}</a></li>
+                                        __('messages.latest') }}</a></li>
                                 <li><a class="dropdown-item" href="{{ route('forums.show', $forum) }}?sort=replies">{{
-                                        __('Most Replies') }}</a></li>
+                                        __('messages.most_replies') }}</a></li>
                             </ul>
                         </div>
 
@@ -69,11 +69,12 @@
                                             <span class="badge bg-primary">{{ __('Pinned') }}</span>
                                             @endif
                                             @if($thread->is_locked)
-                                            <span class="badge bg-secondary">{{ __('Locked') }}</span>
+                                            <span class="badge bg-secondary">{{ __('messages.thread_status.locked')
+                                                }}</span>
                                             @endif
                                         </h5>
                                         <p class="mb-1 text-muted small">
-                                            {{ __('Started by') }}
+                                            {{ __('messages.started_by') }}
                                             <a href="{{ route('profile.show', $thread->user->username) }}"
                                                 class="text-decoration-none">
                                                 {{ $thread->user->name }}
@@ -87,7 +88,7 @@
                                 <div class="row text-md-end">
                                     <div class="col-6">
                                         <div class="fw-bold">{{ $thread->posts_count }}</div>
-                                        <div class="small text-muted">{{ __('Replies') }}</div>
+                                        <div class="small text-muted">{{ __('messages.replies') }}</div>
                                     </div>
                                     <div class="col-6">
                                         <div class="fw-bold">{{ $thread->views ?? 0 }}</div>

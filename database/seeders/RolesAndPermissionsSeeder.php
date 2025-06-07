@@ -81,15 +81,15 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Tạo roles
-        $adminRole = Role::create(['name' => 'admin']);
-        $moderatorRole = Role::create(['name' => 'moderator']);
-        $seniorRole = Role::create(['name' => 'senior']);
-        $memberRole = Role::create(['name' => 'member']);
-        $guestRole = Role::create(['name' => 'guest']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $moderatorRole = Role::firstOrCreate(['name' => 'moderator']);
+        $seniorRole = Role::firstOrCreate(['name' => 'senior']);
+        $memberRole = Role::firstOrCreate(['name' => 'member']);
+        $guestRole = Role::firstOrCreate(['name' => 'guest']);
 
         // Gán permissions cho roles
 

@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\ShowcaseLike;
+use App\Models\Showcase;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ShowcaseLikeSeeder extends Seeder
 {
@@ -13,83 +14,66 @@ class ShowcaseLikeSeeder extends Seeder
      */
     public function run(): void
     {
-        // Sample showcase likes
-        $likes = [
-            [
-                'showcase_id' => 1,
-                'user_id' => 2,
-                'created_at' => Carbon::now()->subDays(5),
-                'updated_at' => Carbon::now()->subDays(5),
-            ],
-            [
-                'showcase_id' => 1,
-                'user_id' => 3,
-                'created_at' => Carbon::now()->subDays(4),
-                'updated_at' => Carbon::now()->subDays(4),
-            ],
-            [
-                'showcase_id' => 1,
-                'user_id' => 4,
-                'created_at' => Carbon::now()->subDays(3),
-                'updated_at' => Carbon::now()->subDays(3),
-            ],
-            [
-                'showcase_id' => 2,
-                'user_id' => 1,
-                'created_at' => Carbon::now()->subDays(4),
-                'updated_at' => Carbon::now()->subDays(4),
-            ],
-            [
-                'showcase_id' => 2,
-                'user_id' => 3,
-                'created_at' => Carbon::now()->subDays(2),
-                'updated_at' => Carbon::now()->subDays(2),
-            ],
-            [
-                'showcase_id' => 2,
-                'user_id' => 4,
-                'created_at' => Carbon::now()->subDays(1),
-                'updated_at' => Carbon::now()->subDays(1),
-            ],
-            [
-                'showcase_id' => 3,
-                'user_id' => 1,
-                'created_at' => Carbon::now()->subDays(3),
-                'updated_at' => Carbon::now()->subDays(3),
-            ],
-            [
-                'showcase_id' => 3,
-                'user_id' => 2,
-                'created_at' => Carbon::now()->subHours(12),
-                'updated_at' => Carbon::now()->subHours(12),
-            ],
-            [
-                'showcase_id' => 3,
-                'user_id' => 4,
-                'created_at' => Carbon::now()->subHours(6),
-                'updated_at' => Carbon::now()->subHours(6),
-            ],
-            // Additional likes for popularity simulation
-            [
-                'showcase_id' => 1,
-                'user_id' => 5,
-                'created_at' => Carbon::now()->subDays(2),
-                'updated_at' => Carbon::now()->subDays(2),
-            ],
-            [
-                'showcase_id' => 2,
-                'user_id' => 5,
-                'created_at' => Carbon::now()->subHours(18),
-                'updated_at' => Carbon::now()->subHours(18),
-            ],
-            [
-                'showcase_id' => 3,
-                'user_id' => 5,
-                'created_at' => Carbon::now()->subHours(3),
-                'updated_at' => Carbon::now()->subHours(3),
-            ],
-        ];
+        echo "🎯 Bắt đầu tạo Showcase Likes...\n";
 
-        DB::table('showcase_likes')->insert($likes);
+        $showcases = Showcase::all();
+        $users = User::all();
+
+        if ($showcases->count() === 0) {
+            echo "❌ Không có showcases để tạo likes\n";
+            return;
+        }
+
+        if ($users->count() === 0) {
+            echo "❌ Không có users để tạo likes\n";
+            return;
+        }
+
+        $createdCount = 0;
+
+        // Tạo likes cho showcases
+        foreach ($showcases as $showcase) {
+            // Mỗi showcase có 2-6 likes từ users khác nhau
+            $numLikes = rand(2, 6);
+            $availableUsers = $users->filter(function ($user) use ($showcase) {
+                return $user->id !== $showcase->user_id; // Không like showcase của chính mình
+            });
+
+            if ($availableUsers->count() === 0) {
+                continue;
+            }
+
+            $selectedUsers = $availableUsers->random(min($numLikes, $availableUsers->count()));
+
+            foreach ($selectedUsers as $user) {
+                // Kiểm tra xem đã like chưa
+                $exists = ShowcaseLike::where('showcase_id', $showcase->id)
+                    ->where('user_id', $user->id)
+                    ->exists();
+
+                if ($exists) {
+                    continue; // Bỏ qua nếu đã like
+                }
+
+                try {
+                    $like = ShowcaseLike::create([
+                        'showcase_id' => $showcase->id,
+                        'user_id' => $user->id,
+                        'created_at' => now()->subDays(rand(1, 15))->subHours(rand(0, 23)),
+                        'updated_at' => now()->subDays(rand(0, 10))->subHours(rand(0, 23)),
+                    ]);
+
+                    if ($like) {
+                        echo "✅ Like #{$like->id}: {$user->name} liked showcase #{$showcase->id}\n";
+                        $createdCount++;
+                    }
+                } catch (\Exception $e) {
+                    echo "⚠️ Không thể tạo like cho showcase {$showcase->id}: " . $e->getMessage() . "\n";
+                    continue;
+                }
+            }
+        }
+
+        echo "🎉 Hoàn thành tạo {$createdCount} showcase likes!\n";
     }
 }
