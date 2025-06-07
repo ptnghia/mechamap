@@ -81,7 +81,7 @@
 
     <!-- Scripts -->
     <!-- Thay thế Vite bằng asset() truyền thống -->
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main-user.css') }}">
 
     <!-- Dark Mode CSS -->
     <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
