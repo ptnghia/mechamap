@@ -15,6 +15,7 @@ class FollowingController extends Controller
      */
     public function index(): View
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $following = $user->following()->paginate(20);
 
@@ -26,6 +27,7 @@ class FollowingController extends Controller
      */
     public function followers(): View
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $followers = $user->followers()->paginate(20);
 
@@ -37,6 +39,7 @@ class FollowingController extends Controller
      */
     public function threads(Request $request): View
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $query = $user->followedThreads();
@@ -51,6 +54,7 @@ class FollowingController extends Controller
         }
 
         $threads = $query->with(['user', 'forum', 'category'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->latest()
             ->paginate(20)
             ->withQueryString();
@@ -63,12 +67,14 @@ class FollowingController extends Controller
      */
     public function participated(): View
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         $threads = Thread::whereHas('comments', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
             ->with(['user', 'forum', 'category'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->latest()
             ->paginate(20);
 

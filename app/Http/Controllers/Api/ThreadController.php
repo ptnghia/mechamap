@@ -269,7 +269,9 @@ class ThreadController extends Controller
             $thread = Thread::where('slug', $slug)->firstOrFail();
 
             // Check if user is authorized to update this thread
-            if (Auth::id() !== $thread->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
+            /** @var \App\Models\User $authUser */
+            $authUser = Auth::user();
+            if (Auth::id() !== $thread->user_id && !$authUser->hasRole(['admin', 'moderator'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Bạn không có quyền cập nhật chủ đề này.'
@@ -366,7 +368,9 @@ class ThreadController extends Controller
             $thread = Thread::where('slug', $slug)->firstOrFail();
 
             // Check if user is authorized to delete this thread
-            if (Auth::id() !== $thread->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
+            /** @var \App\Models\User $authUser */
+            $authUser = Auth::user();
+            if (Auth::id() !== $thread->user_id && !$authUser->hasRole(['admin', 'moderator'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Bạn không có quyền xóa chủ đề này.'
@@ -790,7 +794,9 @@ class ThreadController extends Controller
     public function getSaved(Request $request)
     {
         try {
-            $query = Auth::user()->savedThreads();
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $query = $user->savedThreads();
 
             // Sort by
             $sortBy = $request->input('sort_by', 'created_at');
@@ -845,7 +851,9 @@ class ThreadController extends Controller
     public function getFollowed(Request $request)
     {
         try {
-            $query = Auth::user()->followedThreads();
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $query = $user->followedThreads();
 
             // Sort by
             $sortBy = $request->input('sort_by', 'created_at');
@@ -906,7 +914,7 @@ class ThreadController extends Controller
             $query = Thread::with(['user', 'category', 'forum'])
                 ->where('is_locked', false)
                 ->where('status', 'approved')
-                ->withCount('comments')
+                ->withCount('allComments as comments_count')
                 ->having('comments_count', '<', 5)
                 ->orderBy('comments_count', 'asc')
                 ->orderBy('created_at', 'desc');

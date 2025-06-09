@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -32,7 +33,7 @@ class HomeController extends Controller
                             ->orWhere('status', '!=', 'deleted');
                     });
             })
-            ->withCount('allComments')
+            ->withCount('allComments as comments_count')
             ->latest()
             ->take(10)
             ->get();
@@ -136,8 +137,10 @@ class HomeController extends Controller
         $threads->transform(function ($thread) {
             // Đảm bảo user có avatar URL
             if ($thread->user) {
-                // Sử dụng helper function có sẵn
-                $thread->user->profile_photo_url = get_avatar_url($thread->user);
+                // Sử dụng helper function có sẵn hoặc fallback
+                $thread->user->profile_photo_url = $thread->user->profile_photo_url
+                    ?? $thread->user->avatar
+                    ?? 'https://ui-avatars.com/api/?name=' . urlencode($thread->user->name) . '&color=7F9CF5&background=EBF4FF';
             }
 
             // Đảm bảo featured_image được load đúng từ relationship
@@ -146,6 +149,21 @@ class HomeController extends Controller
             // Làm sạch content để hiển thị preview
             if ($thread->content) {
                 $thread->content = strip_tags($thread->content);
+            }
+
+            // Thêm bookmark và follow status cho authenticated users
+            if (Auth::check()) {
+                $userId = Auth::id();
+                $thread->is_bookmarked = \App\Models\ThreadBookmark::where('user_id', $userId)
+                    ->where('thread_id', $thread->id)
+                    ->exists();
+
+                $thread->is_followed = \App\Models\ThreadFollow::where('user_id', $userId)
+                    ->where('thread_id', $thread->id)
+                    ->exists();
+            } else {
+                $thread->is_bookmarked = false;
+                $thread->is_followed = false;
             }
 
             return $thread;

@@ -119,16 +119,7 @@
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
                     @include('partials.thread-item', [
-                    'thread' => $thread,
-                    'variant' => 'whats-new',
-                    'showFeaturedImage' => true,
-                    'showProjectDetails' => true,
-                    'showCategory' => true,
-                    'showForum' => true,
-                    'showAuthor' => true,
-                    'showDate' => true,
-                    'showActions' => auth()->check(),
-                    'containerClass' => 'list-group-item'
+                    'thread' => $thread
                     ])
                     @endforeach
                 </div>

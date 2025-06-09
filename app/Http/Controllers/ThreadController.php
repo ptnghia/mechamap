@@ -39,7 +39,8 @@ class ThreadController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Thread::with('user', 'forum', 'category');
+        $query = Thread::with('user', 'forum', 'category')
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings']);
 
         // Apply filters
         if ($request->has('category')) {
@@ -68,7 +69,7 @@ class ThreadController extends Controller
                 $query->orderBy('view_count', 'desc');
                 break;
             case 'most_commented':
-                $query->withCount('posts')->orderBy('posts_count', 'desc');
+                $query->orderBy('comments_count', 'desc');
                 break;
             default:
                 $query->latest();

@@ -118,108 +118,98 @@
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
                     @include('partials.thread-item', [
-                    'thread' => $thread,
-                    'variant' => 'replies',
-                    'showAvatar' => true,
-                    'showStats' => true,
-                    'showBadges' => true,
-                    'showActions' => true,
-                    'customActions' => [
-                    [
-                    'url' => route('threads.show', [$thread->slug, 'reply' => 'true']),
-                    'label' => 'Reply Now',
-                    'icon' => 'bi-reply',
-                    'class' => 'btn-primary btn-sm'
-                    ]
-                    ]
+                    'thread' => $thread
                     ])
                     @endforeach
                 </div>
+                ])
+                @endforeach
             </div>
+        </div>
 
-            <!-- Pagination Bottom -->
-            <div class="pagination-container mt-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="pagination-info">
-                        <span>Page {{ $page }} of {{ $totalPages }}</span>
-                    </div>
+        <!-- Pagination Bottom -->
+        <div class="pagination-container mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="pagination-info">
+                    <span>Page {{ $page }} of {{ $totalPages }}</span>
+                </div>
 
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
-                            <!-- Previous Page -->
-                            <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
-                                </a>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <!-- Previous Page -->
+                        <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
+                                <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                            </a>
+                        </li>
+
+                        <!-- First Page -->
+                        @if($page > 3)
+                        <li class="page-item">
+                            <a class="page-link" href="{{ route('whats-new.replies', ['page' => 1]) }}">1</a>
+                        </li>
+                        @endif
+
+                        <!-- Ellipsis for skipped pages -->
+                        @if($page > 4)
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        @endif
+
+                        <!-- Pages before current -->
+                        @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
+                            <a class="page-link" href="{{ route('whats-new.replies', ['page' => $i]) }}">{{ $i
+                                }}</a>
+                            </li>
+                            @endfor
+
+                            <!-- Current Page -->
+                            <li class="page-item active">
+                                <span class="page-link">{{ $page }}</span>
                             </li>
 
-                            <!-- First Page -->
-                            @if($page > 3)
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('whats-new.replies', ['page' => 1]) }}">1</a>
-                            </li>
-                            @endif
-
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page > 4)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
-
-                            <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
+                            <!-- Pages after current -->
+                            @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
                                 <a class="page-link" href="{{ route('whats-new.replies', ['page' => $i]) }}">{{ $i
                                     }}</a>
                                 </li>
                                 @endfor
 
-                                <!-- Current Page -->
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </li>
-
-                                <!-- Pages after current -->
-                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
-                                    <a class="page-link" href="{{ route('whats-new.replies', ['page' => $i]) }}">{{ $i
-                                        }}</a>
+                                <!-- Ellipsis for skipped pages -->
+                                @if($page < $totalPages - 3) <li class="page-item disabled">
+                                    <span class="page-link">...</span>
                                     </li>
-                                    @endfor
+                                    @endif
 
-                                    <!-- Ellipsis for skipped pages -->
-                                    @if($page < $totalPages - 3) <li class="page-item disabled">
-                                        <span class="page-link">...</span>
+                                    <!-- Last Page -->
+                                    @if($page < $totalPages - 2) <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ route('whats-new.replies', ['page' => $totalPages]) }}">{{
+                                            $totalPages }}</a>
                                         </li>
                                         @endif
 
-                                        <!-- Last Page -->
-                                        @if($page < $totalPages - 2) <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ route('whats-new.replies', ['page' => $totalPages]) }}">{{
-                                                $totalPages }}</a>
-                                            </li>
-                                            @endif
+                                        <!-- Next Page -->
+                                        <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
+                                                <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                            </a>
+                                        </li>
+                    </ul>
+                </nav>
 
-                                            <!-- Next Page -->
-                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
-                                                </a>
-                                            </li>
-                        </ul>
-                    </nav>
-
-                    <div class="pagination-goto">
-                        <div class="input-group input-group-sm">
-                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
-                                value="{{ $page }}" placeholder="Page">
-                            <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
-                        </div>
+                <div class="pagination-goto">
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
+                            value="{{ $page }}" placeholder="Page">
+                        <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 @push('scripts')

@@ -17,31 +17,40 @@ class ThreadItemBuilder {
     static createThreadElement(thread, translations) {
         const listItem = document.createElement('div');
         listItem.className = 'list-group-item thread-item thread-item-container';
+        listItem.setAttribute('data-thread-id', thread.id || '');
 
         // Format date
         const createdAt = new Date(thread.created_at);
         const timeAgo = this.timeSince(createdAt);
 
-        // Đảm bảo user có avatar
-        const userAvatar = thread.user?.profile_photo_url || '/images/default-avatar.png';
+        // User info với avatar fallback
+        const userName = thread.user?.name || 'Người dùng';
+        const userAvatar = thread.user?.profile_photo_url || thread.user?.avatar ||
+            `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&color=7F9CF5&background=EBF4FF`;
 
-        // Đảm bảo thread có slug (fallback to id)
+        // Thread URL
         const threadUrl = thread.slug ? `/threads/${thread.slug}` : `/threads/${thread.id}`;
 
-        // Xử lý content preview
+        // Content preview
         const contentPreview = thread.content ?
-            (thread.content.length > 120 ? thread.content.substring(0, 120) + '...' : thread.content) : '';
+            (thread.content.length > 220 ? thread.content.substring(0, 220) + '...' : thread.content) : '';
 
-        // Build the HTML với cấu trúc giống partial view
+        // Build the HTML với cấu trúc giống partial view mới
         listItem.innerHTML = `
             <!-- Thread Header với user info và badges -->
             <div class="thread-item-header">
                 <div class="thread-user-info">
                     <div class="flex-shrink-0 me-3 d-none d-sm-block">
-                        <img src="${userAvatar}" alt="${thread.user?.name || 'User'}" class="avatar">
+                        <img src="${userAvatar}"
+                             alt="${userName}"
+                             class="rounded-circle"
+                             width="50"
+                             height="50"
+                             style="object-fit: cover;"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&color=7F9CF5&background=EBF4FF'">
                     </div>
                     <div>
-                        <strong class="thread-user-name">${thread.user?.name || 'Người dùng'}</strong><br>
+                        <strong class="thread-user-name">${userName}</strong><br>
                         <span class="d-none d-md-inline text-muted">${timeAgo}</span>
                     </div>
                 </div>
@@ -71,7 +80,7 @@ class ThreadItemBuilder {
                     ${contentPreview ? `<p class="text-muted small mb-2 thread-content">${contentPreview}</p>` : ''}
                 </div>
 
-                <!-- Hình ảnh - chỉ hiển thị khi có ảnh -->
+                <!-- Hình ảnh -->
                 ${thread.featured_image ? `
                 <div class="col-md-3 d-none d-md-block">
                     <div class="thread-image-container">
@@ -82,25 +91,90 @@ class ThreadItemBuilder {
             </div>
 
             <div class="thread-item-footer">
-                <div class="thread-meta">
-                    <span class="meta-item"><i class="bi bi-eye"></i> ${thread.view_count || 0} lượt xem</span>
-                    <span class="meta-item"><i class="bi bi-chat"></i> ${thread.comments_count || 0} phản hồi</span>
-                </div>
-                <div class="thread-category-badges">
-                    ${thread.category ? `
-                    <a href="/threads?category=${thread.category.id}" class="badge bg-secondary text-decoration-none">
-                        <i class="bi bi-tag"></i> ${thread.category.name}
-                    </a>` : ''}
+                <div class="thread-meta-left">
+                    <div class="thread-meta">
+                        <span class="meta-item"><i class="bi bi-eye"></i> ${thread.view_count || 0} lượt xem</span>
+                        <span class="meta-item"><i class="bi bi-chat"></i> ${thread.comments_count || thread.comment_count || 0} phản hồi</span>
+                    </div>
 
-                    ${thread.forum ? `
-                    <a href="/threads?forum=${thread.forum.id}" class="badge bg-info text-decoration-none">
-                        <i class="bi bi-folder"></i> ${thread.forum.name}
-                    </a>` : ''}
+                    <div class="thread-category-badges">
+                        ${thread.category ? `
+                        <a href="/threads?category=${thread.category.id}" class="badge bg-secondary text-decoration-none">
+                            <i class="bi bi-tag"></i> ${thread.category.name}
+                        </a>` : ''}
+
+                        ${thread.forum ? `
+                        <a href="/threads?forum=${thread.forum.id}" class="badge bg-info text-decoration-none">
+                            <i class="bi bi-folder"></i> ${thread.forum.name}
+                        </a>` : ''}
+                    </div>
                 </div>
+
+                <!-- Action buttons cho authenticated users -->
+                ${this.generateActionButtons(thread)}
             </div>
         `;
 
         return listItem;
+    }
+
+    /**
+     * Tạo action buttons cho authenticated users
+     * @param {Object} thread - Thread object
+     * @returns {string} - HTML string cho action buttons
+     */
+    static generateActionButtons(thread) {
+        // Kiểm tra authentication status từ global variable hoặc meta tag
+        const isAuthenticated = window.isAuthenticated ||
+            document.querySelector('meta[name="user-authenticated"]')?.content === 'true';
+
+        if (!isAuthenticated) {
+            return '';
+        }
+
+        const isBookmarked = thread.is_bookmarked || false;
+        const isFollowed = thread.is_followed || false;
+
+        return `
+        <div class="thread-actions">
+            ${isBookmarked ? `
+            <!-- Remove bookmark form -->
+            <form method="POST" action="/threads/${thread.id}/bookmark" style="display: inline;" class="bookmark-form">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
+                <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
+                    <i class="bi bi-bookmark-fill"></i>
+                    <span class="d-none d-md-inline ms-1">Đã lưu</span>
+                </button>
+            </form>` : `
+            <!-- Add bookmark form -->
+            <form method="POST" action="/threads/${thread.id}/bookmark" style="display: inline;" class="bookmark-form">
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
+                <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
+                    <i class="bi bi-bookmark"></i>
+                    <span class="d-none d-md-inline ms-1">Lưu</span>
+                </button>
+            </form>`}
+
+            ${isFollowed ? `
+            <!-- Unfollow form -->
+            <form method="POST" action="/threads/${thread.id}/follow" style="display: inline;" class="follow-form">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
+                <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
+                    <i class="bi bi-bell-fill"></i>
+                    <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
+                </button>
+            </form>` : `
+            <!-- Follow form -->
+            <form method="POST" action="/threads/${thread.id}/follow" style="display: inline;" class="follow-form">
+                <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
+                <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
+                    <i class="bi bi-bell"></i>
+                    <span class="d-none d-md-inline ms-1">Theo dõi</span>
+                </button>
+            </form>`}
+        </div>`;
     }
 
     /**
@@ -140,12 +214,19 @@ class ThreadItemBuilder {
             </div>
 
             <div class="thread-item-footer">
-                <div class="thread-meta">
-                    <div class="skeleton-text skeleton-short"></div>
+                <div class="thread-meta-left">
+                    <div class="thread-meta">
+                        <div class="skeleton-text skeleton-short"></div>
+                    </div>
+                    <div class="thread-category-badges">
+                        <div class="skeleton-badge"></div>
+                        <div class="skeleton-badge"></div>
+                    </div>
                 </div>
-                <div class="thread-category-badges">
-                    <div class="skeleton-badge"></div>
-                    <div class="skeleton-badge"></div>
+                <!-- Skeleton action buttons -->
+                <div class="thread-actions">
+                    <div class="skeleton-button"></div>
+                    <div class="skeleton-button"></div>
                 </div>
             </div>
         `;

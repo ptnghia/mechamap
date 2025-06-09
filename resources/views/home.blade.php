@@ -112,11 +112,11 @@
         transform: scale(1.05);
     }
 
-    .avatar {
+    .rounded-circle {
         transition: transform 0.2s ease;
     }
 
-    .avatar:hover {
+    .rounded-circle:hover {
         transform: scale(1.1);
     }
 </style>

@@ -17,7 +17,7 @@ class WhatsNewController extends Controller
     {
         $page = $request->input('page', 1);
         $perPage = 20;
-        
+
         // Get recent comments with their threads, ordered by creation date
         $posts = Comment::with(['user', 'thread.category', 'thread.forum', 'thread.user'])
             ->whereHas('thread', function ($query) {
@@ -25,33 +25,40 @@ class WhatsNewController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
-        
+
+        // Load comment counts for threads efficiently
+        $threadIds = $posts->pluck('thread.id')->unique();
+        $commentCounts = Comment::selectRaw('thread_id, COUNT(*) as comment_count')
+            ->whereIn('thread_id', $threadIds)
+            ->groupBy('thread_id')
+            ->pluck('comment_count', 'thread_id');
+
         // Calculate total pages
         $totalPages = ceil($posts->total() / $perPage);
-        
+
         // Generate pagination URLs
-        $prevPageUrl = $page > 1 
-            ? route('whats-new', ['page' => $page - 1]) 
+        $prevPageUrl = $page > 1
+            ? route('whats-new', ['page' => $page - 1])
             : '#';
-            
-        $nextPageUrl = $page < $totalPages 
-            ? route('whats-new', ['page' => $page + 1]) 
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new', ['page' => $page + 1])
             : '#';
-        
+
         // Add thread statistics
         foreach ($posts as $post) {
-            // Get comment count
-            $post->thread->comment_count = Comment::where('thread_id', $post->thread->id)->count();
-            
+            // Get comment count from pre-loaded data
+            $post->thread->comment_count = $commentCounts->get($post->thread->id, 0);
+
             // Get page count (assuming 20 comments per page)
             $post->thread->page_count = ceil($post->thread->comment_count / 20);
-            
+
             // Get latest comment info
             $latestComment = Comment::where('thread_id', $post->thread->id)
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->first();
-                
+
             if ($latestComment) {
                 $post->thread->latest_comment_at = $latestComment->created_at;
                 $post->thread->latest_comment_user = $latestComment->user;
@@ -60,16 +67,16 @@ class WhatsNewController extends Controller
                 $post->thread->latest_comment_user = $post->thread->user;
             }
         }
-        
+
         return view('whats-new.index', compact(
-            'posts', 
-            'page', 
-            'totalPages', 
-            'prevPageUrl', 
+            'posts',
+            'page',
+            'totalPages',
+            'prevPageUrl',
             'nextPageUrl'
         ));
     }
-    
+
     /**
      * Display popular threads
      */
@@ -78,7 +85,7 @@ class WhatsNewController extends Controller
         $page = $request->input('page', 1);
         $perPage = 20;
         $timeframe = $request->input('timeframe', 'week'); // day, week, month, year, all
-        
+
         // Determine date range based on timeframe
         $startDate = now();
         switch ($timeframe) {
@@ -98,49 +105,48 @@ class WhatsNewController extends Controller
                 $startDate = null;
                 break;
         }
-        
+
         // Get popular threads based on view count and recent activity
         $query = Thread::with(['user', 'category', 'forum'])
+            ->withCount('allComments as comment_count')
             ->where('is_locked', false);
-            
+
         if ($startDate) {
             $query->where(function ($q) use ($startDate) {
                 $q->where('created_at', '>=', $startDate)
-                  ->orWhereHas('comments', function ($q2) use ($startDate) {
-                      $q2->where('created_at', '>=', $startDate);
-                  });
+                    ->orWhereHas('comments', function ($q2) use ($startDate) {
+                        $q2->where('created_at', '>=', $startDate);
+                    });
             });
         }
-        
+
         $threads = $query->orderBy('view_count', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
-        
+
         // Calculate total pages
         $totalPages = ceil($threads->total() / $perPage);
-        
+
         // Generate pagination URLs
-        $prevPageUrl = $page > 1 
-            ? route('whats-new.popular', ['page' => $page - 1, 'timeframe' => $timeframe]) 
+        $prevPageUrl = $page > 1
+            ? route('whats-new.popular', ['page' => $page - 1, 'timeframe' => $timeframe])
             : '#';
-            
-        $nextPageUrl = $page < $totalPages 
-            ? route('whats-new.popular', ['page' => $page + 1, 'timeframe' => $timeframe]) 
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new.popular', ['page' => $page + 1, 'timeframe' => $timeframe])
             : '#';
-        
+
         // Add thread statistics
         foreach ($threads as $thread) {
-            // Get comment count
-            $thread->comment_count = Comment::where('thread_id', $thread->id)->count();
-            
+            // Comment count is already loaded via withCount
             // Get page count (assuming 20 comments per page)
             $thread->page_count = ceil($thread->comment_count / 20);
-            
+
             // Get latest comment info
             $latestComment = Comment::where('thread_id', $thread->id)
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->first();
-                
+
             if ($latestComment) {
                 $thread->latest_comment_at = $latestComment->created_at;
                 $thread->latest_comment_user = $latestComment->user;
@@ -149,17 +155,17 @@ class WhatsNewController extends Controller
                 $thread->latest_comment_user = $thread->user;
             }
         }
-        
+
         return view('whats-new.popular', compact(
-            'threads', 
-            'page', 
-            'totalPages', 
-            'prevPageUrl', 
+            'threads',
+            'page',
+            'totalPages',
+            'prevPageUrl',
             'nextPageUrl',
             'timeframe'
         ));
     }
-    
+
     /**
      * Display new threads
      */
@@ -167,39 +173,38 @@ class WhatsNewController extends Controller
     {
         $page = $request->input('page', 1);
         $perPage = 20;
-        
+
         // Get recent threads
         $threads = Thread::with(['user', 'category', 'forum'])
+            ->withCount('allComments as comment_count')
             ->where('is_locked', false)
             ->orderBy('created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
-        
+
         // Calculate total pages
         $totalPages = ceil($threads->total() / $perPage);
-        
+
         // Generate pagination URLs
-        $prevPageUrl = $page > 1 
-            ? route('whats-new.threads', ['page' => $page - 1]) 
+        $prevPageUrl = $page > 1
+            ? route('whats-new.threads', ['page' => $page - 1])
             : '#';
-            
-        $nextPageUrl = $page < $totalPages 
-            ? route('whats-new.threads', ['page' => $page + 1]) 
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new.threads', ['page' => $page + 1])
             : '#';
-        
+
         // Add thread statistics
         foreach ($threads as $thread) {
-            // Get comment count
-            $thread->comment_count = Comment::where('thread_id', $thread->id)->count();
-            
+            // Comment count is already loaded via withCount
             // Get page count (assuming 20 comments per page)
             $thread->page_count = ceil($thread->comment_count / 20);
-            
+
             // Get latest comment info
             $latestComment = Comment::where('thread_id', $thread->id)
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->first();
-                
+
             if ($latestComment) {
                 $thread->latest_comment_at = $latestComment->created_at;
                 $thread->latest_comment_user = $latestComment->user;
@@ -208,16 +213,16 @@ class WhatsNewController extends Controller
                 $thread->latest_comment_user = $thread->user;
             }
         }
-        
+
         return view('whats-new.threads', compact(
-            'threads', 
-            'page', 
-            'totalPages', 
-            'prevPageUrl', 
+            'threads',
+            'page',
+            'totalPages',
+            'prevPageUrl',
             'nextPageUrl'
         ));
     }
-    
+
     /**
      * Display new media
      */
@@ -225,7 +230,7 @@ class WhatsNewController extends Controller
     {
         $page = $request->input('page', 1);
         $perPage = 20;
-        
+
         // Get recent media
         $mediaItems = Media::with(['user', 'thread.category', 'thread.forum'])
             ->whereNotNull('thread_id')
@@ -234,28 +239,28 @@ class WhatsNewController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
-        
+
         // Calculate total pages
         $totalPages = ceil($mediaItems->total() / $perPage);
-        
+
         // Generate pagination URLs
-        $prevPageUrl = $page > 1 
-            ? route('whats-new.media', ['page' => $page - 1]) 
+        $prevPageUrl = $page > 1
+            ? route('whats-new.media', ['page' => $page - 1])
             : '#';
-            
-        $nextPageUrl = $page < $totalPages 
-            ? route('whats-new.media', ['page' => $page + 1]) 
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new.media', ['page' => $page + 1])
             : '#';
-        
+
         return view('whats-new.media', compact(
-            'mediaItems', 
-            'page', 
-            'totalPages', 
-            'prevPageUrl', 
+            'mediaItems',
+            'page',
+            'totalPages',
+            'prevPageUrl',
             'nextPageUrl'
         ));
     }
-    
+
     /**
      * Display threads looking for replies
      */
@@ -263,9 +268,10 @@ class WhatsNewController extends Controller
     {
         $page = $request->input('page', 1);
         $perPage = 20;
-        
+
         // Get threads with no replies or few replies, ordered by creation date
         $threads = Thread::with(['user', 'category', 'forum'])
+            ->withCount('allComments as comment_count')
             ->where('is_locked', false)
             ->whereDoesntHave('comments')
             ->orWhereHas('comments', function ($query) {
@@ -273,33 +279,31 @@ class WhatsNewController extends Controller
             })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage, ['*'], 'page', $page);
-        
+
         // Calculate total pages
         $totalPages = ceil($threads->total() / $perPage);
-        
+
         // Generate pagination URLs
-        $prevPageUrl = $page > 1 
-            ? route('whats-new.replies', ['page' => $page - 1]) 
+        $prevPageUrl = $page > 1
+            ? route('whats-new.replies', ['page' => $page - 1])
             : '#';
-            
-        $nextPageUrl = $page < $totalPages 
-            ? route('whats-new.replies', ['page' => $page + 1]) 
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new.replies', ['page' => $page + 1])
             : '#';
-        
+
         // Add thread statistics
         foreach ($threads as $thread) {
-            // Get comment count
-            $thread->comment_count = Comment::where('thread_id', $thread->id)->count();
-            
+            // Comment count is already loaded via withCount
             // Get page count (assuming 20 comments per page)
             $thread->page_count = ceil($thread->comment_count / 20);
-            
+
             // Get latest comment info
             $latestComment = Comment::where('thread_id', $thread->id)
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->first();
-                
+
             if ($latestComment) {
                 $thread->latest_comment_at = $latestComment->created_at;
                 $thread->latest_comment_user = $latestComment->user;
@@ -308,12 +312,12 @@ class WhatsNewController extends Controller
                 $thread->latest_comment_user = $thread->user;
             }
         }
-        
+
         return view('whats-new.replies', compact(
-            'threads', 
-            'page', 
-            'totalPages', 
-            'prevPageUrl', 
+            'threads',
+            'page',
+            'totalPages',
+            'prevPageUrl',
             'nextPageUrl'
         ));
     }

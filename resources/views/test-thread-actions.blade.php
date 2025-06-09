@@ -86,23 +86,17 @@
 
             @if($testThread)
             <!-- Default variant -->
-            <h5>Default Variant:</h5>
+            <h5>Thread Item Example:</h5>
             @include('partials.thread-item', [
-            'thread' => $testThread,
-            'variant' => 'default',
-            'showBookmark' => true,
-            'showFollow' => true
+            'thread' => $testThread
             ])
 
             <hr class="my-4">
 
-            <!-- Forum variant -->
-            <h5>Forum Variant:</h5>
+            <!-- Another example -->
+            <h5>Another Thread Example:</h5>
             @include('partials.thread-item', [
-            'thread' => $testThread,
-            'variant' => 'forum',
-            'showBookmark' => true,
-            'showFollow' => true
+            'thread' => $testThread
             ])
 
             <hr class="my-4">
@@ -110,18 +104,7 @@
             <!-- Custom Actions variant -->
             <h5>Custom Actions Variant:</h5>
             @include('partials.thread-item', [
-            'thread' => $testThread,
-            'variant' => 'whats-new',
-            'showBookmark' => true,
-            'showFollow' => true,
-            'customActions' => [
-            [
-            'url' => route('threads.show', $testThread),
-            'label' => 'Xem chi tiết',
-            'icon' => 'bi-eye',
-            'class' => 'btn btn-sm btn-info'
-            ]
-            ]
+            'thread' => $testThread
             ])
             @else
             <div class="status-badge status-error">

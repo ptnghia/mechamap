@@ -60,7 +60,7 @@ class ModerationController extends Controller
     public function threads(Request $request)
     {
         $query = Thread::with(['user', 'forum', 'ratings'])
-            ->withCount(['comments', 'bookmarks']);
+            ->withCount(['allComments as comments_count', 'bookmarks']);
 
         // Filter theo status
         if ($request->status) {
@@ -284,7 +284,7 @@ class ModerationController extends Controller
 
         // Quality distribution
         $qualityDistribution = Thread::select(
-            DB::raw('CASE 
+            DB::raw('CASE
                     WHEN quality_score >= 80 THEN "Excellent (80-100)"
                     WHEN quality_score >= 60 THEN "Good (60-79)"
                     WHEN quality_score >= 40 THEN "Average (40-59)"

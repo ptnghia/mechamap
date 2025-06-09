@@ -40,7 +40,7 @@ class ForumController extends Controller
         // Load the forum with its threads
         $threads = $forum->threads()
             ->with('user')
-            ->withCount('posts')
+            ->withCount('allComments as comments_count')
             ->latest()
             ->paginate(20);
 

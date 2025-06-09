@@ -116,16 +116,7 @@
                 <div class="list-group list-group-flush">
                     @foreach($posts as $post)
                     @include('partials.thread-item', [
-                    'thread' => $post->thread,
-                    'variant' => 'whats-new',
-                    'showFeaturedImage' => true,
-                    'showProjectDetails' => true,
-                    'showCategory' => true,
-                    'showForum' => true,
-                    'showAuthor' => true,
-                    'showDate' => true,
-                    'showActions' => auth()->check(),
-                    'containerClass' => 'list-group-item'
+                    'thread' => $post->thread
                     ])
                     @endforeach
                 </div>

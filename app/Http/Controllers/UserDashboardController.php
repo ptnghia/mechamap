@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Thread;
 use App\Models\ThreadBookmark;
 use App\Models\ThreadRating;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ class UserDashboardController extends Controller
             ->get();
 
         $myThreads = Thread::with(['forum'])
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->where('user_id', $user->id)
             ->latest()
             ->limit(5)
@@ -76,7 +77,7 @@ class UserDashboardController extends Controller
 
         $query = ThreadBookmark::with(['thread' => function ($q) {
             $q->with(['user', 'forum'])
-                ->withCount(['comments', 'ratings']);
+                ->withCount(['allComments as comments_count', 'ratings']);
         }])
             ->where('user_id', $user->id);
 
@@ -123,7 +124,7 @@ class UserDashboardController extends Controller
 
         $query = ThreadRating::with(['thread' => function ($q) {
             $q->with(['user', 'forum'])
-                ->withCount(['comments', 'ratings']);
+                ->withCount(['allComments as comments_count', 'ratings']);
         }])
             ->where('user_id', $user->id);
 
@@ -177,7 +178,7 @@ class UserDashboardController extends Controller
         $user = Auth::user();
 
         $query = Thread::with(['forum', 'tags'])
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->where('user_id', $user->id);
 
         // Filter theo moderation status
@@ -570,6 +571,7 @@ class UserDashboardController extends Controller
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $data = $request->only(['name', 'email', 'phone', 'location', 'bio', 'website', 'profession']);
 
@@ -602,6 +604,7 @@ class UserDashboardController extends Controller
             'new_password' => 'required|min:8|confirmed',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         // Verify current password
@@ -634,6 +637,7 @@ class UserDashboardController extends Controller
             'timezone' => 'required|string',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $preferences = $user->preferences ?? [];
 
@@ -655,6 +659,7 @@ class UserDashboardController extends Controller
      */
     public function updateNotifications(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $notifications = $user->notification_settings ?? [];
 
@@ -683,6 +688,7 @@ class UserDashboardController extends Controller
      */
     public function updatePrivacy(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $privacy = $user->privacy_settings ?? [];
 
@@ -696,7 +702,9 @@ class UserDashboardController extends Controller
         // Logout other devices if requested
         if ($request->has('logout_other_devices')) {
             // This would require session management - implement based on your auth system
-            $user->tokens()->delete(); // For Sanctum
+            if (method_exists($user, 'tokens')) {
+                $user->tokens()->delete(); // For Sanctum
+            }
         }
 
         $user->update(['privacy_settings' => $privacy]);
@@ -712,16 +720,17 @@ class UserDashboardController extends Controller
      */
     public function deleteAccount(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         try {
             DB::beginTransaction();
 
             // Delete user's data
-            $user->threads()->delete();
-            $user->comments()->delete();
-            $user->threadRatings()->delete();
-            $user->threadBookmarks()->delete();
+            Thread::where('user_id', $user->id)->delete();
+            Comment::where('user_id', $user->id)->delete();
+            ThreadRating::where('user_id', $user->id)->delete();
+            ThreadBookmark::where('user_id', $user->id)->delete();
 
             // Delete avatar file
             if ($user->avatar && Storage::exists($user->avatar)) {

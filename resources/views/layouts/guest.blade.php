@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-authenticated" content="{{ Auth::check() ? 'true' : 'false' }}">
     <meta name="description" content="MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm">
     <meta name="keywords" content="mechamap, diễn đàn, cộng đồng, forum, laravel">
     <meta name="author" content="MechaMap Team">

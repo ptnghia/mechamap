@@ -57,7 +57,7 @@ class NewContentController extends Controller
                     ->orWhere('description', 'like', '%showcase%')
                     ->pluck('id')
                     ->toArray();
-                
+
                 $threads = $threadsQuery->whereHas('forum', function ($query) use ($showcaseForumIds) {
                     $query->whereIn('id', $showcaseForumIds);
                 })
@@ -71,7 +71,7 @@ class NewContentController extends Controller
                     ->orWhere('description', 'like', '%gallery%')
                     ->pluck('id')
                     ->toArray();
-                
+
                 $threads = $threadsQuery->whereHas('forum', function ($query) use ($galleryForumIds) {
                     $query->whereIn('id', $galleryForumIds);
                 })
@@ -86,7 +86,7 @@ class NewContentController extends Controller
                     ->orWhere('description', 'like', '%news%')
                     ->pluck('id')
                     ->toArray();
-                
+
                 $threads = $threadsQuery->whereHas('forum', function ($query) use ($newsForumIds) {
                     $query->whereIn('id', $newsForumIds);
                 })
@@ -96,8 +96,8 @@ class NewContentController extends Controller
 
             case 'replies':
                 // Order by number of comments
-                $threads = $threadsQuery->withCount('allComments')
-                    ->orderBy('all_comments_count', 'desc')
+                $threads = $threadsQuery->withCount('allComments as comments_count')
+                    ->orderBy('comments_count', 'desc')
                     ->orderBy('view_count', 'desc')
                     ->paginate(20);
                 break;

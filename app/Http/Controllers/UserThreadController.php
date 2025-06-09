@@ -32,7 +32,7 @@ class UserThreadController extends Controller
     public function index(Request $request)
     {
         $query = Thread::with(['user', 'forum', 'tags'])
-            ->withCount(['comments', 'bookmarks', 'ratings']);
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings']);
 
         // Chỉ hiển thị threads public visible (sử dụng ModerationService)
         $query->where(function ($q) {
@@ -210,7 +210,7 @@ class UserThreadController extends Controller
                         $tagQ->whereIn('tags.id', $thread->tags->pluck('id'));
                     });
             })
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->orderByDesc('average_rating')
             ->limit(5)
             ->get();
@@ -257,7 +257,7 @@ class UserThreadController extends Controller
     {
         $query = $tag->threads()
             ->with(['user', 'forum'])
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->where('moderation_status', 'approved');
 
         // Apply sorting
@@ -284,7 +284,7 @@ class UserThreadController extends Controller
     {
         $query = $forum->threads()
             ->with(['user', 'tags'])
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->where('moderation_status', 'approved');
 
         // Apply filters và sorting tương tự index()
@@ -359,7 +359,7 @@ class UserThreadController extends Controller
         $searchTerm = $request->q;
 
         $query = Thread::with(['user', 'forum', 'tags'])
-            ->withCount(['comments', 'bookmarks', 'ratings'])
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
             ->where('moderation_status', 'approved')
             ->search($searchTerm);
 
