@@ -25,12 +25,14 @@
 }
 
 .search-scope-option {
-    padding: 4px 8px;
+    padding: 6px 9px;
     margin-right: 8px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
     color: #6b7280;
     border-radius: 4px;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
 }
 
 .search-scope-option:hover {
@@ -38,7 +40,7 @@
 }
 
 .search-scope-option.active {
-    background-color: #3366CC;
+    background-color: #7e7757;
     color: white;
 }
 
@@ -47,7 +49,7 @@
 }
 
 .search-results-footer {
-    padding: 8px 12px;
+    padding: 0;
     border-top: 1px solid #e5e7eb;
     text-align: center;
     background-color: #f7f9fc;
@@ -55,16 +57,17 @@
 
 .advanced-search-link {
     display: block;
-    padding: 8px;
+    padding: 12px;
     text-decoration: none;
-    color: #3366CC;
+    color: #123b8d;
     font-weight: 500;
     transition: all 0.2s;
 }
 
 .advanced-search-link:hover {
-    background-color: #e5e7eb;
-    border-radius: 4px;
+    background-color: #7e7757;
+    border-radius: 0;
+    color: #fff;
 }
 
 /* Search Results Styling */
@@ -79,6 +82,8 @@
     margin-bottom: 8px;
     padding-bottom: 4px;
     border-bottom: 1px solid #e5e7eb;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
 }
 
 .search-result-item {
@@ -95,10 +100,12 @@
 .search-result-item-title {
     font-weight: 500;
     margin-bottom: 4px;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 15px;
 }
 
 .search-result-item-title a {
-    color: #3366CC;
+    color: #7e7757;
     text-decoration: none;
 }
 
@@ -115,11 +122,13 @@
 .search-result-item-meta {
     font-size: 12px;
     color: #9ca3af;
+    margin-top: 5px;
 }
 
 .search-result-item-meta a {
     color: #6b7280;
     text-decoration: none;
+    margin-right: 10px;
 }
 
 .search-result-item-meta a:hover {

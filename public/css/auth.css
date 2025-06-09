@@ -234,7 +234,8 @@
 [data-bs-theme="dark"] .auth-social-btn.btn-outline-secondary:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
-
+.modal-dialog{
+}
 /* Responsive adjustments */
 @media (max-width: 576px) {
     .auth-card .card-body {

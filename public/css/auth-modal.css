@@ -31,30 +31,48 @@
 
 .auth-modal .form-control {
     border-radius: 5px;
-    padding: 12px 15px;
     height: auto;
     font-size: 14px;
     border: 1px solid #e2e8f0;
     background-color: #f8fafc;
+    font-family: "Roboto Condensed", sans-serif;
+    padding-left: 40px !IMPORTANT;
+}
+/* CSS cho phần kiểm tra độ mạnh mật khẩu */
+.password-strength-meter .progress-bar {
+    transition: width 0.5s ease;
 }
 
+.password-requirements li {
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.password-requirements li .fa-check-circle {
+    color: #198754; /* Bootstrap success color */
+}
+
+.password-requirements li .fa-times-circle {
+    color: #dc3545; /* Bootstrap danger color */
+}
+
+.password-strength-feedback {
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
 .auth-modal .form-control:focus {
-    border-color: #3366CC;
-    box-shadow: 0 0 0 0.2rem rgba(51, 102, 204, 0.25);
 }
 
 .auth-modal .btn-primary {
-    background-color: #3366CC;
-    border-color: #3366CC;
     border-radius: 5px;
-    padding: 10px 15px;
-    font-weight: 500;
+    /* padding: 10px 15px; */
     width: 100%;
 }
 
 .auth-modal .btn-primary:hover {
-    background-color: #2952a3;
-    border-color: #2952a3;
 }
 
 .auth-modal .social-login {
@@ -64,26 +82,23 @@
 
 .auth-modal .social-login .btn {
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 12px;
     margin-bottom: 10px;
     border-radius: 5px;
     font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 2px;
+    border: 1px solid #ccc !important;
+    font-size: 12px;
 }
 
 .auth-modal .social-login .btn-google {
     background-color: #fff;
-    border: 1px solid #ddd;
-    color: #333;
 }
 
 .auth-modal .social-login .btn-facebook {
-    background-color: #1877F2;
-    border-color: #1877F2;
-    color: white;
 }
 
 .auth-modal .social-login .btn-google:hover {
@@ -113,6 +128,7 @@
     padding: 0 10px;
     color: #718096;
     font-size: 14px;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .auth-modal .form-check-input:checked {
@@ -124,6 +140,7 @@
 .auth-modal .forgot-password {
     font-size: 14px;
     color: #718096;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .auth-modal .forgot-password:hover {
@@ -142,15 +159,20 @@
 
 .auth-modal .nav-tabs .nav-link {
     border: none;
-    color: #718096;
+    color: #7e7757;
     font-weight: 500;
     padding: 10px 15px;
+    border-radius: 0;
+    border: 1px solid #7e7757;
+    border-radius: 5px;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .auth-modal .nav-tabs .nav-link.active {
-    color: #3366CC;
-    background-color: transparent;
-    border-bottom: 2px solid #3366CC;
+    color: #fffffe;
+    background-color: #7e7757;
+    border-bottom: 0;
+    border-radius: 5px;
 }
 
 .auth-modal .alert {

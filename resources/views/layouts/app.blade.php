@@ -80,6 +80,9 @@
     <link rel="stylesheet" href="{{ asset('css/search.css') }}">
 
     <!-- Scripts -->
+    <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
+    <script src="{{ asset('js/theme-preload.js') }}"></script>
+
     <!-- Thay thế Vite bằng asset() truyền thống -->
     <link rel="stylesheet" href="{{ asset('css/main-user.css') }}">
 
@@ -125,6 +128,9 @@
 
     <!-- Avatar Styles -->
     <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
+
+    <!-- Thread Item Styles -->
+    <link rel="stylesheet" href="{{ asset('css/thread-item.css') }}">
 
     <!-- Extra Meta Tags -->
     @if(!empty($seo['extra_meta'] ?? ''))
@@ -258,8 +264,9 @@
                             @endif
 
                             <!-- Theme Toggle Button -->
-                            <button id="theme-toggle" data-toggle-theme
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2">
+                            <button id="theme-toggle" data-toggle-theme title="Chuyển chế độ sáng/tối" type="button"
+                                aria-label="Chuyển chế độ sáng/tối"
+                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 position-relative theme-toggle-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-sun dark-icon" viewBox="0 0 16 16">
                                     <path
@@ -273,6 +280,9 @@
                                         d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
                                 </svg>
                                 <span class="visually-hidden">Chuyển chế độ sáng/tối</span>
+                                <!-- Animated effect for better visibility -->
+                                <span class="theme-toggle-indicator position-absolute start-50 top-50 translate-middle"
+                                    style="display: none;"></span>
                             </button>
                         </div>
                     </div>
@@ -312,11 +322,49 @@
     <!-- Dark Mode JS -->
     <script src="{{ asset('js/dark-mode.js') }}"></script>
 
+    <!-- Theme Diagnostics Tool (activated by adding ?theme-diagnostics=1 to URL) -->
+    <script src="{{ asset('js/theme-diagnostics.js') }}"></script>
+
+    <!-- Theme Recovery System - Restores theme toggle functionality if it breaks -->
+    <script src="{{ asset('js/theme-recovery.js') }}"></script>
+
+    <!-- Theme Debug Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Theme debug info:', {
+                themeButton: document.getElementById('theme-toggle'),
+                dataTheme: document.documentElement.getAttribute('data-theme'),
+                localStorageTheme: localStorage.getItem('theme')
+            });
+
+            // Thêm xử lý lỗi dự phòng
+            setTimeout(function() {
+                const toggleBtn = document.getElementById('theme-toggle');
+                if (toggleBtn && !toggleBtn._hasClickHandler) {
+                    console.log('Adding fallback click handler to theme button');
+                    toggleBtn._hasClickHandler = true;
+                    toggleBtn.addEventListener('click', function(e) {
+                        console.log('Theme button clicked (fallback handler)');
+                        e.preventDefault();
+                        if (window.themeManager) {
+                            window.themeManager.toggle();
+                        } else {
+                            console.error('themeManager not found');
+                        }
+                    });
+                }
+            }, 1000);
+        });
+    </script>
+
     <!-- Auth Modal Script -->
     <script src="{{ asset('js/auth-modal.js') }}"></script>
 
     <!-- Search Script -->
     <script src="{{ asset('js/search.js') }}"></script>
+
+    <!-- Thread Item Script -->
+    <script src="{{ asset('js/thread-item.js') }}"></script>
 
     <!-- Manual Dropdown Script -->
     <script src="{{ asset('js/manual-dropdown.js') }}"></script>

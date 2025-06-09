@@ -7,7 +7,8 @@
    DARK MODE VARIABLES
    ======================================== */
 
-[data-theme="dark"] {
+[data-theme="dark"],
+.dark-mode {
     --bs-body-bg: #0f172a;
     --bs-body-color: #f8fafc;
     --bs-border-color: #334155;
@@ -19,12 +20,14 @@
    DARK MODE OVERRIDES
    ======================================== */
 
-[data-theme="dark"] body {
+[data-theme="dark"] body,
+.dark-mode body {
     background-color: var(--bs-body-bg) !important;
     color: var(--bs-body-color) !important;
 }
 
-[data-theme="dark"] .bg-white {
+[data-theme="dark"] .bg-white,
+.dark-mode .bg-white {
     background-color: var(--bs-secondary-bg) !important;
     color: var(--bs-body-color) !important;
 }
@@ -173,4 +176,58 @@
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
     background: #475569;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON STYLES
+   ======================================== */
+
+/* Theme Toggle Button Base Styles */
+.theme-toggle-btn {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Theme Toggle Button Hover Effect */
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button Focus State */
+.theme-toggle-btn:focus {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+/* Theme Toggle Button Click Animation */
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Theme Toggle Indicator Animation */
+.theme-toggle-indicator {
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn.clicked .theme-toggle-indicator {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+    animation: ripple 0.7s ease-out;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.3;
+        transform: scale(0.1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.5);
+    }
 }

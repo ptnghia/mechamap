@@ -19,8 +19,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Get latest threads
+        // Get latest threads - chỉ lấy thread đáp ứng điều kiện hiển thị
         $latestThreads = Thread::with(['user', 'category', 'forum'])
+            ->publicVisible() // Lọc thread không bị xóa/ẩn/archived/spam
+            ->whereNull('deleted_at') // Đảm bảo không hiển thị thread đã xóa mềm
+            ->where(function ($query) {
+                // Kiểm tra các điều kiện trạng thái khác
+                $query->where('status', '!=', 'cancelled')
+                    ->where('status', '!=', 'rejected')
+                    ->where(function ($q) {
+                        $q->whereNull('status')
+                            ->orWhere('status', '!=', 'deleted');
+                    });
+            })
             ->withCount('allComments')
             ->latest()
             ->take(10)
@@ -28,10 +39,23 @@ class HomeController extends Controller
 
         // Get featured threads (sticky or with most views)
         $featuredThreads = Thread::with(['user'])
-            ->where('is_featured', true)
-            ->orWhere('is_sticky', true)
-            ->orWhere(function ($query) {
-                $query->where('view_count', '>', 100);
+            ->publicVisible() // Áp dụng điều kiện publicVisible trước
+            ->whereNull('deleted_at') // Đảm bảo không hiển thị thread đã xóa mềm
+            ->where(function ($query) {
+                // Kiểm tra các trạng thái hủy
+                $query->where('status', '!=', 'cancelled')
+                    ->where('status', '!=', 'rejected')
+                    ->where(function ($q) {
+                        $q->whereNull('status')
+                            ->orWhere('status', '!=', 'deleted');
+                    });
+            })
+            ->where(function ($query) {
+                $query->where('is_featured', true)
+                    ->orWhere('is_sticky', true)
+                    ->orWhere(function ($subquery) {
+                        $subquery->where('view_count', '>', 100);
+                    });
             })
             ->latest()
             ->take(4)
@@ -85,6 +109,17 @@ class HomeController extends Controller
         $skipAmount = ($page - 1) * $perPage + 10;
 
         $threads = Thread::with(['user', 'category', 'forum', 'media'])
+            ->publicVisible() // Áp dụng điều kiện publicVisible để lọc thread
+            ->whereNull('deleted_at') // Đảm bảo không hiển thị thread đã xóa mềm
+            ->where(function ($query) {
+                // Kiểm tra các trạng thái hủy
+                $query->where('status', '!=', 'cancelled')
+                    ->where('status', '!=', 'rejected')
+                    ->where(function ($q) {
+                        $q->whereNull('status')
+                            ->orWhere('status', '!=', 'deleted');
+                    });
+            })
             ->withCount('allComments as comments_count')
             ->latest()
             ->skip($skipAmount)

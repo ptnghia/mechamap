@@ -196,6 +196,8 @@ Route::get('/auth/{provider}', [\App\Http\Controllers\Auth\SocialiteController::
 Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'handleProviderCallback']);
 
 // Thread routes
+// Redirect empty thread creation to forum selection
+Route::redirect('/threads/create', '/create-thread', 302)->name('threads.create.redirect');
 Route::resource('threads', \App\Http\Controllers\ThreadController::class);
 
 // Comment routes

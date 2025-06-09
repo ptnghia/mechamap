@@ -7,7 +7,7 @@
 .form-control {
     display: block;
     width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.8rem 0.75rem;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
@@ -22,9 +22,8 @@
 .form-control:focus {
     color: #333333;
     background-color: #fff;
-    border-color: #3366CC;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(51, 102, 204, 0.25);
+    box-shadow: 0 0 0 .25rem rgb(126 119 87 / 22%);
 }
 
 .form-control::placeholder {
@@ -61,6 +60,7 @@
     font-size: 14px;
     font-weight: 500;
     color: #333333;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 /* Form text */
@@ -113,6 +113,7 @@
 .form-check-label {
     color: #333333;
     font-size: 14px;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 /* Inline form check */

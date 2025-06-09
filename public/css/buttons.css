@@ -6,8 +6,8 @@
 /* Base button style */
 .btn {
     font-size: 14px;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    font-weight: 400;
+    padding: 10px 30px;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -16,12 +16,14 @@
     justify-content: center;
     line-height: 1.5;
     border: 1px solid transparent;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
 }
 
 /* Button sizes */
 .btn-sm {
     font-size: 13px;
-    padding: 0.25rem 0.5rem;
+    padding: 7px 20px;
 }
 
 .btn-lg {
@@ -31,14 +33,14 @@
 
 /* Primary button */
 .btn-primary {
-    background-color: #3366CC;
-    border-color: #3366CC;
+    background-color: #7e7757;
+    border-color: #7e7757;
     color: #fff;
 }
 
 .btn-primary:hover, .btn-primary:focus {
-    background-color: #2a58b5;
-    border-color: #2a58b5;
+    background-color: #7e7757;
+    border-color: #7e7757;
     color: #fff;
 }
 
@@ -175,15 +177,17 @@
 
 /* Outline buttons */
 .btn-outline-primary {
-    color: #3366CC;
-    border-color: #3366CC;
+    color: #7e7757;
+    border-color: #7e7757;
     background-color: transparent;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
 }
 
 .btn-outline-primary:hover, .btn-outline-primary:focus {
     color: #fff;
-    background-color: #3366CC;
-    border-color: #3366CC;
+    background-color: #7e7757;
+    border-color: #7e7757;
 }
 
 .btn-outline-secondary {
