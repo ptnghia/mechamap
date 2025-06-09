@@ -4,13 +4,13 @@
 
 @section('content')
 <!-- Latest Threads -->
-<div class="card">
+<div class="body_left">
     <div class="list-group list-group-flush" id="latest-threads">
         @foreach($latestThreads as $thread)
         @include('partials.thread-item', ['thread' => $thread])
         @endforeach
     </div>
-    <div class="card-footer text-center">
+    <div class="text-center">
         <button id="load-more-threads" class="btn btn-outline-primary">Tải thêm</button>
     </div>
 </div>
@@ -90,13 +90,13 @@
         transition: all 0.3s ease;
     }
 
-    .thread-item:hover {
-        background-color: #f8f9fa;
-    }
-
     #load-more-threads {
         transition: all 0.3s ease;
-        min-width: 120px;
+        min-width: 150px;
+        border-radius: 6px;
+        padding: 12px;
+        background-color: var(--user-primary);
+        border: 1px solid var(--user-primary);
     }
 
     #load-more-threads:disabled {

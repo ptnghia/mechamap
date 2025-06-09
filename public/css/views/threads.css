@@ -205,12 +205,6 @@
 }
 
 .thread-content {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    padding: 2rem;
-    margin-bottom: 2rem;
-    line-height: 1.7;
 }
 
 .thread-content img {

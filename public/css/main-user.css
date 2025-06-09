@@ -50,12 +50,12 @@
 
 :root {
     /* User Primary Colors - Khác với admin */
-    --user-primary: #2563EB;
-    --user-primary-hover: #1D4ED8;
+    --user-primary: #7e7656;
+    --user-primary-hover: #0556cd;
     --user-primary-light: #EFF6FF;
 
     /* User Secondary Colors */
-    --user-secondary: #10B981;
+    --user-secondary: #686245;
     --user-secondary-hover: #059669;
 
     /* User Status Colors */
@@ -135,7 +135,7 @@
    ======================================== */
 
 body.user-frontend {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
     background: var(--user-bg-secondary);
     color: var(--user-text-primary);
     line-height: 1.6;

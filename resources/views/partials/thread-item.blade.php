@@ -31,7 +31,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 }
 @endphp
 
-<div class="list-group-item thread-item thread-item-container" data-thread-id="{{ $thread->id ?? '' }}">
+<div class="thread-item thread-item-container" data-thread-id="{{ $thread->id ?? '' }}">
     <!-- Thread Header với user info và badges -->
     <div class="thread-item-header">
         <div class="thread-user-info">
@@ -42,24 +42,79 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             </div>
             <div>
                 <strong class="thread-user-name">{{ $userName }}</strong><br>
+                <!-- Status badge nếu có -->
+                @if(isset($thread->status) && $thread->status)
+                <!--span class="badge bg-light text-dark"><i class="bi bi-info-circle me-1"></i>{{ $thread->status
+                    }}</span-->
+                @endif
                 <span class="d-none d-md-inline text-muted">{{ $createdAt }}</span>
+
             </div>
         </div>
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
-            <span class="badge bg-primary"><i class="bi bi-pin-angle"></i> {{ __('messages.thread_status.sticky')
+            <span class="btn btn-sm bg-primary thread_status"><i class="bi bi-pin-angle"></i> {{
+                __('messages.thread_status.sticky')
                 }}</span>
             @endif
             @if($thread->is_locked ?? false)
-            <span class="badge bg-danger"><i class="bi bi-lock-fill"></i> {{ __('messages.thread_status.locked')
+            <span class="btn btn-sm bg-danger thread_status"><i class="bi bi-lock-fill"></i> {{
+                __('messages.thread_status.locked')
                 }}</span>
+            @endif
+
+            <!-- Action buttons cho authenticated users -->
+            @if($isAuthenticated)
+            <div class="thread-actions">
+                @if($isBookmarked)
+                <!-- Remove bookmark form -->
+                <form method="POST" action="{{ route('threads.bookmark.remove', $thread) }}" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
+                        <i class="bi bi-bookmark-fill"></i>
+                        <span class="d-none d-md-inline ms-1">Đã lưu</span>
+                    </button>
+                </form>
+                @else
+                <!-- Add bookmark form -->
+                <form method="POST" action="{{ route('threads.bookmark.add', $thread) }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
+                        <i class="bi bi-bookmark"></i>
+                        <span class="d-none d-md-inline ms-1">Lưu</span>
+                    </button>
+                </form>
+                @endif
+
+                @if($isFollowed)
+                <!-- Unfollow form -->
+                <form method="POST" action="{{ route('threads.follow.remove', $thread) }}" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
+                        <i class="bi bi-bell-fill"></i>
+                        <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
+                    </button>
+                </form>
+                @else
+                <!-- Follow form -->
+                <form method="POST" action="{{ route('threads.follow.add', $thread) }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
+                        <i class="bi bi-bell"></i>
+                        <span class="d-none d-md-inline ms-1">Theo dõi</span>
+                    </button>
+                </form>
+                @endif
+            </div>
             @endif
         </div>
     </div>
 
-    <div class="row">
+    <div class="row align-items-center">
         <!-- Nội dung chính -->
-        <div class="{{ $thread->featured_image ? 'col-md-9' : 'col-12' }}">
+        <div class="{{ $thread->featured_image ? 'col-md-8' : 'col-12' }}">
             <div class="thread-title-section">
                 <div class="thread-title">
                     <a href="{{ $threadUrl }}">{{ $thread->title }}</a>
@@ -67,23 +122,17 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <small class="text-muted d-md-none">{{ $createdAt }}</small>
             </div>
 
-            <!-- Status badge nếu có -->
-            @if(isset($thread->status) && $thread->status)
-            <div class="mb-2 small">
-                <span class="badge bg-light text-dark"><i class="bi bi-info-circle me-1"></i>{{ $thread->status
-                    }}</span>
-            </div>
-            @endif
+
 
             <!-- Mô tả ngắn thread -->
             @if($contentPreview)
-            <p class="text-muted small mb-2 thread-content">{{ $contentPreview }}</p>
+            <div class="thread-content">{{ $contentPreview }}</div>
             @endif
         </div>
 
         <!-- Hình ảnh -->
         @if(isset($thread->featured_image) && $thread->featured_image)
-        <div class="col-md-3 d-none d-md-block">
+        <div class="col-md-4 d-none d-md-block">
             <div class="thread-image-container">
                 <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded"
                     onerror="this.style.display='none'">
@@ -116,51 +165,6 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             </div>
         </div>
 
-        <!-- Action buttons cho authenticated users -->
-        @if($isAuthenticated)
-        <div class="thread-actions">
-            @if($isBookmarked)
-            <!-- Remove bookmark form -->
-            <form method="POST" action="{{ route('threads.bookmark.remove', $thread) }}" style="display: inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
-                    <i class="bi bi-bookmark-fill"></i>
-                    <span class="d-none d-md-inline ms-1">Đã lưu</span>
-                </button>
-            </form>
-            @else
-            <!-- Add bookmark form -->
-            <form method="POST" action="{{ route('threads.bookmark.add', $thread) }}" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
-                    <i class="bi bi-bookmark"></i>
-                    <span class="d-none d-md-inline ms-1">Lưu</span>
-                </button>
-            </form>
-            @endif
 
-            @if($isFollowed)
-            <!-- Unfollow form -->
-            <form method="POST" action="{{ route('threads.follow.remove', $thread) }}" style="display: inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
-                    <i class="bi bi-bell-fill"></i>
-                    <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
-                </button>
-            </form>
-            @else
-            <!-- Follow form -->
-            <form method="POST" action="{{ route('threads.follow.add', $thread) }}" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
-                    <i class="bi bi-bell"></i>
-                    <span class="d-none d-md-inline ms-1">Theo dõi</span>
-                </button>
-            </form>
-            @endif
-        </div>
-        @endif
     </div>
 </div>

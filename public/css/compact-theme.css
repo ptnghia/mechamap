@@ -184,9 +184,7 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
     transition: background-color 0.2s ease;
 }
 
-.thread-item:hover {
-    background-color: rgba(0, 0, 0, 0.02);
-}
+.thread-item:hover {box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);}
 
 .thread-title {
     font-size: var(--font-size-lg);

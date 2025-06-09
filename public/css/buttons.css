@@ -290,7 +290,7 @@
 
 /* Button with icon */
 .btn i, .btn .bi {
-    margin-right: 0.5rem;
+    margin-right: 0.2rem;
 }
 
 .btn.icon-right i, .btn.icon-right .bi {

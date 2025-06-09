@@ -1,8 +1,36 @@
 /* Thread Item Styles */
+
 .thread-item-container {
-    border-radius: 8px;
+    border-radius: 20px;
     transition: all 0.3s ease;
-    position: relative;
+}
+.thread-item{margin-bottom: 20px;font-family: "Roboto Condensed", sans-serif;/* border: 1px solid rgb(228 228 231/1); */padding: 16px;background-color: #fff;}
+.thread-user-name{font-size: 15px;}
+.thread-category-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+    width: auto;
+}
+
+.thread-category-badges .badge,
+.thread-badges .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.thread-badges .badge i {
+    margin-right: 0.25rem;
+}
+
+/* Content and media styles */Common transitions */
+.hover-scale {
+    transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
 }
 
 /* Avatar styling */
@@ -39,7 +67,7 @@
 }
 
 .thread-title {
-    font-size: 1.1rem;
+    font-size: 19px;
     font-weight: 600;
     margin-bottom: 0;
 }
@@ -58,64 +86,85 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.25rem;
-}
-
-.thread-badges .badge {
+} 
+.thread_status {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
+    margin-right: 3px;
+    color: #fff;
+    padding: 5px 10px;
+    border: 1px solid var(--user-bg-primary);
 }
-
+.thread-badges .btn{
+}
 /* Footer styling */
 .thread-item-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
+    padding-top: 23px;
     border-top: 1px solid #f1f3f4;
     flex-wrap: wrap;
     gap: 1rem;
 }
-
+.thread-item-footer .btn{padding: 3px 10px;}
 .thread-meta-left {
     display: flex;
-    flex-direction: column;
     gap: 0.5rem;
     flex-grow: 1;
+    justify-content: space-between;
 }
 
+/* Thread Meta Styles - Consolidated */
 .thread-meta {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.875rem;
     color: #6c757d;
+    justify-content: start;
+    margin-bottom: 0;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
-.meta-item {
-    display: flex;
+.meta-item,
+.thread-meta .meta-item {
+    display: inline-flex;
     align-items: center;
     gap: 0.25rem;
+    margin-right: 0.75rem;
 }
 
+.thread-meta .meta-item i {
+    margin-right: 0.25rem;
+}
+
+/* Thread Category Badges - Consolidated */
 .thread-category-badges {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    flex: 1;
+    width: auto;
+    justify-content: end;
 }
 
 .thread-category-badges .badge {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    padding: 8px 10px;
+    font-family: "Roboto Condensed", sans-serif;
+    border-radius: 5px;
 }
 
-/* Action buttons */
+/* Action buttons section */
 .thread-actions {
     display: flex;
     gap: 0.5rem;
     align-items: center;
 }
 
+/* Action buttons - Consolidated */
 .bookmark-btn,
 .follow-btn {
     display: flex;
@@ -144,7 +193,7 @@
     color: #fff;
 }
 
-/* Loading state */
+/* Loading and disabled states */
 .bookmark-btn:disabled,
 .follow-btn:disabled {
     opacity: 0.6;
@@ -157,82 +206,49 @@
     height: 0.875rem;
     border-width: 1px;
 }
-    align-items: center;
-}
 
-.thread-badges .badge i {
-    margin-right: 0.25rem;
-}
-
+/* Content and media styles */
 .thread-content {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 0.75rem;
+    padding: 0;
+    font-size: 16px;
+    color: #606060;
+    line-height: 25px;
 }
 
-.thread-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.thread-meta .meta-item {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 0.75rem;
-}
-
-.thread-meta .meta-item i {
-    margin-right: 0.25rem;
-}
-
+/* Image and avatar containers */
 .thread-image-container {
     position: relative;
     overflow: hidden;
     border-radius: 6px;
 }
 
+.thread-image-container img,
+.avatar {
+    transition: transform 0.2s ease;
+    object-fit: cover;
+}
+
 .thread-image-container img {
     width: 100%;
-    max-height: 100px;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    height: 150px;
 }
 
 .thread-image-container:hover img {
     transform: scale(1.05);
 }
 
-.thread-item-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.75rem;
-    flex-wrap: wrap;
-}
-
 .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    object-fit: cover;
-    transition: transform 0.2s ease;
 }
 
 .avatar:hover {
     transform: scale(1.1);
-}
-
-.thread-category-badges {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    justify-content: flex-end;
 }
 
 /* Responsive adjustments */
@@ -270,7 +286,7 @@
     color: var(--bs-primary);
 }
 
-/* Skeleton loading styles */
+/* Skeleton loading styles - Optimized */
 @keyframes skeleton-loading {
     0% {
         background-position: -200px 0;
@@ -284,13 +300,21 @@
     pointer-events: none;
 }
 
+/* Apply base skeleton animation to all skeleton elements */
+.skeleton-text,
+.skeleton-circle,
+.skeleton-badge,
+.skeleton-image,
+.skeleton-button {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
 .skeleton-text {
     height: 16px;
     margin-bottom: 8px;
     border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200px 100%;
-    animation: skeleton-loading 1.5s infinite linear;
     width: 100%;
 }
 
@@ -312,36 +336,24 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200px 100%;
-    animation: skeleton-loading 1.5s infinite linear;
 }
 
 .skeleton-badge {
     height: 24px;
     width: 60px;
     border-radius: 12px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200px 100%;
-    animation: skeleton-loading 1.5s infinite linear;
     margin-right: 8px;
 }
 
 .skeleton-image {
     height: 100px;
     border-radius: 6px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200px 100%;
-    animation: skeleton-loading 1.5s infinite linear;
 }
 
 .skeleton-button {
     height: 32px;
     width: 80px;
     border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200px 100%;
-    animation: skeleton-loading 1.5s infinite linear;
     margin-right: 8px;
     display: inline-block;
 }

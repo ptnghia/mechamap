@@ -55,8 +55,10 @@ class ThreadItemBuilder {
                     </div>
                 </div>
                 <div class="thread-badges">
-                    ${thread.is_sticky ? `<span class="badge bg-primary"><i class="bi bi-pin-angle"></i> ${translations.sticky}</span>` : ''}
-                    ${thread.is_locked ? `<span class="badge bg-danger"><i class="bi bi-lock-fill"></i> ${translations.locked}</span>` : ''}
+                    ${thread.is_sticky ? `<span class="btn btn-sm badge bg-primary"><i class="bi bi-pin-angle"></i> ${translations.sticky}</span>` : ''}
+                    ${thread.is_locked ? `<span class="btn btn-sm badge bg-danger"><i class="bi bi-lock-fill"></i> ${translations.locked}</span>` : ''}
+                    <!-- Action buttons cho authenticated users -->
+                     ${this.generateActionButtons(thread)}
                 </div>
             </div>
 
@@ -110,8 +112,7 @@ class ThreadItemBuilder {
                     </div>
                 </div>
 
-                <!-- Action buttons cho authenticated users -->
-                ${this.generateActionButtons(thread)}
+
             </div>
         `;
 
@@ -196,6 +197,11 @@ class ThreadItemBuilder {
                 </div>
                 <div class="thread-badges">
                     <div class="skeleton-badge"></div>
+                    <!-- Skeleton action buttons -->
+                    <div class="thread-actions">
+                        <div class="skeleton-button"></div>
+                        <div class="skeleton-button"></div>
+                    </div>
                 </div>
             </div>
 
@@ -223,11 +229,7 @@ class ThreadItemBuilder {
                         <div class="skeleton-badge"></div>
                     </div>
                 </div>
-                <!-- Skeleton action buttons -->
-                <div class="thread-actions">
-                    <div class="skeleton-button"></div>
-                    <div class="skeleton-button"></div>
-                </div>
+
             </div>
         `;
 
