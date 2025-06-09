@@ -199,12 +199,18 @@ Route::prefix('v1')->group(function () {
             Route::delete('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'removeBookmark']);
             Route::put('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'updateBookmark']);
             Route::get('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'getBookmarkStatus']);
+
+            // Follow endpoints
+            Route::post('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'followThread']);
+            Route::delete('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'unfollowThread']);
+            Route::get('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'getFollowStatus']);
         });
 
         // User Quality Data routes (protected)
         Route::prefix('user')->group(function () {
             Route::get('/bookmarks', [App\Http\Controllers\Api\ThreadQualityController::class, 'getUserBookmarks']);
             Route::get('/bookmark-folders', [App\Http\Controllers\Api\ThreadQualityController::class, 'getBookmarkFolders']);
+            Route::get('/followed-threads', [App\Http\Controllers\Api\ThreadQualityController::class, 'getUserFollowedThreads']);
         });
 
         // Admin routes (protected - require admin role)

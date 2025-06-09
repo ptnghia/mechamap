@@ -51,7 +51,7 @@ $total = count($tests);
 foreach ($tests as $key => $test) {
     $actual = __($test[0]);
     $expected = $test[1];
-    
+
     if ($actual === $expected) {
         echo "✅ SUCCESS: $key = $actual\n";
         $passed++;

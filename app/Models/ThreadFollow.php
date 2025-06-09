@@ -21,6 +21,20 @@ class ThreadFollow extends Model
     ];
 
     /**
+     * Boot method để tự động cập nhật follow count của thread.
+     */
+    protected static function booted()
+    {
+        static::created(function ($follow) {
+            $follow->thread->increment('follow_count');
+        });
+
+        static::deleted(function ($follow) {
+            $follow->thread->decrement('follow_count');
+        });
+    }
+
+    /**
      * Get the user that follows the thread.
      */
     public function user(): BelongsTo

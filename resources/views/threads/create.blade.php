@@ -1,557 +1,1259 @@
 @extends('layouts.app')
 
-@section('title', 'Create New Thread')
+@section('title', 'Tạo Chủ Đề Mới')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/thread-form.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 @endpush
 
 @section('content')
-<div class="thread-form-container">
-    <div class="card thread-form-card">
-        <div class="card-header">
-            <h1>Create New Thread</h1>
+<!-- Header Section -->
+<div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="page-title mb-2">
+                <i class="bi bi-plus-circle"></i>
+                Tạo Chủ Đề Mới
+            </h1>
+            <p class="page-subtitle text-muted mb-0">Chia sẻ ý tưởng, thảo luận và kết nối với cộng đồng</p>
         </div>
-        <div class="card-body">
-            <form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data" class="thread-form">
-                @csrf
-
-                <div class="thread-form-section">
-                    <div class="thread-form-section-title">
-                        <i class="bi bi-pencil-square"></i> Basic Information
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Thread Title</label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
-                            name="title" value="{{ old('title') }}" required
-                            placeholder="Enter a descriptive title for your thread">
-                        <div class="form-text">
-                            <i class="bi bi-info-circle me-1"></i> Use format: CITY l Project Name l Floors l Status
-                            (e.g., CARACAS l Promenade Res. I 24p I E/C)
-                        </div>
-                        @error('title')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="category_id" class="form-label">Category</label>
-                            <select class="form-select @error('category_id') is-invalid @enderror" id="category_id"
-                                name="category_id" required>
-                                <option value="">Select a category</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id')==$category->id ? 'selected' :
-                                    '' }}>{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="forum_id" class="form-label">Forum</label>
-                            <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id"
-                                name="forum_id" required>
-                                <option value="">Select a forum</option>
-                                @foreach($forums as $forum)
-                                <option value="{{ $forum->id }}" {{ old('forum_id')==$forum->id ? 'selected' : '' }}>{{
-                                    $forum->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('forum_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-
-                <div class="thread-form-section">
-                    <div class="thread-form-section-title">
-                        <i class="bi bi-file-text"></i> Thread Content
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="content" class="form-label">Content</label>
-                        <textarea class="form-control @error('content') is-invalid @enderror" id="content"
-                            name="content" rows="15" required>{{ old('content') }}</textarea>
-                        <div class="form-text">
-                            <i class="bi bi-pencil me-1"></i> You can use the editor to format text, add links, and
-                            insert images.
-                        </div>
-                        @error('content')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="images" class="form-label">
-                            <i class="bi bi-images me-1"></i> Upload Images
-                        </label>
-                        <div class="custom-file-upload">
-                            <div class="input-group">
-                                <input type="file" class="form-control @error('images') is-invalid @enderror"
-                                    id="images" name="images[]" multiple accept="image/*">
-                                <label class="input-group-text" for="images"><i class="bi bi-upload me-1"></i>
-                                    Browse</label>
-                            </div>
-                            <div class="form-text">
-                                <i class="bi bi-info-circle me-1"></i> You can upload multiple images. Maximum 10
-                                images, each up to 5MB.
-                            </div>
-                            @error('images')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            @error('images.*')
-                            <div class="text-danger mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div id="image-previews" class="row mt-3 image-preview-container"></div>
-                </div>
-
-                <!-- Poll Section -->
-                <div class="thread-form-section">
-                    <div class="thread-form-section-title">
-                        <i class="bi bi-bar-chart"></i> Poll (Optional)
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="has_poll" name="has_poll" value="1" {{
-                            old('has_poll') ? 'checked' : '' }}>
-                        <label class="form-check-label fw-bold" for="has_poll">
-                            Add a poll to this thread
-                        </label>
-                    </div>
-
-                    <div class="poll-section" style="{{ old('has_poll') ? '' : 'display: none;' }}">
-                        <div class="mb-3">
-                            <label for="poll_question" class="form-label">Question <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('poll_question') is-invalid @enderror"
-                                id="poll_question" name="poll_question" value="{{ old('poll_question') }}">
-                            @error('poll_question')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Possible responses <span class="text-danger">*</span></label>
-                            <div id="poll-options">
-                                <div class="input-group mb-2">
-                                    <input type="text"
-                                        class="form-control @error('poll_options.0') is-invalid @enderror"
-                                        name="poll_options[]" value="{{ old('poll_options.0') }}"
-                                        placeholder="Option 1">
-                                    <button class="btn btn-outline-secondary remove-option" type="button" disabled><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                                <div class="input-group mb-2">
-                                    <input type="text"
-                                        class="form-control @error('poll_options.1') is-invalid @enderror"
-                                        name="poll_options[]" value="{{ old('poll_options.1') }}"
-                                        placeholder="Option 2">
-                                    <button class="btn btn-outline-secondary remove-option" type="button" disabled><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                                @if(old('poll_options'))
-                                @foreach(old('poll_options') as $index => $option)
-                                @if($index > 1)
-                                <div class="input-group mb-2">
-                                    <input type="text"
-                                        class="form-control @error('poll_options.'.$index) is-invalid @enderror"
-                                        name="poll_options[]" value="{{ $option }}"
-                                        placeholder="Option {{ $index + 1 }}">
-                                    <button class="btn btn-outline-secondary remove-option" type="button"><i
-                                            class="bi bi-trash"></i></button>
-                                </div>
-                                @endif
-                                @endforeach
-                                @endif
-                            </div>
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-option">
-                                <i class="bi bi-plus-circle"></i> Add Option
-                            </button>
-                            @error('poll_options')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Maximum selectable responses</label>
-                            <div class="d-flex align-items-center">
-                                <div class="form-check me-4">
-                                    <input class="form-check-input" type="radio" name="poll_max_options"
-                                        id="single_choice" value="1" {{ old('poll_max_options', 1)==1 ? 'checked' : ''
-                                        }}>
-                                    <label class="form-check-label" for="single_choice">
-                                        Single choice
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="poll_max_options"
-                                        id="multiple_choice" value="0" {{ old('poll_max_options')==='0' ? 'checked' : ''
-                                        }}>
-                                    <label class="form-check-label" for="multiple_choice">
-                                        Unlimited
-                                    </label>
-                                </div>
-                                <div class="ms-4 custom-max-options"
-                                    style="{{ old('poll_max_options') && old('poll_max_options') != 1 && old('poll_max_options') != 0 ? '' : 'display: none;' }}">
-                                    <div class="input-group input-group-sm" style="width: 100px;">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="decrease-max">-</button>
-                                        <input type="number" class="form-control text-center" id="custom_max_options"
-                                            name="custom_max_options"
-                                            value="{{ old('poll_max_options') && old('poll_max_options') != 1 && old('poll_max_options') != 0 ? old('poll_max_options') : 2 }}"
-                                            min="2" max="10">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="increase-max">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-text">This is the maximum number of responses a voter may select when
-                                voting.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Options</label>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="poll_allow_change_vote"
-                                    name="poll_allow_change_vote" value="1" {{ old('poll_allow_change_vote', 1)
-                                    ? 'checked' : '' }}>
-                                <label class="form-check-label" for="poll_allow_change_vote">
-                                    Allow voters to change their votes
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="poll_show_votes_publicly"
-                                    name="poll_show_votes_publicly" value="1" {{ old('poll_show_votes_publicly')
-                                    ? 'checked' : '' }}>
-                                <label class="form-check-label" for="poll_show_votes_publicly">
-                                    Display votes publicly
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="poll_allow_view_without_vote"
-                                    name="poll_allow_view_without_vote" value="1" {{ old('poll_allow_view_without_vote',
-                                    1) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="poll_allow_view_without_vote">
-                                    Allow the results to be viewed without voting
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Close this poll after:</label>
-                            <div class="d-flex align-items-center">
-                                <div class="form-check me-4">
-                                    <input class="form-check-input" type="checkbox" id="poll_has_close_date"
-                                        name="poll_has_close_date" value="1" {{ old('poll_has_close_date') ? 'checked'
-                                        : '' }}>
-                                    <label class="form-check-label" for="poll_has_close_date">
-                                        Close poll after
-                                    </label>
-                                </div>
-                                <div class="poll-close-days"
-                                    style="{{ old('poll_has_close_date') ? '' : 'display: none;' }}">
-                                    <div class="input-group input-group-sm" style="width: 120px;">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="decrease-days">-</button>
-                                        <input type="number" class="form-control text-center" id="poll_close_after_days"
-                                            name="poll_close_after_days" value="{{ old('poll_close_after_days', 7) }}"
-                                            min="1" max="365">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                            id="increase-days">+</button>
-                                    </div>
-                                    <span class="ms-2">days</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="thread-form-submit">
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-x-circle me-1"></i> Cancel
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-1"></i> Create Thread
-                    </button>
-                </div>
-            </form>
+        <div>
+            <a href="{{ url()->previous() }}" class="btn btn-secondary btn-modern">
+                <i class="bi bi-arrow-left"></i>
+                <span>Quay Lại</span>
+            </a>
         </div>
     </div>
-    @endsection
+</div>
 
-    @push('scripts')
-    <script>
-        // Initialize rich text editor for content
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize CKEditor
-        if (typeof ClassicEditor !== 'undefined') {
-            ClassicEditor
-                .create(document.querySelector('#content'), {
-                    toolbar: {
-                        items: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'link',
-                            'bulletedList',
-                            'numberedList',
-                            '|',
-                            'outdent',
-                            'indent',
-                            '|',
-                            'imageUpload',
-                            'blockQuote',
-                            'insertTable',
-                            'mediaEmbed',
-                            'undo',
-                            'redo'
-                        ]
-                    },
-                    language: 'vi',
-                    image: {
-                        toolbar: [
-                            'imageTextAlternative',
-                            'imageStyle:full',
-                            'imageStyle:side'
-                        ]
-                    },
-                    table: {
-                        contentToolbar: [
-                            'tableColumn',
-                            'tableRow',
-                            'mergeTableCells'
-                        ]
-                    },
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        } else {
-            // Fallback if CKEditor is not loaded
-            console.warn('CKEditor not loaded. Using plain textarea instead.');
-        }
+<!-- Progress Indicator với accessibility cải thiện -->
+<div class="progress-container" role="progressbar" aria-label="Tiến độ tạo chủ đề" aria-valuemin="0" aria-valuemax="4"
+    aria-valuenow="1">
+    <div class="progress-steps">
+        <div class="progress-line" id="progress-line"></div>
+        <button type="button" class="step-item active" data-step="basic" aria-current="step"
+            aria-label="Bước 1: Thông tin cơ bản">
+            <div class="step-number">1</div>
+            <div class="step-text">Thông Tin Cơ Bản</div>
+        </button>
+        <button type="button" class="step-item" data-step="content" aria-label="Bước 2: Nội dung" disabled>
+            <div class="step-number">2</div>
+            <div class="step-text">Nội Dung</div>
+        </button>
+        <button type="button" class="step-item" data-step="poll" aria-label="Bước 3: Khảo sát tùy chọn" disabled>
+            <div class="step-number">3</div>
+            <div class="step-text">Khảo Sát (Tùy Chọn)</div>
+        </button>
+        <button type="button" class="step-item" data-step="review" aria-label="Bước 4: Xem lại và hoàn tất" disabled>
+            <div class="step-number">4</div>
+            <div class="step-text">Xem Lại</div>
+        </button>
+    </div>
+</div>
 
-        // Poll toggle
-        const hasPollCheckbox = document.getElementById('has_poll');
-        const pollSection = document.querySelector('.poll-section');
+<!-- Main Content -->
+<form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data" class="modern-form"
+    id="thread-form">
+    @csrf
 
-        hasPollCheckbox.addEventListener('change', function() {
-            pollSection.style.display = this.checked ? 'block' : 'none';
-        });
+    <!-- Step 1: Basic Information -->
+    <div class="form-step active" id="step-basic">
+        <div class="form-card">
+            <div class="card-header-modern">
+                <div class="card-title">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Thông Tin Cơ Bản</span>
+                </div>
+                <div class="card-subtitle">Nhập thông tin cơ bản cho chủ đề của bạn</div>
+            </div>
+            <div class="card-body-modern">
+                <div class="form-group-modern">
+                    <label for="title" class="form-label-modern">
+                        <span class="label-text">Tiêu Đề Chủ Đề</span>
+                        <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-control-modern @error('title') is-invalid @enderror" id="title"
+                            name="title" value="{{ old('title') }}" required
+                            placeholder="Nhập tiêu đề mô tả cho chủ đề của bạn">
+                        <div class="input-icon">
+                            <i class="bi bi-pencil-square"></i>
+                        </div>
+                    </div>
+                    <div class="form-help-text">
+                        <i class="bi bi-lightbulb"></i>
+                        <span>Gợi ý: THÀNH PHỐ | Tên Dự Án | Số Tầng | Trạng Thái (VD: HÀ NỘI | Landmark 81 |
+                            81T | Hoàn Thành)</span>
+                    </div>
+                    @error('title')
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
 
-        // Add poll option
-        const addOptionButton = document.getElementById('add-option');
-        const pollOptionsContainer = document.getElementById('poll-options');
-        let optionCount = document.querySelectorAll('#poll-options .input-group').length;
+                <div class="form-row">
+                    <div class="form-group-modern half-width">
+                        <label for="category_id" class="form-label-modern">
+                            <span class="label-text">Danh Mục</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select class="form-select-modern @error('category_id') is-invalid @enderror"
+                                id="category_id" name="category_id" required>
+                                <option value="">Chọn danh mục</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id')==$category->id ?
+                                    'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <div class="select-icon">
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                        </div>
+                        @error('category_id')
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
 
-        addOptionButton.addEventListener('click', function() {
-            optionCount++;
-            const newOption = document.createElement('div');
-            newOption.className = 'input-group mb-2';
-            newOption.innerHTML = `
-                <input type="text" class="form-control" name="poll_options[]" placeholder="Option ${optionCount}">
-                <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
-            `;
-            pollOptionsContainer.appendChild(newOption);
+                    <div class="form-group-modern half-width">
+                        <label for="forum_id" class="form-label-modern">
+                            <span class="label-text">Diễn Đàn</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <div class="select-wrapper">
+                            <select class="form-select-modern @error('forum_id') is-invalid @enderror" id="forum_id"
+                                name="forum_id" required>
+                                <option value="">Chọn diễn đàn</option>
+                                @foreach($forums as $forum)
+                                <option value="{{ $forum->id }}" {{ old('forum_id')==$forum->id ? 'selected' :
+                                    '' }}>
+                                    {{ $forum->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <div class="select-icon">
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                        </div>
+                        @error('forum_id')
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            // Enable remove buttons if we have more than 2 options
-            updateRemoveButtons();
-        });
+        <!-- Navigation Buttons -->
+        <div class="step-navigation">
+            <button type="button" class="btn btn-secondary btn-modern" disabled>
+                <i class="bi bi-chevron-left"></i>
+                <span>Trước</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
+                <span>Tiếp Theo</span>
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
 
-        // Remove poll option
-        pollOptionsContainer.addEventListener('click', function(e) {
-            if (e.target.closest('.remove-option')) {
-                e.target.closest('.input-group').remove();
-                optionCount--;
+    <!-- Step 2: Content -->
+    <div class="form-step" id="step-content">
+        <div class="form-card">
+            <div class="card-header-modern">
+                <div class="card-title">
+                    <i class="bi bi-file-text"></i>
+                    <span>Nội Dung Chủ Đề</span>
+                </div>
+                <div class="card-subtitle">Viết nội dung chi tiết cho chủ đề của bạn</div>
+            </div>
+            <div class="card-body-modern">
+                <div class="form-group-modern">
+                    <label for="content" class="form-label-modern">
+                        <span class="label-text">Nội Dung</span>
+                        <span class="label-required">*</span>
+                    </label>
+                    <div class="editor-wrapper">
+                        <textarea class="form-control-modern editor @error('content') is-invalid @enderror" id="content"
+                            name="content" rows="15" required
+                            placeholder="Viết nội dung chi tiết cho chủ đề của bạn...">{{ old('content') }}</textarea>
+                    </div>
+                    <div class="form-help-text">
+                        <i class="bi bi-magic"></i>
+                        <span>Sử dụng trình soạn thảo để định dạng văn bản, thêm liên kết và chèn hình
+                            ảnh</span>
+                    </div>
+                    @error('content')
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
 
-                // Update placeholders
-                const inputs = pollOptionsContainer.querySelectorAll('input');
-                inputs.forEach((input, index) => {
-                    input.placeholder = `Option ${index + 1}`;
-                });
+                <div class="form-group-modern">
+                    <label for="images" class="form-label-modern">
+                        <span class="label-text">
+                            <i class="bi bi-images"></i>
+                            Tải Lên Hình Ảnh
+                        </span>
+                    </label>
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-upload"></i>
+                            </div>
+                            <div class="upload-text">
+                                <h4>Kéo thả hình ảnh vào đây</h4>
+                                <p>hoặc <span class="upload-link">chọn file</span> từ máy tính</p>
+                            </div>
+                            <input type="file" class="upload-input @error('images') is-invalid @enderror" id="images"
+                                name="images[]" multiple accept="image/*">
+                        </div>
+                    </div>
+                    <div class="form-help-text">
+                        <i class="bi bi-info-circle"></i>
+                        <span>Tối đa 10 hình ảnh, mỗi file không quá 5MB. Hỗ trợ: JPG, PNG, GIF, WebP</span>
+                    </div>
+                    @error('images')
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                    @error('images.*')
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
 
-                // Disable remove buttons if we have only 2 options
-                updateRemoveButtons();
+                <div id="image-previews" class="image-gallery"></div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="step-navigation">
+            <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
+                <i class="bi bi-chevron-left"></i>
+                <span>Trước</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
+                <span>Tiếp Theo</span>
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 3: Poll (Optional) -->
+    <div class="form-step" id="step-poll">
+        <div class="form-card">
+            <div class="card-header-modern">
+                <div class="card-title">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Khảo Sát (Tùy Chọn)</span>
+                </div>
+                <div class="card-subtitle">Tạo một cuộc khảo sát để thu thập ý kiến từ cộng đồng</div>
+            </div>
+            <div class="card-body-modern">
+                <div class="poll-toggle">
+                    <div class="toggle-wrapper">
+                        <input type="checkbox" class="toggle-input" id="has_poll" name="has_poll" value="1" {{
+                            old('has_poll') ? 'checked' : '' }}>
+                        <label for="has_poll" class="toggle-label">
+                            <div class="toggle-switch">
+                                <div class="toggle-slider"></div>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">Thêm khảo sát vào chủ đề này</span>
+                                <span class="toggle-subtitle">Cho phép thành viên bình chọn và thể hiện ý
+                                    kiến</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="poll-content" style="{{ old('has_poll') ? '' : 'display: none;' }}">
+                    <div class="form-group-modern">
+                        <label for="poll_question" class="form-label-modern">
+                            <span class="label-text">Câu Hỏi Khảo Sát</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" class="form-control-modern @error('poll_question') is-invalid @enderror"
+                                id="poll_question" name="poll_question" value="{{ old('poll_question') }}"
+                                placeholder="Nhập câu hỏi cho cuộc khảo sát">
+                            <div class="input-icon">
+                                <i class="bi bi-question-circle"></i>
+                            </div>
+                        </div>
+                        @error('poll_question')
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">
+                            <span class="label-text">Các Lựa Chọn</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <div class="poll-options-container" id="poll-options">
+                            <div class="poll-option-item">
+                                <div class="option-input-wrapper">
+                                    <input type="text"
+                                        class="form-control-modern @error('poll_options.0') is-invalid @enderror"
+                                        name="poll_options[]" value="{{ old('poll_options.0') }}"
+                                        placeholder="Lựa chọn 1">
+                                    <button type="button" class="remove-option-btn" disabled>
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="poll-option-item">
+                                <div class="option-input-wrapper">
+                                    <input type="text"
+                                        class="form-control-modern @error('poll_options.1') is-invalid @enderror"
+                                        name="poll_options[]" value="{{ old('poll_options.1') }}"
+                                        placeholder="Lựa chọn 2">
+                                    <button type="button" class="remove-option-btn" disabled>
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @if(old('poll_options'))
+                            @foreach(old('poll_options') as $index => $option)
+                            @if($index > 1)
+                            <div class="poll-option-item">
+                                <div class="option-input-wrapper">
+                                    <input type="text"
+                                        class="form-control-modern @error('poll_options.'.$index) is-invalid @enderror"
+                                        name="poll_options[]" value="{{ $option }}"
+                                        placeholder="Lựa chọn {{ $index + 1 }}">
+                                    <button type="button" class="remove-option-btn">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endif
+                            @endforeach
+                            @endif
+                        </div>
+                        <button type="button" class="add-option-btn" id="add-option">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Thêm Lựa Chọn</span>
+                        </button>
+                        @error('poll_options')
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="poll-settings">
+                        <div class="settings-group">
+                            <div class="setting-title">Số lựa chọn tối đa</div>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="poll_max_options" value="1" {{ old('poll_max_options',
+                                        1)==1 ? 'checked' : '' }}>
+                                    <span class="radio-check"></span>
+                                    <span class="radio-text">Chỉ một lựa chọn</span>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="poll_max_options" value="0" {{
+                                        old('poll_max_options')==='0' ? 'checked' : '' }}>
+                                    <span class="radio-check"></span>
+                                    <span class="radio-text">Không giới hạn</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="setting-title">Tùy chọn khảo sát</div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="poll_allow_change_vote" value="1" {{
+                                        old('poll_allow_change_vote', 1) ? 'checked' : '' }}>
+                                    <span class="checkbox-check">
+                                        <i class="bi bi-check"></i>
+                                    </span>
+                                    <span class="checkbox-text">Cho phép thay đổi lựa chọn</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="poll_show_votes_publicly" value="1" {{
+                                        old('poll_show_votes_publicly') ? 'checked' : '' }}>
+                                    <span class="checkbox-check">
+                                        <i class="bi bi-check"></i>
+                                    </span>
+                                    <span class="checkbox-text">Hiển thị kết quả công khai</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="poll_allow_view_without_vote" value="1" {{
+                                        old('poll_allow_view_without_vote', 1) ? 'checked' : '' }}>
+                                    <span class="checkbox-check">
+                                        <i class="bi bi-check"></i>
+                                    </span>
+                                    <span class="checkbox-text">Cho phép xem kết quả mà không cần bình
+                                        chọn</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="setting-title">Thời gian đóng khảo sát</div>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="poll_has_close_date" name="poll_has_close_date" value="1" {{
+                                    old('poll_has_close_date') ? 'checked' : '' }}>
+                                <span class="checkbox-check">
+                                    <i class="bi bi-check"></i>
+                                </span>
+                                <span class="checkbox-text">Đóng khảo sát sau</span>
+                            </label>
+                            <div class="poll-close-settings"
+                                style="{{ old('poll_has_close_date') ? '' : 'display: none;' }}">
+                                <div class="number-input-group">
+                                    <button type="button" class="number-btn decrease" id="decrease-days">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input type="number" class="number-input" id="poll_close_after_days"
+                                        name="poll_close_after_days" value="{{ old('poll_close_after_days', 7) }}"
+                                        min="1" max="365">
+                                    <button type="button" class="number-btn increase" id="increase-days">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                    <span class="number-unit">ngày</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="step-navigation">
+            <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
+                <i class="bi bi-chevron-left"></i>
+                <span>Trước</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
+                <span>Tiếp Theo</span>
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 4: Review -->
+    <div class="form-step" id="step-review">
+        <div class="form-card">
+            <div class="card-header-modern">
+                <div class="card-title">
+                    <i class="bi bi-eye"></i>
+                    <span>Xem Lại Thông Tin</span>
+                </div>
+                <div class="card-subtitle">Kiểm tra lại tất cả thông tin trước khi tạo chủ đề</div>
+            </div>
+            <div class="card-body-modern">
+                <div class="review-section">
+                    <div class="review-item">
+                        <div class="review-label">Tiêu đề:</div>
+                        <div class="review-value" id="review-title">-</div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Danh mục:</div>
+                        <div class="review-value" id="review-category">-</div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Diễn đàn:</div>
+                        <div class="review-value" id="review-forum">-</div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Nội dung:</div>
+                        <div class="review-value content-preview" id="review-content">-</div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Hình ảnh:</div>
+                        <div class="review-value" id="review-images">Không có hình ảnh</div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Khảo sát:</div>
+                        <div class="review-value" id="review-poll">Không có khảo sát</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Submit -->
+        <div class="final-submit">
+            <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
+                <i class="bi bi-chevron-left"></i>
+                <span>Trước</span>
+            </button>
+            <button type="submit" class="btn btn-success btn-modern btn-submit">
+                <i class="bi bi-check-circle"></i>
+                <span>Tạo Chủ Đề</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+@endsection
+
+@push('scripts')
+<script>
+    // Biến global để quản lý multi-step form
+let currentStepIndex = 0;
+const steps = ['basic', 'content', 'poll', 'review'];
+
+// Khởi tạo khi trang load
+document.addEventListener('DOMContentLoaded', function() {
+    initializeForm();
+    initializeEditor();
+    initializeUploadArea();
+    initializePollFeatures();
+    initializeValidation();
+    initializeMultiStepForm();
+    enhanceAccessibility();
+});
+
+// Khởi tạo multi-step form
+function initializeMultiStepForm() {
+    // Initialize step display
+    showStep(currentStepIndex);
+    updateStepProgress();
+
+    // Add click handlers for step navigation
+    document.querySelectorAll('.step-item').forEach((item, index) => {
+        item.addEventListener('click', function() {
+            if (index <= currentStepIndex || validateStepsUpTo(index - 1)) {
+                currentStepIndex = index;
+                showStep(currentStepIndex);
+                updateStepProgress();
             }
         });
-
-        function updateRemoveButtons() {
-            const removeButtons = pollOptionsContainer.querySelectorAll('.remove-option');
-            const disableRemove = removeButtons.length <= 2;
-
-            removeButtons.forEach(button => {
-                button.disabled = disableRemove;
-            });
-        }
-
-        // Max options controls
-        const singleChoiceRadio = document.getElementById('single_choice');
-        const multipleChoiceRadio = document.getElementById('multiple_choice');
-        const customMaxOptions = document.querySelector('.custom-max-options');
-        const customMaxInput = document.getElementById('custom_max_options');
-        const decreaseMaxBtn = document.getElementById('decrease-max');
-        const increaseMaxBtn = document.getElementById('increase-max');
-
-        singleChoiceRadio.addEventListener('change', function() {
-            if (this.checked) {
-                customMaxOptions.style.display = 'none';
-                document.querySelector('input[name="poll_max_options"]').value = 1;
-            }
-        });
-
-        multipleChoiceRadio.addEventListener('change', function() {
-            if (this.checked) {
-                customMaxOptions.style.display = 'none';
-                document.querySelector('input[name="poll_max_options"]').value = 0;
-            }
-        });
-
-        // Custom max options
-        decreaseMaxBtn.addEventListener('click', function() {
-            if (customMaxInput.value > 2) {
-                customMaxInput.value = parseInt(customMaxInput.value) - 1;
-                document.querySelector('input[name="poll_max_options"]').value = customMaxInput.value;
-            }
-        });
-
-        increaseMaxBtn.addEventListener('click', function() {
-            if (customMaxInput.value < 10) {
-                customMaxInput.value = parseInt(customMaxInput.value) + 1;
-                document.querySelector('input[name="poll_max_options"]').value = customMaxInput.value;
-            }
-        });
-
-        // Poll close date
-        const hasCloseDateCheckbox = document.getElementById('poll_has_close_date');
-        const pollCloseDays = document.querySelector('.poll-close-days');
-        const pollCloseDaysInput = document.getElementById('poll_close_after_days');
-        const decreaseDaysBtn = document.getElementById('decrease-days');
-        const increaseDaysBtn = document.getElementById('increase-days');
-
-        hasCloseDateCheckbox.addEventListener('change', function() {
-            pollCloseDays.style.display = this.checked ? 'flex' : 'none';
-        });
-
-        decreaseDaysBtn.addEventListener('click', function() {
-            if (pollCloseDaysInput.value > 1) {
-                pollCloseDaysInput.value = parseInt(pollCloseDaysInput.value) - 1;
-            }
-        });
-
-        increaseDaysBtn.addEventListener('click', function() {
-            if (pollCloseDaysInput.value < 365) {
-                pollCloseDaysInput.value = parseInt(pollCloseDaysInput.value) + 1;
-            }
-        });
-
-        // Initialize
-        updateRemoveButtons();
     });
+}
 
-    // Preview images before upload
-    document.getElementById('images').addEventListener('change', function(event) {
-        // Remove existing previews
-        const previewContainer = document.getElementById('image-previews');
-        previewContainer.innerHTML = '';
-
-        // Add previews for each file
-        const files = event.target.files;
-
-        if (files.length === 0) {
-            return;
+// Validate steps up to a certain index
+function validateStepsUpTo(targetIndex) {
+    for (let i = 0; i <= targetIndex; i++) {
+        const step = steps[i];
+        switch (step) {
+            case 'basic':
+                if (!validateBasicInfo()) return false;
+                break;
+            case 'content':
+                if (!validateContent()) return false;
+                break;
+            case 'poll':
+                if (!validatePoll()) return false;
+                break;
         }
-
-        // Show preview container
-        previewContainer.style.display = 'flex';
-        previewContainer.style.flexWrap = 'wrap';
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
-            // Only process image files
-            if (!file.type.match('image.*')) {
-                continue;
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const previewCol = document.createElement('div');
-                previewCol.className = 'col-md-3 col-sm-4 col-6 mb-3';
-
-                const previewCard = document.createElement('div');
-                previewCard.className = 'card h-100 image-preview';
-
-                const previewImg = document.createElement('img');
-                previewImg.src = e.target.result;
-                previewImg.className = 'card-img-top';
-                previewImg.style.height = '120px';
-                previewImg.style.objectFit = 'cover';
-
-                const previewBody = document.createElement('div');
-                previewBody.className = 'card-body p-2';
-
-                const previewText = document.createElement('p');
-                previewText.className = 'card-text small text-truncate mb-0';
-                previewText.title = file.name;
-                previewText.textContent = file.name;
-
-                // Add file size
-                const fileSizeText = document.createElement('small');
-                fileSizeText.className = 'text-muted';
-                fileSizeText.textContent = formatFileSize(file.size);
-
-                // Add remove button
-                const removeButton = document.createElement('button');
-                removeButton.className = 'btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle';
-                removeButton.innerHTML = '<i class="bi bi-x"></i>';
-                removeButton.style.width = '24px';
-                removeButton.style.height = '24px';
-                removeButton.style.padding = '0';
-                removeButton.style.fontSize = '14px';
-                removeButton.title = 'Remove image';
-                removeButton.type = 'button';
-
-                removeButton.addEventListener('click', function() {
-                    previewCol.remove();
-
-                    // If no previews left, hide container
-                    if (previewContainer.children.length === 0) {
-                        previewContainer.style.display = 'none';
-                    }
-                });
-
-                previewBody.appendChild(previewText);
-                previewBody.appendChild(fileSizeText);
-                previewCard.appendChild(previewImg);
-                previewCard.appendChild(previewBody);
-                previewCard.appendChild(removeButton);
-                previewCol.appendChild(previewCard);
-                previewContainer.appendChild(previewCol);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Format file size
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-    </script>
-    @endpush
+    return true;
+}
+
+// Khởi tạo form và các chức năng cơ bản
+function initializeForm() {
+    // Auto-select forum if provided in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const forumId = urlParams.get('forum_id');
+    if (forumId) {
+        const forumSelect = document.getElementById('forum_id');
+        if (forumSelect) {
+            forumSelect.value = forumId;
+        }
+    }
+
+    // Update progress on input change
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+        element.addEventListener('input', updateProgress);
+        element.addEventListener('change', updateProgress);
+    });
+}
+
+// Khởi tạo CKEditor
+function initializeEditor() {
+    if (typeof ClassicEditor !== 'undefined') {
+        ClassicEditor
+            .create(document.querySelector('#content'), {
+                toolbar: {
+                    items: [
+                        'heading', '|',
+                        'bold', 'italic', 'link', '|',
+                        'bulletedList', 'numberedList', '|',
+                        'outdent', 'indent', '|',
+                        'imageUpload', 'blockQuote', 'insertTable', '|',
+                        'undo', 'redo'
+                    ]
+                },
+                language: 'vi',
+                placeholder: 'Viết nội dung chi tiết cho chủ đề của bạn...',
+                image: {
+                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                }
+            })
+            .then(editor => {
+                window.contentEditor = editor;
+                // Listen for content changes
+                editor.model.document.on('change:data', () => {
+                    updateProgress();
+                });
+            })
+            .catch(error => {
+                console.error('CKEditor error:', error);
+            });
+    }
+}
+
+// Khởi tạo khu vực upload
+function initializeUploadArea() {
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('images');
+    const uploadLink = uploadArea.querySelector('.upload-link');
+
+    // Click to browse files
+    uploadLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        fileInput.click();
+    });
+
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleImageFiles(files);
+        }
+    });
+
+    // Handle file selection
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleImageFiles(e.target.files);
+        }
+    });
+}
+
+// Xử lý files hình ảnh
+function handleImageFiles(files) {
+    const previewContainer = document.getElementById('image-previews');
+    previewContainer.innerHTML = '';
+
+    if (files.length === 0) return;
+
+    previewContainer.classList.add('active');
+
+    Array.from(files).forEach((file, index) => {
+        if (!file.type.match('image.*')) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageItem = createImagePreview(file, e.target.result, index);
+            previewContainer.appendChild(imageItem);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    updateProgress();
+}
+
+// Tạo preview cho hình ảnh
+function createImagePreview(file, src, index) {
+    const imageItem = document.createElement('div');
+    imageItem.className = 'image-item';
+    imageItem.innerHTML = `
+        <div class="image-preview">
+            <img src="${src}" alt="${file.name}">
+            <div class="image-overlay">
+                <button type="button" class="remove-image-btn" onclick="removeImagePreview(this)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="image-info">
+            <div class="image-name">${file.name}</div>
+            <div class="image-size">${formatFileSize(file.size)}</div>
+        </div>
+    `;
+    return imageItem;
+}
+
+// Xóa preview hình ảnh
+function removeImagePreview(button) {
+    const imageItem = button.closest('.image-item');
+    imageItem.remove();
+
+    // Update file input
+    const previewContainer = document.getElementById('image-previews');
+    if (previewContainer.children.length === 0) {
+        previewContainer.classList.remove('active');
+        // Reset file input
+        document.getElementById('images').value = '';
+    }
+
+    updateProgress();
+}
+
+// Format file size
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Khởi tạo các tính năng poll
+function initializePollFeatures() {
+    const toggleInput = document.getElementById('has_poll');
+    const pollContent = document.querySelector('.poll-content');
+
+    toggleInput.addEventListener('change', function() {
+        pollContent.style.display = this.checked ? 'block' : 'none';
+        updateProgress();
+    });
+
+    // Poll options management
+    initializePollOptions();
+
+    // Poll close date toggle
+    const closeDateCheckbox = document.getElementById('poll_has_close_date');
+    const closeSettings = document.querySelector('.poll-close-settings');
+
+    closeDateCheckbox.addEventListener('change', function() {
+        closeSettings.style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Number input controls
+    initializeNumberInputs();
+}
+
+// Khởi tạo quản lý poll options
+function initializePollOptions() {
+    const addButton = document.querySelector('.add-option-btn');
+    const optionsContainer = document.getElementById('poll-options');
+
+    addButton.addEventListener('click', addPollOption);
+
+    // Initialize existing options
+    updateRemoveButtons();
+
+    // Handle remove buttons
+    optionsContainer.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-option-btn')) {
+            removePollOption(e.target.closest('.remove-option-btn'));
+        }
+    });
+}
+
+// Thêm poll option
+function addPollOption() {
+    const optionsContainer = document.getElementById('poll-options');
+    const optionCount = optionsContainer.children.length + 1;
+
+    const optionItem = document.createElement('div');
+    optionItem.className = 'poll-option-item';
+    optionItem.innerHTML = `
+        <div class="option-input-wrapper">
+            <input type="text"
+                   class="form-control-modern"
+                   name="poll_options[]"
+                   placeholder="Lựa chọn ${optionCount}">
+            <button type="button" class="remove-option-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    `;
+
+    optionsContainer.appendChild(optionItem);
+    updateRemoveButtons();
+}
+
+// Xóa poll option
+function removePollOption(button) {
+    const optionItem = button.closest('.poll-option-item');
+    optionItem.remove();
+
+    // Update placeholders
+    const optionsContainer = document.getElementById('poll-options');
+    const inputs = optionsContainer.querySelectorAll('input');
+    inputs.forEach((input, index) => {
+        input.placeholder = `Lựa chọn ${index + 1}`;
+    });
+
+    updateRemoveButtons();
+}
+
+// Cập nhật trạng thái nút remove
+function updateRemoveButtons() {
+    const optionsContainer = document.getElementById('poll-options');
+    const removeButtons = optionsContainer.querySelectorAll('.remove-option-btn');
+    const shouldDisable = removeButtons.length <= 2;
+
+    removeButtons.forEach(button => {
+        button.disabled = shouldDisable;
+    });
+}
+
+// Khởi tạo number inputs
+function initializeNumberInputs() {
+    // Poll close days
+    const decreaseDaysBtn = document.getElementById('decrease-days');
+    const increaseDaysBtn = document.getElementById('increase-days');
+    const daysInput = document.getElementById('poll_close_after_days');
+
+    if (decreaseDaysBtn) {
+        decreaseDaysBtn.addEventListener('click', () => {
+            if (daysInput.value > 1) {
+                daysInput.value = parseInt(daysInput.value) - 1;
+            }
+        });
+    }
+
+    if (increaseDaysBtn) {
+        increaseDaysBtn.addEventListener('click', () => {
+            if (daysInput.value < 365) {
+                daysInput.value = parseInt(daysInput.value) + 1;
+            }
+        });
+    }
+}
+
+// Navigation giữa các bước
+function nextStep() {
+    if (currentStepIndex < steps.length - 1) {
+        if (validateCurrentStep()) {
+            currentStepIndex++;
+            showStep(currentStepIndex);
+            updateStepProgress();
+
+            if (currentStepIndex === steps.length - 1) {
+                updateReviewData();
+            }
+        }
+    }
+}
+
+function prevStep() {
+    if (currentStepIndex > 0) {
+        currentStepIndex--;
+        showStep(currentStepIndex);
+        updateStepProgress();
+    }
+}
+
+// Hiển thị bước hiện tại
+function showStep(index) {
+    const formSteps = document.querySelectorAll('.form-step');
+
+    formSteps.forEach((step, i) => {
+        step.classList.toggle('active', i === index);
+    });
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Cập nhật progress steps
+function updateStepProgress() {
+    const stepItems = document.querySelectorAll('.step-item');
+    const progressLine = document.getElementById('progress-line');
+
+    stepItems.forEach((item, index) => {
+        item.classList.remove('active', 'completed');
+
+        if (index < currentStepIndex) {
+            item.classList.add('completed');
+        } else if (index === currentStepIndex) {
+            item.classList.add('active');
+        }
+    });
+
+    // Update progress line width
+    if (progressLine) {
+        const progress = (currentStepIndex / (stepItems.length - 1)) * 100;
+        progressLine.style.width = `${progress}%`;
+    }
+}
+
+// Validate bước hiện tại
+function validateCurrentStep() {
+    const currentStep = steps[currentStepIndex];
+    let isValid = true;
+
+    switch (currentStep) {
+        case 'basic':
+            isValid = validateBasicInfo();
+            break;
+        case 'content':
+            isValid = validateContent();
+            break;
+        case 'poll':
+            isValid = validatePoll();
+            break;
+    }
+
+    return isValid;
+}
+
+// Validate thông tin cơ bản
+function validateBasicInfo() {
+    const title = document.getElementById('title');
+    const category = document.getElementById('category_id');
+    const forum = document.getElementById('forum_id');
+
+    let isValid = true;
+
+    if (!title.value.trim()) {
+        showFieldError(title, 'Vui lòng nhập tiêu đề');
+        isValid = false;
+    } else {
+        clearFieldError(title);
+    }
+
+    if (!category.value) {
+        showFieldError(category, 'Vui lòng chọn danh mục');
+        isValid = false;
+    } else {
+        clearFieldError(category);
+    }
+
+    if (!forum.value) {
+        showFieldError(forum, 'Vui lòng chọn diễn đàn');
+        isValid = false;
+    } else {
+        clearFieldError(forum);
+    }
+
+    return isValid;
+}
+
+// Validate nội dung
+function validateContent() {
+    const contentValue = window.contentEditor ? window.contentEditor.getData() : document.getElementById('content').value;
+
+    if (!contentValue.trim()) {
+        showValidationMessage('Vui lòng nhập nội dung cho chủ đề', 'error');
+        return false;
+    }
+
+    return true;
+}
+
+// Validate poll
+function validatePoll() {
+    const hasPoll = document.getElementById('has_poll').checked;
+
+    if (!hasPoll) return true;
+
+    const question = document.getElementById('poll_question');
+    const options = document.querySelectorAll('#poll-options input[name="poll_options[]"]');
+
+    let isValid = true;
+
+    if (!question.value.trim()) {
+        showFieldError(question, 'Vui lòng nhập câu hỏi khảo sát');
+        isValid = false;
+    } else {
+        clearFieldError(question);
+    }
+
+    let validOptions = 0;
+    options.forEach(option => {
+        if (option.value.trim()) {
+            validOptions++;
+        }
+    });
+
+    if (validOptions < 2) {
+        showValidationMessage('Khảo sát cần ít nhất 2 lựa chọn', 'error');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+// Hiển thị lỗi field
+function showFieldError(field, message) {
+    field.classList.add('is-invalid');
+
+    let errorDiv = field.parentNode.querySelector('.error-message');
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        field.parentNode.appendChild(errorDiv);
+    }
+
+    errorDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${message}`;
+}
+
+// Xóa lỗi field
+function clearFieldError(field) {
+    field.classList.remove('is-invalid');
+    const errorDiv = field.parentNode.querySelector('.error-message');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
+// Hiển thị thông báo validation
+function showValidationMessage(message, type = 'info', duration = 5000) {
+    // Tạo toast notification
+    const toast = document.createElement('div');
+    toast.className = `toast-notification toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Hiển thị và tự động ẩn
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+
+    // Thông báo cho screen reader
+    const liveRegion = document.getElementById('form-status');
+    if (liveRegion) {
+        liveRegion.textContent = message;
+    }
+
+    // Focus vào thông báo lỗi để screen reader đọc
+    if (type === 'error') {
+        const alertElement = document.querySelector('.alert-danger');
+        if (alertElement) {
+            alertElement.setAttribute('role', 'alert');
+            alertElement.setAttribute('aria-live', 'assertive');
+            alertElement.focus();
+        }
+    }
+}
+
+// Cập nhật dữ liệu review
+function updateReviewData() {
+    // Title
+    document.getElementById('review-title').textContent =
+        document.getElementById('title').value || '-';
+
+    // Category
+    const categorySelect = document.getElementById('category_id');
+    document.getElementById('review-category').textContent =
+        categorySelect.options[categorySelect.selectedIndex]?.text || '-';
+
+    // Forum
+    const forumSelect = document.getElementById('forum_id');
+    document.getElementById('review-forum').textContent =
+        forumSelect.options[forumSelect.selectedIndex]?.text || '-';
+
+    // Content
+    const contentValue = window.contentEditor ? window.contentEditor.getData() : document.getElementById('content').value;
+    const contentPreview = document.getElementById('review-content');
+    if (contentValue.trim()) {
+        contentPreview.innerHTML = contentValue.substring(0, 200) + (contentValue.length > 200 ? '...' : '');
+    } else {
+        contentPreview.textContent = '-';
+    }
+
+    // Images
+    const imageCount = document.querySelectorAll('#image-previews .image-item').length;
+    document.getElementById('review-images').textContent =
+        imageCount > 0 ? `${imageCount} hình ảnh` : 'Không có hình ảnh';
+
+    // Poll
+    const hasPoll = document.getElementById('has_poll').checked;
+    const pollReview = document.getElementById('review-poll');
+    if (hasPoll) {
+        const question = document.getElementById('poll_question').value;
+        const optionCount = document.querySelectorAll('#poll-options input[name="poll_options[]"]').length;
+        pollReview.textContent = question ? `${question} (${optionCount} lựa chọn)` : 'Có khảo sát';
+    } else {
+        pollReview.textContent = 'Không có khảo sát';
+    }
+}
+
+// Cập nhật progress tổng thể
+function updateProgress() {
+    // This could be used to show overall form completion progress
+    // For now, we'll just mark steps as completed when moving forward
+}
+
+// Cải thiện khả năng truy cập và điều hướng bàn phím
+function enhanceAccessibility() {
+    // Thêm hỗ trợ điều hướng bàn phím cho progress steps
+    const stepButtons = document.querySelectorAll('.step-item');
+
+    stepButtons.forEach((step, index) => {
+        step.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (!step.disabled && !step.classList.contains('active')) {
+                    goToStep(step.dataset.step);
+                }
+            }
+
+            // Arrow key navigation
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                const nextStep = stepButtons[index + 1];
+                if (nextStep && !nextStep.disabled) {
+                    nextStep.focus();
+                }
+            }
+
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prevStep = stepButtons[index - 1];
+                if (prevStep) {
+                    prevStep.focus();
+                }
+            }
+        });
+    });
+
+    // Thêm live region cho thông báo
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.className = 'sr-only';
+    liveRegion.id = 'form-status';
+    document.body.appendChild(liveRegion);
+}
+
+// Function để chuyển đến step cụ thể với accessibility improvements
+function goToStep(step) {
+    const stepIndex = steps.indexOf(step);
+    if (stepIndex === -1) return;
+
+    // Validate các bước trước
+    if (!validateStepsUpTo(stepIndex - 1)) {
+        return false;
+    }
+
+    currentStepIndex = stepIndex;
+    showStep(currentStepIndex);
+    updateStepProgress();
+
+    if (currentStepIndex === steps.length - 1) {
+        updateReviewData();
+    }
+
+    return true;
+}
+
+// Cập nhật trạng thái step có thể truy cập
+function updateStepAvailability(currentStep) {
+    const stepButtons = document.querySelectorAll('.step-item');
+    const currentIndex = steps.indexOf(currentStep);
+
+    stepButtons.forEach((button, index) => {
+        if (index <= currentIndex + 1) {
+            button.disabled = false;
+            button.setAttribute('tabindex', '0');
+        } else {
+            button.disabled = true;
+            button.setAttribute('tabindex', '-1');
+        }
+    });
+}
+
+// Function để lấy step hiện tại
+function getCurrentStep() {
+    return steps[currentStepIndex];
+}
+
+// Update progress line animation
+function updateProgressLine() {
+    const progressLine = document.getElementById('progress-line');
+    const stepItems = document.querySelectorAll('.step-item');
+
+    if (progressLine && stepItems.length > 0) {
+        const progress = (currentStepIndex / (stepItems.length - 1)) * 100;
+        progressLine.style.width = `${progress}%`;
+
+        // Add smooth transition
+        progressLine.style.transition = 'width 0.3s ease-in-out';
+    }
+}
+
+// Khởi tạo validation
+function initializeValidation() {
+    // Real-time validation for required fields
+    const requiredFields = document.querySelectorAll('[required]');
+
+    requiredFields.forEach(field => {
+        field.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                clearFieldError(this);
+            }
+        });
+
+        field.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid') && this.value.trim()) {
+                this.classList.remove('is-invalid');
+                clearFieldError(this);
+            }
+        });
+    });
+}
+
+// Submit form
+document.getElementById('thread-form').addEventListener('submit', function(e) {
+    // Final validation before submit
+    if (!validateBasicInfo() || !validateContent() || !validatePoll()) {
+        e.preventDefault();
+        showValidationMessage('Vui lòng kiểm tra lại các thông tin đã nhập', 'error');
+        return false;
+    }
+
+    // Show loading state
+    const submitButton = document.querySelector('.btn-submit');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i> <span>Đang tạo...</span>';
+    }
+});
+</script>
+@endpush

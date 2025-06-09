@@ -66,6 +66,7 @@ class Thread extends Model
         'bump_count',
         'dislikes_count',
         'bookmark_count',
+        'follow_count',
         'share_count',
         'cached_comments_count',
         'cached_participants_count',
@@ -210,6 +211,14 @@ class Thread extends Model
     public function isSavedBy(User $user): bool
     {
         return $this->saves()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Check if the thread is bookmarked by the given user.
+     */
+    public function isBookmarkedBy(User $user): bool
+    {
+        return $this->bookmarks()->where('user_id', $user->id)->exists();
     }
 
     /**

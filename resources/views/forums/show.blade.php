@@ -52,62 +52,15 @@
                 @if($threads->count() > 0)
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
-                    <div class="list-group-item py-3" id="thread-{{ $thread->id }}">
-                        <div class="row">
-                            <!-- Thông tin thread - responsive columns dựa trên việc có featured_image hay không -->
-                            <div class="{{ $thread->featured_image ? 'col-md-6' : 'col-md-9' }}">
-                                <div class="d-flex">
-                                    <div class="me-3">
-                                        <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
-                                            class="rounded-circle" width="50" height="50">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">
-                                            <a href="{{ route('threads.show', $thread) }}"
-                                                class="text-decoration-none">{{ $thread->title }}</a>
-                                            @if($thread->is_pinned)
-                                            <span class="badge bg-primary">{{ __('Pinned') }}</span>
-                                            @endif
-                                            @if($thread->is_locked)
-                                            <span class="badge bg-secondary">{{ __('messages.thread_status.locked')
-                                                }}</span>
-                                            @endif
-                                        </h5>
-                                        <p class="mb-1 text-muted small">
-                                            {{ __('messages.started_by') }}
-                                            <a href="{{ route('profile.show', $thread->user->username) }}"
-                                                class="text-decoration-none">
-                                                {{ $thread->user->name }}
-                                            </a>,
-                                            {{ $thread->created_at->diffForHumans() }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="row text-md-end">
-                                    <div class="col-6">
-                                        <div class="fw-bold">{{ $thread->posts_count }}</div>
-                                        <div class="small text-muted">{{ __('messages.replies') }}</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="fw-bold">{{ $thread->views ?? 0 }}</div>
-                                        <div class="small text-muted">{{ __('Views') }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Hình ảnh - chỉ hiển thị khi có featured_image -->
-                            @if($thread->featured_image)
-                            <div class="col-md-3 d-none d-md-block">
-                                <div class="thread-image">
-                                    <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}"
-                                        class="img-fluid rounded"
-                                        style="max-height: 80px; width: 100%; object-fit: cover;">
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+                    @include('partials.thread-item', [
+                    'thread' => $thread,
+                    'variant' => 'forum',
+                    'showBookmark' => true,
+                    'showFollow' => true,
+                    'showProjectDetails' => false,
+                    'showContentPreview' => false,
+                    'showUserInfo' => false
+                    ])
                     @endforeach
                 </div>
 

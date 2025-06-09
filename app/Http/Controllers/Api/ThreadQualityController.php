@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Thread;
 use App\Models\ThreadRating;
 use App\Models\ThreadBookmark;
+use App\Models\ThreadFollow;
 use App\Services\ModerationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -556,5 +557,156 @@ class ThreadQualityController extends Controller
             'recent_average' => round($recentAverage, 2),
             'change_percentage' => $changePercentage
         ];
+    }
+
+    /**
+     * Follow thread
+     */
+    public function followThread(Thread $thread)
+    {
+        // Kiểm tra quyền follow
+        if (!$this->moderationService->canViewThread($thread, Auth::user())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền theo dõi thread này'
+            ], 403);
+        }
+
+        // Kiểm tra đã follow chưa
+        $existingFollow = ThreadFollow::where([
+            'thread_id' => $thread->id,
+            'user_id' => Auth::id()
+        ])->first();
+
+        if ($existingFollow) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn đã theo dõi thread này rồi'
+            ], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $follow = ThreadFollow::create([
+                'thread_id' => $thread->id,
+                'user_id' => Auth::id()
+            ]);
+
+            // Thread follow_count sẽ được cập nhật tự động qua event
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã theo dõi thread',
+                'data' => [
+                    'follow' => $follow,
+                    'follow_count' => $thread->fresh()->follow_count ?? 0
+                ]
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi theo dõi thread'
+            ], 500);
+        }
+    }
+
+    /**
+     * Unfollow thread
+     */
+    public function unfollowThread(Thread $thread)
+    {
+        $follow = ThreadFollow::where([
+            'thread_id' => $thread->id,
+            'user_id' => Auth::id()
+        ])->first();
+
+        if (!$follow) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn chưa theo dõi thread này'
+            ], 404);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $follow->delete();
+            // Thread follow_count sẽ được cập nhật tự động qua event
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã hủy theo dõi thread',
+                'data' => [
+                    'follow_count' => $thread->fresh()->follow_count ?? 0
+                ]
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi hủy theo dõi thread'
+            ], 500);
+        }
+    }
+
+    /**
+     * Lấy trạng thái follow của user cho thread
+     */
+    public function getFollowStatus(Thread $thread)
+    {
+        if (!$this->moderationService->canViewThread($thread, Auth::user())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền xem thread này'
+            ], 403);
+        }
+
+        $follow = ThreadFollow::where([
+            'thread_id' => $thread->id,
+            'user_id' => Auth::id()
+        ])->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'is_following' => !!$follow,
+                'follow' => $follow,
+                'follow_count' => $thread->follow_count ?? 0
+            ]
+        ]);
+    }
+
+    /**
+     * Lấy danh sách thread đang follow của user
+     */
+    public function getUserFollowedThreads(Request $request)
+    {
+        $request->validate([
+            'search' => 'nullable|string|max:100'
+        ]);
+
+        $query = ThreadFollow::with(['thread.user', 'thread.forum'])
+            ->where('user_id', Auth::id());
+
+        if ($request->search) {
+            $query->whereHas('thread', function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $follows = $query->latest()->paginate(20);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'followed_threads' => $follows
+            ]
+        ]);
     }
 }

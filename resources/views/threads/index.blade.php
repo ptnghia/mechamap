@@ -81,111 +81,15 @@
                 @if($threads->count() > 0)
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
-                    <div class="list-group-item p-3">
-                        <div class="row">
-                            <!-- Nội dung chính (9 cột) -->
-                            <div class="col-md-9">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <img src="{{ $thread->user->profile_photo_url }}"
-                                            alt="{{ $thread->user->name }}" class="rounded-circle" width="50"
-                                            height="50">
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <h5 class="mb-1">
-                                                <a href="{{ route('threads.show', $thread) }}"
-                                                    class="text-decoration-none">{{ $thread->title }}</a>
-                                                @if($thread->is_sticky)
-                                                <span class="badge bg-primary ms-1">{{
-                                                    __('messages.thread_status.sticky') }}</span>
-                                                @endif
-                                                @if($thread->is_locked)
-                                                <span class="badge bg-danger ms-1">{{
-                                                    __('messages.thread_status.locked') }}</span>
-                                                @endif
-                                            </h5>
-                                            <small class="text-muted d-md-none">{{ $thread->created_at->diffForHumans()
-                                                }}</small>
-                                        </div>
-
-                                        <!-- Project Details -->
-                                        @if($thread->location || $thread->usage || $thread->floors || $thread->status)
-                                        <div class="project-details mb-2 small">
-                                            @if($thread->location)
-                                            <span class="badge bg-light text-dark me-2">Location: {{ $thread->location
-                                                }}</span>
-                                            @endif
-
-                                            @if($thread->usage)
-                                            <span class="badge bg-light text-dark me-2">Usage: {{ $thread->usage
-                                                }}</span>
-                                            @endif
-
-                                            @if($thread->floors)
-                                            <span class="badge bg-light text-dark me-2">Floors: {{ $thread->floors
-                                                }}</span>
-                                            @endif
-
-                                            @if($thread->status)
-                                            <span class="badge bg-light text-dark me-2">Status: {{ $thread->status
-                                                }}</span>
-                                            @endif
-                                        </div>
-                                        @endif
-
-                                        <p class="mb-1 text-muted">{{ Str::limit(strip_tags($thread->content), 120) }}
-                                        </p>
-
-                                        <div class="thread-meta mt-2">
-                                            <div class="small">
-                                                <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name
-                                                    }}</span>
-                                                <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }}
-                                                    views</span>
-                                                <span class="me-3"><i class="bi bi-chat"></i> {{
-                                                    $thread->allComments->count() }} {{ __('messages.replies') }}</span>
-                                                <span class="me-3"><i class="bi bi-people"></i> {{
-                                                    $thread->participant_count }} participants</span>
-                                                <span class="d-none d-md-inline text-muted">{{
-                                                    $thread->created_at->diffForHumans() }}</span>
-                                            </div>
-
-                                            <div class="mt-1">
-                                                @if($thread->category)
-                                                <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
-                                                    class="badge bg-secondary text-decoration-none">{{
-                                                    $thread->category->name }}</a>
-                                                @endif
-
-                                                @if($thread->forum)
-                                                <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
-                                                    class="badge bg-info text-decoration-none">{{ $thread->forum->name
-                                                    }}</a>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Hình ảnh featured (3 cột) -->
-                            <div class="col-md-3 d-none d-md-block">
-                                <div class="thread-image">
-                                    @if($thread->featured_image)
-                                    <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}"
-                                        class="img-fluid rounded"
-                                        style="max-height: 100px; width: 100%; object-fit: cover;">
-                                    @else
-                                    <div class="placeholder-image bg-light rounded d-flex align-items-center justify-content-center"
-                                        style="height: 100px;">
-                                        <i class="bi bi-image text-muted fs-4"></i>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('partials.thread-item', [
+                    'thread' => $thread,
+                    'variant' => 'index',
+                    'showAvatar' => true,
+                    'showStats' => true,
+                    'showBadges' => true,
+                    'showActions' => true,
+                    'showImage' => true
+                    ])
                     @endforeach
                 </div>
 

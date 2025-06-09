@@ -1,6 +1,15 @@
 @props(['showSidebar' => true])
 
 @if($showSidebar)
+@php
+$currentRoute = Route::currentRouteName();
+@endphp
+
+@if($currentRoute === 'threads.create')
+<!-- Sidebar chuyên dụng cho trang tạo threads -->
+@include('components.thread-creation-sidebar')
+@else
+<!-- Sidebar thông thường -->
 <div class="sidebar-container">
     <!-- Thông tin về cộng đồng -->
     <div class="card shadow-sm rounded-3 mb-4">
@@ -218,4 +227,5 @@
         </div>
     </div>
 </div>
+@endif
 @endif

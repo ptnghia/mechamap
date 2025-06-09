@@ -50,6 +50,101 @@
 .thread-badges .badge {
     display: inline-flex;
     align-items: center;
+    gap: 0.25rem;
+}
+
+/* Footer styling */
+.thread-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f1f3f4;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.thread-meta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+}
+
+.thread-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.thread-category-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.thread-category-badges .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Action buttons */
+.thread-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.bookmark-btn,
+.follow-btn {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.bookmark-btn:hover,
+.follow-btn:hover {
+    transform: translateY(-1px);
+}
+
+.bookmark-btn.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.follow-btn.active {
+    background-color: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+
+/* Loading state */
+.bookmark-btn:disabled,
+.follow-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bookmark-btn .spinner-border,
+.follow-btn .spinner-border {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-width: 1px;
+}
+    align-items: center;
 }
 
 .thread-badges .badge i {

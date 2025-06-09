@@ -38,13 +38,22 @@
                 @php
                 $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
                 @endphp
-                <form action="{{ route('threads.follow.toggle', $thread) }}" method="POST">
+                @if($isFollowed)
+                <form action="{{ route('threads.follow.remove', $thread) }}" method="POST">
                     @csrf
+                    @method('DELETE')
                     <button type="submit" class="btn-follow">
-                        <i class="bi {{ $isFollowed ? 'bi-bell-fill' : 'bi-bell' }}"></i> {{ $isFollowed ? 'Following' :
-                        'Follow' }}
+                        <i class="bi bi-bell-fill"></i> Following
                     </button>
                 </form>
+                @else
+                <form action="{{ route('threads.follow.add', $thread) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-follow">
+                        <i class="bi bi-bell"></i> Follow
+                    </button>
+                </form>
+                @endif
             </div>
         </div>
 
@@ -149,13 +158,24 @@
                 @php
                 $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
                 @endphp
-                <form action="{{ route('threads.follow.toggle', $thread) }}" method="POST" class="d-inline ms-2">
+                @if($isFollowed)
+                <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
                     @csrf
-                    <button type="submit" class="btn btn-sm {{ $isFollowed ? 'btn-info' : 'btn-outline-info' }}">
-                        <i class="bi {{ $isFollowed ? 'bi-bell-fill' : 'bi-bell' }}"></i>
-                        {{ $isFollowed ? 'Following' : 'Follow' }}
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-info">
+                        <i class="bi bi-bell-fill"></i>
+                        Following
                     </button>
                 </form>
+                @else
+                <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-bell"></i>
+                        Follow
+                    </button>
+                </form>
+                @endif
             </div>
 
             <div>

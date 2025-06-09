@@ -17,7 +17,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/thread-item.js') }}"></script>
 <script>
     // Biến dịch cho JavaScript
     const translations = {

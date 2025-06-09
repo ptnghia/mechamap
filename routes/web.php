@@ -18,6 +18,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserThreadController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\ThreadActionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -45,6 +46,12 @@ Route::middleware('auth')->group(function () {
 
     // Profile post routes
     Route::post('/users/{user:username}/posts', [ProfileController::class, 'storeProfilePost'])->name('profile.posts.store');
+
+    // Thread Actions - Simple Form Submissions
+    Route::post('/threads/{thread}/bookmark', [ThreadActionController::class, 'addBookmark'])->name('threads.bookmark.add');
+    Route::delete('/threads/{thread}/bookmark', [ThreadActionController::class, 'removeBookmark'])->name('threads.bookmark.remove');
+    Route::post('/threads/{thread}/follow', [ThreadActionController::class, 'addFollow'])->name('threads.follow.add');
+    Route::delete('/threads/{thread}/follow', [ThreadActionController::class, 'removeFollow'])->name('threads.follow.remove');
 
     // Following routes
     Route::get('/following', [FollowingController::class, 'index'])->name('following.index');
@@ -100,16 +107,18 @@ Route::middleware('auth')->group(function () {
 Route::get('/new', [NewContentController::class, 'index'])->name('new');
 Route::get('/forums', [ForumController::class, 'index'])->name('forums.index');
 
-// User Thread Routes (Public and Authenticated)
-Route::prefix('threads')->name('user.threads.')->group(function () {
+// Thread routes (MUST be before wildcard routes)
+Route::resource('threads', \App\Http\Controllers\ThreadController::class);
+
+// User Thread Browse Routes (Public and Authenticated)
+Route::prefix('browse')->name('browse.threads.')->group(function () {
     // Public routes
-    Route::get('/', [UserThreadController::class, 'index'])->name('index');
-    Route::get('/top-rated', [UserThreadController::class, 'topRated'])->name('top-rated');
-    Route::get('/trending', [UserThreadController::class, 'trending'])->name('trending');
-    Route::get('/by-tag/{tag}', [UserThreadController::class, 'byTag'])->name('by-tag');
-    Route::get('/by-forum/{forum}', [UserThreadController::class, 'byForum'])->name('by-forum');
-    Route::get('/search', [UserThreadController::class, 'search'])->name('search');
-    Route::get('/{thread}', [UserThreadController::class, 'show'])->name('show');
+    Route::get('/threads', [UserThreadController::class, 'index'])->name('index');
+    Route::get('/threads/top-rated', [UserThreadController::class, 'topRated'])->name('top-rated');
+    Route::get('/threads/trending', [UserThreadController::class, 'trending'])->name('trending');
+    Route::get('/threads/by-tag/{tag}', [UserThreadController::class, 'byTag'])->name('by-tag');
+    Route::get('/threads/by-forum/{forum}', [UserThreadController::class, 'byForum'])->name('by-forum');
+    Route::get('/threads/search', [UserThreadController::class, 'search'])->name('search');
 });
 
 // User Dashboard Routes (Authenticated only)
@@ -144,9 +153,9 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
 
 // Enhanced thread interaction routes (override existing ones)
 Route::middleware('auth')->group(function () {
-    // Thread bookmarking with folders
-    Route::post('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'store'])->name('threads.bookmark');
-    Route::delete('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'destroy'])->name('threads.bookmark.remove');
+    // Thread bookmarking with folders - COMMENTED OUT to avoid conflict with ThreadActionController
+    // Route::post('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'store'])->name('threads.bookmark');
+    // Route::delete('/threads/{thread}/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'destroy'])->name('threads.bookmark.remove');
 
     // Thread rating
     Route::post('/threads/{thread}/rate', [\App\Http\Controllers\ThreadRatingController::class, 'store'])->name('threads.rate');
@@ -195,11 +204,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/auth/{provider}', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirectToProvider'])->name('auth.socialite');
 Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'handleProviderCallback']);
 
-// Thread routes
-// Redirect empty thread creation to forum selection
-Route::redirect('/threads/create', '/create-thread', 302)->name('threads.create.redirect');
-Route::resource('threads', \App\Http\Controllers\ThreadController::class);
-
 // Comment routes
 Route::post('/threads/{thread}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('threads.comments.store')->middleware('auth');
 Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])->name('comments.update')->middleware('auth');
@@ -209,7 +213,7 @@ Route::post('/comments/{comment}/like', [\App\Http\Controllers\CommentController
 // Thread like/save/follow routes
 Route::post('/threads/{thread}/like', [\App\Http\Controllers\ThreadLikeController::class, 'toggle'])->name('threads.like')->middleware('auth');
 Route::post('/threads/{thread}/save', [\App\Http\Controllers\ThreadSaveController::class, 'toggle'])->name('threads.save')->middleware('auth');
-Route::post('/threads/{thread}/follow', [\App\Http\Controllers\ThreadFollowController::class, 'toggle'])->name('threads.follow.toggle')->middleware('auth');
+// Route::post('/threads/{thread}/follow', [\App\Http\Controllers\ThreadFollowController::class, 'toggle'])->name('threads.follow.toggle')->middleware('auth'); // COMMENTED OUT - conflict with ThreadActionController
 Route::get('/saved-threads', [\App\Http\Controllers\ThreadSaveController::class, 'index'])->name('threads.saved')->middleware('auth');
 
 // Poll routes
@@ -237,6 +241,60 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin|moderato
     });
 });
 
+// Static pages routes
+Route::get('/rules', function () {
+    return view('pages.rules');
+})->name('rules');
+
+Route::get('/help/writing-guide', function () {
+    return view('pages.writing-guide');
+})->name('help.writing-guide');
+
+// Contact page
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
+// Contact support - redirect to main contact page
+Route::get('/contact/support', function () {
+    return redirect()->route('contact');
+})->name('contact.support');
+
 // Include What's New routes
 require __DIR__ . '/web-whats-new.php';
 require __DIR__ . '/auth.php';
+
+// Test routes - chỉ trong development
+if (app()->environment('local', 'development')) {
+    Route::get('/test/thread-actions', function () {
+        $threads = \App\Models\Thread::with(['user', 'category', 'forum'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('test.thread-actions', compact('threads'));
+    })->name('test.thread-actions')->middleware('auth');
+}
+
+// Web-based API routes for JavaScript calls (with CSRF protection)
+Route::middleware(['webapi', 'auth'])->prefix('api/threads/{thread}')->group(function () {
+    Route::post('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'bookmarkThread']);
+    Route::delete('/bookmark', [App\Http\Controllers\Api\ThreadQualityController::class, 'removeBookmark']);
+    Route::post('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'followThread']);
+    Route::delete('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'unfollowThread']);
+});
+
+// Test route for thread actions (only in development)
+if (app()->environment('local')) {
+    Route::get('/test-thread-actions', function () {
+        return view('test-thread-actions');
+    })->name('test.thread-actions');
+
+    Route::get('/test-js-conflict', function () {
+        return view('test-js-conflict');
+    })->name('test.js-conflict');
+
+    Route::get('/test-auth-actions', function () {
+        return view('test-auth-actions');
+    })->name('test.auth-actions');
+}

@@ -164,7 +164,6 @@
             @php
             // Xác định các trang không hiển thị sidebar
             $excludedRoutes = [
-            'threads.create',
             'threads.edit',
             'profile.edit',
             'profile.update',
@@ -365,6 +364,9 @@
 
     <!-- Thread Item Script -->
     <script src="{{ asset('js/thread-item.js') }}"></script>
+
+    <!-- Thread Actions Script -->
+    <script src="{{ asset('js/thread-actions-simple.js') }}"></script>
 
     <!-- Manual Dropdown Script -->
     <script src="{{ asset('js/manual-dropdown.js') }}"></script>

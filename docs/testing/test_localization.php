@@ -41,7 +41,7 @@ foreach ($translations as $key => $value) {
     } else {
         $expectedKey = "messages.$key";
     }
-    
+
     if ($value === $expectedKey || str_contains($value, 'messages.')) {
         echo "❌ ERROR: $key translation not found! (returned: $value)\n";
     } else {
