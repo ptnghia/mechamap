@@ -3,9 +3,13 @@
 @if($showSidebar)
 @php
 $currentRoute = Route::currentRouteName();
+$isProfessionalMode = request()->get('professional', true); // Enable by default
 @endphp
 
-@if($currentRoute === 'threads.create')
+@if($isProfessionalMode)
+<!-- Professional Engineering Sidebar -->
+@include('components.sidebar-professional', ['user' => auth()->user()])
+@elseif($currentRoute === 'threads.create')
 <!-- Sidebar chuyên dụng cho trang tạo threads -->
 @include('components.thread-creation-sidebar')
 @else
@@ -13,10 +17,6 @@ $currentRoute = Route::currentRouteName();
 <div class="sidebar-container">
     <!-- Thông tin về cộng đồng -->
     <div class="card shadow-sm rounded-3 mb-4">
-        <div class="card-header">
-            <h5 class="card-title mb-0"><i class="bi bi-info-circle-fill me-2 text-primary"></i>{{ config('app.name') }}
-            </h5>
-        </div>
         <div class="card-body">
             <div class="forum-stats mb-3">
                 <div class="d-flex gap-4 mb-3">

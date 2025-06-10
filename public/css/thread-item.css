@@ -94,10 +94,10 @@
     margin-right: 3px;
     color: #fff;
     padding: 5px 10px;
-    border: 1px solid var(--user-bg-primary);
+    border: 1px solid #0d6efd;
+    border-radius: 5px;
 }
-.thread-badges .btn{
-}
+.thread-badges .btn{padding: 3px 10px;}
 /* Footer styling */
 .thread-item-footer {
     display: flex;

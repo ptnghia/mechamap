@@ -36,7 +36,7 @@
 @import url('./views/auth.css');
 
 /* Import các component chung */
-@import url('./sidebar.css');
+@import url('./sidebar-professional.css');
 @import url('./buttons.css');
 @import url('./forms.css');
 @import url('./alerts.css');

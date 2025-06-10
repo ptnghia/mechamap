@@ -51,6 +51,7 @@ body {
     color: var(--text-color);
     font-size: var(--font-size-base);
     line-height: 1.5;
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 /* Typography */
@@ -90,8 +91,6 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
 }
 
 .card-header h5 {
-    margin-bottom: 0;
-    font-weight: 600;
 }
 
 .card-body {

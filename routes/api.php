@@ -30,6 +30,20 @@ Route::prefix('v1')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Api\SettingsController::class, 'index']);
     Route::get('/settings/{group}', [App\Http\Controllers\Api\SettingsController::class, 'getByGroup']);
 
+    // Professional Sidebar API routes
+    Route::prefix('sidebar')->group(function () {
+        // Public sidebar data
+        Route::get('/stats', [App\Http\Controllers\Api\SidebarController::class, 'getStats']);
+        Route::get('/trending', [App\Http\Controllers\Api\SidebarController::class, 'getTrendingTopics']);
+        Route::get('/data', [App\Http\Controllers\Api\SidebarController::class, 'getSidebarData']);
+
+        // Protected routes (require authentication)
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('/recommendations', [App\Http\Controllers\Api\SidebarController::class, 'getRecommendations']);
+            Route::post('/track', [App\Http\Controllers\Api\SidebarController::class, 'trackInteraction']);
+        });
+    });
+
     // Auth routes (public)
     Route::prefix('auth')->group(function () {
         Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);

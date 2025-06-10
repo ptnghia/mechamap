@@ -175,6 +175,7 @@ Route::get('/ajax-search', [SearchController::class, 'ajaxSearch'])->name('searc
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
 Route::get('/members/online', [MemberController::class, 'online'])->name('members.online');
 Route::get('/members/staff', [MemberController::class, 'staff'])->name('members.staff');
+Route::get('/members/leaderboard', [MemberController::class, 'leaderboard'])->name('members.leaderboard');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
 // Theme routes
@@ -242,6 +243,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin|moderato
 });
 
 // Static pages routes
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');
+
 Route::get('/rules', function () {
     return view('pages.rules');
 })->name('rules');

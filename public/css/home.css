@@ -111,28 +111,6 @@
     align-items: center;
     justify-content: space-between;
 }
-
-.card-header h5 {
-    margin-bottom: 0;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #2D3748;
-    position: relative;
-    padding-left: 15px;
-}
-
-.card-header h5::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 18px;
-    background: linear-gradient(to bottom, #3366CC, #1DCABC);
-    border-radius: 2px;
-}
-
 .card-body {
     padding: 1.5rem;
 }
@@ -250,7 +228,9 @@
 }
 
 .col-lg-4 .card-header {
-    padding: 1.25rem 1.5rem;
+    padding: 20px;
+    font-family: "Roboto Condensed", sans-serif;
+    text-transform: uppercase;
 }
 
 .col-lg-4 .list-group-item {
@@ -290,8 +270,6 @@
 }
 
 .col-lg-4 .rounded-circle {
-    border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Stats Styles */
