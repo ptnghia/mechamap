@@ -7,6 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $visitable_id
+ * @property string $visitable_type
+ * @property \Illuminate\Support\Carbon $last_visit_at
+ * @property-read \App\Models\User $user
+ * @property-read Model|\Eloquent $visitable
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit whereLastVisitAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit whereVisitableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVisit whereVisitableType($value)
+ * @mixin \Eloquent
+ */
 class UserVisit extends Model
 {
     use HasFactory;

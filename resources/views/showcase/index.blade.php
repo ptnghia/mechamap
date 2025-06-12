@@ -17,8 +17,11 @@
         </div>
 
         <div class="card shadow-sm rounded-3">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0">{{ __('My Showcase Items') }}</h5>
+                <a href="{{ route('showcase.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>{{ __('Create New Showcase') }}
+                </a>
             </div>
             <div class="card-body">
                 @if($showcaseItems->count() > 0)

@@ -26,3 +26,6 @@ Route::get('/whats-new/media', [WhatsNewController::class, 'media'])->name('what
 
 // Threads looking for replies
 Route::get('/whats-new/replies', [WhatsNewController::class, 'replies'])->name('whats-new.replies');
+
+// New showcases
+Route::get('/whats-new/showcases', [WhatsNewController::class, 'showcases'])->name('whats-new.showcases');

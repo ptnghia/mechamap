@@ -7,16 +7,16 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0">What's New</h1>
+                <h1 class="mb-0">Cập nhật mới</h1>
 
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i> Create Thread
+                    <i class="bi bi-plus-lg me-1"></i> Tạo chủ đề mới
                 </a>
             </div>
 
             <!-- Navigation Tabs -->
             <div class="whats-new-tabs mb-4">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
                     </li>
@@ -25,6 +25,10 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('messages.new_showcases')
+                            }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('messages.new_media') }}</a>
@@ -111,10 +115,7 @@
             </div>
 
             <!-- Threads List -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">{{ __('messages.threads_looking_for_replies') }}</h5>
-                </div>
+            <div class="body_left">
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
                     @include('partials.thread-item', [
@@ -122,8 +123,6 @@
                     ])
                     @endforeach
                 </div>
-                ])
-                @endforeach
             </div>
         </div>
 
@@ -203,13 +202,12 @@
                     <div class="input-group input-group-sm">
                         <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
                             value="{{ $page }}" placeholder="Page">
-                        <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
+                        <button class="btn btn-primary" type="button" id="goToPageBtn">Đến</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 @push('scripts')
@@ -232,4 +230,6 @@
         });
     });
 </script>
+@endpush
+
 @endsection

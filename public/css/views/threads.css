@@ -325,7 +325,7 @@
 }
 
 .page-link {
-    padding: 0.5rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border: 1px solid var(--border-color);
     background: var(--bg-primary);
     color: var(--text-primary);
@@ -335,9 +335,9 @@
 }
 
 .page-link:hover {
-    background: var(--primary-color);
+    background: var(--user-primary);
     color: white;
-    border-color: var(--primary-color);
+    border-color: var(--user-primary);
 }
 
 .page-link.active {

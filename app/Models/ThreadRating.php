@@ -6,6 +6,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $thread_id
+ * @property int $rating
+ * @property string|null $review
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $stars
+ * @property-read \App\Models\Thread $thread
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereRating($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereReview($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereThreadId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating withRating(int $rating)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ThreadRating withReview()
+ * @mixin \Eloquent
+ */
 class ThreadRating extends Model
 {
     use HasFactory;

@@ -2,76 +2,65 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * Chạy tất cả seeders để khởi tạo dữ liệu mẫu cho MechaMap
+     * - Nền tảng cộng đồng kỹ thuật cơ khí Việt Nam
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->command->info('🚀 Starting MechaMap Database Seeding Process...');
+        $this->command->info('🔧 Initializing Mechanical Engineering Community Platform');
+        $this->command->newLine();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // Đảm bảo chạy theo thứ tự đúng
+        // ====================================================================
+        // CORE SETTINGS - Khởi tạo cấu hình cơ bản
+        // ====================================================================
+        $this->command->info('⚙️ Seeding Core Settings...');
         $this->call([
-            // Core seeders - Chạy đầu tiên
-            RolesAndPermissionsSeeder::class, // Phân quyền trước
-            AdminUserSeeder::class, // Admin users
-
-            // Structure seeders
-            CategorySeeder::class, // Forum categories
-            ForumSeeder::class, // Forums
-            TagSeeder::class, // Tags for threads
-            PageCategorySeeder::class, // Page categories
-            FaqCategorySeeder::class, // FAQ categories
-
-            // User seeders
-            UserSeeder::class, // Create diverse users với mechanical expertise
-
-            // Content seeders - Depends on users and structure
-            ThreadSeeder::class, // Forum threads
-            PostSeeder::class, // Thread replies
-            CommentSeeder::class, // Comments on threads/posts/showcases
-
-            // Showcase seeders
-            ShowcaseSeeder::class, // CAD designs and projects
-            ShowcaseCommentSeeder::class, // Showcase comments
-            ShowcaseLikeSeeder::class, // Showcase likes
-            ShowcaseFollowSeeder::class, // Showcase follows
-
-            // Interaction seeders
-            BookmarkSeeder::class, // User bookmarks
-            ReactionSeeder::class, // Likes, loves, etc.
-            PollSeeder::class, // Polls in threads
-            AlertSeeder::class, // User notifications
-            ReportSeeder::class, // Content reports
-
-            // Enhanced Thread States - New quality features
-            ThreadRatingSeeder::class, // Individual thread ratings (1-5 stars)
-            ThreadBookmarkSeeder::class, // Advanced bookmark với folders
-            EnhancedThreadStatesSeeder::class, // Update existing threads với enhanced states
-
-            // Media seeders
-            MediaSeeder::class, // Images and files
-            ForumCategoryImageSeeder::class, // Professional images for forums and categories
-
-            // Page content seeders
-            PageSeeder::class, // Static pages with mechanical content
-            FaqSeeder::class, // FAQ about automation
-
-            // Settings - Keep existing (giữ nguyên theo yêu cầu)
-            SeoSettingSeeder::class, // SEO settings (giữ nguyên)
-            PageSeoSeeder::class, // Page SEO (giữ nguyên)
-            SettingSeeder::class, // Site settings (giữ nguyên)
+            SettingSeeder::class,        // General settings, company info, etc.
+            SeoSettingSeeder::class,     // SEO configuration
+            PageSeoSeeder::class,        // Page-specific SEO settings
         ]);
+        $this->command->newLine();
+
+        // ====================================================================
+        // COMMUNITY DATA - Dữ liệu cộng đồng
+        // ====================================================================
+        $this->command->info('👥 Seeding Community Data...');
+        $this->call([
+            RolesAndPermissionsSeeder::class, // Roles & permissions system
+            MechaMapCategorySeeder::class,    // Mechanical engineering categories
+            MechaMapUserSeeder::class,        // Users with realistic profiles & permissions
+            MechanicalEngineeringDataSeeder::class, // Realistic forum data
+            // ShowcaseSeeder::class,         // Uncomment when showcase seeder is ready
+        ]);
+        $this->command->newLine();
+
+        // ====================================================================
+        // COMPLETION MESSAGE
+        // ====================================================================
+        $this->command->info('✅ MechaMap Database Seeding Completed Successfully!');
+        $this->command->info('🎯 Platform ready for Vietnamese Mechanical Engineering Community');
+        $this->command->info('📊 SEO optimized for mechanical engineering keywords');
+        $this->command->info('🔧 Forum configured for CAD/CAM, Automation, Robotics discussions');
+        $this->command->info('⚡ Performance settings applied for technical content');
+        $this->command->newLine();
+
+        $this->command->warn('💡 Next Steps:');
+        $this->command->line('   1. Configure SMTP settings in admin panel');
+        $this->command->line('   2. Update Google Analytics ID in SEO settings');
+        $this->command->line('   3. Upload brand images (logo, favicon, banners)');
+        $this->command->line('   4. Configure social media API keys');
+        $this->command->line('   5. Test email notifications');
+        $this->command->newLine();
+
+        $this->command->info('🌐 Access admin panel: /admin');
+        $this->command->info('🏠 Visit homepage: /');
     }
 }

@@ -3,6 +3,16 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Direct test route outside of all middleware
+Route::get('/marketplace-test', function() {
+    return response()->json([
+        'success' => true,
+        'message' => 'Direct marketplace test working',
+        'database' => config('database.default'),
+        'env' => app()->environment()
+    ]);
+});
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,13 +32,26 @@ Route::prefix('v1')->group(function () {
             'success' => true,
             'message' => 'CORS test successful',
             'origin' => $request->header('Origin'),
-            'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,https://localhost:3000')),
+            'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.test,http://mechamap.test')),
         ]);
     });
 
     // Public routes
     Route::get('/settings', [App\Http\Controllers\Api\SettingsController::class, 'index']);
     Route::get('/settings/{group}', [App\Http\Controllers\Api\SettingsController::class, 'getByGroup']);
+
+    // Geography API routes (public)
+    Route::prefix('geography')->group(function () {
+        Route::get('/countries', [App\Http\Controllers\Api\GeographyController::class, 'countries']);
+        Route::get('/countries/{code}', [App\Http\Controllers\Api\GeographyController::class, 'country']);
+        Route::get('/countries/{countryCode}/regions', [App\Http\Controllers\Api\GeographyController::class, 'regionsByCountry']);
+        Route::get('/regions/featured', [App\Http\Controllers\Api\GeographyController::class, 'featuredRegions']);
+        Route::get('/regions/{region}', [App\Http\Controllers\Api\GeographyController::class, 'region']);
+        Route::get('/regions/{region}/forums', [App\Http\Controllers\Api\GeographyController::class, 'forumsByRegion']);
+        Route::get('/continents', [App\Http\Controllers\Api\GeographyController::class, 'continents']);
+        Route::get('/standards', [App\Http\Controllers\Api\GeographyController::class, 'standardsByLocation']);
+        Route::get('/cad-software', [App\Http\Controllers\Api\GeographyController::class, 'cadSoftwareByLocation']);
+    });
 
     // Professional Sidebar API routes
     Route::prefix('sidebar')->group(function () {
@@ -113,6 +136,74 @@ Route::prefix('v1')->group(function () {
         Route::get('/suggestions', [App\Http\Controllers\Api\SearchController::class, 'getSearchSuggestions']);
     });
 
+    // Marketplace API routes (Public access for browsing)
+    Route::prefix('marketplace')->group(function () {
+        // Test endpoints
+        Route::get('/test', function() {
+            return response()->json([
+                'success' => true,
+                'message' => 'Marketplace API is working',
+                'timestamp' => now(),
+                'database_connection' => config('database.default')
+            ]);
+        });
+
+        Route::get('/test-db', function() {
+            try {
+                $categories = \App\Models\ProductCategory::count();
+                $products = \App\Models\TechnicalProduct::count();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Database connection successful',
+                    'data' => [
+                        'categories_count' => $categories,
+                        'products_count' => $products,
+                        'connection' => config('database.default')
+                    ]
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Database connection failed',
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ], 500);
+            }
+        });
+
+        // Public product browsing
+        Route::get('/products', [App\Http\Controllers\Api\MarketplaceController::class, 'index']);
+        Route::get('/products/{slug}', [App\Http\Controllers\Api\MarketplaceController::class, 'show']);
+        Route::get('/categories', [App\Http\Controllers\Api\MarketplaceController::class, 'categories']);
+        Route::get('/search', [App\Http\Controllers\Api\MarketplaceController::class, 'search']);
+        Route::get('/featured', [App\Http\Controllers\Api\MarketplaceController::class, 'featured']);
+        Route::get('/bestsellers', [App\Http\Controllers\Api\MarketplaceController::class, 'bestsellers']);
+    });
+
+    // Payment webhooks and callbacks (public - no auth required)
+    Route::prefix('payment')->group(function () {
+        Route::get('/methods', [App\Http\Controllers\Api\PaymentController::class, 'paymentMethods']);
+        Route::post('/stripe/webhook', [App\Http\Controllers\Api\PaymentController::class, 'webhook'])
+            ->middleware('stripe.webhook');
+        Route::get('/vnpay/callback', [App\Http\Controllers\Api\PaymentController::class, 'vnpayCallback']);
+        Route::post('/vnpay/ipn', [App\Http\Controllers\Api\PaymentController::class, 'vnpayIpn']);
+    });
+
+    // Payment Testing Routes (Development only)
+    Route::prefix('payment/test')->group(function () {
+        Route::get('/configurations', [App\Http\Controllers\Api\PaymentTestController::class, 'testConfigurations']);
+        Route::post('/create-order', [App\Http\Controllers\Api\PaymentTestController::class, 'createTestOrder']);
+        Route::post('/stripe', [App\Http\Controllers\Api\PaymentTestController::class, 'testStripePayment']);
+        Route::post('/vnpay', [App\Http\Controllers\Api\PaymentTestController::class, 'testVNPayPayment']);
+        Route::post('/simulate-webhook', [App\Http\Controllers\Api\PaymentTestController::class, 'simulateWebhook']);
+        Route::delete('/cleanup', [App\Http\Controllers\Api\PaymentTestController::class, 'cleanupTestData']);
+        Route::get('/status', [App\Http\Controllers\Api\PaymentTestController::class, 'getSystemStatus']);
+    });
+
+    // Secure download endpoint (public with token validation)
+    Route::get('/download/{token}', [App\Http\Controllers\Api\DownloadController::class, 'download']);
+
     // Protected routes (require authentication)
     Route::middleware('auth:sanctum')->group(function () {
 
@@ -126,6 +217,62 @@ Route::prefix('v1')->group(function () {
             Route::post('/upload-avatar', [App\Http\Controllers\Api\AuthController::class, 'uploadAvatar']);
             Route::delete('/delete-account', [App\Http\Controllers\Api\AuthController::class, 'deleteAccount']);
         });
+
+        // Shopping Cart routes (protected)
+        Route::prefix('cart')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\CartController::class, 'index']);
+            Route::post('/', [App\Http\Controllers\Api\CartController::class, 'store']);
+            Route::put('/{cartItemId}', [App\Http\Controllers\Api\CartController::class, 'update']);
+            Route::delete('/{cartItemId}', [App\Http\Controllers\Api\CartController::class, 'destroy']);
+            Route::delete('/', [App\Http\Controllers\Api\CartController::class, 'clear']);
+            Route::post('/validate', [App\Http\Controllers\Api\CartController::class, 'validateCart']);
+            Route::post('/update-prices', [App\Http\Controllers\Api\CartController::class, 'updatePrices']);
+            Route::post('/estimate', [App\Http\Controllers\Api\CartController::class, 'estimate']);
+        });
+
+        // Order management routes (protected)
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\OrderController::class, 'index']);
+            Route::post('/', [App\Http\Controllers\Api\OrderController::class, 'store']);
+            Route::get('/{orderId}', [App\Http\Controllers\Api\OrderController::class, 'show']);
+            Route::put('/{orderId}', [App\Http\Controllers\Api\OrderController::class, 'update']);
+            Route::post('/{orderId}/cancel', [App\Http\Controllers\Api\OrderController::class, 'cancel']);
+            Route::get('/{orderId}/invoice', [App\Http\Controllers\Api\OrderController::class, 'invoice']);
+            Route::get('/{orderId}/downloads', [App\Http\Controllers\Api\OrderController::class, 'downloads']);
+            Route::post('/{orderId}/reorder', [App\Http\Controllers\Api\OrderController::class, 'reorder']);
+        });
+
+        // Payment processing routes (protected)
+        Route::prefix('payment')->group(function () {
+            Route::post('/initiate', [App\Http\Controllers\Api\PaymentController::class, 'initiate']);
+            Route::post('/stripe/create-intent', [App\Http\Controllers\Api\PaymentController::class, 'createStripeIntent']);
+            Route::post('/vnpay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createVNPayPayment']);
+            Route::post('/confirm/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);
+            Route::post('/stripe/confirm', [App\Http\Controllers\Api\PaymentController::class, 'confirmStripe']);
+            Route::get('/status/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'status']);
+            Route::post('/cancel', [App\Http\Controllers\Api\PaymentController::class, 'cancel']);
+            Route::post('/refund', [App\Http\Controllers\Api\PaymentController::class, 'refund']);
+        });
+
+        // Secure Downloads routes (protected)
+        Route::prefix('downloads')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\DownloadController::class, 'index']);
+            Route::get('/purchase/{purchaseId}', [App\Http\Controllers\Api\DownloadController::class, 'purchaseFiles']);
+            Route::post('/generate-link', [App\Http\Controllers\Api\DownloadController::class, 'generateDownloadLink']);
+            Route::get('/history', [App\Http\Controllers\Api\DownloadController::class, 'history']);
+        });
+
+        // Secure Downloads routes (authenticated)
+        Route::prefix('downloads')->middleware('auth:sanctum')->group(function () {
+            Route::post('/generate-token', [App\Http\Controllers\Api\SecureDownloadController::class, 'generateToken']);
+            Route::get('/history', [App\Http\Controllers\Api\SecureDownloadController::class, 'downloadHistory']);
+            Route::get('/analytics/{purchase_id}', [App\Http\Controllers\Api\SecureDownloadController::class, 'purchaseAnalytics']);
+        });
+
+        // Download with token (public but token-protected)
+        Route::get('/downloads/{token}/file', [App\Http\Controllers\Api\SecureDownloadController::class, 'downloadFile'])
+            ->name('api.downloads.file')
+            ->middleware(['download.access']);
 
         // User actions routes (protected)
         Route::prefix('users')->group(function () {

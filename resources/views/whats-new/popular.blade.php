@@ -7,16 +7,16 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0">What's New</h1>
+                <h1 class="mb-0">Cập nhật mới</h1>
 
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i> Create Thread
+                    <i class="bi bi-plus-lg me-1"></i> Tạo chủ đề mới
                 </a>
             </div>
 
             <!-- Navigation Tabs -->
             <div class="whats-new-tabs mb-4">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-pills nav-fill">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
                     </li>
@@ -26,6 +26,10 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('messages.new_showcases')
+                            }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('messages.new_media') }}</a>
@@ -41,15 +45,15 @@
             <div class="timeframe-filter mb-4">
                 <div class="btn-group" role="group">
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'day']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'day' ? 'active' : '' }}">Today</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'day' ? 'active' : '' }}">Hôm nay</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'week']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'week' ? 'active' : '' }}">This Week</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'week' ? 'active' : '' }}">Tuần này</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'month']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'month' ? 'active' : '' }}">This Month</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'month' ? 'active' : '' }}">Tháng này</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'year']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'year' ? 'active' : '' }}">This Year</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'year' ? 'active' : '' }}">Năm nay</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'all']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'all' ? 'active' : '' }}">All Time</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'all' ? 'active' : '' }}">Tất cả</a>
                 </div>
             </div>
 
@@ -131,10 +135,7 @@
             </div>
 
             <!-- Threads List -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">{{ __('messages.popular_threads') }}</h5>
-                </div>
+            <div class="body_left">
                 <div class="list-group list-group-flush">
                     @foreach($threads as $thread)
                     @include('partials.thread-item', [
@@ -223,7 +224,7 @@
                         <div class="input-group input-group-sm">
                             <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
                                 value="{{ $page }}" placeholder="Page">
-                            <button class="btn btn-primary" type="button" id="goToPageBtn">Go</button>
+                            <button class="btn btn-primary" type="button" id="goToPageBtn">Đến</button>
                         </div>
                     </div>
                 </div>
@@ -254,141 +255,4 @@
 </script>
 @endpush
 
-<style>
-    /* Timeframe Filter Styles */
-    .timeframe-filter {
-        margin-bottom: 1.5rem;
-    }
-
-    .timeframe-filter .btn-group {
-        width: 100%;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .timeframe-filter .btn {
-        flex: 1;
-        border-radius: 0;
-        transition: all 0.2s ease;
-        border: 1px solid #dee2e6;
-        padding: 0.5rem 0;
-    }
-
-    .timeframe-filter .btn:hover:not(.active) {
-        background-color: rgba(var(--bs-primary-rgb), 0.1);
-    }
-
-    .timeframe-filter .btn.active {
-        background-color: var(--bs-primary);
-        border-color: var(--bs-primary);
-        color: white;
-        font-weight: 500;
-    }
-
-    /* Thread Item Styles */
-    .thread-item {
-        transition: all 0.2s ease;
-        border-left: 3px solid transparent;
-    }
-
-    .thread-item:hover {
-        border-left-color: var(--bs-primary);
-        background-color: rgba(0, 0, 0, 0.01);
-    }
-
-    .avatar.avatar-md {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-    .thread-title a {
-        color: var(--bs-dark);
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .thread-title a:hover {
-        color: var(--bs-primary);
-    }
-
-    .thread-meta {
-        font-size: 0.85rem;
-        color: var(--bs-secondary);
-    }
-
-    /* Pagination Styles */
-    .pagination-container {
-        background-color: #f8f9fa;
-        padding: 10px 15px;
-        border-radius: 5px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .pagination-info {
-        color: #6c757d;
-        font-size: 0.9rem;
-    }
-
-    .pagination {
-        margin-bottom: 0;
-    }
-
-    .pagination .page-link {
-        color: var(--bs-primary);
-        border-color: #dee2e6;
-        background-color: #fff;
-        transition: all 0.2s ease;
-    }
-
-    .pagination .page-item.active .page-link {
-        background-color: var(--bs-primary);
-        border-color: var(--bs-primary);
-        color: #fff;
-        font-weight: 500;
-    }
-
-    .pagination .page-item.disabled .page-link {
-        color: #6c757d;
-        background-color: #f8f9fa;
-        border-color: #dee2e6;
-    }
-
-    .pagination .page-link:hover:not(.active) {
-        background-color: rgba(var(--bs-primary-rgb), 0.1);
-        border-color: rgba(var(--bs-primary-rgb), 0.2);
-        color: var(--bs-primary);
-        z-index: 2;
-    }
-
-    .pagination-goto .input-group {
-        width: 120px;
-    }
-
-    .pagination-goto .form-control {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        text-align: center;
-    }
-
-    .pagination-goto .btn {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    @media (max-width: 767.98px) {
-        .pagination-container .d-flex {
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pagination-info,
-        .pagination-goto {
-            margin-bottom: 10px;
-        }
-    }
-</style>
 @endsection

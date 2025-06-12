@@ -12,6 +12,165 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ *
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string $content
+ * @property string|null $featured_image
+ * @property string|null $meta_description
+ * @property array<array-key, mixed>|null $search_keywords
+ * @property int|null $read_time
+ * @property string|null $status
+ * @property int $user_id
+ * @property int $category_id
+ * @property bool $is_sticky
+ * @property bool $is_locked
+ * @property bool $is_featured
+ * @property bool $is_solved
+ * @property int|null $solution_comment_id
+ * @property \Illuminate\Support\Carbon|null $solved_at
+ * @property int|null $solved_by
+ * @property numeric $quality_score
+ * @property numeric $average_rating
+ * @property-read int|null $ratings_count
+ * @property string $thread_type
+ * @property string|null $technical_difficulty Cấp độ kỹ thuật của chủ đề (beginner=sinh viên, expert=kỹ sư senior)
+ * @property string|null $project_type Loại dự án/vấn đề: thiết kế, sản xuất, phân tích, xử lý sự cố
+ * @property array<array-key, mixed>|null $software_used Phần mềm sử dụng: ["AutoCAD","SolidWorks","ANSYS","CATIA","Fusion360"]
+ * @property string|null $industry_sector Lĩnh vực công nghiệp: ô tô, hàng không, sản xuất, năng lượng
+ * @property array<array-key, mixed>|null $technical_specs Thông số kỹ thuật: {"material":"Steel","tolerance":"±0.01","pressure":"10MPa"}
+ * @property int $requires_calculations Thread yêu cầu tính toán kỹ thuật (FEA, stress analysis, thermal)
+ * @property int $has_drawings Thread có kèm bản vẽ kỹ thuật (DWG, PDF, STEP)
+ * @property string $urgency_level Mức độ khẩn cấp: low=học tập, critical=sự cố sản xuất
+ * @property string|null $standards_compliance Tiêu chuẩn áp dụng: ["ASME","ISO","ASTM","JIS","DIN"]
+ * @property int $requires_pe_review Yêu cầu review từ Professional Engineer (PE license)
+ * @property int $has_cad_files Thread có file CAD đính kèm
+ * @property int $attachment_count Số lượng file đính kèm
+ * @property int $views
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadLike> $likes
+ * @property \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadBookmark> $bookmarks
+ * @property int $shares
+ * @property int $replies
+ * @property \Illuminate\Support\Carbon|null $last_activity_at
+ * @property string|null $bumped_at
+ * @property int $priority
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $allComments
+ * @property-read int|null $all_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Media> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read int|null $bookmarks_count
+ * @property-read \App\Models\Category $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read \App\Models\User|null $flagger
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $followers
+ * @property-read int|null $followers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadFollow> $follows
+ * @property-read int|null $follows_count
+ * @property-read int $participant_count
+ * @property-read \App\Models\User|null $lastCommenter
+ * @property-read int|null $likes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $participants
+ * @property-read int|null $participants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Poll> $poll
+ * @property-read int|null $poll_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
+ * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadRating> $ratings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reaction> $reactions
+ * @property-read int|null $reactions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadSave> $saves
+ * @property-read int|null $saves_count
+ * @property-read \App\Models\Showcase|null $showcase
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Showcase> $showcases
+ * @property-read int|null $showcases_count
+ * @property-read \App\Models\Comment|null $solutionComment
+ * @property-read \App\Models\User|null $solver
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
+ * @property-read \App\Models\User $user
+ * @method static Builder<static>|Thread archived()
+ * @method static Builder<static>|Thread bookmarkedBy($userId)
+ * @method static Builder<static>|Thread byPopularity()
+ * @method static Builder<static>|Thread byRecentActivity()
+ * @method static Builder<static>|Thread fromPeriod(string $period)
+ * @method static Builder<static>|Thread hidden()
+ * @method static Builder<static>|Thread highQuality(float $minScore = '4')
+ * @method static Builder<static>|Thread minRating(float $minRating)
+ * @method static Builder<static>|Thread moderationStatus(string $status)
+ * @method static Builder<static>|Thread newModelQuery()
+ * @method static Builder<static>|Thread newQuery()
+ * @method static Builder<static>|Thread notArchived()
+ * @method static Builder<static>|Thread notFlagged()
+ * @method static Builder<static>|Thread notSpam()
+ * @method static Builder<static>|Thread ofType(string $type)
+ * @method static Builder<static>|Thread onlyTrashed()
+ * @method static Builder<static>|Thread popularBookmarks(int $minBookmarks = 5)
+ * @method static Builder<static>|Thread publicVisible()
+ * @method static Builder<static>|Thread query()
+ * @method static Builder<static>|Thread ratedBy($userId)
+ * @method static Builder<static>|Thread search(string $searchTerm)
+ * @method static Builder<static>|Thread solved()
+ * @method static Builder<static>|Thread trending()
+ * @method static Builder<static>|Thread unsolved()
+ * @method static Builder<static>|Thread visible()
+ * @method static Builder<static>|Thread whereAttachmentCount($value)
+ * @method static Builder<static>|Thread whereAverageRating($value)
+ * @method static Builder<static>|Thread whereBookmarks($value)
+ * @method static Builder<static>|Thread whereBumpedAt($value)
+ * @method static Builder<static>|Thread whereCategoryId($value)
+ * @method static Builder<static>|Thread whereContent($value)
+ * @method static Builder<static>|Thread whereCreatedAt($value)
+ * @method static Builder<static>|Thread whereFeaturedImage($value)
+ * @method static Builder<static>|Thread whereHasCadFiles($value)
+ * @method static Builder<static>|Thread whereHasDrawings($value)
+ * @method static Builder<static>|Thread whereId($value)
+ * @method static Builder<static>|Thread whereIndustrySector($value)
+ * @method static Builder<static>|Thread whereIsFeatured($value)
+ * @method static Builder<static>|Thread whereIsLocked($value)
+ * @method static Builder<static>|Thread whereIsSolved($value)
+ * @method static Builder<static>|Thread whereIsSticky($value)
+ * @method static Builder<static>|Thread whereLastActivityAt($value)
+ * @method static Builder<static>|Thread whereLikes($value)
+ * @method static Builder<static>|Thread whereMetaDescription($value)
+ * @method static Builder<static>|Thread wherePriority($value)
+ * @method static Builder<static>|Thread whereProjectType($value)
+ * @method static Builder<static>|Thread whereQualityScore($value)
+ * @method static Builder<static>|Thread whereRatingsCount($value)
+ * @method static Builder<static>|Thread whereReadTime($value)
+ * @method static Builder<static>|Thread whereReplies($value)
+ * @method static Builder<static>|Thread whereRequiresCalculations($value)
+ * @method static Builder<static>|Thread whereRequiresPeReview($value)
+ * @method static Builder<static>|Thread whereSearchKeywords($value)
+ * @method static Builder<static>|Thread whereShares($value)
+ * @method static Builder<static>|Thread whereSlug($value)
+ * @method static Builder<static>|Thread whereSoftwareUsed($value)
+ * @method static Builder<static>|Thread whereSolutionCommentId($value)
+ * @method static Builder<static>|Thread whereSolvedAt($value)
+ * @method static Builder<static>|Thread whereSolvedBy($value)
+ * @method static Builder<static>|Thread whereStandardsCompliance($value)
+ * @method static Builder<static>|Thread whereStatus($value)
+ * @method static Builder<static>|Thread whereTechnicalDifficulty($value)
+ * @method static Builder<static>|Thread whereTechnicalSpecs($value)
+ * @method static Builder<static>|Thread whereThreadType($value)
+ * @method static Builder<static>|Thread whereTitle($value)
+ * @method static Builder<static>|Thread whereUpdatedAt($value)
+ * @method static Builder<static>|Thread whereUrgencyLevel($value)
+ * @method static Builder<static>|Thread whereUserId($value)
+ * @method static Builder<static>|Thread whereViews($value)
+ * @method static Builder<static>|Thread withTrashed()
+ * @method static Builder<static>|Thread withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Thread extends Model
 {
     use HasFactory, SoftDeletes;
@@ -35,8 +194,8 @@ class Thread extends Model
         'title',
         'slug',
         'content',
+        'featured_image',
         'user_id',
-        'forum_id',
         'category_id',
         'is_sticky',
         'is_locked',
@@ -73,6 +232,32 @@ class Thread extends Model
         'meta_description',
         'search_keywords',
         'read_time',
+        // MechaMap mechanical engineering fields
+        'technical_difficulty',
+        'project_type',
+        'software_used',
+        'industry_sector',
+        'technical_specs',
+        'attachment_types',
+        'has_calculations',
+        'has_3d_models',
+        'expert_verified',
+        'verified_by',
+        'verified_at',
+        'technical_accuracy_score',
+        'technical_keywords',
+        'related_standards',
+        // Missing timestamp fields
+        'solved_at',
+        'flagged_at',
+        'last_activity_at',
+        'last_comment_at',
+        'last_bump_at',
+        'archived_at',
+        'hidden_at',
+        // Additional moderation fields
+        'moderated_by',
+        'moderated_at',
     ];
 
     /**
@@ -103,6 +288,18 @@ class Thread extends Model
         'last_activity_at' => 'datetime',
         'last_comment_at' => 'datetime',
         'last_bump_at' => 'datetime',
+        'moderated_at' => 'datetime',
+        // MechaMap mechanical engineering casts
+        'software_used' => 'array',
+        'technical_specs' => 'array',
+        'attachment_types' => 'array',
+        'technical_keywords' => 'array',
+        'related_standards' => 'array',
+        'has_calculations' => 'boolean',
+        'has_3d_models' => 'boolean',
+        'expert_verified' => 'boolean',
+        'verified_at' => 'datetime',
+        'technical_accuracy_score' => 'decimal:2',
         'bump_count' => 'integer',
         'view_count' => 'integer',
         'dislikes_count' => 'integer',
@@ -263,13 +460,13 @@ class Thread extends Model
     {
         // Prioritize: Tìm media đầu tiên từ polymorphic attachments
         $featuredMedia = $this->attachments()
-            ->where('file_type', 'like', 'image/%')
+            ->where('mime_type', 'like', 'image/%')
             ->first();
 
         if (!$featuredMedia) {
             // Fallback: Tìm media đầu tiên từ direct relationship
             $featuredMedia = $this->media()
-                ->where('file_type', 'like', 'image/%')
+                ->where('mime_type', 'like', 'image/%')
                 ->first();
         }
 
@@ -392,11 +589,11 @@ class Thread extends Model
     }
 
     /**
-     * Get the user who made the last comment.
+     * Get the user who moderated this thread.
      */
-    public function lastCommenter(): BelongsTo
+    public function moderator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'last_comment_by');
+        return $this->belongsTo(User::class, 'moderated_by');
     }
 
     /**

@@ -5,14 +5,14 @@ return [
     'welcome' => 'Welcome to the application',
     'success' => 'Operation successful',
     'error' => 'An error occurred',
-    
+
     // Menu
     'menu' => [
         'home' => 'Home',
         'about' => 'About',
         'contact' => 'Contact',
     ],
-    
+
     // Buttons
     'buttons' => [
         'save' => 'Save',
@@ -20,7 +20,7 @@ return [
         'edit' => 'Edit',
         'delete' => 'Delete',
     ],
-    
+
     // Form labels
     'forms' => [
         'name' => 'Name',
@@ -28,4 +28,12 @@ return [
         'password' => 'Password',
         'confirm_password' => 'Confirm Password',
     ],
+
+    // Navigation & Content
+    'new_posts' => 'New Posts',
+    'new_threads' => 'New Threads',
+    'new_media' => 'New Media',
+    'new_showcases' => 'New Showcases',
+    'popular' => 'Popular',
+    'looking_for_replies' => 'Looking for Replies',
 ];

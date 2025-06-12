@@ -77,11 +77,6 @@ class ThreadQualityController extends Controller
             ], 500);
         }
     }
-                'ratings_count' => $thread->ratings_count,
-                'quality_score' => $thread->quality_score,
-            ]
-        ]);
-    }
 
     /**
      * Bump một thread lên top.

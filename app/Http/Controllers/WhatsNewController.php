@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Thread;
 use App\Models\Media;
+use App\Services\ShowcaseImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -315,6 +316,70 @@ class WhatsNewController extends Controller
 
         return view('whats-new.replies', compact(
             'threads',
+            'page',
+            'totalPages',
+            'prevPageUrl',
+            'nextPageUrl'
+        ));
+    }
+
+    /**
+     * Display new showcases
+     */
+    public function showcases(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $perPage = 20;
+
+        // Get recent showcases
+        $showcases = \App\Models\Showcase::with(['user', 'showcaseable', 'media'])
+            ->whereHas('showcaseable') // Ensure showcaseable exists
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        // Calculate total pages
+        $totalPages = ceil($showcases->total() / $perPage);
+
+        // Generate pagination URLs
+        $prevPageUrl = $page > 1
+            ? route('whats-new.showcases', ['page' => $page - 1])
+            : '#';
+
+        $nextPageUrl = $page < $totalPages
+            ? route('whats-new.showcases', ['page' => $page + 1])
+            : '#';
+
+        // Process featured images using unified service
+        ShowcaseImageService::processFeaturedImages($showcases->getCollection());
+
+        // Add additional data for each showcase
+        foreach ($showcases as $showcase) {
+            // Get showcase type and title
+            if ($showcase->showcaseable_type === 'App\Models\Thread') {
+                $showcase->showcase_type = 'Thread';
+                $showcase->showcase_title = $showcase->showcaseable->title ?? 'Unknown Thread';
+                $showcase->showcase_url = route('threads.show', $showcase->showcaseable);
+            } elseif ($showcase->showcaseable_type === 'App\Models\Post') {
+                $showcase->showcase_type = 'Post';
+                $showcase->showcase_title = 'Reply in: ' . ($showcase->showcaseable->thread->title ?? 'Unknown Thread');
+                $showcase->showcase_url = route('threads.show', $showcase->showcaseable->thread) . '#post-' . $showcase->showcaseable->id;
+            } else {
+                $showcase->showcase_type = 'Content';
+                $showcase->showcase_title = $showcase->title ?? 'Showcase Item';
+                $showcase->showcase_url = route('showcase.show', $showcase);
+            }
+
+            // Content preview
+            if ($showcase->showcaseable) {
+                $content = $showcase->showcaseable->content ?? $showcase->showcaseable->description ?? '';
+                $showcase->content_preview = \Illuminate\Support\Str::limit(strip_tags($content), 150);
+            } else {
+                $showcase->content_preview = $showcase->description ?? '';
+            }
+        }
+
+        return view('whats-new.showcases', compact(
+            'showcases',
             'page',
             'totalPages',
             'prevPageUrl',

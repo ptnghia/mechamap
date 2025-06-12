@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookmark;
 use App\Models\Showcase;
 use App\Models\ShowcaseComment;
 use App\Models\ShowcaseLike;
@@ -9,6 +10,7 @@ use App\Models\ShowcaseFollow;
 use App\Models\Thread;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\ShowcaseImageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,11 +54,14 @@ class ShowcaseController extends Controller
             ->take(10)
             ->get();
 
-        // Get user showcases
-        $userShowcases = Showcase::with(['user', 'showcaseable'])
+        // Get user showcases WITH media for unified image processing
+        $userShowcases = Showcase::with(['user', 'showcaseable', 'media'])
             ->whereHas('showcaseable') // Ensure showcaseable exists
             ->latest()
             ->paginate(20);
+
+        // Process featured images using unified service
+        ShowcaseImageService::processFeaturedImages($userShowcases->getCollection());
 
         return view('showcase.public', compact('featuredThreads', 'popularThreads', 'userShowcases'));
     }
@@ -66,33 +71,82 @@ class ShowcaseController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'showcaseable_id' => 'required|integer',
-            'showcaseable_type' => 'required|string',
-            'description' => 'nullable|string|max:500',
-        ]);
+        // Validate based on request type
+        if ($request->has('title')) {
+            // New showcase creation
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'location' => 'nullable|string|max:255',
+                'usage' => 'nullable|string|max:255',
+                'floors' => 'nullable|integer|min:1|max:5',
+                'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
+                'category' => 'nullable|string',
+            ]);
 
-        /** @var User $user */
-        $user = Auth::user();
+            /** @var User $user */
+            $user = Auth::user();
 
-        // Check if the item is already in the showcase
-        $exists = $user->showcaseItems()
-            ->where('showcaseable_id', $request->showcaseable_id)
-            ->where('showcaseable_type', $request->showcaseable_type)
-            ->exists();
+            // Upload cover image
+            $coverImagePath = null;
+            if ($request->hasFile('cover_image')) {
+                $coverImage = $request->file('cover_image');
+                $coverImageName = time() . '_' . $coverImage->getClientOriginalName();
+                $coverImagePath = $coverImage->storeAs('public/uploads/showcases/' . $user->id, $coverImageName);
+            }
 
-        if ($exists) {
-            return back()->with('info', 'This item is already in your showcase.');
+            // Create slug from title
+            $slug = \Illuminate\Support\Str::slug($request->title);
+            $count = Showcase::where('slug', $slug)->count();
+            if ($count > 0) {
+                $slug = $slug . '-' . ($count + 1);
+            }
+
+            // Create showcase
+            $showcase = Showcase::create([
+                'user_id' => $user->id,
+                'title' => $request->title,
+                'slug' => $slug,
+                'description' => $request->description,
+                'location' => $request->location,
+                'usage' => $request->usage,
+                'floors' => $request->floors,
+                'cover_image' => $coverImagePath,
+                'status' => 'approved', // Direct approval for regular users
+                'category' => $request->category,
+            ]);
+
+            return redirect()->route('showcase.show', $showcase)->with('success', 'Showcase đã được tạo thành công!');
+        } else {
+            // Legacy: Adding existing thread/post to showcase
+            $request->validate([
+                'showcaseable_id' => 'required|integer',
+                'showcaseable_type' => 'required|string',
+                'description' => 'nullable|string|max:500',
+            ]);
+
+            /** @var User $user */
+            $user = Auth::user();
+
+            // Check if the item is already in the showcase
+            $exists = $user->showcaseItems()
+                ->where('showcaseable_id', $request->showcaseable_id)
+                ->where('showcaseable_type', $request->showcaseable_type)
+                ->exists();
+
+            if ($exists) {
+                return back()->with('info', 'This item is already in your showcase.');
+            }
+
+            // Create the showcase item
+            $user->showcaseItems()->create([
+                'showcaseable_id' => $request->showcaseable_id,
+                'showcaseable_type' => $request->showcaseable_type,
+                'description' => $request->description,
+            ]);
+
+            return back()->with('success', 'Item added to showcase successfully.');
         }
-
-        // Create the showcase item
-        $user->showcaseItems()->create([
-            'showcaseable_id' => $request->showcaseable_id,
-            'showcaseable_type' => $request->showcaseable_type,
-            'description' => $request->description,
-        ]);
-
-        return back()->with('success', 'Item added to showcase successfully.');
     }
 
     /**
@@ -118,7 +172,7 @@ class ShowcaseController extends Controller
         // Load relationships cần thiết
         $showcase->load([
             'user',
-            'attachments',
+            'media', // Sửa từ 'attachments' thành 'media'
             'comments' => function ($query) {
                 $query->whereNull('parent_id')->with(['user', 'replies.user'])->latest();
             },
@@ -272,5 +326,59 @@ class ShowcaseController extends Controller
         $comment->delete();
 
         return back()->with('success', 'Bình luận đã được xóa.');
+    }
+
+    /**
+     * Toggle bookmark cho showcase.
+     */
+    public function toggleBookmark(Showcase $showcase)
+    {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Check if already bookmarked
+        $existingBookmark = $user->bookmarks()
+            ->where('bookmarkable_type', Showcase::class)
+            ->where('bookmarkable_id', $showcase->id)
+            ->first();
+
+        if ($existingBookmark) {
+            // Remove bookmark
+            $existingBookmark->delete();
+            $isBookmarked = false;
+            $message = 'Đã bỏ lưu showcase này.';
+        } else {
+            // Add bookmark - sử dụng model Bookmark đúng cách
+            $user->bookmarks()->create([
+                'bookmarkable_type' => Showcase::class,
+                'bookmarkable_id' => $showcase->id,
+                'notes' => 'Showcase: ' . ($showcase->title ?? 'Untitled')
+            ]);
+            $isBookmarked = true;
+            $message = 'Đã lưu showcase này vào bookmark.';
+        }
+
+        // Return JSON for AJAX or redirect for regular form
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'is_bookmarked' => $isBookmarked,
+                'message' => $message
+            ]);
+        }
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * Show the form for creating a new showcase item.
+     */
+    public function create(): View
+    {
+        return view('showcase.create');
     }
 }

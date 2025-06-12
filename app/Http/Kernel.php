@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
         'verified.or.social' => \App\Http\Middleware\EnsureEmailIsVerifiedOrSocialLogin::class,
         'api.rate.limit' => \App\Http\Middleware\ApiRateLimit::class,
         'api.standardize' => \App\Http\Middleware\StandardizeApiResponse::class,
+        'stripe.webhook' => \App\Http\Middleware\VerifyStripeWebhook::class,
     ];
 }

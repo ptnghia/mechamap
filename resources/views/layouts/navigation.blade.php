@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('forums.listing') }}">
+                                    <a class="dropdown-item" href="{{ route('forums.index') }}">
                                         <i class="fa-solid fa-list-ul"></i>
                                         <span>Danh sách diễn đàn</span>
                                     </a>

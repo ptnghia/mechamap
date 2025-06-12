@@ -2,180 +2,161 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\User;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * Tạo roles và permissions cho hệ thống phân quyền MechaMap
+     * theo hệ thống 5 cấp độ: Admin, Moderator, Senior, Member, Guest
      */
     public function run(): void
     {
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Tạo permissions
+        // ====================================================================
+        // PERMISSIONS - Định nghĩa các quyền cơ bản
+        // ====================================================================
+
         $permissions = [
-            // User management
-            'view_users',
-            'create_users',
-            'edit_users',
-            'delete_users',
-            'ban_users',
+            // Forum & Thread Permissions
+            'view-threads',
+            'create-threads',
+            'update-own-threads',
+            'update-any-threads',
+            'delete-own-threads',
+            'delete-any-threads',
+            'pin-threads',
+            'lock-threads',
 
-            // Thread management
-            'view_threads',
-            'create_threads',
-            'edit_threads',
-            'delete_threads',
-            'pin_threads',
-            'lock_threads',
+            // Comment Permissions
+            'view-comments',
+            'create-comments',
+            'update-own-comments',
+            'update-any-comments',
+            'delete-own-comments',
+            'delete-any-comments',
 
-            // Comment management
-            'view_comments',
-            'create_comments',
-            'edit_comments',
-            'delete_comments',
+            // User Management
+            'view-users',
+            'create-users',
+            'update-users',
+            'delete-users',
+            'ban-users',
+            'manage-user-roles',
 
-            // Showcase management
-            'view_showcases',
-            'create_showcases',
-            'edit_showcases',
-            'delete_showcases',
+            // Admin Panel
+            'access-admin-panel',
+            'manage-settings',
+            'manage-categories',
+            'view-reports',
+            'manage-reports',
 
-            // Report management
-            'view_reports',
-            'handle_reports',
-            'dismiss_reports',
+            // Content Moderation
+            'moderate-content',
+            'approve-content',
+            'review-reports',
 
-            // Settings management
-            'view_settings',
-            'edit_settings_general',
-            'edit_settings_forum',
-            'edit_settings_user',
-            'edit_settings_email',
-            'edit_settings_security',
-            'edit_settings_seo',
-            'edit_settings_api',
-
-            // Page management
-            'view_pages',
-            'create_pages',
-            'edit_pages',
-            'delete_pages',
-
-            // Media management
-            'view_media',
-            'upload_media',
-            'delete_media',
-
-            // FAQ management
-            'view_faqs',
-            'create_faqs',
-            'edit_faqs',
-            'delete_faqs',
+            // Advanced Features
+            'upload-files',
+            'send-messages',
+            'create-polls',
+            'access-analytics',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::create(['name' => $permission]);
         }
 
-        // Tạo roles
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $moderatorRole = Role::firstOrCreate(['name' => 'moderator']);
-        $seniorRole = Role::firstOrCreate(['name' => 'senior']);
-        $memberRole = Role::firstOrCreate(['name' => 'member']);
-        $guestRole = Role::firstOrCreate(['name' => 'guest']);
+        // ====================================================================
+        // ROLES - Tạo 5 cấp độ người dùng
+        // ====================================================================
 
-        // Gán permissions cho roles
-
-        // Admin có tất cả quyền
+        // 👑 ADMIN - Toàn quyền
+        $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo(Permission::all());
 
-        // Moderator có quyền quản lý nội dung
+        // 🛡️ MODERATOR - Quản lý nội dung
+        $moderatorRole = Role::create(['name' => 'moderator']);
         $moderatorRole->givePermissionTo([
-            'view_users',
-            'edit_users',
-            'ban_users',
-            'view_threads',
-            'edit_threads',
-            'delete_threads',
-            'pin_threads',
-            'lock_threads',
-            'view_comments',
-            'edit_comments',
-            'delete_comments',
-            'view_showcases',
-            'edit_showcases',
-            'delete_showcases',
-            'view_reports',
-            'handle_reports',
-            'dismiss_reports',
-            'view_settings',
-            'view_media',
-            'upload_media',
-            'view_faqs',
-            'edit_faqs',
+            'view-threads',
+            'create-threads',
+            'update-own-threads',
+            'update-any-threads',
+            'delete-any-threads',
+            'pin-threads',
+            'lock-threads',
+            'view-comments',
+            'create-comments',
+            'update-own-comments',
+            'update-any-comments',
+            'delete-any-comments',
+            'view-users',
+            'ban-users',
+            'access-admin-panel',
+            'manage-categories',
+            'view-reports',
+            'manage-reports',
+            'moderate-content',
+            'approve-content',
+            'review-reports',
+            'upload-files',
+            'send-messages',
         ]);
 
-        // Senior có quyền tạo nội dung nâng cao
+        // ⭐ SENIOR - Thành viên cao cấp
+        $seniorRole = Role::create(['name' => 'senior']);
         $seniorRole->givePermissionTo([
-            'view_threads',
-            'create_threads',
-            'edit_threads', // chỉ threads của mình
-            'view_comments',
-            'create_comments',
-            'edit_comments', // chỉ comments của mình
-            'view_showcases',
-            'create_showcases',
-            'edit_showcases', // chỉ showcases của mình
-            'view_media',
-            'upload_media',
+            'view-threads',
+            'create-threads',
+            'update-own-threads',
+            'delete-own-threads',
+            'view-comments',
+            'create-comments',
+            'update-own-comments',
+            'delete-own-comments',
+            'view-users',
+            'upload-files',
+            'send-messages',
+            'create-polls',
+            'view-reports', // Có thể xem reports để báo cáo
         ]);
 
-        // Member có quyền cơ bản
+        // 👤 MEMBER - Thành viên cơ bản
+        $memberRole = Role::create(['name' => 'member']);
         $memberRole->givePermissionTo([
-            'view_threads',
-            'create_threads',
-            'view_comments',
-            'create_comments',
-            'view_showcases',
-            'create_showcases',
-            'view_media',
-            'upload_media',
+            'view-threads',
+            'create-threads',
+            'update-own-threads',
+            'delete-own-threads',
+            'view-comments',
+            'create-comments',
+            'update-own-comments',
+            'delete-own-comments',
+            'view-users',
+            'upload-files',
+            'send-messages',
         ]);
 
-        // Guest chỉ có quyền xem
+        // 👁️ GUEST - Chỉ xem
+        $guestRole = Role::create(['name' => 'guest']);
         $guestRole->givePermissionTo([
-            'view_threads',
-            'view_comments',
-            'view_showcases',
-            'view_media',
+            'view-threads',
+            'view-comments',
+            'view-users',
         ]);
 
-        // Gán role cho users hiện có (nếu có)
-        $adminUsers = User::where('role', 'admin')->get();
-        foreach ($adminUsers as $user) {
-            $user->assignRole('admin');
-        }
-
-        $moderatorUsers = User::where('role', 'moderator')->get();
-        foreach ($moderatorUsers as $user) {
-            $user->assignRole('moderator');
-        }
-
-        $seniorUsers = User::where('role', 'senior')->get();
-        foreach ($seniorUsers as $user) {
-            $user->assignRole('senior');
-        }
-
-        $memberUsers = User::where('role', 'member')->get();
-        foreach ($memberUsers as $user) {
-            $user->assignRole('member');
-        }
+        $this->command->info('✅ Roles and Permissions Seeder completed!');
+        $this->command->info('👑 Admin: ' . $adminRole->permissions->count() . ' permissions');
+        $this->command->info('🛡️ Moderator: ' . $moderatorRole->permissions->count() . ' permissions');
+        $this->command->info('⭐ Senior: ' . $seniorRole->permissions->count() . ' permissions');
+        $this->command->info('👤 Member: ' . $memberRole->permissions->count() . ' permissions');
+        $this->command->info('👁️ Guest: ' . $guestRole->permissions->count() . ' permissions');
+        $this->command->info('🔐 Total permissions: ' . Permission::count());
     }
 }

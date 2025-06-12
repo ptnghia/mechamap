@@ -6,6 +6,7 @@ use App\Models\Forum;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class ForumController extends Controller
 {
@@ -14,67 +15,117 @@ class ForumController extends Controller
      */
     public function index(): View
     {
-        // Get all forums with their categories and media
-        $categories = Forum::where('parent_id', null)
-            ->with([
-                'media' => function ($query) {
-                    $query->where('file_type', 'like', 'image/%');
-                },
-                'subForums' => function ($query) {
-                    $query->withCount(['threads', 'posts'])
-                        ->with(['media' => function ($mediaQuery) {
-                            $mediaQuery->where('file_type', 'like', 'image/%');
-                        }]);
-                }
-            ])
-            ->get();
+        // Cache forum data for better performance
+        $categories = cache()->remember('forums.categories', 3600, function () {
+            return Forum::where('parent_id', null)
+                ->with([
+                    'media' => function ($query) {
+                        $query->where('mime_type', 'like', 'image/%');
+                    },
+                    'subForums' => function ($query) {
+                        $query->withCount(['threads', 'posts'])
+                            ->with(['media' => function ($mediaQuery) {
+                                $mediaQuery->where('mime_type', 'like', 'image/%');
+                            }]);
+                    }
+                ])
+                ->get();
+        });
 
-        return view('forums.index', compact('categories'));
+        // Cache stats for better performance (refresh every 30 minutes)
+        $stats = cache()->remember('forums.stats', 1800, function () {
+            return [
+                'forums' => Forum::count(),
+                'threads' => Thread::count(),
+                'posts' => \App\Models\Post::count(),
+                'users' => \App\Models\User::count(),
+                'newest_member' => \App\Models\User::latest()->first()
+            ];
+        });
+
+        return view('forums.index', compact('categories', 'stats'));
     }
 
     /**
      * Display the specified forum.
      */
-    public function show(Forum $forum): View
+    public function show(Forum $forum, Request $request): View
     {
-        // Load the forum with its threads
-        $threads = $forum->threads()
-            ->with('user')
-            ->withCount('allComments as comments_count')
-            ->latest()
-            ->paginate(20);
+        // Load media relationship for forum images
+        $forum->load('media');
 
-        return view('forums.show', compact('forum', 'threads'));
+        $query = $forum->threads()->with('user')->withCount('allComments as comments_count');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by activity
+        if ($request->get('filter') === 'recent') {
+            $query->where('created_at', '>=', now()->subDays(7));
+        } elseif ($request->get('filter') === 'popular') {
+            $query->where('comments_count', '>=', 5);
+        } elseif ($request->get('filter') === 'unanswered') {
+            $query->having('comments_count', '=', 0);
+        }
+
+        // Sort options
+        $sortBy = $request->get('sort', 'latest');
+        switch ($sortBy) {
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'popular':
+                $query->orderBy('comments_count', 'desc');
+                break;
+            case 'views':
+                $query->orderBy('view_count', 'desc');
+                break;
+            default:
+                $query->latest();
+        }
+
+        $threads = $query->paginate(20)->appends($request->query());
+
+        // Get forum statistics
+        $forumStats = [
+            'total_threads' => $forum->threads()->count(),
+            'total_posts' => $forum->posts()->count(),
+            'recent_threads' => $forum->threads()->where('created_at', '>=', now()->subWeek())->count(),
+            'active_users' => $forum->threads()->with('user')->get()->pluck('user')->unique('id')->count(),
+        ];
+
+        return view('forums.show', compact('forum', 'threads', 'forumStats'));
     }
 
     /**
-     * Display a listing of all forums.
+     * Search across all forums
      */
-    public function listing(): View
+    public function search(Request $request): View
     {
-        // Get all forums with their categories and media
-        $categories = Forum::where('parent_id', null)
-            ->with([
-                'media' => function ($query) {
-                    $query->where('file_type', 'like', 'image/%');
-                },
-                'subForums' => function ($query) {
-                    $query->withCount(['threads', 'posts'])
-                        ->with(['media' => function ($mediaQuery) {
-                            $mediaQuery->where('file_type', 'like', 'image/%');
-                        }]);
-                }
-            ])
-            ->get();
+        $request->validate([
+            'q' => 'required|string|min:3|max:100'
+        ]);
 
-        // Get total stats
-        $stats = [
-            'forums' => Forum::count(),
-            'threads' => Thread::count(),
-            'posts' => \App\Models\Post::count(),
-            'users' => \App\Models\User::count(),
-        ];
+        $query = $request->get('q');
 
-        return view('forums.listing', compact('categories', 'stats'));
+        // Search threads across all forums
+        $threads = Thread::where('title', 'like', "%{$query}%")
+            ->orWhere('content', 'like', "%{$query}%")
+            ->with(['forum', 'user'])
+            ->withCount('allComments as comments_count')
+            ->paginate(20);
+
+        // Search in posts/comments
+        $posts = \App\Models\Post::where('content', 'like', "%{$query}%")
+            ->with(['thread.forum', 'user'])
+            ->paginate(20);
+
+        return view('forums.search', compact('threads', 'posts', 'query'));
     }
 }

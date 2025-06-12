@@ -9,6 +9,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $title
+ * @property string $content
+ * @property string $type
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property string|null $alertable_type
+ * @property int|null $alertable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Model|\Eloquent|null $alertable
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert read()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert unread()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereAlertableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereAlertableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereReadAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Alert whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Alert extends Model
 {
     use HasFactory;

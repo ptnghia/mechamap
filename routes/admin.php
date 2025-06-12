@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\PageCategoryController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FaqCategoryController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ShowcaseController;
@@ -169,6 +171,18 @@ Route::middleware('admin.auth')->group(function () {
     Route::resource('media', MediaController::class);
     Route::get('media/{media}/download', [MediaController::class, 'download'])->name('media.download');
     Route::get('media-library', [MediaController::class, 'library'])->name('media.library');
+    Route::post('media/upload', [MediaController::class, 'upload'])->name('media.upload');
+    Route::get('media/stats', [MediaController::class, 'stats'])->name('media.stats');
+    Route::put('media/{media}/approve', [MediaController::class, 'approve'])->name('media.approve');
+    Route::get('media/user/{user?}', [MediaController::class, 'userMedia'])->name('media.user');
+
+    // Countries & Regions management routes (admin có quyền)
+    Route::middleware(['admin.auth'])->group(function () {
+        Route::resource('countries', CountryController::class);
+        Route::resource('regions', RegionController::class);
+        Route::get('regions/country/{country}', [RegionController::class, 'byCountry'])->name('regions.by-country');
+        Route::get('regions/featured', [RegionController::class, 'featured'])->name('regions.featured');
+    });
 
     // SEO management routes được định nghĩa ở cuối file
 

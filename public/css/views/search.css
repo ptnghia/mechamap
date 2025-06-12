@@ -13,7 +13,7 @@
     background-color: #ffffff;
     border-radius: 0;
 }
-.search-container input{background-color: transparent;border: none;width: 383px !IMPORTANT;box-shadow: none !important;outline: none !important;}
+.search-container input{background-color: transparent;border: none;width: 383px !IMPORTANT;box-shadow: none !important;outline: none !important;border-radius: 0;}
 .search-container input::placeholder {
     color: #b0b0b0;
 }

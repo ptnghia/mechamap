@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Thread;
 use App\Models\User;
-use App\Models\Forum;
+use App\Models\Category;
 
 /**
  * Service chuyên xử lý tối ưu hiệu suất cho API
@@ -56,10 +56,10 @@ class ApiPerformanceService
             return [
                 'total_threads' => Thread::count(),
                 'total_users' => User::count(),
-                'total_forums' => Forum::count(),
+                'total_categories' => Category::count(),
                 'active_users_today' => User::whereDate('last_seen_at', today())->count(),
                 'new_threads_today' => Thread::whereDate('created_at', today())->count(),
-                'top_forums' => Forum::withCount('threads')
+                'top_categories' => Category::withCount('threads')
                     ->orderBy('threads_count', 'desc')
                     ->take(5)
                     ->get(['id', 'name', 'threads_count']),
@@ -80,8 +80,8 @@ class ApiPerformanceService
             if ($type === 'all' || $type === 'threads') {
                 $results['threads'] = Thread::where('title', 'LIKE', "%{$query}%")
                     ->orWhere('content', 'LIKE', "%{$query}%")
-                    ->with(['user:id,name,avatar', 'forum:id,name'])
-                    ->select(['id', 'title', 'slug', 'user_id', 'forum_id', 'views', 'created_at'])
+                    ->with(['user:id,name,avatar', 'category:id,name'])
+                    ->select(['id', 'title', 'slug', 'user_id', 'category_id', 'view_count', 'created_at'])
                     ->take(10)
                     ->get();
             }
@@ -93,8 +93,8 @@ class ApiPerformanceService
                     ->get();
             }
 
-            if ($type === 'all' || $type === 'forums') {
-                $results['forums'] = Forum::where('name', 'LIKE', "%{$query}%")
+            if ($type === 'all' || $type === 'categories') {
+                $results['categories'] = Category::where('name', 'LIKE', "%{$query}%")
                     ->orWhere('description', 'LIKE', "%{$query}%")
                     ->withCount('threads')
                     ->select(['id', 'name', 'slug', 'description'])

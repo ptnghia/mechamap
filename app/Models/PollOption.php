@@ -7,6 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $poll_id
+ * @property string $text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int $vote_count
+ * @property-read float $vote_percentage
+ * @property-read \App\Models\Poll $poll
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PollVote> $votes
+ * @property-read int|null $votes_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption wherePollId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PollOption whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class PollOption extends Model
 {
     use HasFactory;

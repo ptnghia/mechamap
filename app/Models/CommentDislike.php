@@ -6,6 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $comment_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Comment $comment
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike whereCommentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CommentDislike whereUserId($value)
+ * @mixin \Eloquent
+ */
 class CommentDislike extends Model
 {
     use HasFactory;

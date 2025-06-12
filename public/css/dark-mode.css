@@ -126,7 +126,8 @@
 [data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > th {
     background-color: var(--bs-tertiary-bg) !important;
 }
-
+[data-theme="dark"] .search-container{background-color: #fff;}
+[data-theme="dark"] .search-container input{background-color: #fff !important;}
 /* ========================================
    SMOOTH TRANSITIONS
    ======================================== */

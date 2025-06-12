@@ -10,9 +10,12 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.19",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.19",
+        "stripe/stripe-php": "^17.3"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.3",
         "laravel/pint": "^1.13",
@@ -31,7 +34,8 @@
         "files": [
             "app/Helpers/SettingHelper.php",
             "app/Helpers/ImageHelper.php",
-            "app/Helpers/functions.php"
+            "app/Helpers/functions.php",
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {

@@ -72,15 +72,10 @@
                             @foreach($userShowcases as $showcase)
                             <div class="list-group-item py-3 px-0">
                                 <div class="d-flex">
-                                    <!-- Featured Image cho threads -->
-                                    @if($showcase->showcaseable_type === 'App\\Models\\Thread' &&
-                                    $showcase->showcaseable && $showcase->showcaseable->featured_image)
+                                    <!-- Unified Featured Image cho tất cả showcase types -->
                                     <div class="me-3">
-                                        <img src="{{ $showcase->showcaseable->featured_image }}"
-                                            alt="{{ $showcase->showcaseable->title }}" class="rounded"
-                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                        <x-showcase-image :showcase="$showcase" size="medium" />
                                     </div>
-                                    @endif
 
                                     <div class="me-3">
                                         <img src="{{ $showcase->user->getAvatarUrl() }}"
@@ -189,8 +184,14 @@
                     </div>
                     <div class="card-body">
                         <p>{{ __('Showcase your best content and contributions to the community.') }}</p>
-                        <a href="{{ route('showcase.index') }}" class="btn btn-primary">{{ __('Manage Your Showcase')
-                            }}</a>
+                        <div class="d-grid gap-2">
+                            <a href="{{ route('showcase.create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>{{ __('Create New Showcase') }}
+                            </a>
+                            <a href="{{ route('showcase.index') }}" class="btn btn-outline-secondary">
+                                {{ __('Manage Your Showcase') }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -78,6 +78,8 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
     box-shadow: var(--box-shadow);
     margin-bottom: var(--spacing-lg);
     transition: box-shadow 0.2s ease;
+    border-radius: 20px;
+    /* overflow: hidden; */
 }
 
 .card:hover {
@@ -88,6 +90,7 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
     background-color: var(--content-bg);
     border-bottom: 1px solid var(--border-color);
     padding: var(--spacing-md) var(--spacing-base);
+    border-radius: 20px 20px 0 0 !important;
 }
 
 .card-header h5 {
@@ -95,12 +98,14 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
 
 .card-body {
     padding: var(--spacing-base);
+    font-family: "Roboto Condensed", sans-serif;
 }
 
 .card-footer {
     background-color: var(--content-bg);
-    border-top: 1px solid var(--border-color);
+    border-top: none;
     padding: var(--spacing-md) var(--spacing-base);
+    border-radius: 0 0 20px 20px !important;
 }
 
 /* List group redesign */
@@ -274,7 +279,7 @@ h6, .h6 { font-size: var(--h6-size); font-weight: 600; margin-bottom: var(--spac
     --text-muted: #a0a0a0;
     --border-color: #3d3d3d;
 }
-
+.active>.page-link, .page-link.active{background-color: var(--user-primary);border-color: var(--user-primary);}
 .dark-mode .card,
 .dark-mode .card-header,
 .dark-mode .card-footer,

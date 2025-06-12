@@ -89,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/showcase/comment/{comment}', [ShowcaseController::class, 'deleteComment'])->name('showcase.comment.delete');
     Route::post('/showcase/{showcase}/like', [ShowcaseController::class, 'toggleLike'])->name('showcase.toggle-like');
     Route::post('/showcase/{showcase}/follow', [ShowcaseController::class, 'toggleFollow'])->name('showcase.toggle-follow');
+    Route::post('/showcase/{showcase}/bookmark', [ShowcaseController::class, 'toggleBookmark'])->name('showcase.bookmark');
     Route::get('/showcase/attachment/{attachment}/download', [ShowcaseController::class, 'downloadAttachment'])->name('showcase.download');
     Route::post('/showcase/{showcase}/attach-to-thread', [ShowcaseController::class, 'attachToThread'])->name('showcase.attach-to-thread');
 
@@ -105,7 +106,13 @@ Route::middleware('auth')->group(function () {
 
 // Main menu routes
 Route::get('/new', [NewContentController::class, 'index'])->name('new');
-Route::get('/forums', [ForumController::class, 'index'])->name('forums.index');
+
+// Forum routes with caching middleware
+Route::middleware('forum.cache')->group(function () {
+    Route::get('/forums', [ForumController::class, 'index'])->name('forums.index');
+    Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
+    Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
+});
 
 // Thread routes (MUST be before wildcard routes)
 Route::resource('threads', \App\Http\Controllers\ThreadController::class);
@@ -165,7 +172,10 @@ Route::middleware('auth')->group(function () {
 
 // More menu routes
 Route::get('/whats-new', [NewContentController::class, 'whatsNew'])->name('whats-new');
-Route::get('/forum-listing', [ForumController::class, 'listing'])->name('forums.listing');
+// Redirect old forum-listing to unified forums page for backward compatibility
+Route::get('/forum-listing', function () {
+    return redirect()->route('forums.index', [], 301);
+});
 Route::get('/public-showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.public');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
@@ -182,8 +192,7 @@ Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::post('/theme/dark-mode', [ThemeController::class, 'toggleDarkMode'])->name('theme.dark-mode');
 Route::post('/theme/original-view', [ThemeController::class, 'toggleOriginalView'])->name('theme.original-view');
 
-// Forum and thread routes
-Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
+// Forum and thread routes (duplicate route removed - already defined in middleware group above)
 Route::get('/categories/{category:slug}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
 Route::get('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'index'])->name('forums.select')->middleware('auth');
 Route::post('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'selectForum'])->name('forums.select.submit')->middleware('auth');
@@ -291,12 +300,12 @@ Route::middleware(['webapi', 'auth'])->prefix('api/threads/{thread}')->group(fun
 
 // Test route for thread actions (only in development)
 if (app()->environment('local')) {
-    Route::get('/test-thread-actions', function () {
+    Route::get('/test-thread-actions-simple', function () {
         return view('test-thread-actions');
-    })->name('test.thread-actions');
+    })->name('test.thread-actions.simple');
 
     Route::get('/test-js-conflict', function () {
-        return view('test-js-conflict');
+        return view('test-js_conflict');
     })->name('test.js-conflict');
 
     Route::get('/test-auth-actions', function () {

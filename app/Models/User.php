@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,8 +14,122 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Showcase;
+use App\Models\Country;
+use App\Models\Region;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ *
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $username
+ * @property string $email
+ * @property string $role
+ * @property string|null $permissions
+ * @property string $status
+ * @property string|null $avatar
+ * @property string|null $about_me
+ * @property string|null $website
+ * @property string|null $location
+ * @property string|null $signature
+ * @property int $points
+ * @property int $reaction_score
+ * @property \Illuminate\Support\Carbon|null $last_seen_at
+ * @property string|null $last_activity
+ * @property int $setup_progress
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property int $is_active
+ * @property string|null $last_login_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property string|null $banned_at
+ * @property string|null $banned_reason
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserActivity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Alert> $alerts
+ * @property-read int|null $alerts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bookmark> $bookmarks
+ * @property-read int|null $bookmarks_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CommentLike> $commentLikes
+ * @property-read int|null $comment_likes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Conversation> $conversations
+ * @property-read int|null $conversations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Thread> $followedThreads
+ * @property-read int|null $followed_threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $followers
+ * @property-read int|null $followers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $following
+ * @property-read int|null $following_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
+ * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProfilePost> $profilePosts
+ * @property-read int|null $profile_posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reaction> $reactions
+ * @property-read int|null $reactions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ProfilePost> $receivedProfilePosts
+ * @property-read int|null $received_profile_posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Reaction> $receivedReactions
+ * @property-read int|null $received_reactions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Thread> $savedThreads
+ * @property-read int|null $saved_threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Showcase> $showcaseItems
+ * @property-read int|null $showcase_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\SocialAccount> $socialAccounts
+ * @property-read int|null $social_accounts_count
+ * @property-read \App\Models\Subscription|null $subscription
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadFollow> $threadFollows
+ * @property-read int|null $thread_follows_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadLike> $threadLikes
+ * @property-read int|null $thread_likes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ThreadSave> $threadSaves
+ * @property-read int|null $thread_saves_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Thread> $threads
+ * @property-read int|null $threads_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserVisit> $visits
+ * @property-read int|null $visits_count
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAboutMe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBannedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBannedReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastActivity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastSeenAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePermissions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePoints($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereReactionScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSetupProgress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSignature($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereWebsite($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -42,6 +157,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_activity',
         'setup_progress',
         'email_verified_at',
+        // Thêm support cho geographic location
+        'country_id',
+        'region_id',
+        'work_locations',
+        'expertise_regions',
     ];
 
     /**
@@ -65,6 +185,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'last_seen_at' => 'datetime',
             'password' => 'hashed',
+            'work_locations' => 'array',
+            'expertise_regions' => 'array',
         ];
     }
 
@@ -209,12 +331,82 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Media::class);
     }
 
+    // ====================================================================
+    // GEOGRAPHIC RELATIONSHIPS - Countries & Regions
+    // ====================================================================
+
     /**
-     * Get the showcase items of the user.
+     * Get the country where user is located
      */
-    public function showcaseItems(): HasMany
+    public function country(): BelongsTo
     {
-        return $this->hasMany(Showcase::class);
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the region where user is located
+     */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * Check if user is from specific country
+     */
+    public function isFromCountry(string $countryCode): bool
+    {
+        return $this->country && $this->country->code === $countryCode;
+    }
+
+    /**
+     * Check if user is from specific region
+     */
+    public function isFromRegion(string $regionCode): bool
+    {
+        return $this->region && $this->region->code === $regionCode;
+    }
+
+    /**
+     * Get user's primary timezone based on country/region
+     */
+    public function getTimezone(): string
+    {
+        if ($this->region && $this->region->timezone) {
+            return $this->region->timezone;
+        }
+
+        if ($this->country && $this->country->timezone) {
+            return $this->country->timezone;
+        }
+
+        return config('app.timezone', 'UTC');
+    }
+
+    /**
+     * Get user's measurement system preference
+     */
+    public function getMeasurementSystem(): string
+    {
+        return $this->country?->measurement_system ?? 'metric';
+    }
+
+    /**
+     * Get technical standards relevant to user's location
+     */
+    public function getRelevantStandards(): array
+    {
+        $standards = [];
+
+        if ($this->country) {
+            $standards = array_merge($standards, $this->country->standard_organizations ?? []);
+        }
+
+        if ($this->region) {
+            $standards = array_merge($standards, $this->region->local_standards ?? []);
+        }
+
+        return array_unique($standards);
     }
 
     /**

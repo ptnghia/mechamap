@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class GalleryController extends Controller
@@ -14,8 +17,35 @@ class GalleryController extends Controller
      */
     public function index(): View
     {
-        // Get all media items
-        $mediaItems = Media::with('user')
+        // Get media items from public sources only
+        $mediaItems = Media::with(['user', 'thread'])
+            ->where(function ($query) {
+                // Include standalone gallery uploads (not attached to threads/showcases)
+                $query->where(function ($subQuery) {
+                    $subQuery->whereNull('thread_id')
+                        ->whereNull('mediable_type')
+                        ->whereNull('mediable_id');
+                });
+
+                // Include media from public threads
+                $query->orWhereHas('thread', function ($threadQuery) {
+                    $threadQuery->where('moderation_status', 'approved')
+                        ->where('is_spam', false)
+                        ->whereNull('hidden_at')
+                        ->whereNull('archived_at');
+                });
+
+                // Include media from approved showcases (using specific model check)
+                $query->orWhere(function ($showcaseQuery) {
+                    $showcaseQuery->where('mediable_type', 'App\\Models\\Showcase')
+                        ->whereExists(function ($existsQuery) {
+                            $existsQuery->select(DB::raw(1))
+                                ->from('showcases')
+                                ->whereColumn('showcases.id', 'media.mediable_id')
+                                ->where('showcases.status', 'approved');
+                        });
+                });
+            })
             ->latest()
             ->paginate(24);
 
@@ -49,6 +79,7 @@ class GalleryController extends Controller
             'description' => 'nullable|string|max:1000',
         ]);
 
+        /** @var User $user */
         $user = Auth::user();
 
         // Handle file upload
@@ -80,12 +111,14 @@ class GalleryController extends Controller
     public function destroy(Media $media): \Illuminate\Http\RedirectResponse
     {
         // Check if the media belongs to the authenticated user
-        if ($media->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        if ($media->user_id !== Auth::id() && !$currentUser->isAdmin()) {
             abort(403);
         }
 
         // Delete the file
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($media->file_path);
+        Storage::disk('public')->delete($media->file_path);
 
         // Delete the record
         $media->delete();

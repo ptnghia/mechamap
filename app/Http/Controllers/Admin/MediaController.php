@@ -4,226 +4,288 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use App\Services\MediaService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
 {
-    /**
-     * Hiển thị danh sách media
-     */
-    public function index(Request $request): View
+    protected $mediaService;
+
+    public function __construct(MediaService $mediaService)
     {
-        // Lấy các tham số lọc
-        $type = $request->input('type');
-        $search = $request->input('search');
-
-        // Khởi tạo query
-        $query = Media::with('user');
-
-        // Áp dụng các bộ lọc
-        if ($type) {
-            $query->where('file_type', 'like', "{$type}/%");
-        }
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('file_name', 'like', "%{$search}%");
-            });
-        }
-
-        // Sắp xếp và phân trang
-        $media = $query->orderBy('created_at', 'desc')->paginate(24);
-
-        // Breadcrumbs
-        $breadcrumbs = [
-            ['title' => 'Quản lý Media', 'url' => route('admin.media.index')]
-        ];
-
-        return view('admin.media.index', compact('media', 'breadcrumbs', 'type', 'search'));
+        $this->mediaService = $mediaService;
     }
 
     /**
-     * Hiển thị form tải lên media mới
+     * Hiển thị danh sách media với phân trang và lọc
      */
-    public function create(): View
+    public function index(Request $request): JsonResponse
     {
-        // Breadcrumbs
-        $breadcrumbs = [
-            ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
-            ['title' => 'Tải lên media mới', 'url' => route('admin.media.create')]
-        ];
+        $query = Media::with(['user'])->orderBy('created_at', 'desc');
 
-        return view('admin.media.create', compact('breadcrumbs'));
+        // Filter by category
+        if ($request->has('category')) {
+            $query->where('category', $request->category);
+        }
+
+        // Filter by user
+        if ($request->has('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        // Filter by file type
+        if ($request->has('file_type')) {
+            switch ($request->file_type) {
+                case 'image':
+                    $query->where('mime_type', 'like', 'image/%');
+                    break;
+                case 'document':
+                    $query->whereIn('mime_type', [
+                        'application/pdf',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    ]);
+                    break;
+                case 'cad':
+                    $query->whereIn('mime_type', [
+                        'application/acad',
+                        'application/x-autocad',
+                        'application/step',
+                        'application/iges'
+                    ]);
+                    break;
+            }
+        }
+
+        // Search by filename
+        if ($request->has('search')) {
+            $query->where('file_name', 'like', '%' . $request->search . '%');
+        }
+
+        $media = $query->paginate(20);
+
+        return response()->json([
+            'success' => true,
+            'data' => $media,
+            'message' => 'Danh sách media'
+        ]);
     }
 
     /**
-     * Lưu media mới
+     * Upload multiple files
      */
-    public function store(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'files' => 'required|array',
-            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp,avif,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
+            'files' => 'required|array|max:10',
+            'files.*' => 'file|max:51200', // 50MB max per file
+            'category' => 'required|string|in:avatar,thread,showcase,page,document,cad',
+            'entity_id' => 'nullable|integer',
+            'entity_type' => 'nullable|string',
         ]);
 
-        $uploadedFiles = [];
+        try {
+            $uploadedFiles = [];
 
-        foreach ($request->file('files') as $file) {
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $fileType = $file->getMimeType();
+            foreach ($request->file('files') as $file) {
+                $media = $this->mediaService->uploadFile(
+                    $file,
+                    $request->category,
+                    Auth::user(),
+                    $request->entity_id,
+                    $request->entity_type
+                );
 
-            // Xác định thư mục lưu trữ dựa trên loại file
-            $folder = 'other';
-            if (strpos($fileType, 'image') !== false) {
-                $folder = 'images';
-            } elseif (strpos($fileType, 'video') !== false) {
-                $folder = 'videos';
-            } elseif (strpos($fileType, 'audio') !== false) {
-                $folder = 'audios';
-            } elseif (strpos($fileType, 'pdf') !== false || strpos($fileType, 'document') !== false || strpos($fileType, 'spreadsheet') !== false || strpos($fileType, 'presentation') !== false) {
-                $folder = 'documents';
+                $uploadedFiles[] = $media;
             }
 
-            $filePath = $file->storeAs($folder, $fileName, 'public');
+            return response()->json([
+                'success' => true,
+                'data' => $uploadedFiles,
+                'message' => 'Upload files thành công'
+            ], 201);
 
-            $media = new Media();
-            $media->user_id = Auth::id();
-            $media->file_name = $fileName;
-            $media->file_path = $filePath;
-            $media->file_type = $fileType;
-            $media->file_size = $file->getSize();
-            $media->title = $request->title ?? $file->getClientOriginalName();
-            $media->description = $request->description;
-            $media->save();
-
-            $uploadedFiles[] = $media;
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi upload: ' . $e->getMessage()
+            ], 500);
         }
-
-        return redirect()->route('admin.media.index')
-            ->with('success', count($uploadedFiles) . ' file đã được tải lên thành công.');
     }
 
     /**
      * Hiển thị chi tiết media
      */
-    public function show(Media $media): View
+    public function show(Media $media): JsonResponse
     {
-        $media->load('user');
+        $media->load(['user']);
 
-        // Breadcrumbs
-        $breadcrumbs = [
-            ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
-            ['title' => $media->title, 'url' => route('admin.media.show', $media)]
-        ];
-
-        return view('admin.media.show', compact('media', 'breadcrumbs'));
+        return response()->json([
+            'success' => true,
+            'data' => $media,
+            'message' => 'Chi tiết media'
+        ]);
     }
 
     /**
-     * Hiển thị form chỉnh sửa media
+     * Cập nhật thông tin media
      */
-    public function edit(Media $media): View
-    {
-        // Breadcrumbs
-        $breadcrumbs = [
-            ['title' => 'Quản lý Media', 'url' => route('admin.media.index')],
-            ['title' => 'Chỉnh sửa media', 'url' => route('admin.media.edit', $media)]
-        ];
-
-        return view('admin.media.edit', compact('media', 'breadcrumbs'));
-    }
-
-    /**
-     * Cập nhật media
-     */
-    public function update(Request $request, Media $media)
+    public function update(Request $request, Media $media): JsonResponse
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'title' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'alt_text' => 'nullable|string|max:255',
+            'is_approved' => 'boolean',
         ]);
 
-        $media->title = $request->title;
-        $media->description = $request->description;
-        $media->save();
+        try {
+            $media->update($request->only([
+                'title',
+                'description',
+                'alt_text',
+                'is_approved'
+            ]));
 
-        return redirect()->route('admin.media.index')
-            ->with('success', 'Media đã được cập nhật thành công.');
+            return response()->json([
+                'success' => true,
+                'data' => $media,
+                'message' => 'Cập nhật media thành công'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi cập nhật media: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Xóa media
      */
-    public function destroy(Media $media)
+    public function destroy(Media $media): JsonResponse
     {
-        // Xóa file từ storage
-        Storage::disk('public')->delete($media->file_path);
+        try {
+            // Xóa file vật lý
+            if (Storage::disk('public')->exists($media->file_path)) {
+                Storage::disk('public')->delete($media->file_path);
+            }
 
-        // Xóa record từ database
-        $media->delete();
+            // Xóa thumbnail nếu có
+            if ($media->thumbnail_path && Storage::disk('public')->exists($media->thumbnail_path)) {
+                Storage::disk('public')->delete($media->thumbnail_path);
+            }
 
-        return redirect()->route('admin.media.index')
-            ->with('success', 'Media đã được xóa thành công.');
+            $media->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa media thành công'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi xóa media: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Tải xuống media
+     * Bulk approval
      */
-    public function download(Media $media)
+    public function bulkApprove(Request $request): JsonResponse
     {
-        return Storage::disk('public')->download($media->file_path, $media->file_name);
+        $request->validate([
+            'media_ids' => 'required|array',
+            'media_ids.*' => 'integer|exists:media,id',
+            'approved' => 'required|boolean'
+        ]);
+
+        try {
+            $count = Media::whereIn('id', $request->media_ids)
+                ->update(['is_approved' => $request->approved]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Đã cập nhật {$count} media"
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi bulk approval: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Hiển thị thư viện media cho trình soạn thảo
+     * Thống kê media
      */
-    public function library(Request $request)
+    public function stats(): JsonResponse
     {
-        // Lấy các tham số lọc
-        $type = $request->input('type', 'image');
-        $search = $request->input('search');
-
-        // Khởi tạo query
-        $query = Media::with('user');
-
-        // Áp dụng các bộ lọc
-        if ($type === 'image') {
-            $query->where('file_type', 'like', "image/%");
-        } elseif ($type === 'document') {
-            $query->where(function ($q) {
-                $q->where('file_type', 'like', "application/pdf")
-                    ->orWhere('file_type', 'like', "application/msword")
-                    ->orWhere('file_type', 'like', "application/vnd.openxmlformats-officedocument.%")
-                    ->orWhere('file_type', 'like', "application/vnd.ms-%");
-            });
-        }
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('file_name', 'like', "%{$search}%");
-            });
-        }
-
-        // Sắp xếp và phân trang
-        $media = $query->orderBy('created_at', 'desc')->paginate(24);
+        $stats = [
+            'total_files' => Media::count(),
+            'total_size' => Media::sum('file_size'),
+            'by_category' => Media::selectRaw('category, COUNT(*) as count, SUM(file_size) as size')
+                ->groupBy('category')
+                ->get(),
+            'by_type' => Media::selectRaw('
+                CASE
+                    WHEN mime_type LIKE "image/%" THEN "image"
+                    WHEN mime_type LIKE "video/%" THEN "video"
+                    WHEN mime_type IN ("application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document") THEN "document"
+                    WHEN mime_type IN ("application/acad", "application/x-autocad", "application/step", "application/iges") THEN "cad"
+                    ELSE "other"
+                END as type,
+                COUNT(*) as count,
+                SUM(file_size) as size
+            ')
+                ->groupBy('type')
+                ->get(),
+            'recent_uploads' => Media::with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get(),
+            'pending_approval' => Media::where('is_approved', false)->count(),
+        ];
 
         return response()->json([
-            'media' => $media,
-            'pagination' => [
-                'total' => $media->total(),
-                'per_page' => $media->perPage(),
-                'current_page' => $media->currentPage(),
-                'last_page' => $media->lastPage(),
-            ]
+            'success' => true,
+            'data' => $stats,
+            'message' => 'Thống kê media'
         ]);
+    }
+
+    /**
+     * Tạo thumbnail cho image
+     */
+    public function createThumbnail(Media $media): JsonResponse
+    {
+        try {
+            if (!str_starts_with($media->mime_type, 'image/')) {
+                throw new \Exception('Chỉ có thể tạo thumbnail cho hình ảnh');
+            }
+
+            $thumbnailPath = $this->mediaService->createThumbnail($media);
+
+            $media->update(['thumbnail_path' => $thumbnailPath]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $media,
+                'message' => 'Tạo thumbnail thành công'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi tạo thumbnail: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

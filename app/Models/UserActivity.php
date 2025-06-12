@@ -6,6 +6,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $activity_type
+ * @property int|null $activity_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Comment|null $comment
+ * @property-read \App\Models\Thread|null $thread
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereActivityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereActivityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserActivity whereUserId($value)
+ * @mixin \Eloquent
+ */
 class UserActivity extends Model
 {
     use HasFactory;

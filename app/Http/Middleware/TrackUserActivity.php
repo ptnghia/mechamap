@@ -18,16 +18,21 @@ class TrackUserActivity
     {
         $response = $next($request);
 
+        // Skip user activity tracking for API routes to avoid database issues
+        if ($request->is('api/*')) {
+            return $response;
+        }
+
         if (Auth::check()) {
             $user = Auth::user();
-            
+
             // Cập nhật thời gian hoạt động cuối cùng
             $user->last_seen_at = now();
-            
+
             // Lưu hoạt động hiện tại
             $routeName = $request->route() ? $request->route()->getName() : 'unknown';
             $user->last_activity = $routeName;
-            
+
             $user->save();
         }
 

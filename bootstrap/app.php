@@ -7,14 +7,31 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Đăng ký middleware toàn cục
-        $middleware->append(\App\Http\Middleware\TrackUserActivity::class);
-        $middleware->append(\App\Http\Middleware\ApplySeoSettings::class);
-        // Removed HandleCors from here - it's already in Kernel.php
+        // Do not append as global middleware - these should only be for web routes
+        // $middleware->append(\App\Http\Middleware\TrackUserActivity::class);
+        // $middleware->append(\App\Http\Middleware\ApplySeoSettings::class);
+
+        // Override middleware groups to ensure clean API middleware
+        $middleware->group('api', [
+            \App\Http\Middleware\ApiRateLimit::class,
+            \App\Http\Middleware\StandardizeApiResponse::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
+
+        $middleware->group('web', [
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\TrackUserActivity::class,
+            \App\Http\Middleware\ApplySeoSettings::class,
+        ]);
 
         // Đăng ký alias cho middleware
         $middleware->alias([
@@ -22,6 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.auth' => \App\Http\Middleware\AdminAuthenticate::class,
             'verified.social' => \App\Http\Middleware\EnsureEmailIsVerifiedOrSocialLogin::class,
             'track.activity' => \App\Http\Middleware\TrackUserActivity::class,
+            'forum.cache' => \App\Http\Middleware\ForumCacheMiddleware::class,
+            'download.access' => \App\Http\Middleware\VerifyDownloadAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
