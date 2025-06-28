@@ -22,70 +22,292 @@
 
 ### ✨ Tính Năng Nổi Bật
 
-- 🔐 **Hệ thống xác thực đa dạng** - Email, Google, Facebook với xác thực 2 lớp
-- 👥 **Phân quyền 5 cấp độ** - Admin, Moderator, Senior, Member, Guest với quyền hạn rõ ràng  
-- 💬 **Diễn đàn tương tác** - Đăng bài, bình luận, phản ứng, polls và media
-- 📁 **Quản lý nội dung** - Phân loại chuyên mục, tag, tìm kiếm nâng cao
-- 💌 **Hệ thống tin nhắn** - Chat riêng tư, nhóm và thông báo realtime
-- 🛡️ **Bảo mật cao cấp** - Rate limiting, IP whitelist, content moderation
-- 🎨 **Giao diện hiện đại** - Responsive design với TailwindCSS, dark mode
-- 🌐 **Đa ngôn ngữ** - Hỗ trợ Tiếng Việt và Tiếng Anh
-- ⚙️ **Admin Dashboard** - Quản trị toàn diện với 11/16 module hoàn thành
-- 📊 **Analytics & SEO** - Tích hợp SEO tools và báo cáo chi tiết
+#### 🔐 **Hệ Thống Xác Thực & Bảo Mật**
+- **Multi-Auth System** - Email, Google, Facebook với xác thực 2 lớp (2FA)
+- **Advanced Security** - Rate limiting, IP whitelist, CSRF protection, XSS filtering
+- **Session Management** - Secure session handling với Redis backend
+- **Password Security** - Bcrypt hashing, password strength validation
+
+#### 👥 **Mô Hình Phân Quyền 8 Cấp Độ**
+- **System Management** - Super Admin, System Admin, Content Admin
+- **Community Management** - Content Moderator, Marketplace Moderator, Community Moderator
+- **Community Members** - Senior Member, Member, Guest, Student
+- **Business Partners** - Manufacturer, Supplier, Brand, Verified Partner
+
+#### 🏪 **Marketplace B2B2C**
+- **Multi-Vendor Platform** - Suppliers, Manufacturers, Brands
+- **Product Management** - CAD files, technical drawings, physical products
+- **Payment Integration** - Multiple payment gateways, escrow system
+- **Revenue Streams** - Commission-based, subscription fees, advertising
+
+#### 💬 **Diễn Đàn & Cộng Đồng**
+- **Advanced Forum System** - Categories, threads, polls, reactions
+- **Real-time Chat** - Private messaging, group chats, notifications
+- **Content Management** - Rich text editor, file attachments, media gallery
+- **Moderation Tools** - Auto-moderation, report system, content filtering
+
+#### 🎨 **Giao Diện & UX**
+- **Responsive Design** - Mobile-first approach với Bootstrap 5
+- **Dark/Light Mode** - Theme switcher với user preferences
+- **Accessibility** - WCAG 2.1 compliant, screen reader support
+- **Performance** - Lazy loading, image optimization, CDN integration
+
+#### 🌐 **Đa Ngôn Ngữ & Localization**
+- **Multi-Language Support** - Tiếng Việt, English với 200+ translation keys
+- **Dynamic Language Switching** - Session-based language persistence
+- **RTL Support** - Right-to-left language support ready
+- **Timezone Management** - Auto-detect user timezone
+
+#### ⚙️ **Admin Dashboard**
+- **Comprehensive Management** - 11/16 modules hoàn thành (68.75%)
+- **Real-time Analytics** - User activity, content statistics, revenue tracking
+- **System Monitoring** - Performance metrics, error tracking, health checks
+- **Bulk Operations** - Mass user management, content moderation
+
+#### 📊 **Analytics & SEO**
+- **SEO Optimization** - Meta tags, sitemap, structured data
+- **Performance Tracking** - Page speed, user engagement, conversion rates
+- **Business Intelligence** - Revenue analytics, user behavior analysis
+- **Reporting System** - Automated reports, custom dashboards
 
 ## 🏛️ Kiến Trúc Hệ Thống
 
-### 📋 Phân Quyền Người Dùng
+### 📋 Mô Hình Phân Quyền Chi Tiết
 
-| Cấp độ | Quyền hạn | Mô tả |
-|--------|-----------|-------|
-| **👑 Admin** | Toàn quyền | Quản lý hệ thống, server, tất cả nội dung và người dùng |
-| **🛡️ Moderator** | Quản lý nội dung | Kiểm duyệt bài viết, quản lý người dùng (trừ admin) |
-| **⭐ Senior** | Thành viên cao cấp | Đăng bài, bình luận, tin nhắn, báo cáo |
-| **👤 Member** | Thành viên cơ bản | Đăng bài, bình luận, tin nhắn |
-| **👁️ Guest** | Chỉ xem | Xem nội dung công khai, không tương tác |
+#### 🏢 **System Management (Quản Lý Hệ Thống)**
 
-### 🔑 Hệ Thống Xác Thực
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| **👑 Super Admin** | Full System Access | Toàn quyền hệ thống, server management, database access |
+| **🔧 System Admin** | System Configuration | Cấu hình hệ thống, user management, security settings |
+| **📝 Content Admin** | Content Management | Quản lý toàn bộ nội dung, moderation, SEO settings |
 
-- **📧 Email truyền thống** - Đăng ký với email/username, xác thực email bắt buộc
-- **🌐 Social Login** - Google, Facebook với auto-sync tài khoản
-- **🔒 Bảo mật 2FA** - Xác thực 2 lớp với Google Authenticator
-- **🔗 Liên kết tài khoản** - Một người dùng có thể đăng nhập bằng nhiều phương thức
+#### 🛡️ **Community Management (Quản Lý Cộng Đồng)**
+
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| **📋 Content Moderator** | Content Moderation | Kiểm duyệt bài viết, comments, media uploads |
+| **🏪 Marketplace Moderator** | Marketplace Management | Quản lý sản phẩm, sellers, transactions |
+| **👥 Community Moderator** | User Management | Quản lý thành viên, warnings, bans |
+
+#### 👤 **Community Members (Thành Viên Cộng Đồng)**
+
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| **⭐ Senior Member** | Advanced Features | Full forum access, private messaging, file uploads |
+| **👤 Member** | Basic Features | Post threads, comments, basic messaging |
+| **👁️ Guest** | Read Only | Xem nội dung công khai, không tương tác |
+| **🎓 Student** | Educational Access | Student-specific features, learning resources |
+
+#### 🏭 **Business Partners (Đối Tác Kinh Doanh)**
+
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| **🏭 Manufacturer** | Technical Sales | Bán thông tin kỹ thuật, designs, technical data |
+| **📦 Supplier** | Product Sales | Bán sản phẩm vật lý, parts, materials |
+| **🏷️ Brand** | Marketing Access | View-only access, promotion, brand visibility |
+| **✅ Verified Partner** | Premium Features | Enhanced business tools, priority support |
+
+#### 🔐 **Permission Matrix**
+
+| Feature | Guest | Member | Senior | Moderator | Admin |
+|---------|-------|--------|--------|-----------|-------|
+| View Public Content | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Create Threads | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Upload Files | ❌ | ❌ | ✅ | ✅ | ✅ |
+| Private Messaging | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Moderate Content | ❌ | ❌ | ❌ | ✅ | ✅ |
+| User Management | ❌ | ❌ | ❌ | ✅ | ✅ |
+| System Settings | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Marketplace Access | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Business Tools | ❌ | ❌ | ❌ | ✅* | ✅ |
+
+*Business roles only
+
+### 🔑 Hệ Thống Xác Thực & Bảo Mật
+
+#### 🔐 **Authentication Methods**
+- **📧 Email Authentication** - Traditional email/password với email verification
+- **🌐 Social Login** - Google OAuth 2.0, Facebook Login với auto-account linking
+- **🔒 Two-Factor Authentication** - TOTP với Google Authenticator, Authy support
+- **🔗 Account Linking** - Multiple login methods per user account
+- **🎫 Remember Me** - Secure persistent login với encrypted tokens
+
+#### 🛡️ **Security Features**
+- **🚫 Rate Limiting** - API rate limiting, login attempt protection
+- **🌐 IP Whitelisting** - Admin IP restrictions, geo-blocking support
+- **🔍 Content Filtering** - XSS protection, SQL injection prevention
+- **📊 Audit Logging** - Comprehensive activity logs, security event tracking
+- **🔐 Session Security** - Secure session management, automatic timeout
+- **🛡️ CSRF Protection** - Cross-site request forgery protection
+- **🔒 Password Security** - Strong password requirements, breach detection
+
+#### 🏪 **Marketplace Security**
+- **💳 Payment Security** - PCI DSS compliance, encrypted transactions
+- **🔍 Seller Verification** - KYC/KYB verification for business accounts
+- **⭐ Rating System** - Buyer/seller ratings, fraud detection
+- **🛡️ Escrow System** - Secure payment holding, dispute resolution
+- **📋 Transaction Monitoring** - Real-time fraud detection, suspicious activity alerts
+
+## 🏪 Marketplace & Business Model
+
+### 💼 **B2B2C Marketplace Platform**
+
+MechaMap Marketplace là nền tảng thương mại điện tử B2B2C chuyên biệt cho ngành cơ khí, kết nối:
+
+#### 🏭 **Manufacturers (Nhà Sản Xuất)**
+- **Technical Data Sales** - Bán thông tin kỹ thuật, specifications, design data
+- **CAD File Licensing** - Licensing 3D models, technical drawings
+- **Engineering Services** - Consulting, custom design, technical support
+- **Revenue Model** - Commission 5-8% + monthly subscription $99-299
+
+#### 📦 **Suppliers (Nhà Cung Cấp)**
+- **Physical Products** - Parts, materials, tools, equipment
+- **Inventory Management** - Stock tracking, automated reordering
+- **Logistics Integration** - Shipping, tracking, delivery management
+- **Revenue Model** - Commission 3-5% + listing fees $5-50/product
+
+#### 🏷️ **Brands (Thương Hiệu)**
+- **Brand Visibility** - Company profiles, product showcases
+- **Marketing Tools** - Sponsored content, banner ads, featured listings
+- **Lead Generation** - Contact forms, inquiry management
+- **Revenue Model** - Advertising fees $500-5000/month + premium features
+
+#### 💰 **Revenue Streams**
+1. **Transaction Commissions** - 3-8% per sale based on category
+2. **Subscription Fees** - $99-299/month for business accounts
+3. **Advertising Revenue** - $500-5000/month for brand promotion
+4. **Premium Features** - Enhanced analytics, priority support
+5. **Listing Fees** - $5-50 per product listing
+6. **Verification Fees** - $100-500 for business verification
+
+### 🎯 **Target Market**
+
+#### 🏢 **Primary Users**
+- **Mechanical Engineers** - Design, analysis, project management
+- **Manufacturing Companies** - Production, quality control, supply chain
+- **Engineering Students** - Learning resources, project collaboration
+- **Technical Professionals** - R&D, consulting, freelancing
+
+#### 🌍 **Geographic Focus**
+- **Primary**: Vietnam, Southeast Asia
+- **Secondary**: Asia-Pacific region
+- **Future**: Global expansion with localized content
+
+#### 📊 **Market Size**
+- **Vietnam Manufacturing**: $200B+ industry
+- **Engineering Professionals**: 500K+ engineers
+- **SME Manufacturers**: 50K+ companies
+- **Growth Rate**: 8-12% annually
 
 ## ⚙️ Admin Dashboard - Tổng Quan
 
-Hệ thống quản trị hoàn chỉnh với **11/16 module** đã triển khai (68.75% hoàn thành):
+Hệ thống quản trị toàn diện với **13/16 module** đã triển khai (81.25% hoàn thành):
 
-### ✅ Module Đã Hoàn Thành
+### ✅ **Core Modules (Hoàn Thành)**
 
-| Module | Tính năng | Số Settings |
-|--------|-----------|-------------|
-| **🏢 General** | Logo, favicon, maintenance, site info | 18 |
-| **🏪 Company** | Thông tin công ty, địa chỉ, liên hệ | 10 |
-| **📞 Contact** | Form liên hệ, thông tin hỗ trợ | 7 |
-| **📱 Social** | Facebook, Twitter, Instagram, YouTube | 8 |
-| **🔌 API** | Google APIs, Facebook, reCaptcha | 6 |
-| **©️ Copyright** | Thông tin bản quyền, footer | 3 |
-| **💬 Forum** | Diễn đàn, polls, file attachments | 14 |
-| **👥 User** | Đăng ký, profile, avatar, permissions | 12 |
-| **📧 Email** | SMTP config, templates, test connection | 7 |
-| **🛡️ Security** | 2FA, rate limiting, IP whitelist | 11 |
-| **📚 Wiki** | Wiki system, versioning, file uploads | 9 |
+| Module | Features | Settings | Status |
+|--------|----------|----------|--------|
+| **🏢 General** | Logo, favicon, maintenance, site info | 18 | ✅ Complete |
+| **🏪 Company** | Company info, address, contact details | 10 | ✅ Complete |
+| **📞 Contact** | Contact forms, support information | 7 | ✅ Complete |
+| **📱 Social** | Social media integration | 8 | ✅ Complete |
+| **🔌 API** | Google APIs, Facebook, reCaptcha | 6 | ✅ Complete |
+| **©️ Copyright** | Copyright info, footer content | 3 | ✅ Complete |
+| **💬 Forum** | Forum settings, polls, attachments | 14 | ✅ Complete |
+| **👥 User** | Registration, profiles, permissions | 12 | ✅ Complete |
+| **📧 Email** | SMTP config, templates, testing | 7 | ✅ Complete |
+| **🛡️ Security** | 2FA, rate limiting, IP whitelist | 11 | ✅ Complete |
+| **📚 Wiki** | Wiki system, versioning, uploads | 9 | ✅ Complete |
 
-### 🚧 Module Đang Phát Triển
+### 🚀 **Advanced Modules (Hoàn Thành)**
 
-- **🎯 SEO** - Meta tags, sitemap, robots.txt (6 settings)
-- **🏆 Showcase** - Project showcase, portfolios (14 settings)  
-- **🔍 Search** - Search engine, indexing (11 settings)
-- **🔔 Alerts** - Notification system (7 settings)
-- **💌 Messages** - Private messaging system (10 settings)
+| Module | Features | Settings | Status |
+|--------|----------|----------|--------|
+| **🎯 SEO** | Meta tags, sitemap, robots.txt | 6 | ✅ Complete |
+| **🌐 Localization** | Multi-language, translations | 8 | ✅ Complete |
+
+### 🚧 **Modules Đang Phát Triển**
+
+| Module | Features | Priority | ETA |
+|--------|----------|----------|-----|
+| **🏪 Marketplace** | Product management, orders, payments | High | 4 weeks |
+| **🔔 Notifications** | Real-time alerts, email notifications | Medium | 2 weeks |
+| **💌 Messaging** | Private messaging, chat system | Medium | 3 weeks |
+
+### 📊 **Admin Dashboard Features**
+
+#### 🎛️ **Management Interfaces**
+- **User Management** - CRUD operations, role assignment, bulk actions
+- **Content Moderation** - Post approval, comment management, media review
+- **Marketplace Admin** - Product listings, seller management, order tracking
+- **Analytics Dashboard** - User activity, revenue tracking, performance metrics
+- **System Monitoring** - Server health, error logs, performance alerts
+
+#### 🔧 **Administrative Tools**
+- **Bulk Operations** - Mass user import/export, content migration
+- **Backup Management** - Automated backups, restore functionality
+- **Cache Management** - Redis cache control, performance optimization
+- **Log Viewer** - System logs, error tracking, audit trails
+- **Database Tools** - Query builder, migration management
+
+## 🏗️ Technical Architecture
+
+### 🔧 **Backend Stack**
+- **Framework**: Laravel 11 (PHP 8.2+)
+- **Database**: MySQL 8.0+ / PostgreSQL 13+
+- **Cache**: Redis 6.0+ (sessions, cache, queues)
+- **Search**: Elasticsearch 8.0+ (full-text search)
+- **Storage**: Local / AWS S3 / DigitalOcean Spaces
+- **Queue**: Redis / Database / SQS
+
+### 🎨 **Frontend Stack**
+- **CSS Framework**: Bootstrap 5.3+
+- **Icons**: Font Awesome 6.0+
+- **JavaScript**: Vanilla JS (no framework dependencies)
+- **Build Tools**: Laravel Mix / Vite
+- **Image Processing**: Intervention Image
+- **File Uploads**: Dropzone.js
+
+### 🔐 **Security & Performance**
+- **Authentication**: Laravel Sanctum + Social Login
+- **Authorization**: Role-based permissions (Spatie)
+- **Rate Limiting**: Laravel built-in + Redis
+- **CSRF Protection**: Laravel CSRF tokens
+- **XSS Protection**: HTML Purifier
+- **File Security**: Virus scanning, type validation
+- **Performance**: Opcache, Redis caching, CDN ready
+
+### 🌐 **Infrastructure**
+- **Web Server**: Nginx / Apache
+- **PHP**: PHP-FPM 8.2+
+- **SSL**: Let's Encrypt / Custom certificates
+- **Monitoring**: Laravel Telescope, Horizon
+- **Logging**: Laravel Log, Monolog
+- **Backup**: Automated database + file backups
+
+### 📱 **API Architecture**
+- **REST API**: Laravel API Resources
+- **Authentication**: Sanctum tokens
+- **Rate Limiting**: Per-user, per-endpoint
+- **Documentation**: OpenAPI 3.0 specification
+- **Versioning**: URL-based versioning (/api/v1/)
+- **Response Format**: JSON with standardized structure
+
+### 🔄 **Development Workflow**
+- **Version Control**: Git with GitFlow
+- **Code Quality**: PHP CS Fixer, PHPStan, Laravel Pint
+- **Testing**: PHPUnit, Pest, Feature tests
+- **CI/CD**: GitHub Actions / GitLab CI
+- **Deployment**: Zero-downtime deployment scripts
+- **Environment**: Docker support for development
 
 ## 🚀 Cài Đặt Nhanh
 
 ### 📋 Yêu Cầu Hệ Thống
 
 - **PHP** ≥ 8.2 với extensions: OpenSSL, PDO, Mbstring, Tokenizer, XML, JSON, Ctype, BCMath, GD
-- **MySQL** ≥ 8.0 hoặc **PostgreSQL** ≥ 13  
+- **MySQL** ≥ 8.0 hoặc **PostgreSQL** ≥ 13
 - **Composer** ≥ 2.0
 - **Node.js** ≥ 18.0 & **NPM** ≥ 9.0
 - **Redis** (khuyến nghị cho cache & sessions)
@@ -148,7 +370,7 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://127.0.0.1:8000/auth/google/callback
 
-# Facebook OAuth  
+# Facebook OAuth
 FACEBOOK_CLIENT_ID=your-facebook-client-id
 FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
 FACEBOOK_REDIRECT_URI=http://127.0.0.1:8000/auth/facebook/callback
@@ -211,7 +433,7 @@ docker-compose up -d
 mechamap_backend/
 ├── 📁 app/                    # Core application
 │   ├── Http/Controllers/      # Controllers (Web, API, Admin)
-│   ├── Models/               # Eloquent models  
+│   ├── Models/               # Eloquent models
 │   ├── Services/             # Business logic
 │   ├── Helpers/              # Helper functions
 │   └── Policies/             # Authorization policies
@@ -259,37 +481,103 @@ mechamap_backend/
 
 ## 🛠️ API Documentation
 
-### 🔗 Endpoints Chính
+### 🔗 **Core API Endpoints**
 
-| Method | Endpoint | Mô tả | Auth |
-|--------|----------|-------|------|
-| `GET` | `/api/threads` | Danh sách bài viết | ❌ |
-| `POST` | `/api/threads` | Tạo bài viết mới | ✅ |
-| `GET` | `/api/threads/{id}` | Chi tiết bài viết | ❌ |
-| `PUT` | `/api/threads/{id}` | Cập nhật bài viết | ✅ |
-| `DELETE` | `/api/threads/{id}` | Xóa bài viết | ✅ |
-| `POST` | `/api/auth/login` | Đăng nhập | ❌ |
-| `POST` | `/api/auth/register` | Đăng ký | ❌ |
-| `POST` | `/api/auth/logout` | Đăng xuất | ✅ |
+#### 🔐 **Authentication**
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `POST` | `/api/auth/login` | User login | ❌ |
+| `POST` | `/api/auth/register` | User registration | ❌ |
+| `POST` | `/api/auth/logout` | User logout | ✅ |
+| `POST` | `/api/auth/refresh` | Refresh token | ✅ |
+| `GET` | `/api/auth/me` | Current user info | ✅ |
+| `POST` | `/api/auth/forgot-password` | Password reset | ❌ |
 
-### 📝 Response Format
+#### 💬 **Forum & Content**
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `GET` | `/api/threads` | List threads | ❌ |
+| `POST` | `/api/threads` | Create thread | ✅ |
+| `GET` | `/api/threads/{id}` | Thread details | ❌ |
+| `PUT` | `/api/threads/{id}` | Update thread | ✅ |
+| `DELETE` | `/api/threads/{id}` | Delete thread | ✅ |
+| `POST` | `/api/threads/{id}/comments` | Add comment | ✅ |
+| `GET` | `/api/categories` | List categories | ❌ |
 
+#### 🏪 **Marketplace**
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `GET` | `/api/products` | List products | ❌ |
+| `POST` | `/api/products` | Create product | ✅ |
+| `GET` | `/api/products/{id}` | Product details | ❌ |
+| `PUT` | `/api/products/{id}` | Update product | ✅ |
+| `DELETE` | `/api/products/{id}` | Delete product | ✅ |
+| `POST` | `/api/orders` | Create order | ✅ |
+| `GET` | `/api/orders` | List user orders | ✅ |
+
+#### 👥 **User Management**
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `GET` | `/api/users` | List users | ✅ |
+| `GET` | `/api/users/{id}` | User profile | ❌ |
+| `PUT` | `/api/users/{id}` | Update profile | ✅ |
+| `POST` | `/api/users/{id}/follow` | Follow user | ✅ |
+| `DELETE` | `/api/users/{id}/follow` | Unfollow user | ✅ |
+
+### 📝 **Response Format**
+
+#### ✅ **Success Response**
 ```json
 {
   "success": true,
   "data": {
     "id": 1,
-    "title": "Bài viết mẫu",
-    "content": "Nội dung bài viết...",
+    "title": "Sample Thread",
+    "content": "Thread content...",
     "author": {
       "id": 1,
       "username": "admin",
-      "role": "admin"
+      "role": "admin",
+      "avatar": "https://example.com/avatar.jpg"
+    },
+    "created_at": "2025-06-01T14:30:00Z",
+    "updated_at": "2025-06-01T14:30:00Z"
+  },
+  "message": "Success",
+  "meta": {
+    "current_page": 1,
+    "total": 100,
+    "per_page": 15
+  }
+}
+```
+
+#### ❌ **Error Response**
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "The given data was invalid.",
+    "details": {
+      "title": ["The title field is required."],
+      "content": ["The content field is required."]
     }
   },
-  "message": "Thành công",
   "timestamp": "2025-06-01T14:30:00Z"
 }
+```
+
+### 🔑 **Authentication**
+```bash
+# Get access token
+curl -X POST /api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"password"}'
+
+# Use token in requests
+curl -X GET /api/threads \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
 ## 🧪 Testing & Quality
@@ -300,7 +588,7 @@ mechamap_backend/
 # PHP CS Fixer - Format code
 ./vendor/bin/php-cs-fixer fix
 
-# PHPStan - Static analysis  
+# PHPStan - Static analysis
 ./vendor/bin/phpstan analyse
 
 # Pest/PHPUnit - Testing
@@ -319,7 +607,7 @@ php artisan test
 
 ## 🤝 Đóng Góp
 
-Chúng tôi rất hoan nghênh sự đóng góp từ cộng đồng! 
+Chúng tôi rất hoan nghênh sự đóng góp từ cộng đồng!
 
 ### 🚀 Cách Đóng Góp
 
@@ -351,6 +639,53 @@ Khi báo cáo lỗi, vui lòng bao gồm:
 - Mô tả **chi tiết** tính năng đề xuất
 - Giải thích **lý do** cần tính năng này
 - Đề xuất **cách triển khai** (nếu có)
+
+## 🗺️ Roadmap & Future Plans
+
+### 🎯 **Phase 1: Core Platform (Completed)**
+- ✅ User authentication & authorization system
+- ✅ Forum & community features
+- ✅ Admin dashboard (13/16 modules)
+- ✅ Multi-language support (Vietnamese/English)
+- ✅ Security & performance optimization
+- ✅ Basic marketplace structure
+
+### 🚀 **Phase 2: Marketplace Development (In Progress)**
+- 🔄 **Product Management** - Advanced product catalog, categories
+- 🔄 **Order System** - Shopping cart, checkout, payment integration
+- 🔄 **Seller Dashboard** - Vendor management, analytics
+- 🔄 **Payment Gateway** - VNPay, PayPal, Stripe integration
+- ⏳ **Shipping Integration** - GHN, Viettel Post, J&T Express
+- ⏳ **Review System** - Product reviews, seller ratings
+
+### 🌟 **Phase 3: Advanced Features (Q2 2025)**
+- ⏳ **Real-time Chat** - WebSocket-based messaging
+- ⏳ **Video Conferencing** - Integrated video calls for consultations
+- ⏳ **Mobile App** - React Native / Flutter mobile application
+- ⏳ **AI Integration** - Smart recommendations, content moderation
+- ⏳ **Advanced Analytics** - Business intelligence, predictive analytics
+- ⏳ **API Marketplace** - Third-party integrations, developer portal
+
+### 🌍 **Phase 4: Global Expansion (Q3-Q4 2025)**
+- ⏳ **Multi-currency Support** - USD, EUR, regional currencies
+- ⏳ **International Shipping** - Global logistics integration
+- ⏳ **Localization** - Additional languages (Chinese, Japanese, Korean)
+- ⏳ **Regional Compliance** - GDPR, local regulations
+- ⏳ **Partner Network** - International distributor network
+- ⏳ **White-label Solution** - Customizable platform for enterprises
+
+### 📈 **Business Milestones**
+- **2025 Q1**: 10,000+ registered users, 1,000+ products
+- **2025 Q2**: $100K+ monthly GMV, 100+ verified sellers
+- **2025 Q3**: Break-even point, international expansion
+- **2025 Q4**: $1M+ annual revenue, mobile app launch
+
+### 🔮 **Future Vision**
+- **Industry 4.0 Integration** - IoT, smart manufacturing
+- **Blockchain Integration** - Supply chain transparency, smart contracts
+- **AR/VR Features** - 3D product visualization, virtual showrooms
+- **Machine Learning** - Predictive maintenance, demand forecasting
+- **Sustainability Focus** - Carbon footprint tracking, green manufacturing
 
 ## 📊 Thống Kê Dự Án
 
