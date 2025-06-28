@@ -1,15 +1,29 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý danh mục bài viết')
 
-@section('header', 'Quản lý danh mục bài viết')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý danh mục bài viết</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý danh mục bài viết</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.page-categories.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo danh mục mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo danh mục mới') }}
     </a>
     <a href="{{ route('admin.pages.index') }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-file-earmark-text me-1"></i> {{ __('Quản lý bài viết') }}
+        <i class="fas fa-file-text me-1"></i> {{ __('Quản lý bài viết') }}
     </a>
 @endsection
 
@@ -38,7 +52,7 @@
                                 <td>{{ $category->id }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-grip-vertical me-2 text-muted handle" style="cursor: move;"></i>
+                                        <i class="fas fa-grip-vertical me-2 text-muted handle" style="cursor: move;"></i>
                                         <span>{{ $category->name }}</span>
                                     </div>
                                 </td>
@@ -52,10 +66,10 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.page-categories.edit', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}" title="{{ __('Xóa') }}" {{ $category->pages_count > 0 ? 'disabled' : '' }}>
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 

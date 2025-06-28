@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Sitemap')
-@section('header', 'Quản lý Sitemap')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý Sitemap</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý Sitemap</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -19,19 +33,19 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-fill me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action active">
-                            <i class="bi bi-diagram-3 me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
                         </a>
                     </div>
                 </div>
@@ -63,13 +77,13 @@
                     <form action="{{ route('admin.seo.generate-sitemap') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> {{ __('Tạo Sitemap mới') }}
+                            <i class="fas fa-plus-circle me-1"></i> {{ __('Tạo Sitemap mới') }}
                         </button>
                     </form>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <i class="fas fa-info-circle-fill me-2"></i>
                         {{ __('Sitemap sẽ bao gồm: trang chủ, các trang chính, diễn đàn, chủ đề, và hồ sơ người dùng.') }}
                     </div>
                     
@@ -89,7 +103,7 @@
                                         <tr>
                                             <td>
                                                 <a href="{{ $file['url'] }}" target="_blank" class="text-decoration-none">
-                                                    <i class="bi bi-file-earmark-code me-2"></i>{{ $file['name'] }}
+                                                    <i class="fas fa-file-code me-2"></i>{{ $file['name'] }}
                                                 </a>
                                             </td>
                                             <td>{{ number_format($file['size'] / 1024, 2) }} KB</td>
@@ -97,10 +111,10 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="{{ $file['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Xem') }}">
-                                                        <i class="bi bi-eye"></i>
+                                                        <i class="fas fa-eye"></i>
                                                     </a>
                                                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-filename="{{ $file['name'] }}" title="{{ __('Xóa') }}">
-                                                        <i class="bi bi-trash"></i>
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
                                             </td>
@@ -111,7 +125,7 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-exclamation-circle text-muted fs-1 d-block mb-3"></i>
+                            <i class="fas fa-exclamation-circle text-muted fs-1 d-block mb-3"></i>
                             <p class="text-muted mb-0">{{ __('Chưa có file sitemap nào. Hãy tạo sitemap mới.') }}</p>
                         </div>
                     @endif
@@ -128,13 +142,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-google me-2"></i>{{ __('Google Search Console') }}
+                                        <i class="fab fa-google me-2"></i>{{ __('Google Search Console') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Gửi sitemap của bạn đến Google Search Console để giúp Google lập chỉ mục trang web của bạn hiệu quả hơn.') }}
                                     </p>
                                     <a href="https://search.google.com/search-console" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở Google Search Console') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Google Search Console') }}
                                     </a>
                                 </div>
                             </div>
@@ -144,13 +158,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-bing me-2"></i>{{ __('Bing Webmaster Tools') }}
+                                        <i class="fas fa-search me-2"></i>{{ __('Bing Webmaster Tools') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Gửi sitemap của bạn đến Bing Webmaster Tools để giúp Bing lập chỉ mục trang web của bạn hiệu quả hơn.') }}
                                     </p>
                                     <a href="https://www.bing.com/webmasters/about" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở Bing Webmaster Tools') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Bing Webmaster Tools') }}
                                     </a>
                                 </div>
                             </div>
@@ -176,7 +190,7 @@
                     <div class="modal-body">
                         <p>{{ __('Bạn có chắc chắn muốn xóa file sitemap này?') }}</p>
                         <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <i class="fas fa-exclamation-triangle-fill me-2"></i>
                             {{ __('Lưu ý: Việc xóa sitemap có thể ảnh hưởng đến khả năng lập chỉ mục của các công cụ tìm kiếm.') }}
                         </div>
                     </div>

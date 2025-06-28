@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -104,12 +104,27 @@ class Media extends Model
         'user_id',
         'file_name',
         'file_path',
-        'file_type',
+        'disk',
+        'mime_type',
         'file_size',
+        'file_extension',
+        'file_category',
         'title',
         'description',
         'mediable_id',
         'mediable_type',
+        'cad_metadata',
+        'cad_software',
+        'cad_version',
+        'processing_status',
+        'is_public',
+        'is_approved',
+        'virus_scanned',
+        'download_count',
+        'thumbnail_path',
+        'width',
+        'height',
+        'exif_data',
     ];
 
     /**
@@ -128,13 +143,7 @@ class Media extends Model
         return $this->morphTo();
     }
 
-    /**
-     * Get the thread that owns the media.
-     */
-    public function thread(): BelongsTo
-    {
-        return $this->belongsTo(Thread::class);
-    }
+
 
     /**
      * Get the URL for the media file.

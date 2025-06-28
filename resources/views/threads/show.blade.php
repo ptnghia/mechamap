@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="container2">
+<div class="container2" data-thread-id="{{ $thread->id }}" data-forum-id="{{ $thread->forum_id }}">
 
 
 
@@ -118,7 +118,7 @@
             <div class="thread-images mt-3">
                 <div class="row">
                     @foreach($thread->media as $media)
-                    @if(str_starts_with($media->file_type ?? '', 'image/'))
+                    @if(str_starts_with($media->mime_type ?? '', 'image/'))
                     <div class="col-md-4 mb-3">
                         <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
                             data-lightbox="thread-images">
@@ -142,7 +142,7 @@
                         class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
                         <i class="bi bi-hand-thumbs-up"></i>
                         Thích
-                        <span class="badge bg-secondary">{{ $thread->likes->count() }}</span>
+                        <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
                     </button>
                 </form>
 

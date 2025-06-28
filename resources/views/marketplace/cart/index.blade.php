@@ -1,0 +1,656 @@
+@extends('layouts.unified')
+
+@section('title', 'Shopping Cart - MechaMap')
+
+@section('content')
+<div class="min-vh-100 bg-light">
+    <!-- Breadcrumb -->
+    <div class="bg-white border-bottom">
+        <div class="container-fluid py-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('home') }}" class="text-decoration-none">
+                            <i class="bi bi-house me-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">Marketplace</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-cart3 me-2"></i>
+                            Shopping Cart
+                            @if(!$cart->isEmpty())
+                                <span class="badge bg-primary ms-2">{{ $cart->total_items }} items</span>
+                            @endif
+                        </h5>
+                        @if(!$cart->isEmpty())
+                            <div class="d-flex gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                    <label class="form-check-label" for="selectAll">
+                                        Select All
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-outline-warning btn-sm" onclick="removeSelected()" id="removeSelectedBtn" style="display: none;">
+                                    <i class="bi bi-trash me-1"></i>
+                                    Remove Selected
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearCart()">
+                                    <i class="bi bi-trash me-1"></i>
+                                    Clear Cart
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="card-body">
+                        @if($cart->isEmpty())
+                            <!-- Empty Cart State -->
+                            <div class="text-center py-5">
+                                <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
+                                <h4 class="mt-3">Your cart is empty</h4>
+                                <p class="text-muted">Add some products to get started</p>
+                                <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Continue Shopping
+                                </a>
+                            </div>
+                        @else
+                            <!-- Cart Items -->
+                            <div id="cartItems">
+                                @foreach($cart->items as $item)
+                                    <div class="cart-item border-bottom py-3" data-item-id="{{ $item->id }}">
+                                        <div class="row align-items-center">
+                                            <!-- Checkbox -->
+                                            <div class="col-auto">
+                                                <div class="form-check">
+                                                    <input class="form-check-input item-checkbox" type="checkbox" value="{{ $item->id }}" onchange="updateSelectedItems()">
+                                                </div>
+                                            </div>
+
+                                            <!-- Product Image -->
+                                            <div class="col-md-2 col-3">
+                                                @if($item->product_image)
+                                                    <img src="{{ $item->product_image }}" class="img-fluid rounded" alt="{{ $item->product_name }}">
+                                                @else
+                                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
+                                                        <i class="bi bi-image text-muted"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <!-- Product Info -->
+                                            <div class="col-md-4 col-9">
+                                                <h6 class="mb-1">
+                                                    @if($item->product)
+                                                        <a href="{{ route('marketplace.products.show', $item->product->slug) }}" class="text-decoration-none">
+                                                            {{ $item->product_name }}
+                                                        </a>
+                                                    @else
+                                                        {{ $item->product_name }}
+                                                        <small class="text-danger">(Product no longer available)</small>
+                                                    @endif
+                                                </h6>
+                                                @if($item->product_sku)
+                                                    <small class="text-muted">SKU: {{ $item->product_sku }}</small>
+                                                @endif
+                                                @if($item->product && $item->product->seller)
+                                                    <div class="small text-muted">
+                                                        by {{ $item->product->seller->business_name ?? $item->product->seller->user->name }}
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <!-- Price -->
+                                            <div class="col-md-2 col-6">
+                                                @if($item->is_on_sale)
+                                                    <div class="text-danger fw-bold">${{ number_format($item->sale_price, 2) }}</div>
+                                                    <div class="text-muted text-decoration-line-through small">${{ number_format($item->unit_price, 2) }}</div>
+                                                    <div class="text-success small">Save ${{ number_format($item->savings, 2) }}</div>
+                                                @else
+                                                    <div class="fw-bold">${{ number_format($item->unit_price, 2) }}</div>
+                                                @endif
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-2 col-6">
+                                                <div class="input-group input-group-sm">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                            onclick="updateQuantity({{ $item->id }}, {{ $item->quantity - 1 }})"
+                                                            {{ $item->quantity <= 1 ? 'disabled' : '' }}>
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                    <input type="number" class="form-control text-center quantity-input"
+                                                           value="{{ $item->quantity }}"
+                                                           min="1"
+                                                           max="{{ $item->product && $item->product->manage_stock ? $item->product->stock_quantity : 100 }}"
+                                                           data-item-id="{{ $item->id }}"
+                                                           onchange="updateQuantity({{ $item->id }}, this.value)">
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                            onclick="updateQuantity({{ $item->id }}, {{ $item->quantity + 1 }})"
+                                                            {{ $item->product && $item->product->manage_stock && $item->quantity >= $item->product->stock_quantity ? 'disabled' : '' }}>
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </div>
+                                                @if($item->product && $item->product->manage_stock)
+                                                    <small class="text-muted">{{ $item->product->stock_quantity }} available</small>
+                                                @endif
+                                            </div>
+
+                                            <!-- Total & Actions -->
+                                            <div class="col-md-2 col-12 mt-2 mt-md-0">
+                                                <div class="text-center">
+                                                    <div class="fw-bold mb-2">${{ number_format($item->total_price, 2) }}</div>
+                                                    <div class="d-flex flex-column gap-1">
+                                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeItem({{ $item->id }})" title="Remove">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="saveForLater({{ $item->id }})" title="Save for Later">
+                                                            <i class="bi bi-heart"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Continue Shopping -->
+                            <div class="mt-4">
+                                <a href="{{ route('marketplace.products.index') }}" class="btn btn-outline-primary">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Continue Shopping
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            @if(!$cart->isEmpty())
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal ({{ $cart->total_items }} items)</span>
+                                <span>${{ number_format($cart->subtotal, 2) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Shipping</span>
+                                <span>
+                                    @if($cart->shipping_amount > 0)
+                                        ${{ number_format($cart->shipping_amount, 2) }}
+                                    @else
+                                        <span class="text-success">Free</span>
+                                    @endif
+                                </span>
+                            </div>
+
+                            <!-- Shipping Calculator -->
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#shippingCalculator">
+                                    <i class="bi bi-calculator me-1"></i>
+                                    Calculate shipping
+                                </button>
+                                <div class="collapse mt-2" id="shippingCalculator">
+                                    <div class="border rounded p-3">
+                                        <div class="mb-2">
+                                            <label class="form-label small">Country</label>
+                                            <select class="form-select form-select-sm">
+                                                <option value="US">United States</option>
+                                                <option value="VN" selected>Vietnam</option>
+                                                <option value="CA">Canada</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label small">Zip Code</label>
+                                            <input type="text" class="form-control form-control-sm" placeholder="Enter zip code">
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-sm">Calculate</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Tax</span>
+                                <span>${{ number_format($cart->tax_amount, 2) }}</span>
+                            </div>
+                            @if($cart->discount_amount > 0)
+                                <div class="d-flex justify-content-between mb-2 text-success">
+                                    <span>Discount</span>
+                                    <span>-${{ number_format($cart->discount_amount, 2) }}</span>
+                                </div>
+                            @endif
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold h5">
+                                <span>Total</span>
+                                <span>${{ number_format($cart->total_amount, 2) }}</span>
+                            </div>
+
+                            <!-- Coupon Code -->
+                            <div class="mt-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Coupon code" id="couponCode">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Apply</button>
+                                </div>
+                            </div>
+
+                            <!-- Checkout Button -->
+                            <div class="d-grid mt-4">
+                                <button type="button" class="btn btn-primary btn-lg" onclick="proceedToCheckout()">
+                                    <i class="bi bi-credit-card me-2"></i>
+                                    Proceed to Checkout
+                                </button>
+                            </div>
+
+                            <!-- Security Info -->
+                            <div class="mt-3 text-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-shield-check me-1"></i>
+                                    Secure checkout with SSL encryption
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Info -->
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <i class="bi bi-truck me-2"></i>
+                                Shipping Information
+                            </h6>
+                            <ul class="list-unstyled mb-0 small">
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    Free shipping on orders over $100
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    Standard delivery: 3-5 business days
+                                </li>
+                                <li class="mb-1">
+                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    Express delivery available
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        <!-- Recently Viewed Products -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-clock-history me-2"></i>
+                            Recently Viewed Products
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="recentlyViewedProducts">
+                            <div class="col-12 text-center text-muted py-3">
+                                <i class="bi bi-eye" style="font-size: 2rem;"></i>
+                                <p class="mb-0 mt-2">No recently viewed products</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommended Products -->
+        @if(!$cart->isEmpty())
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-lightbulb me-2"></i>
+                            You Might Also Like
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="recommendedProducts">
+                            <div class="col-12 text-center text-muted py-3">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mb-0 mt-2">Loading recommendations...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none" style="background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('styles')
+<style>
+.cart-item {
+    transition: background-color 0.2s ease;
+}
+
+.cart-item:hover {
+    background-color: #f8f9fa;
+}
+
+.input-group-sm .form-control {
+    max-width: 60px;
+}
+
+@media (max-width: 768px) {
+    .cart-item .row > div {
+        margin-bottom: 0.5rem;
+    }
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+// Cart functionality
+function updateQuantity(itemId, quantity) {
+    if (quantity < 0) return;
+
+    showLoading(true);
+
+    fetch(`/marketplace/cart/update/${itemId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (quantity === 0) {
+                // Remove item from DOM
+                document.querySelector(`[data-item-id="${itemId}"]`).remove();
+            }
+            // Reload page to update totals
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update cart');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
+}
+
+function removeItem(itemId) {
+    if (!confirm('Are you sure you want to remove this item?')) return;
+
+    showLoading(true);
+
+    fetch(`/marketplace/cart/remove/${itemId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to remove item');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
+}
+
+function clearCart() {
+    if (!confirm('Are you sure you want to clear your entire cart?')) return;
+
+    showLoading(true);
+
+    fetch('/marketplace/cart/clear', {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to clear cart');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
+}
+
+function applyCoupon() {
+    const couponCode = document.getElementById('couponCode').value.trim();
+    if (!couponCode) {
+        alert('Please enter a coupon code');
+        return;
+    }
+
+    showLoading(true);
+
+    fetch('/marketplace/cart/coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ coupon_code: couponCode })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to apply coupon');
+    })
+    .finally(() => {
+        showLoading(false);
+    });
+}
+
+function proceedToCheckout() {
+    showLoading(true);
+    window.location.href = '/marketplace/cart/checkout';
+}
+
+function showLoading(show) {
+    const overlay = document.getElementById('loadingOverlay');
+    if (show) {
+        overlay.classList.remove('d-none');
+    } else {
+        overlay.classList.add('d-none');
+    }
+}
+
+// Bulk actions functionality
+function toggleSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+
+    updateSelectedItems();
+}
+
+function updateSelectedItems() {
+    const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+    const removeSelectedBtn = document.getElementById('removeSelectedBtn');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const allCheckboxes = document.querySelectorAll('.item-checkbox');
+
+    // Show/hide remove selected button
+    if (removeSelectedBtn) {
+        removeSelectedBtn.style.display = selectedItems.length > 0 ? 'inline-block' : 'none';
+    }
+
+    // Update select all checkbox state
+    if (selectAllCheckbox && allCheckboxes.length > 0) {
+        if (selectedItems.length === allCheckboxes.length) {
+            selectAllCheckbox.checked = true;
+            selectAllCheckbox.indeterminate = false;
+        } else if (selectedItems.length > 0) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = true;
+        } else {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
+        }
+    }
+}
+
+function removeSelected() {
+    const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+    if (selectedItems.length === 0) {
+        alert('Please select items to remove');
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to remove ${selectedItems.length} selected item(s)?`)) {
+        return;
+    }
+
+    showLoading(true);
+
+    const itemIds = Array.from(selectedItems).map(checkbox => checkbox.value);
+    const promises = itemIds.map(itemId =>
+        fetch(`/marketplace/cart/remove/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+    );
+
+    Promise.all(promises)
+        .then(responses => Promise.all(responses.map(r => r.json())))
+        .then(results => {
+            const successful = results.filter(r => r.success).length;
+            if (successful > 0) {
+                location.reload();
+            } else {
+                alert('Failed to remove selected items');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to remove selected items');
+        })
+        .finally(() => {
+            showLoading(false);
+        });
+}
+
+function saveForLater(itemId) {
+    // TODO: Implement save for later functionality
+    alert('Save for later functionality will be implemented in future updates');
+}
+
+// Auto-save cart changes
+let autoSaveTimeout;
+function autoSaveCart() {
+    clearTimeout(autoSaveTimeout);
+    autoSaveTimeout = setTimeout(() => {
+        // Auto-save cart state to prevent data loss
+        console.log('Auto-saving cart state...');
+    }, 2000);
+}
+
+// Validate cart on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize bulk actions
+    updateSelectedItems();
+
+    // Validate cart
+    fetch('/marketplace/cart/validate', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.has_issues) {
+            let message = 'Cart validation issues found:\n';
+            data.issues.forEach(issue => {
+                message += `- ${issue.product_name}: ${issue.issue}\n`;
+            });
+
+            if (data.has_changes) {
+                message += '\nYour cart has been updated automatically.';
+                setTimeout(() => location.reload(), 2000);
+            }
+
+            alert(message);
+        }
+    })
+    .catch(error => console.error('Cart validation error:', error));
+
+    // Add quantity change listeners for auto-save
+    const quantityInputs = document.querySelectorAll('.quantity-input');
+    quantityInputs.forEach(input => {
+        input.addEventListener('change', autoSaveCart);
+    });
+});
+</script>
+@endpush

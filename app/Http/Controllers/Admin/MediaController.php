@@ -22,56 +22,70 @@ class MediaController extends Controller
     /**
      * Hiển thị danh sách media với phân trang và lọc
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
-        $query = Media::with(['user'])->orderBy('created_at', 'desc');
+        // If AJAX request, return JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            $query = Media::with(['user'])->orderBy('created_at', 'desc');
 
-        // Filter by category
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
-        }
-
-        // Filter by user
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
-
-        // Filter by file type
-        if ($request->has('file_type')) {
-            switch ($request->file_type) {
-                case 'image':
-                    $query->where('mime_type', 'like', 'image/%');
-                    break;
-                case 'document':
-                    $query->whereIn('mime_type', [
-                        'application/pdf',
-                        'application/msword',
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                    ]);
-                    break;
-                case 'cad':
-                    $query->whereIn('mime_type', [
-                        'application/acad',
-                        'application/x-autocad',
-                        'application/step',
-                        'application/iges'
-                    ]);
-                    break;
+            // Filter by category
+            if ($request->has('category')) {
+                $query->where('category', $request->category);
             }
+
+            // Filter by user
+            if ($request->has('user_id')) {
+                $query->where('user_id', $request->user_id);
+            }
+
+            // Filter by file type
+            if ($request->has('file_type')) {
+                switch ($request->file_type) {
+                    case 'image':
+                        $query->where('mime_type', 'like', 'image/%');
+                        break;
+                    case 'document':
+                        $query->whereIn('mime_type', [
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        ]);
+                        break;
+                    case 'cad':
+                        $query->whereIn('mime_type', [
+                            'application/acad',
+                            'application/x-autocad',
+                            'application/step',
+                            'application/iges'
+                        ]);
+                        break;
+                }
+            }
+
+            // Search by filename
+            if ($request->has('search')) {
+                $query->where('file_name', 'like', '%' . $request->search . '%');
+            }
+
+            $media = $query->paginate(20);
+
+            return response()->json([
+                'success' => true,
+                'data' => $media,
+                'message' => 'Danh sách media'
+            ]);
         }
 
-        // Search by filename
-        if ($request->has('search')) {
-            $query->where('file_name', 'like', '%' . $request->search . '%');
-        }
-
+        // For regular web requests, return view
+        $query = Media::with(['user'])->orderBy('created_at', 'desc');
         $media = $query->paginate(20);
 
-        return response()->json([
-            'success' => true,
-            'data' => $media,
-            'message' => 'Danh sách media'
-        ]);
+        // Breadcrumbs
+        $breadcrumbs = [
+            ['title' => 'Quản lý Media', 'url' => route('admin.media.index')]
+        ];
+
+        return view('admin.media.index', compact('media', 'breadcrumbs'));
     }
 
     /**

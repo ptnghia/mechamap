@@ -1,23 +1,37 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thống kê tổng quan')
 
-@section('header', 'Thống kê tổng quan')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thống kê tổng quan</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thống kê tổng quan</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <div class="btn-group">
         <a href="{{ route('admin.statistics.users') }}" class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-people me-1"></i> {{ __('Người dùng') }}
+            <i class="fas fa-users me-1"></i> {{ __('Người dùng') }}
         </a>
         <a href="{{ route('admin.statistics.content') }}" class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-file-text me-1"></i> {{ __('Nội dung') }}
+            <i class="fas fa-file-alt me-1"></i> {{ __('Nội dung') }}
         </a>
         <a href="{{ route('admin.statistics.interactions') }}" class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-graph-up me-1"></i> {{ __('Tương tác') }}
+            <i class="fas fa-chart-line me-1"></i> {{ __('Tương tác') }}
         </a>
     </div>
     <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#exportModal">
-        <i class="bi bi-download me-1"></i> {{ __('Xuất báo cáo') }}
+        <i class="fas fa-download me-1"></i> {{ __('Xuất báo cáo') }}
     </button>
 @endsection
 

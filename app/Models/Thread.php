@@ -438,15 +438,15 @@ class Thread extends Model
     }
 
     /**
-     * Get the media for the thread.
+     * Get all media attached to this thread (polymorphic).
      */
-    public function media(): HasMany
+    public function media(): MorphMany
     {
-        return $this->hasMany(Media::class, 'thread_id');
+        return $this->morphMany(Media::class, 'mediable');
     }
 
     /**
-     * Get all media attached to this thread (polymorphic).
+     * Get all media attached to this thread (polymorphic) - alias for consistency.
      */
     public function attachments(): MorphMany
     {
@@ -458,17 +458,10 @@ class Thread extends Model
      */
     public function getFeaturedImageAttribute(): ?string
     {
-        // Prioritize: Tìm media đầu tiên từ polymorphic attachments
-        $featuredMedia = $this->attachments()
+        // Tìm media đầu tiên từ polymorphic relationship
+        $featuredMedia = $this->media()
             ->where('mime_type', 'like', 'image/%')
             ->first();
-
-        if (!$featuredMedia) {
-            // Fallback: Tìm media đầu tiên từ direct relationship
-            $featuredMedia = $this->media()
-                ->where('mime_type', 'like', 'image/%')
-                ->first();
-        }
 
         if ($featuredMedia) {
             $filePath = $featuredMedia->file_path;

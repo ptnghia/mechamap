@@ -1,178 +1,223 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
-
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="user-authenticated" content="{{ Auth::check() ? 'true' : 'false' }}">
 
-    <!-- SEO Meta Tags -->
-    <title>{{ $title ?? $seo['site_title'] ?? config('app.name') }} - @yield('title', 'Diễn đàn cộng đồng')</title>
-    <meta name="description"
-        content="{{ $description ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
-    <meta name="keywords"
-        content="{{ $keywords ?? $seo['site_keywords'] ?? 'mechamap, diễn đàn, cộng đồng, forum, laravel' }}">
-    <meta name="author" content="MechaMap Team">
-
-    @if(!($seo['allow_indexing'] ?? true))
-    <meta name="robots" content="noindex, nofollow">
-    @endif
-
-    @if(!empty($seo['canonical_url'] ?? ''))
-    <link rel="canonical" href="{{ $seo['canonical_url'] }}">
-    @else
-    <link rel="canonical" href="{{ url()->current() }}">
-    @endif
+    <title>@yield('title', 'MechaMap') - {{ get_site_name() }}</title>
+    <meta name="description" content="@yield('description', 'Cộng đồng Kỹ thuật Cơ khí Việt Nam - Nơi hội tụ tri thức CAD, CAM, CNC và Robot công nghiệp')">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Search CSS -->
-    <link rel="stylesheet" href="{{ asset('css/search.css') }}">
-
-    <!-- Custom Header CSS -->
-    <link rel="stylesheet" href="{{ asset('css/custom-header.css') }}">
-
-    <!-- Auth CSS -->
-    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/main-user.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom Styles -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+
+    <!-- Auth-specific CSS -->
+    <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/views/auth.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/auth-component.css') }}" rel="stylesheet">
+
+    <!-- Shared Components CSS -->
+    <link href="{{ asset('css/buttons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/forms.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/alerts.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/avatar.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom-header.css') }}" rel="stylesheet">
+
+    <!-- Additional Styles -->
     @stack('styles')
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #0dcaf0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            font-family: 'Figtree', sans-serif;
+            background-color: var(--light-color);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        /* Auth specific styles */
+        .auth-container {
+            min-height: calc(100vh - 200px);
+        }
+
+        .auth-card {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .auth-brand-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0b5ed7 100%);
+            position: relative;
+        }
+
+        .auth-brand-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .auth-form-section {
+            background: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Community highlights */
+        .community-card {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Loading animation */
+        .btn .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .auth-card {
+                margin: 1rem;
+            }
+
+            .auth-brand-section {
+                padding: 2rem 1rem !important;
+            }
+
+            .auth-form-section {
+                padding: 2rem 1rem !important;
+            }
+        }
+    </style>
 </head>
 
-<body class="min-vh-100">
-    <div class="d-flex flex-column min-vh-100">
-        @include('layouts.navigation')
+<body>
+    <!-- Header -->
+    <x-unified-header
+        :show-banner="get_setting('show_banner', true)"
+        :is-marketplace="false"
+    />
 
-        <!-- Page Content -->
-        <main class="flex-grow-1 py-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6">
-                        <div class="text-center mb-4">
-                            <a href="{{ route('home') }}" class="logo-link">
-                                <img src="{{ get_logo_url() }}" alt="{{ config('app.name') }}" class="img-fluid"
-                                    style="max-height: 80px;">
-                            </a>
-                        </div>
+    <!-- Main Content -->
+    <main class="auth-container d-flex align-items-center">
+        @yield('content')
+    </main>
 
-                        <div class="card auth-card">
-                            <div class="card-body p-4 p-sm-5">
-                                @yield('content')
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="border-top bg-light py-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <p class="small text-muted mb-0">
-                            {{ get_copyright_info()['text'] }}
-                        </p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="d-flex justify-content-center justify-content-md-end align-items-center">
-                            <!-- Social Media Links -->
-                            @php
-                            $socialLinks = get_social_links();
-                            @endphp
-
-                            @if(!empty($socialLinks['facebook']))
-                            <a href="{{ $socialLinks['facebook'] }}" target="_blank"
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 me-2"
-                                data-bs-toggle="tooltip" title="Facebook">
-                                <i class="bi bi-facebook"></i>
-                            </a>
-                            @endif
-
-                            @if(!empty($socialLinks['twitter']))
-                            <a href="{{ $socialLinks['twitter'] }}" target="_blank"
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 me-2"
-                                data-bs-toggle="tooltip" title="Twitter">
-                                <i class="bi bi-twitter"></i>
-                            </a>
-                            @endif
-
-                            @if(!empty($socialLinks['instagram']))
-                            <a href="{{ $socialLinks['instagram'] }}" target="_blank"
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 me-2"
-                                data-bs-toggle="tooltip" title="Instagram">
-                                <i class="bi bi-instagram"></i>
-                            </a>
-                            @endif
-
-                            @if(!empty($socialLinks['linkedin']))
-                            <a href="{{ $socialLinks['linkedin'] }}" target="_blank"
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 me-2"
-                                data-bs-toggle="tooltip" title="LinkedIn">
-                                <i class="bi bi-linkedin"></i>
-                            </a>
-                            @endif
-
-                            @if(!empty($socialLinks['youtube']))
-                            <a href="{{ $socialLinks['youtube'] }}" target="_blank"
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2 me-2"
-                                data-bs-toggle="tooltip" title="YouTube">
-                                <i class="bi bi-youtube"></i>
-                            </a>
-                            @endif
-
-                            <!-- Theme Toggle Button -->
-                            <button id="theme-toggle" data-toggle-theme
-                                class="btn btn-sm btn-outline-secondary rounded-circle p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-sun dark-icon" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-moon-stars light-icon d-none" viewBox="0 0 16 16">
-                                    <path
-                                        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z" />
-                                    <path
-                                        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
-                                </svg>
-                                <span class="visually-hidden">Chuyển chế độ sáng/tối</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
+    <!-- Footer -->
+    <x-footer />
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom JavaScript -->
+    <!-- jQuery (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <!-- Custom JS -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/dark-mode.js') }}"></script>
 
-    <!-- Custom Scripts -->
+    <!-- Additional Scripts -->
     @stack('scripts')
 
-    <!-- Search Script -->
-    <script src="{{ asset('js/search.js') }}"></script>
+    <script>
+        // Global auth page functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form validation
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
 
-    <!-- Theme toggle script is now handled by darkMode.js -->
+            // Auto-hide alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert && alert.parentNode) {
+                        alert.style.transition = 'opacity 0.5s';
+                        alert.style.opacity = '0';
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.parentNode.removeChild(alert);
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            });
+        });
+    </script>
 </body>
-
 </html>

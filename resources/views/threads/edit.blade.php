@@ -111,7 +111,7 @@
                                 @foreach($thread->media as $media)
                                 <div class="col-md-3 mb-3">
                                     <div class="card h-100">
-                                        <img src="{{ asset('storage/' . $media->path) }}" class="card-img-top"
+                                        <img src="{{ asset('storage/' . $media->file_path) }}" class="card-img-top"
                                             style="height: 150px; object-fit: cover;">
                                         <div class="card-body p-2">
                                             <div class="form-check">

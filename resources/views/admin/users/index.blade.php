@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý thành viên')
-@section('header', 'Quản lý thành viên')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý thành viên</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý thành viên</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-person-plus me-1"></i> {{ __('Thêm thành viên') }}
+        <i class="fas fa-user-plus me-1"></i> {{ __('Thêm thành viên') }}
     </a>
 @endsection
 
@@ -21,13 +35,13 @@
                             <h2 class="mt-2 mb-0">{{ number_format($stats['total']) }}</h2>
                         </div>
                         <div class="bg-primary bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-people fs-1 text-primary"></i>
+                            <i class="fas fa-users fs-1 text-primary"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-3">
             <div class="card border-success h-100">
                 <div class="card-body">
@@ -37,13 +51,13 @@
                             <h2 class="mt-2 mb-0">{{ number_format($stats['online']) }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-person-check fs-1 text-success"></i>
+                            <i class="fas fa-user-check fs-1 text-success"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-3">
             <div class="card border-info h-100">
                 <div class="card-body">
@@ -53,13 +67,13 @@
                             <h2 class="mt-2 mb-0">{{ number_format($stats['admin'] + $stats['moderator']) }}</h2>
                         </div>
                         <div class="bg-info bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-shield-check fs-1 text-info"></i>
+                            <i class="fas fa-shield-alt fs-1 text-info"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-3 mb-3">
             <div class="card border-danger h-100">
                 <div class="card-body">
@@ -69,25 +83,25 @@
                             <h2 class="mt-2 mb-0">{{ number_format($stats['banned']) }}</h2>
                         </div>
                         <div class="bg-danger bg-opacity-10 p-3 rounded">
-                            <i class="bi bi-person-x fs-1 text-danger"></i>
+                            <i class="fas fa-user-x fs-1 text-danger"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Tìm kiếm và lọc -->
     <div class="card mb-4">
         <div class="card-body">
             <form action="{{ route('admin.users.index') }}" method="GET" class="row g-3">
                 <div class="col-md-4">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="{{ __('Tìm theo tên, username, email...') }}">
                     </div>
                 </div>
-                
+
                 <div class="col-md-2">
                     <select class="form-select" name="role">
                         <option value="">{{ __('Tất cả vai trò') }}</option>
@@ -97,7 +111,7 @@
                         <option value="member" {{ $role === 'member' ? 'selected' : '' }}>{{ __('Member') }}</option>
                     </select>
                 </div>
-                
+
                 <div class="col-md-2">
                     <select class="form-select" name="status">
                         <option value="">{{ __('Tất cả trạng thái') }}</option>
@@ -106,7 +120,7 @@
                         <option value="online" {{ $status === 'online' ? 'selected' : '' }}>{{ __('Đang online') }}</option>
                     </select>
                 </div>
-                
+
                 <div class="col-md-2">
                     <select class="form-select" name="sort_by">
                         <option value="created_at" {{ $sortBy === 'created_at' ? 'selected' : '' }}>{{ __('Ngày tham gia') }}</option>
@@ -115,23 +129,23 @@
                         <option value="posts_count" {{ $sortBy === 'posts_count' ? 'selected' : '' }}>{{ __('Số bài viết') }}</option>
                     </select>
                 </div>
-                
+
                 <div class="col-md-1">
                     <select class="form-select" name="sort_order">
                         <option value="desc" {{ $sortOrder === 'desc' ? 'selected' : '' }}>{{ __('Giảm dần') }}</option>
                         <option value="asc" {{ $sortOrder === 'asc' ? 'selected' : '' }}>{{ __('Tăng dần') }}</option>
                     </select>
                 </div>
-                
+
                 <div class="col-md-1">
                     <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-funnel"></i>
+                        <i class="fas fa-filter"></i>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-    
+
     <!-- Danh sách thành viên -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -211,16 +225,16 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Xem chi tiết') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="{{ __('Chỉnh sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-outline-success' : 'btn-outline-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal{{ $user->id }}" title="{{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}">
-                                            <i class="bi {{ $user->banned_at ? 'bi-person-check' : 'bi-person-x' }}"></i>
+                                            <i data-feather="{{ $user->banned_at ? 'user-check' : 'user-x' }}"></i>
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Ban Modal -->
                                     <div class="modal fade" id="banModal{{ $user->id }}" tabindex="-1" aria-labelledby="banModalLabel{{ $user->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -264,7 +278,7 @@
                             <tr>
                                 <td colspan="8" class="text-center py-4">
                                     <div class="text-muted">
-                                        <i class="bi bi-search fs-1 d-block mb-2"></i>
+                                        <i class="fas fa-search fs-1 d-block mb-2"></i>
                                         {{ __('Không tìm thấy thành viên nào') }}
                                     </div>
                                 </td>

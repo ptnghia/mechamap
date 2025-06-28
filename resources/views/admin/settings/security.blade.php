@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Cấu hình Bảo mật')
 
@@ -84,6 +84,10 @@
 </style>
 @endsection
 
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -104,7 +108,7 @@
             <!-- Security Alert -->
             <div class="security-alert">
                 <h6 class="mb-2">
-                    <i class="bi bi-shield-exclamation text-warning me-2"></i>
+                    <i class="fas fa-shield-alt text-warning me-2"></i>
                     Cảnh báo bảo mật
                 </h6>
                 <p class="mb-0">
@@ -115,7 +119,7 @@
 
             @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="fas fa-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -123,7 +127,7 @@
 
             @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <i class="fas fa-exclamation-triangle me-2"></i>
                 Có lỗi xảy ra, vui lòng kiểm tra lại!
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -137,13 +141,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-key me-2"></i>
+                            <i class="fas fa-key me-2"></i>
                             Bảo mật xác thực
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-shield-check me-2"></i>Xác thực hai yếu tố (2FA)</h6>
+                            <h6><i class="fas fa-shield-alt me-2"></i>Xác thực hai yếu tố (2FA)</h6>
 
                             <div class="form-check form-switch mb-3">
                                 <input class="form-check-input" type="checkbox" id="two_factor_auth_enabled"
@@ -154,13 +158,13 @@
                                 </label>
                             </div>
                             <div class="form-text">
-                                <i class="bi bi-info-circle me-1"></i>
+                                <i class="fas fa-info-circle me-1"></i>
                                 Yêu cầu admin nhập mã từ ứng dụng authenticator khi đăng nhập.
                             </div>
                         </div>
 
                         <div class="setting-group">
-                            <h6><i class="bi bi-clock me-2"></i>Thời gian phiên làm việc</h6>
+                            <h6><i class="fas fa-clock me-2"></i>Thời gian phiên làm việc</h6>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -186,13 +190,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-door-open me-2"></i>
+                            <i class="fas fa-door-open me-2"></i>
                             Bảo mật đăng nhập
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-shield-x me-2"></i>Bảo vệ chống tấn công brute force</h6>
+                            <h6><i class="fas fa-shield-alt me-2"></i>Bảo vệ chống tấn công brute force</h6>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -231,13 +235,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-lock me-2"></i>
+                            <i class="fas fa-lock me-2"></i>
                             Chính sách mật khẩu
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-key-fill me-2"></i>Yêu cầu mật khẩu</h6>
+                            <h6><i class="fas fa-key-fill me-2"></i>Yêu cầu mật khẩu</h6>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -328,13 +332,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-globe2 me-2"></i>
+                            <i class="fas fa-globe2 me-2"></i>
                             Bảo mật IP
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-list-ul me-2"></i>Danh sách IP được phép truy cập Admin</h6>
+                            <h6><i class="fas fa-list me-2"></i>Danh sách IP được phép truy cập Admin</h6>
 
                             <div class="mb-3">
                                 <label for="admin_ip_whitelist" class="form-label">
@@ -348,7 +352,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div class="form-text">
-                                    <i class="bi bi-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1"></i>
                                     Nhập mỗi IP hoặc CIDR trên một dòng. Để trống để cho phép tất cả IP.
                                     <br>
                                     <strong>IP hiện tại của bạn:</strong> <code
@@ -364,11 +368,11 @@
                     <div class="col-12">
                         <div class="d-flex justify-content-end gap-3">
                             <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                                <i class="bi bi-arrow-clockwise me-2"></i>
+                                <i class="fas fa-sync-alt me-2"></i>
                                 Đặt lại
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-shield-check me-2"></i>
+                                <i class="fas fa-shield-alt me-2"></i>
                                 Lưu cấu hình
                             </button>
                         </div>
@@ -493,7 +497,7 @@ document.getElementById('admin_ip_whitelist').addEventListener('input', function
             const warning = document.createElement('div');
             warning.id = 'ipWarning';
             warning.className = 'alert alert-warning mt-2';
-            warning.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i><strong>Cảnh báo:</strong> IP hiện tại của bạn không có trong danh sách. Bạn có thể bị khóa khỏi admin panel!';
+            warning.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i><strong>Cảnh báo:</strong> IP hiện tại của bạn không có trong danh sách. Bạn có thể bị khóa khỏi admin panel!';
             this.parentNode.insertBefore(warning, this.nextSibling);
         }
     } else {
@@ -502,4 +506,8 @@ document.getElementById('admin_ip_whitelist').addEventListener('input', function
     }
 });
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

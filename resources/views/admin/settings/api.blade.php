@@ -1,7 +1,21 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'API Keys')
-@section('header', 'API Keys')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">API Keys</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">API Keys</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('content')
     <div class="row">
@@ -16,7 +30,7 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <i class="fas fa-info-circle-fill me-2"></i>
                         {{ __('Các API key được sử dụng để kết nối với các dịch vụ bên thứ ba. Hãy đảm bảo rằng bạn giữ các key này an toàn.') }}
                     </div>
                     
@@ -40,7 +54,7 @@
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_google_client_secret') is-invalid @enderror" id="api_google_client_secret" name="api_google_client_secret" value="{{ old('api_google_client_secret', $settings['api_google_client_secret'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_google_client_secret">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                             <div class="form-text">{{ __('Client Secret từ Google Cloud Console.') }}</div>
@@ -67,7 +81,7 @@
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_facebook_app_secret') is-invalid @enderror" id="api_facebook_app_secret" name="api_facebook_app_secret" value="{{ old('api_facebook_app_secret', $settings['api_facebook_app_secret'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_facebook_app_secret">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                             <div class="form-text">{{ __('App Secret từ Facebook Developer Console.') }}</div>
@@ -94,7 +108,7 @@
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_recaptcha_secret_key') is-invalid @enderror" id="api_recaptcha_secret_key" name="api_recaptcha_secret_key" value="{{ old('api_recaptcha_secret_key', $settings['api_recaptcha_secret_key'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_recaptcha_secret_key">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                             <div class="form-text">{{ __('Secret Key từ Google reCAPTCHA Admin Console.') }}</div>
@@ -105,7 +119,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
                             </button>
                         </div>
                     </form>
@@ -121,7 +135,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingGoogle">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGoogle" aria-expanded="false" aria-controls="collapseGoogle">
-                                    <i class="bi bi-google me-2"></i> {{ __('Cấu hình Google Login') }}
+                                    <i class="fab fa-google me-2"></i> {{ __('Cấu hình Google Login') }}
                                 </button>
                             </h2>
                             <div id="collapseGoogle" class="accordion-collapse collapse" aria-labelledby="headingGoogle" data-bs-parent="#accordionApiGuides">
@@ -142,7 +156,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFacebook">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFacebook" aria-expanded="false" aria-controls="collapseFacebook">
-                                    <i class="bi bi-facebook me-2"></i> {{ __('Cấu hình Facebook Login') }}
+                                    <i class="fab fa-facebook me-2"></i> {{ __('Cấu hình Facebook Login') }}
                                 </button>
                             </h2>
                             <div id="collapseFacebook" class="accordion-collapse collapse" aria-labelledby="headingFacebook" data-bs-parent="#accordionApiGuides">
@@ -162,7 +176,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRecaptcha">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecaptcha" aria-expanded="false" aria-controls="collapseRecaptcha">
-                                    <i class="bi bi-shield-check me-2"></i> {{ __('Cấu hình Google reCAPTCHA') }}
+                                    <i class="fas fa-shield-alt me-2"></i> {{ __('Cấu hình Google reCAPTCHA') }}
                                 </button>
                             </h2>
                             <div id="collapseRecaptcha" class="accordion-collapse collapse" aria-labelledby="headingRecaptcha" data-bs-parent="#accordionApiGuides">

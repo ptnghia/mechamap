@@ -1,15 +1,29 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý danh mục hỏi đáp')
 
-@section('header', 'Quản lý danh mục hỏi đáp')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý danh mục hỏi đáp</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý danh mục hỏi đáp</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.faq-categories.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo danh mục mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo danh mục mới') }}
     </a>
     <a href="{{ route('admin.faqs.index') }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-question-circle me-1"></i> {{ __('Quản lý câu hỏi') }}
+        <i class="fas fa-question-circle me-1"></i> {{ __('Quản lý câu hỏi') }}
     </a>
 @endsection
 
@@ -39,7 +53,7 @@
                                 <td>{{ $category->id }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-grip-vertical me-2 text-muted handle" style="cursor: move;"></i>
+                                        <i class="fas fa-grip-vertical me-2 text-muted handle" style="cursor: move;"></i>
                                         <span>{{ $category->name }}</span>
                                     </div>
                                 </td>
@@ -60,17 +74,17 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.faq-categories.edit', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.faq-categories.toggle-status', $category) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-sm btn-outline-{{ $category->is_active ? 'warning' : 'success' }}" title="{{ $category->is_active ? __('Vô hiệu hóa') : __('Kích hoạt') }}">
-                                                <i class="bi bi-{{ $category->is_active ? 'toggle-on' : 'toggle-off' }}"></i>
+                                                <i class="fas fa-{{ $category->is_active ? 'toggle-on' : 'toggle-off' }}"></i>
                                             </button>
                                         </form>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}" title="{{ __('Xóa') }}" {{ $category->faqs_count > 0 ? 'disabled' : '' }}>
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -148,7 +162,7 @@
                         order: order
                     });
                 });
-                
+
                 // Gửi AJAX request để cập nhật thứ tự
                 $.ajax({
                     url: '{{ route("admin.faq-categories.reorder") }}',

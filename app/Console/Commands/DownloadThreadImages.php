@@ -14,7 +14,7 @@ class DownloadThreadImages extends Command
      *
      * @var string
      */
-    protected $signature = 'threads:download-images 
+    protected $signature = 'threads:download-images
                             {--limit=50 : Số lượng ảnh cần tải}
                             {--force : Tải lại tất cả ảnh, kể cả đã tồn tại}
                             {--thread= : Chỉ tải ảnh cho thread cụ thể}';
@@ -40,7 +40,7 @@ class DownloadThreadImages extends Command
         // Xây dựng query
         $query = Media::whereNotNull('mediable_id')
             ->where('mediable_type', 'App\\Models\\Thread')
-            ->where('file_type', 'like', 'image/%');
+            ->where('mime_type', 'like', 'image/%');
 
         if ($threadId) {
             $query->where('mediable_id', $threadId);
@@ -70,7 +70,7 @@ class DownloadThreadImages extends Command
 
         foreach ($mediaList as $media) {
             $progressBar->setMessage("Đang xử lý: {$media->file_name}");
-            
+
             try {
                 $success = $this->downloadImage($media);
                 if ($success) {
@@ -86,13 +86,13 @@ class DownloadThreadImages extends Command
 
         $progressBar->finish();
         $this->newLine(2);
-        
+
         // Sync sang public/storage sau khi tải xong
         $this->info('🔄 Đang đồng bộ files sang public/storage...');
         $this->call('storage:sync');
-        
+
         $this->info("✅ Hoàn thành! Đã tải thành công {$successCount}/{$mediaList->count()} ảnh.");
-        
+
         return 0;
     }
 
@@ -102,7 +102,7 @@ class DownloadThreadImages extends Command
     private function downloadImage($media)
     {
         $force = $this->option('force');
-        
+
         // Kiểm tra xem file đã tồn tại chưa (trừ khi force)
         if (!$force && Storage::disk('public')->exists($media->file_path)) {
             $this->line("  ✓ File đã tồn tại: {$media->file_name}");
@@ -116,7 +116,7 @@ class DownloadThreadImages extends Command
             try {
                 // Tạo URL ảnh
                 $imageUrl = $this->generateUnsplashUrl($media);
-                
+
                 $this->line("  → Đang tải: {$media->file_name} từ " . parse_url($imageUrl, PHP_URL_HOST));
 
                 // Tải ảnh từ internet với timeout
@@ -149,7 +149,7 @@ class DownloadThreadImages extends Command
             } catch (\Exception $e) {
                 $retryCount++;
                 $this->line("  ⚠ Lần thử {$retryCount}: {$e->getMessage()}");
-                
+
                 if ($retryCount < $maxRetries) {
                     sleep(1); // Đợi 1 giây trước khi thử lại
                 }
@@ -169,10 +169,10 @@ class DownloadThreadImages extends Command
         // Lấy thông tin thread để xác định category
         $thread = $media->thread;
         $threadTitle = strtolower($thread->title ?? '');
-        
+
         // Xác định category dựa trên nội dung thread
         $category = $this->detectCategoryFromThread($threadTitle);
-        
+
         // Danh sách các nguồn ảnh chất lượng cao
         $sources = [
             // Unsplash với category cụ thể
@@ -230,21 +230,21 @@ class DownloadThreadImages extends Command
             // Gradient background
             $colors = [
                 [63, 81, 181],   // Indigo
-                [33, 150, 243],  // Blue  
+                [33, 150, 243],  // Blue
                 [76, 175, 80],   // Green
                 [255, 152, 0],   // Orange
                 [156, 39, 176],  // Purple
             ];
-            
+
             $colorSet = $colors[array_rand($colors)];
-            
+
             // Tạo gradient
             for ($i = 0; $i < $height; $i++) {
                 $ratio = $i / $height;
                 $r = (int)($colorSet[0] * (1 - $ratio) + $colorSet[0] * 0.7 * $ratio);
                 $g = (int)($colorSet[1] * (1 - $ratio) + $colorSet[1] * 0.7 * $ratio);
                 $b = (int)($colorSet[2] * (1 - $ratio) + $colorSet[2] * 0.7 * $ratio);
-                
+
                 $color = imagecolorallocate($image, $r, $g, $b);
                 imageline($image, 0, $i, $width, $i, $color);
             }
@@ -261,7 +261,7 @@ class DownloadThreadImages extends Command
             $y = $height / 2 - 30;
             imagestring($image, $fontSize, $x, $y, $mainText, $white);
 
-            // Subtitle  
+            // Subtitle
             $subText = "Thread #{$media->mediable_id} Image";
             $subTextWidth = imagefontwidth(3) * strlen($subText);
             $subX = ($width - $subTextWidth) / 2;
@@ -292,7 +292,7 @@ class DownloadThreadImages extends Command
 
             $this->line("  ✓ Đã tạo placeholder: " . number_format($actualSize / 1024, 1) . " KB");
             return true;
-            
+
         } catch (\Exception $e) {
             $this->line("  ❌ Không thể tạo placeholder: {$e->getMessage()}");
             return false;

@@ -7,6 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-authenticated" content="{{ Auth::check() ? 'true' : 'false' }}">
 
+    <!-- User Info for Chat Widget -->
+    @auth
+    <meta name="user-id" content="{{ auth()->id() }}">
+    @endauth
+
     <!-- SEO Meta Tags -->
     <title>{{ $title ?? $seo['site_title'] ?? config('app.name') }} - @yield('title', 'Diễn đàn cộng đồng')</title>
     <meta name="description"
@@ -79,6 +84,9 @@
 
     <!-- Search CSS -->
     <link rel="stylesheet" href="{{ asset('css/search.css') }}">
+
+    <!-- Enhanced Menu CSS -->
+    <link rel="stylesheet" href="{{ asset('css/enhanced-menu.css') }}">
 
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
@@ -294,6 +302,37 @@
     <!-- Custom Scripts -->
     @stack('scripts')
 
+    <!-- Chat Widget - Chỉ hiển thị khi đăng nhập -->
+    @auth
+    <div id="chatWidget" class="chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
+        <button id="chatToggle" class="btn btn-primary rounded-circle" style="width: 60px; height: 60px;">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div id="chatPanel" class="d-none" style="position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid #e9ecef;">
+            <div class="p-3 bg-primary text-white rounded-top">
+                <h6 class="mb-0">Tin nhắn</h6>
+            </div>
+            <div class="p-3">
+                <p>Chat widget đang hoạt động!</p>
+                <p>User: {{ auth()->user()->name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatToggle = document.getElementById('chatToggle');
+        const chatPanel = document.getElementById('chatPanel');
+
+        if (chatToggle && chatPanel) {
+            chatToggle.addEventListener('click', function() {
+                chatPanel.classList.toggle('d-none');
+            });
+        }
+    });
+    </script>
+    @endauth
+
     <!-- Footer Scripts -->
     @if(!empty($seo['footer_scripts'] ?? ''))
     {!! $seo['footer_scripts'] !!}
@@ -360,8 +399,8 @@
     <!-- Auth Modal Script -->
     <script src="{{ asset('js/auth-modal.js') }}"></script>
 
-    <!-- Search Script -->
-    <script src="{{ asset('js/search.js') }}"></script>
+    <!-- Search Script - Disabled, using unified header search -->
+    {{-- <script src="{{ asset('js/search.js') }}"></script> --}}
 
     <!-- Thread Item Script -->
     <script src="{{ asset('js/thread-item.js') }}"></script>
@@ -371,6 +410,12 @@
 
     <!-- Manual Dropdown Script -->
     <script src="{{ asset('js/manual-dropdown.js') }}"></script>
+
+    <!-- Enhanced Menu Script -->
+    <script src="{{ asset('js/enhanced-menu.js') }}"></script>
+
+    <!-- Performance Optimization Script -->
+    <script src="{{ asset('js/performance-optimization.js') }}"></script>
 
     <!-- Lightbox Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
@@ -390,6 +435,11 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
     @endif
+
+    <!-- Authentication Modal -->
+    @guest
+    <x-auth-modal id="authModal" size="lg" />
+    @endguest
 </body>
 
 </html>

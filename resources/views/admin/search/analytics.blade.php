@@ -1,15 +1,29 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thống kê tìm kiếm')
-@section('header', 'Thống kê tìm kiếm')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thống kê tìm kiếm</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thống kê tìm kiếm</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
 <div class="btn-group">
     <a href="{{ route('admin.search.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại cấu hình') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại cấu hình') }}
     </a>
     <button type="button" class="btn btn-sm btn-outline-primary" onclick="exportAnalytics()">
-        <i class="bi bi-download me-1"></i> {{ __('Xuất báo cáo') }}
+        <i class="fas fa-download me-1"></i> {{ __('Xuất báo cáo') }}
     </button>
 </div>
 @endsection
@@ -23,7 +37,7 @@
                 <div class="h3 text-primary">{{ number_format($stats['total_searches'] ?? 0) }}</div>
                 <div class="text-muted">{{ __('Tổng số tìm kiếm') }}</div>
                 <small class="text-success">
-                    <i class="bi bi-arrow-up"></i> {{ $stats['searches_growth'] ?? 0 }}% {{ __('so với tháng trước') }}
+                    <i class="fas fa-arrow-up"></i> {{ $stats['searches_growth'] ?? 0 }}% {{ __('so với tháng trước') }}
                 </small>
             </div>
         </div>
@@ -56,7 +70,7 @@
                 <div class="h3 text-warning">{{ $stats['avg_response_time'] ?? 0 }}ms</div>
                 <div class="text-muted">{{ __('Thời gian phản hồi TB') }}</div>
                 <small class="text-{{ $stats['response_time_trend'] === 'up' ? 'danger' : 'success' }}">
-                    <i class="bi bi-arrow-{{ $stats['response_time_trend'] === 'up' ? 'up' : 'down' }}"></i>
+                    <i class="fas fa-arrow-{{ $stats['response_time_trend'] === 'up' ? 'up' : 'down' }}"></i>
                     {{ $stats['response_time_change'] ?? 0 }}ms
                 </small>
             </div>
@@ -420,7 +434,7 @@
 
     function updateRecentSearchesTable(searches) {
         const tableBody = document.getElementById('recentSearchesTable');
-        
+
         if (searches.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">{{ __("Chưa có tìm kiếm nào") }}</td></tr>';
             return;
@@ -440,7 +454,7 @@
                 </tr>
             `;
         });
-        
+
         tableBody.innerHTML = html;
     }
 

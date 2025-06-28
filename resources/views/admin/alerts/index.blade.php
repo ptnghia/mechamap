@@ -1,15 +1,29 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý thông báo')
-@section('header', 'Quản lý thông báo')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý thông báo</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý thông báo</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
 <div class="btn-group">
     <a href="{{ route('admin.alerts.test') }}" class="btn btn-sm btn-outline-success">
-        <i class="bi bi-bell me-1"></i> {{ __('Kiểm tra thông báo') }}
+        <i class="fas fa-bell me-1"></i> {{ __('Kiểm tra thông báo') }}
     </a>
     <a href="{{ route('admin.alerts.statistics') }}" class="btn btn-sm btn-outline-info">
-        <i class="bi bi-bar-chart me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
     </a>
 </div>
 @endsection
@@ -24,13 +38,13 @@
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
                     <a href="{{ route('admin.alerts.index') }}" class="list-group-item list-group-item-action active">
-                        <i class="bi bi-gear-fill me-2"></i> {{ __('Cấu hình chung') }}
+                        <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
                     </a>
                     <a href="{{ route('admin.alerts.test') }}" class="list-group-item list-group-item-action">
-                        <i class="bi bi-bell me-2"></i> {{ __('Kiểm tra thông báo') }}
+                        <i class="fas fa-bell me-2"></i> {{ __('Kiểm tra thông báo') }}
                     </a>
                     <a href="{{ route('admin.alerts.statistics') }}" class="list-group-item list-group-item-action">
-                        <i class="bi bi-bar-chart me-2"></i> {{ __('Thống kê thông báo') }}
+                        <i class="fas fa-chart-bar me-2"></i> {{ __('Thống kê thông báo') }}
                     </a>
                 </div>
             </div>
@@ -265,10 +279,10 @@
 
                     <div class="border-top pt-3 mt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg me-1"></i> {{ __('Lưu cấu hình') }}
+                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
                         </button>
                         <button type="reset" class="btn btn-outline-secondary ms-2">
-                            <i class="bi bi-arrow-clockwise me-1"></i> {{ __('Đặt lại') }}
+                            <i class="fas fa-sync-alt me-1"></i> {{ __('Đặt lại') }}
                         </button>
                     </div>
                 </form>

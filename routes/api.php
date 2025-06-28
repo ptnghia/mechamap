@@ -179,6 +179,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/search', [App\Http\Controllers\Api\MarketplaceController::class, 'search']);
         Route::get('/featured', [App\Http\Controllers\Api\MarketplaceController::class, 'featured']);
         Route::get('/bestsellers', [App\Http\Controllers\Api\MarketplaceController::class, 'bestsellers']);
+
+        // Search functionality
+        Route::get('/search-suggestions', [App\Http\Controllers\Api\MarketplaceSearchController::class, 'suggestions']);
+        Route::get('/popular-searches', [App\Http\Controllers\Api\MarketplaceSearchController::class, 'popular']);
+        Route::get('/filters', [App\Http\Controllers\Api\MarketplaceSearchController::class, 'filters']);
     });
 
     // Payment webhooks and callbacks (public - no auth required)
@@ -393,6 +398,71 @@ Route::prefix('v1')->group(function () {
             Route::prefix('tags')->group(function () {
                 Route::post('/', [App\Http\Controllers\Api\TagController::class, 'store']);
             });
+        });
+
+        // ===== NEW MARKETPLACE API ROUTES =====
+
+        // Enhanced Product Management (for business users)
+        Route::prefix('marketplace/v2')->group(function () {
+            // Product CRUD for business users
+            Route::apiResource('products', App\Http\Controllers\Api\ProductController::class);
+
+            // Shopping cart management
+            Route::prefix('cart')->group(function () {
+                Route::get('/', [App\Http\Controllers\Api\ShoppingCartController::class, 'index']);
+                Route::post('/', [App\Http\Controllers\Api\ShoppingCartController::class, 'store']);
+                Route::put('/{id}', [App\Http\Controllers\Api\ShoppingCartController::class, 'update']);
+                Route::delete('/{id}', [App\Http\Controllers\Api\ShoppingCartController::class, 'destroy']);
+                Route::delete('/', [App\Http\Controllers\Api\ShoppingCartController::class, 'clear']);
+                Route::get('/count', [App\Http\Controllers\Api\ShoppingCartController::class, 'count']);
+            });
+
+            // Seller dashboard (for business users)
+            Route::prefix('seller')->middleware('role:supplier,manufacturer,brand')->group(function () {
+                Route::get('/dashboard', function() {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Seller dashboard endpoint',
+                        'data' => ['user' => auth()->user()]
+                    ]);
+                });
+                Route::get('/products', [App\Http\Controllers\Api\ProductController::class, 'index']);
+                Route::get('/orders', function() {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Seller orders endpoint',
+                        'data' => []
+                    ]);
+                });
+                Route::get('/earnings', function() {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Seller earnings endpoint',
+                        'data' => ['total_earnings' => 0]
+                    ]);
+                });
+            });
+        });
+
+        // Conversations API (authenticated users only)
+        Route::prefix('conversations')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\ConversationController::class, 'index']);
+            Route::post('/', [App\Http\Controllers\Api\ConversationController::class, 'store']);
+            Route::get('/{id}', [App\Http\Controllers\Api\ConversationController::class, 'show']);
+            Route::get('/{id}/messages', [App\Http\Controllers\Api\ConversationController::class, 'getMessages']);
+            Route::post('/{id}/messages', [App\Http\Controllers\Api\ConversationController::class, 'sendMessage']);
+            Route::post('/{id}/read', [App\Http\Controllers\Api\ConversationController::class, 'markAsRead']);
+            Route::delete('/{id}', [App\Http\Controllers\Api\ConversationController::class, 'destroy']);
+        });
+
+        // Chat API routes
+        Route::prefix('chat')->group(function () {
+            Route::get('/unread-count', [App\Http\Controllers\ChatController::class, 'getUnreadCount']);
+        });
+
+        // Search API routes
+        Route::prefix('search')->group(function () {
+            Route::get('/users', [App\Http\Controllers\ChatController::class, 'searchUsers']);
         });
     });
 });

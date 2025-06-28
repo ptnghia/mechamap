@@ -1,8 +1,22 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Tải lên Media')
 
-@section('header', 'Tải lên Media')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Tải lên Media</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Tải lên Media</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('content')
     <div class="card">
@@ -51,7 +65,7 @@
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
                     <button type="submit" class="btn btn-primary" id="uploadButton">
-                        <i class="bi bi-upload me-1"></i> {{ __('Tải lên') }}
+                        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
                     </button>
                 </div>
             </form>
@@ -142,17 +156,17 @@
                     if (file.type.match('image.*')) {
                         previewContent = `<img src="${e.target.result}" alt="${file.name}">`;
                     } else if (extension === 'pdf') {
-                        previewContent = `<div class="preview-icon preview-pdf"><i class="bi bi-file-earmark-pdf"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-pdf"><i class="fas fa-file-pdf"></i></div>`;
                     } else if (['doc', 'docx'].includes(extension)) {
-                        previewContent = `<div class="preview-icon preview-doc"><i class="bi bi-file-earmark-word"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-doc"><i class="fas fa-file-word"></i></div>`;
                     } else if (['xls', 'xlsx'].includes(extension)) {
-                        previewContent = `<div class="preview-icon preview-xls"><i class="bi bi-file-earmark-excel"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-xls"><i class="fas fa-file-excel"></i></div>`;
                     } else if (['ppt', 'pptx'].includes(extension)) {
-                        previewContent = `<div class="preview-icon preview-ppt"><i class="bi bi-file-earmark-ppt"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-ppt"><i class="fas fa-file-ppt"></i></div>`;
                     } else if (['zip', 'rar'].includes(extension)) {
-                        previewContent = `<div class="preview-icon preview-zip"><i class="bi bi-file-earmark-zip"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-zip"><i class="fas fa-file-zip"></i></div>`;
                     } else {
-                        previewContent = `<div class="preview-icon preview-other"><i class="bi bi-file-earmark"></i></div>`;
+                        previewContent = `<div class="preview-icon preview-other"><i class="fas fa-file"></i></div>`;
                     }
                     
                     previewCol.html(`
@@ -162,7 +176,7 @@
                             <div class="small text-muted">${formatFileSize(file.size)}</div>
                         </div>
                         <button type="button" class="preview-remove" data-index="${index}">
-                            <i class="bi bi-x"></i>
+                            <i class="fas fa-times"></i>
                         </button>
                     `);
                     

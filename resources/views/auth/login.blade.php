@@ -3,82 +3,281 @@
 @section('title', 'Đăng nhập')
 
 @section('content')
-    <h2 class="auth-title text-center">{{ __('Login') }}</h2>
+<div class="min-vh-100 d-flex align-items-center bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <!-- Main Login Card -->
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Brand Section -->
+                        <div class="col-lg-6 bg-primary text-white position-relative">
+                            <div class="p-5 h-100 d-flex flex-column justify-content-center">
+                                <!-- Background Pattern -->
+                                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
+                                    <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                                                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5"/>
+                                            </pattern>
+                                        </defs>
+                                        <rect width="100%" height="100%" fill="url(#grid)" />
+                                    </svg>
+                                </div>
 
-    <!-- Session Status -->
-    @if (session('status'))
-        <div class="alert alert-success mb-4">
-            {{ session('status') }}
-        </div>
-    @endif
+                                <!-- Content -->
+                                <div class="position-relative">
+                                    <!-- Logo -->
+                                    <div class="mb-4">
+                                        <img src="{{ get_logo_url() }}" alt="MechaMap" class="mb-3" style="height: 50px; filter: brightness(0) invert(1);">
+                                        <h3 class="fw-bold mb-2">MechaMap</h3>
+                                        <p class="fs-5 mb-0 opacity-90">Nơi hội tụ tri thức cơ khí</p>
+                                    </div>
 
-    @if (session('error'))
-        <div class="alert alert-danger mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
+                                    <!-- Value Propositions -->
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-users-cog me-3 fs-5"></i>
+                                            <span>Kết nối với 64+ kỹ sư chuyên nghiệp</span>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-comments me-3 fs-5"></i>
+                                            <span>Tham gia 118+ thảo luận kỹ thuật</span>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-tools me-3 fs-5"></i>
+                                            <span>Chia sẻ kinh nghiệm CAD/CAM/CNC</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-graduation-cap me-3 fs-5"></i>
+                                            <span>Học hỏi từ chuyên gia hàng đầu</span>
+                                        </div>
+                                    </div>
 
-    <form method="POST" action="{{ route('login') }}" class="auth-form">
-        @csrf
+                                    <!-- Trust Indicators -->
+                                    <div class="border-top border-white border-opacity-25 pt-4">
+                                        <p class="small mb-2 opacity-75">Được tin tưởng bởi:</p>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-white text-primary me-2">Kỹ sư CAD</span>
+                                            <span class="badge bg-white text-primary me-2">Chuyên gia CNC</span>
+                                            <span class="badge bg-white text-primary">Nhà sản xuất</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- Username / Email Address -->
-        <div class="form-group">
-            <label for="login" class="form-label">{{ __('Email or Username') }}</label>
-            <input id="login" type="text" name="login" value="{{ old('login') }}" class="form-control @error('login') is-invalid @enderror" required autofocus autocomplete="username" placeholder="Enter your email or username">
-            @error('login')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+                        <!-- Login Form Section -->
+                        <div class="col-lg-6 bg-white">
+                            <div class="p-5">
+                                <!-- Header -->
+                                <div class="text-center mb-4">
+                                    <h2 class="fw-bold text-dark mb-2">Chào mừng trở lại!</h2>
+                                    <p class="text-muted mb-0">
+                                        Đăng nhập để tiếp tục hành trình kỹ thuật của bạn
+                                    </p>
+                                </div>
 
-        <!-- Password -->
-        <div class="form-group">
-            <label for="password" class="form-label">{{ __('Password') }}</label>
-            <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password" placeholder="Enter your password">
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+                                <!-- Session Status -->
+                                @if (session('status'))
+                                    <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        {{ session('status') }}
+                                    </div>
+                                @endif
 
-        <!-- Remember Me -->
-        <div class="form-check">
-            <input id="remember_me" type="checkbox" class="form-check-input" name="remember">
-            <label class="form-check-label" for="remember_me">{{ __('Remember me') }}</label>
-        </div>
+                                @if (session('error'))
+                                    <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
 
-        <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
-            @if (Route::has('password.request'))
-                <a class="auth-footer-link" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+                                <!-- Login Form -->
+                                <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
+                                    @csrf
 
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-box-arrow-in-right me-2"></i>{{ __('Log in') }}
-            </button>
-        </div>
-    </form>
+                                    <!-- Email/Username Field -->
+                                    <div class="mb-3">
+                                        <label for="login" class="form-label fw-medium text-dark">
+                                            <i class="fas fa-user me-2 text-muted"></i>Email hoặc tên đăng nhập
+                                        </label>
+                                        <input type="text"
+                                               class="form-control form-control-lg @error('login') is-invalid @enderror"
+                                               id="login"
+                                               name="login"
+                                               value="{{ old('login') }}"
+                                               required
+                                               autocomplete="username"
+                                               placeholder="engineer@mechamap.com">
+                                        @error('login')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-    <!-- Social Login -->
-    <div class="my-4">
-        <div class="auth-divider">
-            <hr>
-            <span class="auth-divider-text">{{ __('Or continue with') }}</span>
-            <hr>
-        </div>
+                                    <!-- Password Field -->
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label fw-medium text-dark">
+                                            <i class="fas fa-lock me-2 text-muted"></i>Mật khẩu
+                                        </label>
+                                        <div class="position-relative">
+                                            <input type="password"
+                                                   class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                                   id="password"
+                                                   name="password"
+                                                   required
+                                                   autocomplete="current-password"
+                                                   placeholder="••••••••">
+                                            <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted" onclick="togglePassword()">
+                                                <i class="fas fa-eye" id="toggleIcon"></i>
+                                            </button>
+                                        </div>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-        <div class="d-grid gap-2">
-            <a href="{{ route('auth.socialite', 'google') }}" class="btn btn-outline-secondary auth-social-btn">
-                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
-                {{ __('Google') }}
-            </a>
-            <a href="{{ route('auth.socialite', 'facebook') }}" class="btn btn-primary auth-social-btn">
-                <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#ffffff" d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"/></svg>
-                {{ __('Facebook') }}
-            </a>
+                                    <!-- Remember Me and Forgot Password -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <label class="form-check-label text-muted" for="remember">
+                                                Ghi nhớ đăng nhập
+                                            </label>
+                                        </div>
+                                        @if (Route::has('password.request'))
+                                            <a href="{{ route('password.request') }}" class="text-primary text-decoration-none">Quên mật khẩu?</a>
+                                        @endif
+                                    </div>
+
+                                    <!-- Login Button -->
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-4 position-relative" id="loginBtn">
+                                        <span class="btn-text">
+                                            <i class="fas fa-sign-in-alt me-2"></i>
+                                            Đăng nhập
+                                        </span>
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    </button>
+                                </form>
+
+                                <!-- Divider -->
+                                <div class="position-relative text-center mb-4">
+                                    <hr class="text-muted">
+                                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">
+                                        Hoặc đăng nhập với
+                                    </span>
+                                </div>
+
+                                <!-- Social Login -->
+                                <div class="row g-2 mb-4">
+                                    <div class="col-6">
+                                        <a href="#" class="btn btn-outline-danger w-100">
+                                            <i class="fab fa-google me-2"></i>
+                                            Google
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" class="btn btn-outline-primary w-100">
+                                            <i class="fab fa-facebook-f me-2"></i>
+                                            Facebook
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Register Link -->
+                                <div class="text-center">
+                                    <p class="text-muted mb-0">
+                                        Chưa có tài khoản?
+                                        <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-medium">Đăng ký ngay</a>
+                                    </p>
+                                </div>
+
+                                <!-- Security Badge -->
+                                <div class="text-center mt-4">
+                                    <small class="text-muted d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-shield-alt me-2 text-success"></i>
+                                        Bảo mật SSL 256-bit
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Highlights -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="text-center mb-4">
+                            <h4 class="fw-bold text-dark">Tham gia cộng đồng kỹ thuật hàng đầu Việt Nam</h4>
+                            <p class="text-muted">Khám phá những thảo luận nổi bật và kết nối với các chuyên gia</p>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Trending Topics -->
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-fire text-danger fs-1 mb-3"></i>
+                                        <h5 class="fw-bold">Xu hướng nổi bật</h5>
+                                        <p class="text-muted small">Mastercam, Siemens PLC, Robot công nghiệp</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Expert Network -->
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-user-tie text-primary fs-1 mb-3"></i>
+                                        <h5 class="fw-bold">Mạng lưới chuyên gia</h5>
+                                        <p class="text-muted small">64+ kỹ sư từ các công ty hàng đầu</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Knowledge Base -->
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-book-open text-success fs-1 mb-3"></i>
+                                        <h5 class="fw-bold">Kho tri thức</h5>
+                                        <p class="text-muted small">118+ thảo luận chất lượng cao</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="text-center mt-4">
-        <p>{{ __('Don\'t have an account?') }} <a href="{{ route('register') }}" class="auth-footer-link">{{ __('Register') }}</a></p>
-    </div>
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+
+// Form submission with loading state
+document.querySelector('form').addEventListener('submit', function() {
+    const btn = document.getElementById('loginBtn');
+    const btnText = btn.querySelector('.btn-text');
+    const spinner = btn.querySelector('.spinner-border');
+
+    btnText.classList.add('d-none');
+    spinner.classList.remove('d-none');
+    btn.disabled = true;
+});
+</script>
 @endsection

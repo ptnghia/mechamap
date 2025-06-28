@@ -51,4 +51,16 @@ return [
     'latest' => 'Mới Nhất',
     'sort_by' => 'Sắp xếp theo',
     'jump_to_latest' => 'Đi đến Mới Nhất',
+
+    // Language switching
+    'language' => [
+        'switch_language' => 'Chuyển đổi ngôn ngữ',
+        'select_language' => 'Chọn ngôn ngữ',
+        'auto_detect' => 'Tự động phát hiện',
+        'switched_successfully' => 'Đã chuyển đổi ngôn ngữ thành công',
+        'switch_failed' => 'Không thể chuyển đổi ngôn ngữ',
+        'not_supported' => 'Ngôn ngữ không được hỗ trợ',
+        'auto_detected' => 'Đã tự động phát hiện ngôn ngữ từ trình duyệt',
+        'auto_detect_failed' => 'Không thể tự động phát hiện ngôn ngữ',
+    ],
 ];

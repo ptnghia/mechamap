@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Robots.txt')
-@section('header', 'Quản lý Robots.txt')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý Robots.txt</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý Robots.txt</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -19,19 +33,19 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-fill me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action active">
-                            <i class="bi bi-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-diagram-3 me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
                         </a>
                     </div>
                 </div>
@@ -75,10 +89,10 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                         
                         <div class="d-flex justify-content-between">
                             <a href="{{ url('robots.txt') }}" target="_blank" class="btn btn-outline-secondary">
-                                <i class="bi bi-eye me-1"></i> {{ __('Xem file hiện tại') }}
+                                <i class="fas fa-eye me-1"></i> {{ __('Xem file hiện tại') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu thay đổi') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
                             </button>
                         </div>
                     </form>
@@ -103,7 +117,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="allow-all">
-                                        <i class="bi bi-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
                                     </button>
                                 </div>
                             </div>
@@ -124,7 +138,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-admin">
-                                        <i class="bi bi-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
                                     </button>
                                 </div>
                             </div>
@@ -141,7 +155,7 @@ Disallow: /</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-all">
-                                        <i class="bi bi-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
                                     </button>
                                 </div>
                             </div>
@@ -166,7 +180,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-agents">
-                                        <i class="bi bi-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
                                     </button>
                                 </div>
                             </div>
@@ -214,7 +228,7 @@ Sitemap: {{ url('sitemap.xml') }}`
                 
                 // Show success message
                 const originalText = this.innerHTML;
-                this.innerHTML = '<i class="bi bi-check-lg me-1"></i> {{ __('Đã sao chép') }}';
+                this.innerHTML = '<i class="fas fa-check me-1"></i> {{ __('Đã sao chép') }}';
                 this.classList.remove('btn-outline-primary');
                 this.classList.add('btn-success');
                 

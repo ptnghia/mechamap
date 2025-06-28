@@ -34,11 +34,11 @@ class ShowcaseController extends Controller
         if ($request->filled('status')) {
             $status = $request->input('status');
             if ($status === 'featured') {
-                $query->where('is_featured', true);
+                $query->whereNotNull('featured_at');
             } elseif ($status === 'active') {
-                $query->where('is_active', true);
+                $query->where('status', 'published');
             } elseif ($status === 'inactive') {
-                $query->where('is_active', false);
+                $query->where('status', '!=', 'published');
             }
         }
 
@@ -58,8 +58,8 @@ class ShowcaseController extends Controller
         // Thống kê nhanh
         $stats = [
             'total' => Showcase::count(),
-            'featured' => Showcase::where('is_featured', true)->count(),
-            'active' => Showcase::where('is_active', true)->count(),
+            'featured' => Showcase::whereNotNull('featured_at')->count(),
+            'active' => Showcase::where('status', 'published')->count(),
             'threads' => Showcase::where('showcaseable_type', Thread::class)->count(),
             'posts' => Showcase::where('showcaseable_type', Post::class)->count(),
         ];

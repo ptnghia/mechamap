@@ -16,7 +16,7 @@
                     <option value="users" {{ request('search_type') == 'users' ? 'selected' : '' }}>{{ __('Người dùng') }}</option>
                 </select>
                 <button class="btn btn-outline-secondary" type="submit">
-                    <i class="bi bi-search"></i>
+                    <i class="fas fa-search"></i>
                 </button>
             </div>
         </form>
@@ -29,16 +29,16 @@
                 <span>{{ Auth::guard('admin')->user()->name }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="bi bi-person me-2"></i>Hồ sơ của tôi</a></li>
-                <li><a class="dropdown-item" href="{{ route('admin.profile.password') }}"><i class="bi bi-key me-2"></i>Đổi mật khẩu</a></li>
-                <li><a class="dropdown-item" href="{{ route('profile.show', Auth::guard('admin')->user()->username) }}" target="_blank"><i class="bi bi-eye me-2"></i>Xem hồ sơ công khai</a></li>
-                <li><a class="dropdown-item" href="{{ route('home') }}" target="_blank"><i class="bi bi-box-arrow-up-right me-2"></i>Xem trang web</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.profile.index') }}"><i class="fas fa-user me-2"></i>Hồ sơ của tôi</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.profile.password') }}"><i class="fas fa-key me-2"></i>Đổi mật khẩu</a></li>
+                <li><a class="dropdown-item" href="{{ url('/users/' . Auth::guard('admin')->user()->username) }}" target="_blank"><i class="fas fa-eye me-2"></i>Xem hồ sơ công khai</a></li>
+                <li><a class="dropdown-item" href="{{ route('home') }}" target="_blank"><i class="fas fa-external-link-alt me-2"></i>Xem trang web</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="dropdown-item">
-                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                            <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
                         </button>
                     </form>
                 </li>

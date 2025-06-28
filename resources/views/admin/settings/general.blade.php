@@ -1,7 +1,21 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Cấu hình chung')
-@section('header', 'Cấu hình chung')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Cấu hình chung</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Cấu hình chung</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('content')
     <div class="row">
@@ -138,7 +152,7 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
                             </button>
                         </div>
                     </form>

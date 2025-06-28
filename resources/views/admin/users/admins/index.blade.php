@@ -1,6 +1,27 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý quản trị viên')
+
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý quản trị viên</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">MechaMap</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Quản lý thành viên</a></li>
+                    <li class="breadcrumb-item active">Quản trị viên</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -25,10 +46,10 @@
         </div>
         <div class="col-md-6 text-end">
             <a href="{{ route('admin.users.admins.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Thêm quản trị viên
+                <i class="fas fa-plus-circle"></i> Thêm quản trị viên
             </a>
             <a href="{{ route('admin.users.members') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-people"></i> Thành viên thường
+                <i class="fas fa-users"></i> Thành viên thường
             </a>
         </div>
     </div>
@@ -157,9 +178,9 @@
                                     <div>
                                         <h6 class="mb-0">{{ $admin->name }}</h6>
                                         <small class="text-muted">
-                                            <i class="bi bi-person"></i> {{ $admin->username }}
+                                            <i class="fas fa-user"></i> {{ $admin->username }}
                                             <br>
-                                            <i class="bi bi-envelope"></i> {{ $admin->email }}
+                                            <i class="fas fa-envelope"></i> {{ $admin->email }}
                                         </small>
                                     </div>
                                 </div>
@@ -173,12 +194,12 @@
                             </td>
                             <td>
                                 <small>
-                                    <i class="bi bi-chat-dots"></i> {{ $admin->threads_count }} bài viết<br>
-                                    <i class="bi bi-chat"></i> {{ $admin->posts_count }} bình luận<br>
+                                    <i class="fas fa-comment-dots"></i> {{ $admin->threads_count }} bài viết<br>
+                                    <i class="fas fa-comment"></i> {{ $admin->posts_count }} bình luận<br>
                                     @if($admin->last_seen_at)
-                                    <i class="bi bi-clock"></i> {{ $admin->last_seen_at->diffForHumans() }}
+                                    <i class="fas fa-clock"></i> {{ $admin->last_seen_at->diffForHumans() }}
                                     @else
-                                    <i class="bi bi-clock"></i> Chưa có hoạt động
+                                    <i class="fas fa-clock"></i> Chưa có hoạt động
                                     @endif
                                 </small>
                             </td>
@@ -198,15 +219,15 @@
                                 <div class="btn-group btn-group-sm" role="group">
                                     <a href="{{ route('admin.users.show', $admin) }}" class="btn btn-outline-info"
                                         title="Xem chi tiết">
-                                        <i class="bi bi-eye"></i>
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="{{ route('admin.users.admins.edit', $admin) }}"
                                         class="btn btn-outline-primary" title="Chỉnh sửa">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="{{ route('admin.users.admins.permissions', $admin) }}"
                                         class="btn btn-outline-success" title="Phân quyền">
-                                        <i class="bi bi-shield-check"></i>
+                                        <i class="fas fa-shield-alt"></i>
                                     </a>
                                     @if($admin->id !== auth()->guard('admin')->id())
                                     <form method="POST" action="{{ route('admin.users.toggle-ban', $admin) }}"
@@ -216,7 +237,7 @@
                                         <button type="submit" class="btn btn-outline-warning"
                                             title="{{ $admin->banned_at ? 'Bỏ cấm' : 'Cấm' }}"
                                             onclick="return confirm('Bạn có chắc chắn?')">
-                                            <i class="bi bi-{{ $admin->banned_at ? 'unlock' : 'lock' }}"></i>
+                                            <i class="fas fa-{{ $admin->banned_at ? 'unlock' : 'lock' }}"></i>
                                         </button>
                                     </form>
                                     @endif
@@ -229,7 +250,7 @@
             </div>
             @else
             <div class="text-center py-5">
-                <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                <i class="fas fa-users text-muted" style="font-size: 3rem;"></i>
                 <h5 class="mt-3 text-muted">Không tìm thấy quản trị viên nào</h5>
                 <p class="text-muted">Thử thay đổi điều kiện lọc hoặc thêm quản trị viên mới.</p>
             </div>
@@ -242,4 +263,8 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

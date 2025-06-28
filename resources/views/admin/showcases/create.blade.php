@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thêm vào Showcase')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -71,4 +75,8 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

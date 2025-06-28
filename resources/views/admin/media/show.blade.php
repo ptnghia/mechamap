@@ -1,15 +1,29 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Chi tiết Media')
 
-@section('header', 'Chi tiết Media')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chi tiết Media</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chi tiết Media</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.media.edit', $media) }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
     </a>
     <a href="{{ route('admin.media.download', $media) }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-download me-1"></i> {{ __('Tải xuống') }}
+        <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
     </a>
 @endsection
 
@@ -30,35 +44,35 @@
                         </video>
                     @elseif(strpos($media->file_type, 'audio') !== false)
                         <audio controls class="w-100">
-                            <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->file_type }}">
+                            <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->mime_type }}">
                             {{ __('Trình duyệt của bạn không hỗ trợ audio.') }}
                         </audio>
-                    @elseif(strpos($media->file_type, 'pdf') !== false)
+                    @elseif(strpos($media->mime_type, 'pdf') !== false)
                         <div class="ratio ratio-16x9" style="max-height: 500px;">
                             <iframe src="{{ Storage::url($media->file_path) }}" allowfullscreen></iframe>
                         </div>
                     @else
                         <div class="p-5 text-center">
                             @if(strpos($media->file_type, 'word') !== false || strpos($media->file_type, 'document') !== false)
-                                <i class="bi bi-file-earmark-word text-primary" style="font-size: 5rem;"></i>
+                                <i class="fas fa-file-word text-primary" style="font-size: 5rem;"></i>
                             @elseif(strpos($media->file_type, 'excel') !== false || strpos($media->file_type, 'spreadsheet') !== false)
-                                <i class="bi bi-file-earmark-excel text-success" style="font-size: 5rem;"></i>
+                                <i class="fas fa-file-excel text-success" style="font-size: 5rem;"></i>
                             @elseif(strpos($media->file_type, 'powerpoint') !== false || strpos($media->file_type, 'presentation') !== false)
-                                <i class="bi bi-file-earmark-ppt text-warning" style="font-size: 5rem;"></i>
+                                <i class="fas fa-file-ppt text-warning" style="font-size: 5rem;"></i>
                             @elseif(strpos($media->file_type, 'zip') !== false || strpos($media->file_type, 'rar') !== false || strpos($media->file_type, 'archive') !== false)
-                                <i class="bi bi-file-earmark-zip text-secondary" style="font-size: 5rem;"></i>
+                                <i class="fas fa-file-zip text-secondary" style="font-size: 5rem;"></i>
                             @else
-                                <i class="bi bi-file-earmark text-secondary" style="font-size: 5rem;"></i>
+                                <i class="fas fa-file text-secondary" style="font-size: 5rem;"></i>
                             @endif
                             <p class="mt-3">{{ __('Không thể xem trước file này.') }}</p>
                             <a href="{{ route('admin.media.download', $media) }}" class="btn btn-primary">
-                                <i class="bi bi-download me-1"></i> {{ __('Tải xuống') }}
+                                <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
                             </a>
                         </div>
                     @endif
                 </div>
             </div>
-            
+
             @if($media->description)
                 <div class="card">
                     <div class="card-header">
@@ -70,7 +84,7 @@
                 </div>
             @endif
         </div>
-        
+
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
@@ -113,7 +127,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Thao tác') }}</h5>
@@ -121,18 +135,18 @@
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.media.edit', $media) }}" class="btn btn-primary">
-                            <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
                         </a>
                         <a href="{{ route('admin.media.download', $media) }}" class="btn btn-outline-primary">
-                            <i class="bi bi-download me-1"></i> {{ __('Tải xuống') }}
+                            <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
                         </a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="bi bi-trash me-1"></i> {{ __('Xóa') }}
+                            <i class="fas fa-trash me-1"></i> {{ __('Xóa') }}
                         </button>
                     </div>
                 </div>
             </div>
-            
+
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Đường dẫn') }}</h5>
@@ -143,7 +157,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="url" value="{{ Storage::url($media->file_path) }}" readonly>
                             <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('url')">
-                                <i class="bi bi-clipboard"></i>
+                                <i class="fas fa-clipboard"></i>
                             </button>
                         </div>
                     </div>
@@ -151,7 +165,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal xóa -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -182,16 +196,16 @@
         const element = document.getElementById(elementId);
         element.select();
         document.execCommand('copy');
-        
+
         // Hiển thị thông báo
         const button = element.nextElementSibling;
         const originalHtml = button.innerHTML;
-        button.innerHTML = '<i class="bi bi-check"></i>';
+        button.innerHTML = '<i class="fas fa-check"></i>';
         setTimeout(() => {
             button.innerHTML = originalHtml;
         }, 2000);
     }
-    
+
     function formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;

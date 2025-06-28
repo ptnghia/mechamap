@@ -1,1 +1,0 @@
-'Database Error: ' . $e- . PHP_EOL;

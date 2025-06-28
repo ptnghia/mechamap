@@ -26,7 +26,7 @@ class MediaController extends Controller
 
             // Filter by type
             if ($request->has('type')) {
-                $query->where('file_type', $request->type);
+                $query->where('mime_type', 'like', $request->type . '/%');
             }
 
             // Sort by
@@ -98,14 +98,19 @@ class MediaController extends Controller
             // Create media record
             $media = Media::create([
                 'user_id' => Auth::id(),
-                'file_name' => $fileName,
-                'file_path' => $filePath,
-                'file_type' => $file->getClientMimeType(),
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => str_replace('public/', '', $filePath),
+                'disk' => 'public',
+                'mime_type' => $file->getClientMimeType(),
                 'file_size' => $file->getSize(),
+                'file_extension' => $file->getClientOriginalExtension(),
+                'file_category' => $this->getFileCategory($file->getClientMimeType()),
                 'title' => $request->title ?? $file->getClientOriginalName(),
                 'description' => $request->description,
                 'mediable_id' => $request->thread_id,
                 'mediable_type' => $request->has('thread_id') ? Thread::class : null,
+                'is_public' => true,
+                'is_approved' => true,
             ]);
 
             // Add full URL
@@ -315,7 +320,7 @@ class MediaController extends Controller
 
             // Filter by type
             if ($request->has('type')) {
-                $query->where('file_type', $request->type);
+                $query->where('mime_type', 'like', $request->type . '/%');
             }
 
             // Sort by
@@ -364,15 +369,13 @@ class MediaController extends Controller
             $perPage = $request->input('per_page', 20);
 
             // Get recent media (sử dụng điều kiện tương tự như trong Laravel Web Controller)
-            $query = Media::with(['user', 'thread.category', 'thread.forum'])
-                ->whereNotNull('thread_id')
-                ->whereHas('thread', function ($query) {
-                    $query->where('is_locked', false);
-                });
+            $query = Media::with(['user', 'mediable'])
+                ->where('mediable_type', 'App\\Models\\Thread')
+                ->whereNotNull('mediable_id');
 
             // Filter by type
             if ($request->has('type')) {
-                $query->where('file_type', 'like', $request->type . '%');
+                $query->where('mime_type', 'like', $request->type . '/%');
             }
 
             // Sort by
@@ -409,5 +412,29 @@ class MediaController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Get file category based on mime type
+     */
+    private function getFileCategory(string $mimeType): string
+    {
+        if (str_starts_with($mimeType, 'image/')) {
+            return 'image';
+        }
+
+        if (str_starts_with($mimeType, 'application/pdf')) {
+            return 'technical_doc';
+        }
+
+        if (in_array($mimeType, ['application/acad', 'application/x-autocad', 'image/vnd.dwg'])) {
+            return 'cad_drawing';
+        }
+
+        if (in_array($mimeType, ['application/step', 'application/iges', 'model/step', 'model/iges'])) {
+            return 'cad_model';
+        }
+
+        return 'other';
     }
 }

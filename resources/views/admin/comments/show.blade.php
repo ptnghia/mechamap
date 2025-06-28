@@ -1,21 +1,35 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Chi tiết bình luận')
 
-@section('header', 'Chi tiết bình luận')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chi tiết bình luận</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chi tiết bình luận</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
     </a>
     <form action="{{ route('admin.comments.toggle-visibility', $comment) }}" method="POST" class="d-inline">
         @csrf
         @method('PUT')
         <button type="submit" class="btn btn-sm {{ $comment->is_hidden ? 'btn-success' : 'btn-warning' }}">
             @if($comment->is_hidden)
-                <i class="bi bi-eye me-1"></i> {{ __('Hiện bình luận') }}
+                <i class="fas fa-eye me-1"></i> {{ __('Hiện bình luận') }}
             @else
-                <i class="bi bi-eye-slash me-1"></i> {{ __('Ẩn bình luận') }}
+                <i class="fas fa-eye-slash me-1"></i> {{ __('Ẩn bình luận') }}
             @endif
         </button>
     </form>
@@ -117,17 +131,17 @@
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="replyActions{{ $reply->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots"></i>
+                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="replyActions{{ $reply->id }}">
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('admin.comments.show', $reply) }}">
-                                                            <i class="bi bi-eye me-2"></i> {{ __('Xem chi tiết') }}
+                                                            <i class="fas fa-eye me-2"></i> {{ __('Xem chi tiết') }}
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('admin.comments.edit', $reply) }}">
-                                                            <i class="bi bi-pencil me-2"></i> {{ __('Chỉnh sửa') }}
+                                                            <i class="fas fa-edit me-2"></i> {{ __('Chỉnh sửa') }}
                                                         </a>
                                                     </li>
                                                     <li>
@@ -136,9 +150,9 @@
                                                             @method('PUT')
                                                             <button type="submit" class="dropdown-item">
                                                                 @if($reply->is_hidden)
-                                                                    <i class="bi bi-eye me-2"></i> {{ __('Hiện bình luận') }}
+                                                                    <i class="fas fa-eye me-2"></i> {{ __('Hiện bình luận') }}
                                                                 @else
-                                                                    <i class="bi bi-eye-slash me-2"></i> {{ __('Ẩn bình luận') }}
+                                                                    <i class="fas fa-eye-slash me-2"></i> {{ __('Ẩn bình luận') }}
                                                                 @endif
                                                             </button>
                                                         </form>
@@ -149,12 +163,12 @@
                                         <div class="comment-content {{ $reply->is_hidden ? 'text-muted fst-italic' : '' }}">
                                             @if($reply->is_hidden)
                                                 <div class="alert alert-warning py-1 px-2 mb-2">
-                                                    <small><i class="bi bi-eye-slash me-1"></i> {{ __('Bình luận này đã bị ẩn') }}</small>
+                                                    <small><i class="fas fa-eye-slash me-1"></i> {{ __('Bình luận này đã bị ẩn') }}</small>
                                                 </div>
                                             @endif
                                             @if($reply->is_flagged)
                                                 <div class="alert alert-danger py-1 px-2 mb-2">
-                                                    <small><i class="bi bi-flag-fill me-1"></i> {{ __('Bình luận này đã bị đánh dấu') }}</small>
+                                                    <small><i class="fas fa-flag-fill me-1"></i> {{ __('Bình luận này đã bị đánh dấu') }}</small>
                                                 </div>
                                             @endif
                                             {!! $reply->content !!}
@@ -180,7 +194,7 @@
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-primary">
-                            <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
                         </a>
                         
                         <form action="{{ route('admin.comments.toggle-visibility', $comment) }}" method="POST">
@@ -188,9 +202,9 @@
                             @method('PUT')
                             <button type="submit" class="btn btn-block {{ $comment->is_hidden ? 'btn-success' : 'btn-warning' }} w-100">
                                 @if($comment->is_hidden)
-                                    <i class="bi bi-eye me-1"></i> {{ __('Hiện bình luận') }}
+                                    <i class="fas fa-eye me-1"></i> {{ __('Hiện bình luận') }}
                                 @else
-                                    <i class="bi bi-eye-slash me-1"></i> {{ __('Ẩn bình luận') }}
+                                    <i class="fas fa-eye-slash me-1"></i> {{ __('Ẩn bình luận') }}
                                 @endif
                             </button>
                         </form>
@@ -200,15 +214,15 @@
                             @method('PUT')
                             <button type="submit" class="btn btn-block {{ $comment->is_flagged ? 'btn-outline-warning' : 'btn-outline-danger' }} w-100">
                                 @if($comment->is_flagged)
-                                    <i class="bi bi-flag me-1"></i> {{ __('Bỏ đánh dấu') }}
+                                    <i class="fas fa-flag me-1"></i> {{ __('Bỏ đánh dấu') }}
                                 @else
-                                    <i class="bi bi-flag-fill me-1"></i> {{ __('Đánh dấu') }}
+                                    <i class="fas fa-flag-fill me-1"></i> {{ __('Đánh dấu') }}
                                 @endif
                             </button>
                         </form>
                         
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="bi bi-trash me-1"></i> {{ __('Xóa bình luận') }}
+                            <i class="fas fa-trash me-1"></i> {{ __('Xóa bình luận') }}
                         </button>
                     </div>
                 </div>
@@ -242,7 +256,7 @@
                     </div>
                     <div class="d-grid">
                         <a href="{{ route('admin.users.show', $comment->user) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-person me-1"></i> {{ __('Xem hồ sơ') }}
+                            <i class="fas fa-user me-1"></i> {{ __('Xem hồ sơ') }}
                         </a>
                     </div>
                 </div>
@@ -264,7 +278,7 @@
                     </div>
                     <div class="d-grid">
                         <a href="{{ route('admin.threads.show', $comment->thread) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-eye me-1"></i> {{ __('Xem bài đăng') }}
+                            <i class="fas fa-eye me-1"></i> {{ __('Xem bài đăng') }}
                         </a>
                     </div>
                 </div>
@@ -297,8 +311,11 @@
             </div>
         </div>
     </div>
-@endsection
 
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
+@endsection
 @push('styles')
 <style>
     .comment-content {

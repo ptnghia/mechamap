@@ -44,4 +44,18 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    /**
+     * GET route để logout (redirect đến POST)
+     */
+    public function logoutGet(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Đã đăng xuất thành công.');
+    }
 }

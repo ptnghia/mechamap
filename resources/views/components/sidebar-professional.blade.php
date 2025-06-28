@@ -128,7 +128,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
         <div class="card-body p-0">
             <div class="engineers-list">
                 @foreach($sidebarData['active_members'] as $index => $member)
-                <a href="{{ route('profile.show', $member['username']) }}" class="engineer-item">
+                <a href="#" class="engineer-item">
                     <div class="engineer-rank">#{{ $index + 1 }}</div>
                     <div class="engineer-avatar">
                         <img src="{{ $member['avatar'] }}" alt="{{ $member['name'] }}" class="rounded-circle">

@@ -1,29 +1,52 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
-@section('title', 'Quản lý SEO cho các trang')
-@section('header', 'Quản lý SEO cho các trang')
+@section('title', 'Quản Lý SEO Cho Các Trang')
 
-@section('actions')
-    <a href="{{ route('admin.page-seo.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-circle me-1"></i> {{ __('Thêm cấu hình mới') }}
-    </a>
-    <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary ms-2">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
-    </a>
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản Lý SEO Cho Các Trang</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">MechaMap</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.seo.index') }}">SEO</a></li>
+                    <li class="breadcrumb-item active">SEO Trang</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách cấu hình SEO cho các trang') }}</h5>
-            <span class="badge bg-secondary">{{ __('Tổng') }}: {{ $pages->total() }}</span>
-        </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h4 class="card-title">Danh Sách Cấu Hình SEO Cho Các Trang</h4>
+                        <div class="card-title-desc">Quản lý SEO cho từng trang cụ thể</div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group">
+                            <a href="{{ route('admin.page-seo.create') }}" class="btn btn-primary btn-sm">
+                                <i class="mdi mdi-plus me-1"></i> Thêm Cấu Hình Mới
+                            </a>
+                            <a href="{{ route('admin.seo.index') }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="mdi mdi-arrow-left me-1"></i> Quay Lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="card-body">
             <div class="alert alert-info">
-                <i class="bi bi-info-circle-fill me-2"></i>
+                <i class="fas fa-info-circle-fill me-2"></i>
                 {{ __('Cấu hình SEO cho các trang cụ thể sẽ ghi đè lên cấu hình SEO chung.') }}
             </div>
-            
+
             @if(count($pages) > 0)
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
@@ -45,7 +68,7 @@
                                         @endif
                                         @if($page->url_pattern)
                                             <div class="small text-muted">
-                                                <i class="bi bi-link-45deg me-1"></i>{{ $page->url_pattern }}
+                                                <i class="fas fa-link me-1"></i>{{ $page->url_pattern }}
                                             </div>
                                         @endif
                                     </td>
@@ -63,7 +86,7 @@
                                         @else
                                             <span class="badge bg-secondary">{{ __('Không hoạt động') }}</span>
                                         @endif
-                                        
+
                                         @if($page->no_index)
                                             <span class="badge bg-warning ms-1" data-bs-toggle="tooltip" title="{{ __('Không cho phép công cụ tìm kiếm lập chỉ mục') }}">
                                                 {{ __('No Index') }}
@@ -74,13 +97,13 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.page-seo.edit', $page) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Chỉnh sửa') }}">
-                                                <i class="bi bi-pencil"></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $page->id }}" title="{{ __('Xóa') }}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
-                                        
+
                                         <!-- Delete Modal -->
                                         <div class="modal fade" id="deleteModal{{ $page->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $page->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -95,7 +118,7 @@
                                                         <div class="modal-body">
                                                             <p>{{ __('Bạn có chắc chắn muốn xóa cấu hình SEO này?') }}</p>
                                                             <div class="alert alert-warning">
-                                                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                                                <i class="fas fa-exclamation-triangle-fill me-2"></i>
                                                                 {{ __('Hành động này không thể hoàn tác.') }}
                                                             </div>
                                                         </div>
@@ -113,23 +136,25 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="mt-4">
                     {{ $pages->links() }}
                 </div>
             @else
                 <div class="text-center py-5">
-                    <i class="bi bi-search text-muted fs-1 d-block mb-3"></i>
-                    <p class="text-muted mb-0">{{ __('Chưa có cấu hình SEO nào cho các trang.') }}</p>
+                    <i class="mdi mdi-magnify font-size-48 text-muted mb-3"></i>
+                    <p class="text-muted mb-0">Chưa có cấu hình SEO nào cho các trang.</p>
                     <div class="mt-3">
                         <a href="{{ route('admin.page-seo.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> {{ __('Thêm cấu hình mới') }}
+                            <i class="fas fa-plus-circle me-1"></i> {{ __('Thêm cấu hình mới') }}
                         </a>
                     </div>
                 </div>
             @endif
         </div>
     </div>
+</div>
+</div>
 @endsection
 
 @push('scripts')

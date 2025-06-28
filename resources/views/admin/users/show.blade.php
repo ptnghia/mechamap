@@ -1,11 +1,11 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', $user->name)
 @section('header', $user->name)
 
 @section('actions')
     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary me-2">
-        <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
     </a>
     <div class="btn-group me-2">
         <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal">
@@ -13,11 +13,11 @@
             {{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="bi bi-trash me-1"></i> {{ __('Xóa') }}
+            <i class="fas fa-trash me-1"></i> {{ __('Xóa') }}
         </button>
     </div>
     <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -38,7 +38,7 @@
                         @else
                             <span class="badge bg-secondary">{{ __('Member') }}</span>
                         @endif
-                        
+
                         @if($user->banned_at)
                             <span class="badge bg-danger ms-1">{{ __('Bị cấm') }}</span>
                         @elseif($user->isOnline())
@@ -47,33 +47,33 @@
                     </p>
                     <p class="card-text">
                         <small class="text-muted">
-                            <i class="bi bi-person"></i> {{ $user->username }}
+                            <i class="fas fa-user"></i> {{ $user->username }}
                         </small>
                         <br>
                         <small class="text-muted">
-                            <i class="bi bi-envelope"></i> {{ $user->email }}
+                            <i class="fas fa-envelope"></i> {{ $user->email }}
                         </small>
                         @if($user->location)
                             <br>
                             <small class="text-muted">
-                                <i class="bi bi-geo-alt"></i> {{ $user->location }}
+                                <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
                             </small>
                         @endif
                         @if($user->website)
                             <br>
                             <small class="text-muted">
-                                <i class="bi bi-globe"></i> <a href="{{ $user->website }}" target="_blank">{{ $user->website }}</a>
+                                <i class="fas fa-globe"></i> <a href="{{ $user->website }}" target="_blank">{{ $user->website }}</a>
                             </small>
                         @endif
                     </p>
                     <div class="d-grid gap-2">
-                        <a href="{{ route('profile.show', $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
+                        <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
                         </a>
                     </div>
                 </div>
             </div>
-            
+
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Thông tin tài khoản') }}</h5>
@@ -109,7 +109,7 @@
                     @endif
                 </div>
             </div>
-            
+
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Đặt lại mật khẩu') }}</h5>
@@ -118,40 +118,40 @@
                     <form action="{{ route('admin.users.reset-password', $user) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="mb-3">
                             <label for="password" class="form-label">{{ __('Mật khẩu mới') }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </button>
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">{{ __('Xác nhận mật khẩu mới') }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="d-grid">
                             <button type="submit" class="btn btn-warning">
-                                <i class="bi bi-key me-1"></i> {{ __('Đặt lại mật khẩu') }}
+                                <i class="fas fa-key me-1"></i> {{ __('Đặt lại mật khẩu') }}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
@@ -168,13 +168,13 @@
                                             <h2 class="mt-2 mb-0">{{ number_format($stats['threads_count']) }}</h2>
                                         </div>
                                         <div class="bg-primary bg-opacity-10 p-3 rounded">
-                                            <i class="bi bi-chat-left-text fs-1 text-primary"></i>
+                                            <i class="fas fa-comment fs-1 text-primary"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6 mb-3">
                             <div class="card border-success h-100">
                                 <div class="card-body">
@@ -184,7 +184,7 @@
                                             <h2 class="mt-2 mb-0">{{ number_format($stats['posts_count']) }}</h2>
                                         </div>
                                         <div class="bg-success bg-opacity-10 p-3 rounded">
-                                            <i class="bi bi-chat-right-text fs-1 text-success"></i>
+                                            <i class="fas fa-comment fs-1 text-success"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-6 mb-4">
                     <div class="card h-100">
@@ -209,12 +209,12 @@
                                             <small>{{ $thread->created_at->diffForHumans() }}</small>
                                         </div>
                                         <small class="text-muted">
-                                            <i class="bi bi-chat-left"></i> {{ $thread->forum ? $thread->forum->name : __('Unknown Forum') }}
+                                            <i class="fas fa-comment"></i> {{ $thread->forum ? $thread->forum->name : __('Unknown Forum') }}
                                         </small>
                                     </a>
                                 @empty
                                     <div class="list-group-item text-center py-4">
-                                        <i class="bi bi-chat-left-text text-muted fs-1 d-block mb-2"></i>
+                                        <i class="fas fa-comment text-muted fs-1 d-block mb-2"></i>
                                         <p class="text-muted mb-0">{{ __('Chưa có chủ đề nào') }}</p>
                                     </div>
                                 @endforelse
@@ -227,7 +227,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-header">
@@ -242,12 +242,12 @@
                                             <small>{{ $post->created_at->diffForHumans() }}</small>
                                         </div>
                                         <small class="text-muted">
-                                            <i class="bi bi-chat-right"></i> {{ Str::limit(strip_tags($post->content), 50) }}
+                                            <i class="fas fa-comment"></i> {{ Str::limit(strip_tags($post->content), 50) }}
                                         </small>
                                     </a>
                                 @empty
                                     <div class="list-group-item text-center py-4">
-                                        <i class="bi bi-chat-right-text text-muted fs-1 d-block mb-2"></i>
+                                        <i class="fas fa-comment text-muted fs-1 d-block mb-2"></i>
                                         <p class="text-muted mb-0">{{ __('Chưa có bài viết nào') }}</p>
                                     </div>
                                 @endforelse
@@ -261,7 +261,7 @@
                     </div>
                 </div>
             </div>
-            
+
             @if($user->about_me)
                 <div class="card mb-4">
                     <div class="card-header">
@@ -272,7 +272,7 @@
                     </div>
                 </div>
             @endif
-            
+
             @if($user->signature)
                 <div class="card mb-4">
                     <div class="card-header">
@@ -285,7 +285,7 @@
             @endif
         </div>
     </div>
-    
+
     <!-- Ban Modal -->
     <div class="modal fade" id="banModal" tabindex="-1" aria-labelledby="banModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -323,7 +323,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Delete Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -338,7 +338,7 @@
                     <div class="modal-body">
                         <p>{{ __('Bạn có chắc chắn muốn xóa thành viên này?') }}</p>
                         <div class="alert alert-danger">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <i class="fas fa-exclamation-triangle-fill me-2"></i>
                             {{ __('Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.') }}
                         </div>
                     </div>
@@ -360,7 +360,7 @@
             const targetId = this.getAttribute('data-target');
             const passwordInput = document.getElementById(targetId);
             const icon = this.querySelector('i');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.classList.remove('bi-eye');

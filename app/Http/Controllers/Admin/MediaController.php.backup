@@ -195,13 +195,13 @@ class MediaController extends Controller
 
         // Áp dụng các bộ lọc
         if ($type === 'image') {
-            $query->where('file_type', 'like', "image/%");
+            $query->where('mime_type', 'like', "image/%");
         } elseif ($type === 'document') {
             $query->where(function ($q) {
-                $q->where('file_type', 'like', "application/pdf")
-                    ->orWhere('file_type', 'like', "application/msword")
-                    ->orWhere('file_type', 'like', "application/vnd.openxmlformats-officedocument.%")
-                    ->orWhere('file_type', 'like', "application/vnd.ms-%");
+                $q->where('mime_type', 'like', "application/pdf")
+                    ->orWhere('mime_type', 'like', "application/msword")
+                    ->orWhere('mime_type', 'like', "application/vnd.openxmlformats-officedocument.%")
+                    ->orWhere('mime_type', 'like', "application/vnd.ms-%");
             });
         }
 

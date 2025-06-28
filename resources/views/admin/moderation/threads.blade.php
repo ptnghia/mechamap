@@ -1,5 +1,5 @@
 {{-- Admin Moderation Threads Management --}}
-@extends('layouts.admin')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Threads - Moderation')
 

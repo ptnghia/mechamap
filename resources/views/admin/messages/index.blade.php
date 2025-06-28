@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Messages')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid px-4">
@@ -266,4 +270,8 @@
         $('#enable_file_attachments').trigger('change');
     });
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

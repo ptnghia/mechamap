@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - MechaMap</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 2rem;
+        }
+        
+        .offline-icon {
+            font-size: 5rem;
+            color: #6c757d;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .offline-title {
+            color: #343a40;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .offline-message {
+            color: #6c757d;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .offline-features {
+            margin-top: 3rem;
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .feature-icon {
+            color: #28a745;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .status-offline {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .status-online {
+            background: #28a745;
+            color: white;
+        }
+        
+        .cached-content {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #e3f2fd;
+            border-radius: 15px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .cached-content h6 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+        
+        .cached-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .cached-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .cached-links a {
+            color: #1976d2;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        
+        .cached-links a:hover {
+            background: rgba(33, 150, 243, 0.1);
+        }
+        
+        .cached-links i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="connection-status status-offline">
+        <i class="fa-solid fa-wifi-slash me-2"></i>
+        Offline
+    </div>
+
+    <div class="offline-container">
+        <!-- Offline Icon -->
+        <div class="offline-icon">
+            <i class="fa-solid fa-cloud-slash"></i>
+        </div>
+        
+        <!-- Title and Message -->
+        <h1 class="offline-title">You're Offline</h1>
+        <p class="offline-message">
+            It looks like you've lost your internet connection. Don't worry, you can still access some cached content while offline.
+        </p>
+        
+        <!-- Retry Button -->
+        <a href="/" class="retry-btn" onclick="location.reload()">
+            <i class="fa-solid fa-refresh me-2"></i>
+            Try Again
+        </a>
+        
+        <!-- Offline Features -->
+        <div class="offline-features">
+            <h5 class="mb-3">What you can do offline:</h5>
+            
+            <div class="feature-item">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span>Browse previously visited pages</span>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span>View cached materials database</span>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span>Access engineering standards</span>
+            </div>
+            
+            <div class="feature-item">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span>Use offline calculators</span>
+            </div>
+        </div>
+        
+        <!-- Cached Content -->
+        <div class="cached-content">
+            <h6>
+                <i class="fa-solid fa-database me-2"></i>
+                Available Offline Content
+            </h6>
+            
+            <ul class="cached-links" id="cachedLinks">
+                <li>
+                    <a href="/materials">
+                        <i class="fa-solid fa-cube"></i>
+                        Materials Database
+                    </a>
+                </li>
+                <li>
+                    <a href="/standards">
+                        <i class="fa-solid fa-certificate"></i>
+                        Engineering Standards
+                    </a>
+                </li>
+                <li>
+                    <a href="/tools/material-calculator">
+                        <i class="fa-solid fa-calculator"></i>
+                        Material Calculator
+                    </a>
+                </li>
+                <li>
+                    <a href="/showcase">
+                        <i class="fa-solid fa-trophy"></i>
+                        Design Showcase
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Connection status monitoring
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            
+            if (navigator.onLine) {
+                statusElement.className = 'connection-status status-online';
+                statusElement.innerHTML = '<i class="fa-solid fa-wifi me-2"></i>Online';
+                
+                // Auto-reload when back online
+                setTimeout(() => {
+                    if (navigator.onLine) {
+                        location.reload();
+                    }
+                }, 2000);
+            } else {
+                statusElement.className = 'connection-status status-offline';
+                statusElement.innerHTML = '<i class="fa-solid fa-wifi-slash me-2"></i>Offline';
+            }
+        }
+        
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        
+        // Initial status check
+        updateConnectionStatus();
+        
+        // Check cached content availability
+        function checkCachedContent() {
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    const cachedLinks = document.getElementById('cachedLinks');
+                    
+                    // Check which links are available in cache
+                    const links = cachedLinks.querySelectorAll('a');
+                    links.forEach(link => {
+                        const url = link.getAttribute('href');
+                        
+                        caches.match(url).then(response => {
+                            if (response) {
+                                link.style.opacity = '1';
+                                link.style.pointerEvents = 'auto';
+                            } else {
+                                link.style.opacity = '0.5';
+                                link.style.pointerEvents = 'none';
+                                link.title = 'Not available offline';
+                            }
+                        });
+                    });
+                });
+            }
+        }
+        
+        // Check cached content on load
+        document.addEventListener('DOMContentLoaded', checkCachedContent);
+        
+        // Retry connection periodically
+        setInterval(() => {
+            if (!navigator.onLine) {
+                // Try to fetch a small resource to test connection
+                fetch('/favicon.ico', { 
+                    method: 'HEAD',
+                    cache: 'no-cache'
+                }).then(() => {
+                    // Connection restored
+                    updateConnectionStatus();
+                }).catch(() => {
+                    // Still offline
+                });
+            }
+        }, 10000);
+        
+        // Service Worker messaging
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                // Request cached URLs from service worker
+                registration.active.postMessage({
+                    type: 'GET_CACHED_URLS'
+                });
+            });
+            
+            // Listen for messages from service worker
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data.type === 'CACHED_URLS') {
+                    updateCachedLinks(event.data.urls);
+                }
+            });
+        }
+        
+        function updateCachedLinks(urls) {
+            const cachedLinks = document.getElementById('cachedLinks');
+            const links = cachedLinks.querySelectorAll('a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (urls.includes(href)) {
+                    link.style.opacity = '1';
+                    link.style.pointerEvents = 'auto';
+                } else {
+                    link.style.opacity = '0.5';
+                    link.style.pointerEvents = 'none';
+                }
+            });
+        }
+        
+        // Analytics for offline usage
+        function trackOfflineUsage() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'offline_page_view', {
+                    'page_title': 'Offline Page',
+                    'page_location': window.location.href
+                });
+            }
+        }
+        
+        trackOfflineUsage();
+    </script>
+</body>
+</html>

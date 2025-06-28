@@ -1,12 +1,26 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thống kê bình luận')
 
-@section('header', 'Thống kê bình luận')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thống kê bình luận</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thống kê bình luận</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.comments.index') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại danh sách') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại danh sách') }}
     </a>
 @endsection
 
@@ -65,7 +79,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.threads.show', $stat->thread) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye me-1"></i> {{ __('Xem') }}
+                                                <i class="fas fa-eye me-1"></i> {{ __('Xem') }}
                                             </a>
                                         </td>
                                     </tr>
@@ -113,7 +127,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('admin.users.show', $stat->user) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye me-1"></i> {{ __('Xem') }}
+                                                <i class="fas fa-eye me-1"></i> {{ __('Xem') }}
                                             </a>
                                         </td>
                                     </tr>

@@ -36,4 +36,16 @@ return [
     'new_showcases' => 'New Showcases',
     'popular' => 'Popular',
     'looking_for_replies' => 'Looking for Replies',
+
+    // Language switching
+    'language' => [
+        'switch_language' => 'Switch Language',
+        'select_language' => 'Select Language',
+        'auto_detect' => 'Auto Detect',
+        'switched_successfully' => 'Language switched successfully',
+        'switch_failed' => 'Failed to switch language',
+        'not_supported' => 'Language not supported',
+        'auto_detected' => 'Language auto-detected from browser',
+        'auto_detect_failed' => 'Failed to auto-detect language',
+    ],
 ];

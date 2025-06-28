@@ -24,25 +24,38 @@ class ConversationController extends Controller
     public function index(Request $request)
     {
         try {
-            // Get user's conversations
+            // Get user's conversations with additional data for chat widget
             $query = Conversation::whereHas('participants', function ($query) {
                 $query->where('user_id', Auth::id());
-            });
-            
+            })
+            ->with([
+                'participants.user:id,name,email,avatar',
+                'lastMessage:id,conversation_id,user_id,content,created_at'
+            ])
+            ->withCount(['messages as unread_count' => function ($query) {
+                $query->whereHas('conversation.participants', function ($q) {
+                    $q->where('user_id', Auth::id())
+                      ->where(function ($q2) {
+                          $q2->whereNull('last_read_at')
+                             ->orWhereColumn('messages.created_at', '>', 'conversation_participants.last_read_at');
+                      });
+                });
+            }]);
+
             // Sort by
             $sortBy = $request->input('sort_by', 'updated_at');
             $sortOrder = $request->input('sort_order', 'desc');
             $query->orderBy($sortBy, $sortOrder);
-            
+
             // Paginate
             $perPage = $request->input('per_page', 15);
             $conversations = $query->with(['participants.user', 'lastMessage'])->paginate($perPage);
-            
+
             // Add additional information
             $conversations->getCollection()->transform(function ($conversation) {
                 // Add unread messages count
                 $conversation->unread_messages_count = $conversation->unreadMessagesCount(Auth::id());
-                
+
                 // Add other participants
                 $otherParticipants = $conversation->participants->filter(function ($participant) {
                     return $participant->user_id !== Auth::id();
@@ -51,15 +64,15 @@ class ConversationController extends Controller
                     $user->avatar_url = $user->getAvatarUrl();
                     return $user;
                 })->values();
-                
+
                 $conversation->other_participants = $otherParticipants;
-                
+
                 // Remove participants to avoid duplication
                 unset($conversation->participants);
-                
+
                 return $conversation;
             });
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $conversations,
@@ -73,7 +86,7 @@ class ConversationController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Get a conversation by ID
      *
@@ -84,7 +97,7 @@ class ConversationController extends Controller
     {
         try {
             $conversation = Conversation::findOrFail($id);
-            
+
             // Check if the user is a participant
             $isParticipant = $conversation->participants()->where('user_id', Auth::id())->exists();
             if (!$isParticipant) {
@@ -93,10 +106,10 @@ class ConversationController extends Controller
                     'message' => 'Bạn không có quyền xem cuộc trò chuyện này.'
                 ], 403);
             }
-            
+
             // Load relationships
             $conversation->load(['participants.user']);
-            
+
             // Add other participants
             $otherParticipants = $conversation->participants->filter(function ($participant) {
                 return $participant->user_id !== Auth::id();
@@ -105,19 +118,19 @@ class ConversationController extends Controller
                 $user->avatar_url = $user->getAvatarUrl();
                 return $user;
             })->values();
-            
+
             $conversation->other_participants = $otherParticipants;
-            
+
             // Remove participants to avoid duplication
             unset($conversation->participants);
-            
+
             // Get messages
             $perPage = request()->input('per_page', 15);
             $messages = $conversation->messages()
                 ->with('user')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
-            
+
             // Add user avatar URL
             $messages->getCollection()->transform(function ($message) {
                 if ($message->user) {
@@ -125,10 +138,10 @@ class ConversationController extends Controller
                 }
                 return $message;
             });
-            
+
             // Mark conversation as read
             $conversation->markAsRead(Auth::id());
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -150,7 +163,7 @@ class ConversationController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Create a new conversation
      *
@@ -167,13 +180,13 @@ class ConversationController extends Controller
                 'participants.*' => 'required|exists:users,id',
                 'message' => 'required|string',
             ]);
-            
+
             // Add current user to participants
             $participantIds = $request->participants;
             if (!in_array(Auth::id(), $participantIds)) {
                 $participantIds[] = Auth::id();
             }
-            
+
             // Check if conversation already exists between these users
             if (count($participantIds) === 2) {
                 $existingConversation = $this->findExistingConversation($participantIds);
@@ -184,13 +197,13 @@ class ConversationController extends Controller
                         'user_id' => Auth::id(),
                         'content' => $request->message,
                     ]);
-                    
+
                     // Create alerts for other participants
                     $this->createMessageAlerts($existingConversation, $message);
-                    
+
                     // Update conversation's updated_at
                     $existingConversation->touch();
-                    
+
                     return response()->json([
                         'success' => true,
                         'data' => [
@@ -201,14 +214,14 @@ class ConversationController extends Controller
                     ]);
                 }
             }
-            
+
             // Create new conversation
             DB::beginTransaction();
-            
+
             $conversation = Conversation::create([
                 'title' => $request->title,
             ]);
-            
+
             // Add participants
             foreach ($participantIds as $userId) {
                 ConversationParticipant::create([
@@ -217,22 +230,22 @@ class ConversationController extends Controller
                     'last_read_at' => $userId === Auth::id() ? now() : null,
                 ]);
             }
-            
+
             // Add first message
             $message = Message::create([
                 'conversation_id' => $conversation->id,
                 'user_id' => Auth::id(),
                 'content' => $request->message,
             ]);
-            
+
             // Create alerts for other participants
             $this->createMessageAlerts($conversation, $message);
-            
+
             DB::commit();
-            
+
             // Load relationships
             $conversation->load(['participants.user']);
-            
+
             // Add other participants
             $otherParticipants = $conversation->participants->filter(function ($participant) {
                 return $participant->user_id !== Auth::id();
@@ -241,12 +254,12 @@ class ConversationController extends Controller
                 $user->avatar_url = $user->getAvatarUrl();
                 return $user;
             })->values();
-            
+
             $conversation->other_participants = $otherParticipants;
-            
+
             // Remove participants to avoid duplication
             unset($conversation->participants);
-            
+
             return response()->json([
                 'success' => true,
                 'data' => [
@@ -271,7 +284,54 @@ class ConversationController extends Controller
             ], 500);
         }
     }
-    
+
+    /**
+     * Get messages for a conversation
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getMessages($id)
+    {
+        try {
+            $conversation = Conversation::findOrFail($id);
+
+            // Check if the user is a participant
+            $isParticipant = $conversation->participants()->where('user_id', Auth::id())->exists();
+            if (!$isParticipant) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền xem cuộc trò chuyện này.'
+                ], 403);
+            }
+
+            // Get messages with pagination
+            $messages = $conversation->messages()
+                ->with('user:id,name,email,avatar')
+                ->orderBy('created_at', 'asc')
+                ->paginate(50);
+
+            return response()->json([
+                'success' => true,
+                'data' => $messages->items(),
+                'pagination' => [
+                    'current_page' => $messages->currentPage(),
+                    'last_page' => $messages->lastPage(),
+                    'per_page' => $messages->perPage(),
+                    'total' => $messages->total(),
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi khi lấy tin nhắn.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
     /**
      * Send a new message to a conversation
      *
@@ -286,9 +346,9 @@ class ConversationController extends Controller
             $request->validate([
                 'content' => 'required|string',
             ]);
-            
+
             $conversation = Conversation::findOrFail($id);
-            
+
             // Check if the user is a participant
             $isParticipant = $conversation->participants()->where('user_id', Auth::id())->exists();
             if (!$isParticipant) {
@@ -297,31 +357,31 @@ class ConversationController extends Controller
                     'message' => 'Bạn không có quyền gửi tin nhắn đến cuộc trò chuyện này.'
                 ], 403);
             }
-            
+
             // Create message
             $message = Message::create([
                 'conversation_id' => $conversation->id,
                 'user_id' => Auth::id(),
                 'content' => $request->content,
             ]);
-            
+
             // Mark conversation as read for current user
             $conversation->markAsRead(Auth::id());
-            
+
             // Update conversation's updated_at
             $conversation->touch();
-            
+
             // Create alerts for other participants
             $this->createMessageAlerts($conversation, $message);
-            
+
             // Load user
             $message->load('user');
-            
+
             // Add user avatar URL
             if ($message->user) {
                 $message->user->avatar_url = $message->user->getAvatarUrl();
             }
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $message,
@@ -346,7 +406,7 @@ class ConversationController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Mark a conversation as read
      *
@@ -357,7 +417,7 @@ class ConversationController extends Controller
     {
         try {
             $conversation = Conversation::findOrFail($id);
-            
+
             // Check if the user is a participant
             $isParticipant = $conversation->participants()->where('user_id', Auth::id())->exists();
             if (!$isParticipant) {
@@ -366,10 +426,10 @@ class ConversationController extends Controller
                     'message' => 'Bạn không có quyền đánh dấu cuộc trò chuyện này đã đọc.'
                 ], 403);
             }
-            
+
             // Mark conversation as read
             $conversation->markAsRead(Auth::id());
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Đánh dấu cuộc trò chuyện đã đọc thành công.'
@@ -387,7 +447,7 @@ class ConversationController extends Controller
             ], 500);
         }
     }
-    
+
     /**
      * Find an existing conversation between users
      *
@@ -400,20 +460,20 @@ class ConversationController extends Controller
         $conversations = Conversation::whereHas('participants', function ($query) use ($userIds) {
             $query->where('user_id', $userIds[0]);
         })->get();
-        
+
         // Filter conversations where all users are participants
         foreach ($conversations as $conversation) {
             $participantIds = $conversation->participants->pluck('user_id')->toArray();
-            
+
             // Check if the conversation has exactly the same participants
             if (count($participantIds) === count($userIds) && empty(array_diff($userIds, $participantIds))) {
                 return $conversation;
             }
         }
-        
+
         return null;
     }
-    
+
     /**
      * Create alerts for message recipients
      *
@@ -427,10 +487,10 @@ class ConversationController extends Controller
         $otherParticipants = $conversation->participants->filter(function ($participant) {
             return $participant->user_id !== Auth::id();
         });
-        
+
         // Get sender name
         $senderName = Auth::user()->name;
-        
+
         // Create alerts for each participant
         foreach ($otherParticipants as $participant) {
             // Create alert

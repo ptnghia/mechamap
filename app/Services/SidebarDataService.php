@@ -537,7 +537,7 @@ class SidebarDataService
             $avatarMedia = $user->media()
                 ->where('mediable_type', 'App\\Models\\User')
                 ->where('mediable_id', $user->id)
-                ->where('file_type', 'like', 'image/%')
+                ->where('mime_type', 'like', 'image/%')
                 ->orderBy('created_at', 'desc')
                 ->first();
 
@@ -554,7 +554,9 @@ class SidebarDataService
         // Kiểm tra media dựa trên user_id và type image
         $directMedia = \Illuminate\Support\Facades\DB::table('media')
             ->where('user_id', $user->id)
-            ->where('file_type', 'like', 'image/%')
+            ->where('mediable_type', 'App\\Models\\User')
+            ->where('mediable_id', $user->id)
+            ->where('mime_type', 'like', 'image/%')
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -588,7 +590,7 @@ class SidebarDataService
             $forumMedia = $forum->media()
                 ->where('mediable_type', 'App\\Models\\Forum')
                 ->where('mediable_id', $forum->id)
-                ->where('file_type', 'like', 'image/%')
+                ->where('mime_type', 'like', 'image/%')
                 ->orderBy('created_at', 'desc')
                 ->first();
 

@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Đánh chỉ mục lại')
-@section('header', 'Đánh chỉ mục lại')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Đánh chỉ mục lại</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Đánh chỉ mục lại</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
 <a href="{{ route('admin.search.index') }}" class="btn btn-sm btn-outline-secondary">
-    <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại cấu hình') }}
+    <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại cấu hình') }}
 </a>
 @endsection
 
@@ -18,7 +32,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="bi bi-info-circle me-2"></i>
+                    <i class="fas fa-info-circle me-2"></i>
                     {{ __('Quá trình đánh chỉ mục lại sẽ cập nhật toàn bộ dữ liệu tìm kiếm. Điều này có thể mất vài phút
                     tùy thuộc vào lượng dữ liệu.') }}
                 </div>
@@ -95,11 +109,11 @@
 
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary" id="startButton">
-                            <i class="bi bi-arrow-clockwise me-1"></i> {{ __('Bắt đầu đánh chỉ mục') }}
+                            <i class="fas fa-sync-alt me-1"></i> {{ __('Bắt đầu đánh chỉ mục') }}
                         </button>
 
                         <button type="button" class="btn btn-outline-danger" id="cancelButton" style="display: none;">
-                            <i class="bi bi-x-circle me-1"></i> {{ __('Hủy bỏ') }}
+                            <i class="fas fa-times-circle me-1"></i> {{ __('Hủy bỏ') }}
                         </button>
                     </div>
                 </form>
@@ -276,7 +290,7 @@
         
         // Change button text to indicate completion
         setTimeout(() => {
-            startButton.innerHTML = '<i class="bi bi-check-lg me-1"></i> {{ __("Đánh chỉ mục lại") }}';
+            startButton.innerHTML = '<i class="fas fa-check me-1"></i> {{ __("Đánh chỉ mục lại") }}';
         }, 2000);
     }
 

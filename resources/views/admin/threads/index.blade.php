@@ -1,17 +1,35 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý bài đăng')
 
-@section('header', 'Quản lý bài đăng')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý bài đăng</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý bài đăng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.threads.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo bài đăng mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo bài đăng mới') }}
     </a>
     <a href="{{ route('admin.threads.statistics') }}" class="btn btn-sm btn-info">
-        <i class="bi bi-bar-chart me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card mb-4">
@@ -54,10 +72,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
                     </a>
                 </div>
             </form>
@@ -124,13 +142,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.threads.show', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $thread->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -172,4 +190,8 @@
             {{ $threads->withQueryString()->links() }}
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

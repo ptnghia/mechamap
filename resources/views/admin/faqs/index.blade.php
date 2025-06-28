@@ -1,17 +1,35 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý hỏi đáp')
 
-@section('header', 'Quản lý hỏi đáp')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý hỏi đáp</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý hỏi đáp</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.faqs.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo câu hỏi mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo câu hỏi mới') }}
     </a>
     <a href="{{ route('admin.faq-categories.index') }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-folder me-1"></i> {{ __('Quản lý danh mục') }}
+        <i class="fas fa-folder me-1"></i> {{ __('Quản lý danh mục') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card mb-4">
@@ -43,10 +61,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
                     </a>
                 </div>
             </form>
@@ -92,17 +110,17 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.faqs.edit', $faq) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.faqs.toggle-status', $faq) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-sm btn-outline-{{ $faq->is_active ? 'warning' : 'success' }}" title="{{ $faq->is_active ? __('Vô hiệu hóa') : __('Kích hoạt') }}">
-                                                <i class="bi bi-{{ $faq->is_active ? 'toggle-on' : 'toggle-off' }}"></i>
+                                                <i class="fas fa-{{ $faq->is_active ? 'toggle-on' : 'toggle-off' }}"></i>
                                             </button>
                                         </form>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $faq->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -143,4 +161,8 @@
             {{ $faqs->withQueryString()->links() }}
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

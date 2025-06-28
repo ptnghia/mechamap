@@ -1,14 +1,32 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý chuyên mục')
 
-@section('header', 'Quản lý chuyên mục')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý chuyên mục</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý chuyên mục</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo chuyên mục mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo chuyên mục mới') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card">
@@ -49,13 +67,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.categories.show', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -83,13 +101,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            
+
                             @foreach($categories->where('parent_id', $category->id) as $childCategory)
                                 <tr>
                                     <td>{{ $childCategory->id }}</td>
                                     <td>
                                         <div class="ms-3">
-                                            <i class="bi bi-arrow-return-right me-1 text-muted"></i>
+                                            <i data-feather="corner-down-right" class="me-1 text-muted" style="width: 16px; height: 16px;"></i>
                                             <a href="{{ route('admin.categories.show', $childCategory) }}" class="text-decoration-none">
                                                 {{ $childCategory->name }}
                                             </a>
@@ -105,13 +123,13 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.categories.show', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                                <i class="bi bi-eye"></i>
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.categories.edit', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                                <i class="bi bi-pencil"></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $childCategory->id }}" title="{{ __('Xóa') }}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
 
@@ -141,7 +159,7 @@
                                 </tr>
                             @endforeach
                         @endforeach
-                        
+
                         @if($categories->count() == 0)
                             <tr>
                                 <td colspan="7" class="text-center py-4">{{ __('Không có chuyên mục nào.') }}</td>
@@ -152,4 +170,8 @@
             </div>
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

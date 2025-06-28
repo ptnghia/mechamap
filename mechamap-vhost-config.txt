@@ -1,0 +1,83 @@
+# MechaMap Virtual Host Configuration
+# Để giải quyết vấn đề trailing slash và /public/ prefix
+
+# ===========================================
+# APACHE VIRTUAL HOST CONFIGURATION
+# ===========================================
+
+<VirtualHost *:80>
+    ServerName mechamap.test
+    DocumentRoot "D:/xampp/htdocs/laravel/mechamap_backend/public"
+    
+    <Directory "D:/xampp/htdocs/laravel/mechamap_backend/public">
+        AllowOverride All
+        Require all granted
+        Options -Indexes +FollowSymLinks
+    </Directory>
+    
+    # Error and Access logs
+    ErrorLog "logs/mechamap_error.log"
+    CustomLog "logs/mechamap_access.log" common
+</VirtualHost>
+
+# ===========================================
+# NGINX VIRTUAL HOST CONFIGURATION  
+# ===========================================
+
+server {
+    listen 80;
+    server_name mechamap.test;
+    root /d/xampp/htdocs/laravel/mechamap_backend/public;
+    
+    index index.php index.html index.htm;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+# ===========================================
+# HƯỚNG DẪN CẤU HỬ
+# ===========================================
+
+1. APACHE (XAMPP):
+   - Mở file: C:\xampp\apache\conf\extra\httpd-vhosts.conf
+   - Thêm virtual host configuration ở trên
+   - Restart Apache
+
+2. NGINX:
+   - Tạo file: /etc/nginx/sites-available/mechamap.test
+   - Copy nginx configuration ở trên
+   - Enable site: ln -s /etc/nginx/sites-available/mechamap.test /etc/nginx/sites-enabled/
+   - Restart Nginx
+
+3. HOSTS FILE:
+   - Windows: C:\Windows\System32\drivers\etc\hosts
+   - Linux/Mac: /etc/hosts
+   - Thêm dòng: 127.0.0.1 mechamap.test
+
+4. XÓA ROOT .HTACCESS:
+   - Sau khi cấu hình virtual host, có thể xóa file .htaccess ở root directory
+   - Chỉ giữ lại public/.htaccess
+
+# ===========================================
+# LỢI ÍCH CỦA PROPER VIRTUAL HOST
+# ===========================================
+
+✅ Không cần root .htaccess rewrite
+✅ Không có /public/ prefix trong URL
+✅ Performance tốt hơn (ít rewrite rules)
+✅ Security tốt hơn (document root đúng)
+✅ Dễ maintain và debug
+✅ Chuẩn Laravel deployment practice

@@ -1,17 +1,35 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý bài viết')
 
-@section('header', 'Quản lý bài viết')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý bài viết</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý bài viết</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.pages.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo bài viết mới') }}
+        <i class="class="fas fa-plus"-lg me-1"></i> {{ __('Tạo bài viết mới') }}
     </a>
     <a href="{{ route('admin.page-categories.index') }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-folder me-1"></i> {{ __('Quản lý danh mục') }}
+        <i class="fas fa-folder me-1"></i> {{ __('Quản lý danh mục') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card mb-4">
@@ -43,10 +61,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="class="fas fa-filter" me-1"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
                     </a>
                 </div>
             </form>
@@ -97,13 +115,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.pages.show', $page) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="class="fas fa-eye""></i>
                                         </a>
                                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="class="fas fa-edit""></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $page->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="class="fas fa-trash""></i>
                                         </button>
                                     </div>
 
@@ -144,4 +162,8 @@
             {{ $pages->withQueryString()->links() }}
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

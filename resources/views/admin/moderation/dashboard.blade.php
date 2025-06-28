@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts.dason')
 
 @section('title', 'Moderation Dashboard')
 

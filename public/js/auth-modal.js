@@ -190,6 +190,24 @@ function createAuthModal() {
                                     </span>
                                 </div>
 
+                                <div class="mb-4 position-relative">
+                                    <span class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted">
+                                        <i class="fas fa-user-tag"></i>
+                                    </span>
+                                    <select class="form-control ps-4" id="register-account-type" name="account_type" required>
+                                        <option value="">Chọn loại tài khoản</option>
+                                        <optgroup label="🌟 Thành viên cộng đồng">
+                                            <option value="member">Thành viên - Tham gia thảo luận</option>
+                                            <option value="student">Sinh viên - Học tập nghiên cứu</option>
+                                        </optgroup>
+                                        <optgroup label="🏢 Đối tác kinh doanh">
+                                            <option value="manufacturer">Nhà sản xuất - Sản xuất cơ khí</option>
+                                            <option value="supplier">Nhà cung cấp - Phân phối thiết bị</option>
+                                            <option value="brand">Nhãn hàng - Quảng bá thương hiệu</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
                                 <div class="mb-4 form-check">
                                     <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
                                     <label class="form-check-label" for="terms">Tôi đồng ý với <a href="/terms" target="_blank">Điều khoản dịch vụ</a> và <a href="/privacy" target="_blank">Chính sách bảo mật</a></label>

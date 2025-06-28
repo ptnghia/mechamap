@@ -79,6 +79,22 @@ class ProductCategory extends Model
     }
 
     /**
+     * Get marketplace products in this category
+     */
+    public function marketplaceProducts(): HasMany
+    {
+        return $this->hasMany(\App\Models\MarketplaceProduct::class, 'product_category_id');
+    }
+
+    /**
+     * Get active marketplace products in this category
+     */
+    public function activeMarketplaceProducts(): HasMany
+    {
+        return $this->marketplaceProducts()->where('status', 'approved')->where('is_active', true);
+    }
+
+    /**
      * Scope for active categories
      */
     public function scopeActive($query)

@@ -1,19 +1,33 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Chi tiết bài đăng')
 
-@section('header', 'Chi tiết bài đăng')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chi tiết bài đăng</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chi tiết bài đăng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
     </a>
     @if($thread->status == 'pending')
         <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
-            <i class="bi bi-check-lg me-1"></i> {{ __('Duyệt') }}
+            <i class="fas fa-check me-1"></i> {{ __('Duyệt') }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-            <i class="bi bi-x-lg me-1"></i> {{ __('Từ chối') }}
+            <i class="fas fa-times me-1"></i> {{ __('Từ chối') }}
         </button>
     @endif
 @endsection
@@ -123,12 +137,12 @@
                                         </div>
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="commentActions{{ $comment->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots"></i>
+                                                <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="commentActions{{ $comment->id }}">
                                                 <li>
                                                     <a class="dropdown-item" href="{{ route('admin.comments.edit', $comment) }}">
-                                                        <i class="bi bi-pencil me-2"></i> {{ __('Chỉnh sửa') }}
+                                                        <i class="fas fa-edit me-2"></i> {{ __('Chỉnh sửa') }}
                                                     </a>
                                                 </li>
                                                 <li>
@@ -137,16 +151,16 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item">
                                                             @if($comment->is_hidden)
-                                                                <i class="bi bi-eye me-2"></i> {{ __('Hiện bình luận') }}
+                                                                <i class="fas fa-eye me-2"></i> {{ __('Hiện bình luận') }}
                                                             @else
-                                                                <i class="bi bi-eye-slash me-2"></i> {{ __('Ẩn bình luận') }}
+                                                                <i class="fas fa-eye-slash me-2"></i> {{ __('Ẩn bình luận') }}
                                                             @endif
                                                         </button>
                                                     </form>
                                                 </li>
                                                 <li>
                                                     <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteCommentModal{{ $comment->id }}">
-                                                        <i class="bi bi-trash me-2"></i> {{ __('Xóa') }}
+                                                        <i class="fas fa-trash me-2"></i> {{ __('Xóa') }}
                                                     </button>
                                                 </li>
                                             </ul>
@@ -155,12 +169,12 @@
                                     <div class="comment-content {{ $comment->is_hidden ? 'text-muted fst-italic' : '' }}">
                                         @if($comment->is_hidden)
                                             <div class="alert alert-warning py-1 px-2 mb-2">
-                                                <small><i class="bi bi-eye-slash me-1"></i> {{ __('Bình luận này đã bị ẩn') }}</small>
+                                                <small><i class="fas fa-eye-slash me-1"></i> {{ __('Bình luận này đã bị ẩn') }}</small>
                                             </div>
                                         @endif
                                         @if($comment->is_flagged)
                                             <div class="alert alert-danger py-1 px-2 mb-2">
-                                                <small><i class="bi bi-flag-fill me-1"></i> {{ __('Bình luận này đã bị đánh dấu') }}</small>
+                                                <small><i class="fas fa-flag-fill me-1"></i> {{ __('Bình luận này đã bị đánh dấu') }}</small>
                                             </div>
                                         @endif
                                         {!! $comment->content !!}
@@ -197,7 +211,7 @@
                         @endif
                     @empty
                         <div class="text-center py-4">
-                            <i class="bi bi-chat-left-text fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-comment fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('Chưa có bình luận nào.') }}</p>
                         </div>
                     @endforelse
@@ -213,20 +227,20 @@
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-primary">
-                            <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
                         </a>
                         
                         @if($thread->status == 'pending')
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
-                                <i class="bi bi-check-lg me-1"></i> {{ __('Duyệt bài đăng') }}
+                                <i class="fas fa-check me-1"></i> {{ __('Duyệt bài đăng') }}
                             </button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                                <i class="bi bi-x-lg me-1"></i> {{ __('Từ chối bài đăng') }}
+                                <i class="fas fa-times me-1"></i> {{ __('Từ chối bài đăng') }}
                             </button>
                         @endif
                         
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="bi bi-trash me-1"></i> {{ __('Xóa bài đăng') }}
+                            <i class="fas fa-trash me-1"></i> {{ __('Xóa bài đăng') }}
                         </button>
                     </div>
                 </div>
@@ -260,7 +274,7 @@
                     </div>
                     <div class="d-grid">
                         <a href="{{ route('admin.users.show', $thread->user) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-person me-1"></i> {{ __('Xem hồ sơ') }}
+                            <i class="fas fa-user me-1"></i> {{ __('Xem hồ sơ') }}
                         </a>
                     </div>
                 </div>
@@ -341,8 +355,11 @@
             </div>
         </div>
     </div>
-@endsection
 
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
+@endsection
 @push('styles')
 <style>
     .thread-content img {

@@ -148,10 +148,12 @@ class ThreadController extends Controller
                     $path = $image->store('thread-images', 'public');
                     $thread->media()->create([
                         'user_id' => Auth::id(),
-                        'path' => $path,
-                        'type' => 'image',
-                        'size' => $image->getSize(),
+                        'file_name' => $image->getClientOriginalName(),
+                        'file_path' => $path,
+                        'file_extension' => $image->getClientOriginalExtension(),
                         'mime_type' => $image->getMimeType(),
+                        'file_size' => $image->getSize(),
+                        'file_category' => 'image',
                     ]);
                 }
             }
@@ -195,6 +197,9 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
+        // Load counts
+        $thread->loadCount(['likes', 'saves', 'follows']);
+
         // Increment view count
         $thread->incrementViewCount();
 
@@ -286,7 +291,7 @@ class ThreadController extends Controller
             foreach ($request->delete_images as $mediaId) {
                 $media = $thread->media()->find($mediaId);
                 if ($media) {
-                    Storage::disk('public')->delete($media->path);
+                    Storage::disk('public')->delete($media->file_path);
                     $media->delete();
                 }
             }
@@ -298,10 +303,12 @@ class ThreadController extends Controller
                 $path = $image->store('thread-images', 'public');
                 $thread->media()->create([
                     'user_id' => Auth::id(),
-                    'path' => $path,
-                    'type' => 'image',
-                    'size' => $image->getSize(),
+                    'file_name' => $image->getClientOriginalName(),
+                    'file_path' => $path,
+                    'file_extension' => $image->getClientOriginalExtension(),
                     'mime_type' => $image->getMimeType(),
+                    'file_size' => $image->getSize(),
+                    'file_category' => 'image',
                 ]);
             }
         }
@@ -322,7 +329,7 @@ class ThreadController extends Controller
 
         // Delete associated media files
         foreach ($thread->media as $media) {
-            Storage::disk('public')->delete($media->path);
+            Storage::disk('public')->delete($media->file_path);
         }
 
         $thread->delete();

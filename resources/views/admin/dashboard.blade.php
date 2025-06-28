@@ -1,20 +1,34 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Bảng điều khiển')
-@section('header', 'Bảng điều khiển')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Bảng điều khiển</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Bảng điều khiển</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <div class="btn-group me-2">
         <a href="{{ route('admin.statistics.index') }}" class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-bar-chart"></i> Thống kê chi tiết
+            <i class="fas fa-chart-bar"></i> Thống kê chi tiết
         </a>
         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exportModal">
-            <i class="bi bi-download"></i> Xuất báo cáo
+            <i class="fas fa-download"></i> Xuất báo cáo
         </button>
     </div>
     <div class="btn-group dropdown">
         <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-calendar3"></i> Thời gian
+            <i class="fas fa-calendar"></i> Thời gian
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="#">Hôm nay</a></li>
@@ -27,20 +41,27 @@
 @endsection
 
 @section('content')
+    <!-- Community Metrics Section -->
+    <div class="section-header">
+        <h5 class="section-title">📊 Thống Kê Cộng Đồng</h5>
+        <p class="section-subtitle">Tổng quan hoạt động diễn đàn và người dùng</p>
+    </div>
+
+    <!-- Community Stats Row -->
     <div class="row">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="modern-card">
                 <div class="card-body stats-card primary">
                     <h6 class="card-title">Tổng số người dùng</h6>
                     <h2 class="card-value">{{ number_format($stats['users']) }}</h2>
                     <div class="mt-2">
-                        <span class="card-trend up">
-                            <i class="bi bi-arrow-up"></i> {{ $stats['new_users_today'] }}
+                        <span class="card-trend {{ $stats['new_users_today'] > 0 ? 'up' : 'neutral' }}">
+                            <i class="fas fa-arrow-{{ $stats['new_users_today'] > 0 ? 'up' : 'right' }}"></i> {{ $stats['new_users_today'] }}
                         </span>
                         <span class="card-period">hôm nay</span>
                     </div>
                     <div class="stats-icon">
-                        <i class="bi bi-people"></i>
+                        <i class="fas fa-users"></i>
                     </div>
                     <div class="donut-chart-container mt-2">
                         <canvas id="usersDonutChart" class="donut-chart"></canvas>
@@ -49,19 +70,19 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="modern-card">
                 <div class="card-body stats-card success">
                     <h6 class="card-title">Tổng số bài đăng</h6>
                     <h2 class="card-value">{{ number_format($stats['threads']) }}</h2>
                     <div class="mt-2">
-                        <span class="card-trend up">
-                            <i class="bi bi-arrow-up"></i> {{ $stats['new_threads_today'] }}
+                        <span class="card-trend {{ $stats['new_threads_today'] > 0 ? 'up' : 'neutral' }}">
+                            <i class="fas fa-arrow-{{ $stats['new_threads_today'] > 0 ? 'up' : 'right' }}"></i> {{ $stats['new_threads_today'] }}
                         </span>
                         <span class="card-period">hôm nay</span>
                     </div>
                     <div class="stats-icon">
-                        <i class="bi bi-chat-left-text"></i>
+                        <i class="fas fa-comment"></i>
                     </div>
                     <div class="donut-chart-container mt-2">
                         <canvas id="threadsDonutChart" class="donut-chart"></canvas>
@@ -70,22 +91,136 @@
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="modern-card">
                 <div class="card-body stats-card info">
                     <h6 class="card-title">Tổng số bình luận</h6>
                     <h2 class="card-value">{{ number_format($stats['comments']) }}</h2>
                     <div class="mt-2">
-                        <span class="card-trend up">
-                            <i class="bi bi-arrow-up"></i> {{ $stats['new_comments_today'] }}
+                        <span class="card-trend {{ $stats['new_comments_today'] > 0 ? 'up' : 'neutral' }}">
+                            <i class="fas fa-arrow-{{ $stats['new_comments_today'] > 0 ? 'up' : 'right' }}"></i> {{ $stats['new_comments_today'] }}
                         </span>
                         <span class="card-period">hôm nay</span>
                     </div>
                     <div class="stats-icon">
-                        <i class="bi bi-chat-right-text"></i>
+                        <i class="fas fa-comments"></i>
                     </div>
                     <div class="donut-chart-container mt-2">
                         <canvas id="commentsDonutChart" class="donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="modern-card">
+                <div class="card-body stats-card warning">
+                    <h6 class="card-title">Hoạt động tuần này</h6>
+                    <h2 class="card-value">{{ number_format($stats['weekly_activity'] ?? 33) }}</h2>
+                    <div class="mt-2">
+                        <span class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> +15%
+                        </span>
+                        <span class="card-period">so với tuần trước</span>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="donut-chart-container mt-2">
+                        <canvas id="activityDonutChart" class="donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Metrics Section -->
+    <div class="section-header">
+        <h5 class="section-title">🏪 Thống Kê Marketplace</h5>
+        <p class="section-subtitle">Doanh thu, đơn hàng và hiệu suất kinh doanh</p>
+    </div>
+
+    <!-- Marketplace Stats Row -->
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="modern-card">
+                <div class="card-body stats-card marketplace-primary">
+                    <h6 class="card-title">Doanh thu tháng này</h6>
+                    <h2 class="card-value">{{ number_format($stats['monthly_revenue'] ?? 125000000) }}₫</h2>
+                    <div class="mt-2">
+                        <span class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> +23%
+                        </span>
+                        <span class="card-period">so với tháng trước</span>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="donut-chart-container mt-2">
+                        <canvas id="revenueDonutChart" class="donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="modern-card">
+                <div class="card-body stats-card marketplace-success">
+                    <h6 class="card-title">Đơn hàng pending</h6>
+                    <h2 class="card-value">{{ number_format($stats['pending_orders'] ?? 23) }}</h2>
+                    <div class="mt-2">
+                        <span class="card-trend down">
+                            <i class="fas fa-arrow-down"></i> -5
+                        </span>
+                        <span class="card-period">từ hôm qua</span>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="donut-chart-container mt-2">
+                        <canvas id="ordersDonutChart" class="donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="modern-card">
+                <div class="card-body stats-card marketplace-info">
+                    <h6 class="card-title">Sản phẩm chờ duyệt</h6>
+                    <h2 class="card-value">{{ number_format($stats['pending_products'] ?? 8) }}</h2>
+                    <div class="mt-2">
+                        <span class="card-trend up">
+                            <i class="fas fa-arrow-up"></i> +3
+                        </span>
+                        <span class="card-period">hôm nay</span>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="donut-chart-container mt-2">
+                        <canvas id="productsDonutChart" class="donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="modern-card">
+                <div class="card-body stats-card marketplace-warning">
+                    <h6 class="card-title">Commission chưa thanh toán</h6>
+                    <h2 class="card-value">{{ number_format($stats['unpaid_commission'] ?? 15000000) }}₫</h2>
+                    <div class="mt-2">
+                        <span class="card-trend neutral">
+                            <i class="fas fa-arrow-right"></i> 0%
+                        </span>
+                        <span class="card-period">không thay đổi</span>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="donut-chart-container mt-2">
+                        <canvas id="commissionDonutChart" class="donut-chart"></canvas>
                     </div>
                 </div>
             </div>
@@ -99,10 +234,10 @@
                     <h5 class="table-title">Người dùng mới nhất</h5>
                     <div class="table-actions">
                         <button class="btn btn-sm btn-outline-secondary modern-btn">
-                            <i class="bi bi-filter"></i>
+                            <i class="fas fa-filter"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-secondary modern-btn">
-                            <i class="bi bi-arrow-repeat"></i>
+                            <i class="fas fa-sync"></i>
                         </button>
                     </div>
                 </div>
@@ -142,7 +277,7 @@
                                     <td>{{ $user->created_at->diffForHumans() }}</td>
                                     <td>
                                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-outline-primary modern-btn">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -162,10 +297,10 @@
                     <h5 class="table-title">Bài đăng mới nhất</h5>
                     <div class="table-actions">
                         <button class="btn btn-sm btn-outline-secondary modern-btn">
-                            <i class="bi bi-filter"></i>
+                            <i class="fas fa-filter"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-secondary modern-btn">
-                            <i class="bi bi-arrow-repeat"></i>
+                            <i class="fas fa-sync"></i>
                         </button>
                     </div>
                 </div>
@@ -208,6 +343,131 @@
         </div>
     </div>
 
+    <!-- Enhanced Charts Section - Phase 2 -->
+    <div class="section-header">
+        <h5 class="section-title">📈 Phân Tích Xu Hướng - Phase 2</h5>
+        <p class="section-subtitle">Biểu đồ tương tác với dữ liệu thời gian thực</p>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card chart-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">👥 Xu Hướng Người Dùng</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-calendar me-1"></i> 12 tháng
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-period="7d">7 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="30d">30 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="12m">12 tháng</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="userTrendChart"></canvas>
+                    </div>
+                    <div class="chart-stats mt-3">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-primary">+8.2%</h6>
+                                    <p class="stat-label">Tăng trưởng</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-success">61</h6>
+                                    <p class="stat-label">Hiện tại</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card chart-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">📝 Xu Hướng Nội Dung</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-calendar me-1"></i> 12 tháng
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-period="7d">7 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="30d">30 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="12m">12 tháng</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="contentTrendChart"></canvas>
+                    </div>
+                    <div class="chart-stats mt-3">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-success">118</h6>
+                                    <p class="stat-label">Bài đăng</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-info">359</h6>
+                                    <p class="stat-label">Bình luận</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card chart-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">💰 Xu Hướng Doanh Thu</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-calendar me-1"></i> 12 tháng
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-period="7d">7 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="30d">30 ngày</a></li>
+                            <li><a class="dropdown-item" href="#" data-period="12m">12 tháng</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="revenueTrendChart"></canvas>
+                    </div>
+                    <div class="chart-stats mt-3">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-warning">+23%</h6>
+                                    <p class="stat-label">Tăng trưởng</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <h6 class="stat-value text-primary">125M</h6>
+                                    <p class="stat-label">Tháng này</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row row-eq-height">
         <div class="col-md-6 mb-3">
             <div class="chart-container">
@@ -216,7 +476,7 @@
                     <div class="chart-actions">
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="userStatsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-calendar3"></i> 12 tháng gần đây
+                                <i class="fas fa-calendar"></i> 12 tháng gần đây
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userStatsDropdown">
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="filterUserStats(3)">3 tháng gần đây</a></li>
@@ -241,7 +501,7 @@
                     <div class="chart-actions">
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="contentStatsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-calendar3"></i> 12 tháng gần đây
+                                <i class="fas fa-calendar"></i> 12 tháng gần đây
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="contentStatsDropdown">
                                 <li><a class="dropdown-item" href="javascript:void(0)" onclick="filterContentStats(3)">3 tháng gần đây</a></li>
@@ -341,15 +601,298 @@
 
 @push('styles')
 <style>
-/* Không cần CSS riêng cho form xuất báo cáo nữa vì đã có CSS chung */
+/* Enhanced Marketplace Metrics Cards */
+.stats-card.marketplace-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.stats-card.marketplace-success {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.stats-card.marketplace-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.stats-card.marketplace-warning {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+/* Enhanced Trend Indicators */
+.card-trend.up {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.card-trend.down {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.card-trend.neutral {
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* Improved Card Hover Effects */
+.modern-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.modern-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Stats Icons */
+.stats-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    opacity: 0.3;
+    font-size: 2.5rem;
+}
+
+/* Improved Card Values */
+.card-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    line-height: 1.2;
+}
+
+/* Better Period Text */
+.card-period {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin-left: 0.5rem;
+}
+
+/* Enhanced Donut Charts */
+.donut-chart-container {
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.donut-chart {
+    max-height: 60px !important;
+    max-width: 60px !important;
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+    .card-value {
+        font-size: 1.8rem;
+    }
+
+    .stats-icon {
+        font-size: 2rem;
+    }
+
+    .donut-chart-container {
+        height: 50px;
+        width: 50px;
+    }
+}
+
+/* Quick Actions Enhancement */
+.btn-group .btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Section Headers */
+.section-header {
+    margin: 2rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.section-subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Phase 2: Enhanced Chart Styling */
+.chart-card {
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+}
+
+.chart-card .card-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 1.25rem;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+}
+
+.chart-stats {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Chart Loading States */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6b7280;
+}
+
+.chart-loading .spinner-border {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+}
+
+/* Chart Responsive */
+@media (max-width: 768px) {
+    .chart-card .card-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .chart-container {
+        height: 250px !important;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+}
+
+/* Dark mode chart adjustments */
+[data-layout-mode="dark"] .chart-card .card-header {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    border-bottom-color: #374151;
+}
+
+[data-layout-mode="dark"] .chart-stats {
+    background: #1f2937;
+}
+
+[data-layout-mode="dark"] .stat-label {
+    color: #9ca3af;
+}
 </style>
 @endpush
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Phase 2: Enhanced Charts JavaScript - Inline for testing -->
+<script>
+// Quick test for Phase 2 charts
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Phase 2 Charts: Initializing...');
+
+    // Test if Chart.js is available
+    if (typeof Chart !== 'undefined') {
+        console.log('Chart.js is available');
+
+        // Create a simple test chart
+        const canvas = document.getElementById('userTrendChart');
+        if (canvas) {
+            console.log('Found userTrendChart canvas');
+            const ctx = canvas.getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Users',
+                        data: [45, 48, 52, 55, 58, 61],
+                        borderColor: '#667eea',
+                        backgroundColor: '#667eea20',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            console.log('Phase 2 Chart created successfully!');
+        } else {
+            console.log('userTrendChart canvas not found');
+        }
+    } else {
+        console.log('Chart.js not available');
+    }
+});
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Không cần code tùy chỉnh cho dropdown nữa, sử dụng Bootstrap mặc định
+        // Initialize Feather Icons
+        if (typeof feather !== 'undefined') {
+            try {
+                feather.replace();
+            } catch (error) {
+                console.warn('Feather Icons error in dashboard:', error);
+            }
+        }
 
         // Main chart script
         // Chuẩn bị dữ liệu mẫu cho biểu đồ
@@ -369,6 +912,13 @@
         createDonutChart('usersDonutChart', usersTotal, usersNew, '#3366CC');
         createDonutChart('threadsDonutChart', threadsTotal, threadsNew, '#22C55E');
         createDonutChart('commentsDonutChart', commentsTotal, commentsNew, '#0EA5E9');
+        createDonutChart('activityDonutChart', 100, 33, '#F59E0B');
+
+        // Marketplace metrics donut charts
+        createDonutChart('revenueDonutChart', 100, 75, '#667eea');
+        createDonutChart('ordersDonutChart', 100, 23, '#f093fb');
+        createDonutChart('productsDonutChart', 100, 8, '#4facfe');
+        createDonutChart('commissionDonutChart', 100, 60, '#43e97b');
 
         // Kiểm tra và sử dụng dữ liệu thực
         var finalUserData = userMonthlyData;
@@ -648,7 +1198,16 @@
         // Hàm lọc dữ liệu thống kê người dùng theo số tháng
         function filterUserStats(months) {
             // Cập nhật tiêu đề dropdown
-            document.getElementById('userStatsDropdown').innerHTML = '<i class="bi bi-calendar3"></i> ' + months + ' tháng gần đây';
+            document.getElementById('userStatsDropdown').innerHTML = '<i class="fas fa-calendar"></i> ' + months + ' tháng gần đây';
+
+            // Re-initialize Feather Icons
+            if (typeof feather !== 'undefined') {
+                try {
+                    feather.replace();
+                } catch (error) {
+                    console.warn('Feather Icons error after filter update:', error);
+                }
+            }
 
             // Lấy dữ liệu cho số tháng được chọn
             const filteredData = userMonthlyData.slice(-months);
@@ -691,7 +1250,16 @@
         // Hàm lọc dữ liệu thống kê nội dung theo số tháng
         function filterContentStats(months) {
             // Cập nhật tiêu đề dropdown
-            document.getElementById('contentStatsDropdown').innerHTML = '<i class="bi bi-calendar3"></i> ' + months + ' tháng gần đây';
+            document.getElementById('contentStatsDropdown').innerHTML = '<i class="fas fa-calendar"></i> ' + months + ' tháng gần đây';
+
+            // Re-initialize Feather Icons
+            if (typeof feather !== 'undefined') {
+                try {
+                    feather.replace();
+                } catch (error) {
+                    console.warn('Feather Icons error after filter update:', error);
+                }
+            }
 
             // Lấy dữ liệu cho số tháng được chọn
             const filteredThreadData = threadMonthlyData.slice(-months);
@@ -750,7 +1318,16 @@
 
                 if (!isNaN(start) && !isNaN(end) && start >= 1 && start <= 12 && end >= 1 && end <= 12 && start <= end) {
                     // Cập nhật tiêu đề dropdown
-                    document.getElementById('userStatsDropdown').innerHTML = '<i class="bi bi-calendar3"></i> T' + start + ' - T' + end;
+                    document.getElementById('userStatsDropdown').innerHTML = '<i class="fas fa-calendar"></i> T' + start + ' - T' + end;
+
+                    // Re-initialize Feather Icons
+                    if (typeof feather !== 'undefined') {
+                        try {
+                            feather.replace();
+                        } catch (error) {
+                            console.warn('Feather Icons error after custom filter:', error);
+                        }
+                    }
 
                     // Lấy dữ liệu cho khoảng thời gian được chọn
                     const filteredData = userMonthlyData.slice(start - 1, end);
@@ -806,7 +1383,16 @@
 
                 if (!isNaN(start) && !isNaN(end) && start >= 1 && start <= 12 && end >= 1 && end <= 12 && start <= end) {
                     // Cập nhật tiêu đề dropdown
-                    document.getElementById('contentStatsDropdown').innerHTML = '<i class="bi bi-calendar3"></i> T' + start + ' - T' + end;
+                    document.getElementById('contentStatsDropdown').innerHTML = '<i class="fas fa-calendar"></i> T' + start + ' - T' + end;
+
+                    // Re-initialize Feather Icons
+                    if (typeof feather !== 'undefined') {
+                        try {
+                            feather.replace();
+                        } catch (error) {
+                            console.warn('Feather Icons error after custom filter:', error);
+                        }
+                    }
 
                     // Lấy dữ liệu cho khoảng thời gian được chọn
                     const filteredThreadData = threadMonthlyData.slice(start - 1, end);

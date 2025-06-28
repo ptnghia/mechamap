@@ -183,3 +183,78 @@ if (!function_exists('getForumStats')) {
         });
     }
 }
+
+if (!function_exists('get_setting')) {
+    /**
+     * Get application setting
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function get_setting($key, $default = null)
+    {
+        // For now, return default values for common settings
+        $settings = [
+            'show_banner' => true,
+            'site_name' => 'MechaMap',
+            'site_description' => 'Cộng đồng kỹ sư cơ khí Việt Nam',
+            'logo_url' => '/images/logo.png',
+            'favicon_url' => '/favicon.ico',
+            'banner_url' => '/images/banner.jpg',
+            'maintenance_mode' => false,
+            'registration_enabled' => true,
+            'email_verification_required' => false,
+        ];
+
+        return $settings[$key] ?? $default;
+    }
+}
+
+if (!function_exists('get_site_name')) {
+    /**
+     * Get site name
+     *
+     * @return string
+     */
+    function get_site_name()
+    {
+        return get_setting('site_name', config('app.name', 'MechaMap'));
+    }
+}
+
+if (!function_exists('get_logo_url')) {
+    /**
+     * Get logo URL
+     *
+     * @return string
+     */
+    function get_logo_url()
+    {
+        return get_setting('logo_url', '/images/logo.png');
+    }
+}
+
+if (!function_exists('get_favicon_url')) {
+    /**
+     * Get favicon URL
+     *
+     * @return string
+     */
+    function get_favicon_url()
+    {
+        return get_setting('favicon_url', '/favicon.ico');
+    }
+}
+
+if (!function_exists('get_banner_url')) {
+    /**
+     * Get banner URL
+     *
+     * @return string
+     */
+    function get_banner_url()
+    {
+        return get_setting('banner_url', '/images/banner.jpg');
+    }
+}

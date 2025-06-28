@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thống kê tương tác')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -297,4 +301,8 @@
     // Tương tự cho các biểu đồ khác: likesChart, followsChart, bookmarksChart, forumInteractionsChart, deviceChart, hourlyChart
     // Mã JavaScript cho các biểu đồ này sẽ tương tự như biểu đồ lượt xem, chỉ thay đổi dữ liệu và màu sắc
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

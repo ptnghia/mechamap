@@ -17,33 +17,54 @@ class AdminAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Kiểm tra xem người dùng đã đăng nhập vào trang admin chưa
-        if (!Auth::guard('admin')->check()) {
+        // Debug logging
+        \Log::info('AdminAuthenticate middleware triggered', [
+            'url' => $request->url(),
+            'auth_check' => Auth::check(),
+            'session_id' => session()->getId(),
+        ]);
+
+        // Kiểm tra xem người dùng đã đăng nhập chưa (sử dụng web guard)
+        if (!Auth::check()) {
+            \Log::warning('User not authenticated, redirecting to admin login', [
+                'url' => $request->url(),
+                'session_id' => session()->getId(),
+            ]);
             return redirect()->route('admin.login');
         }
 
         // Nếu đã đăng nhập, kiểm tra quyền truy cập
-        $user = Auth::guard('admin')->user();
+        $user = Auth::user();
 
-        // Lấy model User từ database
-        $userModel = User::find($user->id);
+        \Log::info('User authenticated', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'role' => $user->role,
+            'role_group' => $user->role_group,
+            'can_access_admin' => $user->canAccessAdmin(),
+        ]);
 
-        // Kiểm tra quyền truy cập
-        if (!$userModel || !$userModel->canAccessAdmin()) {
+        // Kiểm tra quyền truy cập admin
+        if (!$user || !$user->canAccessAdmin()) {
+            \Log::warning('User does not have admin access', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'role_group' => $user->role_group,
+            ]);
             // Người dùng không có quyền admin hoặc moderator
-            Auth::guard('admin')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return redirect()->route('admin.login')
+            return redirect()->route('home')
                 ->with('error', 'Bạn không có quyền truy cập vào trang quản trị. Chỉ Admin và Moderator mới có quyền truy cập.');
         }
 
         // Cập nhật thời gian hoạt động cuối cùng
-        $userModel = User::find($user->id);
-        if ($userModel) {
-            $userModel->last_seen_at = now();
-            $userModel->save();
-        }
+        $user->last_seen_at = now();
+        $user->save();
+
+        \Log::info('AdminAuthenticate middleware passed', [
+            'user_id' => $user->id,
+            'url' => $request->url(),
+        ]);
 
         return $next($request);
     }

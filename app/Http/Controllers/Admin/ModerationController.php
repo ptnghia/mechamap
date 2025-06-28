@@ -23,11 +23,15 @@ class ModerationController extends Controller
      */
     public function dashboard()
     {
+        \Log::info('ModerationController::dashboard called', [
+            'user' => auth()->user()->email,
+            'timestamp' => now()
+        ]);
         $stats = [
             'threads' => [
                 'total' => Thread::count(),
                 'pending' => Thread::where('moderation_status', 'under_review')->count(),
-                'flagged' => Thread::where('is_flagged', true)->count(),
+                'flagged' => Thread::whereNotNull('flagged_at')->count(),
                 'spam' => Thread::where('is_spam', true)->count(),
                 'approved' => Thread::where('moderation_status', 'approved')->count(),
             ],
@@ -46,12 +50,42 @@ class ModerationController extends Controller
             ],
             'bookmarks' => [
                 'total' => ThreadBookmark::count(),
-                'with_folders' => ThreadBookmark::whereNotNull('folder')->count(),
-                'with_notes' => ThreadBookmark::whereNotNull('notes')->count(),
+                'unique_users' => ThreadBookmark::distinct('user_id')->count(),
+                'unique_threads' => ThreadBookmark::distinct('thread_id')->count(),
             ]
         ];
 
-        return view('admin.moderation.dashboard', compact('stats'));
+        // Today's activity stats
+        $todayActivity = [
+            'approved_threads' => Thread::where('moderation_status', 'approved')
+                ->whereDate('moderated_at', today())
+                ->count(),
+            'rejected_threads' => Thread::where('moderation_status', 'rejected')
+                ->whereDate('moderated_at', today())
+                ->count(),
+            'approved_comments' => Comment::where('verification_status', 'verified')
+                ->whereDate('verified_at', today())
+                ->count(),
+            'rejected_comments' => Comment::where('verification_status', 'rejected')
+                ->whereDate('verified_at', today())
+                ->count(),
+        ];
+
+        // Recent threads needing moderation
+        $recentThreads = Thread::where('moderation_status', 'under_review')
+            ->orWhereNotNull('flagged_at')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Recent comments needing moderation
+        $recentComments = Comment::where('is_flagged', true)
+            ->orWhere('is_spam', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('admin.moderation.dashboard', compact('stats', 'todayActivity', 'recentThreads', 'recentComments'));
     }
 
     /**
@@ -356,5 +390,165 @@ class ModerationController extends Controller
         $userStats = $query->paginate(20);
 
         return view('admin.moderation.user-activity', compact('userStats'));
+    }
+
+    /**
+     * Danh sách báo cáo vi phạm
+     */
+    public function reports(Request $request)
+    {
+        $query = \App\Models\Report::with(['user', 'reportable', 'reporter'])
+            ->orderBy('created_at', 'desc');
+
+        // Filter theo status
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter theo type
+        if ($request->type) {
+            $query->where('reportable_type', $request->type);
+        }
+
+        // Filter theo priority
+        if ($request->priority) {
+            $query->where('priority', $request->priority);
+        }
+
+        // Search
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('reason', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $reports = $query->paginate(20);
+
+        // Statistics
+        $stats = [
+            'total' => \App\Models\Report::count(),
+            'pending' => \App\Models\Report::where('status', 'pending')->count(),
+            'resolved' => \App\Models\Report::where('status', 'resolved')->count(),
+            'dismissed' => \App\Models\Report::where('status', 'dismissed')->count(),
+            'high_priority' => \App\Models\Report::where('priority', 'high')->where('status', 'pending')->count(),
+        ];
+
+        return view('admin.moderation.reports', compact('reports', 'stats'));
+    }
+
+    /**
+     * Giải quyết báo cáo
+     */
+    public function resolveReport(Request $request, $reportId)
+    {
+        $report = \App\Models\Report::findOrFail($reportId);
+
+        $report->update([
+            'status' => 'resolved',
+            'resolved_by' => auth()->id(),
+            'resolved_at' => now(),
+            'resolution_note' => $request->resolution_note,
+        ]);
+
+        // Log action
+        \Log::info('Report resolved', [
+            'report_id' => $reportId,
+            'resolved_by' => auth()->user()->name,
+            'resolution_note' => $request->resolution_note,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Báo cáo đã được giải quyết thành công.'
+        ]);
+    }
+
+    /**
+     * Bỏ qua báo cáo
+     */
+    public function dismissReport(Request $request, $reportId)
+    {
+        $report = \App\Models\Report::findOrFail($reportId);
+
+        $report->update([
+            'status' => 'dismissed',
+            'resolved_by' => auth()->id(),
+            'resolved_at' => now(),
+            'resolution_note' => $request->resolution_note,
+        ]);
+
+        // Log action
+        \Log::info('Report dismissed', [
+            'report_id' => $reportId,
+            'dismissed_by' => auth()->user()->name,
+            'resolution_note' => $request->resolution_note,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Báo cáo đã được bỏ qua.'
+        ]);
+    }
+
+    /**
+     * Bulk actions cho reports
+     */
+    public function bulkActionReports(Request $request)
+    {
+        $reportIds = $request->report_ids;
+        $action = $request->action;
+
+        if (!$reportIds || !$action) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng chọn báo cáo và hành động.'
+            ]);
+        }
+
+        $reports = \App\Models\Report::whereIn('id', $reportIds);
+
+        switch ($action) {
+            case 'resolve':
+                $reports->update([
+                    'status' => 'resolved',
+                    'resolved_by' => auth()->id(),
+                    'resolved_at' => now(),
+                ]);
+                $message = 'Đã giải quyết ' . count($reportIds) . ' báo cáo.';
+                break;
+
+            case 'dismiss':
+                $reports->update([
+                    'status' => 'dismissed',
+                    'resolved_by' => auth()->id(),
+                    'resolved_at' => now(),
+                ]);
+                $message = 'Đã bỏ qua ' . count($reportIds) . ' báo cáo.';
+                break;
+
+            case 'high_priority':
+                $reports->update(['priority' => 'high']);
+                $message = 'Đã đặt ' . count($reportIds) . ' báo cáo thành ưu tiên cao.';
+                break;
+
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Hành động không hợp lệ.'
+                ]);
+        }
+
+        // Log bulk action
+        \Log::info('Bulk action on reports', [
+            'action' => $action,
+            'report_ids' => $reportIds,
+            'performed_by' => auth()->user()->name,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
     }
 }

@@ -1,7 +1,21 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Mạng xã hội')
-@section('header', 'Mạng xã hội')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Mạng xã hội</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Mạng xã hội</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('content')
     <div class="row">
@@ -21,7 +35,7 @@
                         
                         <div class="mb-3">
                             <label for="social_facebook" class="form-label">
-                                <i class="bi bi-facebook me-1 text-primary"></i> {{ __('Facebook') }}
+                                <i class="fab fa-facebook me-1 text-primary"></i> {{ __('Facebook') }}
                             </label>
                             <input type="url" class="form-control @error('social_facebook') is-invalid @enderror" id="social_facebook" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/yourpage">
                             <div class="form-text">{{ __('Liên kết đến trang Facebook của bạn.') }}</div>
@@ -32,7 +46,7 @@
                         
                         <div class="mb-3">
                             <label for="social_twitter" class="form-label">
-                                <i class="bi bi-twitter me-1 text-info"></i> {{ __('Twitter / X') }}
+                                <i class="fab fa-twitter me-1 text-info"></i> {{ __('Twitter / X') }}
                             </label>
                             <input type="url" class="form-control @error('social_twitter') is-invalid @enderror" id="social_twitter" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://twitter.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Twitter/X của bạn.') }}</div>
@@ -43,7 +57,7 @@
                         
                         <div class="mb-3">
                             <label for="social_instagram" class="form-label">
-                                <i class="bi bi-instagram me-1 text-danger"></i> {{ __('Instagram') }}
+                                <i class="fab fa-instagram me-1 text-danger"></i> {{ __('Instagram') }}
                             </label>
                             <input type="url" class="form-control @error('social_instagram') is-invalid @enderror" id="social_instagram" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Instagram của bạn.') }}</div>
@@ -54,7 +68,7 @@
                         
                         <div class="mb-3">
                             <label for="social_linkedin" class="form-label">
-                                <i class="bi bi-linkedin me-1 text-primary"></i> {{ __('LinkedIn') }}
+                                <i class="fab fa-linkedin me-1 text-primary"></i> {{ __('LinkedIn') }}
                             </label>
                             <input type="url" class="form-control @error('social_linkedin') is-invalid @enderror" id="social_linkedin" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? '') }}" placeholder="https://linkedin.com/company/yourcompany">
                             <div class="form-text">{{ __('Liên kết đến trang LinkedIn của bạn.') }}</div>
@@ -65,7 +79,7 @@
                         
                         <div class="mb-3">
                             <label for="social_youtube" class="form-label">
-                                <i class="bi bi-youtube me-1 text-danger"></i> {{ __('YouTube') }}
+                                <i class="fab fa-youtube me-1 text-danger"></i> {{ __('YouTube') }}
                             </label>
                             <input type="url" class="form-control @error('social_youtube') is-invalid @enderror" id="social_youtube" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? '') }}" placeholder="https://youtube.com/c/yourchannel">
                             <div class="form-text">{{ __('Liên kết đến kênh YouTube của bạn.') }}</div>
@@ -76,7 +90,7 @@
                         
                         <div class="mb-3">
                             <label for="social_tiktok" class="form-label">
-                                <i class="bi bi-tiktok me-1"></i> {{ __('TikTok') }}
+                                <i class="fab fa-tiktok me-1"></i> {{ __('TikTok') }}
                             </label>
                             <input type="url" class="form-control @error('social_tiktok') is-invalid @enderror" id="social_tiktok" name="social_tiktok" value="{{ old('social_tiktok', $settings['social_tiktok'] ?? '') }}" placeholder="https://tiktok.com/@yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang TikTok của bạn.') }}</div>
@@ -87,7 +101,7 @@
                         
                         <div class="mb-3">
                             <label for="social_pinterest" class="form-label">
-                                <i class="bi bi-pinterest me-1 text-danger"></i> {{ __('Pinterest') }}
+                                <i class="fab fa-pinterest me-1 text-danger"></i> {{ __('Pinterest') }}
                             </label>
                             <input type="url" class="form-control @error('social_pinterest') is-invalid @enderror" id="social_pinterest" name="social_pinterest" value="{{ old('social_pinterest', $settings['social_pinterest'] ?? '') }}" placeholder="https://pinterest.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Pinterest của bạn.') }}</div>
@@ -98,7 +112,7 @@
                         
                         <div class="mb-3">
                             <label for="social_github" class="form-label">
-                                <i class="bi bi-github me-1"></i> {{ __('GitHub') }}
+                                <i class="fab fa-github me-1"></i> {{ __('GitHub') }}
                             </label>
                             <input type="url" class="form-control @error('social_github') is-invalid @enderror" id="social_github" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? '') }}" placeholder="https://github.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang GitHub của bạn.') }}</div>
@@ -109,7 +123,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
                             </button>
                         </div>
                     </form>
@@ -124,49 +138,49 @@
                     <div class="d-flex flex-wrap gap-2 justify-content-center">
                         @if(!empty($settings['social_facebook'] ?? ''))
                             <a href="{{ $settings['social_facebook'] }}" target="_blank" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Facebook">
-                                <i class="bi bi-facebook"></i>
+                                <i class="fab fa-facebook"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_twitter'] ?? ''))
                             <a href="{{ $settings['social_twitter'] }}" target="_blank" class="btn btn-outline-info" data-bs-toggle="tooltip" title="Twitter / X">
-                                <i class="bi bi-twitter"></i>
+                                <i class="fab fa-twitter"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_instagram'] ?? ''))
                             <a href="{{ $settings['social_instagram'] }}" target="_blank" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Instagram">
-                                <i class="bi bi-instagram"></i>
+                                <i class="fab fa-instagram"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_linkedin'] ?? ''))
                             <a href="{{ $settings['social_linkedin'] }}" target="_blank" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="LinkedIn">
-                                <i class="bi bi-linkedin"></i>
+                                <i class="fab fa-linkedin"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_youtube'] ?? ''))
                             <a href="{{ $settings['social_youtube'] }}" target="_blank" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="YouTube">
-                                <i class="bi bi-youtube"></i>
+                                <i class="fab fa-youtube"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_tiktok'] ?? ''))
                             <a href="{{ $settings['social_tiktok'] }}" target="_blank" class="btn btn-outline-dark" data-bs-toggle="tooltip" title="TikTok">
-                                <i class="bi bi-tiktok"></i>
+                                <i class="fab fa-tiktok"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_pinterest'] ?? ''))
                             <a href="{{ $settings['social_pinterest'] }}" target="_blank" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Pinterest">
-                                <i class="bi bi-pinterest"></i>
+                                <i class="fab fa-pinterest"></i>
                             </a>
                         @endif
                         
                         @if(!empty($settings['social_github'] ?? ''))
                             <a href="{{ $settings['social_github'] }}" target="_blank" class="btn btn-outline-dark" data-bs-toggle="tooltip" title="GitHub">
-                                <i class="bi bi-github"></i>
+                                <i class="fab fa-github"></i>
                             </a>
                         @endif
                     </div>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -51,6 +51,10 @@ class Report extends Model
         'reason',
         'description',
         'status',
+        'priority',
+        'resolved_by',
+        'resolved_at',
+        'resolution_note',
     ];
 
     /**
@@ -62,10 +66,33 @@ class Report extends Model
     }
 
     /**
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'resolved_at' => 'datetime',
+    ];
+
+    /**
      * Get the user who reported.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the user who reported (alias for consistency).
+     */
+    public function reporter(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the user who resolved the report.
+     */
+    public function resolver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'resolved_by');
     }
 }

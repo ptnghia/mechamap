@@ -72,14 +72,19 @@ class AjaxAuthController extends Controller
                 'username' => ['required', 'string', 'max:255', 'unique:' . User::class, 'alpha_dash'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'account_type' => ['required', 'string', 'in:member,student,manufacturer,supplier,brand'],
             ]);
+
+            // Xác định role_group dựa trên account_type
+            $roleGroup = $this->getRoleGroup($request->account_type);
 
             $user = User::create([
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => 'member',
+                'role' => $request->account_type,
+                'role_group' => $roleGroup,
             ]);
 
             event(new Registered($user));
@@ -144,5 +149,20 @@ class AjaxAuthController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Xác định role_group dựa trên account_type
+     *
+     * @param string $accountType
+     * @return string
+     */
+    private function getRoleGroup(string $accountType): string
+    {
+        return match ($accountType) {
+            'member', 'student' => 'community_members',
+            'manufacturer', 'supplier', 'brand' => 'business_partners',
+            default => 'community_members'
+        };
     }
 }

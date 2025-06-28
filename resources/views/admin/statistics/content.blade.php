@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thống kê nội dung')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -429,4 +433,8 @@
         }
     });
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

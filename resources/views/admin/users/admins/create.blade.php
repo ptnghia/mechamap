@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thêm quản trị viên')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -25,7 +29,7 @@
         </div>
         <div class="col-md-6 text-end">
             <a href="{{ route('admin.users.admins') }}" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Quay lại
+                <i class="fas fa-arrow-left"></i> Quay lại
             </a>
         </div>
     </div>
@@ -205,7 +209,7 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-warning small mb-0">
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle"></i>
                         <strong>Chú ý:</strong> Tài khoản quản trị viên có quyền hạn cao. Hãy đảm bảo chỉ tạo cho những
                         người được tin tưởng.
                     </div>
@@ -230,4 +234,8 @@ document.getElementById('avatar').addEventListener('change', function(e) {
     }
 });
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

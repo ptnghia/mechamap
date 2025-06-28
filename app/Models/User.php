@@ -16,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Showcase;
 use App\Models\Country;
 use App\Models\Region;
-use Spatie\Permission\Traits\HasRoles;
+// use Spatie\Permission\Traits\HasRoles; // Temporarily disabled
 
 /**
  *
@@ -132,7 +132,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable; // HasRoles temporarily disabled
 
     /**
      * The attributes that are mass assignable.
@@ -162,6 +162,25 @@ class User extends Authenticatable implements MustVerifyEmail
         'region_id',
         'work_locations',
         'expertise_regions',
+        // Business fields
+        'company_name',
+        'business_license',
+        'tax_code',
+        'business_description',
+        'business_categories',
+        'business_phone',
+        'business_email',
+        'business_address',
+        'is_verified_business',
+        'business_verified_at',
+        'verified_by',
+        'subscription_level',
+        'business_rating',
+        'total_reviews',
+        // New role system fields
+        'role_group',
+        'role_permissions',
+        'role_updated_at',
     ];
 
     /**
@@ -184,9 +203,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'last_seen_at' => 'datetime',
+            'business_verified_at' => 'datetime',
             'password' => 'hashed',
             'work_locations' => 'array',
             'expertise_regions' => 'array',
+            'business_categories' => 'array',
+            'is_verified_business' => 'boolean',
+            'business_rating' => 'decimal:2',
+            'role_permissions' => 'array',
+            'role_updated_at' => 'datetime',
         ];
     }
 
@@ -206,23 +231,64 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Check if user is an admin
+     * Check if user has any of the specified roles
+     *
+     * @param array $roles
+     * @return bool
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return in_array($this->role, $roles);
+    }
+
+    /**
+     * Check if user is an admin (any admin level)
      *
      * @return bool
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return in_array($this->role, ['super_admin', 'system_admin', 'content_admin']);
     }
 
     /**
-     * Check if user is a moderator
+     * Check if user is a moderator (any moderator level)
      *
      * @return bool
      */
     public function isModerator(): bool
     {
-        return $this->role === 'moderator';
+        return in_array($this->role, ['content_moderator', 'marketplace_moderator', 'community_moderator']);
+    }
+
+    /**
+     * Check if user is super admin
+     *
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user is system management level
+     *
+     * @return bool
+     */
+    public function isSystemManagement(): bool
+    {
+        return $this->role_group === 'system_management';
+    }
+
+    /**
+     * Check if user is community management level
+     *
+     * @return bool
+     */
+    public function isCommunityManagement(): bool
+    {
+        return $this->role_group === 'community_management';
     }
 
     /**
@@ -246,13 +312,93 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Check if user is a supplier
+     *
+     * @return bool
+     */
+    public function isSupplier(): bool
+    {
+        return $this->role === 'supplier';
+    }
+
+    /**
+     * Check if user is a manufacturer
+     *
+     * @return bool
+     */
+    public function isManufacturer(): bool
+    {
+        return $this->role === 'manufacturer';
+    }
+
+    /**
+     * Check if user is a brand
+     *
+     * @return bool
+     */
+    public function isBrand(): bool
+    {
+        return $this->role === 'brand';
+    }
+
+    /**
+     * Check if user is a guest
+     *
+     * @return bool
+     */
+    public function isGuest(): bool
+    {
+        return $this->role === 'guest';
+    }
+
+    /**
+     * Check if user is a business account (supplier, manufacturer, brand, verified_partner)
+     *
+     * @return bool
+     */
+    public function isBusiness(): bool
+    {
+        return $this->role_group === 'business_partners';
+    }
+
+    /**
      * Check if user can access admin panel
      *
      * @return bool
      */
     public function canAccessAdmin(): bool
     {
-        return in_array($this->role, ['admin', 'moderator']);
+        return in_array($this->role_group, ['system_management', 'community_management']);
+    }
+
+    /**
+     * Check if user can access system admin features
+     *
+     * @return bool
+     */
+    public function canAccessSystemAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'system_admin']);
+    }
+
+    /**
+     * Check if user can access content admin features
+     *
+     * @return bool
+     */
+    public function canAccessContentAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'system_admin', 'content_admin']);
+    }
+
+    /**
+     * Check if user can access marketplace admin features
+     *
+     * @return bool
+     */
+    public function canAccessMarketplaceAdmin(): bool
+    {
+        return in_array($this->role, ['super_admin', 'system_admin', 'marketplace_moderator']);
     }
 
     /**
@@ -271,6 +417,10 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->avatar) {
             if (strpos($this->avatar, 'http') === 0) {
                 return $this->avatar;
+            }
+            // Nếu avatar path bắt đầu bằng /images/ thì dùng asset() trực tiếp
+            if (strpos($this->avatar, '/images/') === 0) {
+                return asset($this->avatar);
             }
             return asset('storage/' . $this->avatar);
         }
@@ -593,75 +743,142 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Lấy màu badge theo role
+     * Lấy màu badge theo role mới
      *
      * @return string
      */
     public function getRoleColor(): string
     {
         return match ($this->role) {
-            'admin' => 'danger',
-            'moderator' => 'warning',
-            'senior' => 'info',
+            // System Management
+            'super_admin' => 'danger',
+            'system_admin' => 'warning',
+            'content_admin' => 'info',
+
+            // Community Management
+            'content_moderator' => 'primary',
+            'marketplace_moderator' => 'success',
+            'community_moderator' => 'dark',
+
+            // Community Members
+            'senior_member' => 'info',
             'member' => 'primary',
             'guest' => 'secondary',
+            'student' => 'light',
+
+            // Business Partners
+            'manufacturer' => 'dark',
+            'supplier' => 'success',
+            'brand' => 'purple',
+            'verified_partner' => 'gold',
+
             default => 'secondary'
         };
     }
 
     /**
-     * Lấy tên hiển thị của role
+     * Lấy tên hiển thị của role mới
      *
      * @return string
      */
     public function getRoleDisplayName(): string
     {
         return match ($this->role) {
-            'admin' => 'Admin',
-            'moderator' => 'Moderator',
-            'senior' => 'Senior Member',
-            'member' => 'Member',
-            'guest' => 'Guest',
-            default => 'Unknown'
+            // System Management
+            'super_admin' => 'Super Admin',
+            'system_admin' => 'System Admin',
+            'content_admin' => 'Content Admin',
+
+            // Community Management
+            'content_moderator' => 'Content Moderator',
+            'marketplace_moderator' => 'Marketplace Moderator',
+            'community_moderator' => 'Community Moderator',
+
+            // Community Members
+            'senior_member' => 'Thành viên cấp cao',
+            'member' => 'Thành viên',
+            'guest' => 'Khách',
+            'student' => 'Sinh viên',
+
+            // Business Partners
+            'manufacturer' => 'Nhà sản xuất',
+            'supplier' => 'Nhà cung cấp',
+            'brand' => 'Nhãn hàng',
+            'verified_partner' => 'Đối tác xác thực',
+
+            default => 'Không xác định'
         };
     }
 
     /**
-     * Kiểm tra có permission không (tương thích với Spatie)
+     * Lấy tên nhóm role
+     *
+     * @return string
+     */
+    public function getRoleGroupDisplayName(): string
+    {
+        return match ($this->role_group) {
+            'system_management' => 'Quản lý hệ thống',
+            'community_management' => 'Quản lý cộng đồng',
+            'community_members' => 'Thành viên cộng đồng',
+            'business_partners' => 'Đối tác kinh doanh',
+            default => 'Không xác định'
+        };
+    }
+
+    /**
+     * Kiểm tra có permission không (sử dụng PermissionService)
+     * Fallback to old PermissionService if exists
      *
      * @param string $permission
      * @return bool
      */
-    public function hasPermission($permission): bool
+    public function hasPermissionOld($permission): bool
     {
-        // Admin có tất cả quyền
-        if ($this->role === 'admin') {
-            return true;
+        if (class_exists('\App\Services\PermissionService')) {
+            return \App\Services\PermissionService::hasPermission($this, $permission);
         }
-
-        // Kiểm tra qua Spatie Permission nếu có cài đặt
-        if (method_exists($this, 'hasPermissionTo')) {
-            return $this->hasPermissionTo($permission);
-        }
-
-        // Fallback: Moderator có một số quyền cơ bản
-        if ($this->role === 'moderator') {
-            $moderatorPermissions = [
-                'view_dashboard',
-                'view_reports',
-                'manage_users',
-                'ban_users',
-                'view_user_details',
-                'manage_posts',
-                'moderate_content',
-                'manage_comments',
-                'manage_categories',
-                'send_notifications'
-            ];
-            return in_array($permission, $moderatorPermissions);
-        }
-
         return false;
+    }
+
+    /**
+     * Kiểm tra có thể truy cập marketplace không
+     *
+     * @return bool
+     */
+    public function canAccessMarketplace(): bool
+    {
+        return \App\Services\PermissionService::canAccessMarketplace($this);
+    }
+
+    /**
+     * Kiểm tra có thể bán hàng không
+     *
+     * @return bool
+     */
+    public function canSell(): bool
+    {
+        return \App\Services\PermissionService::canSell($this);
+    }
+
+    /**
+     * Kiểm tra có thể mua hàng không
+     *
+     * @return bool
+     */
+    public function canBuy(): bool
+    {
+        return \App\Services\PermissionService::canBuy($this);
+    }
+
+    /**
+     * Kiểm tra business đã được verify chưa
+     *
+     * @return bool
+     */
+    public function isVerifiedBusiness(): bool
+    {
+        return $this->isBusiness() && $this->is_verified_business;
     }
 
     /**
@@ -678,5 +895,145 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Fallback: Trả về collection rỗng hoặc permissions mặc định
         return collect([]);
+    }
+
+    /**
+     * Kiểm tra user có permission cụ thể không (sử dụng Spatie Permission)
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission(string $permission): bool
+    {
+        // Super Admin có tất cả quyền
+        if ($this->role === 'super_admin') {
+            return true;
+        }
+
+        // Sử dụng Spatie Permission nếu có
+        if (method_exists($this, 'hasPermissionTo')) {
+            return $this->hasPermissionTo($permission);
+        }
+
+        // Fallback: Kiểm tra cached permissions
+        if ($this->role_permissions && is_array($this->role_permissions)) {
+            return in_array($permission, $this->role_permissions);
+        }
+
+        return false;
+    }
+
+    /**
+     * Cache permissions cho user
+     *
+     * @return void
+     */
+    public function cachePermissions(): void
+    {
+        if (method_exists($this, 'getAllPermissions')) {
+            $permissions = $this->getAllPermissions()->pluck('name')->toArray();
+            $this->update([
+                'role_permissions' => $permissions,
+                'role_updated_at' => now()
+            ]);
+        }
+    }
+
+    /**
+     * Kiểm tra user có bất kỳ permission nào trong danh sách không
+     *
+     * @param array $permissions
+     * @return bool
+     */
+    public function hasAnyPermission(array $permissions): bool
+    {
+        foreach ($permissions as $permission) {
+            if ($this->hasPermission($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Kiểm tra user có tất cả permissions trong danh sách không
+     *
+     * @param array $permissions
+     * @return bool
+     */
+    public function hasAllPermissions(array $permissions): bool
+    {
+        foreach ($permissions as $permission) {
+            if (!$this->hasPermission($permission)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Lấy tất cả permissions của user theo role
+     *
+     * @return array
+     */
+    public function getUserPermissions(): array
+    {
+        $permissions = config('admin_permissions.permissions');
+        $userPermissions = [];
+
+        foreach ($permissions as $group => $groupPermissions) {
+            foreach ($groupPermissions as $permission => $config) {
+                if ($config[$this->role] ?? false) {
+                    $userPermissions[] = $permission;
+                }
+            }
+        }
+
+        return $userPermissions;
+    }
+
+    /**
+     * Kiểm tra user có thể truy cập route không
+     *
+     * @param string $routeName
+     * @return bool
+     */
+    public function canAccessRoute(string $routeName): bool
+    {
+        // Admin có thể truy cập tất cả routes
+        if ($this->role === 'admin') {
+            return true;
+        }
+
+        $routePermissions = config('admin_permissions.route_permissions');
+
+        // Kiểm tra exact match trước
+        if (isset($routePermissions[$routeName])) {
+            return $this->hasPermission($routePermissions[$routeName]);
+        }
+
+        // Kiểm tra wildcard patterns
+        foreach ($routePermissions as $pattern => $permission) {
+            if (str_contains($pattern, '*')) {
+                $regex = str_replace('*', '.*', $pattern);
+                if (preg_match('/^' . $regex . '$/', $routeName)) {
+                    return $this->hasPermission($permission);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Laravel native compatible method for checking permissions
+     * This replaces Spatie Permission's hasPermissionTo() method
+     */
+    public function hasPermissionTo($permission)
+    {
+        // Use Laravel native Gate system
+        return $this->can($permission);
     }
 }

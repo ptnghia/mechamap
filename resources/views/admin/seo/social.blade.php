@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Cấu hình Social Media')
-@section('header', 'Cấu hình Social Media')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Cấu hình Social Media</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Cấu hình Social Media</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -19,19 +33,19 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-fill me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-diagram-3 me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action active">
-                            <i class="bi bi-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-gear-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
                         </a>
                     </div>
                 </div>
@@ -58,14 +72,14 @@
                 <div class="card-body">
                     <div class="social-preview facebook-preview mb-4">
                         <h6 class="text-muted mb-2">
-                            <i class="bi bi-facebook me-1"></i> {{ __('Facebook') }}
+                            <i class="fab fa-facebook me-1"></i> {{ __('Facebook') }}
                         </h6>
                         <div class="card">
                             <div class="card-img-top bg-light text-center py-3" style="height: 150px;" id="og-image-preview">
                                 @if(!empty($settings['og_image'] ?? ''))
                                     <img src="{{ $settings['og_image'] }}" alt="OG Image" class="h-100">
                                 @else
-                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -78,14 +92,14 @@
                     
                     <div class="social-preview twitter-preview">
                         <h6 class="text-muted mb-2">
-                            <i class="bi bi-twitter me-1"></i> {{ __('Twitter') }}
+                            <i class="fab fa-twitter me-1"></i> {{ __('Twitter') }}
                         </h6>
                         <div class="card">
                             <div class="card-img-top bg-light text-center py-3" style="height: 150px;" id="twitter-image-preview">
                                 @if(!empty($settings['twitter_image'] ?? ''))
                                     <img src="{{ $settings['twitter_image'] }}" alt="Twitter Image" class="h-100">
                                 @else
-                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -193,7 +207,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
                             </button>
                         </div>
                     </form>
@@ -210,13 +224,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-facebook me-2"></i>{{ __('Facebook Sharing Debugger') }}
+                                        <i class="fab fa-facebook me-2"></i>{{ __('Facebook Sharing Debugger') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Facebook.') }}
                                     </p>
                                     <a href="https://developers.facebook.com/tools/debug/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở Facebook Debugger') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Facebook Debugger') }}
                                     </a>
                                 </div>
                             </div>
@@ -226,13 +240,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-twitter me-2"></i>{{ __('Twitter Card Validator') }}
+                                        <i class="fab fa-twitter me-2"></i>{{ __('Twitter Card Validator') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Twitter.') }}
                                     </p>
                                     <a href="https://cards-dev.twitter.com/validator" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở Twitter Card Validator') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Twitter Card Validator') }}
                                     </a>
                                 </div>
                             </div>
@@ -242,13 +256,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-linkedin me-2"></i>{{ __('LinkedIn Post Inspector') }}
+                                        <i class="fab fa-linkedin me-2"></i>{{ __('LinkedIn Post Inspector') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên LinkedIn.') }}
                                     </p>
                                     <a href="https://www.linkedin.com/post-inspector/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở LinkedIn Post Inspector') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở LinkedIn Post Inspector') }}
                                     </a>
                                 </div>
                             </div>
@@ -258,13 +272,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="bi bi-pinterest me-2"></i>{{ __('Pinterest Rich Pins Validator') }}
+                                        <i class="fab fa-pinterest me-2"></i>{{ __('Pinterest Rich Pins Validator') }}
                                     </h5>
                                     <p class="card-text">
                                         {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Pinterest.') }}
                                     </p>
                                     <a href="https://developers.pinterest.com/tools/url-debugger/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="bi bi-box-arrow-up-right me-1"></i> {{ __('Mở Pinterest Validator') }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Pinterest Validator') }}
                                     </a>
                                 </div>
                             </div>

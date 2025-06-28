@@ -1,5 +1,5 @@
 {{-- Admin Moderation Comments Management --}}
-@extends('layouts.admin')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Comments - Moderation')
 

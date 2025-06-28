@@ -5,12 +5,18 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Elements
-    const searchInput = document.getElementById('header-search');
-    const searchButton = document.getElementById('header-search-btn');
-    const searchResultsDropdown = document.getElementById('search-results-dropdown');
-    const searchResultsContent = document.getElementById('search-results-content');
-    const searchScopeOptions = document.querySelectorAll('.search-scope-option');
+    // Elements - Updated to match actual IDs in unified-header
+    const searchInput = document.getElementById('headerSearch');
+    const searchButton = document.getElementById('searchButton');
+    const searchResultsDropdown = document.getElementById('searchResults');
+    const searchResultsContent = document.querySelector('#searchResults .p-3:last-child');
+    const searchScopeOptions = document.querySelectorAll('.search-scope');
+
+    // Check if search elements exist
+    if (!searchInput) {
+        console.warn('Search input not found. Search functionality disabled.');
+        return;
+    }
 
     // Variables
     let currentSearchScope = 'site';
@@ -66,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query.length >= 2) {
             // Show loading state
             showSearchResults();
-            searchResultsContent.innerHTML = '<div class="search-loading"><i class="bi bi-hourglass-split me-2"></i>Searching...</div>';
+            if (searchResultsContent) {
+                searchResultsContent.innerHTML = '<div class="search-loading"><i class="fa fa-spinner fa-spin me-2"></i>Searching...</div>';
+            }
 
             // Set a timeout to avoid too many requests
             searchTimeout = setTimeout(function() {
@@ -77,14 +85,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    searchButton.addEventListener('click', function() {
-        const query = searchInput.value.trim();
+    if (searchButton) {
+        searchButton.addEventListener('click', function() {
+            const query = searchInput.value.trim();
 
-        if (query.length >= 2) {
-            // Redirect to search page
-            window.location.href = `/search?query=${encodeURIComponent(query)}&type=all`;
-        }
-    });
+            if (query.length >= 2) {
+                // Redirect to search page
+                window.location.href = `/search?query=${encodeURIComponent(query)}&type=all`;
+            }
+        });
+    }
 
     // Handle Enter key in search input
     searchInput.addEventListener('keydown', function(e) {
@@ -130,11 +140,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Functions
     function showSearchResults() {
-        searchResultsDropdown.style.display = 'block';
+        if (searchResultsDropdown) {
+            searchResultsDropdown.classList.remove('d-none');
+        }
     }
 
     function hideSearchResults() {
-        searchResultsDropdown.style.display = 'none';
+        if (searchResultsDropdown) {
+            searchResultsDropdown.classList.add('d-none');
+        }
     }
 
     function performSearch(query) {

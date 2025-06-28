@@ -1,6 +1,10 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Showcase')
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -109,4 +113,8 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

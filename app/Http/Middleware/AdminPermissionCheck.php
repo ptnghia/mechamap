@@ -46,7 +46,11 @@ class AdminPermissionCheck
                     'edit_comments',
                     'delete_comments',
                     'view_reports',
+                    'view-reports', // New format
+                    'manage_reports',
+                    'manage-reports', // New format
                     'handle_reports',
+                    'moderate-content', // New format
                     'view_showcases',
                     'edit_showcases',
                     'view_settings_general',

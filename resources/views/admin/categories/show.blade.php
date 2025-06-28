@@ -1,14 +1,32 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Chi tiết chuyên mục')
 
-@section('header', 'Chi tiết chuyên mục')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chi tiết chuyên mục</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chi tiết chuyên mục</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-pencil me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="row">
@@ -138,7 +156,7 @@
                                         <td>{{ $thread->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <a href="{{ route('admin.threads.show', $thread) }}" class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye"></i>
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -157,4 +175,8 @@
             </div>
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

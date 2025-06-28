@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Chỉnh sửa thành viên - ' . $user->name)
-@section('header', 'Chỉnh sửa thành viên')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chỉnh sửa thành viên</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa thành viên</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -29,11 +43,11 @@
                     </p>
                     <p class="card-text">
                         <small class="text-muted">
-                            <i class="bi bi-person"></i> {{ $user->username }}
+                            <i class="fas fa-user"></i> {{ $user->username }}
                         </small>
                         <br>
                         <small class="text-muted">
-                            <i class="bi bi-envelope"></i> {{ $user->email }}
+                            <i class="fas fa-envelope"></i> {{ $user->email }}
                         </small>
                     </p>
                 </div>
@@ -87,7 +101,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div class="form-text">
-                                    <i class="bi bi-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1"></i>
                                     {{ __('Admin và Moderator có quyền truy cập trang quản trị.') }}
                                 </div>
                             </div>
@@ -140,7 +154,7 @@
                                 {{ __('Hủy') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu thay đổi') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
                             </button>
                         </div>
                     </form>

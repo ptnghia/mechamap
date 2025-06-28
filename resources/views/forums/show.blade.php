@@ -46,7 +46,7 @@
 
 @section('content')
 <div class="py-5">
-    <div class="container">
+    <div class="container" data-forum-id="{{ $forum->id }}">
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">

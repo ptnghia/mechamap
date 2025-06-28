@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thêm thành viên mới')
-@section('header', 'Thêm thành viên mới')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thêm thành viên mới</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thêm thành viên mới</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -58,7 +72,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <div class="form-text">
-                                    <i class="bi bi-info-circle me-1"></i>
+                                    <i class="fas fa-info-circle me-1"></i>
                                     {{ __('Admin và Moderator có quyền truy cập trang quản trị.') }}
                                 </div>
                             </div>
@@ -70,7 +84,7 @@
                                 <div class="input-group">
                                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                                     <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
-                                        <i class="bi bi-eye"></i>
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -83,7 +97,7 @@
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                     <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
-                                        <i class="bi bi-eye"></i>
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
@@ -103,7 +117,7 @@
                                 {{ __('Hủy') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-person-plus me-1"></i> {{ __('Tạo thành viên') }}
+                                <i class="fas fa-user-plus me-1"></i> {{ __('Tạo thành viên') }}
                             </button>
                         </div>
                     </form>

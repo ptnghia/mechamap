@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Cấu hình Email')
 
@@ -60,6 +60,10 @@
 </style>
 @endsection
 
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -79,7 +83,7 @@
 
             @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="fas fa-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -87,7 +91,7 @@
 
             @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
+                <i class="fas fa-exclamation-triangle me-2"></i>
                 Có lỗi xảy ra, vui lòng kiểm tra lại!
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -101,13 +105,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-envelope me-2"></i>
+                            <i class="fas fa-envelope me-2"></i>
                             Cấu hình người gửi
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-person-badge me-2"></i>Thông tin người gửi</h6>
+                            <h6><i class="fas fa-user-badge me-2"></i>Thông tin người gửi</h6>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -115,7 +119,7 @@
                                         Email người gửi <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                         <input type="email"
                                             class="form-control @error('from_address') is-invalid @enderror"
                                             id="from_address" name="from_address"
@@ -132,7 +136,7 @@
                                         Tên người gửi <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         <input type="text" class="form-control @error('from_name') is-invalid @enderror"
                                             id="from_name" name="from_name"
                                             value="{{ old('from_name', $settings['from_name'] ?? '') }}"
@@ -149,7 +153,7 @@
                                     Email trả lời
                                 </label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-reply"></i></span>
+                                    <span class="input-group-text"><i class="fas fa-reply"></i></span>
                                     <input type="email" class="form-control @error('reply_to') is-invalid @enderror"
                                         id="reply_to" name="reply_to"
                                         value="{{ old('reply_to', $settings['reply_to'] ?? '') }}"
@@ -169,13 +173,13 @@
                 <div class="card setting-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bi bi-server me-2"></i>
+                            <i class="fas fa-server me-2"></i>
                             Cấu hình SMTP
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="setting-group">
-                            <h6><i class="bi bi-hdd-network me-2"></i>Máy chủ SMTP</h6>
+                            <h6><i class="fas fa-network-wired me-2"></i>Máy chủ SMTP</h6>
 
                             <div class="row">
                                 <div class="col-md-8 mb-3">
@@ -183,7 +187,7 @@
                                         Host SMTP <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-server"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-server"></i></span>
                                         <input type="text" class="form-control @error('smtp_host') is-invalid @enderror"
                                             id="smtp_host" name="smtp_host"
                                             value="{{ old('smtp_host', $settings['smtp_host'] ?? '') }}"
@@ -199,7 +203,7 @@
                                         Port SMTP <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-hdd-network"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-network-wired"></i></span>
                                         <select class="form-select @error('smtp_port') is-invalid @enderror"
                                             id="smtp_port" name="smtp_port" required>
                                             <option value="">Chọn port</option>
@@ -225,7 +229,7 @@
                                         Username SMTP <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person-check"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-user-check"></i></span>
                                         <input type="text"
                                             class="form-control @error('smtp_username') is-invalid @enderror"
                                             id="smtp_username" name="smtp_username"
@@ -242,7 +246,7 @@
                                         Password SMTP <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
                                         <input type="password"
                                             class="form-control @error('smtp_password') is-invalid @enderror"
                                             id="smtp_password" name="smtp_password"
@@ -250,14 +254,14 @@
                                             placeholder="••••••••••••••••" required>
                                         <button type="button" class="btn btn-outline-secondary"
                                             onclick="togglePassword('smtp_password')">
-                                            <i class="bi bi-eye" id="smtp_password_icon"></i>
+                                            <i class="fas fa-eye" id="smtp_password_icon"></i>
                                         </button>
                                     </div>
                                     @error('smtp_password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <div class="form-text">
-                                        <i class="bi bi-info-circle me-1"></i>
+                                        <i class="fas fa-info-circle me-1"></i>
                                         Với Gmail, hãy sử dụng App Password thay vì mật khẩu thường.
                                     </div>
                                 </div>
@@ -266,7 +270,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <button type="button" class="test-connection-btn" onclick="testEmailConnection()">
-                                        <i class="bi bi-wifi me-2"></i>
+                                        <i class="fas fa-wifi me-2"></i>
                                         Kiểm tra kết nối
                                     </button>
                                     <div id="connection-result" class="mt-2"></div>
@@ -281,11 +285,11 @@
                     <div class="col-12">
                         <div class="d-flex justify-content-end gap-3">
                             <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                                <i class="bi bi-arrow-clockwise me-2"></i>
+                                <i class="fas fa-sync-alt me-2"></i>
                                 Đặt lại
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-lg me-2"></i>
+                                <i class="fas fa-check me-2"></i>
                                 Lưu cấu hình
                             </button>
                         </div>
@@ -306,10 +310,10 @@ function togglePassword(fieldId) {
 
     if (field.type === 'password') {
         field.type = 'text';
-        icon.className = 'bi bi-eye-slash';
+        icon.className = 'fas fa-eye-slash';
     } else {
         field.type = 'password';
-        icon.className = 'bi bi-eye';
+        icon.className = 'fas fa-eye';
     }
 }
 
@@ -335,18 +339,18 @@ function testEmailConnection() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            result.innerHTML = '<div class="alert alert-success mt-2"><i class="bi bi-check-circle me-2"></i>' + data.message + '</div>';
+            result.innerHTML = '<div class="alert alert-success mt-2"><i class="fas fa-check-circle me-2"></i>' + data.message + '</div>';
         } else {
-            result.innerHTML = '<div class="alert alert-danger mt-2"><i class="bi bi-exclamation-triangle me-2"></i>' + data.message + '</div>';
+            result.innerHTML = '<div class="alert alert-danger mt-2"><i class="fas fa-exclamation-triangle me-2"></i>' + data.message + '</div>';
         }
     })
     .catch(error => {
-        result.innerHTML = '<div class="alert alert-danger mt-2"><i class="bi bi-exclamation-triangle me-2"></i>Có lỗi xảy ra khi kiểm tra kết nối.</div>';
+        result.innerHTML = '<div class="alert alert-danger mt-2"><i class="fas fa-exclamation-triangle me-2"></i>Có lỗi xảy ra khi kiểm tra kết nối.</div>';
     })
     .finally(() => {
         // Re-enable button
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-wifi me-2"></i>Kiểm tra kết nối';
+        btn.innerHTML = '<i class="fas fa-wifi me-2"></i>Kiểm tra kết nối';
 
         // Auto hide result after 5 seconds
         setTimeout(() => {
@@ -416,4 +420,8 @@ document.getElementById('smtp_host').addEventListener('blur', function() {
     }
 });
 </script>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

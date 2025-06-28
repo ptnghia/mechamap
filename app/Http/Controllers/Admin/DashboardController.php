@@ -22,6 +22,7 @@ class DashboardController extends Controller
     {
         // Lấy thống kê cơ bản
         $stats = [
+            // Community Stats
             'users' => User::count(),
             'threads' => Thread::count(),
             'posts' => Post::count(),
@@ -33,6 +34,15 @@ class DashboardController extends Controller
             'new_posts_today' => Post::whereDate('created_at', today())->count(),
             'new_comments_today' => Schema::hasTable('comments') ? Comment::whereDate('created_at', today())->count() : 0,
             'online_users' => Schema::hasColumn('users', 'last_seen_at') ? User::where('last_seen_at', '>=', now()->subMinutes(5))->count() : 0,
+
+            // Weekly Activity
+            'weekly_activity' => $this->getWeeklyActivity(),
+
+            // Marketplace Stats
+            'monthly_revenue' => $this->getMonthlyRevenue(),
+            'pending_orders' => $this->getPendingOrders(),
+            'pending_products' => $this->getPendingProducts(),
+            'unpaid_commission' => $this->getUnpaidCommission(),
         ];
 
         // Lấy danh sách người dùng mới nhất
@@ -130,5 +140,76 @@ class DashboardController extends Controller
         }
 
         return 0;
+    }
+
+    /**
+     * Get weekly activity count
+     */
+    private function getWeeklyActivity(): int
+    {
+        $weekStart = now()->startOfWeek();
+        $weekEnd = now()->endOfWeek();
+
+        $threadCount = Thread::whereBetween('created_at', [$weekStart, $weekEnd])->count();
+        $commentCount = Schema::hasTable('comments') ?
+            Comment::whereBetween('created_at', [$weekStart, $weekEnd])->count() : 0;
+        $userCount = User::whereBetween('created_at', [$weekStart, $weekEnd])->count();
+
+        return $threadCount + $commentCount + $userCount;
+    }
+
+    /**
+     * Get monthly revenue (mock data for now)
+     */
+    private function getMonthlyRevenue(): int
+    {
+        // TODO: Implement real revenue calculation when Order/Payment system is ready
+        // For now, return mock data based on user activity
+        $monthStart = now()->startOfMonth();
+        $monthEnd = now()->endOfMonth();
+
+        $activeUsers = User::whereBetween('created_at', [$monthStart, $monthEnd])->count();
+
+        // Mock calculation: 2M VND per active user
+        return $activeUsers * 2000000;
+    }
+
+    /**
+     * Get pending orders count (mock data for now)
+     */
+    private function getPendingOrders(): int
+    {
+        // TODO: Implement real order system
+        // For now, return mock data based on recent activity
+        $recentThreads = Thread::where('created_at', '>=', now()->subDays(7))->count();
+
+        // Mock: assume 20% of recent threads result in orders
+        return max(1, intval($recentThreads * 0.2));
+    }
+
+    /**
+     * Get pending products count (mock data for now)
+     */
+    private function getPendingProducts(): int
+    {
+        // TODO: Implement real product approval system
+        // For now, return mock data
+        $businessUsers = User::whereIn('role', ['supplier', 'manufacturer', 'brand'])->count();
+
+        // Mock: assume each business user has 0.5 pending products on average
+        return max(1, intval($businessUsers * 0.5));
+    }
+
+    /**
+     * Get unpaid commission amount (mock data for now)
+     */
+    private function getUnpaidCommission(): int
+    {
+        // TODO: Implement real commission system
+        // For now, return mock data based on monthly revenue
+        $monthlyRevenue = $this->getMonthlyRevenue();
+
+        // Mock: assume 12% commission rate
+        return intval($monthlyRevenue * 0.12);
     }
 }

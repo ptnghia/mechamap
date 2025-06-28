@@ -1,14 +1,32 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý bình luận')
 
-@section('header', 'Quản lý bình luận')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý bình luận</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý bình luận</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.comments.statistics') }}" class="btn btn-sm btn-info">
-        <i class="bi bi-bar-chart me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card mb-4">
@@ -40,10 +58,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="class="fas fa-filter" me-1"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.comments.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
                     </a>
                 </div>
             </form>
@@ -79,7 +97,7 @@
                                     </div>
                                     @if($comment->parent_id)
                                         <div class="small text-muted mt-1">
-                                            <i class="bi bi-reply me-1"></i> {{ __('Trả lời cho bình luận #') . $comment->parent_id }}
+                                            <i class="fas fa-reply me-1"></i> {{ __('Trả lời cho bình luận #') . $comment->parent_id }}
                                         </div>
                                     @endif
                                 </td>
@@ -106,13 +124,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="class="fas fa-eye""></i>
                                         </a>
                                         <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="class="fas fa-edit""></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $comment->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="class="fas fa-trash""></i>
                                         </button>
                                     </div>
 
@@ -153,4 +171,8 @@
             {{ $comments->withQueryString()->links() }}
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

@@ -1,14 +1,32 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý Media')
 
-@section('header', 'Quản lý Media')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý Media</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý Media</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.media.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-upload me-1"></i> {{ __('Tải lên') }}
+        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card mb-4">
@@ -33,10 +51,10 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-x-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
                     </a>
                 </div>
             </form>
@@ -59,27 +77,27 @@
                                         <img src="{{ Storage::url($item->file_path) }}" class="img-fluid" alt="{{ $item->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                     @elseif(strpos($item->file_type, 'video') !== false)
                                         <div class="d-flex justify-content-center align-items-center bg-dark h-100">
-                                            <i class="bi bi-film text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-film text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @elseif(strpos($item->file_type, 'audio') !== false)
                                         <div class="d-flex justify-content-center align-items-center bg-info h-100">
-                                            <i class="bi bi-music-note-beamed text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-music text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @elseif(strpos($item->file_type, 'pdf') !== false)
                                         <div class="d-flex justify-content-center align-items-center bg-danger h-100">
-                                            <i class="bi bi-file-earmark-pdf text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-file-pdf text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @elseif(strpos($item->file_type, 'word') !== false || strpos($item->file_type, 'document') !== false)
                                         <div class="d-flex justify-content-center align-items-center bg-primary h-100">
-                                            <i class="bi bi-file-earmark-word text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-file-word text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @elseif(strpos($item->file_type, 'excel') !== false || strpos($item->file_type, 'spreadsheet') !== false)
                                         <div class="d-flex justify-content-center align-items-center bg-success h-100">
-                                            <i class="bi bi-file-earmark-excel text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-file-excel text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @else
                                         <div class="d-flex justify-content-center align-items-center bg-secondary h-100">
-                                            <i class="bi bi-file-earmark text-light" style="font-size: 3rem;"></i>
+                                            <i class="fas fa-file text-light" style="font-size: 3rem;"></i>
                                         </div>
                                     @endif
                                     <div class="position-absolute bottom-0 end-0 p-2">
@@ -94,16 +112,16 @@
                                 <div class="card-footer">
                                     <div class="btn-group w-100">
                                         <a href="{{ route('admin.media.show', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="{{ route('admin.media.download', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Tải xuống') }}">
-                                            <i class="bi bi-download"></i>
+                                            <i class="fas fa-download"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $item->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -136,10 +154,10 @@
                 </div>
             @else
                 <div class="text-center py-5">
-                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
                     <p class="mt-3">{{ __('Không có file nào.') }}</p>
                     <a href="{{ route('admin.media.create') }}" class="btn btn-primary">
-                        <i class="bi bi-upload me-1"></i> {{ __('Tải lên') }}
+                        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
                     </a>
                 </div>
             @endif
@@ -148,4 +166,8 @@
             {{ $media->withQueryString()->links() }}
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

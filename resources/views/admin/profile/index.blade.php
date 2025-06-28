@@ -1,11 +1,25 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Hồ sơ của tôi')
-@section('header', 'Hồ sơ của tôi')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Hồ sơ của tôi</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Hồ sơ của tôi</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.profile.password') }}" class="btn btn-sm btn-outline-primary">
-        <i class="bi bi-key me-1"></i> {{ __('Đổi mật khẩu') }}
+        <i class="fas fa-key me-1"></i> {{ __('Đổi mật khẩu') }}
     </a>
 @endsection
 
@@ -25,33 +39,33 @@
                     </p>
                     <p class="card-text">
                         <small class="text-muted">
-                            <i class="bi bi-person"></i> {{ $user->username }}
+                            <i class="fas fa-user"></i> {{ $user->username }}
                         </small>
                         <br>
                         <small class="text-muted">
-                            <i class="bi bi-envelope"></i> {{ $user->email }}
+                            <i class="fas fa-envelope"></i> {{ $user->email }}
                         </small>
                         @if($user->location)
                             <br>
                             <small class="text-muted">
-                                <i class="bi bi-geo-alt"></i> {{ $user->location }}
+                                <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
                             </small>
                         @endif
                         @if($user->website)
                             <br>
                             <small class="text-muted">
-                                <i class="bi bi-globe"></i> <a href="{{ $user->website }}" target="_blank">{{ $user->website }}</a>
+                                <i class="fas fa-globe"></i> <a href="{{ $user->website }}" target="_blank">{{ $user->website }}</a>
                             </small>
                         @endif
                     </p>
                     <div class="d-grid gap-2">
-                        <a href="{{ route('profile.show', $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
+                        <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
                         </a>
                     </div>
                 </div>
             </div>
-            
+
             <div class="card mt-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Thông tin tài khoản') }}</h5>
@@ -78,7 +92,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
@@ -88,7 +102,7 @@
                     <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="name" class="form-label">{{ __('Họ tên') }} <span class="text-danger">*</span></label>
@@ -105,7 +119,7 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="email" class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required>
@@ -113,7 +127,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="avatar" class="form-label">{{ __('Ảnh đại diện') }}</label>
                             <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
@@ -122,7 +136,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="about_me" class="form-label">{{ __('Giới thiệu') }}</label>
                             <textarea class="form-control @error('about_me') is-invalid @enderror" id="about_me" name="about_me" rows="3">{{ old('about_me', $user->about_me) }}</textarea>
@@ -130,7 +144,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="website" class="form-label">{{ __('Website') }}</label>
@@ -147,7 +161,7 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="signature" class="form-label">{{ __('Chữ ký') }}</label>
                             <textarea class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" rows="2">{{ old('signature', $user->signature) }}</textarea>
@@ -155,10 +169,10 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu thay đổi') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
                             </button>
                         </div>
                     </form>

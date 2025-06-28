@@ -1,14 +1,32 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản lý diễn đàn')
 
-@section('header', 'Quản lý diễn đàn')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý diễn đàn</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý diễn đàn</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @section('actions')
     <a href="{{ route('admin.forums.create') }}" class="btn btn-sm btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> {{ __('Tạo diễn đàn mới') }}
+        <i class="class="fas fa-plus"-lg me-1"></i> {{ __('Tạo diễn đàn mới') }}
     </a>
 @endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
 
 @section('content')
     <div class="card">
@@ -55,13 +73,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.forums.show', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="bi bi-eye"></i>
+                                            <i class="class="fas fa-eye""></i>
                                         </a>
                                         <a href="{{ route('admin.forums.edit', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="class="fas fa-edit""></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $forum->id }}" title="{{ __('Xóa') }}">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="class="fas fa-trash""></i>
                                         </button>
                                     </div>
 
@@ -95,7 +113,7 @@
                                     <td>{{ $subForum->id }}</td>
                                     <td>
                                         <div class="ms-3">
-                                            <i class="bi bi-arrow-return-right me-1 text-muted"></i>
+                                            <i class="fas fa-reply me-1 text-muted"></i>
                                             <a href="{{ route('admin.forums.show', $subForum) }}" class="text-decoration-none">
                                                 {{ $subForum->name }}
                                             </a>
@@ -117,13 +135,13 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.forums.show', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                                <i class="bi bi-eye"></i>
+                                                <i class="class="fas fa-eye""></i>
                                             </a>
                                             <a href="{{ route('admin.forums.edit', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                                <i class="bi bi-pencil"></i>
+                                                <i class="class="fas fa-edit""></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $subForum->id }}" title="{{ __('Xóa') }}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="class="fas fa-trash""></i>
                                             </button>
                                         </div>
 
@@ -164,4 +182,8 @@
             </div>
         </div>
     </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
 @endsection

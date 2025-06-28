@@ -36,8 +36,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class, // Roles & permissions system
             MechaMapCategorySeeder::class,    // Mechanical engineering categories
-            MechaMapUserSeeder::class,        // Users with realistic profiles & permissions
+            MechaMapUserSeeder::class,        // Community users (Admin, Moderator, Senior, Member, Guest)
+            BusinessUserSeeder::class,        // Business users (Supplier, Manufacturer, Brand)
             MechanicalEngineeringDataSeeder::class, // Realistic forum data
+            MediaSeeder::class,               // Media files (images, avatars, etc.)
             // ShowcaseSeeder::class,         // Uncomment when showcase seeder is ready
         ]);
         $this->command->newLine();
@@ -47,6 +49,8 @@ class DatabaseSeeder extends Seeder
         // ====================================================================
         $this->command->info('✅ MechaMap Database Seeding Completed Successfully!');
         $this->command->info('🎯 Platform ready for Vietnamese Mechanical Engineering Community');
+        $this->command->info('👥 8 User Roles: Admin, Moderator, Senior, Member, Guest, Supplier, Manufacturer, Brand');
+        $this->command->info('💼 Business Marketplace: Verified suppliers, manufacturers, and brands');
         $this->command->info('📊 SEO optimized for mechanical engineering keywords');
         $this->command->info('🔧 Forum configured for CAD/CAM, Automation, Robotics discussions');
         $this->command->info('⚡ Performance settings applied for technical content');

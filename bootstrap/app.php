@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('web', [
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\Localization::class,
             \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -35,12 +36,16 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Đăng ký alias cho middleware
         $middleware->alias([
+            'auth' => \App\Http\Middleware\Authenticate::class,
             'admin' => \App\Http\Middleware\AdminAccess::class,
             'admin.auth' => \App\Http\Middleware\AdminAuthenticate::class,
+            'admin.permission' => \App\Http\Middleware\CheckAdminPermission::class,
+            'admin.redirect' => \App\Http\Middleware\AdminRedirectIfUnauthenticated::class,
             'verified.social' => \App\Http\Middleware\EnsureEmailIsVerifiedOrSocialLogin::class,
             'track.activity' => \App\Http\Middleware\TrackUserActivity::class,
             'forum.cache' => \App\Http\Middleware\ForumCacheMiddleware::class,
             'download.access' => \App\Http\Middleware\VerifyDownloadAccess::class,
+            'role' => \App\Http\Middleware\RoleBasedAccessMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -12,6 +12,14 @@ use Illuminate\View\View;
 class SettingsController extends Controller
 {
     /**
+     * Hiển thị trang chính cài đặt (redirect to general)
+     */
+    public function index()
+    {
+        return redirect()->route('admin.settings.general');
+    }
+
+    /**
      * Hiển thị trang cấu hình chung
      */
     public function general(): View

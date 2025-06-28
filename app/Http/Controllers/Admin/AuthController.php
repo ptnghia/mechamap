@@ -67,7 +67,7 @@ class AuthController extends Controller
         }
 
         // Thử đăng nhập
-        if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             // Đăng nhập thành công
             $request->session()->regenerate();
 
@@ -89,10 +89,22 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('admin.login');
+    }
+
+    /**
+     * GET route để logout (redirect đến POST)
+     */
+    public function logoutGet(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login')->with('success', 'Đã đăng xuất thành công.');
     }
 }

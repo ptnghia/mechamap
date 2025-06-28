@@ -25,11 +25,169 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register Gates for moderation
-        \Illuminate\Support\Facades\Gate::define('moderate-content', function ($user) {
-            return app(\App\Policies\ModerationPolicy::class)->moderateContent($user);
+        $this->registerPolicies();
+        $this->registerGates();
+    }
+
+    /**
+     * Register authorization gates.
+     */
+    private function registerGates(): void
+    {
+        // Admin Dashboard Access
+        \Illuminate\Support\Facades\Gate::define('access-admin', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin',
+                'admin', 'moderator', 'content_moderator',
+                'marketplace_moderator', 'community_moderator'
+            ]);
         });
 
+        // System Management (Full Admin Access)
+        \Illuminate\Support\Facades\Gate::define('system-management', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'content_admin']);
+        });
+
+        // Community Management (Limited Admin Access)
+        \Illuminate\Support\Facades\Gate::define('community-management', function ($user) {
+            return in_array($user->role, [
+                'admin', 'moderator', 'content_moderator',
+                'marketplace_moderator', 'community_moderator'
+            ]);
+        });
+
+        // Business Partner Access
+        \Illuminate\Support\Facades\Gate::define('business-partner', function ($user) {
+            return in_array($user->role, ['supplier', 'manufacturer', 'brand', 'verified_partner']);
+        });
+
+        // Marketplace Access
+        \Illuminate\Support\Facades\Gate::define('marketplace-access', function ($user) {
+            return in_array($user->role, [
+                'supplier', 'manufacturer', 'brand', 'verified_partner',
+                'senior_member', 'member'
+            ]);
+        });
+
+        // Content Moderation
+        \Illuminate\Support\Facades\Gate::define('moderate-content', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin',
+                'admin', 'moderator', 'content_moderator'
+            ]);
+        });
+
+        // Marketplace Moderation
+        \Illuminate\Support\Facades\Gate::define('moderate-marketplace', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin',
+                'admin', 'moderator', 'marketplace_moderator'
+            ]);
+        });
+
+        // User Management
+        \Illuminate\Support\Facades\Gate::define('manage-users', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'admin']);
+        });
+
+        // System Settings
+        \Illuminate\Support\Facades\Gate::define('manage-settings', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin']);
+        });
+
+        // Additional Gates for existing permissions
+        \Illuminate\Support\Facades\Gate::define('view-users', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'content_admin', 'admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-all-users', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('verify-business-accounts', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'content_admin', 'admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-user-roles', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('view-analytics', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'marketplace_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('view-system-logs', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-content', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'content_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-community', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'community_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('approve-products', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'marketplace_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-seller-accounts', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'marketplace_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('view-marketplace-analytics', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator', 'marketplace_moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('manage-commissions', function ($user) {
+            return in_array($user->role, ['super_admin', 'system_admin', 'admin']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('export-data', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('view-reports', function ($user) {
+            return in_array($user->role, [
+                'super_admin', 'system_admin', 'content_admin', 'admin',
+                'moderator'
+            ]);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('access-b2b-features', function ($user) {
+            return in_array($user->role, ['supplier', 'manufacturer', 'brand', 'verified_partner']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('sell-products', function ($user) {
+            return in_array($user->role, ['supplier', 'manufacturer']);
+        });
+
+        \Illuminate\Support\Facades\Gate::define('view-content', function ($user) {
+            return !in_array($user->role, ['guest']) || auth()->check();
+        });
+
+        // Legacy Gates for existing moderation system
         \Illuminate\Support\Facades\Gate::define('flag-thread', function ($user, $thread) {
             return app(\App\Policies\ModerationPolicy::class)->flagThread($user, $thread);
         });

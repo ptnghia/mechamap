@@ -1,11 +1,11 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Thêm cấu hình SEO mới')
 @section('header', 'Thêm cấu hình SEO mới')
 
 @section('actions')
     <a href="{{ route('admin.page-seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
     </a>
 @endsection
 
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
@@ -39,7 +39,7 @@
                 <div class="card-body">
                     <form action="{{ route('admin.page-seo.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="route_name" class="form-label">{{ __('Route name') }}</label>
@@ -65,16 +65,16 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                         <div class="alert alert-warning">
-                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <i class="fas fa-exclamation-triangle-fill me-2"></i>
                             {{ __('Bạn phải cung cấp Route name hoặc URL pattern.') }}
                         </div>
-                        
+
                         <hr>
-                        
+
                         <h6 class="mb-3">{{ __('Cấu hình SEO cơ bản') }}</h6>
-                        
+
                         <div class="mb-3">
                             <label for="title" class="form-label">{{ __('Tiêu đề trang') }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
@@ -83,7 +83,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="description" class="form-label">{{ __('Mô tả trang') }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description') }}</textarea>
@@ -92,7 +92,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="keywords" class="form-label">{{ __('Từ khóa') }}</label>
                             <input type="text" class="form-control @error('keywords') is-invalid @enderror" id="keywords" name="keywords" value="{{ old('keywords') }}">
@@ -101,7 +101,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="canonical_url" class="form-label">{{ __('Canonical URL') }}</label>
                             <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" name="canonical_url" value="{{ old('canonical_url') }}">
@@ -110,7 +110,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="no_index" name="no_index" {{ old('no_index') ? 'checked' : '' }}>
@@ -118,11 +118,11 @@
                             </div>
                             <div class="form-text">{{ __('Nếu bật, trang sẽ không xuất hiện trong kết quả tìm kiếm.') }}</div>
                         </div>
-                        
+
                         <hr>
-                        
+
                         <h6 class="mb-3">{{ __('Cấu hình Open Graph (Facebook, LinkedIn, ...)') }}</h6>
-                        
+
                         <div class="mb-3">
                             <label for="og_title" class="form-label">{{ __('Tiêu đề Open Graph') }}</label>
                             <input type="text" class="form-control @error('og_title') is-invalid @enderror" id="og_title" name="og_title" value="{{ old('og_title') }}">
@@ -131,7 +131,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="og_description" class="form-label">{{ __('Mô tả Open Graph') }}</label>
                             <textarea class="form-control @error('og_description') is-invalid @enderror" id="og_description" name="og_description" rows="3">{{ old('og_description') }}</textarea>
@@ -140,7 +140,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="og_image" class="form-label">{{ __('Hình ảnh Open Graph') }}</label>
                             <input type="file" class="form-control @error('og_image') is-invalid @enderror" id="og_image" name="og_image">
@@ -149,11 +149,11 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <hr>
-                        
+
                         <h6 class="mb-3">{{ __('Cấu hình Twitter Card') }}</h6>
-                        
+
                         <div class="mb-3">
                             <label for="twitter_title" class="form-label">{{ __('Tiêu đề Twitter') }}</label>
                             <input type="text" class="form-control @error('twitter_title') is-invalid @enderror" id="twitter_title" name="twitter_title" value="{{ old('twitter_title') }}">
@@ -162,7 +162,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="twitter_description" class="form-label">{{ __('Mô tả Twitter') }}</label>
                             <textarea class="form-control @error('twitter_description') is-invalid @enderror" id="twitter_description" name="twitter_description" rows="3">{{ old('twitter_description') }}</textarea>
@@ -171,7 +171,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <label for="twitter_image" class="form-label">{{ __('Hình ảnh Twitter') }}</label>
                             <input type="file" class="form-control @error('twitter_image') is-invalid @enderror" id="twitter_image" name="twitter_image">
@@ -180,11 +180,11 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <hr>
-                        
+
                         <h6 class="mb-3">{{ __('Cấu hình nâng cao') }}</h6>
-                        
+
                         <div class="mb-3">
                             <label for="extra_meta" class="form-label">{{ __('Meta tags bổ sung') }}</label>
                             <textarea class="form-control font-monospace @error('extra_meta') is-invalid @enderror" id="extra_meta" name="extra_meta" rows="5">{{ old('extra_meta') }}</textarea>
@@ -193,7 +193,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
+
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {{ old('is_active', true) ? 'checked' : '' }}>
@@ -201,13 +201,13 @@
                             </div>
                             <div class="form-text">{{ __('Nếu tắt, cấu hình SEO này sẽ không được áp dụng.') }}</div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.page-seo.index') }}" class="btn btn-outline-secondary">
                                 {{ __('Hủy') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
                             </button>
                         </div>
                     </form>
@@ -228,7 +228,7 @@
             document.getElementById('twitter_title').value = this.value;
         }
     });
-    
+
     document.getElementById('description').addEventListener('input', function() {
         if (!document.getElementById('og_description').value) {
             document.getElementById('og_description').value = this.value;
