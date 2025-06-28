@@ -22,15 +22,15 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                 <div class="d-flex gap-4 mb-3">
                     <div class="stat-item">
                         <strong>{{ App\Models\Thread::count() }}</strong>
-                        <span class="text-muted">bài đăng</span>
+                        <span class="text-muted">{{ __('forum.threads') }}</span>
                     </div>
                     <div class="stat-item">
                         <strong>{{ App\Models\User::count() }}</strong>
-                        <span class="text-muted">thành viên</span>
+                        <span class="text-muted">{{ __('user.members') }}</span>
                     </div>
                 </div>
                 <div class="text-muted small mb-3">
-                    <i class="bi bi-calendar-check me-1"></i> Hoạt động từ {{
+                    <i class="bi bi-calendar-check me-1"></i> {{ __('content.active_since') }} {{
                     \Carbon\Carbon::parse(config('app.established_year', '2023'))->format('Y') }}
                 </div>
             </div>
@@ -41,11 +41,11 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
             <div class="d-grid gap-2">
                 @guest
                 <a href="{{ route('login') }}" class="btn btn-primary">
-                    <i class="bi bi-person-plus me-2"></i>Tham gia cộng đồng
+                    <i class="bi bi-person-plus me-2"></i>{{ __('content.join_community') }}
                 </a>
                 @endguest
                 <a href="{{ route('business.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-graph-up me-2"></i>Phát triển doanh nghiệp
+                    <i class="bi bi-graph-up me-2"></i>{{ __('content.business_development') }}
                 </a>
             </div>
         </div>
@@ -195,14 +195,21 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                     // Lấy ảnh đại diện của forum từ media relationship
                     $forumImage = $forum->media->first();
                     if ($forumImage) {
-                    // Nếu file_path là URL đầy đủ thì dùng trực tiếp, ngược lại thì dùng asset
-                    $imageUrl = filter_var($forumImage->file_path, FILTER_VALIDATE_URL)
-                    ? $forumImage->file_path
-                    : asset('storage/' . $forumImage->file_path);
+                        // Nếu file_path là URL đầy đủ thì dùng trực tiếp
+                        if (filter_var($forumImage->file_path, FILTER_VALIDATE_URL)) {
+                            $imageUrl = $forumImage->file_path;
+                        } elseif (strpos($forumImage->file_path, '/images/') === 0) {
+                            // Nếu file_path bắt đầu bằng /images/ thì dùng asset() trực tiếp
+                            $imageUrl = asset($forumImage->file_path);
+                        } else {
+                            // Loại bỏ slash đầu để tránh double slash
+                            $cleanPath = ltrim($forumImage->file_path, '/');
+                            $imageUrl = asset('storage/' . $cleanPath);
+                        }
                     } else {
-                    // Fallback về UI Avatars nếu không có ảnh
-                    $imageUrl = 'https://ui-avatars.com/api/?name=' . urlencode(substr($forum->name, 0, 2)) .
-                    '&background=random&color=fff&size=40';
+                        // Fallback về UI Avatars nếu không có ảnh
+                        $imageUrl = 'https://ui-avatars.com/api/?name=' . urlencode(substr($forum->name, 0, 2)) .
+                        '&background=random&color=fff&size=40';
                     }
                     @endphp
                     <img src="{{ $imageUrl }}" alt="{{ $forum->name }}" class="rounded shadow-sm" width="40" height="40"

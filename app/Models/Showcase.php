@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -242,7 +242,15 @@ class Showcase extends Model
             if (filter_var($this->cover_image, FILTER_VALIDATE_URL)) {
                 return $this->cover_image;
             }
-            return asset('storage/' . str_replace('public/', '', $this->cover_image));
+
+            // Nếu cover_image bắt đầu bằng /images/ thì dùng asset() trực tiếp
+            if (strpos($this->cover_image, '/images/') === 0) {
+                return asset($this->cover_image);
+            }
+
+            // Loại bỏ 'public/' và slash đầu để tránh double slash
+            $cleanPath = ltrim(str_replace('public/', '', $this->cover_image), '/');
+            return asset('storage/' . $cleanPath);
         }
 
         return asset('images/placeholder.svg');

@@ -156,8 +156,15 @@ class Media extends Model
                 return $this->file_path;
             }
 
-            // Nếu là đường dẫn local thì tạo URL từ storage
-            return asset('storage/' . $this->file_path);
+            // Nếu file_path bắt đầu bằng /images/ thì dùng asset() trực tiếp
+            if (strpos($this->file_path, '/images/') === 0) {
+                return asset($this->file_path);
+            }
+
+            // Nếu là đường dẫn local khác thì tạo URL từ storage
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->file_path, '/');
+            return asset('storage/' . $cleanPath);
         }
 
         // Fallback về placeholder image

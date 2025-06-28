@@ -180,13 +180,20 @@
                                         // Lấy ảnh đại diện của forum từ media relationship
                                         $forumImage = $forum->media->first();
                                         if ($forumImage) {
-                                        // Nếu file_path là URL đầy đủ thì dùng trực tiếp, ngược lại thì dùng asset
-                                        $imageUrl = filter_var($forumImage->file_path, FILTER_VALIDATE_URL)
-                                        ? $forumImage->file_path
-                                        : asset('storage/' . $forumImage->file_path);
+                                            // Nếu file_path là URL đầy đủ thì dùng trực tiếp
+                                            if (filter_var($forumImage->file_path, FILTER_VALIDATE_URL)) {
+                                                $imageUrl = $forumImage->file_path;
+                                            } elseif (strpos($forumImage->file_path, '/images/') === 0) {
+                                                // Nếu file_path bắt đầu bằng /images/ thì dùng asset() trực tiếp
+                                                $imageUrl = asset($forumImage->file_path);
+                                            } else {
+                                                // Loại bỏ slash đầu để tránh double slash
+                                                $cleanPath = ltrim($forumImage->file_path, '/');
+                                                $imageUrl = asset('storage/' . $cleanPath);
+                                            }
                                         } else {
-                                        // Fallback về icon Bootstrap nếu không có ảnh
-                                        $imageUrl = null;
+                                            // Fallback về icon Bootstrap nếu không có ảnh
+                                            $imageUrl = null;
                                         }
                                         @endphp
 

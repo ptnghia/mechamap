@@ -44,7 +44,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('/') || request()->is('homepage') ? 'active' : '' }}" href="{{ url('/') }}">
                             <i class="fa-solid fa-home me-1"></i>
-                            Trang chủ
+                            {{ __('messages.nav.home') }}
                         </a>
                     </li>
 
@@ -52,10 +52,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-store me-1"></i>
-                            Marketplace
+                            {{ __('messages.nav.marketplace') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Browse Products</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.browse_products') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.index') }}">
                                 <i class="fa-solid fa-grid-2 me-2"></i>All Categories
                             </a></li>
@@ -69,7 +69,7 @@
                                 <i class="fa-solid fa-fire me-2"></i>Best Sellers
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>Business Tools</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
                                 <i class="fa-solid fa-file-invoice me-2"></i>Request for Quote
                             </a></li>
@@ -92,12 +92,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-users me-1"></i>
-                            Cộng đồng
+                            {{ __('messages.nav.community') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="communityDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>Discussion</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('forums.index') }}">
-                                <i class="fa-regular fa-rectangle-list me-2"></i>Diễn đàn
+                                <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('forums.recent') }}">
                                 <i class="fa-solid fa-clock me-2"></i>Recent Discussions
@@ -106,7 +106,7 @@
                                 <i class="fa-solid fa-trending-up me-2"></i>Popular Topics
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>Networking</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('members.index') }}">
                                 <i class="fa-solid fa-users-gear me-2"></i>Member Directory
                             </a></li>
@@ -117,7 +117,7 @@
                                 <i class="fa-solid fa-calendar-days me-2"></i>Events & Webinars
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                <i class="fa-solid fa-briefcase me-2"></i>Job Board
+                                <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
                             </a></li>
                         </ul>
                     </li>
@@ -126,45 +126,45 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-screwdriver-wrench me-1"></i>
-                            Tài nguyên kỹ thuật
+                            {{ __('messages.nav.technical_resources') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>Technical Database</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('messages.nav.technical_database') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('materials.index') }}">
-                                <i class="fa-solid fa-cube me-2"></i>Materials Database
+                                <i class="fa-solid fa-cube me-2"></i>{{ __('messages.nav.materials_database') }}
                                 <span class="badge bg-primary ms-2">10</span>
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('standards.index') }}">
-                                <i class="fa-solid fa-certificate me-2"></i>Engineering Standards
+                                <i class="fa-solid fa-certificate me-2"></i>{{ __('messages.nav.engineering_standards') }}
                                 <span class="badge bg-success ms-2">8</span>
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('manufacturing.processes.index') }}">
-                                <i class="fa-solid fa-gears me-2"></i>Manufacturing Processes
+                                <i class="fa-solid fa-gears me-2"></i>{{ __('messages.nav.manufacturing_processes') }}
                                 <span class="badge bg-info ms-2">10</span>
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>Design Resources</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('messages.nav.design_resources') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('cad.library.index') }}">
-                                <i class="fa-solid fa-file-code me-2"></i>CAD Library
+                                <i class="fa-solid fa-file-code me-2"></i>{{ __('messages.nav.cad_library') }}
                                 <span class="badge bg-warning ms-2">20+</span>
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('technical.drawings.index') }}">
-                                <i class="fa-solid fa-compass-drafting me-2"></i>Technical Drawings
+                                <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
                                 <span class="badge bg-secondary ms-2">15+</span>
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                <i class="fa-solid fa-trophy me-2"></i>Design Showcase
+                                <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.design_showcase') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>Tools & Calculators</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.tools_calculators') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
-                                <i class="fa-solid fa-calculator me-2"></i>Material Cost Calculator
+                                <i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.material_cost_calculator') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('tools.process-selector') }}">
-                                <i class="fa-solid fa-route me-2"></i>Process Selector
+                                <i class="fa-solid fa-route me-2"></i>{{ __('messages.nav.process_selector') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('tools.standards-checker') }}">
-                                <i class="fa-solid fa-check-circle me-2"></i>Standards Compliance
+                                <i class="fa-solid fa-check-circle me-2"></i>{{ __('messages.nav.standards_compliance') }}
                             </a></li>
                         </ul>
                     </li>
@@ -173,10 +173,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-graduation-cap me-1"></i>
-                            Kiến thức
+                            {{ __('messages.nav.knowledge') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>Learning Resources</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('messages.nav.learning_resources') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
                                 <i class="fa-solid fa-book-open me-2"></i>Knowledge Base
                             </a></li>
@@ -187,7 +187,7 @@
                                 <i class="fa-solid fa-file-lines me-2"></i>Technical Documentation
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>Industry Updates</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_updates') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
                                 <i class="fa-solid fa-newspaper me-2"></i>Industry News
                             </a></li>
@@ -299,7 +299,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-ellipsis me-1"></i>
-                            More
+                            {{ __('messages.nav.more') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="moreDropdown">
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Search & Discovery</h6></li>
@@ -342,7 +342,7 @@
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>About MechaMap</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ __('messages.nav.about_mechamap') }}</h6></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('about.index') }}">
                                     <i class="fa-solid fa-building me-2"></i>
@@ -382,7 +382,7 @@
                 <div class="search-container position-relative" style="min-width: 300px;">
                     <div class="input-group">
                         <input type="text" class="form-control search-input" id="unified-search" name="query" autocomplete="off"
-                            placeholder="{{ $isMarketplace ? 'Search products, parts, materials...' : 'Nhập từ khóa cần tìm...' }}" aria-label="Search">
+                            placeholder="{{ $isMarketplace ? __('messages.common.search_placeholder') : __('messages.common.search_placeholder') }}" aria-label="{{ __('messages.common.search') }}">
                         <button class="btn btn-outline-secondary" type="button" id="unified-search-btn">
                             <i class="bi bi-search"></i>
                         </button>
@@ -391,11 +391,11 @@
                     <!-- Search Results Dropdown - Exact structure from old header -->
                     <div class="search-results-dropdown" id="search-results-dropdown">
                         <div class="search-scope-options">
-                            <div class="search-scope-option active" data-scope="site">TẤT CẢ NỘI DUNG</div>
-                            <div class="search-scope-option" data-scope="thread" style="display: none;">TÌM TRONG CHỦ ĐỀ</div>
-                            <div class="search-scope-option" data-scope="forum" style="display: none;">TÌM TRONG FORUM</div>
+                            <div class="search-scope-option active" data-scope="site">{{ __('content.all_content') }}</div>
+                            <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('content.search_in_thread') }}</div>
+                            <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('content.search_in_forum') }}</div>
                             @if($isMarketplace)
-                            <div class="search-scope-option" data-scope="marketplace">MARKETPLACE</div>
+                            <div class="search-scope-option" data-scope="marketplace">{{ __('nav.marketplace') }}</div>
                             @endif
                         </div>
                         <div class="search-results-content" id="search-results-content">
@@ -403,7 +403,7 @@
                         </div>
                         <div class="search-results-footer">
                             <a href="/advanced-search" class="advanced-search-link">
-                                🔍 Tìm kiếm nâng cao
+                                🔍 {{ __('content.advanced_search') }}
                             </a>
                         </div>
                     </div>
@@ -422,15 +422,15 @@
                         <!-- Mini Cart Dropdown -->
                         <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
                             <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Shopping Cart</h6>
+                                <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
                                 <span class="badge bg-primary" id="miniCartItemCount">0</span>
                             </div>
                             <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
                                 <!-- Empty state -->
                                 <div class="text-center text-muted py-4" id="miniCartEmpty">
                                     <i class="bi bi-cart-x" style="font-size: 2.5rem;"></i>
-                                    <p class="mb-0 mt-2">Your cart is empty</p>
-                                    <small>Add some products to get started</small>
+                                    <p class="mb-0 mt-2">{{ __('messages.cart.cart_empty') }}</p>
+                                    <small>{{ __('messages.cart.add_products') }}</small>
                                 </div>
                                 <!-- Cart items will be loaded here -->
                             </div>
@@ -556,7 +556,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
                                     <i class="fa-regular fa-address-card me-2"></i>
-                                    Hồ sơ của tôi
+                                    {{ __('user.profile') }}
                                 </a>
                             </li>
                             <li>
@@ -618,7 +618,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i class="bi bi-gear me-2"></i>
-                                    Cài đặt tài khoản
+                                    {{ __('user.settings') }}
                                 </a>
                             </li>
 
@@ -653,7 +653,7 @@
                                     @csrf
                                     <button type="submit" class="dropdown-item">
                                         <i class="bi bi-box-arrow-right me-2"></i>
-                                        Đăng xuất
+                                        {{ __('auth.logout') }}
                                     </button>
                                 </form>
                             </li>
@@ -664,12 +664,12 @@
                     <li class="nav-item">
                         <button type="button" class="nav-link btn btn-link" onclick="openLoginModal()">
                             <i class="fa-regular fa-user me-1"></i>
-                            Đăng nhập
+                            {{ __('messages.auth.login') }}
                         </button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="btn btn-primary btn-sm ms-2" onclick="openRegisterModal()">
-                            Đăng ký
+                            {{ __('messages.auth.register') }}
                         </button>
                     </li>
                     @endauth
@@ -722,21 +722,21 @@
 
                     <!-- Recent Searches -->
                     <div class="mb-3">
-                        <h6 class="text-muted mb-2">Recent Searches</h6>
+                        <h6 class="text-muted mb-2">{{ __('messages.search.recent_searches') }}</h6>
                         <div id="mobileRecentSearches">
-                            <small class="text-muted">No recent searches</small>
+                            <small class="text-muted">{{ __('messages.search.no_recent_searches') }}</small>
                         </div>
                     </div>
 
                     <!-- Popular Searches -->
                     <div>
-                        <h6 class="text-muted mb-2">Popular Searches</h6>
+                        <h6 class="text-muted mb-2">{{ __('messages.search.popular_searches') }}</h6>
                         <div class="d-flex flex-wrap gap-1">
                             <span class="badge bg-light text-dark">bearings</span>
                             <span class="badge bg-light text-dark">steel materials</span>
-                            <span class="badge bg-light text-dark">CAD files</span>
+                            <span class="badge bg-light text-dark">{{ __('messages.search.cad_files') }}</span>
                             <span class="badge bg-light text-dark">manufacturing</span>
-                            <span class="badge bg-light text-dark">ISO standards</span>
+                            <span class="badge bg-light text-dark">{{ __('messages.search.iso_standards') }}</span>
                         </div>
                     </div>
                 </div>
@@ -980,7 +980,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasForum) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">Forum</div>
+                    <div class="search-result-section-title">{{ __('messages.search.forum') }}</div>
                     <div class="search-result-item">
                         <div class="search-result-item-title">
                             <a href="${results.forum.url}">${results.forum.name}</a>
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasThreads) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">Threads</div>
+                    <div class="search-result-section-title">{{ __('messages.search.threads') }}</div>
             `;
 
             results.threads.forEach(thread => {

@@ -157,7 +157,7 @@
 
 <body class="min-vh-100">
     <div class="d-flex flex-column min-vh-100">
-        @include('layouts.navigation')
+        <x-unified-header />
 
         <!-- Page Heading -->
         @isset($header)

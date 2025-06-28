@@ -120,9 +120,9 @@
                     @foreach($thread->media as $media)
                     @if(str_starts_with($media->mime_type ?? '', 'image/'))
                     <div class="col-md-4 mb-3">
-                        <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
+                        <a href="{{ $media->url }}"
                             data-lightbox="thread-images">
-                            <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
+                            <img src="{{ $media->url }}" alt="Thread image"
                                 class="img-fluid rounded"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
                         </a>

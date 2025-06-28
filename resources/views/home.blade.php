@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Trang chủ')
+@section('title', __('messages.nav.home'))
 
 @section('content')
 <!-- Latest Threads -->
@@ -11,7 +11,7 @@
         @endforeach
     </div>
     <div class="text-center">
-        <button id="load-more-threads" class="btn btn-outline-primary">Tải thêm</button>
+        <button id="load-more-threads" class="btn btn-outline-primary">{{ __('messages.common.load_more') }}</button>
     </div>
 </div>
 @endsection
@@ -20,8 +20,10 @@
 <script>
     // Biến dịch cho JavaScript
     const translations = {
-        sticky: '{{ __("messages.thread_status.sticky") }}',
-        locked: '{{ __("messages.thread_status.locked") }}'
+        sticky: '{{ __("status.sticky") }}',
+        locked: '{{ __("status.locked") }}',
+        loading: '{{ __("common.loading") }}',
+        loadMore: '{{ __("common.load_more") }}'
     };
 
     // Load more threads functionality
@@ -35,7 +37,7 @@
 
         // Hiển thị trạng thái loading và skeleton
         loadMoreButton.disabled = true;
-        loadMoreButton.textContent = 'Đang tải...';
+        loadMoreButton.textContent = translations.loading;
 
         // Hiển thị skeleton loading
         ThreadItemBuilder.showSkeletonLoading(threadsContainer, 3);
