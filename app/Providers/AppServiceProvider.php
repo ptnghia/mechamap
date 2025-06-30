@@ -3,6 +3,15 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Observers\CacheInvalidationObserver;
+use App\Models\Thread;
+use App\Models\Post;
+use App\Models\MarketplaceProduct;
+use App\Models\MarketplaceOrder;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Forum;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
@@ -53,5 +62,15 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('isModerator', function () {
             return \App\Helpers\AdminPermissionHelper::isModerator();
         });
+
+        // Register cache invalidation observers for database optimization
+        Thread::observe(CacheInvalidationObserver::class);
+        Post::observe(CacheInvalidationObserver::class);
+        MarketplaceProduct::observe(CacheInvalidationObserver::class);
+        MarketplaceOrder::observe(CacheInvalidationObserver::class);
+        User::observe(CacheInvalidationObserver::class);
+        Category::observe(CacheInvalidationObserver::class);
+        Forum::observe(CacheInvalidationObserver::class);
+        Notification::observe(CacheInvalidationObserver::class);
     }
 }

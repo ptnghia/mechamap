@@ -46,6 +46,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'forum.cache' => \App\Http\Middleware\ForumCacheMiddleware::class,
             'download.access' => \App\Http\Middleware\VerifyDownloadAccess::class,
             'role' => \App\Http\Middleware\RoleBasedAccessMiddleware::class,
+            'db.cache' => \App\Http\Middleware\DatabaseCacheMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
