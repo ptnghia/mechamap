@@ -14,6 +14,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdvancedSearchController;
+use App\Http\Controllers\RealTimeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ThemeController;
@@ -511,6 +512,23 @@ Route::post('/search/save', [AdvancedSearchController::class, 'saveSearch'])->na
 Route::get('/search/saved', [AdvancedSearchController::class, 'savedSearches'])->name('search.saved');
 Route::get('/search/analytics', [AdvancedSearchController::class, 'analytics'])->name('search.analytics');
 Route::get('/ajax-search', [SearchController::class, 'ajaxSearch'])->name('search.ajax');
+
+// Real-time routes
+Route::prefix('realtime')->name('realtime.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('realtime.dashboard');
+    })->name('dashboard')->middleware('auth');
+
+    Route::get('/status', [RealTimeController::class, 'status'])->name('status');
+    Route::post('/connect', [RealTimeController::class, 'connect'])->name('connect')->middleware('auth');
+    Route::post('/disconnect', [RealTimeController::class, 'disconnect'])->name('disconnect')->middleware('auth');
+    Route::post('/notification', [RealTimeController::class, 'sendNotification'])->name('notification')->middleware('auth');
+    Route::post('/chat/message', [RealTimeController::class, 'sendChatMessage'])->name('chat.message')->middleware('auth');
+    Route::post('/chat/typing', [RealTimeController::class, 'sendTypingIndicator'])->name('chat.typing')->middleware('auth');
+    Route::get('/users/online', [RealTimeController::class, 'getOnlineUsers'])->name('users.online');
+    Route::post('/announcement', [RealTimeController::class, 'broadcastAnnouncement'])->name('announcement')->middleware('auth');
+    Route::get('/health', [RealTimeController::class, 'healthCheck'])->name('health');
+});
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
 Route::get('/members/online', [MemberController::class, 'online'])->name('members.online');
 Route::get('/members/staff', [MemberController::class, 'staff'])->name('members.staff');

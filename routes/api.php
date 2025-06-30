@@ -136,6 +136,38 @@ Route::prefix('v1')->group(function () {
         Route::get('/suggestions', [App\Http\Controllers\Api\SearchController::class, 'getSearchSuggestions']);
     });
 
+    // Real-time API routes
+    Route::prefix('realtime')->group(function () {
+        Route::get('/metrics', [App\Http\Controllers\RealTimeController::class, 'status']);
+        Route::get('/online-users', [App\Http\Controllers\RealTimeController::class, 'getOnlineUsers']);
+        Route::get('/activity', function () {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    [
+                        'type' => 'user',
+                        'icon' => 'fas fa-user',
+                        'title' => 'New user registered',
+                        'time' => '2 minutes ago'
+                    ],
+                    [
+                        'type' => 'system',
+                        'icon' => 'fas fa-cog',
+                        'title' => 'System backup completed',
+                        'time' => '5 minutes ago'
+                    ],
+                    [
+                        'type' => 'success',
+                        'icon' => 'fas fa-check',
+                        'title' => 'Order processed successfully',
+                        'time' => '8 minutes ago'
+                    ]
+                ]
+            ]);
+        });
+        Route::get('/health', [App\Http\Controllers\RealTimeController::class, 'healthCheck']);
+    });
+
     // Marketplace API routes (Public access for browsing)
     Route::prefix('marketplace')->group(function () {
         // Test endpoints

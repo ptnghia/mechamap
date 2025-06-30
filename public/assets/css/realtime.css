@@ -1,0 +1,489 @@
+/**
+ * MechaMap Real-time Styles
+ * CSS for real-time features and notifications
+ */
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.toast-notification {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    overflow: hidden;
+    animation: slideInRight 0.3s ease-out;
+    border-left: 4px solid #007bff;
+}
+
+.toast-notification.toast-success {
+    border-left-color: #28a745;
+}
+
+.toast-notification.toast-warning {
+    border-left-color: #ffc107;
+}
+
+.toast-notification.toast-error {
+    border-left-color: #dc3545;
+}
+
+.toast-notification.toast-info {
+    border-left-color: #17a2b8;
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px 8px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.toast-header i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.toast-header strong {
+    flex: 1;
+    font-size: 14px;
+    color: #495057;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-close:hover {
+    color: #495057;
+}
+
+.toast-body {
+    padding: 12px 16px;
+    color: #495057;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Connection Status */
+.connection-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.connection-status.connected {
+    background: #d4edda;
+    color: #155724;
+}
+
+.connection-status.connected::before {
+    content: '●';
+    margin-right: 4px;
+    color: #28a745;
+}
+
+.connection-status.disconnected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.connection-status.disconnected::before {
+    content: '●';
+    margin-right: 4px;
+    color: #dc3545;
+}
+
+/* User Status Indicators */
+.user-status {
+    position: relative;
+    display: inline-block;
+}
+
+.user-status::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.user-status.online::after {
+    background: #28a745;
+}
+
+.user-status.offline::after {
+    background: #6c757d;
+}
+
+.user-status.away::after {
+    background: #ffc107;
+}
+
+.user-status.busy::after {
+    background: #dc3545;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 18px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.typing-indicator::after {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #6c757d;
+    margin-left: 8px;
+    animation: typingDots 1.4s infinite;
+}
+
+@keyframes typingDots {
+    0%, 60%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    30% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Chat Messages */
+.chat-message {
+    margin-bottom: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.chat-message.own {
+    background: #007bff;
+    color: white;
+    margin-left: 20%;
+}
+
+.chat-message.other {
+    background: #e9ecef;
+    margin-right: 20%;
+}
+
+.message-sender {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+.message-content {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.message-time {
+    font-size: 11px;
+    opacity: 0.6;
+    text-align: right;
+}
+
+/* Real-time Metrics */
+.metric-realtime {
+    position: relative;
+}
+
+.metric-realtime::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #28a745;
+    animation: pulse 2s infinite;
+}
+
+.metric-updating {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+/* Activity Feed */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8f9fa;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 14px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.activity-icon.user { background: #007bff; }
+.activity-icon.system { background: #6c757d; }
+.activity-icon.error { background: #dc3545; }
+.activity-icon.success { background: #28a745; }
+.activity-icon.warning { background: #ffc107; color: #212529; }
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    color: #495057;
+}
+
+.activity-description {
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Online Users List */
+.online-users-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.online-user {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.online-user:last-child {
+    border-bottom: none;
+}
+
+.online-user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #6c757d;
+    position: relative;
+}
+
+.online-user-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #28a745;
+    border: 2px solid white;
+}
+
+.online-user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.online-user-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #495057;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.online-user-status {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+/* System Announcements */
+.system-announcement {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    animation: slideInDown 0.3s ease-out;
+}
+
+.announcement-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.announcement-message {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.announcement-time {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Loading States */
+.realtime-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #6c757d;
+}
+
+.realtime-loading i {
+    margin-right: 8px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Error States */
+.realtime-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #f5c6cb;
+    margin: 16px 0;
+}
+
+.realtime-error i {
+    margin-right: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .toast-notification {
+        margin-bottom: 8px;
+    }
+    
+    .chat-message.own {
+        margin-left: 10%;
+    }
+    
+    .chat-message.other {
+        margin-right: 10%;
+    }
+    
+    .activity-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+    
+    .online-user-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+    }
+}
