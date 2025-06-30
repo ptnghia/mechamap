@@ -222,7 +222,30 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/marketplace', [App\Http\Controllers\Admin\AnalyticsController::class, 'marketplace'])->name('marketplace');
         Route::get('/technical', [App\Http\Controllers\Admin\AnalyticsController::class, 'technical'])->name('technical');
         Route::get('/export', [App\Http\Controllers\Admin\AnalyticsController::class, 'export'])->name('export');
-        Route::get('/realtime', [App\Http\Controllers\Admin\AnalyticsController::class, 'realtime'])->name('realtime');
+        Route::get('/realtime-data', [App\Http\Controllers\Admin\AnalyticsController::class, 'realtime'])->name('realtime.data');
+
+        // Real-time Analytics Dashboard
+        Route::get('/realtime', [App\Http\Controllers\Admin\RealtimeAnalyticsController::class, 'dashboard'])->name('realtime');
+        Route::get('/realtime/metrics', [App\Http\Controllers\Admin\RealtimeAnalyticsController::class, 'getRealtimeMetrics'])->name('realtime.metrics');
+        Route::get('/realtime/predictive', [App\Http\Controllers\Admin\RealtimeAnalyticsController::class, 'getPredictiveAnalytics'])->name('realtime.predictive');
+
+        // Custom KPI Builder
+        Route::prefix('kpi')->name('kpi.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\CustomKPIController::class, 'index'])->name('index');
+            Route::post('/create', [App\Http\Controllers\Admin\CustomKPIController::class, 'create'])->name('create');
+            Route::post('/calculate', [App\Http\Controllers\Admin\CustomKPIController::class, 'calculate'])->name('calculate');
+            Route::get('/dashboard', [App\Http\Controllers\Admin\CustomKPIController::class, 'dashboard'])->name('dashboard');
+            Route::get('/export', [App\Http\Controllers\Admin\CustomKPIController::class, 'export'])->name('export');
+        });
+
+        // Business Analytics
+        Route::prefix('business')->name('business.')->group(function () {
+            Route::get('/dashboard', [App\Http\Controllers\Admin\BusinessAnalyticsController::class, 'dashboard'])->name('dashboard');
+            Route::get('/marketplace', [App\Http\Controllers\Admin\BusinessAnalyticsController::class, 'marketplace'])->name('marketplace');
+            Route::get('/revenue', [App\Http\Controllers\Admin\BusinessAnalyticsController::class, 'revenue'])->name('revenue');
+            Route::get('/commissions', [App\Http\Controllers\Admin\BusinessAnalyticsController::class, 'commissions'])->name('commissions');
+            Route::get('/realtime-metrics', [App\Http\Controllers\Admin\BusinessAnalyticsController::class, 'getRealtimeMetrics'])->name('realtime.metrics');
+        });
     });
 
     // Performance & Security routes

@@ -224,6 +224,11 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('admin.analytics.index') }}" data-key="t-analytics-overview" class="{{ request()->routeIs('admin.analytics.index') ? 'active' : '' }}">Dashboard</a></li>
+                        <li><a href="{{ route('admin.analytics.realtime') }}" data-key="t-realtime-analytics" class="{{ request()->routeIs('admin.analytics.realtime*') ? 'active' : '' }}">
+                            <i class="fas fa-circle text-success me-1" style="font-size: 8px;"></i>Real-time Analytics
+                        </a></li>
+                        <li><a href="{{ route('admin.analytics.kpi.index') }}" data-key="t-kpi-builder" class="{{ request()->routeIs('admin.analytics.kpi.*') ? 'active' : '' }}">KPI Builder</a></li>
+                        <li><a href="{{ route('admin.analytics.business.dashboard') }}" data-key="t-business-analytics" class="{{ request()->routeIs('admin.analytics.business.*') ? 'active' : '' }}">Business Analytics</a></li>
                         <li><a href="{{ route('admin.analytics.revenue') }}" data-key="t-revenue" class="{{ request()->routeIs('admin.analytics.revenue') ? 'active' : '' }}">Doanh Thu</a></li>
                         <li><a href="{{ route('admin.analytics.users') }}" data-key="t-user-analytics" class="{{ request()->routeIs('admin.analytics.users') ? 'active' : '' }}">Người Dùng</a></li>
                         <li><a href="{{ route('admin.analytics.marketplace') }}" data-key="t-marketplace-analytics" class="{{ request()->routeIs('admin.analytics.marketplace') ? 'active' : '' }}">Marketplace</a></li>
