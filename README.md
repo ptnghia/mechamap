@@ -59,7 +59,7 @@
 - **Timezone Management** - Auto-detect user timezone
 
 #### ⚙️ **Admin Dashboard**
-- **Comprehensive Management** - 16/16 modules hoàn thành (95%)
+- **Comprehensive Management** - 16/16 modules hoàn thành (97%)
 - **Real-time Analytics** - User activity, content statistics, revenue tracking
 - **System Monitoring** - Performance metrics, error tracking, health checks
 - **Bulk Operations** - Mass user management, content moderation
@@ -662,9 +662,21 @@ Khi báo cáo lỗi, vui lòng bao gồm:
 - ⏳ **Real-time Chat** - WebSocket-based messaging
 - ⏳ **Video Conferencing** - Integrated video calls for consultations
 - ⏳ **Mobile App** - React Native / Flutter mobile application
-- ⏳ **AI Integration** - Smart recommendations, content moderation
-- ⏳ **Advanced Analytics** - Business intelligence, predictive analytics
 - ⏳ **API Marketplace** - Third-party integrations, developer portal
+
+### 🤖 **AI Features (Future Phase)**
+*Noted for development in Phase 4 (post-production)*
+- ⏳ **Smart Content Moderation** - AI content filtering and spam detection
+- ⏳ **Intelligent User Management** - Behavior-based role assignment
+- ⏳ **Predictive Analytics** - Advanced ML forecasting models
+- ⏳ **Smart Recommendations** - AI-powered product suggestions
+
+### 🎯 **CAD Integration (Future Phase)**
+*Noted for development in Phase 4 (post-production)*
+- ⏳ **3D CAD Viewer** - Three.js integration for 3D preview
+- ⏳ **CAD File Processing** - Auto-generate previews and thumbnails
+- ⏳ **Interactive 3D Controls** - Zoom, rotate, pan, measure tools
+- ⏳ **Technical Specifications** - CAD metadata display and analysis
 
 ### 🌍 **Phase 4: Global Expansion (Q3-Q4 2025)**
 - ⏳ **Multi-currency Support** - USD, EUR, regional currencies
