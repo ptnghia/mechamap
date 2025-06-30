@@ -12,6 +12,21 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1c84ee">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MechaMap Admin">
+    <meta name="msapplication-TileImage" content="{{ asset('assets/images/icons/admin-icon-144x144.png') }}">
+    <meta name="msapplication-TileColor" content="#1c84ee">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ asset('admin-manifest.json') }}">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/icons/admin-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/icons/admin-icon-180x180.png') }}">
+
     @yield('css')
 
     <!-- Bootstrap Css -->
@@ -24,6 +39,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <!-- Mobile Admin Css -->
+    <link href="{{ asset('assets/css/admin-mobile.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Custom Admin Styles -->
     <style>
@@ -357,6 +374,12 @@
 
 
     </script>
+
+    <!-- Mobile Admin JavaScript -->
+    <script src="{{ asset('assets/js/admin-mobile.js') }}"></script>
+
+    <!-- PWA JavaScript -->
+    <script src="{{ asset('assets/js/admin-pwa.js') }}"></script>
 
     @stack('scripts')
 
