@@ -1158,8 +1158,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="col-3 text-end">
                                 <div class="fw-bold small">$${item.total_price}</div>
-                                <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeMiniCartItem(${item.id})" title="Remove">
-                                    <i class="bi bi-x"></i>
+                                <button type="button" class="btn btn-sm btn-outline-danger mt-1 mini-cart-remove-btn"
+                                        data-item-id="${item.id}" title="Remove">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
@@ -1472,3 +1473,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 </style>
+
+<!-- Mini Cart Enhancements -->
+<script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>

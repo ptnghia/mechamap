@@ -497,4 +497,9 @@ Route::prefix('v1')->group(function () {
             Route::get('/users', [App\Http\Controllers\ChatController::class, 'searchUsers']);
         });
     });
+
+    // Analytics API routes (public)
+    Route::post('/analytics', [App\Http\Controllers\Api\AnalyticsController::class, 'store']);
+    Route::get('/pages/{pageId}/view-count', [App\Http\Controllers\Api\AnalyticsController::class, 'getViewCount']);
+    Route::get('/analytics/dashboard', [App\Http\Controllers\Api\AnalyticsController::class, 'getDashboardData']);
 });

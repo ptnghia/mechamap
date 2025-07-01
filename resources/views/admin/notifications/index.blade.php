@@ -29,7 +29,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-muted fw-medium">Tổng Thông Báo</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">{{ $stats['total'] ?? 0 }}</h4>
                             </div>
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
@@ -48,7 +48,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-muted fw-medium">Chưa Đọc</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">{{ $stats['unread'] ?? 0 }}</h4>
                             </div>
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
@@ -67,7 +67,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-muted fw-medium">Hôm Nay</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">{{ $stats['today'] ?? 0 }}</h4>
                             </div>
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
@@ -86,7 +86,7 @@
                         <div class="d-flex">
                             <div class="flex-grow-1">
                                 <p class="text-muted fw-medium">Quan Trọng</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">{{ $notifications->where('priority', 'high')->count() }}</h4>
                             </div>
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-danger">
@@ -129,119 +129,84 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
-                    Hệ thống thông báo đang được phát triển. Sẽ sớm ra mắt!
+                @if($notifications->count() > 0)
+                    <!-- Real Notifications -->
+                    <div class="list-group list-group-flush">
+                    @foreach($notifications as $notification)
+                        <div class="list-group-item list-group-item-action {{ $notification->is_read ? 'bg-light' : '' }}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <div class="d-flex align-items-start">
+                                    <div class="avatar-sm me-3">
+                                        <span class="avatar-title bg-{{ $notification->color }} rounded-circle">
+                                            <i class="fas fa-{{ $notification->icon }}"></i>
+                                        </span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ $notification->title }}</h6>
+                                        <p class="mb-1 text-muted">{{ $notification->message }}</p>
+                                        <small class="text-muted">{{ $notification->time_ago }}</small>
+                                    </div>
+                                </div>
+                                @if($notification->is_read)
+                                    <span class="badge bg-success">Đã đọc</span>
+                                @else
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="#" onclick="markAsRead({{ $notification->id }})">
+                                                    <i class="fas fa-check me-2"></i>Đánh dấu đã đọc
+                                                </a>
+                                            </li>
+                                            @if($notification->hasActionUrl())
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ $notification->data['action_url'] }}">
+                                                        <i class="fas fa-external-link-alt me-2"></i>Xem chi tiết
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="#" onclick="deleteNotification({{ $notification->id }})">
+                                                    <i class="fas fa-trash me-2"></i>Xóa
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+                @else
+                    <!-- Empty State -->
+                    <div class="text-center py-5">
+                        <i class="fas fa-bell-slash font-size-48 text-muted mb-3"></i>
+                        <h5 class="text-muted">Không có thông báo</h5>
+                        <p class="text-muted">Tất cả thông báo đã được xử lý</p>
+                    </div>
+                @endif
 
-                <!-- Sample Notifications -->
-                <div class="list-group list-group-flush">
-                    <!-- Sample Notification 1 -->
-                    <div class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div class="d-flex align-items-start">
-                                <div class="avatar-sm me-3">
-                                    <span class="avatar-title bg-primary rounded-circle">
-                                        <i class="mdi mdi-account-plus"></i>
-                                    </span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Người dùng mới đăng ký</h6>
-                                    <p class="mb-1 text-muted">Nguyễn Văn A đã đăng ký tài khoản mới và đang chờ phê duyệt.</p>
-                                    <small class="text-muted">2 giờ trước</small>
-                                </div>
+                @if($notifications->count() > 0)
+                    <!-- Pagination -->
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            <div>
+                                <p class="mb-sm-0">
+                                    Hiển thị {{ $notifications->firstItem() ?? 0 }} đến {{ $notifications->lastItem() ?? 0 }}
+                                    của {{ $notifications->total() }} thông báo
+                                </p>
                             </div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                    <i class="mdi mdi-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Đánh dấu đã đọc</a></li>
-                                    <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#">Xóa</a></li>
-                                </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-sm-end">
+                                {{ $notifications->links('pagination::bootstrap-4') }}
                             </div>
                         </div>
                     </div>
-
-                    <!-- Sample Notification 2 -->
-                    <div class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div class="d-flex align-items-start">
-                                <div class="avatar-sm me-3">
-                                    <span class="avatar-title bg-warning rounded-circle">
-                                        <i class="mdi mdi-alert-circle"></i>
-                                    </span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Báo cáo vi phạm mới</h6>
-                                    <p class="mb-1 text-muted">Có báo cáo vi phạm mới cần được xem xét và xử lý.</p>
-                                    <small class="text-muted">5 giờ trước</small>
-                                </div>
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                    <i class="mdi mdi-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Đánh dấu đã đọc</a></li>
-                                    <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#">Xóa</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sample Notification 3 -->
-                    <div class="list-group-item list-group-item-action bg-light">
-                        <div class="d-flex w-100 justify-content-between">
-                            <div class="d-flex align-items-start">
-                                <div class="avatar-sm me-3">
-                                    <span class="avatar-title bg-success rounded-circle">
-                                        <i class="mdi mdi-check-circle"></i>
-                                    </span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1">Sản phẩm đã được duyệt</h6>
-                                    <p class="mb-1 text-muted">Sản phẩm "Máy tiện CNC" đã được phê duyệt và hiển thị công khai.</p>
-                                    <small class="text-muted">1 ngày trước</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-success">Đã đọc</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Empty State -->
-                <div class="text-center py-5" style="display: none;" id="emptyState">
-                    <i class="mdi mdi-bell-off font-size-48 text-muted mb-3"></i>
-                    <h5 class="text-muted">Không có thông báo</h5>
-                    <p class="text-muted">Tất cả thông báo đã được xử lý</p>
-                </div>
-
-                <!-- Pagination -->
-                <div class="row mt-4">
-                    <div class="col-sm-6">
-                        <div>
-                            <p class="mb-sm-0">Hiển thị 1 đến 3 của 3 thông báo</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="float-sm-end">
-                            <ul class="pagination pagination-rounded mb-sm-0">
-                                <li class="page-item disabled">
-                                    <a href="#" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                                </li>
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">1</a>
-                                </li>
-                                <li class="page-item disabled">
-                                    <a href="#" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -250,15 +215,126 @@
 
 @section('script')
 <script>
-function markAllAsRead() {
-    // Implementation for marking all notifications as read
-    alert('Chức năng đánh dấu tất cả đã đọc sẽ được triển khai');
+// CSRF Token for AJAX requests
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+/**
+ * Mark single notification as read
+ */
+function markAsRead(notificationId) {
+    fetch(`/admin/notifications/${notificationId}/mark-read`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Reload page to update UI
+            window.location.reload();
+        } else {
+            alert('Có lỗi xảy ra khi đánh dấu thông báo đã đọc');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi đánh dấu thông báo đã đọc');
+    });
 }
 
-// Auto-refresh notifications every 30 seconds
+/**
+ * Delete notification
+ */
+function deleteNotification(notificationId) {
+    if (confirm('Bạn có chắc chắn muốn xóa thông báo này?')) {
+        fetch(`/admin/notifications/${notificationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload page to update UI
+                window.location.reload();
+            } else {
+                alert('Có lỗi xảy ra khi xóa thông báo');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi xóa thông báo');
+        });
+    }
+}
+
+/**
+ * Mark all notifications as read
+ */
+function markAllAsRead() {
+    if (confirm('Bạn có chắc chắn muốn đánh dấu tất cả thông báo đã đọc?')) {
+        fetch('/admin/notifications/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                alert(data.message);
+                // Reload page to update UI
+                window.location.reload();
+            } else {
+                alert('Có lỗi xảy ra khi đánh dấu tất cả thông báo đã đọc');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi đánh dấu tất cả thông báo đã đọc');
+        });
+    }
+}
+
+// Attach event listener to "Mark All as Read" button
+document.addEventListener('DOMContentLoaded', function() {
+    const markAllBtn = document.querySelector('button[onclick*="markAllAsRead"]');
+    if (markAllBtn) {
+        markAllBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            markAllAsRead();
+        });
+    }
+});
+
+// Auto-refresh notifications every 2 minutes
 setInterval(function() {
-    // Implementation for auto-refresh
-    console.log('Auto-refreshing notifications...');
-}, 30000);
+    // Check for new notifications count
+    fetch('/admin/notifications/api/unread-count')
+        .then(response => response.json())
+        .then(data => {
+            // Update notification badge in header if needed
+            const badge = document.querySelector('.noti-icon .badge');
+            if (badge) {
+                if (data.count > 0) {
+                    badge.textContent = data.formatted;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error checking notification count:', error);
+        });
+}, 120000); // 2 minutes
+
+console.log('Notification system initialized');
 </script>
 @endsection

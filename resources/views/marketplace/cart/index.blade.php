@@ -2,6 +2,10 @@
 
 @section('title', 'Shopping Cart - MechaMap')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
+@endpush
+
 @section('content')
 <div class="min-vh-100 bg-light">
     <!-- Breadcrumb -->
@@ -73,7 +77,7 @@
                             <!-- Cart Items -->
                             <div id="cartItems">
                                 @foreach($cart->items as $item)
-                                    <div class="cart-item border-bottom py-3" data-item-id="{{ $item->id }}">
+                                    <div class="cart-item cart-item-row border-bottom py-3" data-item-id="{{ $item->id }}" style="transition: all 0.3s ease;">
                                         <div class="row align-items-center">
                                             <!-- Checkbox -->
                                             <div class="col-auto">
@@ -85,7 +89,7 @@
                                             <!-- Product Image -->
                                             <div class="col-md-2 col-3">
                                                 @if($item->product_image)
-                                                    <img src="{{ $item->product_image }}" class="img-fluid rounded" alt="{{ $item->product_name }}">
+                                                    <img src="{{ $item->product_image }}" class="img-fluid rounded" alt="{{ $item->product_name }}" style="height: 80px; object-fit: cover;">
                                                 @else
                                                     <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
                                                         <i class="bi bi-image text-muted"></i>
@@ -95,7 +99,7 @@
 
                                             <!-- Product Info -->
                                             <div class="col-md-4 col-9">
-                                                <h6 class="mb-1">
+                                                <h6 class="mb-1 product-name">
                                                     @if($item->product)
                                                         <a href="{{ route('marketplace.products.show', $item->product->slug) }}" class="text-decoration-none">
                                                             {{ $item->product_name }}
@@ -129,21 +133,21 @@
                                             <!-- Quantity -->
                                             <div class="col-md-2 col-6">
                                                 <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-secondary" type="button"
+                                                    <button class="btn btn-outline-secondary quantity-btn-minus" type="button"
                                                             onclick="updateQuantity({{ $item->id }}, {{ $item->quantity - 1 }})"
                                                             {{ $item->quantity <= 1 ? 'disabled' : '' }}>
-                                                        <i class="bi bi-dash"></i>
+                                                        <i class="fas fa-minus"></i>
                                                     </button>
                                                     <input type="number" class="form-control text-center quantity-input"
                                                            value="{{ $item->quantity }}"
                                                            min="1"
                                                            max="{{ $item->product && $item->product->manage_stock ? $item->product->stock_quantity : 100 }}"
                                                            data-item-id="{{ $item->id }}"
-                                                           onchange="updateQuantity({{ $item->id }}, this.value)">
-                                                    <button class="btn btn-outline-secondary" type="button"
+                                                           data-unit-price="{{ $item->is_on_sale ? $item->sale_price : $item->unit_price }}">
+                                                    <button class="btn btn-outline-secondary quantity-btn-plus" type="button"
                                                             onclick="updateQuantity({{ $item->id }}, {{ $item->quantity + 1 }})"
                                                             {{ $item->product && $item->product->manage_stock && $item->quantity >= $item->product->stock_quantity ? 'disabled' : '' }}>
-                                                        <i class="bi bi-plus"></i>
+                                                        <i class="fas fa-plus"></i>
                                                     </button>
                                                 </div>
                                                 @if($item->product && $item->product->manage_stock)
@@ -154,13 +158,14 @@
                                             <!-- Total & Actions -->
                                             <div class="col-md-2 col-12 mt-2 mt-md-0">
                                                 <div class="text-center">
-                                                    <div class="fw-bold mb-2">${{ number_format($item->total_price, 2) }}</div>
+                                                    <div class="fw-bold mb-2 item-total-price">${{ number_format($item->total_price, 2) }}</div>
                                                     <div class="d-flex flex-column gap-1">
-                                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeItem({{ $item->id }})" title="Remove">
-                                                            <i class="bi bi-trash"></i>
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn"
+                                                                data-item-id="{{ $item->id }}" title="Remove">
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="saveForLater({{ $item->id }})" title="Save for Later">
-                                                            <i class="bi bi-heart"></i>
+                                                            <i class="fas fa-heart"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -192,7 +197,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Subtotal ({{ $cart->total_items }} items)</span>
-                                <span>${{ number_format($cart->subtotal, 2) }}</span>
+                                <span class="cart-subtotal">${{ number_format($cart->subtotal, 2) }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Shipping</span>
@@ -208,7 +213,7 @@
                             <!-- Shipping Calculator -->
                             <div class="mb-3">
                                 <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#shippingCalculator">
-                                    <i class="bi bi-calculator me-1"></i>
+                                    <i class="fas fa-calculator me-1"></i>
                                     Calculate shipping
                                 </button>
                                 <div class="collapse mt-2" id="shippingCalculator">
@@ -242,7 +247,7 @@
                             <hr>
                             <div class="d-flex justify-content-between fw-bold h5">
                                 <span>Total</span>
-                                <span>${{ number_format($cart->total_amount, 2) }}</span>
+                                <span class="cart-total">${{ number_format($cart->total_amount, 2) }}</span>
                             </div>
 
                             <!-- Coupon Code -->
@@ -381,75 +386,48 @@
 @endpush
 
 @push('scripts')
+<!-- Include Cart UX Enhancements -->
+<script src="{{ asset('assets/js/cart-ux-enhancements.js') }}"></script>
+
 <script>
-// Cart functionality
+// Legacy function wrappers for backward compatibility
 function updateQuantity(itemId, quantity) {
-    if (quantity < 0) return;
-
-    showLoading(true);
-
-    fetch(`/marketplace/cart/update/${itemId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ quantity: quantity })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            if (quantity === 0) {
-                // Remove item from DOM
-                document.querySelector(`[data-item-id="${itemId}"]`).remove();
-            }
-            // Reload page to update totals
-            location.reload();
-        } else {
-            alert(data.message);
+    // Use new UX enhancement system
+    if (window.cartUX) {
+        const input = document.querySelector(`[data-item-id="${itemId}"] .quantity-input`);
+        if (input) {
+            input.value = quantity;
+            window.cartUX.handleQuantityChange(input);
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to update cart');
-    })
-    .finally(() => {
-        showLoading(false);
-    });
+    }
 }
 
 function removeItem(itemId) {
-    if (!confirm('Are you sure you want to remove this item?')) return;
-
-    showLoading(true);
-
-    fetch(`/marketplace/cart/remove/${itemId}`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to remove item');
-    })
-    .finally(() => {
-        showLoading(false);
-    });
+    // Use new UX enhancement system
+    if (window.cartUX) {
+        window.cartUX.handleItemRemoval(itemId);
+    }
 }
 
 function clearCart() {
-    if (!confirm('Are you sure you want to clear your entire cart?')) return;
+    // Use new UX enhancement system
+    if (window.cartUX) {
+        window.cartUX.showConfirmation({
+            title: 'Clear Cart',
+            message: 'Are you sure you want to clear your entire cart? This action cannot be undone.',
+            icon: 'fa-trash text-danger',
+            confirmText: 'Clear Cart',
+            confirmClass: 'btn-danger',
+            onConfirm: () => {
+                performClearCart();
+            }
+        });
+    }
+}
 
-    showLoading(true);
+function performClearCart() {
+    const clearBtn = document.querySelector('[onclick="clearCart()"]');
+    const stopLoading = window.cartUX ? window.cartUX.showEnhancedLoading(clearBtn, 'Clearing...') : () => {};
 
     fetch('/marketplace/cart/clear', {
         method: 'DELETE',
@@ -460,28 +438,46 @@ function clearCart() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            if (window.cartUX) {
+                window.cartUX.showToast('success', 'Success', 'Cart cleared successfully');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                location.reload();
+            }
         } else {
-            alert(data.message);
+            if (window.cartUX) {
+                window.cartUX.showToast('error', 'Error', data.message || 'Failed to clear cart');
+            } else {
+                alert(data.message);
+            }
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Failed to clear cart');
+        if (window.cartUX) {
+            window.cartUX.showToast('error', 'Error', 'Failed to clear cart');
+        } else {
+            alert('Failed to clear cart');
+        }
     })
     .finally(() => {
-        showLoading(false);
+        stopLoading();
     });
 }
 
 function applyCoupon() {
     const couponCode = document.getElementById('couponCode').value.trim();
     if (!couponCode) {
-        alert('Please enter a coupon code');
+        if (window.cartUX) {
+            window.cartUX.showToast('warning', 'Warning', 'Please enter a coupon code');
+        } else {
+            alert('Please enter a coupon code');
+        }
         return;
     }
 
-    showLoading(true);
+    const applyBtn = document.querySelector('[onclick="applyCoupon()"]');
+    const stopLoading = window.cartUX ? window.cartUX.showEnhancedLoading(applyBtn, 'Applying...') : () => {};
 
     fetch('/marketplace/cart/coupon', {
         method: 'POST',

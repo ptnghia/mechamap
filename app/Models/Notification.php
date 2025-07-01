@@ -82,16 +82,19 @@ class Notification extends Model
     public function getIconAttribute(): string
     {
         return match ($this->type) {
-            'business_verified' => 'fas fa-check-circle',
-            'business_rejected' => 'fas fa-times-circle',
-            'product_approved' => 'fas fa-box',
-            'product_rejected' => 'fas fa-box',
-            'order_update' => 'fas fa-shopping-cart',
-            'role_changed' => 'fas fa-user-cog',
-            'commission_paid' => 'fas fa-dollar-sign',
-            'system_announcement' => 'fas fa-bullhorn',
-            'quote_request' => 'fas fa-file-invoice',
-            default => 'fas fa-bell',
+            'business_verified' => 'check-circle',
+            'business_rejected' => 'times-circle',
+            'product_approved' => 'box',
+            'product_rejected' => 'box',
+            'order_update' => 'shopping-cart',
+            'role_changed' => 'user-cog',
+            'commission_paid' => 'dollar-sign',
+            'system_announcement' => 'bullhorn',
+            'quote_request' => 'file-invoice',
+            'user_registered' => 'user-plus',
+            'forum_activity' => 'comments',
+            'marketplace_activity' => 'store',
+            default => 'bell',
         };
     }
 
@@ -114,6 +117,8 @@ class Notification extends Model
             default => 'secondary',
         };
     }
+
+
 
     /**
      * Get formatted time ago

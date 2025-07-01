@@ -276,10 +276,10 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        @include('admin.layouts.partials.dason-header')
+        @include('admin.layouts.partials.unified-header')
 
         <!-- ========== Left Sidebar Start ========== -->
-        @include('admin.layouts.partials.dason-sidebar')
+        @include('admin.layouts.partials.unified-sidebar')
         <!-- Left Sidebar End -->
 
         <!-- ============================================================== -->
@@ -364,7 +364,140 @@
                     element.className = 'fas fa-' + iconName.replace(/-/g, '-');
                 }
             });
+
+            // Initialize Theme Toggle Functionality
+            initializeThemeToggle();
         });
+
+        // Theme Toggle Implementation
+        function initializeThemeToggle() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const body = document.body;
+            const html = document.documentElement;
+
+            if (!themeToggleBtn || !themeIcon) {
+                console.log('Theme toggle elements not found');
+                return;
+            }
+
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('mechamap-admin-theme') || 'light';
+            console.log('Loading saved theme:', savedTheme);
+
+            // Apply saved theme
+            applyTheme(savedTheme);
+
+            // Add click event listener
+            themeToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currentTheme = body.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+                console.log('Switching theme from', currentTheme, 'to', newTheme);
+
+                // Apply new theme
+                applyTheme(newTheme);
+
+                // Save to localStorage
+                localStorage.setItem('mechamap-admin-theme', newTheme);
+
+                // Show feedback
+                showThemeChangeNotification(newTheme);
+            });
+
+            function applyTheme(theme) {
+                // Update body and html attributes
+                body.setAttribute('data-theme', theme);
+                html.setAttribute('data-theme', theme);
+
+                // Update body classes
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    body.classList.remove('light-mode');
+                    // Update icon to sun (for switching back to light)
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    body.classList.add('light-mode');
+                    body.classList.remove('dark-mode');
+                    // Update icon to moon (for switching to dark)
+                    themeIcon.className = 'fas fa-moon';
+                }
+
+                // Update theme customizer if present
+                updateThemeCustomizer(theme);
+
+                console.log('Applied theme:', theme);
+            }
+
+            function updateThemeCustomizer(theme) {
+                // Update the theme customizer radio buttons if present
+                const lightRadio = document.querySelector('input[name="layout-mode"][value="light"]');
+                const darkRadio = document.querySelector('input[name="layout-mode"][value="dark"]');
+
+                if (lightRadio && darkRadio) {
+                    if (theme === 'dark') {
+                        darkRadio.checked = true;
+                        lightRadio.checked = false;
+                    } else {
+                        lightRadio.checked = true;
+                        darkRadio.checked = false;
+                    }
+                }
+            }
+
+            function showThemeChangeNotification(theme) {
+                // Create a small notification
+                const notification = document.createElement('div');
+                notification.className = 'theme-change-notification';
+                notification.innerHTML = `
+                    <i class="fas fa-${theme === 'dark' ? 'moon' : 'sun'}"></i>
+                    <span>Đã chuyển sang chế độ ${theme === 'dark' ? 'tối' : 'sáng'}</span>
+                `;
+
+                // Add styles
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${theme === 'dark' ? '#2a3042' : '#ffffff'};
+                    color: ${theme === 'dark' ? '#ffffff' : '#495057'};
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                    border: 1px solid ${theme === 'dark' ? '#404553' : '#e9ecef'};
+                    transition: all 0.3s ease;
+                    opacity: 0;
+                    transform: translateX(100%);
+                `;
+
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                    notification.style.transform = 'translateX(0)';
+                }, 10);
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            console.log('Theme toggle initialized successfully');
+        }
 
 
 

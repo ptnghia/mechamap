@@ -40,6 +40,8 @@ class DatabaseSeeder extends Seeder
             BusinessUserSeeder::class,        // Business users (Supplier, Manufacturer, Brand)
             MechanicalEngineeringDataSeeder::class, // Realistic forum data
             MediaSeeder::class,               // Media files (images, avatars, etc.)
+            StaticPagesSeeder::class,         // Static pages (Terms, Privacy, About, etc.)
+            MinimalDocumentationSeeder::class, // Documentation Management System (Lightweight)
             // ShowcaseSeeder::class,         // Uncomment when showcase seeder is ready
         ]);
         $this->command->newLine();

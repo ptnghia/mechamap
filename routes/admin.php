@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\ModerationController;
 use App\Http\Controllers\Admin\DasonDashboardController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DynamicDashboardController;
+use App\Http\Controllers\Admin\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -42,6 +43,48 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Dynamic Dashboard - Phase 2
     Route::get('/', [DynamicDashboardController::class, 'index'])->name('dashboard');
+
+    // Test permissions
+    Route::get('/test-permissions', function () {
+        return view('admin.test-permissions');
+    })->name('test-permissions');
+
+    // Debug route for marketplace categories permission
+    Route::get('/debug-marketplace-permission', function() {
+        $user = auth()->user();
+        return response()->json([
+            'user_id' => $user->id,
+            'user_role' => $user->role,
+            'user_role_group' => $user->role_group,
+            'has_view_products' => $user->hasPermission('view_products'),
+            'can_access_admin' => $user->canAccessAdmin(),
+            'is_super_admin' => $user->isSuperAdmin(),
+            'role_permissions' => $user->role_permissions,
+            'method_exists_hasPermissionTo' => method_exists($user, 'hasPermissionTo'),
+            'method_exists_can' => method_exists($user, 'can'),
+            'debug_hasPermission_direct' => $user->role === 'super_admin' ? 'Should be TRUE' : 'Check logic',
+        ]);
+    })->name('debug-marketplace-permission');
+
+    // Test route with same middleware as marketplace categories
+    Route::get('/test-view-products-middleware', function() {
+        return response()->json([
+            'message' => 'SUCCESS! Middleware passed!',
+            'user' => auth()->user()->email,
+            'timestamp' => now()
+        ]);
+    })->middleware(['admin.permission:view_products'])->name('test-view-products-middleware');
+
+    // Simple test without any middleware
+    Route::get('/test-simple', function() {
+        $user = auth()->user();
+        return response()->json([
+            'message' => 'Simple test - no middleware',
+            'user_role' => $user->role,
+            'hasPermission_view_products' => $user->hasPermission('view_products'),
+            'is_super_admin' => $user->role === 'super_admin',
+        ]);
+    })->name('test-simple');
     Route::get('/dashboard/realtime', [DynamicDashboardController::class, 'getRealtimeData'])->name('dashboard.realtime');
 
     // Legacy dashboard (backup)
@@ -267,6 +310,52 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/export-report', [App\Http\Controllers\Admin\PerformanceController::class, 'exportReport'])->name('export-report');
     });
 
+    // Documentation Management routes (chỉ admin có quyền manage_system)
+    Route::prefix('documentation')->name('documentation.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\DocumentationController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\DocumentationController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\DocumentationController::class, 'store'])->name('store');
+        Route::post('/bulk-action', [App\Http\Controllers\Admin\DocumentationController::class, 'bulkAction'])->name('bulk-action');
+
+        // Special documentation pages
+        Route::get('/user-guides/index', function () {
+            return redirect()->route('admin.documentation.index', ['content_type' => 'guide']);
+        })->name('user-guides');
+        Route::get('/api-docs/index', function () {
+            return redirect()->route('admin.documentation.index', ['content_type' => 'api']);
+        })->name('api-docs');
+        Route::get('/analytics/index', [App\Http\Controllers\Admin\DocumentationAnalyticsController::class, 'index'])->name('analytics');
+        Route::get('/analytics/export', [App\Http\Controllers\Admin\DocumentationAnalyticsController::class, 'export'])->name('analytics.export');
+        Route::get('/analytics/realtime', [App\Http\Controllers\Admin\DocumentationAnalyticsController::class, 'realtime'])->name('analytics.realtime');
+
+        // Categories management
+        Route::get('/categories', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'index'])->name('categories.index');
+        Route::get('/categories/create', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'create'])->name('categories.create');
+        Route::post('/categories', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'store'])->name('categories.store');
+        Route::get('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'show'])->name('categories.show');
+        Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::post('/categories/bulk-action', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'bulkAction'])->name('categories.bulk-action');
+        Route::post('/categories/update-order', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'updateOrder'])->name('categories.update-order');
+        Route::get('/categories/tree/api', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'getTree'])->name('categories.tree');
+
+        // Documentation CRUD routes (MUST BE LAST - catch-all routes)
+        Route::get('/{documentation}', [App\Http\Controllers\Admin\DocumentationController::class, 'show'])->name('show');
+        Route::get('/{documentation}/edit', [App\Http\Controllers\Admin\DocumentationController::class, 'edit'])->name('edit');
+        Route::put('/{documentation}', [App\Http\Controllers\Admin\DocumentationController::class, 'update'])->name('update');
+        Route::delete('/{documentation}', [App\Http\Controllers\Admin\DocumentationController::class, 'destroy'])->name('destroy');
+        Route::get('/categories/create', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'create'])->name('categories.create');
+        Route::post('/categories', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'store'])->name('categories.store');
+        Route::get('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'show'])->name('categories.show');
+        Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::post('/categories/bulk-action', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'bulkAction'])->name('categories.bulk-action');
+        Route::post('/categories/update-order', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'updateOrder'])->name('categories.update-order');
+        Route::get('/categories/tree/api', [App\Http\Controllers\Admin\DocumentationCategoryController::class, 'getTree'])->name('categories.tree');
+    });
+
     // Page management routes (chỉ admin có quyền manage_system)
     Route::middleware(['admin.auth'])->group(function () {
         Route::resource('pages', PageController::class);
@@ -283,15 +372,49 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Knowledge Base management routes
     Route::prefix('knowledge')->name('knowledge.')->group(function () {
-        Route::get('/', function() {
-            return view('admin.knowledge.index');
-        })->name('index');
-        Route::get('/create', function() {
-            return view('admin.knowledge.create');
-        })->name('create');
-        Route::get('/{article}/edit', function($article) {
-            return view('admin.knowledge.edit', compact('article'));
-        })->name('edit');
+        // Main dashboard
+        Route::get('/', [App\Http\Controllers\Admin\KnowledgeController::class, 'index'])->name('index');
+
+        // Articles management
+        Route::get('/articles', [App\Http\Controllers\Admin\KnowledgeController::class, 'articles'])->name('articles');
+        Route::get('/articles/create', [App\Http\Controllers\Admin\KnowledgeController::class, 'createArticle'])->name('articles.create');
+        Route::post('/articles', [App\Http\Controllers\Admin\KnowledgeController::class, 'storeArticle'])->name('articles.store');
+        Route::get('/articles/{article}/edit', [App\Http\Controllers\Admin\KnowledgeController::class, 'editArticle'])->name('articles.edit');
+        Route::put('/articles/{article}', [App\Http\Controllers\Admin\KnowledgeController::class, 'updateArticle'])->name('articles.update');
+        Route::delete('/articles/{article}', [App\Http\Controllers\Admin\KnowledgeController::class, 'destroyArticle'])->name('articles.destroy');
+
+        // Videos management
+        Route::get('/videos', [App\Http\Controllers\Admin\KnowledgeController::class, 'videos'])->name('videos');
+        Route::get('/videos/create', [App\Http\Controllers\Admin\KnowledgeController::class, 'createVideo'])->name('videos.create');
+        Route::post('/videos', [App\Http\Controllers\Admin\KnowledgeController::class, 'storeVideo'])->name('videos.store');
+        Route::get('/videos/{video}/edit', [App\Http\Controllers\Admin\KnowledgeController::class, 'editVideo'])->name('videos.edit');
+        Route::put('/videos/{video}', [App\Http\Controllers\Admin\KnowledgeController::class, 'updateVideo'])->name('videos.update');
+        Route::delete('/videos/{video}', [App\Http\Controllers\Admin\KnowledgeController::class, 'destroyVideo'])->name('videos.destroy');
+
+        // Documents management
+        Route::get('/documents', [App\Http\Controllers\Admin\KnowledgeController::class, 'documents'])->name('documents');
+        Route::get('/documents/create', [App\Http\Controllers\Admin\KnowledgeController::class, 'createDocument'])->name('documents.create');
+        Route::post('/documents', [App\Http\Controllers\Admin\KnowledgeController::class, 'storeDocument'])->name('documents.store');
+        Route::get('/documents/{document}/edit', [App\Http\Controllers\Admin\KnowledgeController::class, 'editDocument'])->name('documents.edit');
+        Route::put('/documents/{document}', [App\Http\Controllers\Admin\KnowledgeController::class, 'updateDocument'])->name('documents.update');
+        Route::delete('/documents/{document}', [App\Http\Controllers\Admin\KnowledgeController::class, 'destroyDocument'])->name('documents.destroy');
+
+        // Categories management
+        Route::get('/categories', [App\Http\Controllers\Admin\KnowledgeController::class, 'categories'])->name('categories');
+        Route::get('/categories/create', [App\Http\Controllers\Admin\KnowledgeController::class, 'createCategory'])->name('categories.create');
+        Route::post('/categories', [App\Http\Controllers\Admin\KnowledgeController::class, 'storeCategory'])->name('categories.store');
+        Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\KnowledgeController::class, 'editCategory'])->name('categories.edit');
+        Route::put('/categories/{category}', [App\Http\Controllers\Admin\KnowledgeController::class, 'updateCategory'])->name('categories.update');
+        Route::delete('/categories/{category}', [App\Http\Controllers\Admin\KnowledgeController::class, 'destroyCategory'])->name('categories.destroy');
+
+        // Bulk operations
+        Route::post('/articles/bulk-delete', [App\Http\Controllers\Admin\KnowledgeController::class, 'bulkDeleteArticles'])->name('articles.bulk-delete');
+        Route::post('/videos/bulk-delete', [App\Http\Controllers\Admin\KnowledgeController::class, 'bulkDeleteVideos'])->name('videos.bulk-delete');
+        Route::post('/documents/bulk-delete', [App\Http\Controllers\Admin\KnowledgeController::class, 'bulkDeleteDocuments'])->name('documents.bulk-delete');
+        Route::post('/bulk-update-status', [App\Http\Controllers\Admin\KnowledgeController::class, 'bulkUpdateStatus'])->name('bulk-update-status');
+
+        // Search
+        Route::get('/search', [App\Http\Controllers\Admin\KnowledgeController::class, 'search'])->name('search');
     });
 
     // Marketplace management routes
@@ -431,13 +554,16 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Notifications routes
     Route::prefix('notifications')->name('notifications.')->group(function () {
-        Route::get('/', function() {
-            return view('admin.notifications.index');
-        })->name('index');
-        Route::post('/{id}/mark-read', function($id) {
-            // Mark notification as read
-            return response()->json(['success' => true]);
-        })->name('mark-read');
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/{id}', [NotificationController::class, 'show'])->name('show');
+        Route::post('/{id}/mark-read', [NotificationController::class, 'markAsRead'])->name('mark-read');
+        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+        Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+
+        // API endpoints
+        Route::get('/api/unread-count', [NotificationController::class, 'getUnreadCount'])->name('api.unread-count');
+        Route::get('/api/recent', [NotificationController::class, 'getRecent'])->name('api.recent');
+        Route::post('/api/test', [NotificationController::class, 'createTest'])->name('api.test');
     });
 
     // Media management routes (admin và moderator có quyền)

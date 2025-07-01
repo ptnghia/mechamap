@@ -34,8 +34,12 @@ class SearchService
     private function initializeElasticsearch(): void
     {
         try {
+            // Temporarily disable Elasticsearch for testing
+            $this->client = null;
+            return;
+
             $hosts = config('elasticsearch.hosts', ['localhost:9200']);
-            
+
             $this->client = ClientBuilder::create()
                 ->setHosts($hosts)
                 ->setRetries(2)
@@ -44,7 +48,7 @@ class SearchService
             // Test connection
             $this->client->ping();
             $this->isElasticsearchAvailable = true;
-            
+
             Log::info('Elasticsearch connection established');
 
         } catch (\Exception $e) {
@@ -67,7 +71,7 @@ class SearchService
         try {
             $searchParams = $this->buildSearchParams($query, $filters, $options);
             $response = $this->client->search($searchParams);
-            
+
             $results = $this->formatSearchResults($response, $options);
             $results['meta']['search_time'] = round((microtime(true) - $startTime) * 1000, 2);
 

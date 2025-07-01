@@ -2,6 +2,10 @@
 
 @section('title', 'Checkout - MechaMap')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
+@endpush
+
 @section('content')
 <div class="min-vh-100 bg-light">
     <!-- Breadcrumb -->

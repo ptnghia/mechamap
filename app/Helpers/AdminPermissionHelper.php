@@ -91,7 +91,8 @@ class AdminPermissionHelper
             return false;
         }
 
-        return Auth::user()->role === 'admin';
+        $role = Auth::user()->role;
+        return in_array($role, ['admin', 'super_admin']);
     }
 
     /**

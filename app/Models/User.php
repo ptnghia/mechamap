@@ -657,6 +657,30 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the notifications for the user (Phase 3 notifications).
+     */
+    public function userNotifications(): HasMany
+    {
+        return $this->hasMany(\App\Models\Notification::class);
+    }
+
+    /**
+     * Get unread notifications for the user.
+     */
+    public function unreadNotifications(): HasMany
+    {
+        return $this->hasMany(\App\Models\Notification::class)->where('is_read', false);
+    }
+
+    /**
+     * Get notification count for the user.
+     */
+    public function getUnreadNotificationCountAttribute(): int
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    /**
      * Get the conversations that the user is participating in.
      */
     public function conversations(): BelongsToMany
@@ -905,19 +929,43 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasPermission(string $permission): bool
     {
-        // Super Admin có tất cả quyền
+        // Debug for view_products permission
+        if ($permission === 'view_products') {
+            \Log::info('hasPermission debug', [
+                'user_id' => $this->id,
+                'user_role' => $this->role,
+                'permission' => $permission,
+                'is_super_admin' => $this->role === 'super_admin',
+                'role_permissions_count' => is_array($this->role_permissions) ? count($this->role_permissions) : 'not_array',
+            ]);
+        }
+
+        // Super Admin có tất cả quyền - ALWAYS return true first
         if ($this->role === 'super_admin') {
+            if ($permission === 'view_products') {
+                \Log::info('Super admin returning true for view_products');
+            }
             return true;
         }
 
-        // Sử dụng Spatie Permission nếu có
-        if (method_exists($this, 'hasPermissionTo')) {
-            return $this->hasPermissionTo($permission);
+        // System Admin có hầu hết quyền
+        if ($this->role === 'system_admin') {
+            return true;
         }
 
-        // Fallback: Kiểm tra cached permissions
+        // Fallback: Kiểm tra cached permissions trước
         if ($this->role_permissions && is_array($this->role_permissions)) {
             return in_array($permission, $this->role_permissions);
+        }
+
+        // Sử dụng Spatie Permission nếu có (cuối cùng)
+        if (method_exists($this, 'hasPermissionTo')) {
+            try {
+                return $this->hasPermissionTo($permission);
+            } catch (\Exception $e) {
+                // Nếu Spatie Permission lỗi, fallback về false
+                return false;
+            }
         }
 
         return false;
@@ -1002,8 +1050,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function canAccessRoute(string $routeName): bool
     {
-        // Admin có thể truy cập tất cả routes
-        if ($this->role === 'admin') {
+        // Super Admin và System Admin có thể truy cập tất cả routes
+        if (in_array($this->role, ['super_admin', 'system_admin', 'admin'])) {
             return true;
         }
 
@@ -1022,6 +1070,11 @@ class User extends Authenticatable implements MustVerifyEmail
                     return $this->hasPermission($permission);
                 }
             }
+        }
+
+        // Fallback: Nếu user có quyền admin cơ bản thì cho phép truy cập
+        if ($this->canAccessAdmin()) {
+            return true;
         }
 
         return false;

@@ -298,13 +298,9 @@ Route::get('/about', function () {
     return view('about.index');
 })->name('about.index');
 
-Route::get('/terms', function () {
-    return view('coming-soon', ['title' => 'Terms of Service', 'message' => 'Terms of service coming soon']);
-})->name('terms.index');
-
-Route::get('/privacy', function () {
-    return view('coming-soon', ['title' => 'Privacy Policy', 'message' => 'Privacy policy coming soon']);
-})->name('privacy.index');
+// Dynamic pages from database
+Route::get('/terms', [App\Http\Controllers\PageController::class, 'showByRoute'])->defaults('routeName', 'terms')->name('terms.index');
+Route::get('/privacy', [App\Http\Controllers\PageController::class, 'showByRoute'])->defaults('routeName', 'privacy')->name('privacy.index');
 
 // Contact route duplicate removed
 
@@ -579,18 +575,62 @@ Route::post('/polls/{poll}/vote', [\App\Http\Controllers\PollController::class, 
 // Static pages routes
 // About route duplicate removed - using about.index instead
 
-Route::get('/rules', function () {
-    return view('pages.rules');
-})->name('rules');
+// Dynamic pages from database
+Route::get('/rules', [App\Http\Controllers\PageController::class, 'showByRoute'])->defaults('routeName', 'rules')->name('rules');
+Route::get('/help/writing-guide', [App\Http\Controllers\PageController::class, 'showByRoute'])->defaults('routeName', 'help')->name('help.writing-guide');
 
-Route::get('/help/writing-guide', function () {
-    return view('pages.writing-guide');
-})->name('help.writing-guide');
+// Dynamic pages from database
+Route::get('/contact', [App\Http\Controllers\PageController::class, 'showByRoute'])->defaults('routeName', 'contact')->name('contact');
 
-// Contact page
-Route::get('/contact', function () {
-    return view('pages.contact');
-})->name('contact');
+// Page management routes
+Route::get('/pages/categories', [App\Http\Controllers\PageController::class, 'categories'])->name('pages.categories');
+Route::get('/pages/category/{slug}', [App\Http\Controllers\PageController::class, 'category'])->name('pages.category');
+Route::get('/pages/search', [App\Http\Controllers\PageController::class, 'search'])->name('pages.search');
+Route::get('/pages/popular', [App\Http\Controllers\PageController::class, 'popular'])->name('pages.popular');
+Route::get('/pages/recent', [App\Http\Controllers\PageController::class, 'recent'])->name('pages.recent');
+Route::get('/pages/{slug}', [App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
+
+// Legacy routes and redirects
+Route::get('/legacy/{path}', [App\Http\Controllers\PageController::class, 'handleLegacyRoute'])->name('pages.legacy');
+
+// Static pages overview (for admin/development)
+Route::get('/static-pages', function () {
+    return view('pages.static-pages-overview');
+})->name('static-pages.overview');
+
+// Test dynamic pages system
+Route::get('/test-dynamic', function () {
+    return view('pages.test-dynamic');
+})->name('test-dynamic');
+
+// System improvements overview
+Route::get('/system-improvements', function () {
+    return view('pages.system-improvements');
+})->name('system-improvements');
+
+// SEO Routes
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-pages.xml', [App\Http\Controllers\SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-forums.xml', [App\Http\Controllers\SitemapController::class, 'forums'])->name('sitemap.forums');
+Route::get('/sitemap-threads.xml', [App\Http\Controllers\SitemapController::class, 'threads'])->name('sitemap.threads');
+Route::get('/sitemap-users.xml', [App\Http\Controllers\SitemapController::class, 'users'])->name('sitemap.users');
+Route::get('/sitemap-products.xml', [App\Http\Controllers\SitemapController::class, 'products'])->name('sitemap.products');
+Route::get('/robots.txt', [App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
+
+// Documentation Routes (Public)
+Route::prefix('docs')->name('docs.')->group(function () {
+    Route::get('/', [App\Http\Controllers\DocumentationController::class, 'index'])->name('index');
+    Route::get('/search', [App\Http\Controllers\DocumentationController::class, 'search'])->name('search');
+    Route::get('/category/{category:slug}', [App\Http\Controllers\DocumentationController::class, 'category'])->name('category');
+    Route::get('/download/{documentation}/{file}', [App\Http\Controllers\DocumentationController::class, 'download'])->name('download');
+    Route::get('/{documentation:slug}', [App\Http\Controllers\DocumentationController::class, 'show'])->name('show');
+
+    // User interactions (requires auth)
+    Route::middleware('auth')->group(function () {
+        Route::post('/{documentation}/rate', [App\Http\Controllers\DocumentationController::class, 'rate'])->name('rate');
+        Route::post('/{documentation}/comment', [App\Http\Controllers\DocumentationController::class, 'comment'])->name('comment');
+    });
+});
 
 // Contact support - redirect to main contact page
 Route::get('/contact/support', function () {

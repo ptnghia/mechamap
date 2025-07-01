@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $title
@@ -90,6 +90,7 @@ class KnowledgeArticle extends Model
         'slug',
         'excerpt',
         'content',
+        'category_id',
         'article_type',
         'engineering_field',
         'prerequisites',
@@ -99,14 +100,16 @@ class KnowledgeArticle extends Model
         'featured_image',
         'technical_specs',
         'software_requirements',
+        'tags',
+        'views_count',
+        'rating_average',
+        'rating_count',
         'author_id',
         'reviewer_id',
         'status',
         'published_at',
         'reviewed_at',
         'view_count',
-        'rating_average',
-        'rating_count',
         'is_featured',
         'requires_pe_license'
     ];
@@ -116,6 +119,7 @@ class KnowledgeArticle extends Model
         'learning_outcomes' => 'array',
         'technical_specs' => 'array',
         'software_requirements' => 'array',
+        'tags' => 'array',
         'published_at' => 'datetime',
         'reviewed_at' => 'datetime',
         'rating_average' => 'decimal:2',
@@ -132,6 +136,11 @@ class KnowledgeArticle extends Model
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewer_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(KnowledgeCategory::class, 'category_id');
     }
 
     public function revisions(): MorphMany

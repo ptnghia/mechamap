@@ -33,7 +33,9 @@ class CheckAdminPermission
 
         // Nếu có permission cụ thể được chỉ định
         if ($permission) {
-            if (!$user->hasPermission($permission)) {
+            $hasPermission = $user->hasPermission($permission);
+
+            if (!$hasPermission) {
                 // Log unauthorized access attempt
                 \Log::warning('Unauthorized admin access attempt', [
                     'user_id' => $user->id,
