@@ -4,13 +4,13 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // Initialize menu functionality
     initializeMenu();
     initializeMobileSearch();
     initializeQuickAccess();
     initializeSearchEnhancements();
-    
+
     /**
      * Initialize main menu functionality
      */
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add active state management
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-        
+
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
             if (href && currentPath.startsWith(href) && href !== '/') {
@@ -33,23 +33,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-        
+
         // Add hover effects for desktop
         if (window.innerWidth >= 992) {
             const dropdowns = document.querySelectorAll('.navbar-nav .dropdown');
             dropdowns.forEach(dropdown => {
                 const toggle = dropdown.querySelector('.dropdown-toggle');
                 const menu = dropdown.querySelector('.dropdown-menu');
-                
+
+                // Skip if toggle element not found
+                if (!toggle) {
+                    console.warn('Dropdown toggle not found for:', dropdown);
+                    return;
+                }
+
                 let hoverTimeout;
-                
+
                 dropdown.addEventListener('mouseenter', () => {
                     clearTimeout(hoverTimeout);
                     if (!dropdown.classList.contains('show')) {
                         toggle.click();
                     }
                 });
-                
+
                 dropdown.addEventListener('mouseleave', () => {
                     hoverTimeout = setTimeout(() => {
                         if (dropdown.classList.contains('show')) {
@@ -59,13 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         }
-        
+
         // Track menu interactions
         document.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', function() {
                 const menuName = this.closest('.dropdown').querySelector('.dropdown-toggle').textContent.trim();
                 const itemName = this.textContent.trim();
-                
+
                 // Analytics tracking (if available)
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'menu_click', {
@@ -76,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
     /**
      * Initialize mobile search functionality
      */
@@ -85,18 +91,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileSearchInput = document.getElementById('mobileSearchInput');
         const mobileSearchButton = document.getElementById('mobileSearchButton');
         const searchScopes = document.querySelectorAll('.mobile-search-scope');
-        
+
         if (!mobileSearchModal) return;
-        
+
         let currentScope = 'all';
-        
+
         // Handle search scope selection
         searchScopes.forEach(scope => {
             scope.addEventListener('click', function() {
                 searchScopes.forEach(s => s.classList.remove('active'));
                 this.classList.add('active');
                 currentScope = this.dataset.scope;
-                
+
                 // Update placeholder
                 const placeholders = {
                     'marketplace': 'Search products, parts, materials...',
@@ -104,40 +110,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     'members': 'Search members, companies...',
                     'technical': 'Search CAD files, standards...'
                 };
-                
+
                 mobileSearchInput.placeholder = placeholders[currentScope] || 'Search MechaMap...';
             });
         });
-        
+
         // Handle search execution
         function executeSearch() {
             const query = mobileSearchInput.value.trim();
             if (!query) return;
-            
+
             // Save to recent searches
             saveRecentSearch(query);
-            
+
             // Redirect to search results
             const searchUrl = `/search?q=${encodeURIComponent(query)}&scope=${currentScope}`;
             window.location.href = searchUrl;
         }
-        
+
         mobileSearchButton.addEventListener('click', executeSearch);
         mobileSearchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 executeSearch();
             }
         });
-        
+
         // Auto-focus search input when modal opens
         mobileSearchModal.addEventListener('shown.bs.modal', function() {
             mobileSearchInput.focus();
         });
-        
+
         // Load recent searches
         loadRecentSearches();
     }
-    
+
     /**
      * Initialize quick access toolbar
      */
@@ -146,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.innerWidth <= 768) {
             createQuickAccessToolbar();
         }
-        
+
         // Handle window resize
         window.addEventListener('resize', function() {
             const toolbar = document.querySelector('.quick-access-toolbar');
@@ -157,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     /**
      * Create quick access toolbar for mobile
      */
@@ -175,26 +181,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 <i class="fa-solid fa-bookmark"></i>
             </button>
         `;
-        
+
         document.body.appendChild(toolbar);
     }
-    
+
     /**
      * Initialize search enhancements
      */
     function initializeSearchEnhancements() {
         const headerSearch = document.getElementById('headerSearch');
         const searchResults = document.getElementById('searchResults');
-        
+
         if (!headerSearch) return;
-        
+
         let searchTimeout;
-        
+
         // Real-time search suggestions
         headerSearch.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             const query = this.value.trim();
-            
+
             if (query.length >= 2) {
                 searchTimeout = setTimeout(() => {
                     fetchSearchSuggestions(query);
@@ -203,14 +209,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 hideSearchResults();
             }
         });
-        
+
         // Hide results when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-container')) {
                 hideSearchResults();
             }
         });
-        
+
         // Handle search scope changes
         document.querySelectorAll('.search-scope').forEach(scope => {
             scope.addEventListener('click', function() {
@@ -219,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
     /**
      * Fetch search suggestions
      */
@@ -231,19 +237,19 @@ document.addEventListener('DOMContentLoaded', function() {
             { type: 'material', title: 'Aluminum 6061', category: 'Technical' },
             { type: 'member', title: 'John Engineer', category: 'Members' }
         ];
-        
-        displaySearchSuggestions(suggestions.filter(s => 
+
+        displaySearchSuggestions(suggestions.filter(s =>
             s.title.toLowerCase().includes(query.toLowerCase())
         ));
     }
-    
+
     /**
      * Display search suggestions
      */
     function displaySearchSuggestions(suggestions) {
         const searchResults = document.getElementById('searchResults');
         if (!searchResults) return;
-        
+
         if (suggestions.length === 0) {
             searchResults.innerHTML = '<div class="p-3"><p class="text-muted mb-0">No suggestions found</p></div>';
         } else {
@@ -255,13 +261,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `).join('');
-            
+
             searchResults.innerHTML = `<div class="p-2">${html}</div>`;
         }
-        
+
         searchResults.classList.remove('d-none');
     }
-    
+
     /**
      * Hide search results
      */
@@ -271,35 +277,35 @@ document.addEventListener('DOMContentLoaded', function() {
             searchResults.classList.add('d-none');
         }
     }
-    
+
     /**
      * Save recent search
      */
     function saveRecentSearch(query) {
         let recentSearches = JSON.parse(localStorage.getItem('mechamap_recent_searches') || '[]');
-        
+
         // Remove if already exists
         recentSearches = recentSearches.filter(search => search !== query);
-        
+
         // Add to beginning
         recentSearches.unshift(query);
-        
+
         // Keep only last 5
         recentSearches = recentSearches.slice(0, 5);
-        
+
         localStorage.setItem('mechamap_recent_searches', JSON.stringify(recentSearches));
         loadRecentSearches();
     }
-    
+
     /**
      * Load recent searches
      */
     function loadRecentSearches() {
         const container = document.getElementById('mobileRecentSearches');
         if (!container) return;
-        
+
         const recentSearches = JSON.parse(localStorage.getItem('mechamap_recent_searches') || '[]');
-        
+
         if (recentSearches.length === 0) {
             container.innerHTML = '<small class="text-muted">No recent searches</small>';
         } else {
@@ -307,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="badge bg-light text-dark me-1 mb-1 recent-search" style="cursor: pointer;">${search}</span>
             `).join('');
             container.innerHTML = html;
-            
+
             // Add click handlers
             container.querySelectorAll('.recent-search').forEach(badge => {
                 badge.addEventListener('click', function() {
