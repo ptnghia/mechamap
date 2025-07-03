@@ -28,7 +28,7 @@ return [
     'clear' => 'Xóa',
     'refresh' => 'Làm mới',
     'reload' => 'Tải lại',
-    
+
     // Navigation
     'home' => 'Trang chủ',
     'dashboard' => 'Bảng điều khiển',
@@ -40,7 +40,7 @@ return [
     'sign_in' => 'Đăng nhập',
     'sign_up' => 'Đăng ký',
     'sign_out' => 'Đăng xuất',
-    
+
     // Content Actions
     'view' => 'Xem',
     'view_all' => 'Xem tất cả',
@@ -56,7 +56,7 @@ return [
     'deselect_all' => 'Bỏ chọn tất cả',
     'check_all' => 'Đánh dấu tất cả',
     'uncheck_all' => 'Bỏ đánh dấu tất cả',
-    
+
     // File Operations
     'upload' => 'Tải lên',
     'download' => 'Tải xuống',
@@ -66,7 +66,7 @@ return [
     'choose_file' => 'Chọn tệp',
     'attach' => 'Đính kèm',
     'detach' => 'Tháo',
-    
+
     // Search & Filter
     'search' => 'Tìm kiếm',
     'filter' => 'Lọc',
@@ -75,7 +75,7 @@ return [
     'sort_desc' => 'Sắp xếp giảm dần',
     'clear_filters' => 'Xóa bộ lọc',
     'advanced_search' => 'Tìm kiếm nâng cao',
-    
+
     // Communication
     'reply' => 'Trả lời',
     'comment' => 'Bình luận',
@@ -91,7 +91,7 @@ return [
     'report' => 'Báo cáo',
     'block' => 'Chặn',
     'unblock' => 'Bỏ chặn',
-    
+
     // Status Actions
     'publish' => 'Xuất bản',
     'unpublish' => 'Hủy xuất bản',
@@ -105,7 +105,7 @@ return [
     'approve' => 'Phê duyệt',
     'reject' => 'Từ chối',
     'pending' => 'Chờ xử lý',
-    
+
     // Marketplace
     'buy_now' => 'Mua ngay',
     'add_to_cart' => 'Thêm vào giỏ',
@@ -116,7 +116,7 @@ return [
     'contact_seller' => 'Liên hệ người bán',
     'compare' => 'So sánh',
     'wishlist' => 'Danh sách yêu thích',
-    
+
     // Help & Support
     'help' => 'Trợ giúp',
     'support' => 'Hỗ trợ',
@@ -126,4 +126,7 @@ return [
     'tutorial' => 'Hướng dẫn',
     'documentation' => 'Tài liệu',
     'faq' => 'Câu hỏi thường gặp',
+
+    // Showcase specific
+    'view_details' => 'Xem chi tiết',
 ];

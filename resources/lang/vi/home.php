@@ -83,4 +83,8 @@ return [
     'provided_helpful_answer' => 'đã đưa ra câu trả lời hữu ích',
     'joined_community' => 'đã tham gia cộng đồng',
     'newsletter_success' => 'Cảm ơn bạn đã đăng ký nhận tin!',
+
+    // Featured Showcases
+    'featured_showcases' => 'Dự án nổi bật',
+    'featured_showcases_desc' => 'Khám phá những dự án cơ khí ấn tượng từ cộng đồng',
 ];

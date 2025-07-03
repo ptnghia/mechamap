@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Forum;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Showcase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -88,12 +89,22 @@ class HomeController extends Controller
                 ->take(5)
                 ->get();
 
+            // Get featured showcases
+            $featuredShowcases = Showcase::with(['user'])
+                ->where('status', 'featured')
+                ->whereNotNull('cover_image')
+                ->orderBy('view_count', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->take(6)
+                ->get();
+
             return view('home', compact(
                 'latestThreads',
                 'featuredThreads',
                 'topForums',
                 'categories',
-                'topContributors'
+                'topContributors',
+                'featuredShowcases'
             ));
         } catch (\Exception $e) {
             // Nếu có lỗi, return view đơn giản
