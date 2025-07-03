@@ -186,7 +186,9 @@ class Category extends Model
     public function getAvatarUrlAttribute($value)
     {
         if ($this->avatarMedia) {
-            return asset('storage/' . $this->avatarMedia->file_path);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->avatarMedia->file_path, '/');
+            return asset('storage/' . $cleanPath);
         }
         return $value;
     }
@@ -197,7 +199,9 @@ class Category extends Model
     public function getBannerUrlAttribute($value)
     {
         if ($this->bannerMedia) {
-            return asset('storage/' . $this->bannerMedia->file_path);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->bannerMedia->file_path, '/');
+            return asset('storage/' . $cleanPath);
         }
         return $value;
     }

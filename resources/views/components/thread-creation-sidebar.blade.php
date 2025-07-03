@@ -6,7 +6,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="bi bi-lightbulb-fill me-2 text-warning"></i>
-                Mẹo Viết Bài Hay
+                {{ __('sidebar.writing_tips') }}
             </h5>
         </div>
         <div class="card-body">
@@ -15,8 +15,8 @@
                     <div class="d-flex align-items-start">
                         <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>Tiêu đề rõ ràng</strong>
-                            <p class="text-muted small mb-0">Sử dụng tiêu đề mô tả chính xác nội dung bài viết</p>
+                            <strong>{{ __('sidebar.clear_title') }}</strong>
+                            <p class="text-muted small mb-0">{{ __('sidebar.clear_title_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -25,8 +25,8 @@
                     <div class="d-flex align-items-start">
                         <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>Nội dung chi tiết</strong>
-                            <p class="text-muted small mb-0">Cung cấp thông tin đầy đủ, ví dụ cụ thể</p>
+                            <strong>{{ __('sidebar.detailed_content') }}</strong>
+                            <p class="text-muted small mb-0">{{ __('sidebar.detailed_content_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
                     <div class="d-flex align-items-start">
                         <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>Sử dụng hình ảnh</strong>
-                            <p class="text-muted small mb-0">Thêm hình ảnh để minh họa rõ hơn</p>
+                            <strong>{{ __('sidebar.use_images') }}</strong>
+                            <p class="text-muted small mb-0">{{ __('sidebar.use_images_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,8 @@
                     <div class="d-flex align-items-start">
                         <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>Chọn đúng danh mục</strong>
-                            <p class="text-muted small mb-0">Đăng bài đúng chuyên mục để dễ tìm kiếm</p>
+                            <strong>{{ __('sidebar.choose_right_category') }}</strong>
+                            <p class="text-muted small mb-0">{{ __('sidebar.choose_right_category_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -59,36 +59,36 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="bi bi-shield-check-fill me-2 text-primary"></i>
-                Quy Tắc Cộng Đồng
+                {{ __('sidebar.community_rules') }}
             </h5>
         </div>
         <div class="card-body">
             <div class="rules-list">
                 <div class="rule-item mb-2">
                     <i class="bi bi-dot text-primary"></i>
-                    <span class="small">Tôn trọng ý kiến của thành viên khác</span>
+                    <span class="small">{{ __('sidebar.respect_opinions') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="bi bi-dot text-primary"></i>
-                    <span class="small">Không spam hoặc quảng cáo không liên quan</span>
+                    <span class="small">{{ __('sidebar.no_spam') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="bi bi-dot text-primary"></i>
-                    <span class="small">Sử dụng ngôn ngữ phù hợp, văn minh</span>
+                    <span class="small">{{ __('sidebar.appropriate_language') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="bi bi-dot text-primary"></i>
-                    <span class="small">Không chia sẻ thông tin cá nhân</span>
+                    <span class="small">{{ __('sidebar.no_personal_info') }}</span>
                 </div>
                 <div class="rule-item">
                     <i class="bi bi-dot text-primary"></i>
-                    <span class="small">Kiểm tra thông tin trước khi đăng</span>
+                    <span class="small">{{ __('sidebar.verify_info') }}</span>
                 </div>
             </div>
             <div class="mt-3">
                 <a href="{{ route('rules') ?? '/rules' }}" class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-book me-1"></i>
-                    Đọc đầy đủ quy tắc
+                    {{ __('sidebar.read_full_rules') }}
                 </a>
             </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="bi bi-collection-fill me-2 text-info"></i>
-                Danh Mục Phổ Biến
+                {{ __('sidebar.popular_categories') }}
             </h5>
         </div>
         <div class="card-body p-0">
@@ -125,7 +125,7 @@
                             @endif
                             <div>
                                 <span class="fw-medium">{{ $forum->name }}</span>
-                                <div class="text-muted small">{{ number_format($forum->threads_count) }} bài đăng</div>
+                                <div class="text-muted small">{{ number_format($forum->threads_count) }} {{ __('sidebar.posts') }}</div>
                             </div>
                         </div>
                         <small class="text-muted">
@@ -135,7 +135,7 @@
                 </div>
                 @empty
                 <div class="list-group-item py-2 border-0">
-                    <p class="text-muted mb-0 small">Chưa có danh mục nào.</p>
+                    <p class="text-muted mb-0 small">{{ __('sidebar.no_categories') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -147,21 +147,21 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="bi bi-question-circle-fill me-2 text-secondary"></i>
-                Cần Hỗ Trợ?
+                {{ __('sidebar.need_support') }}
             </h5>
         </div>
         <div class="card-body">
             <p class="text-muted small mb-3">
-                Gặp khó khăn khi tạo bài viết? Chúng tôi sẵn sàng hỗ trợ bạn!
+                {{ __('sidebar.support_description') }}
             </p>
             <div class="d-grid gap-2">
                 <a href="{{ route('help.writing-guide') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-chat-dots me-1"></i>
-                    Hướng dẫn chi tiết
+                    {{ __('sidebar.detailed_guide') }}
                 </a>
                 <a href="{{ route('contact') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-envelope me-1"></i>
-                    Liên hệ hỗ trợ
+                    {{ __('sidebar.contact_support') }}
                 </a>
             </div>
         </div>
@@ -173,7 +173,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="bi bi-person-circle me-2 text-success"></i>
-                Hoạt Động Của Bạn
+                {{ __('sidebar.your_activity') }}
             </h5>
         </div>
         <div class="card-body"> @php
@@ -190,17 +190,17 @@
 
             <div class="user-stats">
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted small">Bài đăng</span>
+                    <span class="text-muted small">{{ __('sidebar.posts_count') }}</span>
                     <strong>{{ $userThreadsCount }}</strong>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted small">Bình luận</span>
+                    <span class="text-muted small">{{ __('sidebar.comments_count') }}</span>
                     <strong>{{ $userCommentsCount }}</strong>
                 </div>
 
                 @if($userLastThread)
                 <div class="last-activity">
-                    <p class="text-muted small mb-1">Bài viết gần nhất:</p>
+                    <p class="text-muted small mb-1">{{ __('sidebar.recent_post') }}</p>
                     <a href="{{ route('threads.show', $userLastThread) }}" class="text-decoration-none small">
                         <i class="bi bi-arrow-right me-1"></i>
                         {{ Str::limit($userLastThread->title, 30) }}

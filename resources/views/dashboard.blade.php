@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', __('nav.dashboard'))
 
 @section('content')
 
@@ -10,8 +10,8 @@
                 <div class="col-md-12">
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body">
-                            <h5 class="card-title">{{ __('Welcome') }}</h5>
-                            <p class="card-text">{{ __("You're logged in!") }}</p>
+                            <h5 class="card-title">{{ __('content.welcome') }}</h5>
+                            <p class="card-text">{{ __('content.logged_in_message') }}</p>
                         </div>
                     </div>
                 </div>

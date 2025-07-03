@@ -546,7 +546,9 @@ class SidebarDataService
                 if (filter_var($avatarMedia->file_path, FILTER_VALIDATE_URL)) {
                     return $avatarMedia->file_path;
                 } else {
-                    return asset('storage/' . $avatarMedia->file_path);
+                    // Loại bỏ slash đầu để tránh double slash
+                    $cleanPath = ltrim($avatarMedia->file_path, '/');
+                    return asset('storage/' . $cleanPath);
                 }
             }
         }
@@ -564,15 +566,21 @@ class SidebarDataService
             if (filter_var($directMedia->file_path, FILTER_VALIDATE_URL)) {
                 return $directMedia->file_path;
             } else {
-                return asset('storage/' . $directMedia->file_path);
+                // Loại bỏ slash đầu để tránh double slash
+                $cleanPath = ltrim($directMedia->file_path, '/');
+                return asset('storage/' . $cleanPath);
             }
         }
 
         // Kiểm tra column avatar trực tiếp trong users table
         if ($user->avatar && !empty($user->avatar)) {
-            return filter_var($user->avatar, FILTER_VALIDATE_URL)
-                ? $user->avatar
-                : asset('storage/' . $user->avatar);
+            if (filter_var($user->avatar, FILTER_VALIDATE_URL)) {
+                return $user->avatar;
+            } else {
+                // Loại bỏ slash đầu để tránh double slash
+                $cleanPath = ltrim($user->avatar, '/');
+                return asset('storage/' . $cleanPath);
+            }
         }
 
         // Fallback to UI Avatars
@@ -598,22 +606,32 @@ class SidebarDataService
                 if (filter_var($forumMedia->file_path, FILTER_VALIDATE_URL)) {
                     return $forumMedia->file_path;
                 } else {
-                    return asset('storage/' . $forumMedia->file_path);
+                    // Loại bỏ slash đầu để tránh double slash
+                    $cleanPath = ltrim($forumMedia->file_path, '/');
+                    return asset('storage/' . $cleanPath);
                 }
             }
         }
 
         // Kiểm tra column image/icon trực tiếp trong forum table
         if (isset($forum->image) && !empty($forum->image)) {
-            return filter_var($forum->image, FILTER_VALIDATE_URL)
-                ? $forum->image
-                : asset('storage/' . $forum->image);
+            if (filter_var($forum->image, FILTER_VALIDATE_URL)) {
+                return $forum->image;
+            } else {
+                // Loại bỏ slash đầu để tránh double slash
+                $cleanPath = ltrim($forum->image, '/');
+                return asset('storage/' . $cleanPath);
+            }
         }
 
         if (isset($forum->icon) && !empty($forum->icon)) {
-            return filter_var($forum->icon, FILTER_VALIDATE_URL)
-                ? $forum->icon
-                : asset('storage/' . $forum->icon);
+            if (filter_var($forum->icon, FILTER_VALIDATE_URL)) {
+                return $forum->icon;
+            } else {
+                // Loại bỏ slash đầu để tránh double slash
+                $cleanPath = ltrim($forum->icon, '/');
+                return asset('storage/' . $cleanPath);
+            }
         }
 
         // Fallback

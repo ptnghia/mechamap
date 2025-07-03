@@ -1,8 +1,9 @@
 /*
  * MechaMap CSS Architecture Documentation
  * Hướng dẫn sử dụng và tổ chức CSS trong dự án
- * 
+ *
  * Cấu trúc CSS đã được tổ chức theo mô hình Traditional CSS (không sử dụng Vite)
+ * CẬP NHẬT: Unified Components - header.blade.php, sidebar.blade.php, footer.blade.php
  */
 
 /* ========================================

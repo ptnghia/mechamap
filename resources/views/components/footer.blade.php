@@ -1,3 +1,7 @@
+{{--
+    MechaMap Unified Footer Component
+    Footer thống nhất cho tất cả trang frontend user
+--}}
 <!-- Footer -->
 <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container">
@@ -55,10 +59,10 @@
                     @endif
 
                     <!-- Dark Mode Toggle -->
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-light rounded-circle p-2 ms-2" 
+                    <button type="button"
+                            class="btn btn-sm btn-outline-light rounded-circle p-2 ms-2"
                             id="darkModeToggle"
-                            data-bs-toggle="tooltip" 
+                            data-bs-toggle="tooltip"
                             title="Chuyển chế độ sáng/tối">
                         <img src="{{ asset('images/moon.svg') }}" alt="Dark Mode" width="16" height="16" id="darkModeIcon">
                         <span class="visually-hidden">Chuyển chế độ sáng/tối</span>
@@ -74,22 +78,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const darkModeIcon = document.getElementById('darkModeIcon');
-    
+
     if (darkModeToggle && darkModeIcon) {
         // Check for saved theme preference or default to light mode
         const currentTheme = localStorage.getItem('theme') || 'light';
-        
+
         // Apply the current theme
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-mode');
             darkModeIcon.src = '{{ asset("images/sun.svg") }}';
             darkModeIcon.alt = 'Light Mode';
         }
-        
+
         // Toggle theme on button click
         darkModeToggle.addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
-            
+
             if (document.body.classList.contains('dark-mode')) {
                 localStorage.setItem('theme', 'dark');
                 darkModeIcon.src = '{{ asset("images/sun.svg") }}';
@@ -101,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

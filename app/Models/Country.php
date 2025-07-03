@@ -227,7 +227,9 @@ class Country extends Model
     public function getFlagUrlAttribute(): ?string
     {
         if ($this->flag_icon) {
-            return asset('storage/' . $this->flag_icon);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->flag_icon, '/');
+            return asset('storage/' . $cleanPath);
         }
         return null;
     }

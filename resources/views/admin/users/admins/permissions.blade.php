@@ -419,7 +419,7 @@
                 </div>
                 <div class="card-body text-center">
                     @if($user->avatar)
-                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}"
+                    <img src="{{ asset('storage/' . ltrim($user->avatar, '/')) }}" alt="{{ $user->name }}"
                         class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
                     @else
                     <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3"

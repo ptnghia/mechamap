@@ -1,4 +1,4 @@
-@extends('layouts.unified')
+@extends('layouts.app')
 
 @section('title', 'Order Confirmation - MechaMap')
 

@@ -472,7 +472,9 @@ class Thread extends Model
             }
 
             // Nếu là relative path, tạo asset URL
-            return asset('storage/' . $filePath);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($filePath, '/');
+            return asset('storage/' . $cleanPath);
         }
 
         return null;

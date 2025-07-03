@@ -15,9 +15,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <div class="sidebar-card community-overview" data-aos="fade-up">
         <div class="card-body">
             <div class="community_header">
-                <h5 class="fw-bold">{{ $sidebarData['site_settings']['name'] ?? 'Cộng đồng MechaMap' }}</h5>
-                <p class="text-muted">{{ $sidebarData['site_settings']['tagline'] ?? 'Mạng lưới Kỹ sư Chuyên
-                    nghiệp' }}</p>
+                <h5 class="fw-bold">{{ $sidebarData['site_settings']['name'] ?? __('content.mechamap_community') }}</h5>
+                <p class="text-muted">{{ $sidebarData['site_settings']['tagline'] ?? __('content.professional_network') }}</p>
             </div>
 
             <div class="stats-grid">
@@ -26,35 +25,35 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         <i class="fa-regular fa-comment-dots"></i>
                         <span>{{ number_format($sidebarData['community_stats']['total_threads']) }}</span>
                     </div>
-                    <div class="stat-label">Thảo luận Kỹ thuật</div>
+                    <div class="stat-label">{{ __('content.technical_discussions') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-user-tie"></i>
                         <span>{{ number_format($sidebarData['community_stats']['verified_users']) }}</span>
                     </div>
-                    <div class="stat-label">Kỹ sư</div>
+                    <div class="stat-label">{{ __('content.engineers') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-chart-area"></i>
                         <span>{{number_format($sidebarData['community_stats']['active_users_week']) }}</span>
                     </div>
-                    <div class="stat-label">Hoạt động tuần này</div>
+                    <div class="stat-label">{{ __('content.weekly_activity') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-chart-line"></i>
                         <span>+{{ $sidebarData['community_stats']['growth_rate'] }}%</span>
                     </div>
-                    <div class="stat-label">Tỷ lệ tăng trưởng</div>
+                    <div class="stat-label">{{ __('content.growth_rate') }}</div>
                 </div>
             </div>
 
             @guest
             <div class="cta-section mt-3">
                 <a href="{{ route('register') }}" class="btn btn-primary w-100">
-                    <i class="bi bi-person-plus me-2"></i>Tham gia Mạng lưới Chuyên nghiệp
+                    <i class="bi bi-person-plus me-2"></i>{{ __('content.join_professional_network') }}
                 </a>
             </div>
             @endguest
@@ -65,7 +64,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Trending Topics Card -->
     <div class="sidebar-card trending-topics" data-aos="fade-up" data-aos-delay="100">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-graph-up me-2 text-success"></i>Xu hướng tuần này</h6>
+            <h6 class="mb-0"><i class="bi bi-graph-up me-2 text-success"></i>{{ __('content.weekly_trends') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="trending-list">
@@ -75,8 +74,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
                     <div class="trend-content">
                         <div class="trend-name">{{ $topic['name'] }}</div>
                         <div class="trend-stats">
-                            <span class="trend-score">{{ $topic['trend_score'] }} điểm</span>
-                            <span class="trend-threads">{{ $topic['thread_count'] }} thảo luận</span>
+                            <span class="trend-score">{{ $topic['trend_score'] }} {{ __('content.points') }}</span>
+                            <span class="trend-threads">{{ $topic['thread_count'] }} {{ __('content.discussions') }}</span>
                         </div>
                     </div>
                     <div class="trend-indicator">
@@ -89,8 +88,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div> <!-- Featured Discussions Card -->
     <div class="sidebar-card featured-discussions" data-aos="fade-up" data-aos-delay="200">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-lightning-fill me-2 text-warning"></i>Thảo luận Nổi bật</h6>
-            <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">Xem tất cả</a>
+            <h6 class="mb-0"><i class="bi bi-lightning-fill me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
+            <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="discussion-list">
@@ -103,7 +102,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         <h6 class="discussion-title">{{ Str::limit($thread['title'], 60) }}</h6>
                         <div class="discussion-meta">
                             <span class="author">{{ $thread['author']['name'] }}</span>
-                            <span class="forum">trong {{ $thread['forum']['name'] }}</span>
+                            <span class="forum">{{ __('content.in') }} {{ $thread['forum']['name'] }}</span>
                         </div>
                         <div class="discussion-metrics">
                             <span class="metric">
@@ -122,8 +121,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div> <!-- Top Engineers Card -->
     <div class="sidebar-card top-engineers" data-aos="fade-up" data-aos-delay="300">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-award me-2 text-primary"></i>Kỹ sư Hàng đầu</h6>
-            <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">Bảng xếp hạng</a>
+            <h6 class="mb-0"><i class="bi bi-award me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
+            <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">{{ __('content.leaderboard') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="engineers-list">
@@ -143,9 +142,9 @@ $sidebarData = $sidebarService->getSidebarData($user);
                             {{ $member['badge']['name'] }}
                         </div>
                         <div class="engineer-score">
-                            {{ $member['contribution_score'] }} điểm
+                            {{ $member['contribution_score'] }} {{ __('content.points') }}
                             @if($member['recent_activity_score'] > 0)
-                            <small class="text-success">(+{{ $member['recent_activity_score'] }} gần đây)</small>
+                            <small class="text-success">(+{{ $member['recent_activity_score'] }} {{ __('content.recently') }})</small>
                             @endif
                         </div>
                     </div>
@@ -159,7 +158,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @if($user && !empty($sidebarData['user_recommendations'])) <div class="sidebar-card recommendations"
         data-aos="fade-up" data-aos-delay="400">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-stars me-2 text-info"></i>Đề xuất cho bạn</h6>
+            <h6 class="mb-0"><i class="bi bi-stars me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="recommendations-list">
@@ -168,8 +167,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
                     <div class="rec-content">
                         <h6 class="rec-title">{{ Str::limit($recommendation['title'], 50) }}</h6>
                         <div class="rec-meta">
-                            <span>bởi {{ $recommendation['author'] }}</span>
-                            <span>trong {{ $recommendation['forum'] }}</span>
+                            <span>{{ __('content.by') }} {{ $recommendation['author'] }}</span>
+                            <span>{{ __('content.in') }} {{ $recommendation['forum'] }}</span>
                         </div>
                     </div>
                     <div class="rec-score">{{ $recommendation['relevance_score'] }}%</div>
@@ -182,7 +181,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Popular Forums Card -->
     <div class="sidebar-card popular-forums" data-aos="fade-up" data-aos-delay="500">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-collection me-2 text-primary"></i>Diễn đàn Hoạt động</h6>
+            <h6 class="mb-0"><i class="bi bi-collection me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="forums-list">
@@ -195,14 +194,14 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         <h6 class="forum-name">{{ $forum['name'] }}</h6>
                         <p class="forum-desc">{{ $forum['description'] }}</p>
                         <div class="forum-stats">
-                            <span class="stat">{{ $forum['recent_threads'] }} mới trong tháng</span>
+                            <span class="stat">{{ $forum['recent_threads'] }} {{ __('content.new_this_month') }}</span>
                             <span class="activity-badge activity-{{ $forum['activity_level'] }}">
                                 @if($forum['activity_level'] == 'high')
-                                Hoạt động Cao
+                                {{ __('content.high_activity') }}
                                 @elseif($forum['activity_level'] == 'medium')
-                                Hoạt động Trung bình
+                                {{ __('content.medium_activity') }}
                                 @else
-                                Hoạt động Thấp
+                                {{ __('content.low_activity') }}
                                 @endif
                             </span>
                         </div>

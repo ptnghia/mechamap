@@ -1,3 +1,7 @@
+{{--
+    MechaMap Unified Sidebar Component
+    Sidebar thông minh tự động chọn loại sidebar phù hợp theo context
+--}}
 @props(['showSidebar' => true])
 
 @if($showSidebar)
@@ -54,7 +58,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các chủ đề mới/nổi bật -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="bi bi-star-fill me-2 text-warning"></i>Chủ đề nổi bật</h5>
+            <h5 class="card-title mb-0"><i class="bi bi-star-fill me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -87,13 +91,13 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">Chưa có chủ đề nổi bật.</p>
+                    <p class="text-muted mb-0 small">{{ __('content.no_featured_topics') }}</p>
                 </div>
                 @endforelse
             </div>
 
             <div class="card-footer bg-white text-center">
-                <a href="{{ route('threads.index') }}" class="btn btn-sm btn-link text-decoration-none">Xem thêm</a>
+                <a href="{{ route('threads.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('content.view_more') }}</a>
             </div>
         </div>
     </div>
@@ -101,8 +105,8 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các diễn đàn hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="bi bi-collection-fill me-2 text-primary"></i>Diễn đàn phổ biến</h5>
-            <a href="{{ route('forums.index') }}" class="btn btn-sm btn-link">Xem tất cả</a>
+            <h5 class="card-title mb-0"><i class="bi bi-collection-fill me-2 text-primary"></i>{{ __('content.popular_forums') }}</h5>
+            <a href="{{ route('forums.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -125,7 +129,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">Chưa có diễn đàn nào.</p>
+                    <p class="text-muted mb-0 small">{{ __('content.no_forums') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -135,8 +139,8 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Những người đóng góp hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="bi bi-people-fill me-2 text-success"></i>Thành viên tích cực</h5>
-            <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">Xem tất cả</a>
+            <h5 class="card-title mb-0"><i class="bi bi-people-fill me-2 text-success"></i>{{ __('content.active_members') }}</h5>
+            <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -157,14 +161,14 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                         </div>
                         <div>
                             <h6 class="mb-1">{{ $user->name }}</h6>
-                            <p class="text-muted small mb-0">{{ $user->threads_count + $user->comments_count }} đóng góp
+                            <p class="text-muted small mb-0">{{ $user->threads_count + $user->comments_count }} {{ __('content.contributions') }}
                             </p>
                         </div>
                     </div>
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">Chưa có thành viên tích cực.</p>
+                    <p class="text-muted mb-0 small">{{ __('content.no_active_members') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -174,7 +178,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các cộng đồng được đề xuất -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="bi bi-globe2 me-2 text-info"></i>Cộng đồng liên quan</h5>
+            <h5 class="card-title mb-0"><i class="bi bi-globe2 me-2 text-info"></i>{{ __('content.related_communities') }}</h5>
         </div>
         <div class="card-body">
             @php
@@ -222,13 +226,13 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                     </h6>
                     <p class="text-muted small mb-0">
                         <i class="bi bi-chat-text me-1"></i>{{ $forum->threads_count }}
-                        {{ $forum->threads_count == 1 ? 'chủ đề' : 'chủ đề' }}
+                        {{ __('content.topics') }}
                     </p>
                 </div>
             </div>
             @empty
             <div class="text-center py-3">
-                <p class="text-muted mb-0 small">Chưa có diễn đàn nào.</p>
+                <p class="text-muted mb-0 small">{{ __('content.no_forums') }}</p>
             </div>
             @endforelse
         </div>

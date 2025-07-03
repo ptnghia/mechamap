@@ -1,6 +1,6 @@
-@extends('layouts.auth')
+@extends('layouts.app')
 
-@section('title', 'Đăng nhập')
+@section('title', __('auth.login'))
 
 @section('content')
 <div class="min-vh-100 d-flex align-items-center bg-light">
@@ -31,22 +31,22 @@
                                     <div class="mb-4">
                                         <img src="{{ get_logo_url() }}" alt="MechaMap" class="mb-3" style="height: 50px; filter: brightness(0) invert(1);">
                                         <h3 class="fw-bold mb-2">MechaMap</h3>
-                                        <p class="fs-5 mb-0 opacity-90">Nơi hội tụ tri thức cơ khí</p>
+                                        <p class="fs-5 mb-0 opacity-90">{{ __('content.knowledge_hub') }}</p>
                                     </div>
 
                                     <!-- Value Propositions -->
                                     <div class="mb-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-users-cog me-3 fs-5"></i>
-                                            <span>Kết nối với 64+ kỹ sư chuyên nghiệp</span>
+                                            <span>{{ __('content.connect_engineers') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-comments me-3 fs-5"></i>
-                                            <span>Tham gia 118+ thảo luận kỹ thuật</span>
+                                            <span>{{ __('content.join_discussions') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-tools me-3 fs-5"></i>
-                                            <span>Chia sẻ kinh nghiệm CAD/CAM/CNC</span>
+                                            <span>{{ __('content.share_experience') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-graduation-cap me-3 fs-5"></i>

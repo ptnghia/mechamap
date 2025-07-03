@@ -22,6 +22,7 @@ use App\Http\Controllers\UserThreadController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\HomeEnhancedController;
 use Illuminate\Support\Facades\Route;
 
 // Test route để debug
@@ -29,10 +30,11 @@ Route::get('/test', function () {
     return 'Test route hoạt động bình thường!';
 });
 
-// Tạo route trang chủ mới hoàn toàn
-Route::get('/home-new', function () {
-    return view('test-home');
-})->name('home-new');
+// Enhanced Home Page Routes
+Route::get('/home-new', [HomeEnhancedController::class, 'index'])->name('home.new');
+Route::get('/api/live-activity', [HomeEnhancedController::class, 'getLiveActivity'])->name('api.live-activity');
+Route::post('/api/newsletter-subscribe', [HomeEnhancedController::class, 'subscribeNewsletter'])->name('api.newsletter-subscribe');
+Route::get('/api/search-suggestions', [HomeEnhancedController::class, 'getSearchSuggestions'])->name('api.search-suggestions');
 
 // Trang chủ chính tại route /
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');

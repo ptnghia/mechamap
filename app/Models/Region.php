@@ -316,7 +316,9 @@ class Region extends Model
             return $this->icon;
         }
         if ($this->icon) {
-            return asset('storage/' . $this->icon);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->icon, '/');
+            return asset('storage/' . $cleanPath);
         }
         return null;
     }

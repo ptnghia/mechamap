@@ -1,17 +1,17 @@
-@extends('layouts.auth')
+@extends('layouts.app')
 
-@section('title', 'Đăng ký')
+@section('title', __('auth.register'))
 
 @section('content')
 <x-auth-layout
-    title="Tạo tài khoản mới"
-    subtitle="Tham gia cộng đồng kỹ thuật cơ khí hàng đầu"
+    title="{{ __('auth.create_new_account') }}"
+    subtitle="{{ __('content.join_engineering_community') }}"
     :show-social-login="true">
 
     <!-- Page Title -->
     <div class="text-center mb-4">
-        <h2 class="fw-bold text-dark mb-2">Chào mừng bạn đến với MechaMap!</h2>
-        <p class="text-muted">Tạo tài khoản để bắt đầu hành trình kỹ thuật của bạn</p>
+        <h2 class="fw-bold text-dark mb-2">{{ __('auth.welcome_to_mechamap') }}</h2>
+        <p class="text-muted">{{ __('auth.create_account_journey') }}</p>
     </div>
 
     <!-- Status Messages -->

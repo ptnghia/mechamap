@@ -39,10 +39,10 @@
    LAYOUT COMPONENTS
    ======================================== */
 
-/* Import các component layout */
-@import url('./custom-header.css');
-@import url('./sidebar.css');
-@import url('./mobile-nav.css');
+/* Import các component layout - Unified Components */
+@import url('./custom-header.css'); /* Header styles */
+@import url('./sidebar.css');       /* Sidebar styles */
+@import url('./mobile-nav.css');    /* Mobile navigation */
 
 /* ========================================
    AUTHENTICATION COMPONENTS

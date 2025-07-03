@@ -20,7 +20,7 @@ $sizeClass = [
             <div class="modal-header border-0 pb-0">
                 <div class="w-100 text-center">
                     <img src="{{ get_logo_url() }}" alt="{{ get_site_name() }}" class="mb-3" style="height: 40px;">
-                    <h5 class="modal-title" id="{{ $id }}Label">Chào mừng đến với {{ get_site_name() }}</h5>
+                    <h5 class="modal-title" id="{{ $id }}Label">{{ __('auth.welcome_back') }} {{ get_site_name() }}</h5>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -31,17 +31,17 @@ $sizeClass = [
                 <ul class="nav nav-pills nav-justified mb-4" id="{{ $id }}Tabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-panel" type="button" role="tab" aria-controls="login-panel" aria-selected="true">
-                            <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                            <i class="fas fa-sign-in-alt me-2"></i>{{ __('auth.login') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-panel" type="button" role="tab" aria-controls="register-panel" aria-selected="false">
-                            <i class="fas fa-user-plus me-2"></i>Đăng ký
+                            <i class="fas fa-user-plus me-2"></i>{{ __('auth.register') }}
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="forgot-tab" data-bs-toggle="pill" data-bs-target="#forgot-panel" type="button" role="tab" aria-controls="forgot-panel" aria-selected="false">
-                            <i class="fas fa-key me-2"></i>Quên mật khẩu
+                            <i class="fas fa-key me-2"></i>{{ __('auth.forgot_password') }}
                         </button>
                     </li>
                 </ul>
@@ -53,12 +53,12 @@ $sizeClass = [
                         <form id="loginForm" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="loginEmail" class="form-label">Email hoặc tên đăng nhập</label>
+                                <label for="loginEmail" class="form-label">{{ __('auth.email') }} {{ __('content.or') }} {{ __('auth.username') }}</label>
                                 <input type="text" class="form-control" id="loginEmail" name="login" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="mb-3">
-                                <label for="loginPassword" class="form-label">Mật khẩu</label>
+                                <label for="loginPassword" class="form-label">{{ __('auth.password_field') }}</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="loginPassword" name="password" required>
                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword')">
@@ -69,18 +69,18 @@ $sizeClass = [
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
-                                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                                <label class="form-check-label" for="rememberMe">{{ __('auth.remember_me') }}</label>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                                    <i class="fas fa-sign-in-alt me-2"></i>{{ __('auth.login') }}
                                 </button>
                             </div>
                         </form>
 
                         <!-- Social Login -->
                         <div class="text-center my-3">
-                            <small class="text-muted">hoặc đăng nhập với</small>
+                            <small class="text-muted">{{ __('content.or') }} {{ __('auth.social_login') }}</small>
                         </div>
                         <div class="row g-2">
                             <div class="col-6">
@@ -102,24 +102,24 @@ $sizeClass = [
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="registerName" class="form-label">Họ và tên</label>
+                                    <label for="registerName" class="form-label">{{ __('auth.name') }}</label>
                                     <input type="text" class="form-control" id="registerName" name="name" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="registerUsername" class="form-label">Tên đăng nhập</label>
+                                    <label for="registerUsername" class="form-label">{{ __('auth.username') }}</label>
                                     <input type="text" class="form-control" id="registerUsername" name="username" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="registerEmail" class="form-label">Email</label>
+                                <label for="registerEmail" class="form-label">{{ __('auth.email') }}</label>
                                 <input type="email" class="form-control" id="registerEmail" name="email" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="registerPassword" class="form-label">Mật khẩu</label>
+                                    <label for="registerPassword" class="form-label">{{ __('auth.password_field') }}</label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="registerPassword" name="password" required>
                                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('registerPassword')">
@@ -129,7 +129,7 @@ $sizeClass = [
                                     <div class="invalid-feedback"></div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="registerPasswordConfirm" class="form-label">Xác nhận mật khẩu</label>
+                                    <label for="registerPasswordConfirm" class="form-label">{{ __('auth.confirm_password') }}</label>
                                     <input type="password" class="form-control" id="registerPasswordConfirm" name="password_confirmation" required>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -137,13 +137,13 @@ $sizeClass = [
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="agreeTerms" required>
                                 <label class="form-check-label" for="agreeTerms">
-                                    Tôi đồng ý với <a href="/terms" target="_blank">Điều khoản sử dụng</a> và <a href="/privacy" target="_blank">Chính sách bảo mật</a>
+                                    {{ __('auth.agree_terms') }} <a href="/terms" target="_blank">{{ __('auth.terms_of_service') }}</a> {{ __('content.and') }} <a href="/privacy" target="_blank">{{ __('auth.privacy_policy') }}</a>
                                 </label>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-user-plus me-2"></i>Đăng ký
+                                    <i class="fas fa-user-plus me-2"></i>{{ __('auth.register') }}
                                 </button>
                             </div>
                         </form>
@@ -155,22 +155,22 @@ $sizeClass = [
                             @csrf
                             <div class="text-center mb-4">
                                 <i class="fas fa-key fa-3x text-warning mb-3"></i>
-                                <h6>Quên mật khẩu?</h6>
-                                <p class="text-muted">Nhập email của bạn để nhận liên kết đặt lại mật khẩu</p>
+                                <h6>{{ __('auth.forgot_password') }}</h6>
+                                <p class="text-muted">{{ __('auth.check_email') }}</p>
                             </div>
                             <div class="mb-3">
-                                <label for="forgotEmail" class="form-label">Email</label>
+                                <label for="forgotEmail" class="form-label">{{ __('auth.email') }}</label>
                                 <input type="email" class="form-control" id="forgotEmail" name="email" required>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-warning">
-                                    <i class="fas fa-paper-plane me-2"></i>Gửi liên kết đặt lại
+                                    <i class="fas fa-paper-plane me-2"></i>{{ __('auth.send_reset_link') }}
                                 </button>
                             </div>
                             <div class="text-center mt-3">
                                 <button type="button" class="btn btn-link btn-sm" onclick="switchToLogin()">
-                                    <i class="fas fa-arrow-left me-1"></i>Quay lại đăng nhập
+                                    <i class="fas fa-arrow-left me-1"></i>{{ __('auth.login_to_continue') }}
                                 </button>
                             </div>
                         </form>
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.togglePassword = function(inputId) {
         const input = document.getElementById(inputId);
         const icon = document.getElementById(inputId + 'Icon');
-        
+
         if (input.type === 'password') {
             input.type = 'text';
             icon.classList.remove('fa-eye');
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submissions with AJAX
     const forms = ['loginForm', 'registerForm', 'forgotForm'];
-    
+
     forms.forEach(formId => {
         const form = document.getElementById(formId);
         if (form) {
@@ -225,11 +225,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(form);
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
-        
+
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
-        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("content.processing") }}';
+
         // Clear previous errors
         form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
         form.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
@@ -257,14 +257,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     Object.keys(data.errors).forEach(field => {
                         const input = form.querySelector(`[name="${field}"]`);
                         const feedback = input.parentNode.querySelector('.invalid-feedback');
-                        
+
                         if (input && feedback) {
                             input.classList.add('is-invalid');
                             feedback.textContent = data.errors[field][0];
                         }
                     });
                 }
-                
+
                 if (data.message) {
                     showAlert(data.message, 'danger');
                 }
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlert('Có lỗi xảy ra. Vui lòng thử lại.', 'danger');
+            showAlert('{{ __("content.error_occurred") }}', 'danger');
         })
         .finally(() => {
             // Restore button state
@@ -289,10 +289,10 @@ document.addEventListener('DOMContentLoaded', function() {
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-        
+
         const modal = document.querySelector('#{{ $id }} .modal-body');
         modal.insertBefore(alertDiv, modal.firstChild);
-        
+
         // Auto remove after 5 seconds
         setTimeout(() => {
             if (alertDiv.parentNode) {

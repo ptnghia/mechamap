@@ -14,13 +14,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">
                     <i class="fas fa-comments me-2"></i>
-                    Tin nhắn
+                    {{ __('nav.messages') }}
                 </h6>
                 <div class="chat-header-actions">
-                    <button id="newChatBtn" class="btn btn-sm btn-primary" title="Tin nhắn mới">
+                    <button id="newChatBtn" class="btn btn-sm btn-primary" title="{{ __('content.new_message') }}">
                         <i class="fas fa-plus"></i>
                     </button>
-                    <button id="chatMinimize" class="btn btn-sm btn-outline-secondary" title="Thu gọn">
+                    <button id="chatMinimize" class="btn btn-sm btn-outline-secondary" title="{{ __('content.minimize') }}">
                         <i class="fas fa-minus"></i>
                     </button>
                 </div>
@@ -34,14 +34,14 @@
                     <button class="nav-link active" id="conversations-tab" data-bs-toggle="tab"
                             data-bs-target="#conversations" type="button" role="tab">
                         <i class="fas fa-list me-1"></i>
-                        Danh sách
+                        {{ __('content.list') }}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="active-chat-tab" data-bs-toggle="tab"
                             data-bs-target="#active-chat" type="button" role="tab" style="display: none;">
                         <i class="fas fa-comment-dots me-1"></i>
-                        <span id="activeChatTitle">Chat</span>
+                        <span id="activeChatTitle">{{ __('content.chat') }}</span>
                     </button>
                 </li>
             </ul>

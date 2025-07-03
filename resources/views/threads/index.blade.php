@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Forums')
+@section('title', __('nav.forums'))
 
 @section('content')
 <div class="container">
@@ -8,10 +8,10 @@
         <!-- Main Content -->
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>Forums</h1>
+                <h1>{{ __('nav.forums') }}</h1>
                 @auth
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg"></i> New Thread
+                    <i class="bi bi-plus-lg"></i> {{ __('forum.new_thread') }}
                 </a>
                 @endauth
             </div>

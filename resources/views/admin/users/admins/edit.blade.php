@@ -138,7 +138,7 @@
                                 @if($user->avatar)
                                 <div class="mt-2">
                                     <small class="text-muted">Ảnh hiện tại:</small><br>
-                                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar hiện tại"
+                                    <img src="{{ asset('storage/' . ltrim($user->avatar, '/')) }}" alt="Avatar hiện tại"
                                         class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
                                 </div>
                                 @endif
@@ -298,7 +298,7 @@
                     <div class="text-center">
                         <div class="mb-3">
                             @if($user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}"
+                            <img src="{{ asset('storage/' . ltrim($user->avatar, '/')) }}" alt="{{ $user->name }}"
                                 class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
                             @else
                             <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center"

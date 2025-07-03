@@ -33,7 +33,7 @@
                 @else
                 <i class="bi bi-star me-1"></i>
                 @endif
-                {{ $showcase->title ?? $showcase->showcaseable->title ?? 'Showcase Item' }}
+                {{ $showcase->title ?? $showcase->showcaseable->title ?? __('content.showcase_item') }}
             </a>
         </h5>
 

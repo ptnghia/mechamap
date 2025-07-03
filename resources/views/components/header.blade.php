@@ -1,3 +1,7 @@
+{{--
+    MechaMap Unified Header Component
+    Sử dụng cho tất cả trang frontend user
+--}}
 @props(['showBanner' => true, 'isMarketplace' => false])
 
 <header class="bg-white shadow-sm border-b border-gray-200 sticky-top">
@@ -57,32 +61,32 @@
                         <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.browse_products') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.index') }}">
-                                <i class="fa-solid fa-grid-2 me-2"></i>All Categories
+                                <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.all_categories') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                <i class="fa-solid fa-building me-2"></i>Supplier Directory
+                                <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.supplier_directory') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.products.new') }}">
-                                <i class="fa-solid fa-sparkles me-2"></i>New Arrivals
+                                <i class="fa-solid fa-sparkles me-2"></i>{{ __('messages.nav.new_arrivals') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.products.popular') }}">
-                                <i class="fa-solid fa-fire me-2"></i>Best Sellers
+                                <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.best_sellers') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                <i class="fa-solid fa-file-invoice me-2"></i>Request for Quote
+                                <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_for_quote') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
-                                <i class="fa-solid fa-boxes-stacked me-2"></i>Bulk Orders
+                                <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('messages.nav.bulk_orders') }}
                             </a></li>
                             @auth
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
-                                <i class="fa-solid fa-list-check me-2"></i>My Orders
+                                <i class="fa-solid fa-list-check me-2"></i>{{ __('messages.nav.my_orders') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('marketplace.wishlist.index') }}">
-                                <i class="fa-solid fa-heart me-2"></i>Saved Items
+                                <i class="fa-solid fa-heart me-2"></i>{{ __('messages.nav.saved_items') }}
                             </a></li>
                             @endauth
                         </ul>
@@ -100,21 +104,21 @@
                                 <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('forums.recent') }}">
-                                <i class="fa-solid fa-clock me-2"></i>Recent Discussions
+                                <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('forums.popular') }}">
-                                <i class="fa-solid fa-trending-up me-2"></i>Popular Topics
+                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.popular_topics') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('members.index') }}">
-                                <i class="fa-solid fa-users-gear me-2"></i>Member Directory
+                                <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                <i class="fa-solid fa-building-user me-2"></i>Company Profiles
+                                <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('events.index') }}">
-                                <i class="fa-solid fa-calendar-days me-2"></i>Events & Webinars
+                                <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
                                 <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
@@ -178,24 +182,24 @@
                         <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('messages.nav.learning_resources') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
-                                <i class="fa-solid fa-book-open me-2"></i>Knowledge Base
+                                <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.knowledge_base') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
-                                <i class="fa-solid fa-chalkboard-teacher me-2"></i>Tutorials & Guides
+                                <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('messages.nav.tutorials_guides') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('documentation.index') }}">
-                                <i class="fa-solid fa-file-lines me-2"></i>Technical Documentation
+                                <i class="fa-solid fa-file-lines me-2"></i>{{ __('messages.nav.technical_documentation') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_updates') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
-                                <i class="fa-solid fa-newspaper me-2"></i>Industry News
+                                <i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_news') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                <i class="fa-solid fa-fire-flame-curved me-2"></i>What's New
+                                <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('messages.nav.whats_new') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('reports.industry.index') }}">
-                                <i class="fa-solid fa-chart-line me-2"></i>Industry Reports
+                                <i class="fa-solid fa-chart-line me-2"></i>{{ __('messages.nav.industry_reports') }}
                             </a></li>
                         </ul>
                     </li>
@@ -210,16 +214,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>Dashboard Admin
+                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.admin_dashboard') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                    <i class="bx bx-user me-2"></i>Quản lý người dùng
+                                    <i class="bx bx-user me-2"></i>{{ __('messages.nav.user_management') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.threads.index') }}">
-                                    <i class="bx bx-chat me-2"></i>Quản lý diễn đàn
+                                    <i class="bx bx-chat me-2"></i>{{ __('messages.nav.forum_management') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                                    <i class="bx bx-package me-2"></i>Quản lý marketplace
+                                    <i class="bx bx-package me-2"></i>{{ __('messages.nav.marketplace_management') }}
                                 </a></li>
                             </ul>
                         </li>
@@ -233,16 +237,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="supplierDropdown">
                                 <li><a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>Dashboard
+                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('supplier.products.index') }}">
-                                    <i class="bx bx-package me-2"></i>Sản phẩm của tôi
+                                    <i class="bx bx-package me-2"></i>{{ __('messages.nav.my_products') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
-                                    <i class="bx bx-list-ul me-2"></i>Đơn hàng
+                                    <i class="bx bx-list-ul me-2"></i>{{ __('messages.nav.orders') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('supplier.analytics.index') }}">
-                                    <i class="bx bx-bar-chart me-2"></i>Báo cáo
+                                    <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.reports') }}
                                 </a></li>
                             </ul>
                         </li>
@@ -256,16 +260,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="manufacturerDropdown">
                                 <li><a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>Dashboard
+                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
-                                    <i class="bx bx-cube-alt me-2"></i>Thiết kế của tôi
+                                    <i class="bx bx-cube-alt me-2"></i>{{ __('messages.nav.my_designs') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
-                                    <i class="bx bx-download me-2"></i>Đơn hàng download
+                                    <i class="bx bx-download me-2"></i>{{ __('messages.nav.download_orders') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('manufacturer.analytics.index') }}">
-                                    <i class="bx bx-bar-chart me-2"></i>Phân tích
+                                    <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.analytics') }}
                                 </a></li>
                             </ul>
                         </li>
@@ -279,16 +283,16 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="brandDropdown">
                                 <li><a class="dropdown-item" href="{{ route('brand.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>Dashboard
+                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('brand.insights.index') }}">
-                                    <i class="bx bx-bulb me-2"></i>Market Insights
+                                    <i class="bx bx-bulb me-2"></i>{{ __('messages.nav.market_insights') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('brand.marketplace.analytics') }}">
-                                    <i class="bx bx-store me-2"></i>Phân tích Marketplace
+                                    <i class="bx bx-store me-2"></i>{{ __('messages.nav.marketplace_analytics') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('brand.promotion.index') }}">
-                                    <i class="bx bx-megaphone me-2"></i>Cơ hội quảng cáo
+                                    <i class="bx bx-megaphone me-2"></i>{{ __('messages.nav.promotion_opportunities') }}
                                 </a></li>
                             </ul>
                         </li>
@@ -302,43 +306,43 @@
                             {{ __('messages.nav.more') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Search & Discovery</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.search_discovery') }}</h6></li>
                             <li>
                                 <a class="dropdown-item" href="/search/advanced">
                                     <i class="fa-brands fa-searchengin me-2"></i>
-                                    Advanced Search
+                                    {{ __('messages.nav.advanced_search') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('gallery.index') }}">
                                     <i class="fa-regular fa-images me-2"></i>
-                                    Photo Gallery
+                                    {{ __('messages.nav.photo_gallery') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('tags.index') }}">
                                     <i class="fa-solid fa-tags me-2"></i>
-                                    Browse by Tags
+                                    {{ __('messages.nav.browse_by_tags') }}
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>Help & Support</h6></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ __('messages.nav.help_support') }}</h6></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('faq.index') }}">
                                     <i class="fa-solid fa-question me-2"></i>
-                                    FAQ
+                                    {{ __('messages.nav.faq') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('help.index') }}">
                                     <i class="fa-solid fa-life-ring me-2"></i>
-                                    Help Center
+                                    {{ __('messages.nav.help_center') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('contact') }}">
                                     <i class="fa-solid fa-envelope me-2"></i>
-                                    Contact Support
+                                    {{ __('messages.nav.contact_support') }}
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -346,19 +350,19 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('about.index') }}">
                                     <i class="fa-solid fa-building me-2"></i>
-                                    About Us
+                                    {{ __('messages.nav.about_us') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('terms.index') }}">
                                     <i class="fa-solid fa-file-contract me-2"></i>
-                                    Terms of Service
+                                    {{ __('messages.nav.terms_of_service') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('privacy.index') }}">
                                     <i class="fa-solid fa-shield-halved me-2"></i>
-                                    Privacy Policy
+                                    {{ __('messages.nav.privacy_policy') }}
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
@@ -486,7 +490,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                     <i class="bx bx-tachometer me-2"></i>
-                                    Bảng điều khiển Admin
+                                    {{ __('messages.nav.admin_dashboard') }}
                                 </a>
                             </li>
                             @endif
@@ -495,19 +499,19 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
                                     <i class="bx bx-store me-2"></i>
-                                    Dashboard Nhà cung cấp
+                                    {{ __('messages.nav.supplier_dashboard') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('supplier.products.index') }}">
                                     <i class="bx bx-package me-2"></i>
-                                    Quản lý sản phẩm
+                                    {{ __('messages.nav.product_management') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
                                     <i class="bx bx-list-ul me-2"></i>
-                                    Đơn hàng của tôi
+                                    {{ __('messages.nav.my_orders') }}
                                 </a>
                             </li>
                             @endif
@@ -516,19 +520,19 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
                                     <i class="bx bx-cube me-2"></i>
-                                    Dashboard Nhà sản xuất
+                                    {{ __('messages.nav.manufacturer_dashboard') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
                                     <i class="bx bx-cube-alt me-2"></i>
-                                    Quản lý thiết kế
+                                    {{ __('messages.nav.design_management') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
                                     <i class="bx bx-download me-2"></i>
-                                    Đơn hàng download
+                                    {{ __('messages.nav.download_orders') }}
                                 </a>
                             </li>
                             @endif
@@ -537,13 +541,13 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('brand.dashboard') }}">
                                     <i class="bx bx-bullhorn me-2"></i>
-                                    Dashboard Thương hiệu
+                                    {{ __('messages.nav.brand_dashboard') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('brand.insights.index') }}">
                                     <i class="bx bx-bar-chart me-2"></i>
-                                    Phân tích thị trường
+                                    {{ __('messages.nav.market_analysis') }}
                                 </a>
                             </li>
                             @endif
@@ -562,13 +566,13 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('following.index') }}">
                                     <i class="fa-solid fa-circle-plus me-2"></i>
-                                    Đang theo dõi
+                                    {{ __('messages.nav.following') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('chat.index') }}">
                                     <i class="fa-solid fa-comments me-2"></i>
-                                    Tin nhắn
+                                    {{ __('messages.nav.messages') }}
                                     @php
                                     $unreadMessagesCount = \App\Models\Message::whereHas('conversation.participants', function ($query) {
                                         $query->where('user_id', Auth::id())
@@ -588,7 +592,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('alerts.index') }}">
                                     <i class="fa-solid fa-bell me-2"></i>
-                                    Thông báo
+                                    {{ __('messages.nav.notifications') }}
                                     @php
                                     $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
                                     @endphp
@@ -600,19 +604,19 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('conversations.index') }}">
                                     <i class="fa-regular fa-envelope me-2"></i>
-                                    Tin nhắn
+                                    {{ __('messages.nav.messages') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
                                     <i class="fa-regular fa-bookmark me-2"></i>
-                                    Đã lưu
+                                    {{ __('messages.nav.saved') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('showcase.index') }}">
                                     <i class="bi bi-image me-2"></i>
-                                    My Showcase
+                                    {{ __('messages.nav.my_showcase') }}
                                 </a>
                             </li>
                             <li>
@@ -628,14 +632,14 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('business.index') }}">
                                     <i class="bi bi-briefcase me-2"></i>
-                                    Doanh nghiệp của tôi
+                                    {{ __('messages.nav.my_business') }}
                                 </a>
                             </li>
                             @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer']))
                             <li>
                                 <a class="dropdown-item" href="{{ route('marketplace.seller.verification-status') }}">
                                     <i class="bx bx-shield-check me-2"></i>
-                                    Trạng thái xác minh
+                                    {{ __('messages.nav.verification_status') }}
                                 </a>
                             </li>
                             @endif
@@ -644,7 +648,7 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('subscription.index') }}">
                                     <i class="bi bi-star me-2"></i>
-                                    Gói đăng ký của tôi
+                                    {{ __('messages.nav.my_subscription') }}
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider"></li>

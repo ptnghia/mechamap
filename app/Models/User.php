@@ -484,7 +484,9 @@ class User extends Authenticatable implements MustVerifyEmail
             if (strpos($this->avatar, '/images/') === 0) {
                 return asset($this->avatar);
             }
-            return asset('storage/' . $this->avatar);
+            // Loại bỏ slash đầu để tránh double slash
+            $cleanPath = ltrim($this->avatar, '/');
+            return asset('storage/' . $cleanPath);
         }
 
         $firstLetter = strtoupper(substr($this->username ?: $this->name, 0, 1));

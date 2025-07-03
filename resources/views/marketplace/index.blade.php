@@ -162,7 +162,7 @@
 </head>
 <body class="bg-gray-50 antialiased">
     <!-- Unified Header -->
-    <x-unified-header
+    <x-header
         :show-banner="get_setting('show_banner', true)"
         :is-marketplace="true"
     />
