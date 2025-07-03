@@ -27,14 +27,14 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    
+
                     @if(session('error'))
                         <div class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                             {{ session('error') }}
                         </div>
                     @endif
-                    
+
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
@@ -80,7 +80,7 @@
                                         <div class="user-block">
                                             <img class="img-circle img-bordered-sm" src="{{ $showcase->user->getAvatarUrl() }}" alt="User Image">
                                             <span class="username">
-                                                <a href="{{ route('users.show', $showcase->user->username) }}">{{ $showcase->user->name }}</a>
+                                                <a href="{{ route('profile.show', $showcase->user->username) }}">{{ $showcase->user->name }}</a>
                                             </span>
                                             <span class="description">{{ $showcase->user->username }}</span>
                                         </div>
