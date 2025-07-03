@@ -156,7 +156,7 @@
                                 <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
                                 <span class="badge bg-secondary ms-2">15+</span>
                             </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
+                            <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
                                 <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.design_showcase') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
