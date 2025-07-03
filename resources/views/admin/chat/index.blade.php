@@ -42,15 +42,16 @@
                                     $lastMessage = $conversation->lastMessage;
                                     $isUnread = $conversation->unread_count > 0;
                                 @endphp
-                                
-                                <a href="{{ route('admin.chat.show', $conversation->id) }}" 
+
+                                <a href="{{ route('admin.chat.show', $conversation->id) }}"
                                    class="list-group-item list-group-item-action {{ $isUnread ? 'bg-light' : '' }}">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0 me-3">
-                                            <img src="{{ $otherUser->avatar ?? '/images/default-avatar.png' }}" 
-                                                 class="rounded-circle" width="50" height="50" alt="">
+                                            <img src="{{ $otherUser->getAvatarUrl() }}"
+                                                 class="rounded-circle" width="50" height="50" alt=""
+                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($otherUser->name, 0, 1))) }}&background=6366f1&color=fff&size=50'">
                                         </div>
-                                        
+
                                         <div class="flex-grow-1 min-width-0">
                                             <div class="d-flex justify-content-between align-items-center mb-1">
                                                 <h6 class="mb-0 {{ $isUnread ? 'fw-bold' : '' }}">
@@ -60,7 +61,7 @@
                                                     {{ $lastMessage ? $lastMessage->created_at->diffForHumans() : '' }}
                                                 </small>
                                             </div>
-                                            
+
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <p class="mb-0 text-truncate text-muted">
                                                     @if($lastMessage)
@@ -72,7 +73,7 @@
                                                         <em>Chưa có tin nhắn</em>
                                                     @endif
                                                 </p>
-                                                
+
                                                 @if($isUnread)
                                                     <span class="badge bg-primary rounded-pill">
                                                         {{ $conversation->unread_count }}

@@ -188,7 +188,7 @@ class SidebarDataService
                     'author' => [
                         'name' => $thread->user->name,
                         'username' => $thread->user->username ?? Str::slug($thread->user->name),
-                        'avatar' => $this->getUserAvatarFromMedia($thread->user),
+                        'avatar_url' => $thread->user->getAvatarUrl(),
                     ],
                     'forum' => [
                         'name' => $thread->forum->name,
@@ -407,7 +407,7 @@ class SidebarDataService
                     'id' => $user->id,
                     'name' => $user->name,
                     'username' => $user->username ?? Str::slug($user->name),
-                    'avatar' => $this->getUserAvatarFromMedia($user),
+                    'avatar' => $user->getAvatarUrl(),
                     'contribution_score' => $user->threads_count * 3 + $commentsCount,
                     'recent_activity_score' => $recentThreads * 5 + $recentComments * 2,
                     'badge' => $this->getUserBadge($user, $commentsCount),

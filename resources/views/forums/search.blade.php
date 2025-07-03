@@ -37,10 +37,10 @@
                 <div class="col-md-8">
                     <h1 class="h3 mb-2">
                         <i class="fas fa-search me-2"></i>
-                        Search Results
+                        {{ __('forums.search.results') }}
                     </h1>
                     <p class="mb-0 opacity-90">
-                        Results for: <strong>"{{ $query }}"</strong>
+                        {{ __('forums.search.results_for') }}: <strong>"{{ $query }}"</strong>
                     </p>
                 </div>
                 <div class="col-md-4 text-md-end">

@@ -129,10 +129,10 @@
                         <div class="btn-group btn-group-sm" role="group">
                             <input type="radio" class="btn-check" name="timeRange" id="today" {{ request('range', 'week') == 'today' ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary" for="today">Today</label>
-                            
+
                             <input type="radio" class="btn-check" name="timeRange" id="week" {{ request('range', 'week') == 'week' ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary" for="week">Week</label>
-                            
+
                             <input type="radio" class="btn-check" name="timeRange" id="month" {{ request('range', 'week') == 'month' ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary" for="month">Month</label>
                         </div>
@@ -147,7 +147,7 @@
                                 <h6 class="mb-0">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</h6>
                                 <span class="badge bg-light text-dark">{{ $dayActivities->count() }} activities</span>
                             </div>
-                            
+
                             @foreach($dayActivities as $activity)
                             <div class="timeline-item">
                                 <div class="timeline-marker bg-{{ $activity->getTypeColor() }}">
@@ -162,7 +162,7 @@
                                             {{ $activity->created_at->format('g:i A') }}
                                         </div>
                                     </div>
-                                    
+
                                     @if($activity->metadata)
                                     <div class="timeline-metadata">
                                         @if($activity->type == 'forum_post_created' && isset($activity->metadata['thread_title']))
@@ -173,14 +173,14 @@
                                             </a>
                                         </div>
                                         @endif
-                                        
+
                                         @if($activity->type == 'marketplace_order_placed' && isset($activity->metadata['order_total']))
                                         <div class="activity-details">
                                             <i class="bx bx-dollar me-1"></i>
                                             Order Total: ${{ number_format($activity->metadata['order_total'], 2) }}
                                         </div>
                                         @endif
-                                        
+
                                         @if($activity->type == 'product_reviewed' && isset($activity->metadata['rating']))
                                         <div class="activity-details">
                                             <div class="rating-stars">
@@ -192,7 +192,7 @@
                                         @endif
                                     </div>
                                     @endif
-                                    
+
                                     @if($activity->hasAttachments())
                                     <div class="timeline-attachments">
                                         @foreach($activity->attachments as $attachment)
@@ -217,7 +217,7 @@
                     <div class="text-center mt-4">
                         <button class="btn btn-outline-primary" onclick="loadMoreActivities()">
                             <i class="bx bx-loader-alt me-1"></i>
-                            Load More Activities
+                            {{ __('messages.common.load_more') }}
                         </button>
                     </div>
                     @endif
@@ -515,11 +515,11 @@
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .timeline-time {
         margin-top: 0.25rem;
     }
-    
+
     .timeline-marker {
         width: 32px;
         height: 32px;
@@ -567,7 +567,7 @@ document.querySelectorAll('input[name="timeRange"]').forEach(radio => {
 function loadMoreActivities() {
     const nextPage = {{ $activities->currentPage() + 1 }};
     const url = `{{ request()->fullUrl() }}&page=${nextPage}`;
-    
+
     fetch(url)
         .then(response => response.text())
         .then(html => {
@@ -575,7 +575,7 @@ function loadMoreActivities() {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const newActivities = doc.querySelector('.activity-timeline').innerHTML;
-            
+
             document.querySelector('.activity-timeline').insertAdjacentHTML('beforeend', newActivities);
         })
         .catch(error => {

@@ -16,7 +16,8 @@ class ThreadItemBuilder {
      */
     static createThreadElement(thread, translations) {
         const listItem = document.createElement('div');
-        listItem.className = 'list-group-item thread-item thread-item-container';
+        // Đồng bộ với partial blade: chỉ dùng thread-item thread-item-container (không có list-group-item)
+        listItem.className = 'thread-item thread-item-container';
         listItem.setAttribute('data-thread-id', thread.id || '');
 
         // Format date
@@ -31,11 +32,11 @@ class ThreadItemBuilder {
         // Thread URL
         const threadUrl = thread.slug ? `/threads/${thread.slug}` : `/threads/${thread.id}`;
 
-        // Content preview
+        // Content preview - đồng bộ với partial blade (220 chars)
         const contentPreview = thread.content ?
             (thread.content.length > 220 ? thread.content.substring(0, 220) + '...' : thread.content) : '';
 
-        // Build the HTML với cấu trúc giống partial view mới
+        // Build the HTML với cấu trúc hoàn toàn giống partial view
         listItem.innerHTML = `
             <!-- Thread Header với user info và badges -->
             <div class="thread-item-header">
@@ -51,20 +52,23 @@ class ThreadItemBuilder {
                     </div>
                     <div>
                         <strong class="thread-user-name">${userName}</strong><br>
+                        <!-- Status badge nếu có -->
+                        ${thread.status ? `<!--span class="badge bg-light text-dark"><i class="bi bi-info-circle me-1"></i>${thread.status}</span-->` : ''}
                         <span class="d-none d-md-inline text-muted">${timeAgo}</span>
                     </div>
                 </div>
                 <div class="thread-badges">
-                    ${thread.is_sticky ? `<span class="btn btn-sm badge bg-primary"><i class="bi bi-pin-angle"></i> ${translations.sticky}</span>` : ''}
-                    ${thread.is_locked ? `<span class="btn btn-sm badge bg-danger"><i class="bi bi-lock-fill"></i> ${translations.locked}</span>` : ''}
+                    ${thread.is_sticky ? `<span class="btn btn-sm bg-primary thread_status"><i class="bi bi-pin-angle"></i> ${translations.sticky || 'Ghim'}</span>` : ''}
+                    ${thread.is_locked ? `<span class="btn btn-sm bg-danger thread_status"><i class="bi bi-lock-fill"></i> ${translations.locked || 'Khóa'}</span>` : ''}
+
                     <!-- Action buttons cho authenticated users -->
-                     ${this.generateActionButtons(thread)}
+                    ${this.generateActionButtons(thread)}
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row align-items-center">
                 <!-- Nội dung chính -->
-                <div class="${thread.featured_image ? 'col-md-9' : 'col-12'}">
+                <div class="${thread.featured_image || thread.actual_image ? 'col-md-8' : 'col-12'}">
                     <div class="thread-title-section">
                         <div class="thread-title">
                             <a href="${threadUrl}">${thread.title}</a>
@@ -72,21 +76,15 @@ class ThreadItemBuilder {
                         <small class="text-muted d-md-none">${timeAgo}</small>
                     </div>
 
-                    <!-- Status badge nếu có -->
-                    ${thread.status ? `
-                    <div class="mb-2 small">
-                        <span class="badge bg-light text-dark"><i class="bi bi-info-circle me-1"></i>${thread.status}</span>
-                    </div>` : ''}
-
                     <!-- Mô tả ngắn thread -->
-                    ${contentPreview ? `<p class="text-muted small mb-2 thread-content">${contentPreview}</p>` : ''}
+                    ${contentPreview ? `<div class="thread-content">${contentPreview}</div>` : ''}
                 </div>
 
-                <!-- Hình ảnh -->
-                ${thread.featured_image ? `
-                <div class="col-md-3 d-none d-md-block">
+                <!-- Hình ảnh - chỉ hiển thị khi có hình ảnh thực tế -->
+                ${thread.featured_image || thread.actual_image ? `
+                <div class="col-md-4 d-none d-md-block">
                     <div class="thread-image-container">
-                        <img src="${thread.featured_image}" alt="${thread.title}" class="img-fluid rounded"
+                        <img src="${thread.featured_image || thread.actual_image}" alt="${thread.title}" class="img-fluid rounded"
                             onerror="this.style.display='none'">
                     </div>
                 </div>` : ''}
@@ -101,18 +99,16 @@ class ThreadItemBuilder {
 
                     <div class="thread-category-badges">
                         ${thread.category ? `
-                        <a href="/threads?category=${thread.category.id}" class="badge bg-secondary text-decoration-none">
+                        <a href="https://mechamap.test/threads?category=${thread.category.id}" class="badge bg-secondary text-decoration-none">
                             <i class="bi bi-tag"></i> ${thread.category.name}
                         </a>` : ''}
 
-                        ${thread.forum ? `
-                        <a href="/threads?forum=${thread.forum.id}" class="badge bg-info text-decoration-none">
+                        ${thread.forum && thread.forum.id ? `
+                        <a href="https://mechamap.test/threads?forum=${thread.forum.id}" class="badge bg-info text-decoration-none">
                             <i class="bi bi-folder"></i> ${thread.forum.name}
                         </a>` : ''}
                     </div>
                 </div>
-
-
             </div>
         `;
 

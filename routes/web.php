@@ -22,19 +22,12 @@ use App\Http\Controllers\UserThreadController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\HomeEnhancedController;
 use Illuminate\Support\Facades\Route;
 
 // Test route để debug
 Route::get('/test', function () {
     return 'Test route hoạt động bình thường!';
 });
-
-// Enhanced Home Page Routes
-Route::get('/home-new', [HomeEnhancedController::class, 'index'])->name('home.new');
-Route::get('/api/live-activity', [HomeEnhancedController::class, 'getLiveActivity'])->name('api.live-activity');
-Route::post('/api/newsletter-subscribe', [HomeEnhancedController::class, 'subscribeNewsletter'])->name('api.newsletter-subscribe');
-Route::get('/api/search-suggestions', [HomeEnhancedController::class, 'getSearchSuggestions'])->name('api.search-suggestions');
 
 // Trang chủ chính tại route /
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -46,7 +39,18 @@ Route::get('/homepage', function () {
 
 // Giữ lại route welcome để test
 Route::get('/welcome', [\App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
-Route::get('/api/threads', [\App\Http\Controllers\HomeController::class, 'getMoreThreads'])->name('api.threads');
+
+// Load More threads route cho trang chủ
+Route::get('/threads/load-more', [\App\Http\Controllers\HomeController::class, 'getMoreThreads'])->name('threads.load-more');
+
+// Test route đơn giản
+Route::get('/threads/test', function() {
+    return response()->json([
+        'success' => true,
+        'message' => 'Test route working',
+        'threads_count' => \App\Models\Thread::count()
+    ]);
+});
 
 // Language switching routes
 Route::prefix('language')->name('language.')->group(function () {
@@ -121,18 +125,14 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     });
 });
 
-// Forum routes - Enhanced
-Route::prefix('forums')->name('forums.')->group(function () {
-    Route::get('/', function () {
-        return view('coming-soon', ['title' => 'Forums', 'message' => 'Forum system coming soon']);
-    })->name('index');
-    Route::get('/recent', function () {
-        return view('coming-soon', ['title' => 'Recent Discussions', 'message' => 'Recent discussions coming soon']);
-    })->name('recent');
-    Route::get('/popular', function () {
-        return view('coming-soon', ['title' => 'Popular Topics', 'message' => 'Popular topics coming soon']);
-    })->name('popular');
-});
+// Redirect old forums routes to whats-new
+Route::get('/forums/recent', function () {
+    return redirect()->route('whats-new');
+})->name('forums.recent');
+
+Route::get('/forums/popular', function () {
+    return redirect()->route('whats-new.popular');
+})->name('forums.popular');
 
 // Community routes - Enhanced
 Route::get('/members', function () {
@@ -398,11 +398,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
     Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
 
-    // Showcase routes
+    // Showcase routes (authenticated)
     Route::get('/showcase', [ShowcaseController::class, 'index'])->name('showcase.index');
     Route::get('/showcase/create', [ShowcaseController::class, 'create'])->name('showcase.create');
     Route::post('/showcase', [ShowcaseController::class, 'store'])->name('showcase.store');
-    Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');
     Route::get('/showcase/{showcase}/edit', [ShowcaseController::class, 'edit'])->name('showcase.edit');
     Route::put('/showcase/{showcase}', [ShowcaseController::class, 'update'])->name('showcase.update');
     Route::delete('/showcase/{showcase}', [ShowcaseController::class, 'destroy'])->name('showcase.destroy');
@@ -431,10 +430,15 @@ Route::get('/new', [NewContentController::class, 'index'])->name('new');
 
 // Forum routes with caching middleware
 Route::middleware('forum.cache')->group(function () {
-    Route::get('/forums', [ForumController::class, 'index'])->name('forums.index');
+    Route::get('/forums', [\App\Http\Controllers\CategoryController::class, 'index'])->name('forums.index');
     Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
     Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
 });
+
+// Category routes
+Route::get('/categories/{category:slug}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+Route::get('/categories/{category:slug}/search', [\App\Http\Controllers\CategoryController::class, 'search'])->name('categories.search');
+Route::get('/categories/trending', [\App\Http\Controllers\CategoryController::class, 'trending'])->name('categories.trending');
 
 // Thread routes (MUST be before wildcard routes)
 Route::resource('threads', \App\Http\Controllers\ThreadController::class);
@@ -498,7 +502,23 @@ Route::get('/whats-new', [NewContentController::class, 'whatsNew'])->name('whats
 Route::get('/forum-listing', function () {
     return redirect()->route('forums.index', [], 301);
 });
+// Public Showcase Routes - NEW DEDICATED MENU
 Route::get('/public-showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.public');
+Route::get('/showcase/featured', [ShowcaseController::class, 'featured'])->name('showcase.featured');
+Route::get('/showcase/categories', [ShowcaseController::class, 'categories'])->name('showcase.categories');
+Route::get('/showcase/trending', [ShowcaseController::class, 'trending'])->name('showcase.trending');
+Route::get('/showcase/leaderboard', [ShowcaseController::class, 'leaderboard'])->name('showcase.leaderboard');
+Route::get('/showcase/competitions', [ShowcaseController::class, 'competitions'])->name('showcase.competitions');
+Route::get('/showcase/guidelines', [ShowcaseController::class, 'guidelines'])->name('showcase.guidelines');
+Route::get('/showcase/drafts', [ShowcaseController::class, 'drafts'])->name('showcase.drafts')->middleware('auth');
+
+// Public Showcase Detail Route (no auth required)
+Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');
+
+// Showcase Rating routes
+Route::post('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'store'])->name('showcase.rating.store');
+Route::get('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'index'])->name('showcase.rating.index');
+Route::delete('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'destroy'])->name('showcase.rating.destroy');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search/advanced', [AdvancedSearchController::class, 'index'])->name('search.advanced');
@@ -538,7 +558,6 @@ Route::post('/theme/dark-mode', [ThemeController::class, 'toggleDarkMode'])->nam
 Route::post('/theme/original-view', [ThemeController::class, 'toggleOriginalView'])->name('theme.original-view');
 
 // Forum and thread routes (duplicate route removed - already defined in middleware group above)
-Route::get('/categories/{category:slug}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
 Route::get('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'index'])->name('forums.select')->middleware('auth');
 Route::post('/create-thread', [\App\Http\Controllers\ForumSelectionController::class, 'selectForum'])->name('forums.select.submit')->middleware('auth');
 

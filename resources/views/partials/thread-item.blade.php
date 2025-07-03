@@ -2,10 +2,8 @@
 // Thiết lập các biến cần thiết cho thread item
 $threadUrl = isset($thread->slug) ? route('threads.show', $thread) : '/threads/'.$thread->id;
 $userName = $thread->user->name ?? 'Người dùng';
-$userAvatar = $thread->user->profile_photo_url ?? (
-$thread->user->avatar ??
-'https://ui-avatars.com/api/?name=' . urlencode($userName) . '&color=7F9CF5&background=EBF4FF'
-);
+// Sử dụng method getAvatarUrl() để đảm bảo logic nhất quán
+$userAvatar = $thread->user->getAvatarUrl();
 $threadContent = isset($thread->content) ? strip_tags($thread->content) : '';
 $contentPreview = $threadContent ? Str::limit($threadContent, 220) : '';
 $commentsCount = $thread->comments_count ?? $thread->cached_comments_count ?? $thread->comment_count ??
@@ -14,6 +12,10 @@ $viewCount = $thread->view_count ?? $thread->views ?? 0;
 $createdAt = isset($thread->created_at) && $thread->created_at instanceof \Carbon\Carbon
 ? $thread->created_at->diffForHumans()
 : '';
+
+// Check for thread image - consistent with JavaScript logic
+$threadImage = $thread->featured_image ?? $thread->actual_image ?? null;
+$hasImage = !empty($threadImage);
 
 // User authentication checks
 $isAuthenticated = Auth::check();
@@ -38,7 +40,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             <div class="flex-shrink-0 me-3 d-none d-sm-block">
                 <img src="{{ $userAvatar }}" alt="{{ $userName }}" class="rounded-circle" width="50" height="50"
                     style="object-fit: cover;"
-                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($userName) }}&color=7F9CF5&background=EBF4FF'">
+                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($userName, 0, 1))) }}&background=6366f1&color=fff&size=200'">
             </div>
             <div>
                 <strong class="thread-user-name">{{ $userName }}</strong><br>
@@ -53,14 +55,14 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         </div>
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
-            <span class="btn btn-sm bg-primary thread_status"><i class="bi bi-pin-angle"></i> {{
-                __('messages.thread_status.sticky')
-                }}</span>
+            <span class="btn btn-sm bg-primary thread_status"><i class="bi bi-pin-angle"></i>
+                Ghim
+            </span>
             @endif
             @if($thread->is_locked ?? false)
-            <span class="btn btn-sm bg-danger thread_status"><i class="bi bi-lock-fill"></i> {{
-                __('messages.thread_status.locked')
-                }}</span>
+            <span class="btn btn-sm bg-danger thread_status"><i class="bi bi-lock-fill"></i>
+                Khóa
+            </span>
             @endif
 
             <!-- Action buttons cho authenticated users -->
@@ -114,7 +116,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
     <div class="row align-items-center">
         <!-- Nội dung chính -->
-        <div class="{{ $thread->featured_image ? 'col-md-8' : 'col-12' }}">
+        <div class="{{ $hasImage ? 'col-md-8' : 'col-12' }}">
             <div class="thread-title-section">
                 <div class="thread-title">
                     <a href="{{ $threadUrl }}">{{ $thread->title }}</a>
@@ -122,19 +124,17 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <small class="text-muted d-md-none">{{ $createdAt }}</small>
             </div>
 
-
-
             <!-- Mô tả ngắn thread -->
             @if($contentPreview)
             <div class="thread-content">{{ $contentPreview }}</div>
             @endif
         </div>
 
-        <!-- Hình ảnh -->
-        @if(isset($thread->featured_image) && $thread->featured_image)
+        <!-- Hình ảnh - chỉ hiển thị khi có hình ảnh thực tế -->
+        @if($hasImage)
         <div class="col-md-4 d-none d-md-block">
             <div class="thread-image-container">
-                <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded"
+                <img src="{{ $threadImage }}" alt="{{ $thread->title }}" class="img-fluid rounded"
                     onerror="this.style.display='none'">
             </div>
         </div>

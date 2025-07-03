@@ -32,7 +32,28 @@ return [
         'events_webinars' => 'Sự kiện & Webinar',
         'job_board' => 'Bảng việc làm',
 
-        // Technical Resources Submenu
+        // Showcase Menu - NEW DEDICATED SECTION
+        'showcase' => 'Triển lãm',
+        'browse_showcases' => 'Duyệt triển lãm',
+        'public_gallery' => 'Thư viện công khai',
+        'featured_projects' => 'Dự án nổi bật',
+        'by_category' => 'Theo danh mục',
+        'trending_projects' => 'Dự án thịnh hành',
+        'create_manage' => 'Tạo & Quản lý',
+        'create_showcase' => 'Tạo triển lãm',
+        'my_showcases' => 'Triển lãm của tôi',
+        'drafts' => 'Bản nháp',
+        'login_to_create' => 'Đăng nhập để tạo',
+        'top_creators' => 'Người tạo hàng đầu',
+        'competitions' => 'Cuộc thi',
+        'submission_guidelines' => 'Hướng dẫn đăng bài',
+        'showcase_categories' => 'Danh mục triển lãm',
+        'latest_showcases' => 'Triển lãm mới nhất',
+        'most_liked' => 'Được yêu thích nhất',
+        'showcase_leaderboard' => 'Bảng xếp hạng',
+        'showcase_competitions' => 'Cuộc thi triển lãm',
+
+        // Technical Resources Submenu - UPDATED (removed showcase)
         'technical_database' => 'Cơ sở dữ liệu kỹ thuật',
         'materials_database' => 'Cơ sở dữ liệu vật liệu',
         'engineering_standards' => 'Tiêu chuẩn kỹ thuật',
@@ -40,7 +61,6 @@ return [
         'design_resources' => 'Tài nguyên thiết kế',
         'cad_library' => 'Thư viện CAD',
         'technical_drawings' => 'Bản vẽ kỹ thuật',
-        'design_showcase' => 'Triển lãm thiết kế',
         'tools_calculators' => 'Công cụ & Máy tính',
         'material_cost_calculator' => 'Máy tính chi phí vật liệu',
         'process_selector' => 'Bộ chọn quy trình',
@@ -133,4 +153,12 @@ return [
         'forum' => 'Diễn đàn',
         'threads' => 'Chủ đề',
     ],
+
+    // What's New navigation
+    'new_posts' => 'Bài viết mới',
+    'popular' => 'Phổ biến',
+    'new_threads' => 'Thảo luận mới',
+    'new_showcases' => 'Dự án mới',
+    'new_media' => 'Media mới',
+    'looking_for_replies' => 'Cần phản hồi',
 ];

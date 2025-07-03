@@ -59,8 +59,13 @@ class ThreadController extends Controller
             });
         }
 
-        // Apply sorting
+        // Apply sorting - ALWAYS put sticky threads first
         $sort = $request->get('sort', 'latest');
+
+        // Primary sort: sticky threads first
+        $query->orderBy('is_sticky', 'desc');
+
+        // Secondary sort: based on user selection
         switch ($sort) {
             case 'oldest':
                 $query->oldest();
@@ -197,8 +202,20 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
-        // Load counts
-        $thread->loadCount(['likes', 'saves', 'follows']);
+        // Load relationships and counts
+        $thread->load([
+            'user',
+            'category',
+            'forum',
+            'media'
+        ]);
+
+        $thread->loadCount([
+            'likes',
+            'saves',
+            'follows',
+            'comments'
+        ]);
 
         // Increment view count
         $thread->incrementViewCount();
@@ -229,6 +246,7 @@ class ThreadController extends Controller
         // Get related threads
         $relatedThreads = Thread::where('category_id', $thread->category_id)
             ->where('id', '!=', $thread->id)
+            ->withCount('comments')
             ->take(5)
             ->get();
 

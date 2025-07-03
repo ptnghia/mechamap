@@ -87,253 +87,121 @@
                 <div class="col-md-4 text-md-end">
                     <a href="{{ route('threads.create', ['forum' => $forum->id]) }}" class="btn btn-light">
                         <i class="fas fa-plus me-2"></i>
-                        New Thread
+                        {{ __('forums.actions.new_thread') }}
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-9">
-                <!-- Search and Filters -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <form method="GET" class="row g-3">
-                            <!-- Search Input -->
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <input type="text" name="search" class="form-control"
-                                        placeholder="Search threads in this forum..." value="{{ request('search') }}">
-                                    <button class="btn btn-outline-secondary" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Sort Dropdown -->
-                            <div class="col-md-3">
-                                <select name="sort" class="form-select" onchange="this.form.submit()">
-                                    <option value="latest" {{ request('sort')=='latest' ? 'selected' : '' }}>
-                                        Latest Activity
-                                    </option>
-                                    <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>
-                                        Oldest First
-                                    </option>
-                                    <option value="popular" {{ request('sort')=='popular' ? 'selected' : '' }}>
-                                        Most Replies
-                                    </option>
-                                    <option value="views" {{ request('sort')=='views' ? 'selected' : '' }}>
-                                        Most Views
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Filter Buttons -->
-                            <div class="col-md-3">
-                                <div class="btn-group w-100" role="group">
-                                    <input type="radio" name="filter" value="" id="all" class="btn-check" {{
-                                        !request('filter') ? 'checked' : '' }}>
-                                    <label class="btn filter-btn btn-sm" for="all">All</label>
-
-                                    <input type="radio" name="filter" value="recent" id="recent" class="btn-check" {{
-                                        request('filter')=='recent' ? 'checked' : '' }}>
-                                    <label class="btn filter-btn btn-sm" for="recent">Recent</label>
-
-                                    <input type="radio" name="filter" value="unanswered" id="unanswered"
-                                        class="btn-check" {{ request('filter')=='unanswered' ? 'checked' : '' }}>
-                                    <label class="btn filter-btn btn-sm" for="unanswered">Unanswered</label>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Threads List -->
-                @if($threads->count() > 0)
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">
-                            <i class="fas fa-comments me-2"></i>
-                            Threads
-                            <span class="badge bg-secondary">{{ $threads->total() }}</span>
-                        </h5>
-
-                        @if(request('search') || request('filter'))
-                        <a href="{{ route('forums.show', $forum) }}" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-times me-1"></i>
-                            Clear Filters
-                        </a>
-                        @endif
-                    </div>
-                    <div class="card-body p-0">
-                        @foreach($threads as $thread)
-                        <div class="thread-item p-3 border-bottom">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 me-3">
-                                            <img src="{{ $thread->user->avatar ?? '/images/default-avatar.png' }}"
-                                                alt="{{ $thread->user->name }}" class="rounded-circle" width="40"
-                                                height="40">
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">
-                                                <a href="{{ route('threads.show', $thread) }}"
-                                                    class="text-decoration-none">
-                                                    @if($thread->is_pinned)
-                                                    <i class="fas fa-thumbtack text-warning me-1"></i>
-                                                    @endif
-                                                    @if($thread->is_locked)
-                                                    <i class="fas fa-lock text-muted me-1"></i>
-                                                    @endif
-                                                    {{ $thread->title }}
-                                                </a>
-                                                @if($thread->is_solved)
-                                                <span class="badge bg-success ms-2">Solved</span>
-                                                @endif
-                                            </h6>
-                                            <div class="thread-meta">
-                                                <span class="me-3">
-                                                    <i class="fas fa-user me-1"></i>
-                                                    {{ $thread->user->name }}
-                                                    {!! getUserRoleBadge($thread->user) !!}
-                                                </span>
-                                                <span>
-                                                    <i class="fas fa-clock me-1"></i>
-                                                    {{ $thread->created_at->diffForHumans() }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 text-md-end">
-                                    <div class="row text-center">
-                                        <div class="col-4">
-                                            <div class="text-muted small">Replies</div>
-                                            <div class="fw-bold">{{ formatNumber($thread->comments_count) }}</div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-muted small">Views</div>
-                                            <div class="fw-bold">{{ formatNumber($thread->view_count ?? 0) }}</div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-muted small">Last</div>
-                                            <div class="fw-bold small">
-                                                {{ $thread->updated_at->diffForHumans() }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                    <div class="card-footer">
-                        {{ $threads->appends(request()->query())->links() }}
-                    </div>
-                </div>
-                @else
-                <!-- No Threads Found -->
-                <div class="card">
-                    <div class="card-body text-center py-5">
-                        @if(request('search') || request('filter'))
-                        <i class="fas fa-search text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h4 class="text-muted mb-2">No Threads Found</h4>
-                        <p class="text-muted mb-4">
-                            No threads match your current search or filter criteria.
-                        </p>
-                        <a href="{{ route('forums.show', $forum) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-times me-2"></i>
-                            Clear Filters
-                        </a>
-                        @else
-                        <i class="fas fa-comments text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h4 class="text-muted mb-2">No Threads Yet</h4>
-                        <p class="text-muted mb-4">
-                            Be the first to start a discussion in this forum!
-                        </p>
-                        <a href="{{ route('threads.create', ['forum' => $forum->id]) }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-2"></i>
-                            Create First Thread
-                        </a>
-                        @endif
-                    </div>
-                </div>
-                @endif
-            </div>
-
-            <div class="col-lg-3">
-                <!-- Forum Statistics -->
-                <div class="card forum-stats mb-4">
-                    <div class="card-header">
-                        <h6 class="mb-0">
-                            <i class="fas fa-chart-bar me-2"></i>
-                            Forum Statistics
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6 mb-3">
-                                <div class="h4 text-primary mb-0">{{ formatNumber($forumStats['total_threads']) }}</div>
-                                <small class="text-muted">Total Threads</small>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <div class="h4 text-success mb-0">{{ formatNumber($forumStats['total_posts']) }}</div>
-                                <small class="text-muted">Total Posts</small>
-                            </div>
-                            <div class="col-6">
-                                <div class="h4 text-info mb-0">{{ formatNumber($forumStats['recent_threads']) }}</div>
-                                <small class="text-muted">This Week</small>
-                            </div>
-                            <div class="col-6">
-                                <div class="h4 text-warning mb-0">{{ formatNumber($forumStats['active_users']) }}</div>
-                                <small class="text-muted">Active Users</small>
-                            </div>
+        {{-- Search and Filters - Full Width --}}
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <!-- Search Input -->
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control"
+                                placeholder="{{ __('forums.search.placeholder') }}" value="{{ request('search') }}">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Recent Activity -->
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="mb-0">
-                            <i class="fas fa-clock me-2"></i>
-                            Recent Activity
-                        </h6>
+                    <!-- Sort Dropdown -->
+                    <div class="col-md-3">
+                        <select name="sort" class="form-select" onchange="this.form.submit()">
+                            <option value="latest" {{ request('sort')=='latest' ? 'selected' : '' }}>
+                                {{ __('forums.sort.latest_activity') }}
+                            </option>
+                            <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>
+                                {{ __('forums.sort.oldest_first') }}
+                            </option>
+                            <option value="popular" {{ request('sort')=='popular' ? 'selected' : '' }}>
+                                {{ __('forums.sort.most_replies') }}
+                            </option>
+                            <option value="views" {{ request('sort')=='views' ? 'selected' : '' }}>
+                                {{ __('forums.sort.most_views') }}
+                            </option>
+                        </select>
                     </div>
-                    <div class="card-body">
-                        @php
-                        $recentThreads = $forum->threads()
-                        ->with('user')
-                        ->latest()
-                        ->limit(5)
-                        ->get();
-                        @endphp
 
-                        @forelse($recentThreads as $recentThread)
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $recentThread->user->avatar ?? '/images/default-avatar.png' }}"
-                                alt="{{ $recentThread->user->name }}" class="rounded-circle me-2" width="30"
-                                height="30">
-                            <div class="flex-grow-1 min-w-0">
-                                <div class="small">
-                                    <a href="{{ route('threads.show', $recentThread) }}" class="text-decoration-none">
-                                        {{ Str::limit($recentThread->title, 40) }}
-                                    </a>
-                                </div>
-                                <div class="text-muted" style="font-size: 0.75rem;">
-                                    by {{ $recentThread->user->name }} • {{ $recentThread->created_at->diffForHumans()
-                                    }}
-                                </div>
-                            </div>
+                    <!-- Filter Buttons -->
+                    <div class="col-md-3">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" name="filter" value="" id="all" class="btn-check" {{
+                                !request('filter') ? 'checked' : '' }}>
+                            <label class="btn filter-btn btn-sm" for="all">{{ __('forums.filter.all') }}</label>
+
+                            <input type="radio" name="filter" value="recent" id="recent" class="btn-check" {{
+                                request('filter')=='recent' ? 'checked' : '' }}>
+                            <label class="btn filter-btn btn-sm" for="recent">{{ __('forums.filter.recent') }}</label>
+
+                            <input type="radio" name="filter" value="unanswered" id="unanswered"
+                                class="btn-check" {{ request('filter')=='unanswered' ? 'checked' : '' }}>
+                            <label class="btn filter-btn btn-sm" for="unanswered">{{ __('forums.filter.unanswered') }}</label>
                         </div>
-                        @empty
-                        <p class="text-muted small mb-0">No recent activity</p>
-                        @endforelse
                     </div>
-                </div>
+                </form>
             </div>
         </div>
+
+        {{-- Threads List using thread-item component --}}
+        @if($threads->count() > 0)
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-comments me-2"></i>
+                    {{ __('forums.threads.title') }}
+                    <span class="badge bg-secondary">{{ $threads->total() }}</span>
+                </h5>
+
+                @if(request('search') || request('filter'))
+                <a href="{{ route('forums.show', $forum) }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-times me-1"></i>
+                    {{ __('forums.actions.clear_filters') }}
+                </a>
+                @endif
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    @foreach($threads as $thread)
+                    @include('partials.thread-item', ['thread' => $thread])
+                    @endforeach
+                </div>
+            </div>
+            <div class="card-footer">
+                {{ $threads->appends(request()->query())->links() }}
+            </div>
+        </div>
+        @else
+        {{-- No Threads Found --}}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                @if(request('search') || request('filter'))
+                <i class="fas fa-search text-muted mb-3" style="font-size: 3rem;"></i>
+                <h4 class="text-muted mb-2">{{ __('forums.threads.no_threads_found') }}</h4>
+                <p class="text-muted mb-4">
+                    {{ __('forums.threads.no_threads_found_desc') }}
+                </p>
+                <a href="{{ route('forums.show', $forum) }}" class="btn btn-outline-primary">
+                    <i class="fas fa-times me-2"></i>
+                    {{ __('forums.actions.clear_filters') }}
+                </a>
+                @else
+                <i class="fas fa-comments text-muted mb-3" style="font-size: 3rem;"></i>
+                <h4 class="text-muted mb-2">{{ __('forums.threads.no_threads_yet') }}</h4>
+                <p class="text-muted mb-4">
+                    {{ __('forums.threads.be_first_to_post') }}
+                </p>
+                <a href="{{ route('threads.create', ['forum' => $forum->id]) }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    {{ __('forums.actions.create_first_thread') }}
+                </a>
+                @endif
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 

@@ -25,6 +25,7 @@ class ThreadController extends Controller
      */
     public function index(Request $request)
     {
+        \Log::info('API ThreadController::index() được gọi');
         try {
             $query = Thread::query();
 
@@ -45,10 +46,14 @@ class ThreadController extends Controller
 
             // Filter by status
             if ($request->has('status')) {
-                $query->where('status', $request->status);
+                if ($request->status === 'all') {
+                    // Không filter status nếu request status=all
+                } else {
+                    $query->where('status', $request->status);
+                }
             } else {
-                // Only show approved threads by default
-                $query->where('status', 'approved');
+                // Chỉ hiển thị threads đã published (match với database thực tế)
+                $query->where('status', 'published');
             }
 
             // Filter by sticky
@@ -91,9 +96,9 @@ class ThreadController extends Controller
                 $query->orderBy('is_sticky', 'desc');
             }
 
-            // Paginate
+            // Paginate - THÊM 'media' relationship để load featured images
             $perPage = $request->input('per_page', 15);
-            $threads = $query->with(['user', 'forum'])->paginate($perPage);
+            $threads = $query->with(['user', 'forum', 'media', 'category'])->paginate($perPage);
 
             // Include additional information
             $threads->getCollection()->transform(function ($thread) {

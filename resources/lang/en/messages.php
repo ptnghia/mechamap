@@ -32,7 +32,28 @@ return [
         'events_webinars' => 'Events & Webinars',
         'job_board' => 'Job Board',
 
-        // Technical Resources Submenu
+        // Showcase Menu - NEW DEDICATED SECTION
+        'showcase' => 'Showcase',
+        'browse_showcases' => 'Browse Showcases',
+        'public_gallery' => 'Public Gallery',
+        'featured_projects' => 'Featured Projects',
+        'by_category' => 'By Category',
+        'trending_projects' => 'Trending Projects',
+        'create_manage' => 'Create & Manage',
+        'create_showcase' => 'Create Showcase',
+        'my_showcases' => 'My Showcases',
+        'drafts' => 'Drafts',
+        'login_to_create' => 'Login to Create',
+        'top_creators' => 'Top Creators',
+        'competitions' => 'Competitions',
+        'submission_guidelines' => 'Submission Guidelines',
+        'showcase_categories' => 'Showcase Categories',
+        'latest_showcases' => 'Latest Showcases',
+        'most_liked' => 'Most Liked',
+        'showcase_leaderboard' => 'Leaderboard',
+        'showcase_competitions' => 'Showcase Competitions',
+
+        // Technical Resources Submenu - UPDATED (removed showcase)
         'technical_database' => 'Technical Database',
         'materials_database' => 'Materials Database',
         'engineering_standards' => 'Engineering Standards',
@@ -40,7 +61,6 @@ return [
         'design_resources' => 'Design Resources',
         'cad_library' => 'CAD Library',
         'technical_drawings' => 'Technical Drawings',
-        'design_showcase' => 'Design Showcase',
         'tools_calculators' => 'Tools & Calculators',
         'material_cost_calculator' => 'Material Cost Calculator',
         'process_selector' => 'Process Selector',
@@ -133,4 +153,12 @@ return [
         'forum' => 'Forum',
         'threads' => 'Threads',
     ],
+
+    // What's New navigation
+    'new_posts' => 'New Posts',
+    'popular' => 'Popular',
+    'new_threads' => 'New Threads',
+    'new_showcases' => 'New Showcases',
+    'new_media' => 'New Media',
+    'looking_for_replies' => 'Looking for Replies',
 ];

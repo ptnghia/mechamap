@@ -115,10 +115,8 @@
             <!-- Posts List -->
             <div class="body_left">
                 <div class="list-group list-group-flush">
-                    @foreach($posts as $post)
-                    @include('partials.thread-item', [
-                    'thread' => $post->thread
-                    ])
+                    @foreach($threads as $thread)
+                    @include('partials.thread-item', ['thread' => $thread])
                     @endforeach
                 </div>
             </div>

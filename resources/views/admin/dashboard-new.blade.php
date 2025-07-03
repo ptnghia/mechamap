@@ -420,10 +420,11 @@
                             @forelse($recentActivity['latest_users'] as $user)
                             <tr>
                                 <td style="width: 50px;">
-                                    <img src="{{ $user->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random&color=fff' }}"
+                                    <img src="{{ $user->getAvatarUrl() }}"
                                          alt="{{ $user->name }}"
                                          class="rounded-circle"
-                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                         style="width: 40px; height: 40px; object-fit: cover;"
+                                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($user->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                                 </td>
                                 <td>
                                     <div class="font-weight-bold">{{ $user->name }}</div>

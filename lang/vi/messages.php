@@ -64,6 +64,8 @@ return [
         'search_placeholder' => 'Tìm kiếm...',
         'load_more' => 'Tải thêm',
         'loading' => 'Đang tải...',
+        'no_more_posts' => 'Không còn bài viết',
+        'error_occurred' => 'Có lỗi xảy ra. Thử lại.',
         'save' => 'Lưu',
         'cancel' => 'Hủy',
         'delete' => 'Xóa',

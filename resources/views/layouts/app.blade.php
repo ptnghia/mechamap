@@ -146,6 +146,9 @@
     <!-- Thread Item Styles -->
     <link rel="stylesheet" href="{{ asset('css/thread-item.css') }}">
 
+    <!-- Showcase Item Styles -->
+    <link rel="stylesheet" href="{{ asset('css/showcase-item.css') }}">
+
     <!-- Extra Meta Tags -->
     @if(!empty($seo['extra_meta'] ?? ''))
     {!! $seo['extra_meta'] !!}

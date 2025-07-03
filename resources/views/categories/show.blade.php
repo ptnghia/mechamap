@@ -1,161 +1,215 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - MechaMap')
+@section('title', $category->name . ' - MechaMap Community')
+
+@push('styles')
+<style>
+    .category-header {
+        background: linear-gradient(135deg, {{ $category->color_code ?? '#007bff' }}15 0%, {{ $category->color_code ?? '#007bff' }}05 100%);
+        border-left: 4px solid {{ $category->color_code ?? '#007bff' }};
+    }
+
+    .stats-card {
+        transition: transform 0.2s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-2px);
+    }
+
+    .forum-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .forum-card:hover {
+        border-left-color: {{ $category->color_code ?? '#007bff' }};
+        transform: translateX(5px);
+    }
+
+    /* Thread item styles for category page */
+    .threads-list .thread-item-container {
+        background: #fff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .threads-list .thread-item-container:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
+    }
+</style>
+@endpush
 
 @section('content')
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    @if($category->parent)
-                    <li class="breadcrumb-item"><a href="{{ route('categories.show', $category->parent->slug) }}">{{
-                            $category->parent->name }}</a></li>
-                    @endif
-                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
-                </ol>
-            </nav>
+<div class="py-5">
+    <div class="container">
+        {{-- Breadcrumb --}}
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">Diễn đàn</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
+            </ol>
+        </nav>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>{{ $category->name }}</h1>
-                @auth
-                <a href="{{ route('forums.select') }}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> New Thread
-                </a>
-                @endauth
-            </div>
-
-            @if($category->description)
-            <div class="card mb-4">
-                <div class="card-body">
-                    <p class="card-text">{{ $category->description }}</p>
-                </div>
-            </div>
-            @endif
-
-            @if($subcategories->count() > 0)
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">Subcategories</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach($subcategories as $subcategory)
-                        <div class="col-md-6 mb-3">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 me-3">
-                                    <i class="fas fa-folder fa-2x text-primary"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-1">
-                                        <a href="{{ route('categories.show', $subcategory->slug) }}"
-                                            class="text-decoration-none">
-                                            {{ $subcategory->name }}
-                                        </a>
-                                    </h5>
-                                    @if($subcategory->description)
-                                    <p class="text-muted small mb-0">{{ Str::limit($subcategory->description, 100) }}
-                                    </p>
-                                    @endif
-                                </div>
+        {{-- Category Header --}}
+        <div class="card shadow-sm rounded-3 mb-4 category-header">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center">
+                            @if($category->icon)
+                            <img src="{{ $category->icon }}" alt="{{ $category->name }}"
+                                 class="rounded me-3" width="48" height="48">
+                            @else
+                            <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
+                                 style="width: 48px; height: 48px;">
+                                <i class="bi bi-collection fs-4 text-primary"></i>
                             </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <div class="card">
-                <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Threads</h5>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item"
-                                    href="{{ request()->fullUrlWithQuery(['sort' => 'latest']) }}">{{
-                                    __('messages.latest') }}</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">{{
-                                    __('messages.popular') }}</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ request()->fullUrlWithQuery(['sort' => 'most_viewed']) }}">Most Viewed</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="list-group list-group-flush">
-                    @forelse($threads as $thread)
-                    <div class="list-group-item p-3">
-                        <div class="d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <img src="{{ $thread->user->avatar }}" alt="{{ $thread->user->name }}"
-                                    class="rounded-circle" width="50" height="50">
-                            </div>
-                            <div class="flex-grow-1">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <h5 class="mb-1">
-                                        @if($thread->is_sticky)
-                                        <span class="badge bg-primary me-1">Sticky</span>
-                                        @endif
-                                        @if($thread->is_locked)
-                                        <span class="badge bg-secondary me-1">{{ __('messages.thread_status.locked')
-                                            }}</span>
-                                        @endif
-                                        <a href="{{ route('threads.show', $thread->slug) }}"
-                                            class="text-decoration-none">
-                                            {{ $thread->title }}
-                                        </a>
-                                    </h5>
-                                    <small class="text-muted">{{ $thread->created_at->diffForHumans() }}</small>
-                                </div>
-                                <p class="mb-1 text-muted small">
-                                    By <a href="{{ route('profile.show', $thread->user->username) }}"
-                                        class="text-decoration-none">{{ $thread->user->name }}</a>
-                                    @if($thread->forum)
-                                    in <a href="{{ route('forums.show', $thread->forum->slug) }}"
-                                        class="text-decoration-none">{{ $thread->forum->name }}</a>
-                                    @endif
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <div>
-                                        <span class="badge bg-secondary me-2" title="{{ __('messages.replies') }}">
-                                            <i class="fas fa-comment"></i> {{ $thread->comments->count() }}
-                                        </span>
-                                        <span class="badge bg-secondary" title="{{ __('Views') }}">
-                                            <i class="fas fa-eye"></i> {{ $thread->view_count }}
-                                        </span>
-                                    </div>
-                                    <div class="text-muted small">
-                                        @if($thread->comments->count() > 0)
-                                        Last reply {{
-                                        $thread->comments->sortByDesc('created_at')->first()->created_at->diffForHumans()
-                                        }}
-                                        @endif
-                                    </div>
-                                </div>
+                            @endif
+                            <div>
+                                <h1 class="h3 mb-1">{{ $category->name }}</h1>
+                                @if($category->description)
+                                <p class="text-muted mb-0">{{ $category->description }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    @empty
-                    <div class="list-group-item p-4 text-center">
-                        <p class="mb-0">No threads found in this category.</p>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
                         @auth
-                        <a href="{{ route('forums.select') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus"></i> Create the first thread
+                        <a href="{{ route('threads.create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Tạo bài đăng mới
                         </a>
                         @endauth
                     </div>
-                    @endforelse
                 </div>
             </div>
+        </div>
 
-            <div class="mt-4">
-                {{ $threads->links() }}
+        {{-- Category Statistics --}}
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="fs-2 fw-bold text-primary">{{ number_format($categoryStats['forums_count']) }}</div>
+                        <div class="text-muted">Diễn đàn</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="fs-2 fw-bold text-success">{{ number_format($categoryStats['threads_count']) }}</div>
+                        <div class="text-muted">Bài đăng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="fs-2 fw-bold text-info">{{ number_format($categoryStats['views_count']) }}</div>
+                        <div class="text-muted">Lượt xem</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card stats-card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="fs-2 fw-bold text-warning">{{ number_format($categoryStats['posts_count']) }}</div>
+                        <div class="text-muted">Bình luận</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Forums in Category - Full Width --}}
+        <div class="card shadow-sm rounded-3 mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Diễn đàn trong {{ $category->name }}</h5>
+            </div>
+            <div class="card-body p-0">
+                @if($category->forums->count() > 0)
+                <div class="list-group list-group-flush">
+                    @foreach($category->forums as $forum)
+                    <a href="{{ route('forums.show', $forum) }}"
+                       class="list-group-item list-group-item-action py-3 forum-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center">
+                                    @if($forum->media->first())
+                                    <img src="{{ asset('storage/' . $forum->media->first()->file_path) }}"
+                                         alt="{{ $forum->name }}" class="rounded me-3" width="40" height="40">
+                                    @else
+                                    <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
+                                         style="width: 40px; height: 40px;">
+                                        <i class="bi bi-chat-square-text text-primary"></i>
+                                    </div>
+                                    @endif
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">{{ $forum->name }}</h6>
+                                        <p class="mb-0 text-muted small">{{ $forum->description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="fw-bold text-primary">{{ number_format($forum->threads_count ?? 0) }}</div>
+                                        <div class="small text-muted">Threads</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="fw-bold text-success">{{ number_format($forum->posts_count ?? 0) }}</div>
+                                        <div class="small text-muted">Posts</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+                @else
+                <div class="text-center py-5">
+                    <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
+                    <p class="text-muted mt-3">Chưa có diễn đàn nào trong danh mục này</p>
+                </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Recent Threads - Full Width using thread-item component --}}
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Bài đăng gần đây trong {{ $category->name }}</h5>
+            </div>
+            <div class="card-body">
+                @if($recentThreads->count() > 0)
+                <div class="threads-list">
+                    @foreach($recentThreads as $thread)
+                    <div class="mb-4 @if(!$loop->last) pb-4 border-bottom @endif">
+                        @include('partials.thread-item', ['thread' => $thread])
+                    </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-4">
+                    {{ $recentThreads->links() }}
+                </div>
+                @else
+                <div class="text-center py-5">
+                    <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
+                    <p class="text-muted mt-3 mb-0">Chưa có bài đăng nào trong danh mục này</p>
+                    @auth
+                    <a href="{{ route('threads.create') }}" class="btn btn-primary mt-3">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Tạo bài đăng đầu tiên
+                    </a>
+                    @endauth
+                </div>
+                @endif
             </div>
         </div>
     </div>

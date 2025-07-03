@@ -31,7 +31,7 @@
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
-        
+
         <!-- Page Title & Role Info -->
         <div class="row">
             <div class="col-12">
@@ -43,7 +43,7 @@
                                 {{ $dashboardData['role_info']['role'] }}
                             </span>
                             <small class="text-muted">
-                                {{ $dashboardData['role_info']['role_group'] }} • 
+                                {{ $dashboardData['role_info']['role_group'] }} •
                                 {{ $dashboardData['role_info']['permissions_count'] }} quyền hạn
                             </small>
                         </div>
@@ -164,7 +164,7 @@
         <div class="row">
             <!-- Left Column -->
             <div class="col-xl-8">
-                
+
                 @if(isset($dashboardData['analytics']['charts']))
                 <!-- Analytics Chart -->
                 <div class="card">
@@ -208,7 +208,8 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ $report->user->avatar_url }}" alt="" class="avatar-xs rounded-circle me-2">
+                                                    <img src="{{ $report->user->getAvatarUrl() }}" alt="" class="avatar-xs rounded-circle me-2"
+                                                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($report->user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'">
                                                     <span>{{ $report->user->name }}</span>
                                                 </div>
                                             </td>
@@ -246,7 +247,7 @@
 
             <!-- Right Column -->
             <div class="col-xl-4">
-                
+
                 @if(isset($dashboardData['system']['users']['by_role_group']))
                 <!-- Role Distribution -->
                 <div class="card">
@@ -271,7 +272,7 @@
                                 </div>
                             </div>
                             <div class="progress mb-3" style="height: 6px;">
-                                <div class="progress-bar bg-{{ $groupConfig['color'] ?? 'secondary' }}" 
+                                <div class="progress-bar bg-{{ $groupConfig['color'] ?? 'secondary' }}"
                                      style="width: {{ $percentage }}%"></div>
                             </div>
                         @endforeach
@@ -297,7 +298,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex align-items-center mb-3">
                             <div class="flex-1">
                                 <h6 class="mb-1">Database</h6>
@@ -319,7 +320,7 @@
                                 <div class="progress-bar" style="width: {{ $dashboardData['system']['system']['storage_usage']['percentage'] }}%"></div>
                             </div>
                             <small class="text-muted">
-                                {{ $dashboardData['system']['system']['storage_usage']['used'] }} / 
+                                {{ $dashboardData['system']['system']['storage_usage']['used'] }} /
                                 {{ $dashboardData['system']['system']['storage_usage']['total'] }}
                             </small>
                         </div>
@@ -338,19 +339,19 @@
                                 <i class="fas fa-user-plus me-2"></i> Thêm người dùng
                             </a>
                         @endif
-                        
+
                         @if(auth()->user()->hasPermissionTo('moderate-content'))
                             <a href="{{ route('admin.reports.index') }}" class="btn btn-warning btn-sm w-100 mb-2">
                                 <i class="fas fa-flag me-2"></i> Xem báo cáo
                             </a>
                         @endif
-                        
+
                         @if(auth()->user()->hasPermissionTo('manage-marketplace'))
                             <a href="{{ route('admin.products.pending') }}" class="btn btn-info btn-sm w-100 mb-2">
                                 <i class="fas fa-clock me-2"></i> Duyệt sản phẩm
                             </a>
                         @endif
-                        
+
                         @if(auth()->user()->hasPermissionTo('view-analytics'))
                             <a href="{{ route('admin.analytics.dashboard') }}" class="btn btn-success btn-sm w-100">
                                 <i class="fas fa-chart-bar me-2"></i> Xem báo cáo

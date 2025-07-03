@@ -464,7 +464,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get avatar URL
+     * Get avatar URL with proper fallback logic
      *
      * @return string
      */
@@ -476,21 +476,35 @@ class User extends Authenticatable implements MustVerifyEmail
             return $socialAccount->provider_avatar;
         }
 
+        // Kiểm tra avatar do user upload
         if ($this->avatar) {
+            // Nếu là URL đầy đủ (http/https)
             if (strpos($this->avatar, 'http') === 0) {
                 return $this->avatar;
             }
+
+            // Xử lý đường dẫn local
+            $avatarPath = $this->avatar;
+
             // Nếu avatar path bắt đầu bằng /images/ thì dùng asset() trực tiếp
-            if (strpos($this->avatar, '/images/') === 0) {
-                return asset($this->avatar);
+            if (strpos($avatarPath, '/images/') === 0) {
+                $fullPath = public_path(ltrim($avatarPath, '/'));
+                if (file_exists($fullPath)) {
+                    return asset($avatarPath);
+                }
+            } else {
+                // Loại bỏ slash đầu để tránh double slash
+                $cleanPath = ltrim($avatarPath, '/');
+                $fullPath = public_path('images/' . $cleanPath);
+                if (file_exists($fullPath)) {
+                    return asset('images/' . $cleanPath);
+                }
             }
-            // Loại bỏ slash đầu để tránh double slash
-            $cleanPath = ltrim($this->avatar, '/');
-            return asset('storage/' . $cleanPath);
         }
 
+        // Fallback: Tạo avatar từ chữ cái đầu username
         $firstLetter = strtoupper(substr($this->username ?: $this->name, 0, 1));
-        return "https://ui-avatars.com/api/?name={$firstLetter}&background=random&color=fff";
+        return "https://ui-avatars.com/api/?name={$firstLetter}&background=6366f1&color=fff&size=200";
     }
 
     /**
@@ -503,12 +517,23 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // Delete old avatar if exists and not a URL
         if ($this->avatar && strpos($this->avatar, 'http') !== 0) {
-            Storage::disk('public')->delete($this->avatar);
+            $oldPath = public_path('images/' . ltrim($this->avatar, '/'));
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
         }
 
-        // Store new avatar
-        $path = $file->store('avatars', 'public');
-        $this->avatar = $path;
+        // Store new avatar in public/images/users/avatars/
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('images/users/avatars');
+
+        // Tạo thư mục nếu chưa tồn tại
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        $file->move($destinationPath, $filename);
+        $this->avatar = 'users/avatars/' . $filename;
 
         return $this->save();
     }

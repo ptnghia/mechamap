@@ -1,0 +1,61 @@
+{
+    "timestamp": "2025-07-03 09:19:06",
+    "summary": {
+        "valid_directories": 9,
+        "missing_directories": 0,
+        "total_files": 75,
+        "total_size": 7164332,
+        "cleaned_directories": 1
+    },
+    "details": {
+        "directory_validation": {
+            "valid": {
+                "users\/avatars": 14,
+                "threads": 16,
+                "showcases": 10,
+                "categories": 9,
+                "forums": 0,
+                "brand": 5,
+                "placeholders": 6,
+                "demo": 15,
+                "temp": 0
+            },
+            "missing": []
+        },
+        "cleanup": [
+            "settings"
+        ],
+        "file_validation": {
+            "users\/avatars": {
+                "valid_files": 14,
+                "invalid_files": [],
+                "total_files": 14
+            },
+            "threads": {
+                "valid_files": 16,
+                "invalid_files": [],
+                "total_files": 16
+            },
+            "showcases": {
+                "valid_files": 10,
+                "invalid_files": [],
+                "total_files": 10
+            },
+            "categories": {
+                "valid_files": 9,
+                "invalid_files": [],
+                "total_files": 9
+            },
+            "brand": {
+                "valid_files": 5,
+                "invalid_files": [],
+                "total_files": 5
+            },
+            "placeholders": {
+                "valid_files": 6,
+                "invalid_files": [],
+                "total_files": 6
+            }
+        }
+    }
+}

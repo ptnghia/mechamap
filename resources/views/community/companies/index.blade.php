@@ -91,8 +91,8 @@
                     <form method="GET" action="{{ route('companies.index') }}" class="row g-3">
                         <div class="col-md-3">
                             <label for="search" class="form-label">Search Companies</label>
-                            <input type="text" class="form-control" id="search" name="search" 
-                                   value="{{ request('search') }}" 
+                            <input type="text" class="form-control" id="search" name="search"
+                                   value="{{ request('search') }}"
                                    placeholder="Company name, industry, or location...">
                         </div>
                         <div class="col-md-2">
@@ -183,7 +183,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="row g-2 mb-3">
                         <div class="col-12">
@@ -205,7 +205,7 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <div class="d-flex align-items-center mb-1">
                             <span class="me-2">Rating:</span>
@@ -216,7 +216,7 @@
                         </div>
                         <small class="text-muted">{{ rand(15, 85) }} reviews</small>
                     </div>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted">Specialties:</small>
                         <div class="mt-1">
@@ -227,7 +227,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted">Contact:</small>
                         <div class="mt-1">
@@ -241,7 +241,7 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <small class="text-muted">Products</small>
@@ -253,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex gap-1">
@@ -370,7 +370,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="contactMessage" class="form-label">Message</label>
-                        <textarea class="form-control" id="contactMessage" rows="4" 
+                        <textarea class="form-control" id="contactMessage" rows="4"
                                   placeholder="Describe your inquiry or requirements..."></textarea>
                     </div>
                     <div class="mb-3">

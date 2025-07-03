@@ -13,6 +13,30 @@ Route::get('/marketplace-test', function() {
     ]);
 });
 
+// Test threads route
+Route::get('/threads-test', function() {
+    $count = \App\Models\Thread::count();
+    return response()->json([
+        'success' => true,
+        'message' => 'Threads test working',
+        'total_threads' => $count,
+        'sample_thread' => \App\Models\Thread::first(['id', 'title', 'status'])
+    ]);
+});
+
+// Test API ThreadController directly
+Route::get('/threads-controller-test', [App\Http\Controllers\Api\ThreadController::class, 'index']);
+
+// Notifications API endpoint
+Route::get('/notifications', function() {
+    return response()->json([
+        'success' => true,
+        'notifications' => [],
+        'unread_count' => 0,
+        'message' => 'Notifications endpoint working'
+    ]);
+});
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

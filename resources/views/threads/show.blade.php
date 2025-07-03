@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div class="container2" data-thread-id="{{ $thread->id }}" data-forum-id="{{ $thread->forum_id }}">
+<div class="container2">
 
 
 
@@ -51,7 +51,7 @@
                         <i class="bi bi-eye"></i> {{ number_format($thread->view_count) }} Lượt xem
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-chat"></i> {{ number_format($thread->allComments->count()) }} Phản hồi
+                        <i class="bi bi-chat"></i> {{ number_format($thread->comments_count ?? 0) }} Phản hồi
                     </div>
                     <div class="thread-meta-item">
                         <i class="bi bi-people"></i> {{ number_format($thread->participant_count) }} Người tham gia
@@ -77,7 +77,7 @@
                         class="fw-bold text-decoration-none">{{
                         $thread->user->name }}</a>
                     <div class="text-muted small">
-                        <span>{{ $thread->user->threads->count() }} Bài viết</span> ·
+                        <span>{{ $thread->user->threads_count ?? 0 }} Bài viết</span> ·
                         <span>Tham gia {{ $thread->user->created_at->format('M Y') }}</span>
                     </div>
                 </div>
@@ -114,15 +114,15 @@
             </div>
 
             <!-- Thread Images -->
-            @if($thread->media && $thread->media->count() > 0)
+            @if($thread->media && count($thread->media) > 0)
             <div class="thread-images mt-3">
                 <div class="row">
                     @foreach($thread->media as $media)
-                    @if(str_starts_with($media->mime_type ?? '', 'image/'))
+                    @if(str_starts_with($media->file_type ?? '', 'image/'))
                     <div class="col-md-4 mb-3">
-                        <a href="{{ $media->url }}"
+                        <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
                             data-lightbox="thread-images">
-                            <img src="{{ $media->url }}" alt="Thread image"
+                            <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
                                 class="img-fluid rounded"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
                         </a>
@@ -283,7 +283,7 @@
                         <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">{{
                             $comment->user->name }}</a>
                         <div class="text-muted small">
-                            <span>{{ $comment->user->comments->count() }} bình luận</span> ·
+                            <span>{{ $comment->user->comments_count ?? 0 }} bình luận</span> ·
                             <span>Tham gia {{ $comment->user->created_at->format('M Y') }}</span>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                     {!! $comment->content !!}
                 </div>
 
-                @if($comment->has_media && $comment->attachments->count() > 0)
+                @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
                 <div class="comment-attachments mt-3">
                     <div class="row g-2">
                         @foreach($comment->attachments as $attachment)
@@ -315,7 +315,7 @@
                 @endif
 
                 <!-- Nested Replies -->
-                @if($comment->replies->count() > 0)
+                @if(isset($comment->replies) && count($comment->replies) > 0)
                 <div class="nested-replies mt-3">
                     @foreach($comment->replies as $reply)
                     <div class="card mb-2" id="comment-{{ $reply->id }}">
@@ -338,7 +338,7 @@
                                 {!! $reply->content !!}
                             </div>
 
-                            @if($reply->has_media && $reply->attachments->count() > 0)
+                            @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
                             <div class="reply-attachments mt-2">
                                 <div class="row g-2">
                                     @foreach($reply->attachments as $attachment)
@@ -547,7 +547,7 @@
     @endauth
 
     <!-- Related Threads -->
-    @if($relatedThreads->count() > 0)
+    @if(count($relatedThreads) > 0)
     <div class="related-threads mt-4">
         <h3>Chủ đề liên quan</h3>
         <div class="list-group">
@@ -559,7 +559,7 @@
                 </div>
                 <p class="mb-1">{{ Str::limit(strip_tags($relatedThread->content), 100) }}</p>
                 <small>Bởi {{ $relatedThread->user->name }} · {{ $relatedThread->view_count }} lượt xem · {{
-                    $relatedThread->allComments->count() }} phản hồi</small>
+                    $relatedThread->comments_count ?? 0 }} phản hồi</small>
             </a>
             @endforeach
         </div>

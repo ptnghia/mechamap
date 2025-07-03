@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Models\Region;
 use App\Models\Country;
+use App\Models\Comment;
 
 /**
  *
@@ -82,6 +83,14 @@ class Forum extends Model
         'local_regulations' => 'array',
         'gallery_media_ids' => 'array',
     ];
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * Get the category this forum belongs to.
@@ -219,7 +228,7 @@ class Forum extends Model
      */
     public function posts(): HasManyThrough
     {
-        return $this->hasManyThrough(Post::class, Thread::class);
+        return $this->hasManyThrough(Comment::class, Thread::class);
     }
 
     /**

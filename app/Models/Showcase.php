@@ -148,6 +148,14 @@ class Showcase extends Model
     }
 
     /**
+     * Get the ratings for the showcase.
+     */
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(ShowcaseRating::class);
+    }
+
+    /**
      * Lấy tất cả comments của showcase này.
      */
     public function comments(): HasMany
@@ -164,9 +172,19 @@ class Showcase extends Model
     }
 
     /**
-     * Lấy featured image của showcase.
+     * Lấy featured image của showcase với fallback logic.
      */
     public function getFeaturedImageAttribute(): ?string
+    {
+        // Sử dụng UnifiedImageDisplayService để có fallback logic
+        $imageService = app(\App\Services\UnifiedImageDisplayService::class);
+        return $imageService->getShowcaseDisplayImage($this);
+    }
+
+    /**
+     * Lấy featured image của showcase (legacy method - chỉ từ media).
+     */
+    public function getMediaFeaturedImageAttribute(): ?string
     {
         $featuredMedia = $this->media()
             ->where('file_name', 'like', '%[Featured]%')
@@ -293,5 +311,52 @@ class Showcase extends Model
         }
 
         return 'Showcase';
+    }
+
+    /**
+     * Get the average rating for the showcase.
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return $this->ratings()->avg('overall_rating') ?? 0.0;
+    }
+
+    /**
+     * Get the total ratings count.
+     */
+    public function getRatingsCountAttribute(): int
+    {
+        return $this->ratings()->count();
+    }
+
+    /**
+     * Check if user has rated this showcase.
+     */
+    public function isRatedBy(User $user): bool
+    {
+        return $this->ratings()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get user's rating for this showcase.
+     */
+    public function getUserRating(User $user): ?ShowcaseRating
+    {
+        return $this->ratings()->where('user_id', $user->id)->first();
+    }
+
+    /**
+     * Get category averages for this showcase.
+     */
+    public function getCategoryAverages(): array
+    {
+        $ratings = $this->ratings();
+
+        return [
+            'technical_quality' => round($ratings->avg('technical_quality') ?? 0, 1),
+            'innovation' => round($ratings->avg('innovation') ?? 0, 1),
+            'usefulness' => round($ratings->avg('usefulness') ?? 0, 1),
+            'documentation' => round($ratings->avg('documentation') ?? 0, 1),
+        ];
     }
 }

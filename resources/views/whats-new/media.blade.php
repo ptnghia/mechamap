@@ -141,7 +141,7 @@
                         <img src="{{ get_avatar_url($media->user) }}" alt="{{ $media->user->name }}"
                             class="rounded-circle me-2" width="24" height="24">
                         <small class="text-muted">
-                            <a href="{{ route('profile.show', $media->user->username) }}"
+                            <a href="{{ route('profile.show', $media->user->id) }}"
                                 class="text-decoration-none">{{ $media->user->name }}</a>
                         </small>
                     </div>

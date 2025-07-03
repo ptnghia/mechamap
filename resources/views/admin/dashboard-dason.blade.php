@@ -229,7 +229,8 @@
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $order->user->avatar_url ?? asset('images/users/avatar-1.jpg') }}" alt="" class="avatar-sm rounded-circle me-2">
+                                        <img src="{{ $order->user->getAvatarUrl() }}" alt="" class="avatar-sm rounded-circle me-2"
+                                             onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($order->user->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                                         <div class="flex-grow-1">{{ $order->user->name }}</div>
                                     </div>
                                 </td>
@@ -271,7 +272,8 @@
                 @forelse($top_sellers ?? [] as $seller)
                 <div class="d-flex align-items-center pb-3">
                     <div class="avatar-sm flex-shrink-0 me-3">
-                        <img src="{{ $seller->avatar_url ?? asset('images/users/avatar-1.jpg') }}" alt="" class="img-thumbnail rounded-circle">
+                        <img src="{{ $seller->getAvatarUrl() }}" alt="" class="img-thumbnail rounded-circle"
+                             onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($seller->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                     </div>
                     <div class="flex-grow-1">
                         <div>

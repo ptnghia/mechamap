@@ -32,8 +32,9 @@
                         <a href="{{ route('admin.chat.index') }}" class="btn btn-outline-secondary me-3">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <img src="{{ $otherUser->avatar ?? '/images/default-avatar.png' }}" 
-                             class="rounded-circle me-3" width="40" height="40" alt="">
+                        <img src="{{ $otherUser->getAvatarUrl() }}"
+                             class="rounded-circle me-3" width="40" height="40" alt=""
+                             onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($otherUser->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                         <div>
                             <h5 class="mb-0">{{ $otherUser->name ?? 'Unknown User' }}</h5>
                             <small class="text-muted">
@@ -56,8 +57,9 @@
                                 <div class="d-inline-block" style="max-width: 70%;">
                                     @if($message->user_id != Auth::id())
                                         <div class="d-flex align-items-start">
-                                            <img src="{{ $message->user->avatar ?? '/images/default-avatar.png' }}" 
-                                                 class="rounded-circle me-2" width="30" height="30" alt="">
+                                            <img src="{{ $message->user->getAvatarUrl() }}"
+                                                 class="rounded-circle me-2" width="30" height="30" alt=""
+                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($message->user->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
                                             <div>
                                                 <div class="fw-medium text-muted small">{{ $message->user->name }}</div>
                                                 <div class="bg-light p-3 rounded">
@@ -89,10 +91,10 @@
                     <form id="messageForm" class="d-flex align-items-center">
                         @csrf
                         <div class="flex-grow-1 me-2">
-                            <textarea class="form-control" 
-                                      id="messageInput" 
-                                      placeholder="Nhập tin nhắn..." 
-                                      rows="1" 
+                            <textarea class="form-control"
+                                      id="messageInput"
+                                      placeholder="Nhập tin nhắn..."
+                                      rows="1"
                                       style="resize: none; min-height: 38px; max-height: 120px;"
                                       maxlength="1000"></textarea>
                         </div>
@@ -155,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     messageInput.addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        
+
         // Enable/disable send button
         sendBtn.disabled = this.value.trim() === '';
     });
@@ -173,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     messageForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const content = messageInput.value.trim();
         if (!content) return;
 
@@ -195,11 +197,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 // Add message to UI
                 addMessageToUI(data.message);
-                
+
                 // Clear input
                 messageInput.value = '';
                 messageInput.style.height = 'auto';
-                
+
                 // Scroll to bottom
                 scrollToBottom();
             } else {
@@ -233,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        
+
         messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
     }
 

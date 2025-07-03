@@ -381,4 +381,111 @@ class ShowcaseController extends Controller
     {
         return view('showcase.create');
     }
+
+    /**
+     * Display featured showcases.
+     */
+    public function featured(): View
+    {
+        $showcases = Showcase::where('is_featured', true)
+            ->with(['user', 'showcaseable'])
+            ->latest()
+            ->paginate(20);
+
+        return view('showcase.featured', compact('showcases'));
+    }
+
+    /**
+     * Display showcase categories.
+     */
+    public function categories(): View
+    {
+        // Get showcases grouped by category
+        $categories = [
+            'design' => 'Thiết kế',
+            'manufacturing' => 'Sản xuất',
+            'automation' => 'Tự động hóa',
+            'research' => 'Nghiên cứu',
+            'innovation' => 'Đổi mới',
+        ];
+
+        $showcasesByCategory = [];
+        foreach ($categories as $key => $name) {
+            $showcasesByCategory[$key] = [
+                'name' => $name,
+                'showcases' => Showcase::where('category', $key)
+                    ->with(['user', 'showcaseable'])
+                    ->latest()
+                    ->take(6)
+                    ->get()
+            ];
+        }
+
+        return view('showcase.categories', compact('showcasesByCategory'));
+    }
+
+    /**
+     * Display trending showcases.
+     */
+    public function trending(): View
+    {
+        $showcases = Showcase::withCount(['likes', 'comments'])
+            ->with(['user', 'showcaseable'])
+            ->orderByDesc('likes_count')
+            ->orderByDesc('comments_count')
+            ->orderByDesc('views')
+            ->paginate(20);
+
+        return view('showcase.trending', compact('showcases'));
+    }
+
+    /**
+     * Display showcase leaderboard.
+     */
+    public function leaderboard(): View
+    {
+        $topCreators = User::withCount(['showcaseItems as showcases_count'])
+            ->withSum('showcaseItems as total_likes', 'likes_count')
+            ->withSum('showcaseItems as total_views', 'views')
+            ->having('showcases_count', '>', 0)
+            ->orderByDesc('total_likes')
+            ->orderByDesc('showcases_count')
+            ->take(50)
+            ->get();
+
+        return view('showcase.leaderboard', compact('topCreators'));
+    }
+
+    /**
+     * Display showcase competitions.
+     */
+    public function competitions(): View
+    {
+        // For now, return a coming soon page
+        return view('showcase.competitions');
+    }
+
+    /**
+     * Display submission guidelines.
+     */
+    public function guidelines(): View
+    {
+        return view('showcase.guidelines');
+    }
+
+    /**
+     * Display user's draft showcases.
+     */
+    public function drafts(): View
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $drafts = $user->showcaseItems()
+            ->where('status', 'draft')
+            ->with('showcaseable')
+            ->latest()
+            ->paginate(20);
+
+        return view('showcase.drafts', compact('drafts'));
+    }
 }

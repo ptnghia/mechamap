@@ -3,6 +3,7 @@
 @section('title', $showcase->title)
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
 <style>
     .showcase-breadcrumb {
@@ -29,9 +30,9 @@
 @endpush
 
 @section('content')
-<div class="container">
+<div class="container2">
     {{-- Breadcrumb Navigation --}}
-    <nav aria-label="breadcrumb" class="showcase-breadcrumb">
+    <nav aria-label="breadcrumb" class="showcase-breadcrumb mb-3">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('showcase.public') }}">Showcases</a></li>
@@ -46,41 +47,24 @@
         </ol>
     </nav>
 
-    <div class="row">
-        {{-- Cột chính: Nội dung showcase (9 cột) --}}
-        <div class="col-md-9">
-            {{-- Header với tác giả và thời gian --}}
-            <div class="showcase-header mb-4">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <a href="{{ route('profile.show', $showcase->user->username ?? $showcase->user->id) }}"
-                            class="me-3">
-                            <img src="{{ $showcase->user->getAvatarUrl() }}" class="rounded-circle" width="50"
-                                height="50" alt="Avatar của {{ $showcase->user->name }}"
-                                onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
-                        </a>
-                        <div>
-                            <h6 class="mb-0">
-                                <a href="{{ route('profile.show', $showcase->user->username ?? $showcase->user->id) }}"
-                                    class="text-decoration-none fw-semibold">
-                                    {{ $showcase->user->name }}
-                                </a>
-                            </h6>
-                            <small class="text-muted">
-                                {{ $showcase->created_at->diffForHumans() }}
-                            </small>
-                        </div>
-                    </div>
+    {{-- Main Showcase Card (giống threads layout) --}}
+    <div class="card mb-4">
+        {{-- Showcase Header (giống thread header) --}}
+        <div class="thread-header p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="thread-title">{{ $showcase->title }}</h1>
 
-                    {{-- Nút theo dõi tác giả --}}
+                <div class="thread-actions">
+                    <a href="#comments" class="btn-jump">
+                        <i class="bi bi-arrow-right"></i> Đến bình luận
+                    </a>
+
                     @auth
                     @if($showcase->user_id !== auth()->id())
-                    <form action="{{ route('showcase.toggle-follow', $showcase) }}" method="POST" class="follow-form">
+                    <form action="{{ route('showcase.toggle-follow', $showcase) }}" method="POST" class="follow-form d-inline">
                         @csrf
-                        <button type="submit"
-                            class="btn btn-sm {{ $showcase->isFollowedBy(auth()->user()) ? 'btn-outline-primary' : 'btn-primary' }}">
-                            <i
-                                class="fas {{ $showcase->isFollowedBy(auth()->user()) ? 'fa-user-check' : 'fa-user-plus' }}"></i>
+                        <button type="submit" class="btn-follow">
+                            <i class="bi {{ $showcase->isFollowedBy(auth()->user()) ? 'bi-bell-fill' : 'bi-bell' }}"></i>
                             {{ $showcase->isFollowedBy(auth()->user()) ? 'Đang theo dõi' : 'Theo dõi' }}
                         </button>
                     </form>
@@ -89,8 +73,47 @@
                 </div>
             </div>
 
-            {{-- Tiêu đề showcase --}}
-            <h1 class="showcase-title mb-3">{{ $showcase->title }}</h1>
+            {{-- Showcase Meta (giống thread meta) --}}
+            <div class="thread-meta">
+                <div class="d-flex justify-content-start g-3">
+                    <div class="thread-meta-item">
+                        <i class="bi bi-eye"></i> {{ number_format($showcase->view_count ?? 0) }} Lượt xem
+                    </div>
+                    <div class="thread-meta-item">
+                        <i class="bi bi-star"></i> {{ number_format($showcase->average_rating, 1) }} Đánh giá
+                    </div>
+                    <div class="thread-meta-item">
+                        <i class="bi bi-chat"></i> {{ number_format($showcase->commentsCount()) }} Bình luận
+                    </div>
+                    <div class="thread-meta-item">
+                        <i class="bi bi-heart"></i> {{ number_format($showcase->likesCount()) }} Thích
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Author Info (giống thread author) --}}
+        <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom: none;">
+            <div class="d-flex align-items-center">
+                <img src="{{ $showcase->user->getAvatarUrl() }}" alt="{{ $showcase->user->name }}"
+                    class="rounded-circle me-2" width="40" height="40"
+                    onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+                <div>
+                    <a href="{{ route('profile.show', $showcase->user->username ?? $showcase->user->id) }}"
+                        class="fw-bold text-decoration-none">{{ $showcase->user->name }}</a>
+                    <div class="text-muted small">
+                        <span>{{ $showcase->user->showcases_count ?? 0 }} Showcases</span> ·
+                        <span>Tham gia {{ $showcase->user->created_at->format('M Y') }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-muted small">
+                #1 · {{ $showcase->created_at->diffForHumans() }}
+            </div>
+        </div>
+
+        {{-- Main Content --}}
+        <div class="card-body">
 
             {{-- Mô tả --}}
             @if($showcase->description)
@@ -251,6 +274,11 @@
 
             <hr>
 
+            {{-- Rating System (thay thế polls) --}}
+            @include('showcases.partials.rating', ['showcase' => $showcase])
+
+            <hr>
+
             {{-- Phần bình luận --}}
             <div class="showcase-comments">
                 <h5 class="mb-3">
@@ -264,8 +292,9 @@
                     <form action="{{ route('showcase.comment', $showcase) }}" method="POST">
                         @csrf
                         <div class="d-flex gap-3">
-                            <img src="{{ auth()->user()->avatar_url }}" class="rounded-circle" width="40" height="40"
-                                alt="Avatar của bạn">
+                            <img src="{{ auth()->user()->getAvatarUrl() }}" class="rounded-circle" width="40" height="40"
+                                alt="Avatar của bạn"
+                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                             <div class="flex-grow-1">
                                 <div class="form-floating">
                                     <textarea class="form-control" id="comment-content" name="content"
@@ -296,8 +325,9 @@
                     <div class="comment-item mb-3" id="comment-{{ $comment->id }}">
                         <div class="d-flex gap-3">
                             <a href="{{ route('profile.show', $comment->user->username) }}">
-                                <img src="{{ $comment->user->avatar_url }}" class="rounded-circle" width="40"
-                                    height="40" alt="Avatar của {{ $comment->user->display_name }}">
+                                <img src="{{ $comment->user->getAvatarUrl() }}" class="rounded-circle" width="40"
+                                    height="40" alt="Avatar của {{ $comment->user->display_name }}"
+                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($comment->user->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                             </a>
                             <div class="flex-grow-1">
                                 <div class="comment-content bg-light p-3 rounded">
@@ -341,9 +371,10 @@
                                     <div class="reply-item mb-2">
                                         <div class="d-flex gap-2">
                                             <a href="{{ route('profile.show', $reply->user->username) }}">
-                                                <img src="{{ $reply->user->avatar_url }}" class="rounded-circle"
+                                                <img src="{{ $reply->user->getAvatarUrl() }}" class="rounded-circle"
                                                     width="30" height="30"
-                                                    alt="Avatar của {{ $reply->user->display_name }}">
+                                                    alt="Avatar của {{ $reply->user->display_name }}"
+                                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($reply->user->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
                                             </a>
                                             <div class="flex-grow-1">
                                                 <div class="reply-content bg-white p-2 rounded border">
@@ -390,8 +421,9 @@
                                         @csrf
                                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                                         <div class="d-flex gap-2">
-                                            <img src="{{ auth()->user()->avatar_url }}" class="rounded-circle"
-                                                width="30" height="30" alt="Avatar của bạn">
+                                            <img src="{{ auth()->user()->getAvatarUrl() }}" class="rounded-circle"
+                                                width="30" height="30" alt="Avatar của bạn"
+                                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
                                             <div class="flex-grow-1">
                                                 <div class="input-group">
                                                     <textarea class="form-control form-control-sm" name="content"
@@ -421,171 +453,15 @@
                 </div>
             </div>
         </div>
-
-        {{-- Sidebar (3 cột) --}}
-        <div class="col-md-3">
-            {{-- Card thông tin showcase --}}
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0"><i class="fas fa-info-circle"></i> Thông tin Showcase</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row g-2 text-center">
-                        <div class="col-4">
-                            <div class="border rounded p-2">
-                                <div class="fw-bold text-danger">{{ $showcase->likesCount() }}</div>
-                                <small class="text-muted">Thích</small>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="border rounded p-2">
-                                <div class="fw-bold text-primary">{{ $showcase->commentsCount() }}</div>
-                                <small class="text-muted">Bình luận</small>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="border rounded p-2">
-                                <div class="fw-bold text-success">{{ $showcase->followsCount() }}</div>
-                                <small class="text-muted">Theo dõi</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($showcase->views_count)
-                    <hr>
-                    <div class="text-center">
-                        <small class="text-muted">
-                            <i class="fas fa-eye"></i>
-                            {{ number_format($showcase->views_count) }} lượt xem
-                        </small>
-                    </div>
-                    @endif
-
-                    <hr>
-                    <div>
-                        <small class="text-muted">
-                            <strong>Đăng lúc:</strong><br>
-                            {{ $showcase->created_at->format('d/m/Y H:i') }}
-                        </small>
-                    </div>
-
-                    @if($showcase->updated_at->gt($showcase->created_at))
-                    <div class="mt-2">
-                        <small class="text-muted">
-                            <strong>Cập nhật:</strong><br>
-                            {{ $showcase->updated_at->format('d/m/Y H:i') }}
-                        </small>
-                    </div>
-                    @endif
-                </div>
-            </div>
-
-            {{-- Card thông tin tác giả --}}
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0"><i class="fas fa-user"></i> Về tác giả</h6>
-                </div>
-                <div class="card-body text-center">
-                    <a href="{{ route('profile.show', $showcase->user->username) }}">
-                        <img src="{{ $showcase->user->avatar_url }}" class="rounded-circle mb-3" width="80" height="80"
-                            alt="Avatar của {{ $showcase->user->display_name }}">
-                    </a>
-                    <h6>
-                        <a href="{{ route('profile.show', $showcase->user->username) }}" class="text-decoration-none">
-                            {{ $showcase->user->display_name }}
-                        </a>
-                    </h6>
-                    @if($showcase->user->title)
-                    <p class="text-muted small">{{ $showcase->user->title }}</p>
-                    @endif
-                    @if($showcase->user->location)
-                    <p class="text-muted small">
-                        <i class="fas fa-map-marker-alt"></i>
-                        {{ $showcase->user->location }}
-                    </p>
-                    @endif
-
-                    <div class="row g-2 text-center">
-                        <div class="col-4">
-                            <small class="text-muted">
-                                <div class="fw-bold">{{ $showcase->user->showcases_count ?? 0 }}</div>
-                                <div>Showcases</div>
-                            </small>
-                        </div>
-                        <div class="col-4">
-                            <small class="text-muted">
-                                <div class="fw-bold">{{ $showcase->user->followers_count ?? 0 }}</div>
-                                <div>Người theo dõi</div>
-                            </small>
-                        </div>
-                        <div class="col-4">
-                            <small class="text-muted">
-                                <div class="fw-bold">{{ $showcase->user->following_count ?? 0 }}</div>
-                                <div>Đang theo dõi</div>
-                            </small>
-                        </div>
-                    </div>
-
-                    @auth
-                    @if($showcase->user_id !== auth()->id())
-                    <div class="mt-3">
-                        <a href="{{ route('profile.show', $showcase->user->username) }}"
-                            class="btn btn-outline-primary btn-sm me-2">
-                            <i class="fas fa-user"></i> Xem hồ sơ
-                        </a>
-                    </div>
-                    @endif
-                    @endauth
-                </div>
-            </div>
-
-            {{-- Card các showcase khác của tác giả --}}
-            @if($otherShowcases && $otherShowcases->count() > 0)
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">
-                        <i class="fas fa-th-large"></i>
-                        Showcase khác từ {{ $showcase->user->display_name }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    @foreach($otherShowcases as $otherShowcase)
-                    <div class="d-flex align-items-center mb-3">
-                        @if($otherShowcase->image_url)
-                        <img src="{{ $otherShowcase->image_url }}" class="rounded me-2" width="50" height="40"
-                            style="object-fit: cover;" alt="{{ $otherShowcase->title }}">
-                        @else
-                        <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center"
-                            style="width: 50px; height: 40px;">
-                            <i class="fas fa-image text-muted"></i>
-                        </div>
-                        @endif
-                        <div class="flex-grow-1">
-                            <a href="{{ route('showcase.show', $otherShowcase) }}"
-                                class="text-decoration-none small fw-semibold">
-                                {{ Str::limit($otherShowcase->title, 40) }}
-                            </a>
-                            <div class="text-muted" style="font-size: 0.75rem;">
-                                {{ $otherShowcase->created_at->diffForHumans() }}
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-
-                    <div class="text-center">
-                        <a href="{{ route('profile.show', $showcase->user->username) }}"
-                            class="btn btn-outline-primary btn-sm">
-                            Xem tất cả showcase
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @endif
-        </div>
     </div>
+
+    {{-- Include Sidebar Component (giống threads) --}}
+    {{-- Include Sidebar Component (giống threads) --}}
+    <x-sidebar />
 </div>
 
 @push('scripts')
+<script src="{{ asset('js/showcase-rating.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 <script>
     // Configure Lightbox

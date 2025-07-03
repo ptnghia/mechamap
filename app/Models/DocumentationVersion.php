@@ -42,39 +42,4 @@ class DocumentationVersion extends Model
     }
 }
 
-// DocumentationView Model
-class DocumentationView extends Model
-{
-    use HasFactory;
 
-    protected $fillable = [
-        'documentation_id',
-        'user_id',
-        'ip_address',
-        'user_agent',
-        'referrer',
-        'time_spent',
-        'scroll_percentage',
-    ];
-
-    protected $casts = [
-        'time_spent' => 'integer',
-        'scroll_percentage' => 'decimal:2',
-    ];
-
-    /**
-     * Get the documentation
-     */
-    public function documentation(): BelongsTo
-    {
-        return $this->belongsTo(Documentation::class);
-    }
-
-    /**
-     * Get the user
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-}

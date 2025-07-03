@@ -52,7 +52,105 @@
                         </a>
                     </li>
 
-                    <!-- 2. Marketplace với Enhanced Submenu -->
+                    <!-- 2. Community/Forum - PRIORITY #1 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-users me-1"></i>
+                            {{ __('messages.nav.community') }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="communityDropdown">
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
+                            <li><a class="dropdown-item" href="{{ route('forums.index') }}">
+                                <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('whats-new') }}">
+                                <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
+                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.popular_topics') }}
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
+                            <li><a class="dropdown-item" href="{{ route('members.index') }}">
+                                <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('companies.index') }}">
+                                <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('events.index') }}">
+                                <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
+                                <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
+                            </a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 3. Showcase - PRIORITY #2 - NEW DEDICATED MENU -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="#" id="showcaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-trophy me-1"></i>
+                            {{ __('messages.nav.showcase') }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="showcaseDropdown">
+                            <!-- Browse Showcases -->
+                            <li><h6 class="dropdown-header">
+                                <i class="fa-solid fa-eye me-2"></i>{{ __('messages.nav.browse_showcases') }}
+                            </h6></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
+                                <i class="fa-solid fa-globe me-2"></i>{{ __('messages.nav.public_gallery') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.featured') }}">
+                                <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_projects') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.categories') }}">
+                                <i class="fa-solid fa-folder-tree me-2"></i>{{ __('messages.nav.by_category') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.trending') }}">
+                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.trending_projects') }}
+                            </a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <!-- Create & Manage -->
+                            <li><h6 class="dropdown-header">
+                                <i class="fa-solid fa-plus me-2"></i>{{ __('messages.nav.create_manage') }}
+                            </h6></li>
+                            @auth
+                            <li><a class="dropdown-item" href="{{ route('showcase.create') }}">
+                                <i class="fa-solid fa-plus-circle me-2"></i>{{ __('messages.nav.create_showcase') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
+                                <i class="fa-solid fa-folder-user me-2"></i>{{ __('messages.nav.my_showcases') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.drafts') }}">
+                                <i class="fa-solid fa-file-pen me-2"></i>{{ __('messages.nav.drafts') }}
+                            </a></li>
+                            @else
+                            <li><a class="dropdown-item" href="{{ route('login') }}">
+                                <i class="fa-solid fa-sign-in-alt me-2"></i>{{ __('messages.nav.login_to_create') }}
+                            </a></li>
+                            @endauth
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <!-- Community Features -->
+                            <li><h6 class="dropdown-header">
+                                <i class="fa-solid fa-users me-2"></i>{{ __('messages.nav.community') }}
+                            </h6></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.leaderboard') }}">
+                                <i class="fa-solid fa-medal me-2"></i>{{ __('messages.nav.top_creators') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.competitions') }}">
+                                <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.competitions') }}
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('showcase.guidelines') }}">
+                                <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.submission_guidelines') }}
+                            </a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 4. Marketplace - PRIORITY #3 -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-store me-1"></i>
@@ -92,41 +190,7 @@
                         </ul>
                     </li>
 
-                    <!-- 3. Cộng đồng với Enhanced Features -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-users me-1"></i>
-                            {{ __('messages.nav.community') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="communityDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('forums.index') }}">
-                                <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('forums.recent') }}">
-                                <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('forums.popular') }}">
-                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.popular_topics') }}
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('members.index') }}">
-                                <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('events.index') }}">
-                                <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- 4. Tài nguyên kỹ thuật - NEW SECTION -->
+                    <!-- 5. Technical Resources - UPDATED (removed showcase) -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-screwdriver-wrench me-1"></i>
@@ -156,9 +220,7 @@
                                 <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
                                 <span class="badge bg-secondary ms-2">15+</span>
                             </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
-                                <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.design_showcase') }}
-                            </a></li>
+                            <!-- Showcase đã được chuyển sang menu riêng -->
                             <li><hr class="dropdown-divider"></li>
                             <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.tools_calculators') }}</h6></li>
                             <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
@@ -173,7 +235,7 @@
                         </ul>
                     </li>
 
-                    <!-- 5. Kiến thức - NEW SECTION -->
+                    <!-- 6. Knowledge -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-graduation-cap me-1"></i>

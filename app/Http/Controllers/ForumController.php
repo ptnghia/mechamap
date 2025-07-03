@@ -37,7 +37,7 @@ class ForumController extends Controller
             return [
                 'forums' => Forum::count(),
                 'threads' => Thread::count(),
-                'posts' => \App\Models\Post::count(),
+                'posts' => \App\Models\Comment::count(), // Use Comment instead of Post
                 'users' => \App\Models\User::count(),
                 'newest_member' => \App\Models\User::latest()->first()
             ];
@@ -54,7 +54,7 @@ class ForumController extends Controller
         // Load media relationship for forum images
         $forum->load('media');
 
-        $query = $forum->threads()->with('user')->withCount('allComments as comments_count');
+        $query = $forum->threads()->with(['user', 'media', 'category', 'forum'])->withCount('allComments as comments_count');
 
         // Search functionality
         if ($request->filled('search')) {
@@ -74,8 +74,13 @@ class ForumController extends Controller
             $query->having('comments_count', '=', 0);
         }
 
-        // Sort options
+        // Sort options - ALWAYS put sticky threads first
         $sortBy = $request->get('sort', 'latest');
+
+        // Primary sort: sticky threads first
+        $query->orderBy('is_sticky', 'desc');
+
+        // Secondary sort: based on user selection
         switch ($sortBy) {
             case 'oldest':
                 $query->oldest();
@@ -95,7 +100,9 @@ class ForumController extends Controller
         // Get forum statistics
         $forumStats = [
             'total_threads' => $forum->threads()->count(),
-            'total_posts' => $forum->posts()->count(),
+            'total_posts' => \App\Models\Comment::whereHas('thread', function($q) use ($forum) {
+                $q->where('forum_id', $forum->id);
+            })->count(),
             'recent_threads' => $forum->threads()->where('created_at', '>=', now()->subWeek())->count(),
             'active_users' => $forum->threads()->with('user')->get()->pluck('user')->unique('id')->count(),
         ];
@@ -122,7 +129,7 @@ class ForumController extends Controller
             ->paginate(20);
 
         // Search in posts/comments
-        $posts = \App\Models\Post::where('content', 'like', "%{$query}%")
+        $posts = \App\Models\Comment::where('content', 'like', "%{$query}%")
             ->with(['thread.forum', 'user'])
             ->paginate(20);
 

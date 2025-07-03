@@ -38,15 +38,15 @@
         {{-- Breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ __('Forums') }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('nav.home') }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ __('nav.forums') }}</li>
             </ol>
         </nav>
 
         {{-- Page Header --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 class="h2 mb-1">{{ __('Forums') }}</h1>
+                <h1 class="h2 mb-1">{{ __('nav.forums') }}</h1>
                 <p class="text-muted mb-0">{{ __('Discuss mechanical engineering topics with the community') }}</p>
             </div>
             @auth
@@ -66,7 +66,7 @@
                     <div class="col-md-3 mb-3 mb-md-0">
                         <div class="stats-item">
                             <div class="fs-2 fw-bold">{{ number_format($stats['forums']) }}</div>
-                            <div class="opacity-75">{{ __('Forums') }}</div>
+                            <div class="opacity-75">{{ __('nav.forums') }}</div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3 mb-md-0">
@@ -133,7 +133,7 @@
                 </div>
             </div>
         </div>
-        {{-- Enhanced Forum Categories --}}
+        {{-- Enhanced Forum Categories with Statistics --}}
         @foreach($categories as $category)
         <div class="card shadow-sm rounded-3 mb-4">
             <div class="card-header category-header">
@@ -149,87 +149,112 @@
                 }
                 @endphp
 
-                <div class="d-flex align-items-center">
-                    @if($categoryImageUrl)
-                    <img src="{{ $categoryImageUrl }}" alt="{{ $category->name }}" class="rounded me-3 shadow-sm"
-                        width="36" height="36" style="object-fit: cover;">
-                    @else
-                    <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
-                        style="width: 36px; height: 36px;">
-                        <i class="bi bi-collection text-primary"></i>
-                    </div>
-                    @endif
-                    <div>
-                        <h5 class="card-title mb-0">{{ $category->name }}</h5>
-                        @if($category->description)
-                        <small class="text-muted">{{ $category->description }}</small>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        @if($categoryImageUrl)
+                        <img src="{{ $categoryImageUrl }}" alt="{{ $category->name }}" class="rounded me-3 shadow-sm"
+                            width="36" height="36" style="object-fit: cover;">
+                        @else
+                        <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
+                            style="width: 36px; height: 36px;">
+                            <i class="bi bi-collection text-primary"></i>
+                        </div>
                         @endif
+                        <div>
+                            <h5 class="card-title mb-0">{{ $category->name }}</h5>
+                            @if($category->description)
+                            <small class="text-muted">{{ $category->description }}</small>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Category Statistics --}}
+                    <div class="d-flex gap-3 text-center">
+                        <div>
+                            <div class="fw-bold text-primary">{{ number_format($category->stats['forums_count']) }}</div>
+                            <small class="text-muted">{{ __('forums.stats.forums') }}</small>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-success">{{ number_format($category->stats['threads_count']) }}</div>
+                            <small class="text-muted">{{ __('forums.stats.threads') }}</small>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-info">{{ number_format($category->stats['views_count']) }}</div>
+                            <small class="text-muted">{{ __('forums.stats.views') }}</small>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-warning">{{ number_format($category->stats['posts_count']) }}</div>
+                            <small class="text-muted">{{ __('forums.stats.comments') }}</small>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <div class="list-group list-group-flush">
-                    @foreach($category->subForums as $forum)
-                    <a href="{{ route('forums.show', $forum) }}"
-                        class="list-group-item list-group-item-action py-3 forum-item">
-                        <div class="row align-items-center">
-                            <div class="col-md-7">
-                                <div class="d-flex align-items-center">
-                                    <div class="forum-icon me-3">
-                                        @php
-                                        // Lấy ảnh đại diện của forum từ media relationship
-                                        $forumImage = $forum->media->first();
-                                        if ($forumImage) {
-                                            // Nếu file_path là URL đầy đủ thì dùng trực tiếp
-                                            if (filter_var($forumImage->file_path, FILTER_VALIDATE_URL)) {
-                                                $imageUrl = $forumImage->file_path;
-                                            } elseif (strpos($forumImage->file_path, '/images/') === 0) {
-                                                // Nếu file_path bắt đầu bằng /images/ thì dùng asset() trực tiếp
-                                                $imageUrl = asset($forumImage->file_path);
-                                            } else {
-                                                // Loại bỏ slash đầu để tránh double slash
-                                                $cleanPath = ltrim($forumImage->file_path, '/');
-                                                $imageUrl = asset('storage/' . $cleanPath);
-                                            }
-                                        } else {
-                                            // Fallback về icon Bootstrap nếu không có ảnh
-                                            $imageUrl = null;
-                                        }
-                                        @endphp
-
-                                        @if($imageUrl)
-                                        <img src="{{ $imageUrl }}" alt="{{ $forum->name }}" class="rounded shadow-sm"
-                                            width="50" height="50" style="object-fit: cover;">
-                                        @else
-                                        <div class="bg-primary bg-opacity-10 rounded d-flex align-items-center justify-content-center"
-                                            style="width: 50px; height: 50px;">
-                                            <i class="bi bi-chat-square-text fs-4 text-primary"></i>
-                                        </div>
-                                        @endif
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">{{ $forum->name }}</h6>
-                                        <p class="mb-0 text-muted small">{{ $forum->description }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="row text-md-end">
-                                    <div class="col-6">
-                                        <div class="fw-bold text-primary">{{ number_format($forum->threads_count) }}
-                                        </div>
-                                        <div class="small text-muted">{{ __('Threads') }}</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="fw-bold text-success">{{ number_format($forum->posts_count) }}</div>
-                                        <div class="small text-muted">{{ __('Posts') }}</div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="card-body">
+                {{-- Forums in this category --}}
+                @if($category->forums->count() > 0)
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6 class="text-muted mb-3">{{ __('forums.category.forums_in_category') }}:</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach($category->forums as $forum)
+                            <a href="{{ route('forums.show', $forum) }}"
+                               class="btn btn-outline-primary btn-sm">
+                                {{ $forum->name }}
+                                <span class="badge bg-primary ms-1">{{ $forum->threads_count ?? 0 }}</span>
+                            </a>
+                            @endforeach
                         </div>
-                    </a>
-                    @endforeach
+                    </div>
                 </div>
+                @endif
+
+                {{-- Recent Threads from this category --}}
+                @if($category->recent_threads && $category->recent_threads->count() > 0)
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-muted mb-0">{{ __('forums.category.recent_threads', ['count' => 5]) }}:</h6>
+                            <a href="{{ route('categories.show', $category->slug) }}"
+                               class="btn btn-sm btn-outline-secondary">
+                                {{ __('forums.actions.view_more') }} <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <div class="list-group list-group-flush">
+                            @foreach($category->recent_threads as $thread)
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <a href="{{ route('threads.show', $thread) }}"
+                                           class="text-decoration-none fw-semibold">
+                                            {{ Str::limit($thread->title, 60) }}
+                                        </a>
+                                        <div class="small text-muted mt-1">
+                                            <span>bởi {{ $thread->user->name }}</span>
+                                            <span class="mx-1">•</span>
+                                            <span>trong {{ $thread->forum->name }}</span>
+                                            <span class="mx-1">•</span>
+                                            <span>{{ $thread->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end ms-3">
+                                        <div class="d-flex gap-2 small text-muted">
+                                            <span><i class="bi bi-eye"></i> {{ number_format($thread->view_count ?? 0) }}</span>
+                                            <span><i class="bi bi-chat"></i> {{ number_format($thread->comments_count ?? 0) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-chat-square-text fs-1 opacity-50"></i>
+                    <p class="mt-2 mb-0">{{ __('forums.category.no_threads') }}</p>
+                </div>
+                @endif
             </div>
         </div>
         @endforeach

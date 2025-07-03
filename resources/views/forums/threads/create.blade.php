@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create New Thread')
+@section('title', __('forums.actions.create_thread'))
 
 @section('content')
 <div class="container py-4">
@@ -8,7 +8,7 @@
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">Forums</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">{{ __('forums.title') }}</a></li>
             @if(isset($forum))
             <li class="breadcrumb-item"><a href="{{ route('forums.show', $forum) }}">{{ $forum->name }}</a></li>
             @endif
@@ -23,9 +23,9 @@
                 <div>
                     <h1 class="h2 mb-1">
                         <i class="bx bx-plus-circle text-primary me-2"></i>
-                        Create New Thread
+                        {{ __('forums.actions.create_thread') }}
                     </h1>
-                    <p class="text-muted mb-0">Start a new discussion in the community</p>
+                    <p class="text-muted mb-0">{{ __('forums.threads.start_discussion') }}</p>
                 </div>
                 <div>
                     <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
@@ -39,7 +39,7 @@
 
     <form action="{{ route('threads.store') }}" method="POST" enctype="multipart/form-data" id="threadForm">
         @csrf
-        
+
         <div class="row">
             <!-- Main Form -->
             <div class="col-lg-8">
@@ -53,11 +53,11 @@
                             <label for="title" class="form-label">
                                 Thread Title <span class="text-danger">*</span>
                             </label>
-                            <input type="text" 
-                                   class="form-control @error('title') is-invalid @enderror" 
-                                   id="title" 
-                                   name="title" 
-                                   value="{{ old('title') }}" 
+                            <input type="text"
+                                   class="form-control @error('title') is-invalid @enderror"
+                                   id="title"
+                                   name="title"
+                                   value="{{ old('title') }}"
                                    placeholder="Enter a descriptive title for your thread"
                                    maxlength="255"
                                    required>
@@ -74,13 +74,13 @@
                             <label for="forum_id" class="form-label">
                                 Forum <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select @error('forum_id') is-invalid @enderror" 
-                                    id="forum_id" 
-                                    name="forum_id" 
+                            <select class="form-select @error('forum_id') is-invalid @enderror"
+                                    id="forum_id"
+                                    name="forum_id"
                                     required>
                                 <option value="">Select a forum</option>
                                 @foreach($forums as $forum)
-                                    <option value="{{ $forum->id }}" 
+                                    <option value="{{ $forum->id }}"
                                             {{ (old('forum_id', $selectedForum ?? '') == $forum->id) ? 'selected' : '' }}>
                                         {{ $forum->name }}
                                         @if($forum->description)
@@ -99,13 +99,13 @@
                             <label for="category_id" class="form-label">
                                 Category <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select @error('category_id') is-invalid @enderror" 
-                                    id="category_id" 
-                                    name="category_id" 
+                            <select class="form-select @error('category_id') is-invalid @enderror"
+                                    id="category_id"
+                                    name="category_id"
                                     required>
                                 <option value="">Select a category</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" 
+                                    <option value="{{ $category->id }}"
                                             {{ (old('category_id', $selectedCategory ?? '') == $category->id) ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
@@ -150,10 +150,10 @@
                                     </button>
                                 </div>
                             </div>
-                            <textarea class="form-control @error('content') is-invalid @enderror" 
-                                      id="content" 
-                                      name="content" 
-                                      rows="12" 
+                            <textarea class="form-control @error('content') is-invalid @enderror"
+                                      id="content"
+                                      name="content"
+                                      rows="12"
                                       placeholder="Write your thread content here..."
                                       required>{{ old('content') }}</textarea>
                             <div class="form-text">
@@ -169,11 +169,11 @@
                             <label for="attachments" class="form-label">
                                 Attachments
                             </label>
-                            <input type="file" 
-                                   class="form-control @error('attachments.*') is-invalid @enderror" 
-                                   id="attachments" 
-                                   name="attachments[]" 
-                                   multiple 
+                            <input type="file"
+                                   class="form-control @error('attachments.*') is-invalid @enderror"
+                                   id="attachments"
+                                   name="attachments[]"
+                                   multiple
                                    accept="image/*,.pdf,.doc,.docx,.txt">
                             <div class="form-text">
                                 You can upload images, PDFs, and documents. Maximum 5 files, 10MB each.
@@ -181,7 +181,7 @@
                             @error('attachments.*')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            
+
                             <!-- File Preview -->
                             <div id="filePreview" class="mt-2"></div>
                         </div>
@@ -191,11 +191,11 @@
                             <label for="tags" class="form-label">
                                 Tags
                             </label>
-                            <input type="text" 
-                                   class="form-control @error('tags') is-invalid @enderror" 
-                                   id="tags" 
-                                   name="tags" 
-                                   value="{{ old('tags') }}" 
+                            <input type="text"
+                                   class="form-control @error('tags') is-invalid @enderror"
+                                   id="tags"
+                                   name="tags"
+                                   value="{{ old('tags') }}"
                                    placeholder="Enter tags separated by commas">
                             <div class="form-text">
                                 Add relevant tags to help others find your thread (e.g., mechanical, design, CAD)
@@ -277,10 +277,10 @@
                     <div class="card-body" id="pollOptions" style="display: none;">
                         <div class="mb-3">
                             <label for="poll_question" class="form-label">Poll Question</label>
-                            <input type="text" class="form-control" id="poll_question" name="poll_question" 
+                            <input type="text" class="form-control" id="poll_question" name="poll_question"
                                    placeholder="What would you like to ask?">
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label">Poll Options</label>
                             <div id="pollOptionsList">
@@ -413,7 +413,7 @@
     .editor-toolbar {
         flex-wrap: wrap;
     }
-    
+
     .editor-toolbar .btn-group {
         margin-bottom: 0.5rem;
     }
@@ -442,7 +442,7 @@ document.getElementById('has_poll').addEventListener('change', function() {
 document.getElementById('attachments').addEventListener('change', function() {
     const preview = document.getElementById('filePreview');
     preview.innerHTML = '';
-    
+
     Array.from(this.files).forEach((file, index) => {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
@@ -461,7 +461,7 @@ function formatText(command) {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
-    
+
     let formattedText = '';
     switch(command) {
         case 'bold':
@@ -474,7 +474,7 @@ function formatText(command) {
             formattedText = `__${selectedText}__`;
             break;
     }
-    
+
     textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
     textarea.focus();
 }
@@ -483,7 +483,7 @@ function insertList(type) {
     const textarea = document.getElementById('content');
     const listItem = type === 'ul' ? '- ' : '1. ';
     const start = textarea.selectionStart;
-    
+
     textarea.value = textarea.value.substring(0, start) + listItem + textarea.value.substring(start);
     textarea.focus();
 }
@@ -494,7 +494,7 @@ function insertLink() {
         const text = prompt('Enter link text:') || url;
         const textarea = document.getElementById('content');
         const start = textarea.selectionStart;
-        
+
         textarea.value = textarea.value.substring(0, start) + `[${text}](${url})` + textarea.value.substring(start);
         textarea.focus();
     }
@@ -505,7 +505,7 @@ function insertCode() {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
-    
+
     const codeText = selectedText ? `\`${selectedText}\`` : '```\n\n```';
     textarea.value = textarea.value.substring(0, start) + codeText + textarea.value.substring(end);
     textarea.focus();
@@ -515,7 +515,7 @@ function insertCode() {
 function addPollOption() {
     const list = document.getElementById('pollOptionsList');
     const optionCount = list.children.length + 1;
-    
+
     const div = document.createElement('div');
     div.className = 'input-group mb-2';
     div.innerHTML = `
@@ -524,7 +524,7 @@ function addPollOption() {
             <i class="bx bx-x"></i>
         </button>
     `;
-    
+
     list.appendChild(div);
 }
 
@@ -543,12 +543,12 @@ function removeFile(index) {
 function previewThread() {
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
-    
+
     if (!title || !content) {
         alert('Please fill in title and content before previewing.');
         return;
     }
-    
+
     // Simple preview - in real implementation, you'd send to server for proper markdown rendering
     const previewContent = document.getElementById('previewContent');
     previewContent.innerHTML = `
@@ -557,7 +557,7 @@ function previewThread() {
             ${content.replace(/\n/g, '<br>')}
         </div>
     `;
-    
+
     new bootstrap.Modal(document.getElementById('previewModal')).show();
 }
 
@@ -568,7 +568,7 @@ function autoSave() {
     autoSaveTimer = setTimeout(() => {
         const formData = new FormData(document.getElementById('threadForm'));
         formData.set('action', 'auto_save');
-        
+
         fetch('{{ route("threads.auto-save") }}', {
             method: 'POST',
             body: formData,

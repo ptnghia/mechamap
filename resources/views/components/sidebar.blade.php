@@ -75,8 +75,9 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                 <a href="{{ route('threads.show', $thread) }}" class="list-group-item list-group-item-action py-2">
                     <div class="d-flex">
                         <div class="flex-shrink-0 me-2">
-                            <img src="{{ get_avatar_url($thread->user) }}" alt="{{ $thread->user->name }}"
-                                class="rounded-circle" width="32" height="32">
+                            <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
+                                class="rounded-circle" width="32" height="32"
+                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($thread->user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'"
                         </div>
                         <div>
                             <h6 class="mb-1 text-truncate" style="max-width: 100%;">{{ $thread->title }}</h6>
@@ -156,8 +157,9 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                     class="list-group-item list-group-item-action py-2">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-2">
-                            <img src="{{ get_avatar_url($user) }}" alt="{{ $user->name }}" class="rounded-circle"
-                                width="32" height="32">
+                            <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle"
+                                width="32" height="32"
+                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'"
                         </div>
                         <div>
                             <h6 class="mb-1">{{ $user->name }}</h6>

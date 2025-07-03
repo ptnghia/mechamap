@@ -8,7 +8,7 @@
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">Forums</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">{{ __('forums.title') }}</a></li>
             <li class="breadcrumb-item"><a href="{{ route('forums.categories.index') }}">Categories</a></li>
             <li class="breadcrumb-item active">{{ $category->name }}</li>
         </ol>
@@ -33,11 +33,11 @@
                                     <div class="category-stats-banner">
                                         <div class="stat-item">
                                             <div class="stat-number text-white">{{ $forums->count() }}</div>
-                                            <div class="stat-label text-white-50">Forums</div>
+                                            <div class="stat-label text-white-50">{{ __('forums.stats.forums') }}</div>
                                         </div>
                                         <div class="stat-item">
                                             <div class="stat-number text-white">{{ $totalThreads }}</div>
-                                            <div class="stat-label text-white-50">Threads</div>
+                                            <div class="stat-label text-white-50">{{ __('forums.stats.threads') }}</div>
                                         </div>
                                         <div class="stat-item">
                                             <div class="stat-number text-white">{{ $totalPosts }}</div>
@@ -85,11 +85,11 @@
     <div class="row">
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3>Forums in {{ $category->name }}</h3>
+                <h3>{{ __('forums.category.forums_in', ['category' => $category->name]) }}</h3>
                 @auth
                 <a href="{{ route('threads.create', ['category' => $category->id]) }}" class="btn btn-primary">
                     <i class="bx bx-plus me-1"></i>
-                    New Thread
+                    {{ __('forums.actions.new_thread') }}
                 </a>
                 @endauth
             </div>
@@ -114,7 +114,7 @@
                                     @if($forum->description)
                                     <p class="text-muted mb-2">{{ $forum->description }}</p>
                                     @endif
-                                    
+
                                     <!-- Forum Stats -->
                                     <div class="d-flex gap-3 small text-muted">
                                         <span><i class="bx bx-message-dots me-1"></i>{{ $forum->threads_count }} threads</span>
@@ -127,11 +127,11 @@
                             @if($forum->latest_thread)
                             <div class="latest-activity">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $forum->latest_thread->user->getAvatarUrl() }}" 
-                                         alt="{{ $forum->latest_thread->user->name }}" 
+                                    <img src="{{ $forum->latest_thread->user->getAvatarUrl() }}"
+                                         alt="{{ $forum->latest_thread->user->name }}"
                                          class="rounded-circle me-2" width="32" height="32">
                                     <div class="flex-grow-1 min-w-0">
-                                        <a href="{{ route('threads.show', $forum->latest_thread) }}" 
+                                        <a href="{{ route('threads.show', $forum->latest_thread) }}"
                                            class="text-decoration-none small fw-medium">
                                             {{ Str::limit($forum->latest_thread->title, 30) }}
                                         </a>
@@ -209,11 +209,11 @@
                 <div class="card-body">
                     @foreach($recentThreads as $thread)
                     <div class="d-flex align-items-start mb-3">
-                        <img src="{{ $thread->user->getAvatarUrl() }}" 
-                             alt="{{ $thread->user->name }}" 
+                        <img src="{{ $thread->user->getAvatarUrl() }}"
+                             alt="{{ $thread->user->name }}"
                              class="rounded-circle me-2" width="32" height="32">
                         <div class="flex-grow-1 min-w-0">
-                            <a href="{{ route('threads.show', $thread) }}" 
+                            <a href="{{ route('threads.show', $thread) }}"
                                class="text-decoration-none small fw-medium">
                                 {{ Str::limit($thread->title, 40) }}
                             </a>
@@ -236,10 +236,10 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap gap-2">
                         @foreach($activeUsers as $user)
-                        <a href="{{ route('profile.show', $user->username) }}" 
+                        <a href="{{ route('profile.show', $user->username) }}"
                            class="text-decoration-none" title="{{ $user->name }}">
-                            <img src="{{ $user->getAvatarUrl() }}" 
-                                 alt="{{ $user->name }}" 
+                            <img src="{{ $user->getAvatarUrl() }}"
+                                 alt="{{ $user->name }}"
                                  class="rounded-circle" width="32" height="32">
                         </a>
                         @endforeach
@@ -328,12 +328,12 @@
     .category-banner {
         height: 150px;
     }
-    
+
     .category-stats-banner {
         justify-content: center;
         margin-top: 1rem;
     }
-    
+
     .forum-item:hover {
         transform: none;
     }

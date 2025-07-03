@@ -454,9 +454,19 @@ class Thread extends Model
     }
 
     /**
-     * Lấy featured image của thread.
+     * Lấy featured image của thread với fallback logic.
      */
-    public function getFeaturedImageAttribute(): ?string
+    // public function getFeaturedImageAttribute(): ?string
+    // {
+    //     // Sử dụng UnifiedImageDisplayService để có fallback logic
+    //     $imageService = app(\App\Services\UnifiedImageDisplayService::class);
+    //     return $imageService->getThreadDisplayImage($this);
+    // }
+
+    /**
+     * Lấy featured image của thread (legacy method - chỉ từ media).
+     */
+    public function getMediaFeaturedImageAttribute(): ?string
     {
         // Tìm media đầu tiên từ polymorphic relationship
         $featuredMedia = $this->media()
@@ -479,6 +489,88 @@ class Thread extends Model
 
         return null;
     }
+
+    /**
+     * Kiểm tra xem thread có hình ảnh thực tế không (không phải fallback).
+     */
+    public function hasActualImage(): bool
+    {
+        // 1. Có media relationships
+        if ($this->relationLoaded('media') && $this->media->isNotEmpty()) {
+            $hasImageMedia = $this->media
+                ->filter(function ($media) {
+                    return \Illuminate\Support\Str::startsWith($media->mime_type, 'image/');
+                })
+                ->isNotEmpty();
+
+            if ($hasImageMedia) {
+                return true;
+            }
+        }
+
+        // 2. Có database featured_image column (truy cập trực tiếp attributes)
+        if (!empty($this->attributes['featured_image'])) {
+            return true;
+        }
+
+        // 3. Có hình ảnh trong content
+        if ($this->content) {
+            // Tìm img tags trong content
+            preg_match('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $this->content, $matches);
+            if (!empty($matches[1])) {
+                return true;
+            }
+
+            // Tìm markdown images
+            preg_match('/!\[.*?\]\(([^)]+)\)/', $this->content, $markdownMatches);
+            if (!empty($markdownMatches[1])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Lấy hình ảnh thực tế (không fallback) cho thread-item display.
+     */
+    // public function getActualImageAttribute(): ?string
+    // {
+    //     if (!$this->hasActualImage()) {
+    //         return null;
+    //     }
+
+    //     // Sử dụng UnifiedImageDisplayService nhưng chỉ lấy hình ảnh thực tế
+    //     $imageService = app(\App\Services\UnifiedImageDisplayService::class);
+
+    //     // 1. Media relationships
+    //     if ($this->relationLoaded('media') && $this->media->isNotEmpty()) {
+    //         $featuredMedia = $this->media
+    //             ->filter(function ($media) {
+    //                 return \Illuminate\Support\Str::startsWith($media->mime_type, 'image/');
+    //             })
+    //             ->first();
+
+    //         if ($featuredMedia) {
+    //             return $imageService->buildImageUrl($featuredMedia->file_path);
+    //         }
+    //     }
+
+    //     // 2. Database featured_image column (truy cập trực tiếp attributes)
+    //     if (!empty($this->attributes['featured_image'])) {
+    //         return $imageService->buildImageUrl($this->attributes['featured_image']);
+    //     }
+
+    //     // 3. Content images
+    //     if ($this->content) {
+    //         $imageFromContent = $imageService->extractImageFromContent($this->content);
+    //         if ($imageFromContent) {
+    //             return $imageFromContent;
+    //         }
+    //     }
+
+    //     return null;
+    // }
 
     /**
      * Get the poll associated with the thread.
@@ -520,6 +612,8 @@ class Thread extends Model
     {
         return $this->follows()->where('user_id', $user->id)->exists();
     }
+
+
 
     /**
      * Get the showcase for this thread (polymorphic relationship).

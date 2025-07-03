@@ -64,6 +64,8 @@ return [
         'search_placeholder' => 'Search...',
         'load_more' => 'Load More',
         'loading' => 'Loading...',
+        'no_more_posts' => 'No more posts',
+        'error_occurred' => 'An error occurred. Try again.',
         'save' => 'Save',
         'cancel' => 'Cancel',
         'delete' => 'Delete',
