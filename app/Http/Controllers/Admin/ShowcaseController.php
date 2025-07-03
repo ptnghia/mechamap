@@ -78,14 +78,15 @@ class ShowcaseController extends Controller
     public function create(): View
     {
         // Lấy danh sách threads và posts có thể showcase
+        // Sử dụng polymorphic relationship thay vì many-to-many
         $availableThreads = Thread::where('is_featured', false)
-            ->whereDoesntHave('showcases')
+            ->whereDoesntHave('showcase') // Sử dụng morphOne relationship
             ->with('user')
             ->orderBy('view_count', 'desc')
             ->limit(20)
             ->get();
 
-        $availablePosts = Post::whereDoesntHave('showcases')
+        $availablePosts = Post::whereDoesntHave('showcase') // Sử dụng morphOne relationship
             ->with(['user', 'thread'])
             ->orderBy('created_at', 'desc')
             ->limit(20)
