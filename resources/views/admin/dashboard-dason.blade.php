@@ -301,7 +301,7 @@
             <div class="card-header align-items-center d-flex">
                 <h4 class="card-title mb-0 flex-grow-1">Forum Activity</h4>
                 <div class="flex-shrink-0">
-                    <a href="{{ route('admin.forum.threads') }}" class="btn btn-soft-primary btn-sm">
+                    <a href="{{ route('admin.moderation.threads') }}" class="btn btn-soft-primary btn-sm">
                         Manage Forum <i class="mdi mdi-arrow-right align-middle ms-1"></i>
                     </a>
                 </div>
@@ -333,7 +333,7 @@
                 <h4 class="card-title mb-0 flex-grow-1">System Status</h4>
                 <div class="flex-shrink-0">
                     <a href="{{ route('admin.settings.maintenance') }}" class="btn btn-soft-primary btn-sm">
-                        Settings <i class="mdi mdi-cog align-middle ms-1"></i>
+                        Settings <i class="fas fa-cog align-middle ms-1"></i>
                     </a>
                 </div>
             </div>

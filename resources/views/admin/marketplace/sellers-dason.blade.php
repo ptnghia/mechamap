@@ -246,10 +246,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.sellers.show', $seller) }}">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem chi tiết
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem chi tiết
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.sellers.edit', $seller) }}">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Chỉnh sửa
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Chỉnh sửa
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 @if($seller->status === 'active')

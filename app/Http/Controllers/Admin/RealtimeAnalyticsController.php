@@ -28,10 +28,10 @@ class RealtimeAnalyticsController extends BaseAdminController
         $realTimeData = $this->getRealTimeMetrics();
         $kpiData = $this->getKPIData();
         $chartData = $this->getChartData();
-        
+
         return view('admin.analytics.realtime-dashboard', compact(
             'realTimeData',
-            'kpiData', 
+            'kpiData',
             'chartData'
         ));
     }
@@ -135,7 +135,7 @@ class RealtimeAnalyticsController extends BaseAdminController
     public function getPredictiveAnalytics(Request $request)
     {
         $period = $request->get('period', 30);
-        
+
         return response()->json([
             'revenue_forecast' => $this->getRevenueForecast($period),
             'user_growth_prediction' => $this->getUserGrowthPrediction($period),
@@ -159,7 +159,7 @@ class RealtimeAnalyticsController extends BaseAdminController
         ]);
 
         $result = $this->calculateCustomKPI($config);
-        
+
         return response()->json($result);
     }
 
@@ -177,8 +177,25 @@ class RealtimeAnalyticsController extends BaseAdminController
 
     private function getServerLoad()
     {
-        // Placeholder - implement based on your server monitoring
-        return round(sys_getloadavg()[0], 2);
+        // Check if function exists (Linux/Unix only)
+        if (function_exists('sys_getloadavg')) {
+            return round(sys_getloadavg()[0], 2);
+        }
+
+        // Windows fallback - simulate server load based on memory usage
+        $memoryUsage = $this->getMemoryUsage();
+
+        // Convert memory usage percentage to load average simulation
+        // This is a rough approximation for Windows systems
+        if ($memoryUsage > 90) {
+            return 2.5; // High load
+        } elseif ($memoryUsage > 70) {
+            return 1.5; // Medium load
+        } elseif ($memoryUsage > 50) {
+            return 0.8; // Normal load
+        } else {
+            return 0.3; // Low load
+        }
     }
 
     private function getMemoryUsage()
@@ -207,7 +224,7 @@ class RealtimeAnalyticsController extends BaseAdminController
     {
         $visitors = Cache::get('daily_visitors', 1000); // Implement visitor tracking
         $orders = $this->getTodayOrders();
-        
+
         return $visitors > 0 ? round(($orders / $visitors) * 100, 2) : 0;
     }
 
@@ -222,7 +239,7 @@ class RealtimeAnalyticsController extends BaseAdminController
     {
         $threads = Thread::whereDate('created_at', today())->count();
         $comments = Comment::whereDate('created_at', today())->count();
-        
+
         return $threads > 0 ? round($comments / $threads, 2) : 0;
     }
 
@@ -244,11 +261,11 @@ class RealtimeAnalyticsController extends BaseAdminController
     {
         $query = MarketplaceOrder::where('payment_status', 'paid')
             ->where('created_at', '>=', $startDate);
-            
+
         if ($endDate) {
             $query->where('created_at', '<', $endDate);
         }
-        
+
         return $query->sum('total_amount');
     }
 
@@ -274,13 +291,13 @@ class RealtimeAnalyticsController extends BaseAdminController
             $revenue = MarketplaceOrder::where('payment_status', 'paid')
                 ->whereBetween('created_at', [$hour, $hour->copy()->addHour()])
                 ->sum('total_amount');
-            
+
             $data[] = [
                 'time' => $hour->format('H:i'),
                 'value' => $revenue,
             ];
         }
-        
+
         return $data;
     }
 
@@ -292,13 +309,13 @@ class RealtimeAnalyticsController extends BaseAdminController
             $activity = User::where('last_login_at', '>=', $hour)
                 ->where('last_login_at', '<', $hour->copy()->addHour())
                 ->count();
-            
+
             $data[] = [
                 'time' => $hour->format('H:i'),
                 'value' => $activity,
             ];
         }
-        
+
         return $data;
     }
 

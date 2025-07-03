@@ -129,8 +129,21 @@ class ModerationController extends Controller
         }
 
         $threads = $query->latest()->paginate(20);
+        $forums = \App\Models\Forum::orderBy('name')->get();
 
-        return view('admin.moderation.threads', compact('threads'));
+        return view('admin.moderation.threads', compact('threads', 'forums'));
+    }
+
+    /**
+     * Show thread details for moderation
+     */
+    public function showThread(Thread $thread)
+    {
+        $thread->load(['user', 'forum', 'comments.user', 'ratings']);
+
+        $html = view('admin.moderation.thread-details', compact('thread'))->render();
+
+        return response($html);
     }
 
     /**
@@ -189,6 +202,68 @@ class ModerationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Thread đã được flag để review'
+        ]);
+    }
+
+    /**
+     * Update thread status (for AJAX calls)
+     */
+    public function updateThreadStatus(Request $request, Thread $thread)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected,flagged,pending'
+        ]);
+
+        switch ($request->status) {
+            case 'approved':
+                $thread->update([
+                    'moderation_status' => 'approved',
+                    'is_flagged' => false,
+                    'is_spam' => false,
+                    'moderation_notes' => $request->notes ?? 'Approved via quick action',
+                    'flagged_by' => null,
+                    'flagged_at' => null,
+                ]);
+                $message = 'Thread đã được duyệt';
+                break;
+
+            case 'rejected':
+                $thread->update([
+                    'moderation_status' => 'spam',
+                    'is_spam' => true,
+                    'is_flagged' => true,
+                    'moderation_notes' => $request->notes ?? 'Rejected via quick action',
+                    'flagged_by' => Auth::id(),
+                    'flagged_at' => now(),
+                ]);
+                $message = 'Thread đã bị từ chối';
+                break;
+
+            case 'flagged':
+                $thread->update([
+                    'moderation_status' => 'flagged',
+                    'is_flagged' => true,
+                    'moderation_notes' => $request->notes ?? 'Flagged via quick action',
+                    'flagged_by' => Auth::id(),
+                    'flagged_at' => now(),
+                ]);
+                $message = 'Thread đã được đánh dấu để review';
+                break;
+
+            case 'pending':
+                $thread->update([
+                    'moderation_status' => 'under_review',
+                    'is_flagged' => false,
+                    'is_spam' => false,
+                    'moderation_notes' => $request->notes ?? 'Set to pending via quick action',
+                ]);
+                $message = 'Thread đã được đặt về trạng thái chờ duyệt';
+                break;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
         ]);
     }
 
@@ -254,6 +329,49 @@ class ModerationController extends Controller
     }
 
     /**
+     * Bulk update threads status
+     */
+    public function bulkUpdateThreads(Request $request)
+    {
+        $request->validate([
+            'thread_ids' => 'required|array',
+            'thread_ids.*' => 'exists:threads,id',
+            'status' => 'required|in:approved,rejected',
+            'reason' => 'nullable|string|max:500'
+        ]);
+
+        $threads = Thread::whereIn('id', $request->thread_ids);
+        $count = $threads->count();
+
+        if ($request->status === 'approved') {
+            $threads->update([
+                'moderation_status' => 'approved',
+                'is_flagged' => false,
+                'is_spam' => false,
+                'moderation_notes' => $request->reason ?? 'Bulk approved',
+                'flagged_by' => null,
+                'flagged_at' => null,
+            ]);
+            $message = "Đã duyệt {$count} threads";
+        } else {
+            $threads->update([
+                'moderation_status' => 'spam',
+                'is_spam' => true,
+                'is_flagged' => true,
+                'moderation_notes' => $request->reason ?? 'Bulk rejected',
+                'flagged_by' => Auth::id(),
+                'flagged_at' => now(),
+            ]);
+            $message = "Đã từ chối {$count} threads";
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
+    }
+
+    /**
      * Danh sách comments cần moderation
      */
     public function comments(Request $request)
@@ -268,8 +386,9 @@ class ModerationController extends Controller
         }
 
         $comments = $query->latest()->paginate(20);
+        $threads = \App\Models\Thread::orderBy('title')->get();
 
-        return view('admin.moderation.comments', compact('comments'));
+        return view('admin.moderation.comments', compact('comments', 'threads'));
     }
 
     /**
@@ -298,6 +417,112 @@ class ModerationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Comment đã được xóa'
+        ]);
+    }
+
+    /**
+     * Show comment details
+     */
+    public function showComment(Comment $comment)
+    {
+        $comment->load(['user', 'thread', 'thread.forum']);
+
+        return view('admin.moderation.comment-details', compact('comment'));
+    }
+
+    /**
+     * Update comment status
+     */
+    public function updateCommentStatus(Request $request, Comment $comment)
+    {
+        $status = $request->input('status');
+
+        switch ($status) {
+            case 'approved':
+                $comment->update([
+                    'is_flagged' => false,
+                    'is_spam' => false,
+                ]);
+                $message = 'Comment đã được duyệt';
+                break;
+
+            case 'rejected':
+                $comment->update([
+                    'is_flagged' => true,
+                    'is_spam' => false,
+                ]);
+                $message = 'Comment đã bị từ chối';
+                break;
+
+            case 'spam':
+                $comment->update([
+                    'is_flagged' => true,
+                    'is_spam' => true,
+                ]);
+                $message = 'Comment đã được đánh dấu là spam';
+                break;
+
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trạng thái không hợp lệ'
+                ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * Bulk update comments
+     */
+    public function bulkUpdateComments(Request $request)
+    {
+        $request->validate([
+            'comment_ids' => 'required|array',
+            'comment_ids.*' => 'exists:comments,id',
+            'status' => 'required|in:approved,rejected,spam',
+            'reason' => 'nullable|string|max:255'
+        ]);
+
+        $commentIds = $request->input('comment_ids');
+        $status = $request->input('status');
+        $reason = $request->input('reason');
+
+        $updateData = [];
+        switch ($status) {
+            case 'approved':
+                $updateData = [
+                    'is_flagged' => false,
+                    'is_spam' => false,
+                ];
+                $message = 'Đã duyệt ' . count($commentIds) . ' comment';
+                break;
+
+            case 'rejected':
+                $updateData = [
+                    'is_flagged' => true,
+                    'is_spam' => false,
+                ];
+                $message = 'Đã từ chối ' . count($commentIds) . ' comment';
+                break;
+
+            case 'spam':
+                $updateData = [
+                    'is_flagged' => true,
+                    'is_spam' => true,
+                ];
+                $message = 'Đã đánh dấu spam ' . count($commentIds) . ' comment';
+                break;
+        }
+
+        Comment::whereIn('id', $commentIds)->update($updateData);
+
+        return response()->json([
+            'success' => true,
+            'message' => $message
         ]);
     }
 

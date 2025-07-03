@@ -33,6 +33,7 @@ class CheckAdminPermission
 
         // Nếu có permission cụ thể được chỉ định
         if ($permission) {
+            // ✅ UNIFIED: Sử dụng unified hasPermission() method
             $hasPermission = $user->hasPermission($permission);
 
             if (!$hasPermission) {

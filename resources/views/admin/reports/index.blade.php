@@ -44,7 +44,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-flag font-size-24"></i>
+                                                <i class="fas fa-flag font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-check-circle font-size-24"></i>
+                                                <i class="fas fa-check-circle font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -82,7 +82,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-danger">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-close-circle font-size-24"></i>
+                                                <i class="fas fa-times-circle font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>

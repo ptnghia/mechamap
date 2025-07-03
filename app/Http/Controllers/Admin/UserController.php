@@ -85,13 +85,9 @@ class UserController extends Controller
      */
     public function create(): View
     {
-        // Breadcrumbs
-        $breadcrumbs = [
-            ['title' => 'Quản lý thành viên', 'url' => route('admin.users.index')],
-            ['title' => 'Thêm thành viên mới', 'url' => route('admin.users.create')]
-        ];
-
-        return view('admin.users.create', compact('breadcrumbs'));
+        // ✅ REDIRECT: Redirect to specific creation based on context
+        // Default to admin creation for security
+        return redirect()->route('admin.users.admins.create');
     }
 
     /**
@@ -359,6 +355,15 @@ class UserController extends Controller
      */
     public function createAdmin(): View
     {
+        // Load available roles for multiple roles selection
+        $availableRoles = \App\Models\Role::where('is_active', true)
+            ->where('can_be_assigned', true)
+            ->whereIn('role_group', ['system_management', 'community_management'])
+            ->orderBy('role_group')
+            ->orderBy('hierarchy_level')
+            ->get()
+            ->groupBy('role_group');
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Quản lý thành viên', 'url' => route('admin.users.index')],
@@ -366,7 +371,7 @@ class UserController extends Controller
             ['title' => 'Thêm quản trị viên', 'url' => route('admin.users.admins.create')]
         ];
 
-        return view('admin.users.admins.create', compact('breadcrumbs'));
+        return view('admin.users.admins.create', compact('breadcrumbs', 'availableRoles'));
     }
 
     /**
@@ -386,6 +391,11 @@ class UserController extends Controller
             'website' => ['nullable', 'url', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:500'],
+            // Multiple roles validation
+            'enable_multiple_roles' => ['nullable', 'boolean'],
+            'additional_roles' => ['nullable', 'array'],
+            'additional_roles.*' => ['string', 'exists:roles,name'],
+            'assignment_reason' => ['nullable', 'string', 'max:500'],
         ]);
 
         if ($validator->fails()) {
@@ -413,11 +423,55 @@ class UserController extends Controller
 
         $user->save();
 
-        // Gán role permissions
-        $user->assignRole($request->role);
+        // Handle role assignment
+        if ($request->enable_multiple_roles && $request->additional_roles) {
+            // Multiple roles assignment
+            try {
+                \DB::beginTransaction();
+
+                // Find roles by name and convert to IDs
+                $roleNames = $request->additional_roles;
+                $roles = \App\Models\Role::whereIn('name', $roleNames)->get();
+                $primaryRoleName = $request->role;
+
+                // Attach multiple roles
+                foreach ($roles as $role) {
+                    $isPrimary = ($role->name === $primaryRoleName);
+
+                    $user->roles()->attach($role->id, [
+                        'is_primary' => $isPrimary,
+                        'assigned_by' => auth()->id(),
+                        'assigned_at' => now(),
+                        'assignment_reason' => $request->assignment_reason ?? 'Gán multiple roles khi tạo admin mới',
+                        'is_active' => true,
+                    ]);
+                }
+
+                // Update user's primary role info
+                $primaryRole = $roles->where('name', $primaryRoleName)->first();
+                if ($primaryRole) {
+                    $user->update([
+                        'role' => $primaryRole->name,
+                        'role_group' => $primaryRole->role_group,
+                    ]);
+                }
+
+                \DB::commit();
+
+                $roleCount = count($roleNames);
+                $message = "Quản trị viên mới đã được tạo thành công với {$roleCount} roles: " . implode(', ', $roleNames);
+            } catch (\Exception $e) {
+                \DB::rollback();
+                return redirect()->back()->with('error', 'Có lỗi xảy ra khi gán multiple roles: ' . $e->getMessage());
+            }
+        } else {
+            // Single role assignment (legacy)
+            $user->assignRole($request->role);
+            $message = 'Quản trị viên mới đã được tạo thành công.';
+        }
 
         return redirect()->route('admin.users.admins')
-            ->with('success', 'Quản trị viên mới đã được tạo thành công.');
+            ->with('success', $message);
     }
 
     /**
@@ -429,6 +483,9 @@ class UserController extends Controller
         if (!in_array($user->role, ['admin', 'moderator'])) {
             abort(404);
         }
+
+        // Load user's current roles
+        $user->load('roles');
 
         // Breadcrumbs
         $breadcrumbs = [
@@ -510,11 +567,25 @@ class UserController extends Controller
             abort(404);
         }
 
-        // Lấy tất cả permissions
-        $allPermissions = \Spatie\Permission\Models\Permission::all()->groupBy('group');
+        // Lấy tất cả permissions từ custom Permission model
+        $allPermissions = \App\Models\Permission::active()
+            ->orderBy('category')
+            ->orderBy('module')
+            ->get()
+            ->groupBy('category');
 
-        // Lấy permissions hiện tại của user
-        $userPermissions = $user->permissions->pluck('name')->toArray();
+        // Lấy permissions hiện tại của user từ roles
+        $userPermissions = [];
+        if ($user->roles && $user->roles->count() > 0) {
+            foreach ($user->roles as $role) {
+                $rolePermissions = $role->permissions->pluck('name')->toArray();
+                $userPermissions = array_merge($userPermissions, $rolePermissions);
+            }
+        }
+        $userPermissions = array_unique($userPermissions);
+
+        // Load permission groups từ config
+        $permissionGroups = config('mechamap_permissions.permission_groups', []);
 
         // Breadcrumbs
         $breadcrumbs = [
@@ -524,7 +595,7 @@ class UserController extends Controller
             ['title' => 'Phân quyền', 'url' => route('admin.users.admins.permissions', $user)]
         ];
 
-        return view('admin.users.admins.permissions', compact('user', 'allPermissions', 'userPermissions', 'breadcrumbs'));
+        return view('admin.users.admins.permissions', compact('user', 'allPermissions', 'userPermissions', 'permissionGroups', 'breadcrumbs'));
     }
 
     /**
@@ -541,18 +612,58 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'permissions' => ['nullable', 'array'],
             'permissions.*' => ['exists:permissions,name'],
+            'reason' => ['nullable', 'string', 'max:500'],
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
 
-        // Cập nhật permissions
-        $permissions = $request->input('permissions', []);
-        $user->syncPermissions($permissions);
+        try {
+            \DB::beginTransaction();
 
-        return redirect()->route('admin.users.admins')
-            ->with('success', 'Phân quyền đã được cập nhật thành công.');
+            // Lấy permissions được chọn
+            $selectedPermissions = $request->input('permissions', []);
+            $reason = $request->input('reason', 'Cập nhật permissions cho admin/moderator');
+
+            // Cập nhật permissions thông qua roles
+            // Tạo temporary role hoặc update existing role permissions
+            if ($user->roles && $user->roles->count() > 0) {
+                $primaryRole = $user->roles->where('pivot.is_primary', true)->first();
+
+                if ($primaryRole) {
+                    // Sync permissions cho primary role
+                    $permissionData = [];
+                    $permissions = \App\Models\Permission::whereIn('name', $selectedPermissions)->get();
+
+                    foreach ($permissions as $permission) {
+                        $permissionData[$permission->id] = [
+                            'is_granted' => true,
+                            'granted_by' => auth()->id(),
+                            'granted_at' => now(),
+                            'grant_reason' => $reason,
+                        ];
+                    }
+
+                    $primaryRole->permissions()->sync($permissionData);
+                }
+            }
+
+            // Update user's cached permissions
+            $user->update([
+                'role_permissions' => $selectedPermissions,
+            ]);
+
+            \DB::commit();
+
+            return redirect()->route('admin.users.admins')
+                ->with('success', 'Phân quyền đã được cập nhật thành công.');
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra khi cập nhật permissions: ' . $e->getMessage());
+        }
     }
 
     // ========== QUẢN LÝ THÀNH VIÊN THƯỜNG ==========
@@ -893,6 +1004,91 @@ class UserController extends Controller
             exit;
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Có lỗi xảy ra khi export: ' . $e->getMessage());
+        }
+    }
+
+    // ========== MULTIPLE ROLES MANAGEMENT ==========
+
+    /**
+     * Show multiple roles management page (ADMIN/MODERATOR ONLY)
+     */
+    public function manageRoles(User $user)
+    {
+        // ✅ SECURITY: Chỉ Admin/Moderator mới có quyền truy cập admin permissions
+        $allowedRoles = ['admin', 'moderator', 'content_moderator', 'community_moderator', 'marketplace_moderator'];
+        if (!in_array($user->role, $allowedRoles)) {
+            abort(404, 'Chỉ Admin và Moderator mới có quyền truy cập tính năng này.');
+        }
+
+        $roles = \App\Models\Role::where('is_active', true)
+            ->where('can_be_assigned', true)
+            ->orderBy('role_group')
+            ->orderBy('hierarchy_level')
+            ->get()
+            ->groupBy('role_group');
+
+        $userRoles = $user->roles()->get();
+        $primaryRole = $user->primaryRole()->first();
+
+        // Breadcrumbs - Update to reflect admin context
+        $breadcrumbs = [
+            ['title' => 'Quản lý Admin', 'url' => route('admin.users.admins')],
+            ['title' => $user->name, 'url' => route('admin.users.show', $user)],
+            ['title' => 'Quản lý Multiple Roles', 'url' => route('admin.users.roles', $user)]
+        ];
+
+        return view('admin.users.manage-roles', compact('user', 'roles', 'userRoles', 'primaryRole', 'breadcrumbs'));
+    }
+
+    /**
+     * Update user's multiple roles (ADMIN/MODERATOR ONLY)
+     */
+    public function updateRoles(Request $request, User $user)
+    {
+        // ✅ SECURITY: Chỉ Admin/Moderator mới có quyền truy cập admin permissions
+        $allowedRoles = ['admin', 'moderator', 'content_moderator', 'community_moderator', 'marketplace_moderator'];
+        if (!in_array($user->role, $allowedRoles)) {
+            abort(404, 'Chỉ Admin và Moderator mới có quyền truy cập tính năng này.');
+        }
+
+        $request->validate([
+            'primary_role_id' => 'required|exists:roles,id',
+            'role_ids' => 'required|array|min:1',
+            'role_ids.*' => 'exists:roles,id',
+            'reason' => 'required|string|max:500',
+        ]);
+
+        try {
+            \DB::beginTransaction();
+
+            // Detach all current roles
+            $user->roles()->detach();
+
+            // Attach new roles
+            foreach ($request->role_ids as $roleId) {
+                $isPrimary = ($roleId == $request->primary_role_id);
+
+                $user->roles()->attach($roleId, [
+                    'is_primary' => $isPrimary,
+                    'assigned_by' => auth()->id(),
+                    'assigned_at' => now(),
+                    'assignment_reason' => $request->reason,
+                ]);
+            }
+
+            // Update user's primary role field
+            $primaryRole = \App\Models\Role::find($request->primary_role_id);
+            $user->update([
+                'role' => $primaryRole->name,
+                'role_group' => $primaryRole->role_group,
+            ]);
+
+            \DB::commit();
+
+            return redirect()->back()->with('success', 'Đã cập nhật multiple roles thành công cho ' . $user->name);
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
 }

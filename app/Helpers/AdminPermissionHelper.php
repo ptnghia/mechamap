@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 class AdminPermissionHelper
 {
     /**
-     * Kiểm tra user hiện tại có permission không
+     * ✅ UNIFIED: Kiểm tra user hiện tại có permission không
      *
      * @param string $permission
      * @return bool
@@ -18,6 +18,7 @@ class AdminPermissionHelper
             return false;
         }
 
+        // Sử dụng unified hasPermission() method
         return Auth::user()->hasPermission($permission);
     }
 

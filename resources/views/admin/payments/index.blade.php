@@ -63,7 +63,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-clock-outline font-size-24"></i>
+                                                <i class="fas fa-clock-outline font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -82,7 +82,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-check-circle font-size-24"></i>
+                                                <i class="fas fa-check-circle font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@
                                     <div class="flex-shrink-0 align-self-center">
                                         <div class="mini-stat-icon avatar-sm rounded-circle bg-danger">
                                             <span class="avatar-title">
-                                                <i class="mdi mdi-close-circle font-size-24"></i>
+                                                <i class="fas fa-times-circle font-size-24"></i>
                                             </span>
                                         </div>
                                     </div>

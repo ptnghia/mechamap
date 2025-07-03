@@ -33,7 +33,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Cấu hình các phương thức thanh toán cho marketplace MechaMap
                 </div>
 
@@ -164,7 +164,7 @@
 
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-content-save me-1"></i> Lưu Cài Đặt
+                            <i class="fas fa-save me-1"></i> Lưu Cài Đặt
                         </button>
                     </div>
                 </form>
@@ -225,7 +225,7 @@
 
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-content-save me-1"></i> Lưu Cài Đặt
+                            <i class="fas fa-save me-1"></i> Lưu Cài Đặt
                         </button>
                     </div>
                 </form>

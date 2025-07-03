@@ -95,7 +95,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i data-feather="alert-triangle"></i>
+                                        <i class="fas fa-exclamation-triangle"></i>
                                     </span>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                                 <i data-feather="bar-chart-2" class="me-1"></i> So Sánh
                             </button>
                             <button type="button" class="btn btn-success btn-sm" onclick="exportMaterials()">
-                                <i data-feather="download" class="me-1"></i> Xuất Excel
+                                <i class="fas fa-download" class="me-1"></i> Xuất Excel
                             </button>
                         </div>
                     </div>
@@ -288,11 +288,11 @@
                                             </a>
                                             @if($material->datasheet_path)
                                                 <a href="{{ route('admin.technical.materials.datasheet', $material) }}" class="btn btn-outline-success" title="Tải datasheet">
-                                                    <i data-feather="download"></i>
+                                                    <i class="fas fa-download"></i>
                                                 </a>
                                             @endif
                                             <button type="button" class="btn btn-outline-warning" onclick="toggleFeatured({{ $material->id }})" title="Nổi bật">
-                                                <i data-feather="star"></i>
+                                                <i class="fas fa-star"></i>
                                             </button>
                                             <button type="button" class="btn btn-outline-danger" onclick="deleteMaterial({{ $material->id }})" title="Xóa">
                                                 <i class="fas fa-trash"></i>

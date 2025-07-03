@@ -33,7 +33,7 @@
                         <form action="{{ route('admin.search.global') }}" method="GET" class="d-flex">
                             <input type="text" class="form-control me-2" name="q" value="{{ $query }}" placeholder="Nhập từ khóa tìm kiếm...">
                             <button type="submit" class="btn btn-primary">
-                                <i class="mdi mdi-magnify"></i>
+                                <i class="fas fa-search"></i>
                             </button>
                         </form>
                     </div>
@@ -48,7 +48,7 @@
                     <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-bs-toggle="tab" href="#users-tab" role="tab">
-                                <span class="d-block d-sm-none"><i class="mdi mdi-account"></i></span>
+                                <span class="d-block d-sm-none"><i class="fas fa-user"></i></span>
                                 <span class="d-none d-sm-block">Người Dùng</span>
                             </a>
                         </li>
@@ -66,7 +66,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#pages-tab" role="tab">
-                                <span class="d-block d-sm-none"><i class="mdi mdi-file"></i></span>
+                                <span class="d-block d-sm-none"><i class="fas fa-file"></i></span>
                                 <span class="d-none d-sm-block">Trang</span>
                             </a>
                         </li>
@@ -76,7 +76,7 @@
                         <!-- Users Tab -->
                         <div class="tab-pane active" id="users-tab" role="tabpanel">
                             <div class="alert alert-info">
-                                <i class="mdi mdi-information-outline me-2"></i>
+                                <i class="fas fa-info-circle-outline me-2"></i>
                                 Chức năng tìm kiếm đang được phát triển. Sẽ sớm ra mắt!
                             </div>
                             
@@ -102,7 +102,7 @@
                                 
                                 <!-- Empty State -->
                                 <div class="col-12 text-center py-4">
-                                    <i class="mdi mdi-account-search font-size-48 text-muted"></i>
+                                    <i class="fas fa-user-search font-size-48 text-muted"></i>
                                     <h5 class="text-muted mt-2">Không tìm thấy người dùng</h5>
                                     <p class="text-muted">Thử tìm kiếm với từ khóa khác</p>
                                 </div>
@@ -112,7 +112,7 @@
                         <!-- Posts Tab -->
                         <div class="tab-pane" id="posts-tab" role="tabpanel">
                             <div class="alert alert-info">
-                                <i class="mdi mdi-information-outline me-2"></i>
+                                <i class="fas fa-info-circle-outline me-2"></i>
                                 Chức năng tìm kiếm bài đăng đang được phát triển.
                             </div>
                             
@@ -126,7 +126,7 @@
                         <!-- Products Tab -->
                         <div class="tab-pane" id="products-tab" role="tabpanel">
                             <div class="alert alert-info">
-                                <i class="mdi mdi-information-outline me-2"></i>
+                                <i class="fas fa-info-circle-outline me-2"></i>
                                 Chức năng tìm kiếm sản phẩm đang được phát triển.
                             </div>
                             
@@ -140,12 +140,12 @@
                         <!-- Pages Tab -->
                         <div class="tab-pane" id="pages-tab" role="tabpanel">
                             <div class="alert alert-info">
-                                <i class="mdi mdi-information-outline me-2"></i>
+                                <i class="fas fa-info-circle-outline me-2"></i>
                                 Chức năng tìm kiếm trang đang được phát triển.
                             </div>
                             
                             <div class="text-center py-4">
-                                <i class="mdi mdi-file-document-outline font-size-48 text-muted"></i>
+                                <i class="fas fa-file-document-outline font-size-48 text-muted"></i>
                                 <h5 class="text-muted mt-2">Không tìm thấy trang</h5>
                                 <p class="text-muted">Thử tìm kiếm với từ khóa khác</p>
                             </div>
@@ -157,14 +157,14 @@
             <!-- No Search Query -->
             <div class="card">
                 <div class="card-body text-center py-5">
-                    <i class="mdi mdi-magnify font-size-48 text-muted mb-3"></i>
+                    <i class="fas fa-search font-size-48 text-muted mb-3"></i>
                     <h5 class="text-muted">Nhập từ khóa để tìm kiếm</h5>
                     <p class="text-muted mb-4">Tìm kiếm người dùng, bài đăng, sản phẩm và trang trong hệ thống</p>
                     
                     <form action="{{ route('admin.search.global') }}" method="GET" class="d-inline-flex">
                         <input type="text" class="form-control me-2" name="q" placeholder="Nhập từ khóa tìm kiếm..." style="width: 300px;">
                         <button type="submit" class="btn btn-primary">
-                            <i class="mdi mdi-magnify me-1"></i> Tìm Kiếm
+                            <i class="fas fa-search me-1"></i> Tìm Kiếm
                         </button>
                     </form>
                 </div>

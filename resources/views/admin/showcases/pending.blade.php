@@ -35,7 +35,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-clock-outline font-size-24"></i>
+                                        <i class="fas fa-clock-outline font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-check-circle font-size-24"></i>
+                                        <i class="fas fa-check-circle font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-danger">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-close-circle font-size-24"></i>
+                                        <i class="fas fa-times-circle font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -113,10 +113,10 @@
                     <div class="col-auto">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success btn-sm" onclick="approveSelected()">
-                                <i class="mdi mdi-check me-1"></i> Duyệt Đã Chọn
+                                <i class="fas fa-check me-1"></i> Duyệt Đã Chọn
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" onclick="rejectSelected()">
-                                <i class="mdi mdi-close me-1"></i> Từ Chối Đã Chọn
+                                <i class="fas fa-times me-1"></i> Từ Chối Đã Chọn
                             </button>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Chức năng này đang được phát triển. Sẽ sớm ra mắt!
                 </div>
                 
@@ -153,7 +153,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Tìm kiếm..." id="searchInput">
                             <button class="btn btn-outline-secondary" type="button">
-                                <i class="mdi mdi-magnify"></i>
+                                <i class="fas fa-search"></i>
                             </button>
                         </div>
                     </div>

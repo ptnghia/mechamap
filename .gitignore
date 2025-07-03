@@ -158,6 +158,14 @@ test.txt
 /temp_*.sql
 /*_temp.sql
 
+# Documentation Files (must be in docs/)
+/DOCUMENTATION_*.md
+/DYNAMIC_*.md
+/KNOWLEDGE_*.md
+/*_COMPLETION_*.md
+/*_IMPROVEMENTS.md
+/*_PLAN.md
+
 # Configuration Backups
 /.env.*
 !/.env.example

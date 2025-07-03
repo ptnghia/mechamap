@@ -4,6 +4,26 @@
 
 @push('styles')
 <!-- Page specific CSS -->
+<style>
+.chart-area {
+    position: relative;
+    height: 300px !important;
+    width: 100% !important;
+    min-height: 300px;
+}
+.chart-pie {
+    position: relative;
+    height: 300px !important;
+    width: 100% !important;
+    min-height: 300px;
+}
+canvas {
+    width: 100% !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    display: block !important;
+}
+</style>
 @endpush
 
 @section('content')
@@ -67,19 +87,57 @@
         <div class="col-xl-6 col-lg-6 mb-4">
             <div class="card shadow h-100">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Bài đăng theo diễn đàn</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Bài đăng theo diễn đàn (Top 15)</h6>
                 </div>
                 <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="forumChart"></canvas>
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-bordered table-sm" width="100%" cellspacing="0">
+                            <thead class="thead-light sticky-top">
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th style="width: 70%">Tên diễn đàn</th>
+                                    <th style="width: 25%" class="text-center">Số bài đăng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($forumStats->take(15) as $index => $stat)
+                                <tr>
+                                    <td class="text-center">{{ $index + 1 }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="mr-2">
+                                                @if($index < 3)
+                                                    <i class="fas fa-trophy text-warning"></i>
+                                                @elseif($index < 5)
+                                                    <i class="fas fa-medal text-info"></i>
+                                                @else
+                                                    <i class="fas fa-circle text-primary" style="font-size: 8px;"></i>
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <div class="font-weight-bold">{{ $stat->forum->name }}</div>
+                                                @if($stat->forum->category)
+                                                <small class="text-muted">{{ $stat->forum->category->name }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge badge-primary">{{ $stat->total }}</span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="mt-4 text-center small">
-                        @foreach($forumStats as $stat)
-                            <span class="mr-2">
-                                <i class="fas fa-circle" style="color: {{ randomColor($loop->index) }}"></i> {{ $stat->forum->name }}: {{ $stat->total }}
-                            </span>
-                        @endforeach
+                    @if($forumStats->count() > 15)
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            Hiển thị top 15 trong tổng số {{ $forumStats->count() }} diễn đàn
+                        </small>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -141,7 +199,13 @@
 @endsection
 
 @section('scripts')
+@endsection
+
+@push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎯 Initializing content charts...');
+
     // Hàm chuyển đổi tháng sang tên tháng
     function getMonthName(month) {
         const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
@@ -150,8 +214,10 @@
 
     // Biểu đồ trạng thái bài đăng
     var threadStatusCtx = document.getElementById("threadStatusChart");
-    var threadStatusData = @json($threadStatusStats);
-    var threadStatusChart = new Chart(threadStatusCtx, {
+    if (threadStatusCtx) {
+        var threadStatusData = @json($threadStatusStats);
+        console.log('📊 Thread status data:', threadStatusData);
+        var threadStatusChart = new Chart(threadStatusCtx, {
         type: 'doughnut',
         data: {
             labels: threadStatusData.map(item => item.status.charAt(0).toUpperCase() + item.status.slice(1)),
@@ -168,66 +234,35 @@
         },
         options: {
             maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
+            plugins: {
+                tooltip: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    padding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                }
             },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
+            cutout: '80%',
         },
     });
+        console.log('✅ Thread status chart created successfully');
+    }
 
-    // Biểu đồ diễn đàn
-    var forumCtx = document.getElementById("forumChart");
-    var forumData = @json($forumStats);
-    var forumChart = new Chart(forumCtx, {
-        type: 'doughnut',
-        data: {
-            labels: forumData.map(item => item.forum.name),
-            datasets: [{
-                data: forumData.map(item => item.total),
-                backgroundColor: [
-                    '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796',
-                    '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796'
-                ],
-                hoverBackgroundColor: [
-                    '#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f',
-                    '#2e59d9', '#17a673', '#2c9faf', '#dda20a', '#be2617', '#60616f'
-                ],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
-    });
+    // Biểu đồ diễn đàn đã được thay thế bằng bảng
+    console.log('📊 Forum stats displayed as table instead of chart');
 
     // Biểu đồ chuyên mục
     var categoryCtx = document.getElementById("categoryChart");
-    var categoryData = @json($categoryStats);
-    var categoryChart = new Chart(categoryCtx, {
+    if (categoryCtx) {
+        var categoryData = @json($categoryStats);
+        console.log('📂 Category data:', categoryData);
+        var categoryChart = new Chart(categoryCtx, {
         type: 'doughnut',
         data: {
             labels: categoryData.map(item => item.category.name),
@@ -246,30 +281,35 @@
         },
         options: {
             maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
+            plugins: {
+                tooltip: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    padding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                }
             },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
+            cutout: '80%',
         },
     });
+        console.log('✅ Category chart created successfully');
+    }
 
     // Biểu đồ bài đăng theo thời gian
     var threadTimeCtx = document.getElementById("threadTimeChart");
-    var threadTimeData = @json($threadTimeStats);
-    var threadTimeLabels = threadTimeData.map(item => getMonthName(item.month) + ' ' + item.year);
-    var threadTimeValues = threadTimeData.map(item => item.total);
-    
-    var threadTimeChart = new Chart(threadTimeCtx, {
+    if (threadTimeCtx) {
+        var threadTimeData = @json($threadTimeStats);
+        console.log('📈 Thread time data:', threadTimeData);
+        var threadTimeLabels = threadTimeData.map(item => getMonthName(item.month) + ' ' + item.year);
+        var threadTimeValues = threadTimeData.map(item => item.total);
+
+        var threadTimeChart = new Chart(threadTimeCtx, {
         type: 'line',
         data: {
             labels: threadTimeLabels,
@@ -300,32 +340,30 @@
                 }
             },
             scales: {
-                xAxes: [{
+                x: {
                     time: {
                         unit: 'date'
                     },
-                    gridLines: {
+                    grid: {
                         display: false,
                         drawBorder: false
                     },
                     ticks: {
                         maxTicksLimit: 7
                     }
-                }],
-                yAxes: [{
+                },
+                y: {
                     ticks: {
                         maxTicksLimit: 5,
                         padding: 10,
                         beginAtZero: true
                     },
-                    gridLines: {
+                    grid: {
                         color: "rgb(234, 236, 244)",
-                        zeroLineColor: "rgb(234, 236, 244)",
                         drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
+                        borderDash: [2]
                     }
-                }],
+                }
             },
             legend: {
                 display: false
@@ -347,14 +385,18 @@
             }
         }
     });
+        console.log('✅ Thread time chart created successfully');
+    }
 
     // Biểu đồ bình luận theo thời gian
     var commentTimeCtx = document.getElementById("commentTimeChart");
-    var commentTimeData = @json($commentTimeStats);
-    var commentTimeLabels = commentTimeData.map(item => getMonthName(item.month) + ' ' + item.year);
-    var commentTimeValues = commentTimeData.map(item => item.total);
-    
-    var commentTimeChart = new Chart(commentTimeCtx, {
+    if (commentTimeCtx) {
+        var commentTimeData = @json($commentTimeStats);
+        console.log('💬 Comment time data:', commentTimeData);
+        var commentTimeLabels = commentTimeData.map(item => getMonthName(item.month) + ' ' + item.year);
+        var commentTimeValues = commentTimeData.map(item => item.total);
+
+        var commentTimeChart = new Chart(commentTimeCtx, {
         type: 'line',
         data: {
             labels: commentTimeLabels,
@@ -385,32 +427,30 @@
                 }
             },
             scales: {
-                xAxes: [{
+                x: {
                     time: {
                         unit: 'date'
                     },
-                    gridLines: {
+                    grid: {
                         display: false,
                         drawBorder: false
                     },
                     ticks: {
                         maxTicksLimit: 7
                     }
-                }],
-                yAxes: [{
+                },
+                y: {
                     ticks: {
                         maxTicksLimit: 5,
                         padding: 10,
                         beginAtZero: true
                     },
-                    gridLines: {
+                    grid: {
                         color: "rgb(234, 236, 244)",
-                        zeroLineColor: "rgb(234, 236, 244)",
                         drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
+                        borderDash: [2]
                     }
-                }],
+                }
             },
             legend: {
                 display: false
@@ -432,9 +472,10 @@
             }
         }
     });
-</script>
+        console.log('✅ Comment time chart created successfully');
+    }
 
-@push('scripts')
-<!-- Page specific JS -->
+    console.log('🎉 All content charts initialized successfully!');
+});
+</script>
 @endpush
-@endsection

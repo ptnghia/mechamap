@@ -73,7 +73,7 @@
                         <div class="flex-shrink-0 align-self-center">
                             <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                 <span class="avatar-title">
-                                    <i class="mdi mdi-flag font-size-24"></i>
+                                    <i class="fas fa-flag font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                         <div class="flex-shrink-0 align-self-center">
                             <div class="mini-stat-icon avatar-sm rounded-circle bg-info">
                                 <span class="avatar-title">
-                                    <i class="mdi mdi-flag-variant font-size-24"></i>
+                                    <i class="fas fa-flag-variant font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-auto">
                             <a href="{{ route('admin.technical.standards.create') }}" class="btn btn-primary">
-                                <i class="mdi mdi-plus me-1"></i> Thêm tiêu chuẩn
+                                <i class="fas fa-plus me-1"></i> Thêm tiêu chuẩn
                             </a>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Tìm kiếm tiêu chuẩn..." id="searchInput">
                                 <button class="btn btn-outline-secondary" type="button">
-                                    <i class="mdi mdi-magnify"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
@@ -220,13 +220,13 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem chi tiết
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem chi tiết
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-download font-size-16 text-info me-1"></i> Tải PDF
+                                                    <i class="fas fa-download font-size-16 text-info me-1"></i> Tải PDF
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Chỉnh sửa
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Chỉnh sửa
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item text-danger" href="#" onclick="deleteStandard({{ $standard->id ?? 1 }})">
@@ -243,7 +243,7 @@
                                             <i class="mdi mdi-certificate font-size-48 text-muted mb-2"></i>
                                             <p class="text-muted mb-0">Chưa có tiêu chuẩn kỹ thuật nào</p>
                                             <a href="{{ route('admin.technical.standards.create') }}" class="btn btn-primary btn-sm mt-2">
-                                                <i class="mdi mdi-plus me-1"></i> Thêm tiêu chuẩn đầu tiên
+                                                <i class="fas fa-plus me-1"></i> Thêm tiêu chuẩn đầu tiên
                                             </a>
                                         </div>
                                     </td>

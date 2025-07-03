@@ -32,7 +32,7 @@
                     <div class="col-auto">
                         <div class="btn-group">
                             <a href="{{ route('admin.page-seo.create') }}" class="btn btn-primary btn-sm">
-                                <i class="mdi mdi-plus me-1"></i> Thêm Cấu Hình Mới
+                                <i class="fas fa-plus me-1"></i> Thêm Cấu Hình Mới
                             </a>
                             <a href="{{ route('admin.seo.index') }}" class="btn btn-outline-secondary btn-sm">
                                 <i class="mdi mdi-arrow-left me-1"></i> Quay Lại
@@ -142,7 +142,7 @@
                 </div>
             @else
                 <div class="text-center py-5">
-                    <i class="mdi mdi-magnify font-size-48 text-muted mb-3"></i>
+                    <i class="fas fa-search font-size-48 text-muted mb-3"></i>
                     <p class="text-muted mb-0">Chưa có cấu hình SEO nào cho các trang.</p>
                     <div class="mt-3">
                         <a href="{{ route('admin.page-seo.create') }}" class="btn btn-primary">

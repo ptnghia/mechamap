@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.pages.create') }}" class="btn btn-sm btn-primary">
-        <i class="class="fas fa-plus"-lg me-1"></i> {{ __('Tạo bài viết mới') }}
+        <i class="fas fa-plus me-1"></i> {{ __('Tạo bài viết mới') }}
     </a>
     <a href="{{ route('admin.page-categories.index') }}" class="btn btn-sm btn-outline-primary">
         <i class="fas fa-folder me-1"></i> {{ __('Quản lý danh mục') }}
@@ -61,7 +61,7 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="class="fas fa-filter" me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">
                         <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
@@ -115,13 +115,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.pages.show', $page) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="class="fas fa-eye""></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="class="fas fa-edit""></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $page->id }}" title="{{ __('Xóa') }}">
-                                            <i class="class="fas fa-trash""></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 

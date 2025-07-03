@@ -34,7 +34,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-bell font-size-24"></i>
+                                        <i class="fas fa-bell font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-bell-alert font-size-24"></i>
+                                        <i class="fas fa-bell-alert font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-calendar-today font-size-24"></i>
+                                        <i class="fas fa-calendar-today font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -112,10 +112,10 @@
                     <div class="col-auto">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success btn-sm" onclick="markAllAsRead()">
-                                <i class="mdi mdi-check-all me-1"></i> Đánh Dấu Tất Cả Đã Đọc
+                                <i class="fas fa-check-all me-1"></i> Đánh Dấu Tất Cả Đã Đọc
                             </button>
                             <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-filter me-1"></i> Lọc
+                                <i class="fas fa-filter me-1"></i> Lọc
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="?filter=unread">Chưa đọc</a></li>

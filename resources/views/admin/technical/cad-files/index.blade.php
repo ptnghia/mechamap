@@ -53,7 +53,7 @@
                         <div class="flex-shrink-0 align-self-center">
                             <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                 <span class="avatar-title">
-                                    <i class="mdi mdi-file-cad font-size-24"></i>
+                                    <i class="fas fa-file-cad font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                         <div class="flex-shrink-0 align-self-center">
                             <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                 <span class="avatar-title">
-                                    <i class="mdi mdi-file-outline font-size-24"></i>
+                                    <i class="fas fa-file-outline font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-auto">
                             <a href="{{ route('admin.technical.cad-files.create') }}" class="btn btn-primary">
-                                <i class="mdi mdi-plus me-1"></i> Upload file CAD
+                                <i class="fas fa-plus me-1"></i> Upload file CAD
                             </a>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Tìm kiếm file CAD..." id="searchInput">
                                 <button class="btn btn-outline-secondary" type="button">
-                                    <i class="mdi mdi-magnify"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
@@ -211,13 +211,13 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem trước
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem trước
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-download font-size-16 text-info me-1"></i> Tải xuống
+                                                    <i class="fas fa-download font-size-16 text-info me-1"></i> Tải xuống
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Chỉnh sửa
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Chỉnh sửa
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item text-danger" href="#" onclick="deleteCADFile({{ $file->id ?? 1 }})">
@@ -234,7 +234,7 @@
                                             <i class="mdi mdi-cube-outline font-size-48 text-muted mb-2"></i>
                                             <p class="text-muted mb-0">Chưa có file CAD nào</p>
                                             <a href="{{ route('admin.technical.cad-files.create') }}" class="btn btn-primary btn-sm mt-2">
-                                                <i class="mdi mdi-plus me-1"></i> Upload file CAD đầu tiên
+                                                <i class="fas fa-plus me-1"></i> Upload file CAD đầu tiên
                                             </a>
                                         </div>
                                     </td>

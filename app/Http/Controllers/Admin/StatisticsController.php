@@ -24,7 +24,7 @@ class StatisticsController extends Controller
         $overviewStats = [
             'users' => User::count(),
             'threads' => Thread::count(),
-            'posts' => Post::count(),
+            'posts' => Thread::count(), // Sử dụng threads thay vì posts
             'comments' => Comment::count(),
             'forums' => Forum::count(),
             'categories' => Category::count(),
@@ -48,7 +48,7 @@ class StatisticsController extends Controller
 
         // Thống kê tương tác theo tháng (12 tháng gần nhất)
         $interactionStats = DB::table(DB::raw('(
-                SELECT created_at FROM posts
+                SELECT created_at FROM threads
                 UNION ALL
                 SELECT created_at FROM comments
             ) as interactions'))
@@ -109,7 +109,7 @@ class StatisticsController extends Controller
             'users.created_at',
             'users.last_seen_at as last_login_at',
             DB::raw('(SELECT COUNT(*) FROM threads WHERE threads.user_id = users.id) as threads_count'),
-            DB::raw('(SELECT COUNT(*) FROM posts WHERE posts.user_id = users.id) as posts_count'),
+            DB::raw('(SELECT COUNT(*) FROM threads WHERE threads.user_id = users.id) as posts_count'), // Sử dụng threads
             DB::raw('(SELECT COUNT(*) FROM comments WHERE comments.user_id = users.id) as comments_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_likes WHERE thread_likes.user_id = users.id) as likes_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_follows WHERE thread_follows.user_id = users.id) as follows_count')
@@ -181,7 +181,7 @@ class StatisticsController extends Controller
     {
         // Thống kê tương tác theo loại
         $typeStats = [
-            'posts' => Post::count(),
+            'posts' => Thread::count(), // Sử dụng threads thay vì posts
             'comments' => Comment::count(),
             'likes' => DB::table('thread_likes')->count() + DB::table('comment_likes')->count(),
             'saves' => DB::table('thread_saves')->count(),
@@ -189,7 +189,7 @@ class StatisticsController extends Controller
 
         // Thống kê tương tác theo thời gian (12 tháng gần nhất)
         $timeStats = DB::table(DB::raw('(
-                SELECT created_at, "post" as type FROM posts
+                SELECT created_at, "thread" as type FROM threads
                 UNION ALL
                 SELECT created_at, "comment" as type FROM comments
                 UNION ALL
@@ -210,7 +210,7 @@ class StatisticsController extends Controller
         $popularThreads = Thread::select(
             'threads.id',
             'threads.title',
-            DB::raw('(SELECT COUNT(*) FROM posts WHERE posts.thread_id = threads.id) as post_count'),
+            DB::raw('threads.view_count as post_count'), // Sử dụng view_count thay vì posts
             DB::raw('(SELECT COUNT(*) FROM comments WHERE comments.thread_id = threads.id) as comment_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_likes WHERE thread_likes.thread_id = threads.id) as like_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_saves WHERE thread_saves.thread_id = threads.id) as save_count')
@@ -224,9 +224,9 @@ class StatisticsController extends Controller
             'forums.id',
             'forums.name',
             DB::raw('(SELECT COUNT(*) FROM threads WHERE threads.forum_id = forums.id) as thread_count'),
-            DB::raw('(SELECT COUNT(*) FROM posts WHERE posts.thread_id IN (SELECT id FROM threads WHERE forum_id = forums.id)) as post_count'),
+            DB::raw('(SELECT COUNT(*) FROM threads WHERE threads.forum_id = forums.id) as post_count'), // Sử dụng threads
             DB::raw('(SELECT COUNT(*) FROM comments WHERE comments.thread_id IN (SELECT id FROM threads WHERE forum_id = forums.id)) as comment_count'),
-            DB::raw('((SELECT COUNT(*) FROM posts WHERE posts.thread_id IN (SELECT id FROM threads WHERE forum_id = forums.id)) + (SELECT COUNT(*) FROM comments WHERE comments.thread_id IN (SELECT id FROM threads WHERE forum_id = forums.id))) as total_interactions')
+            DB::raw('((SELECT COUNT(*) FROM threads WHERE threads.forum_id = forums.id) + (SELECT COUNT(*) FROM comments WHERE comments.thread_id IN (SELECT id FROM threads WHERE forum_id = forums.id))) as total_interactions')
         )
             ->orderBy('total_interactions', 'desc')
             ->limit(10)
@@ -237,15 +237,58 @@ class StatisticsController extends Controller
             'users.id',
             'users.name',
             'users.username',
-            DB::raw('(SELECT COUNT(*) FROM posts WHERE posts.user_id = users.id) as posts_count'),
+            DB::raw('(SELECT COUNT(*) FROM threads WHERE threads.user_id = users.id) as posts_count'), // Sử dụng threads
             DB::raw('(SELECT COUNT(*) FROM comments WHERE comments.user_id = users.id) as comments_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_likes WHERE thread_likes.user_id = users.id) as likes_count'),
             DB::raw('(SELECT COUNT(*) FROM thread_saves WHERE thread_saves.user_id = users.id) as saves_count'),
-            DB::raw('((SELECT COUNT(*) FROM posts WHERE posts.user_id = users.id) + (SELECT COUNT(*) FROM comments WHERE comments.user_id = users.id) + (SELECT COUNT(*) FROM thread_likes WHERE thread_likes.user_id = users.id) + (SELECT COUNT(*) FROM thread_saves WHERE thread_saves.user_id = users.id)) as total_interactions')
+            DB::raw('((SELECT COUNT(*) FROM threads WHERE threads.user_id = users.id) + (SELECT COUNT(*) FROM comments WHERE comments.user_id = users.id) + (SELECT COUNT(*) FROM thread_likes WHERE thread_likes.user_id = users.id) + (SELECT COUNT(*) FROM thread_saves WHERE thread_saves.user_id = users.id)) as total_interactions')
         )
             ->orderBy('total_interactions', 'desc')
             ->limit(10)
             ->get();
+
+        // Dữ liệu cho biểu đồ views theo thời gian (12 tháng gần nhất)
+        $viewsStats = $this->generateTimeSeriesData(
+            Thread::select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('SUM(view_count) as total'))
+                ->where('created_at', '>=', now()->subMonths(12))
+                ->groupBy('year', 'month')
+                ->orderBy('year')
+                ->orderBy('month')
+                ->get()
+        );
+
+        // Dữ liệu cho biểu đồ likes theo thời gian
+        $likesStats = $this->generateTimeSeriesData(
+            DB::table('thread_likes')
+                ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
+                ->where('created_at', '>=', now()->subMonths(12))
+                ->groupBy('year', 'month')
+                ->orderBy('year')
+                ->orderBy('month')
+                ->get()
+        );
+
+        // Dữ liệu cho biểu đồ follows theo thời gian
+        $followsStats = $this->generateTimeSeriesData(
+            DB::table('thread_follows')
+                ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
+                ->where('created_at', '>=', now()->subMonths(12))
+                ->groupBy('year', 'month')
+                ->orderBy('year')
+                ->orderBy('month')
+                ->get()
+        );
+
+        // Dữ liệu cho biểu đồ bookmarks theo thời gian
+        $bookmarksStats = $this->generateTimeSeriesData(
+            DB::table('thread_saves')
+                ->select(DB::raw('YEAR(created_at) as year'), DB::raw('MONTH(created_at) as month'), DB::raw('count(*) as total'))
+                ->where('created_at', '>=', now()->subMonths(12))
+                ->groupBy('year', 'month')
+                ->orderBy('year')
+                ->orderBy('month')
+                ->get()
+        );
 
         // Dữ liệu cho biểu đồ tương tác theo thời gian
         $viewsStats = [
@@ -421,5 +464,32 @@ class StatisticsController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * Tạo dữ liệu time series cho biểu đồ (12 tháng gần nhất)
+     */
+    private function generateTimeSeriesData($dbData)
+    {
+        $labels = [];
+        $data = [];
+
+        // Tạo array cho 12 tháng gần nhất
+        for ($i = 11; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $year = $date->year;
+            $month = $date->month;
+
+            $labels[] = $date->format('M Y');
+
+            // Tìm dữ liệu cho tháng này
+            $monthData = $dbData->where('year', $year)->where('month', $month)->first();
+            $data[] = $monthData ? $monthData->total : 0;
+        }
+
+        return [
+            'labels' => $labels,
+            'data' => $data
+        ];
     }
 }

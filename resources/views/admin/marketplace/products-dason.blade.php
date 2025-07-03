@@ -216,10 +216,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.products.show', $product) }}">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.products.edit', $product) }}">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Sửa
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Sửa
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item text-danger" href="#" onclick="deleteProduct({{ $product->id }})">

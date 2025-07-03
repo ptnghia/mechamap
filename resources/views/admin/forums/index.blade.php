@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.forums.create') }}" class="btn btn-sm btn-primary">
-        <i class="class="fas fa-plus"-lg me-1"></i> {{ __('Tạo diễn đàn mới') }}
+        <i class="fas fa-plus"></i> {{ __('Tạo diễn đàn mới') }}
     </a>
 @endsection
 
@@ -73,13 +73,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.forums.show', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="class="fas fa-eye""></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.forums.edit', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="class="fas fa-edit""></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $forum->id }}" title="{{ __('Xóa') }}">
-                                            <i class="class="fas fa-trash""></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 
@@ -135,13 +135,13 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{{ route('admin.forums.show', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                                <i class="class="fas fa-eye""></i>
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.forums.edit', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                                <i class="class="fas fa-edit""></i>
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $subForum->id }}" title="{{ __('Xóa') }}">
-                                                <i class="class="fas fa-trash""></i>
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
 

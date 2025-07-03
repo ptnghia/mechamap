@@ -147,6 +147,67 @@
                                         <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
+
+                                        <!-- Moderation Actions -->
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ __('Moderation') }}">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <!-- Pin/Unpin -->
+                                                <li>
+                                                    <form action="{{ route('admin.threads.toggle-pin', $thread) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="dropdown-item">
+                                                            <i class="fas fa-thumbtack me-2"></i>
+                                                            {{ $thread->is_sticky ? __('Bỏ ghim') : __('Ghim bài đăng') }}
+                                                        </button>
+                                                    </form>
+                                                </li>
+
+                                                <!-- Lock/Unlock -->
+                                                <li>
+                                                    <form action="{{ route('admin.threads.toggle-lock', $thread) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="dropdown-item">
+                                                            <i class="fas fa-{{ $thread->is_locked ? 'unlock' : 'lock' }} me-2"></i>
+                                                            {{ $thread->is_locked ? __('Mở khóa') : __('Khóa bài đăng') }}
+                                                        </button>
+                                                    </form>
+                                                </li>
+
+                                                <!-- Feature/Unfeature -->
+                                                <li>
+                                                    <form action="{{ route('admin.threads.toggle-feature', $thread) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="dropdown-item">
+                                                            <i class="fas fa-star me-2"></i>
+                                                            {{ $thread->is_featured ? __('Bỏ nổi bật') : __('Đánh dấu nổi bật') }}
+                                                        </button>
+                                                    </form>
+                                                </li>
+
+                                                <li><hr class="dropdown-divider"></li>
+
+                                                <!-- Approve/Reject for pending threads -->
+                                                @if($thread->status == 'pending')
+                                                <li>
+                                                    <form action="{{ route('admin.threads.approve', $thread) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="dropdown-item text-success">
+                                                            <i class="fas fa-check me-2"></i>
+                                                            {{ __('Duyệt bài đăng') }}
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                @endif
+                                            </ul>
+                                        </div>
+
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $thread->id }}" title="{{ __('Xóa') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>

@@ -70,6 +70,11 @@
                         <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
                             <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
                         </a>
+                        @adminCan('manage_roles')
+                        <a href="{{ route('admin.users.roles', $user) }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-users-cog me-1"></i> {{ __('Quản lý Multiple Roles') }}
+                        </a>
+                        @endadminCan
                     </div>
                 </div>
             </div>

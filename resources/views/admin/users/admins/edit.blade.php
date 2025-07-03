@@ -190,11 +190,35 @@
                                     <i class="fas fa-times mr-1"></i> Hủy
                                 </a>
                             </div>
+                            @if(in_array($user->role, ['admin', 'moderator']))
+                            <!-- ✅ ADMIN PERMISSIONS: Chỉ Admin/Moderator mới có quyền truy cập -->
                             <div>
-                                <a href="{{ route('admin.users.admins.permissions', $user) }}" class="btn btn-info">
-                                    <i class="fas fa-cog mr-1"></i> Quản Lý Quyền
+                                @adminCan('manage_roles')
+                                <a href="{{ route('admin.users.roles', $user) }}" class="btn btn-primary me-2">
+                                    <i class="fas fa-users-cog me-1"></i> Multiple Roles
+                                    <small class="d-block">Base permissions</small>
+                                </a>
+                                @endadminCan
+                                <a href="{{ route('admin.users.admins.permissions', $user) }}" class="btn btn-success">
+                                    <i class="fas fa-plus-circle me-1"></i> Custom Permissions
+                                    <small class="d-block">Additional permissions</small>
                                 </a>
                             </div>
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    <strong>Hybrid System:</strong> Sử dụng Multiple Roles cho base permissions,
+                                    Custom Permissions cho fine-tuning
+                                </small>
+                            </div>
+                            @else
+                            <!-- ❌ MEMBER: Không có quyền truy cập admin permissions -->
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Thành viên thường:</strong> User này là thành viên thường và không có quyền truy cập
+                                vào tính năng quản trị. Chỉ Admin và Moderator mới có quyền sử dụng Multiple Roles và Custom Permissions.
+                            </div>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -234,6 +258,36 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Current Roles -->
+            @if($user->roles && $user->roles->count() > 1)
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-warning">
+                        <i class="fas fa-users-cog me-2"></i>
+                        Multiple Roles ({{ $user->roles->count() }})
+                    </h6>
+                </div>
+                <div class="card-body">
+                    @foreach($user->roles as $role)
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-{{ $role->icon ?? 'user' }} me-2 text-{{ $role->color ?? 'primary' }}"></i>
+                            <span class="me-2">{{ $role->display_name }}</span>
+                            @if($role->pivot->is_primary)
+                                <span class="badge bg-success">Primary</span>
+                            @endif
+                        </div>
+                    @endforeach
+
+                    <div class="mt-3">
+                        <a href="{{ route('admin.users.roles', $user) }}" class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit me-1"></i>
+                            Chỉnh sửa Multiple Roles
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!-- Thống kê nhanh -->
             <div class="card shadow mb-4">
@@ -307,7 +361,7 @@
     $('#role').change(function() {
         const role = $(this).val();
         let roleInfo = '';
-        
+
         if (role === 'admin') {
             roleInfo = `
                 <div class="alert alert-primary" role="alert">
@@ -333,7 +387,7 @@
                 </div>
             `;
         }
-        
+
         $('#role-info').html(roleInfo);
     });
 
@@ -348,9 +402,9 @@
                     $('#avatar').after(`
                         <div class="mt-2" id="avatar-preview">
                             <small class="text-muted">Ảnh xem trước:</small><br>
-                            <img src="${e.target.result}" 
-                                 alt="Preview" 
-                                 class="img-thumbnail" 
+                            <img src="${e.target.result}"
+                                 alt="Preview"
+                                 class="img-thumbnail"
                                  style="max-width: 100px; max-height: 100px;">
                         </div>
                     `);

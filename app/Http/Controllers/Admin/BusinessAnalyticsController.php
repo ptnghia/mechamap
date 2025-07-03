@@ -20,7 +20,7 @@ class BusinessAnalyticsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'permission:view-analytics|view-marketplace-analytics']);
+        $this->middleware(['auth', 'admin.auth']);
     }
 
     /**
@@ -29,11 +29,17 @@ class BusinessAnalyticsController extends Controller
     public function dashboard(Request $request)
     {
         $user = auth()->user();
+
+        // Check permission using Gate - allow moderators and above
+        if (!$user->can('access-admin')) {
+            abort(403, 'Không có quyền truy cập admin');
+        }
+
         $timeRange = $request->get('range', '30'); // days
-        
+
         // Get data based on user role
         $analytics = $this->getAnalyticsData($user, $timeRange);
-        
+
         return view('admin.analytics.business-dashboard', compact('analytics', 'timeRange'));
     }
 
@@ -43,14 +49,14 @@ class BusinessAnalyticsController extends Controller
     public function marketplace(Request $request)
     {
         $user = auth()->user();
-        
+
         if (!$user->hasPermissionTo('view-marketplace-analytics')) {
             abort(403, 'Không có quyền xem analytics marketplace');
         }
 
         $timeRange = $request->get('range', '30');
         $startDate = now()->subDays($timeRange);
-        
+
         $data = [
             'overview' => $this->getMarketplaceOverview($startDate),
             'revenue' => $this->getRevenueAnalytics($startDate),
@@ -69,24 +75,24 @@ class BusinessAnalyticsController extends Controller
     public function sellers(Request $request)
     {
         $user = auth()->user();
-        
-        if (!$user->hasPermissionTo('manage-seller-accounts') && 
+
+        if (!$user->hasPermissionTo('manage-seller-accounts') &&
             !$user->hasPermissionTo('view-marketplace-analytics')) {
             abort(403, 'Không có quyền xem analytics seller');
         }
 
         $timeRange = $request->get('range', '30');
         $sellerType = $request->get('type', 'all');
-        
+
         $query = User::where('role_group', 'business_partners')
             ->with(['products', 'orders']);
-            
+
         if ($sellerType !== 'all') {
             $query->where('role', $sellerType);
         }
 
         $sellers = $query->get();
-        
+
         $analytics = $sellers->map(function($seller) use ($timeRange) {
             return $this->getSellerPerformance($seller, $timeRange);
         })->sortByDesc('total_revenue');
@@ -108,14 +114,14 @@ class BusinessAnalyticsController extends Controller
     public function revenue(Request $request)
     {
         $user = auth()->user();
-        
+
         if (!$user->hasPermissionTo('view-marketplace-analytics')) {
             abort(403, 'Không có quyền xem analytics doanh thu');
         }
 
         $timeRange = $request->get('range', '30');
         $groupBy = $request->get('group', 'day'); // day, week, month
-        
+
         $data = [
             'timeline' => $this->getRevenueTimeline($timeRange, $groupBy),
             'by_category' => $this->getRevenueByCategory($timeRange),
@@ -134,23 +140,23 @@ class BusinessAnalyticsController extends Controller
     public function commissions(Request $request)
     {
         $user = auth()->user();
-        
+
         if (!$user->hasPermissionTo('manage-commissions')) {
             abort(403, 'Không có quyền xem commission analytics');
         }
 
         $timeRange = $request->get('range', '30');
         $status = $request->get('status', 'all');
-        
+
         $query = Commission::with(['seller', 'order'])
             ->whereBetween('created_at', [now()->subDays($timeRange), now()]);
-            
+
         if ($status !== 'all') {
             $query->where('status', $status);
         }
 
         $commissions = $query->get();
-        
+
         $analytics = [
             'total_commission' => $commissions->sum('amount'),
             'paid_commission' => $commissions->where('status', 'paid')->sum('amount'),
@@ -169,7 +175,7 @@ class BusinessAnalyticsController extends Controller
     private function getAnalyticsData(User $user, int $timeRange): array
     {
         $startDate = now()->subDays($timeRange);
-        
+
         $data = [
             'user_role' => $user->role,
             'permissions' => $user->getAllPermissions()->pluck('name')->toArray(),
@@ -223,7 +229,7 @@ class BusinessAnalyticsController extends Controller
     private function getSellerPerformance(User $seller, int $timeRange): array
     {
         $startDate = now()->subDays($timeRange);
-        
+
         $orders = Order::whereHas('items.product', function($q) use ($seller) {
             $q->where('seller_id', $seller->id);
         })->where('created_at', '>=', $startDate)->get();
@@ -277,7 +283,7 @@ class BusinessAnalyticsController extends Controller
         $commissionByType = [];
 
         $sellers = User::where('role_group', 'business_partners')->get();
-        
+
         foreach ($sellers as $seller) {
             $revenue = Order::whereHas('items.product', function($q) use ($seller) {
                 $q->where('seller_id', $seller->id);
@@ -288,7 +294,7 @@ class BusinessAnalyticsController extends Controller
             $features = PermissionService::getMarketplaceFeatures($seller);
             $rate = $features['commission_rate'] ?? 5.0;
             $commission = $revenue * ($rate / 100);
-            
+
             $totalCommission += $commission;
             $commissionByType[$seller->role] = ($commissionByType[$seller->role] ?? 0) + $commission;
         }
@@ -343,7 +349,7 @@ class BusinessAnalyticsController extends Controller
     public function getRealtimeMetrics(Request $request)
     {
         $user = auth()->user();
-        
+
         $metrics = [
             'timestamp' => now()->toISOString(),
         ];

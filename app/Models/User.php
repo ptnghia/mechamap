@@ -363,12 +363,74 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if user can access admin panel
+     * Kiểm tra dựa trên multiple roles hoặc role_group
      *
      * @return bool
      */
     public function canAccessAdmin(): bool
     {
-        return in_array($this->role_group, ['system_management', 'community_management']);
+        // Kiểm tra theo role_group cũ (backward compatibility)
+        if (in_array($this->role_group, ['system_management', 'community_management'])) {
+            return true;
+        }
+
+        // Kiểm tra theo multiple roles mới
+        $adminRoles = [
+            'super_admin', 'system_admin', 'content_admin',
+            'content_moderator', 'marketplace_moderator', 'community_moderator'
+        ];
+
+        return $this->hasAnyActiveRole($adminRoles);
+    }
+
+    /**
+     * Kiểm tra user có bất kỳ role nào trong danh sách không
+     *
+     * @param array $roleNames
+     * @return bool
+     */
+    public function hasAnyActiveRole(array $roleNames): bool
+    {
+        return $this->activeRoles()
+            ->whereIn('roles.name', $roleNames)
+            ->exists();
+    }
+
+    /**
+     * Kiểm tra user có role cụ thể không
+     *
+     * @param string $roleName
+     * @return bool
+     */
+    public function hasActiveRole(string $roleName): bool
+    {
+        return $this->activeRoles()
+            ->where('roles.name', $roleName)
+            ->exists();
+    }
+
+    /**
+     * ✅ UNIFIED: Lấy tất cả permissions từ multiple roles
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllPermissionsFromRoles()
+    {
+        $permissions = collect();
+
+        // Load roles nếu chưa load
+        if (!$this->relationLoaded('roles')) {
+            $this->load(['roles.permissions']);
+        }
+
+        foreach ($this->activeRoles as $role) {
+            if ($role->permissions) {
+                $rolePermissions = $role->permissions->where('pivot.is_granted', true);
+                $permissions = $permissions->merge($rolePermissions);
+            }
+        }
+
+        return $permissions->unique('id');
     }
 
     /**
@@ -640,6 +702,47 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * 👑 Relationship với roles (many-to-many)
+     * User có thể có nhiều roles
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'user_has_roles')
+            ->withPivot([
+                'is_primary',
+                'assigned_at',
+                'expires_at',
+                'assigned_by',
+                'assignment_reason',
+                'assignment_conditions',
+                'is_active',
+                'deactivated_at',
+                'deactivated_by'
+            ])
+            ->withTimestamps();
+    }
+
+    /**
+     * Lấy role chính của user
+     */
+    public function primaryRole(): BelongsToMany
+    {
+        return $this->roles()->wherePivot('is_primary', true)->wherePivot('is_active', true);
+    }
+
+    /**
+     * Lấy tất cả roles đang hoạt động
+     */
+    public function activeRoles(): BelongsToMany
+    {
+        return $this->roles()->wherePivot('is_active', true)
+            ->where(function($query) {
+                $query->whereNull('user_has_roles.expires_at')
+                      ->orWhere('user_has_roles.expires_at', '>', now());
+            });
+    }
+
+    /**
      * Update the user's reaction score.
      */
     public function updateReactionScore(): void
@@ -747,6 +850,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function subscription(): HasOne
     {
         return $this->hasOne(Subscription::class);
+    }
+
+    /**
+     * Get the seller earnings for the user.
+     */
+    public function sellerEarnings(): HasMany
+    {
+        return $this->hasMany(SellerEarning::class, 'seller_id');
+    }
+
+    /**
+     * Get the technical products for the user.
+     */
+    public function technicalProducts(): HasMany
+    {
+        return $this->hasMany(TechnicalProduct::class, 'user_id');
     }
 
     /**
@@ -922,29 +1041,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Kiểm tra user có permission cụ thể không (sử dụng Spatie Permission)
+     * ✅ HYBRID: Kiểm tra user có permission cụ thể không (Roles + Custom Permissions)
      *
      * @param string $permission
      * @return bool
      */
     public function hasPermission(string $permission): bool
     {
-        // Debug for view_products permission
-        if ($permission === 'view_products') {
-            \Log::info('hasPermission debug', [
-                'user_id' => $this->id,
-                'user_role' => $this->role,
-                'permission' => $permission,
-                'is_super_admin' => $this->role === 'super_admin',
-                'role_permissions_count' => is_array($this->role_permissions) ? count($this->role_permissions) : 'not_array',
-            ]);
-        }
-
         // Super Admin có tất cả quyền - ALWAYS return true first
         if ($this->role === 'super_admin') {
-            if ($permission === 'view_products') {
-                \Log::info('Super admin returning true for view_products');
-            }
             return true;
         }
 
@@ -953,38 +1058,142 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
         }
 
-        // Fallback: Kiểm tra cached permissions trước
-        if ($this->role_permissions && is_array($this->role_permissions)) {
-            return in_array($permission, $this->role_permissions);
+        // ✅ HYBRID: Check permissions từ multiple roles system
+        if ($this->hasPermissionViaRoles($permission)) {
+            return true;
         }
 
-        // Sử dụng Spatie Permission nếu có (cuối cùng)
-        if (method_exists($this, 'hasPermissionTo')) {
-            try {
-                return $this->hasPermissionTo($permission);
-            } catch (\Exception $e) {
-                // Nếu Spatie Permission lỗi, fallback về false
-                return false;
-            }
+        // ✅ HYBRID: Check custom permissions (legacy system as supplement)
+        if ($this->hasCustomPermission($permission)) {
+            return true;
+        }
+
+        // Final fallback: Admin role có basic permissions
+        if ($this->role === 'admin') {
+            $basicAdminPermissions = [
+                'view_dashboard', 'view_users', 'view_reports', 'moderate-content',
+                'approve-content', 'manage-categories', 'manage-forums', 'view_products',
+                'view_orders', 'manage_sellers'
+            ];
+            return in_array($permission, $basicAdminPermissions);
         }
 
         return false;
     }
 
     /**
-     * Cache permissions cho user
+     * ✅ HYBRID: Check custom permissions (supplemental to roles)
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasCustomPermission(string $permission): bool
+    {
+        // Check cached custom permissions
+        if ($this->role_permissions && is_array($this->role_permissions)) {
+            return in_array($permission, $this->role_permissions);
+        }
+
+        return false;
+    }
+
+    /**
+     * ✅ NEW: Check permission via multiple roles system
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermissionViaRoles(string $permission): bool
+    {
+        // Kiểm tra user có active roles không
+        if (!$this->relationLoaded('roles')) {
+            $this->load('roles');
+        }
+
+        if (!$this->roles || $this->roles->count() === 0) {
+            return false;
+        }
+
+        // Check permission trong tất cả active roles
+        return $this->activeRoles()
+            ->whereHas('permissions', function($query) use ($permission) {
+                $query->where('permissions.name', $permission)
+                      ->where('role_has_permissions.is_granted', true);
+            })->exists();
+    }
+
+    /**
+     * ✅ HYBRID: Get all permissions combined (roles + custom)
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllCombinedPermissions()
+    {
+        $permissions = collect();
+
+        // Get permissions from roles
+        $rolePermissions = $this->getAllPermissionsFromRoles();
+        $permissions = $permissions->merge($rolePermissions);
+
+        // Get custom permissions
+        if ($this->role_permissions && is_array($this->role_permissions)) {
+            $customPermissions = \App\Models\Permission::whereIn('name', $this->role_permissions)->get();
+            $permissions = $permissions->merge($customPermissions);
+        }
+
+        return $permissions->unique('id');
+    }
+
+    /**
+     * ✅ HYBRID: Cache permissions từ roles (không override custom permissions)
      *
      * @return void
      */
     public function cachePermissions(): void
     {
-        if (method_exists($this, 'getAllPermissions')) {
-            $permissions = $this->getAllPermissions()->pluck('name')->toArray();
-            $this->update([
-                'role_permissions' => $permissions,
-                'role_updated_at' => now()
-            ]);
-        }
+        // Chỉ cache permissions từ roles, giữ nguyên custom permissions
+        $rolePermissions = $this->getAllPermissionsFromRoles()->pluck('name')->toArray();
+
+        // Merge với existing custom permissions nếu có
+        $existingCustom = $this->role_permissions && is_array($this->role_permissions)
+            ? $this->role_permissions
+            : [];
+
+        $allPermissions = array_unique(array_merge($rolePermissions, $existingCustom));
+
+        $this->update([
+            'role_permissions' => $allPermissions,
+            'role_updated_at' => now()
+        ]);
+    }
+
+    /**
+     * ✅ HYBRID: Refresh cached permissions từ multiple roles
+     *
+     * @return void
+     */
+    public function refreshPermissions(): void
+    {
+        $this->cachePermissions();
+    }
+
+    /**
+     * ✅ HYBRID: Get permissions breakdown
+     *
+     * @return array
+     */
+    public function getPermissionsBreakdown(): array
+    {
+        $rolePermissions = $this->getAllPermissionsFromRoles()->pluck('name')->toArray();
+        $customPermissions = $this->role_permissions && is_array($this->role_permissions)
+            ? array_diff($this->role_permissions, $rolePermissions)
+            : [];
+
+        return [
+            'role_permissions' => $rolePermissions,
+            'custom_permissions' => $customPermissions,
+            'total_permissions' => array_unique(array_merge($rolePermissions, $customPermissions))
+        ];
     }
 
     /**

@@ -77,28 +77,40 @@ class DocumentationController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:documentations,slug',
-            'content' => 'required|string',
-            'excerpt' => 'nullable|string|max:500',
-            'category_id' => 'required|exists:documentation_categories,id',
-            'status' => 'required|in:draft,review,published,archived',
-            'is_featured' => 'boolean',
-            'is_public' => 'boolean',
-            'allowed_roles' => 'nullable|array',
-            'content_type' => 'required|in:guide,api,tutorial,reference,faq',
-            'difficulty_level' => 'required|in:beginner,intermediate,advanced,expert',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'meta_keywords' => 'nullable|string|max:500',
-            'tags' => 'nullable|string',
-            'related_docs' => 'nullable|array',
-            'sort_order' => 'nullable|integer|min:0',
-            'featured_image' => 'nullable|image|max:2048',
-            'attachments.*' => 'nullable|file|max:10240',
-            'downloadable_files.*' => 'nullable|file|max:51200',
-        ]);
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'slug' => 'nullable|string|max:255|unique:documentations,slug',
+                'content' => 'required|string',
+                'excerpt' => 'nullable|string|max:500',
+                'category_id' => 'required|exists:documentation_categories,id',
+                'status' => 'in:draft,review,published,archived',
+                'is_featured' => 'boolean',
+                'is_public' => 'boolean',
+                'allowed_roles' => 'nullable|array',
+                'content_type' => 'required|in:guide,api,tutorial,reference,faq',
+                'difficulty_level' => 'required|in:beginner,intermediate,advanced,expert',
+                'meta_title' => 'nullable|string|max:255',
+                'meta_description' => 'nullable|string|max:500',
+                'meta_keywords' => 'nullable|string|max:500',
+                'tags' => 'nullable|string',
+                'related_docs' => 'nullable|array',
+                'sort_order' => 'nullable|integer|min:0',
+                'featured_image' => 'nullable|image|max:2048',
+                'attachments.*' => 'nullable|file|max:10240',
+                'downloadable_files.*' => 'nullable|file|max:51200',
+            ], [
+                'title.required' => 'Tiêu đề là bắt buộc.',
+                'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+                'slug.unique' => 'Slug này đã tồn tại. Vui lòng chọn slug khác.',
+                'content.required' => 'Nội dung là bắt buộc.',
+                'category_id.required' => 'Vui lòng chọn danh mục.',
+                'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+                'content_type.required' => 'Vui lòng chọn loại nội dung.',
+                'difficulty_level.required' => 'Vui lòng chọn độ khó.',
+                'featured_image.image' => 'File phải là hình ảnh.',
+                'featured_image.max' => 'Hình ảnh không được vượt quá 2MB.',
+            ]);
 
         // Handle slug
         if (empty($validated['slug'])) {
@@ -146,19 +158,49 @@ class DocumentationController extends Controller
             $validated['downloadable_files'] = $downloadableFiles;
         }
 
-        // Set published_at if status is published
-        if ($validated['status'] === 'published') {
-            $validated['published_at'] = now();
+            // Set default status if not provided
+            if (empty($validated['status'])) {
+                $validated['status'] = 'draft';
+            }
+
+            // Set published_at if status is published
+            if ($validated['status'] === 'published') {
+                $validated['published_at'] = now();
+            }
+
+            $documentation = Documentation::create($validated);
+
+            // Create initial version
+            if (method_exists($documentation, 'createVersion')) {
+                $documentation->createVersion(Auth::user(), 'Tạo tài liệu mới');
+            }
+
+            return redirect()
+                ->route('admin.documentation.show', $documentation)
+                ->with('success', 'Tài liệu đã được tạo thành công!');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database errors (like duplicate slug)
+            if ($e->getCode() == 23000) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['slug' => 'Slug này đã tồn tại. Vui lòng thử lại với tiêu đề khác.']);
+            }
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi xảy ra khi lưu tài liệu. Vui lòng thử lại.']);
+
+        } catch (\Exception $e) {
+            \Log::error('Documentation creation error: ' . $e->getMessage());
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi không mong muốn xảy ra. Vui lòng thử lại.']);
         }
-
-        $documentation = Documentation::create($validated);
-
-        // Create initial version
-        $documentation->createVersion(Auth::user(), 'Tạo tài liệu mới');
-
-        return redirect()
-            ->route('admin.documentation.show', $documentation)
-            ->with('success', 'Tài liệu đã được tạo thành công!');
     }
 
     /**
@@ -167,7 +209,7 @@ class DocumentationController extends Controller
     public function show(Documentation $documentation)
     {
         $documentation->load(['category', 'author', 'reviewer', 'versions.user']);
-        
+
         $statistics = [
             'views_today' => $documentation->views()->whereDate('created_at', today())->count(),
             'views_this_week' => $documentation->views()->where('created_at', '>=', now()->subWeek())->count(),
@@ -191,7 +233,7 @@ class DocumentationController extends Controller
         $difficultyLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
         $statuses = ['draft', 'review', 'published', 'archived'];
         $userRoles = ['admin', 'moderator', 'senior_member', 'member', 'supplier', 'manufacturer', 'brand'];
-        
+
         // Get available documents for related docs (excluding current)
         $availableDocs = Documentation::where('id', '!=', $documentation->id)
                                     ->where('status', 'published')
@@ -199,7 +241,7 @@ class DocumentationController extends Controller
                                     ->get(['id', 'title']);
 
         return view('admin.documentation.edit', compact(
-            'documentation', 'categories', 'contentTypes', 'difficultyLevels', 
+            'documentation', 'categories', 'contentTypes', 'difficultyLevels',
             'statuses', 'userRoles', 'availableDocs'
         ));
     }
@@ -209,29 +251,42 @@ class DocumentationController extends Controller
      */
     public function update(Request $request, Documentation $documentation)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:documentations,slug,' . $documentation->id,
-            'content' => 'required|string',
-            'excerpt' => 'nullable|string|max:500',
-            'category_id' => 'required|exists:documentation_categories,id',
-            'status' => 'required|in:draft,review,published,archived',
-            'is_featured' => 'boolean',
-            'is_public' => 'boolean',
-            'allowed_roles' => 'nullable|array',
-            'content_type' => 'required|in:guide,api,tutorial,reference,faq',
-            'difficulty_level' => 'required|in:beginner,intermediate,advanced,expert',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'meta_keywords' => 'nullable|string|max:500',
-            'tags' => 'nullable|string',
-            'related_docs' => 'nullable|array',
-            'sort_order' => 'nullable|integer|min:0',
-            'featured_image' => 'nullable|image|max:2048',
-            'attachments.*' => 'nullable|file|max:10240',
-            'downloadable_files.*' => 'nullable|file|max:51200',
-            'change_summary' => 'nullable|string|max:500',
-        ]);
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'slug' => 'nullable|string|max:255|unique:documentations,slug,' . $documentation->id,
+                'content' => 'required|string',
+                'excerpt' => 'nullable|string|max:500',
+                'category_id' => 'required|exists:documentation_categories,id',
+                'status' => 'in:draft,review,published,archived',
+                'is_featured' => 'boolean',
+                'is_public' => 'boolean',
+                'allowed_roles' => 'nullable|array',
+                'content_type' => 'required|in:guide,api,tutorial,reference,faq',
+                'difficulty_level' => 'required|in:beginner,intermediate,advanced,expert',
+                'meta_title' => 'nullable|string|max:255',
+                'meta_description' => 'nullable|string|max:500',
+                'meta_keywords' => 'nullable|string|max:500',
+                'tags' => 'nullable|string',
+                'related_docs' => 'nullable|array',
+                'sort_order' => 'nullable|integer|min:0',
+                'featured_image' => 'nullable|image|max:2048',
+                'attachments.*' => 'nullable|file|max:10240',
+                'downloadable_files.*' => 'nullable|file|max:51200',
+                'change_summary' => 'nullable|string|max:500',
+                'published_at' => 'nullable|date',
+            ], [
+                'title.required' => 'Tiêu đề là bắt buộc.',
+                'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+                'slug.unique' => 'Slug này đã tồn tại. Vui lòng chọn slug khác.',
+                'content.required' => 'Nội dung là bắt buộc.',
+                'category_id.required' => 'Vui lòng chọn danh mục.',
+                'category_id.exists' => 'Danh mục được chọn không hợp lệ.',
+                'content_type.required' => 'Vui lòng chọn loại nội dung.',
+                'difficulty_level.required' => 'Vui lòng chọn độ khó.',
+                'featured_image.image' => 'File phải là hình ảnh.',
+                'featured_image.max' => 'Hình ảnh không được vượt quá 2MB.',
+            ]);
 
         // Store original content for version comparison
         $originalContent = $documentation->content;
@@ -264,23 +319,57 @@ class DocumentationController extends Controller
             $validated['published_at'] = now();
         }
 
-        // Set reviewed_at if status changed to published and there's a reviewer
-        if ($validated['status'] === 'published' && Auth::user()->hasRole(['admin', 'moderator'])) {
-            $validated['reviewer_id'] = Auth::id();
-            $validated['reviewed_at'] = now();
+            // Set default status if not provided
+            if (empty($validated['status'])) {
+                $validated['status'] = $documentation->status ?? 'draft';
+            }
+
+            // Set reviewed_at if status changed to published and there's a reviewer
+            if ($validated['status'] === 'published' && Auth::user()->hasRole(['admin', 'moderator'])) {
+                $validated['reviewer_id'] = Auth::id();
+                $validated['reviewed_at'] = now();
+            }
+
+            $documentation->update($validated);
+
+            // Create new version if content changed
+            if ($originalContent !== $documentation->content) {
+                $changeSummary = $request->change_summary ?? 'Cập nhật nội dung';
+                if (method_exists($documentation, 'createVersion')) {
+                    $documentation->createVersion(Auth::user(), $changeSummary);
+                }
+            }
+
+            $redirectRoute = $request->has('continue_editing')
+                ? 'admin.documentation.edit'
+                : 'admin.documentation.show';
+
+            return redirect()
+                ->route($redirectRoute, $documentation)
+                ->with('success', 'Tài liệu đã được cập nhật thành công!');
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Handle database errors (like duplicate slug)
+            if ($e->getCode() == 23000) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['slug' => 'Slug này đã tồn tại. Vui lòng thử lại với tiêu đề khác.']);
+            }
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi xảy ra khi cập nhật tài liệu. Vui lòng thử lại.']);
+
+        } catch (\Exception $e) {
+            \Log::error('Documentation update error: ' . $e->getMessage());
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['error' => 'Có lỗi không mong muốn xảy ra. Vui lòng thử lại.']);
         }
-
-        $documentation->update($validated);
-
-        // Create new version if content changed
-        if ($originalContent !== $documentation->content) {
-            $changeSummary = $request->change_summary ?? 'Cập nhật nội dung';
-            $documentation->createVersion(Auth::user(), $changeSummary);
-        }
-
-        return redirect()
-            ->route('admin.documentation.show', $documentation)
-            ->with('success', 'Tài liệu đã được cập nhật thành công!');
     }
 
     /**
@@ -288,28 +377,43 @@ class DocumentationController extends Controller
      */
     public function destroy(Documentation $documentation)
     {
-        // Delete associated files
-        if ($documentation->featured_image) {
-            Storage::disk('public')->delete($documentation->featured_image);
-        }
+        try {
+            $title = $documentation->title;
 
-        if ($documentation->attachments) {
-            foreach ($documentation->attachments as $attachment) {
-                Storage::disk('public')->delete($attachment['path']);
+            // Delete associated files
+            if ($documentation->featured_image) {
+                Storage::disk('public')->delete($documentation->featured_image);
             }
-        }
 
-        if ($documentation->downloadable_files) {
-            foreach ($documentation->downloadable_files as $file) {
-                Storage::disk('public')->delete($file['path']);
+            if ($documentation->attachments) {
+                foreach ($documentation->attachments as $attachment) {
+                    if (isset($attachment['path'])) {
+                        Storage::disk('public')->delete($attachment['path']);
+                    }
+                }
             }
+
+            if ($documentation->downloadable_files) {
+                foreach ($documentation->downloadable_files as $file) {
+                    if (isset($file['path'])) {
+                        Storage::disk('public')->delete($file['path']);
+                    }
+                }
+            }
+
+            $documentation->delete();
+
+            return redirect()
+                ->route('admin.documentation.index')
+                ->with('success', "Tài liệu '{$title}' đã được xóa thành công!");
+
+        } catch (\Exception $e) {
+            \Log::error('Documentation deletion error: ' . $e->getMessage());
+
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Có lỗi xảy ra khi xóa tài liệu. Vui lòng thử lại.']);
         }
-
-        $documentation->delete();
-
-        return redirect()
-            ->route('admin.documentation.index')
-            ->with('success', 'Tài liệu đã được xóa thành công!');
     }
 
     /**

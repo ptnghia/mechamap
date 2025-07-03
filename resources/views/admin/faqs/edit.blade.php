@@ -27,7 +27,7 @@
             <form action="{{ route('admin.faqs.update', $faq) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="mb-3">
                     <label for="question" class="form-label">{{ __('Câu hỏi') }} <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('question') is-invalid @enderror" id="question" name="question" value="{{ old('question', $faq->question) }}" required>
@@ -35,15 +35,16 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="answer" class="form-label">{{ __('Câu trả lời') }} <span class="text-danger">*</span></label>
-                    <textarea class="form-control @error('answer') is-invalid @enderror" id="answer" name="answer" rows="5" required>{{ old('answer', $faq->answer) }}</textarea>
+                    <textarea class="form-control @error('answer') is-invalid @enderror" id="answer" name="answer" rows="10" required>{{ old('answer', $faq->answer) }}</textarea>
                     @error('answer')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                    <div class="form-text">{{ __('Sử dụng editor để định dạng văn bản, thêm liên kết và hình ảnh') }}</div>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="category_id" class="form-label">{{ __('Danh mục') }} <span class="text-danger">*</span></label>
                     <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
@@ -56,7 +57,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="order" class="form-label">{{ __('Thứ tự') }}</label>
                     <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" value="{{ old('order', $faq->order) }}" min="0">
@@ -64,7 +65,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {{ old('is_active', $faq->is_active) ? 'checked' : '' }}>
@@ -73,12 +74,47 @@
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.faqs.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-info" onclick="previewFAQ()">
+                            <i class="fas fa-eye me-1"></i> {{ __('Xem trước') }}
+                        </button>
+                        <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel">{{ __('Xem trước câu hỏi') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0" id="preview-question">{{ __('Câu hỏi sẽ hiển thị ở đây') }}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="preview-answer">{{ __('Câu trả lời sẽ hiển thị ở đây') }}</div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <small>
+                                <strong>{{ __('Danh mục:') }}</strong> <span id="preview-category">{{ __('Chưa chọn') }}</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Đóng') }}</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -93,5 +129,24 @@
         plugins: 'advlist autolink lists link image charmap print preview anchor',
         toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat'
     });
+
+    // Preview function
+    function previewFAQ() {
+        const question = document.getElementById('question').value;
+        const categorySelect = document.getElementById('category_id');
+        const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
+
+        // Get content from TinyMCE
+        const answer = tinymce.get('answer').getContent();
+
+        // Update preview modal
+        document.getElementById('preview-question').textContent = question || '{{ __("Chưa nhập câu hỏi") }}';
+        document.getElementById('preview-answer').innerHTML = answer || '{{ __("Chưa nhập câu trả lời") }}';
+        document.getElementById('preview-category').textContent = categorySelect.value ? categoryText : '{{ __("Chưa chọn danh mục") }}';
+
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+        modal.show();
+    }
 </script>
 @endpush

@@ -26,6 +26,8 @@
 - **[Marketplace Management](./admin/MARKETPLACE_MANAGEMENT.md)** - E-commerce administration
 - **[Content Moderation](./admin/CONTENT_MODERATION.md)** - Content management tools
 - **[System Settings](./admin/SYSTEM_SETTINGS.md)** - Configuration management
+- **[📄 Documentation Management](./04-features/admin-panel/documentation-management-guide.md)** - Complete documentation system guide
+- **[🔧 Documentation Technical Specs](./04-features/admin-panel/documentation-technical-specs.md)** - Technical implementation details
 
 ### 🛠️ **[/api/](./api/)** - API Documentation
 - **[API Overview](./api/README.md)** - Complete API reference

@@ -75,7 +75,7 @@ File: app/Http/Controllers/Admin/DashboardController.php
 File: routes/admin.php
 ```
 **Routes cần thêm:**
-- `/admin/dashboard` - Main dashboard
+- `/admin` - Main dashboard
 - `/admin/users/*` - User management
 - `/admin/forums/*` - Forum management
 - `/admin/marketplace/*` - Marketplace management
@@ -96,7 +96,7 @@ File: app/Http/Middleware/AdminMiddleware.php
 
 #### **3.1 Tạo Main Dashboard View**
 ```bash
-File: resources/views/admin/dashboard.blade.php
+File: resources/views/admin.blade.php
 ```
 **Components:**
 - Statistics cards (Users, Posts, Orders, Revenue)
@@ -277,7 +277,7 @@ npm run dev
 php artisan serve
 
 # 5. Visit admin dashboard
-# http://localhost:8000/admin/dashboard
+# http://localhost:8000/admin
 ```
 
 ---

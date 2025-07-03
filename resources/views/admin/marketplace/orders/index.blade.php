@@ -55,7 +55,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i data-feather="clock"></i>
+                                        <i class="fas fa-clock"></i>
                                     </span>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                     <div class="col-auto">
                         <div class="btn-group">
                             <button type="button" class="btn btn-success btn-sm" onclick="exportOrders()">
-                                <i data-feather="download" class="me-1"></i> Xuất Excel
+                                <i class="fas fa-download" class="me-1"></i> Xuất Excel
                             </button>
                             <button type="button" class="btn btn-info btn-sm" onclick="refreshOrders()">
                                 <i class="fas fa-sync" class="me-1"></i> Làm Mới
@@ -264,11 +264,11 @@
                                             </a>
                                             @if($order->canBeCancelled())
                                                 <button type="button" class="btn btn-outline-danger" onclick="cancelOrder({{ $order->id }})" title="Hủy đơn">
-                                                    <i data-feather="x-circle"></i>
+                                                    <i class="fas fa-times-circle"></i>
                                                 </button>
                                             @endif
                                             <button type="button" class="btn btn-outline-info" onclick="generateInvoice({{ $order->id }})" title="Tạo hóa đơn">
-                                                <i data-feather="file-text"></i>
+                                                <i class="fas fa-file-alt"></i>
                                             </button>
                                         </div>
                                     </td>

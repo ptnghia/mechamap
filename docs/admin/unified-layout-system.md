@@ -25,10 +25,10 @@ Hệ thống layout thống nhất cho admin panel MechaMap, được thiết k�
 resources/views/admin/layouts/
 ├── dason.blade.php                 # Single unified layout for all admin pages
 └── partials/
-    ├── unified-header.blade.php    # SINGLE header for all admin pages
-    ├── unified-sidebar.blade.php   # SINGLE sidebar for all admin pages
-    ├── footer.blade.php           # Footer
-    └── right-sidebar.blade.php    # Theme customizer
+    ├── header.blade.php           # SINGLE header for all admin pages
+    ├── sidebar.blade.php          # SINGLE sidebar for all admin pages
+    ├── dason-footer.blade.php     # Footer
+    └── dason-right-sidebar.blade.php # Theme customizer
 ```
 
 ## 🎨 Master Layout Features

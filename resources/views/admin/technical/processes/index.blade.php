@@ -33,7 +33,7 @@
                         <div class="flex-shrink-0 align-self-center">
                             <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                 <span class="avatar-title">
-                                    <i class="mdi mdi-cog-outline font-size-24"></i>
+                                    <i class="fas fa-cog-outline font-size-24"></i>
                                 </span>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-auto">
                             <a href="{{ route('admin.technical.processes.create') }}" class="btn btn-primary">
-                                <i class="mdi mdi-plus me-1"></i> Thêm quy trình
+                                <i class="fas fa-plus me-1"></i> Thêm quy trình
                             </a>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Tìm kiếm quy trình..." id="searchInput">
                                 <button class="btn btn-outline-secondary" type="button">
-                                    <i class="mdi mdi-magnify"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm me-3">
                                                 <div class="avatar-title bg-light text-primary rounded">
-                                                    <i class="mdi mdi-cog-outline font-size-18"></i>
+                                                    <i class="fas fa-cog-outline font-size-18"></i>
                                                 </div>
                                             </div>
                                             <div>
@@ -224,10 +224,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem chi tiết
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem chi tiết
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Chỉnh sửa
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Chỉnh sửa
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="#">
                                                     <i class="mdi mdi-content-duplicate font-size-16 text-info me-1"></i> Nhân bản
@@ -244,10 +244,10 @@
                                 <tr>
                                     <td colspan="8" class="text-center py-4">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i class="mdi mdi-cog-outline font-size-48 text-muted mb-2"></i>
+                                            <i class="fas fa-cog-outline font-size-48 text-muted mb-2"></i>
                                             <p class="text-muted mb-0">Chưa có quy trình sản xuất nào</p>
                                             <a href="{{ route('admin.technical.processes.create') }}" class="btn btn-primary btn-sm mt-2">
-                                                <i class="mdi mdi-plus me-1"></i> Thêm quy trình đầu tiên
+                                                <i class="fas fa-plus me-1"></i> Thêm quy trình đầu tiên
                                             </a>
                                         </div>
                                     </td>

@@ -191,7 +191,7 @@
                 </li>
                 @endadminCanAny
 
-                @adminCanAny(['view_users', 'manage_admins', 'manage_roles'])
+                @adminCanAny(['view-users', 'manage-admins', 'manage-roles'])
                 <li class="menu-title" data-key="t-users">Quản Lý Người Dùng</li>
 
                 <!-- User Management -->
@@ -201,24 +201,27 @@
                         <span data-key="t-user-management">Người Dùng</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        @adminCan('view_users')
+                        @adminCan('view-users')
                         <li><a href="{{ route('admin.users.index') }}" data-key="t-all-users" class="{{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
                             <i class="fas fa-list"></i> Tất Cả Người Dùng
                         </a></li>
                         @endadminCan
-                        @adminCan('manage_admins')
+                        @adminCan('manage-admins')
                         <li><a href="{{ route('admin.users.admins') }}" data-key="t-admins" class="{{ request()->routeIs('admin.users.admins*') ? 'active' : '' }}">
                             <i class="fas fa-user-shield"></i> Quản Trị Viên
                         </a></li>
                         @endadminCan
-                        @adminCan('view_users')
+                        @adminCan('view-users')
                         <li><a href="{{ route('admin.users.members') }}" data-key="t-members" class="{{ request()->routeIs('admin.users.members*') ? 'active' : '' }}">
                             <i class="fas fa-user"></i> Thành Viên
                         </a></li>
                         @endadminCan
-                        @adminCan('manage_roles')
-                        <li><a href="{{ route('admin.roles.index') }}" data-key="t-roles" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                        @adminCan('manage-roles')
+                        <li><a href="{{ route('admin.roles.index') }}" data-key="t-roles" class="{{ request()->routeIs('admin.roles.index') ? 'active' : '' }}">
                             <i class="fas fa-key"></i> Vai Trò & Quyền Hạn
+                        </a></li>
+                        <li><a href="{{ route('admin.roles.multiple-roles-demo') }}" data-key="t-multiple-roles" class="{{ request()->routeIs('admin.roles.multiple-roles-demo') ? 'active' : '' }}">
+                            <i class="fas fa-users-cog"></i> Gán Multiple Roles
                         </a></li>
                         @endadminCan
                     </ul>
@@ -259,7 +262,7 @@
                 </li>
                 @endadminCanAny
 
-                @adminCanAny(['view_messages', 'send_messages'])
+                @adminCanAny(['send-announcements', 'manage-events', 'manage-user-groups'])
                 <li class="menu-title" data-key="t-communication">Giao Tiếp & Thông Báo</li>
 
                 <!-- Messages & Alerts -->
@@ -269,21 +272,27 @@
                         <span data-key="t-communication">Giao Tiếp</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        @adminCan('view_messages')
-                        <li><a href="{{ route('admin.chat.index') }}" data-key="t-chat" class="{{ request()->routeIs('admin.chat.*') ? 'active' : '' }}">
-                            <i class="fas fa-comments"></i> Chat Trực Tiếp
-                            {{-- @php $unreadMessages = auth()->user()->unreadMessages()->count(); @endphp
-                            @if($unreadMessages > 0)
-                                <span class="badge rounded-pill bg-info float-end">{{ $unreadMessages }}</span>
-                            @endif --}}
+                        @adminCan('send-announcements')
+                        <li><a href="{{ route('admin.notifications.index') }}" data-key="t-announcements" class="{{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}">
+                            <i class="fas fa-bullhorn"></i> Thông Báo
+                        </a></li>
+                        @endadminCan
+                        @adminCan('manage-events')
+                        <li><a href="{{ route('admin.pages.index') }}" data-key="t-events" class="{{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
+                            <i class="fas fa-calendar"></i> Sự Kiện & Tri Thức
+                        </a></li>
+                        @endadminCan
+                        @adminCan('manage-user-groups')
+                        <li><a href="{{ route('admin.moderation.dashboard') }}" data-key="t-user-groups" class="{{ request()->routeIs('admin.moderation.dashboard') ? 'active' : '' }}">
+                            <i class="fas fa-users"></i> Quản Lý Cộng Đồng
                         </a></li>
                         @endadminCan
                         @isAdmin
+                        <li><a href="{{ route('admin.chat.index') }}" data-key="t-chat" class="{{ request()->routeIs('admin.chat.*') ? 'active' : '' }}">
+                            <i class="fas fa-comments"></i> Chat Trực Tiếp
+                        </a></li>
                         <li><a href="{{ route('admin.messages.index') }}" data-key="t-messages" class="{{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                             <i class="fas fa-cog"></i> Cấu Hình Tin Nhắn
-                        </a></li>
-                        <li><a href="{{ route('admin.alerts.index') }}" data-key="t-alerts" class="{{ request()->routeIs('admin.alerts.*') ? 'active' : '' }}">
-                            <i class="fas fa-bell"></i> Cấu Hình Thông Báo
                         </a></li>
                         <li><a href="{{ route('admin.notifications.index') }}" data-key="t-notifications" class="{{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}">
                             <i class="fas fa-bell-slash"></i> Quản Lý Thông Báo
@@ -328,11 +337,11 @@
                 </li>
                 @endadminCanAny
 
-                @adminCanAny(['view_statistics', 'view_analytics'])
+                @adminCanAny(['view-analytics', 'view-reports', 'manage-reports'])
                 <li class="menu-title" data-key="t-analytics">Phân Tích & Báo Cáo</li>
 
                 <!-- Statistics -->
-                @adminCan('view_statistics')
+                @adminCan('view-analytics')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-chart-line"></i>
@@ -356,7 +365,7 @@
                 @endadminCan
 
                 <!-- Advanced Analytics -->
-                @adminCan('view_analytics')
+                @adminCan('view-analytics')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-chart-bar"></i>
@@ -393,6 +402,34 @@
                     </ul>
                 </li>
                 @endadminCan
+
+                <!-- Reports -->
+                @adminCanAny(['view-reports', 'manage-reports'])
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-file-chart-line"></i>
+                        <span data-key="t-reports">Báo Cáo</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        @adminCan('view-reports')
+                        <li><a href="{{ route('admin.reports.index') }}" data-key="t-reports-overview" class="{{ request()->routeIs('admin.reports.index') ? 'active' : '' }}">
+                            <i class="fas fa-chart-pie"></i> Tổng Quan Báo Cáo
+                        </a></li>
+                        <li><a href="{{ route('admin.moderation.reports') }}" data-key="t-moderation-reports" class="{{ request()->routeIs('admin.moderation.reports') ? 'active' : '' }}">
+                            <i class="fas fa-shield-alt"></i> Báo Cáo Kiểm Duyệt
+                        </a></li>
+                        <li><a href="{{ route('admin.moderation.statistics') }}" data-key="t-content-reports" class="{{ request()->routeIs('admin.moderation.statistics') ? 'active' : '' }}">
+                            <i class="fas fa-file-alt"></i> Báo Cáo Nội Dung
+                        </a></li>
+                        @endadminCan
+                        @adminCan('manage-reports')
+                        <li><a href="{{ route('admin.analytics.export') }}" data-key="t-custom-reports" class="{{ request()->routeIs('admin.analytics.export') ? 'active' : '' }}">
+                            <i class="fas fa-cog"></i> Báo Cáo Tùy Chỉnh
+                        </a></li>
+                        @endadminCan
+                    </ul>
+                </li>
+                @endadminCanAny
                 @endadminCanAny
 
                 @adminCanAny(['manage_seo', 'manage_performance', 'view_settings', 'manage_locations'])

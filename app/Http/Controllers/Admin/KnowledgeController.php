@@ -24,7 +24,7 @@ class KnowledgeController extends Controller
             'articles_count' => KnowledgeArticle::count(),
             'videos_count' => KnowledgeVideo::count(),
             'documents_count' => KnowledgeDocument::count(),
-            'total_views' => KnowledgeArticle::sum('views_count') + KnowledgeVideo::sum('views_count'),
+            'total_views' => KnowledgeArticle::sum('view_count') + KnowledgeVideo::sum('views_count'),
             'published_articles' => KnowledgeArticle::where('status', 'published')->count(),
             'draft_articles' => KnowledgeArticle::where('status', 'draft')->count(),
             'published_videos' => KnowledgeVideo::where('status', 'published')->count(),

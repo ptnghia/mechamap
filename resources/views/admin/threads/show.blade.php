@@ -48,11 +48,11 @@
                         @elseif($thread->status == 'rejected')
                             <span class="badge bg-danger">{{ __('Đã từ chối') }}</span>
                         @endif
-                        
+
                         @if($thread->is_sticky)
                             <span class="badge bg-info">{{ __('Ghim') }}</span>
                         @endif
-                        
+
                         @if($thread->is_featured)
                             <span class="badge bg-warning">{{ __('Nổi bật') }}</span>
                         @endif
@@ -71,9 +71,9 @@
                             {!! $thread->content !!}
                         </div>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <h6 class="mb-3">{{ __('Thông tin chi tiết') }}</h6>
                     <div class="row">
                         <div class="col-md-6">
@@ -93,6 +93,23 @@
                                 <li class="list-group-item d-flex justify-content-between px-0">
                                     <span>{{ __('Chuyên mục') }}:</span>
                                     <span class="text-muted">{{ $thread->category->name }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between px-0">
+                                    <span>{{ __('Trạng thái') }}:</span>
+                                    <div>
+                                        @if($thread->is_sticky)
+                                            <span class="badge bg-info me-1">{{ __('Ghim') }}</span>
+                                        @endif
+                                        @if($thread->is_locked)
+                                            <span class="badge bg-warning me-1">{{ __('Khóa') }}</span>
+                                        @endif
+                                        @if($thread->is_featured)
+                                            <span class="badge bg-success me-1">{{ __('Nổi bật') }}</span>
+                                        @endif
+                                        @if(!$thread->is_sticky && !$thread->is_locked && !$thread->is_featured)
+                                            <span class="text-muted">{{ __('Bình thường') }}</span>
+                                        @endif
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -119,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Bình luận') }} ({{ $thread->comments->count() }})</h5>
@@ -182,7 +199,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Modal xóa bình luận -->
                         <div class="modal fade" id="deleteCommentModal{{ $comment->id }}" tabindex="-1" aria-labelledby="deleteCommentModalLabel{{ $comment->id }}" aria-hidden="true">
                             <div class="modal-dialog">
@@ -205,7 +222,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         @if(!$loop->last)
                             <hr>
                         @endif
@@ -218,7 +235,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
@@ -229,7 +246,40 @@
                         <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-primary">
                             <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
                         </a>
-                        
+
+                        <!-- Moderation Actions -->
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <form action="{{ route('admin.threads.toggle-pin', $thread) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-outline-info w-100">
+                                        <i class="fas fa-thumbtack me-1"></i>
+                                        {{ $thread->is_sticky ? __('Bỏ ghim') : __('Ghim') }}
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-6">
+                                <form action="{{ route('admin.threads.toggle-lock', $thread) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-outline-warning w-100">
+                                        <i class="fas fa-{{ $thread->is_locked ? 'unlock' : 'lock' }} me-1"></i>
+                                        {{ $thread->is_locked ? __('Mở khóa') : __('Khóa') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <form action="{{ route('admin.threads.toggle-feature', $thread) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-outline-success">
+                                <i class="fas fa-star me-1"></i>
+                                {{ $thread->is_featured ? __('Bỏ nổi bật') : __('Đánh dấu nổi bật') }}
+                            </button>
+                        </form>
+
                         @if($thread->status == 'pending')
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
                                 <i class="fas fa-check me-1"></i> {{ __('Duyệt bài đăng') }}
@@ -238,14 +288,14 @@
                                 <i class="fas fa-times me-1"></i> {{ __('Từ chối bài đăng') }}
                             </button>
                         @endif
-                        
+
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                             <i class="fas fa-trash me-1"></i> {{ __('Xóa bài đăng') }}
                         </button>
                     </div>
                 </div>
             </div>
-            
+
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Thông tin tác giả') }}</h5>
@@ -281,7 +331,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal duyệt bài đăng -->
     <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -304,7 +354,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal từ chối bài đăng -->
     <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -331,7 +381,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal xóa bài đăng -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">

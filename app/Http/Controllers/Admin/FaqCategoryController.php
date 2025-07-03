@@ -18,16 +18,16 @@ class FaqCategoryController extends Controller
         $categories = FaqCategory::withCount('faqs')
             ->orderBy('order')
             ->get();
-        
+
         // Breadcrumbs
         $breadcrumbs = [
             ['title' => 'Quản lý FAQ', 'url' => route('admin.faqs.index')],
             ['title' => 'Danh mục FAQ', 'url' => route('admin.faq-categories.index')]
         ];
-        
+
         return view('admin.faq-categories.index', compact('categories', 'breadcrumbs'));
     }
-    
+
     /**
      * Hiển thị form tạo danh mục mới
      */
@@ -39,10 +39,10 @@ class FaqCategoryController extends Controller
             ['title' => 'Danh mục FAQ', 'url' => route('admin.faq-categories.index')],
             ['title' => 'Tạo danh mục mới', 'url' => route('admin.faq-categories.create')]
         ];
-        
+
         return view('admin.faq-categories.create', compact('breadcrumbs'));
     }
-    
+
     /**
      * Lưu danh mục mới
      */
@@ -54,7 +54,7 @@ class FaqCategoryController extends Controller
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
-        
+
         $category = new FaqCategory();
         $category->name = $request->name;
         $category->slug = Str::slug($request->name);
@@ -62,11 +62,11 @@ class FaqCategoryController extends Controller
         $category->order = $request->order ?? 0;
         $category->is_active = $request->has('is_active');
         $category->save();
-        
+
         return redirect()->route('admin.faq-categories.index')
             ->with('success', 'Danh mục đã được tạo thành công.');
     }
-    
+
     /**
      * Hiển thị form chỉnh sửa danh mục
      */
@@ -78,10 +78,10 @@ class FaqCategoryController extends Controller
             ['title' => 'Danh mục FAQ', 'url' => route('admin.faq-categories.index')],
             ['title' => 'Chỉnh sửa danh mục', 'url' => route('admin.faq-categories.edit', $faqCategory)]
         ];
-        
+
         return view('admin.faq-categories.edit', compact('faqCategory', 'breadcrumbs'));
     }
-    
+
     /**
      * Cập nhật danh mục
      */
@@ -93,7 +93,7 @@ class FaqCategoryController extends Controller
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
-        
+
         $faqCategory->name = $request->name;
         // Chỉ cập nhật slug nếu tên thay đổi
         if ($faqCategory->name != $request->name) {
@@ -103,11 +103,11 @@ class FaqCategoryController extends Controller
         $faqCategory->order = $request->order ?? 0;
         $faqCategory->is_active = $request->has('is_active');
         $faqCategory->save();
-        
+
         return redirect()->route('admin.faq-categories.index')
             ->with('success', 'Danh mục đã được cập nhật thành công.');
     }
-    
+
     /**
      * Xóa danh mục
      */
@@ -117,13 +117,13 @@ class FaqCategoryController extends Controller
         if ($faqCategory->faqs()->count() > 0) {
             return back()->withErrors(['delete' => 'Không thể xóa danh mục có câu hỏi.']);
         }
-        
+
         $faqCategory->delete();
-        
+
         return redirect()->route('admin.faq-categories.index')
             ->with('success', 'Danh mục đã được xóa thành công.');
     }
-    
+
     /**
      * Thay đổi trạng thái danh mục
      */
@@ -131,13 +131,13 @@ class FaqCategoryController extends Controller
     {
         $faqCategory->is_active = !$faqCategory->is_active;
         $faqCategory->save();
-        
+
         $status = $faqCategory->is_active ? 'kích hoạt' : 'vô hiệu hóa';
-        
+
         return redirect()->route('admin.faq-categories.index')
             ->with('success', "Danh mục đã được {$status} thành công.");
     }
-    
+
     /**
      * Sắp xếp lại thứ tự danh mục
      */
@@ -148,13 +148,70 @@ class FaqCategoryController extends Controller
             'categories.*.id' => 'required|exists:faq_categories,id',
             'categories.*.order' => 'required|integer|min:0',
         ]);
-        
+
         foreach ($request->categories as $categoryData) {
             $category = FaqCategory::find($categoryData['id']);
             $category->order = $categoryData['order'];
             $category->save();
         }
-        
+
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Bulk activate FAQ Categories
+     */
+    public function bulkActivate(Request $request)
+    {
+        $ids = json_decode($request->ids, true);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Không có mục nào được chọn.');
+        }
+
+        $count = FaqCategory::whereIn('id', $ids)->update(['is_active' => true]);
+
+        return redirect()->back()->with('success', "Đã kích hoạt {$count} danh mục thành công.");
+    }
+
+    /**
+     * Bulk deactivate FAQ Categories
+     */
+    public function bulkDeactivate(Request $request)
+    {
+        $ids = json_decode($request->ids, true);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Không có mục nào được chọn.');
+        }
+
+        $count = FaqCategory::whereIn('id', $ids)->update(['is_active' => false]);
+
+        return redirect()->back()->with('success', "Đã vô hiệu hóa {$count} danh mục thành công.");
+    }
+
+    /**
+     * Bulk delete FAQ Categories
+     */
+    public function bulkDelete(Request $request)
+    {
+        $ids = json_decode($request->ids, true);
+
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'Không có mục nào được chọn.');
+        }
+
+        // Check if any categories have FAQs
+        $categoriesWithFaqs = FaqCategory::whereIn('id', $ids)->withCount('faqs')->get();
+        $hasActiveFaqs = $categoriesWithFaqs->where('faqs_count', '>', 0)->count() > 0;
+
+        if ($hasActiveFaqs) {
+            return redirect()->back()->with('error', 'Không thể xóa danh mục có chứa câu hỏi. Vui lòng xóa tất cả câu hỏi trước.');
+        }
+
+        $count = FaqCategory::whereIn('id', $ids)->count();
+        FaqCategory::whereIn('id', $ids)->delete();
+
+        return redirect()->back()->with('success', "Đã xóa {$count} danh mục thành công.");
     }
 }

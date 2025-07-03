@@ -41,8 +41,8 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('logout', [AuthController::class, 'logoutGet'])->name('logout.get');
 
-    // Dynamic Dashboard - Phase 2
-    Route::get('/', [DynamicDashboardController::class, 'index'])->name('dashboard');
+    // Admin Dashboard - Main route
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Test permissions
     Route::get('/test-permissions', function () {
@@ -85,10 +85,7 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
             'is_super_admin' => $user->role === 'super_admin',
         ]);
     })->name('test-simple');
-    Route::get('/dashboard/realtime', [DynamicDashboardController::class, 'getRealtimeData'])->name('dashboard.realtime');
-
-    // Legacy dashboard (backup)
-    Route::get('/legacy', [DashboardController::class, 'index'])->name('dashboard.legacy');
+    Route::get('/realtime', [DynamicDashboardController::class, 'getRealtimeData'])->name('dashboard.realtime');
 
     // Profile routes (tất cả admin và moderator đều có quyền)
     Route::prefix('profile')->name('profile.')->group(function () {
@@ -100,15 +97,24 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Roles & Permissions management routes (chỉ admin có quyền)
     Route::middleware(['admin.auth'])->prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', function() {
-            return view('admin.roles.index');
-        })->name('index');
-        Route::get('/create', function() {
-            return view('admin.roles.create');
-        })->name('create');
-        Route::get('/{role}/edit', function($role) {
-            return view('admin.roles.edit', compact('role'));
-        })->name('edit');
+        // Demo page (phải đặt trước các route có parameter)
+        Route::get('/multiple-roles-demo', function() {
+            return view('admin.roles.multiple-roles-demo');
+        })->name('multiple-roles-demo');
+
+        Route::get('/', [App\Http\Controllers\Admin\RoleController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\RoleController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\RoleController::class, 'store'])->name('store');
+        Route::get('/{role}', [App\Http\Controllers\Admin\RoleController::class, 'show'])->name('show');
+        Route::get('/{role}/edit', [App\Http\Controllers\Admin\RoleController::class, 'edit'])->name('edit');
+        Route::put('/{role}', [App\Http\Controllers\Admin\RoleController::class, 'update'])->name('update');
+        Route::delete('/{role}', [App\Http\Controllers\Admin\RoleController::class, 'destroy'])->name('destroy');
+
+        // AJAX routes
+        Route::post('/{role}/toggle-status', [App\Http\Controllers\Admin\RoleController::class, 'toggleStatus'])->name('toggle-status');
+        Route::get('/{role}/permissions', [App\Http\Controllers\Admin\RoleController::class, 'getPermissions'])->name('permissions');
+        Route::post('/{role}/assign-user', [App\Http\Controllers\Admin\RoleController::class, 'assignToUser'])->name('assign-user');
+        Route::post('/assign-multiple', [App\Http\Controllers\Admin\RoleController::class, 'assignMultipleRoles'])->name('assign-multiple');
     });
 
     // User management routes (cần quyền view_users)
@@ -141,6 +147,12 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         // Quản lý admin export
         Route::get('/admins/export', [UserController::class, 'exportAdmins'])->name('admins.export');
 
+        // Multiple roles management (cần quyền manage_roles)
+        Route::middleware(['admin.permission:manage_roles'])->group(function () {
+            Route::get('/{user}/roles', [UserController::class, 'manageRoles'])->name('roles');
+            Route::post('/{user}/roles', [UserController::class, 'updateRoles'])->name('roles.update');
+        });
+
         // Route chung cho cả hai loại thành viên
         Route::get('/{user}', [UserController::class, 'show'])->name('show');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
@@ -161,6 +173,9 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::resource('threads', ThreadController::class);
         Route::put('threads/{thread}/approve', [ThreadController::class, 'approve'])->name('threads.approve');
         Route::put('threads/{thread}/reject', [ThreadController::class, 'reject'])->name('threads.reject');
+        Route::put('threads/{thread}/toggle-pin', [ThreadController::class, 'togglePin'])->name('threads.toggle-pin');
+        Route::put('threads/{thread}/toggle-lock', [ThreadController::class, 'toggleLock'])->name('threads.toggle-lock');
+        Route::put('threads/{thread}/toggle-feature', [ThreadController::class, 'toggleFeature'])->name('threads.toggle-feature');
         Route::get('threads-statistics', [ThreadController::class, 'statistics'])->name('threads.statistics');
     });
 
@@ -181,17 +196,23 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
         // Quản lý threads
         Route::get('/threads', [ModerationController::class, 'threads'])->name('threads');
+        Route::get('/threads/{thread}', [ModerationController::class, 'showThread'])->name('threads.show');
         Route::post('/threads/{thread}/approve', [ModerationController::class, 'approveThread'])->name('threads.approve');
         Route::post('/threads/{thread}/reject', [ModerationController::class, 'rejectThread'])->name('threads.reject');
         Route::post('/threads/{thread}/flag', [ModerationController::class, 'flagThread'])->name('threads.flag');
+        Route::post('/threads/{thread}/update-status', [ModerationController::class, 'updateThreadStatus'])->name('threads.update-status');
         Route::post('/threads/bulk-action', [ModerationController::class, 'bulkActionThreads'])->name('threads.bulk-action');
+        Route::post('/threads/bulk-update', [ModerationController::class, 'bulkUpdateThreads'])->name('threads.bulk-update');
 
         // Quản lý comments
         Route::get('/comments', [ModerationController::class, 'comments'])->name('comments');
+        Route::get('/comments/{comment}', [ModerationController::class, 'showComment'])->name('comments.show');
         Route::post('/comments/{comment}/approve', [ModerationController::class, 'approveComment'])->name('comments.approve');
         Route::post('/comments/{comment}/reject', [ModerationController::class, 'rejectComment'])->name('comments.reject');
+        Route::post('/comments/{comment}/update-status', [ModerationController::class, 'updateCommentStatus'])->name('comments.update-status');
         Route::post('/comments/{comment}/flag', [ModerationController::class, 'flagComment'])->name('comments.flag');
         Route::post('/comments/bulk-action', [ModerationController::class, 'bulkActionComments'])->name('comments.bulk-action');
+        Route::post('/comments/bulk-update', [ModerationController::class, 'bulkUpdateComments'])->name('comments.bulk-update');
 
         // Reports management (cần quyền view-reports)
         Route::middleware(['admin.permission:view-reports'])->group(function () {
@@ -366,9 +387,20 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
     // FAQ management routes (admin và moderator có quyền)
     Route::resource('faqs', FaqController::class);
     Route::put('faqs/{faq}/toggle-status', [FaqController::class, 'toggleStatus'])->name('faqs.toggle-status');
+
+    // FAQ bulk actions
+    Route::post('faqs/bulk-activate', [FaqController::class, 'bulkActivate'])->name('faqs.bulk-activate');
+    Route::post('faqs/bulk-deactivate', [FaqController::class, 'bulkDeactivate'])->name('faqs.bulk-deactivate');
+    Route::post('faqs/bulk-delete', [FaqController::class, 'bulkDelete'])->name('faqs.bulk-delete');
+
     Route::resource('faq-categories', FaqCategoryController::class);
     Route::put('faq-categories/{faq_category}/toggle-status', [FaqCategoryController::class, 'toggleStatus'])->name('faq-categories.toggle-status');
     Route::post('faq-categories/reorder', [FaqCategoryController::class, 'reorder'])->name('faq-categories.reorder');
+
+    // FAQ Categories bulk actions
+    Route::post('faq-categories/bulk-activate', [FaqCategoryController::class, 'bulkActivate'])->name('faq-categories.bulk-activate');
+    Route::post('faq-categories/bulk-deactivate', [FaqCategoryController::class, 'bulkDeactivate'])->name('faq-categories.bulk-deactivate');
+    Route::post('faq-categories/bulk-delete', [FaqCategoryController::class, 'bulkDelete'])->name('faq-categories.bulk-delete');
 
     // Knowledge Base management routes
     Route::prefix('knowledge')->name('knowledge.')->group(function () {
@@ -724,13 +756,7 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // ===== DASON TEMPLATE INTEGRATION ROUTES =====
 
-    // New Dason-powered dashboard
-    Route::get('/dason', [DasonDashboardController::class, 'index'])->name('dason.dashboard');
 
-    // Test route for Dason dashboard (temporary)
-    Route::get('/dashboard-test', function() {
-        return view('admin.dashboard-test');
-    })->name('dashboard.test');
 
     // Analytics routes with Dason UI
     Route::prefix('analytics')->name('analytics.')->group(function () {

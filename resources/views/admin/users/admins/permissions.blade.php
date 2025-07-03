@@ -44,6 +44,46 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <!-- 🎯 HYBRID SYSTEM INFO -->
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>🎯 CUSTOM PERMISSIONS:</strong> Trang này cho phép bạn thêm permissions tùy chỉnh bổ sung cho
+                        <a href="{{ route('admin.users.roles', $user) }}" class="alert-link"><strong>Multiple Roles</strong></a> hiện có.
+                        <br><small class="text-muted">Permissions cuối cùng = Roles Permissions + Custom Permissions</small>
+                    </div>
+
+                    @php
+                        $permissionsBreakdown = $user->getPermissionsBreakdown();
+                        $rolePermissionsCount = count($permissionsBreakdown['role_permissions']);
+                        $customPermissionsCount = count($permissionsBreakdown['custom_permissions']);
+                        $totalPermissionsCount = count($permissionsBreakdown['total_permissions']);
+                    @endphp
+
+                    @if($user->roles && $user->roles->count() > 0)
+                    <div class="alert alert-success">
+                        <i class="fas fa-users-cog me-2"></i>
+                        <strong>Current Roles:</strong>
+                        @foreach($user->roles as $role)
+                            <span class="badge bg-primary me-1">{{ $role->display_name }}</span>
+                        @endforeach
+                        <br><small class="text-muted">{{ $rolePermissionsCount }} permissions từ roles</small>
+                    </div>
+                    @else
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Chưa có roles:</strong> User chưa được gán roles nào.
+                        <a href="{{ route('admin.users.roles', $user) }}" class="alert-link">Gán roles trước</a> để có base permissions.
+                    </div>
+                    @endif
+
+                    @if($customPermissionsCount > 0)
+                    <div class="alert alert-info">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        <strong>Custom Permissions:</strong> {{ $customPermissionsCount }} additional permissions
+                        <br><small class="text-muted">Total: {{ $totalPermissionsCount }} permissions ({{ $rolePermissionsCount }} từ roles + {{ $customPermissionsCount }} custom)</small>
+                    </div>
+                    @endif
+
                     <!-- Thông báo vai trò -->
                     @if($user->role === 'admin')
                     <div class="alert alert-info">
@@ -57,41 +97,96 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Quyền cơ bản -->
-                        <div class="mb-4">
-                            <h6 class="text-primary mb-3">
-                                <i class="fas fa-shield-alt mr-2"></i>
-                                Quyền Cơ Bản
-                            </h6>
+                        <!-- Dynamic Permissions từ Database -->
+                        @if($allPermissions && $allPermissions->count() > 0)
+                            @foreach($allPermissions as $category => $permissions)
+                                <div class="mb-4">
+                                    <h6 class="text-primary mb-3">
+                                        @php
+                                            $categoryIcons = [
+                                                'system' => 'cogs',
+                                                'users' => 'users',
+                                                'content' => 'edit',
+                                                'marketplace' => 'shopping-cart',
+                                                'community' => 'comments',
+                                                'analytics' => 'chart-bar',
+                                                'basic' => 'user',
+                                                'business' => 'briefcase'
+                                            ];
+                                            $icon = $categoryIcons[$category] ?? 'shield-alt';
+                                        @endphp
+                                        <i class="fas fa-{{ $icon }} me-2"></i>
+                                        {{ ucfirst(str_replace('_', ' ', $category)) }}
+                                    </h6>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" id="can_view_dashboard"
-                                            name="permissions[]" value="view_dashboard" {{
-                                            $user->hasPermission('view_dashboard') ? 'checked' : '' }}
-                                        {{ $user->role === 'admin' ? 'disabled' : '' }}>
-                                        <label class="form-check-label" for="can_view_dashboard">
-                                            <strong>Xem Dashboard</strong>
-                                            <small class="text-muted d-block">Truy cập trang quản trị chính</small>
-                                        </label>
+                                    <div class="row">
+                                        @foreach($permissions as $permission)
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           id="permission_{{ $permission->id }}"
+                                                           name="permissions[]"
+                                                           value="{{ $permission->name }}"
+                                                           {{ in_array($permission->name, $userPermissions) ? 'checked' : '' }}
+                                                           {{ $user->role === 'super_admin' ? 'disabled' : '' }}>
+                                                    <label class="form-check-label" for="permission_{{ $permission->id }}">
+                                                        <strong>{{ $permission->display_name }}</strong>
+                                                        @if($permission->description)
+                                                            <small class="text-muted d-block">{{ $permission->description }}</small>
+                                                        @endif
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
+                                <hr>
+                            @endforeach
+                        @else
+                            <!-- Fallback: Permission Groups từ Config -->
+                            @if($permissionGroups && count($permissionGroups) > 0)
+                                @foreach($permissionGroups as $groupKey => $group)
+                                    <div class="mb-4">
+                                        <h6 class="text-primary mb-3">
+                                            @php
+                                                $groupIcons = [
+                                                    'system' => 'cogs',
+                                                    'users' => 'users',
+                                                    'content' => 'edit',
+                                                    'marketplace' => 'shopping-cart',
+                                                    'community' => 'comments',
+                                                    'analytics' => 'chart-bar',
+                                                    'basic' => 'user',
+                                                    'business' => 'briefcase'
+                                                ];
+                                                $icon = $groupIcons[$groupKey] ?? 'shield-alt';
+                                            @endphp
+                                            <i class="fas fa-{{ $icon }} me-2"></i>
+                                            {{ $group['name'] }}
+                                        </h6>
 
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" id="can_view_reports"
-                                            name="permissions[]" value="view_reports" {{
-                                            $user->hasPermission('view_reports') ? 'checked' : '' }}
-                                        {{ $user->role === 'admin' ? 'disabled' : '' }}>
-                                        <label class="form-check-label" for="can_view_reports">
-                                            <strong>Xem Báo Cáo</strong>
-                                            <small class="text-muted d-block">Truy cập các báo cáo thống kê</small>
-                                        </label>
+                                        <div class="row">
+                                            @foreach($group['permissions'] as $permissionName)
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="permission_{{ $permissionName }}"
+                                                               name="permissions[]"
+                                                               value="{{ $permissionName }}"
+                                                               {{ in_array($permissionName, $userPermissions) ? 'checked' : '' }}
+                                                               {{ $user->role === 'super_admin' ? 'disabled' : '' }}>
+                                                        <label class="form-check-label" for="permission_{{ $permissionName }}">
+                                                            <strong>{{ ucfirst(str_replace('-', ' ', $permissionName)) }}</strong>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                    <hr>
+                                @endforeach
+                            @endif
+                        @endif
 
                         <hr>
 
@@ -280,6 +375,17 @@
                             </div>
                         </div>
 
+                        <!-- Reason Field -->
+                        <div class="mb-4">
+                            <label for="reason" class="form-label">Lý do thay đổi permissions</label>
+                            <textarea class="form-control @error('reason') is-invalid @enderror"
+                                      id="reason" name="reason" rows="3"
+                                      placeholder="Nhập lý do thay đổi permissions cho user này...">{{ old('reason') }}</textarea>
+                            @error('reason')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between">
                             <div>
@@ -380,6 +486,9 @@
             </div>
         </div>
     </div>
+
+    {{-- 📚 Role Descriptions Guide --}}
+    @include('admin.components.role-descriptions')
 </div>
 
 @push('scripts')

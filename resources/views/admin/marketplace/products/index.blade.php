@@ -55,7 +55,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i data-feather="clock"></i>
+                                        <i class="fas fa-clock"></i>
                                     </span>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-info">
                                     <span class="avatar-title">
-                                        <i data-feather="star"></i>
+                                        <i class="fas fa-star"></i>
                                     </span>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                                                 <img src="{{ Storage::url($product->featured_image) }}" alt="{{ $product->name }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
                                             @else
                                                 <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                    <i data-feather="image" class="text-muted"></i>
+                                                    <i class="fas fa-image" class="text-muted"></i>
                                                 </div>
                                             @endif
                                             <div>
@@ -281,7 +281,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-outline-warning" onclick="toggleFeatured({{ $product->id }})" title="Nổi bật">
-                                                <i data-feather="star"></i>
+                                                <i class="fas fa-star"></i>
                                             </button>
                                             <button type="button" class="btn btn-outline-danger" onclick="deleteProduct({{ $product->id }})" title="Xóa">
                                                 <i class="fas fa-trash"></i>
@@ -389,15 +389,9 @@ function getSelectedIds() {
     return Array.from(checkboxes).map(cb => cb.value);
 }
 
-// Initialize Feather Icons
+// Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof feather !== 'undefined') {
-        try {
-            feather.replace();
-        } catch (error) {
-            console.warn('Feather Icons error in products page:', error);
-        }
-    }
+    console.log('Products page loaded');
 });
 </script>
 @endsection

@@ -35,7 +35,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-star font-size-24"></i>
+                                        <i class="fas fa-star font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-success">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-eye font-size-24"></i>
+                                        <i class="fas fa-eye font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-info">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-heart font-size-24"></i>
+                                        <i class="fas fa-heart font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i class="mdi mdi-star-outline font-size-24"></i>
+                                        <i class="fas fa-star-outline font-size-24"></i>
                                     </span>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                     <div class="col-auto">
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addFeaturedModal">
-                                <i class="mdi mdi-plus me-1"></i> Thêm Nổi Bật
+                                <i class="fas fa-plus me-1"></i> Thêm Nổi Bật
                             </button>
                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="reorderFeatured()">
                                 <i class="mdi mdi-sort me-1"></i> Sắp Xếp
@@ -124,7 +124,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Chức năng này đang được phát triển. Sẽ sớm ra mắt!
                 </div>
                 
@@ -137,7 +137,7 @@
                                 <img src="{{ asset('assets/images/small/img-1.jpg') }}" class="card-img-top" alt="Featured Product" style="height: 200px; object-fit: cover;">
                                 <div class="position-absolute top-0 end-0 p-2">
                                     <span class="badge bg-warning">
-                                        <i class="mdi mdi-star me-1"></i> Nổi Bật
+                                        <i class="fas fa-star me-1"></i> Nổi Bật
                                     </span>
                                 </div>
                                 <div class="position-absolute top-0 start-0 p-2">
@@ -149,14 +149,14 @@
                                 <p class="card-text text-muted">Mô tả ngắn về sản phẩm cơ khí này...</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
-                                        <i class="mdi mdi-eye me-1"></i> 1,234 lượt xem
+                                        <i class="fas fa-eye me-1"></i> 1,234 lượt xem
                                     </small>
                                     <div class="btn-group btn-group-sm">
                                         <button type="button" class="btn btn-outline-primary" title="Chỉnh sửa">
-                                            <i class="mdi mdi-pencil"></i>
+                                            <i class="fas fa-edit"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-danger" title="Bỏ nổi bật">
-                                            <i class="mdi mdi-star-off"></i>
+                                            <i class="fas fa-star-off"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -167,11 +167,11 @@
                     <!-- Empty State -->
                     <div class="col-12" id="emptyState" style="display: none;">
                         <div class="text-center py-5">
-                            <i class="mdi mdi-star-outline font-size-48 text-muted mb-3"></i>
+                            <i class="fas fa-star-outline font-size-48 text-muted mb-3"></i>
                             <h5 class="text-muted">Chưa có sản phẩm nổi bật</h5>
                             <p class="text-muted mb-3">Thêm sản phẩm vào danh sách nổi bật để hiển thị ở trang chủ</p>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFeaturedModal">
-                                <i class="mdi mdi-plus me-1"></i> Thêm Sản Phẩm Nổi Bật
+                                <i class="fas fa-plus me-1"></i> Thêm Sản Phẩm Nổi Bật
                             </button>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Chức năng này sẽ được triển khai để cho phép chọn sản phẩm từ danh sách showcase hiện có.
                 </div>
                 <form>

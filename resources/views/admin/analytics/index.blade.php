@@ -200,7 +200,7 @@
                     </div>
                     <div class="list-group-item d-flex justify-content-between align-items-center px-0">
                         <div>
-                            <i data-feather="clock" class="text-warning me-2"></i>
+                            <i class="fas fa-clock" class="text-warning me-2"></i>
                             Chờ phê duyệt
                         </div>
                         <span class="badge bg-warning" id="pending-approvals">0</span>
@@ -226,7 +226,7 @@
                         <i data-feather="tool" class="me-2"></i>Phân Tích Kỹ Thuật
                     </a>
                     <button type="button" class="btn btn-outline-secondary" onclick="exportData()">
-                        <i data-feather="download" class="me-2"></i>Xuất Báo Cáo
+                        <i class="fas fa-download" class="me-2"></i>Xuất Báo Cáo
                     </button>
                 </div>
             </div>
@@ -243,7 +243,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i data-feather="info" class="me-2"></i>
+                    <i class="fas fa-info-circle" class="me-2"></i>
                     Dữ liệu hiệu suất sẽ được hiển thị khi có đủ thông tin
                 </div>
             </div>

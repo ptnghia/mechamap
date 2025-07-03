@@ -77,10 +77,10 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="role" class="form-label">Vai trò <span class="text-danger">*</span></label>
+                                <label for="role" class="form-label">Vai trò chính <span class="text-danger">*</span></label>
                                 <select class="form-select @error('role') is-invalid @enderror" id="role" name="role"
                                     required>
-                                    <option value="">Chọn vai trò</option>
+                                    <option value="">Chọn vai trò chính</option>
                                     <option value="admin" {{ old('role')==='admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="moderator" {{ old('role')==='moderator' ? 'selected' : '' }}>
                                         Moderator</option>
@@ -88,6 +88,16 @@
                                 @error('role')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <!-- Multiple Roles Option -->
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="enable_multiple_roles"
+                                           name="enable_multiple_roles" value="1" {{ old('enable_multiple_roles') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="enable_multiple_roles">
+                                        <i class="fas fa-users-cog me-1"></i>
+                                        Gán Multiple Roles (Nâng cao)
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -163,6 +173,76 @@
                             @enderror
                         </div>
 
+                        <!-- Multiple Roles Section (Hidden by default) -->
+                        <div id="multiple_roles_section" class="mb-4" style="display: none;">
+                            <hr>
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-users-cog me-2"></i>
+                                Gán Multiple Roles
+                            </h6>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Lưu ý:</strong> Vai trò chính sẽ được tự động chọn. Bạn có thể chọn thêm các vai trò phụ.
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-secondary">System Management</h6>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="super_admin" id="role_super_admin">
+                                        <label class="form-check-label" for="role_super_admin">
+                                            <i class="fas fa-crown me-1 text-warning"></i>
+                                            Super Admin
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="system_admin" id="role_system_admin">
+                                        <label class="form-check-label" for="role_system_admin">
+                                            <i class="fas fa-cog me-1 text-primary"></i>
+                                            System Admin
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="content_admin" id="role_content_admin">
+                                        <label class="form-check-label" for="role_content_admin">
+                                            <i class="fas fa-edit me-1 text-info"></i>
+                                            Content Admin
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-secondary">Community Management</h6>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="content_moderator" id="role_content_moderator">
+                                        <label class="form-check-label" for="role_content_moderator">
+                                            <i class="fas fa-shield-alt me-1 text-success"></i>
+                                            Content Moderator
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="marketplace_moderator" id="role_marketplace_moderator">
+                                        <label class="form-check-label" for="role_marketplace_moderator">
+                                            <i class="fas fa-shopping-cart me-1 text-warning"></i>
+                                            Marketplace Moderator
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="additional_roles[]" value="community_moderator" id="role_community_moderator">
+                                        <label class="form-check-label" for="role_community_moderator">
+                                            <i class="fas fa-users me-1 text-info"></i>
+                                            Community Moderator
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="assignment_reason" class="form-label">Lý do gán multiple roles</label>
+                                <textarea class="form-control" id="assignment_reason" name="assignment_reason" rows="2"
+                                          placeholder="Nhập lý do gán multiple roles cho user này...">{{ old('assignment_reason') }}</textarea>
+                            </div>
+                        </div>
+
                         <!-- Submit buttons -->
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('admin.users.admins') }}" class="btn btn-secondary">Hủy</a>
@@ -231,6 +311,55 @@ document.getElementById('avatar').addEventListener('change', function(e) {
             // You can add avatar preview here if needed
         }
         reader.readAsDataURL(file);
+    }
+});
+
+// Toggle Multiple Roles Section
+document.getElementById('enable_multiple_roles').addEventListener('change', function() {
+    const multipleRolesSection = document.getElementById('multiple_roles_section');
+    const primaryRoleSelect = document.getElementById('role');
+
+    if (this.checked) {
+        multipleRolesSection.style.display = 'block';
+        // Auto-check primary role in additional roles
+        const primaryRole = primaryRoleSelect.value;
+        if (primaryRole) {
+            const primaryRoleCheckbox = document.querySelector(`input[name="additional_roles[]"][value="${primaryRole}"]`);
+            if (primaryRoleCheckbox) {
+                primaryRoleCheckbox.checked = true;
+                primaryRoleCheckbox.disabled = true; // Prevent unchecking primary role
+            }
+        }
+    } else {
+        multipleRolesSection.style.display = 'none';
+        // Uncheck all additional roles
+        document.querySelectorAll('input[name="additional_roles[]"]').forEach(checkbox => {
+            checkbox.checked = false;
+            checkbox.disabled = false;
+        });
+    }
+});
+
+// Update primary role checkbox when primary role changes
+document.getElementById('role').addEventListener('change', function() {
+    const multipleRolesCheckbox = document.getElementById('enable_multiple_roles');
+
+    if (multipleRolesCheckbox.checked) {
+        // Reset all checkboxes
+        document.querySelectorAll('input[name="additional_roles[]"]').forEach(checkbox => {
+            checkbox.checked = false;
+            checkbox.disabled = false;
+        });
+
+        // Auto-check new primary role
+        const primaryRole = this.value;
+        if (primaryRole) {
+            const primaryRoleCheckbox = document.querySelector(`input[name="additional_roles[]"][value="${primaryRole}"]`);
+            if (primaryRoleCheckbox) {
+                primaryRoleCheckbox.checked = true;
+                primaryRoleCheckbox.disabled = true;
+            }
+        }
     }
 });
 </script>

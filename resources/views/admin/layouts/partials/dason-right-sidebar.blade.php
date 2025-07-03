@@ -4,7 +4,7 @@
         <div class="rightbar-title d-flex align-items-center bg-dark p-3">
             <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
             <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
-                <i class="mdi mdi-close noti-icon"></i>
+                <i class="fas fa-times noti-icon"></i>
             </a>
         </div>
 

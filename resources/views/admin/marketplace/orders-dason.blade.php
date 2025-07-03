@@ -221,10 +221,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.orders.show', $order) }}">
-                                                    <i class="mdi mdi-eye font-size-16 text-success me-1"></i> Xem chi tiết
+                                                    <i class="fas fa-eye font-size-16 text-success me-1"></i> Xem chi tiết
                                                 </a></li>
                                                 <li><a class="dropdown-item" href="{{ route('admin.marketplace.orders.edit', $order) }}">
-                                                    <i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Cập nhật
+                                                    <i class="fas fa-edit font-size-16 text-success me-1"></i> Cập nhật
                                                 </a></li>
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item" href="#" onclick="printInvoice({{ $order->id }})">

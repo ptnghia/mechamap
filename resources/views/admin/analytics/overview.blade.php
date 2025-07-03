@@ -32,7 +32,7 @@
                     <div class="flex-shrink-0 align-self-center">
                         <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                             <span class="avatar-title">
-                                <i class="mdi mdi-account-group font-size-24"></i>
+                                <i class="fas fa-user-group font-size-24"></i>
                             </span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Biểu đồ phân tích đang được phát triển. Sẽ sớm ra mắt!
                 </div>
                 <div id="traffic-chart" style="height: 300px;"></div>
@@ -170,7 +170,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Biểu đồ hoạt động đang được phát triển.
                 </div>
                 <div id="user-activity-chart" style="height: 250px;"></div>
@@ -200,7 +200,7 @@
                     </div>
                 </div>
                 <div class="alert alert-info">
-                    <i class="mdi mdi-information-outline me-2"></i>
+                    <i class="fas fa-info-circle-outline me-2"></i>
                     Biểu đồ thiết bị đang được phát triển.
                 </div>
                 <div id="device-chart" style="height: 200px;"></div>

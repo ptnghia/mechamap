@@ -35,7 +35,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                     <span class="avatar-title">
-                                        <i data-feather="file-text"></i>
+                                        <i class="fas fa-file-alt"></i>
                                     </span>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i data-feather="clock"></i>
+                                        <i class="fas fa-clock"></i>
                                     </span>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-info">
                                     <span class="avatar-title">
-                                        <i data-feather="download"></i>
+                                        <i class="fas fa-download"></i>
                                     </span>
                                 </div>
                             </div>
@@ -268,11 +268,11 @@
                                             </a>
                                             @if($drawing->canBeDownloaded())
                                                 <a href="{{ route('admin.technical.drawings.download', $drawing) }}" class="btn btn-outline-success" title="Tải xuống">
-                                                    <i data-feather="download"></i>
+                                                    <i class="fas fa-download"></i>
                                                 </a>
                                             @endif
                                             <button type="button" class="btn btn-outline-warning" onclick="toggleFeatured({{ $drawing->id }})" title="Nổi bật">
-                                                <i data-feather="star"></i>
+                                                <i class="fas fa-star"></i>
                                             </button>
                                             <button type="button" class="btn btn-outline-danger" onclick="deleteDrawing({{ $drawing->id }})" title="Xóa">
                                                 <i class="fas fa-trash"></i>
@@ -284,7 +284,7 @@
                                 <tr>
                                     <td colspan="9" class="text-center py-4">
                                         <div class="d-flex flex-column align-items-center">
-                                            <i data-feather="file-text" style="width: 48px; height: 48px;" class="text-muted mb-2"></i>
+                                            <i class="fas fa-file-alt" style="width: 48px; height: 48px;" class="text-muted mb-2"></i>
                                             <h5 class="text-muted">Chưa có bản vẽ kỹ thuật nào</h5>
                                             <p class="text-muted mb-0">Thêm bản vẽ kỹ thuật đầu tiên vào hệ thống</p>
                                         </div>
@@ -365,15 +365,9 @@ function getSelectedIds() {
     return Array.from(checkboxes).map(cb => cb.value);
 }
 
-// Initialize Feather Icons
+// Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof feather !== 'undefined') {
-        try {
-            feather.replace();
-        } catch (error) {
-            console.warn('Feather Icons error in drawings page:', error);
-        }
-    }
+    console.log('Technical drawings page loaded');
 });
 </script>
 @endsection

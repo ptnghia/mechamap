@@ -35,7 +35,7 @@
                                 <i class="fas fa-sync" class="me-1"></i> Refresh
                             </button>
                             <button type="button" class="btn btn-outline-success btn-sm" onclick="exportReport()">
-                                <i data-feather="download" class="me-1"></i> Export Report
+                                <i class="fas fa-download" class="me-1"></i> Export Report
                             </button>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                     </div>
                     <div class="list-group-item d-flex justify-content-between align-items-center px-0">
                         <div>
-                            <i data-feather="clock" class="text-warning me-2"></i>
+                            <i class="fas fa-clock" class="text-warning me-2"></i>
                             Uptime
                         </div>
                         <span class="badge bg-warning">{{ $metrics['system_resources']['uptime'] ?? 'Unknown' }}</span>
@@ -271,14 +271,6 @@
 let performanceChart;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Feather Icons with error handling
-    if (typeof feather !== 'undefined') {
-        try {
-            feather.replace();
-        } catch (error) {
-            console.warn('Feather Icons error in performance page:', error);
-        }
-    }
 
     // Initialize performance chart
     initPerformanceChart();

@@ -1,145 +1,150 @@
 {
-  "name": "MechaMap Admin Dashboard",
-  "short_name": "MechaMap Admin",
-  "description": "Professional admin dashboard for MechaMap mechanical engineering community",
-  "start_url": "/admin/dashboard",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1c84ee",
-  "orientation": "portrait-primary",
-  "scope": "/admin/",
-  "lang": "vi-VN",
-  "dir": "ltr",
-  "categories": ["business", "productivity", "utilities"],
-  "screenshots": [
-    {
-      "src": "/assets/images/admin-screenshot-mobile.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "platform": "mobile",
-      "label": "Mobile Admin Dashboard"
-    },
-    {
-      "src": "/assets/images/admin-screenshot-desktop.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "Desktop Admin Dashboard"
-    }
-  ],
-  "icons": [
-    {
-      "src": "/assets/images/icons/admin-icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "/assets/images/icons/admin-icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "View admin dashboard",
-      "url": "/admin/dashboard",
-      "icons": [
+    "name": "MechaMap Admin Dashboard",
+    "short_name": "MechaMap Admin",
+    "description": "Professional admin dashboard for MechaMap mechanical engineering community",
+    "start_url": "/admin",
+    "display": "browser",
+    "background_color": "#ffffff",
+    "theme_color": "#1c84ee",
+    "orientation": "portrait-primary",
+    "scope": "/admin/",
+    "lang": "vi-VN",
+    "dir": "ltr",
+    "categories": [
+        "business",
+        "productivity",
+        "utilities"
+    ],
+    "screenshots": [
         {
-          "src": "/assets/images/icons/dashboard-shortcut.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Analytics",
-      "short_name": "Analytics",
-      "description": "View real-time analytics",
-      "url": "/admin/analytics/realtime",
-      "icons": [
+            "src": "/assets/images/admin-screenshot-mobile.png",
+            "sizes": "640x1136",
+            "type": "image/png",
+            "platform": "mobile",
+            "label": "Mobile Admin Dashboard"
+        },
         {
-          "src": "/assets/images/icons/analytics-shortcut.png",
-          "sizes": "96x96"
+            "src": "/assets/images/admin-screenshot-desktop.png",
+            "sizes": "1920x1080",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "Desktop Admin Dashboard"
         }
-      ]
-    },
-    {
-      "name": "Users",
-      "short_name": "Users",
-      "description": "Manage users",
-      "url": "/admin/users",
-      "icons": [
+    ],
+    "icons": [
         {
-          "src": "/assets/images/icons/users-shortcut.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Orders",
-      "short_name": "Orders",
-      "description": "Manage marketplace orders",
-      "url": "/admin/orders",
-      "icons": [
+            "src": "/assets/images/icons/admin-icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
         {
-          "src": "/assets/images/icons/orders-shortcut.png",
-          "sizes": "96x96"
+            "src": "/assets/images/icons/admin-icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/assets/images/icons/admin-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
         }
-      ]
-    }
-  ],
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://mechamap.test/admin/"
-    }
-  ],
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
-  "handle_links": "preferred",
-  "capture_links": "existing-client-navigate"
+    ],
+    "shortcuts": [
+        {
+            "name": "Dashboard",
+            "short_name": "Dashboard",
+            "description": "View admin dashboard",
+            "url": "/admin",
+            "icons": [
+                {
+                    "src": "/assets/images/icons/dashboard-shortcut.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Analytics",
+            "short_name": "Analytics",
+            "description": "View real-time analytics",
+            "url": "/admin/analytics/realtime",
+            "icons": [
+                {
+                    "src": "/assets/images/icons/analytics-shortcut.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Users",
+            "short_name": "Users",
+            "description": "Manage users",
+            "url": "/admin/users",
+            "icons": [
+                {
+                    "src": "/assets/images/icons/users-shortcut.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "short_name": "Orders",
+            "description": "Manage marketplace orders",
+            "url": "/admin/orders",
+            "icons": [
+                {
+                    "src": "/assets/images/icons/orders-shortcut.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "related_applications": [
+        {
+            "platform": "webapp",
+            "url": "https://mechamap.test/admin/"
+        }
+    ],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    "handle_links": "preferred",
+    "capture_links": "existing-client-navigate",
+    "_note": "PWA install prompt disabled - display set to browser"
 }

@@ -191,7 +191,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <i data-feather="info" class="me-2"></i>
+                    <i class="fas fa-info-circle" class="me-2"></i>
                     Marketplace đang được phát triển. Các tính năng sẽ sớm ra mắt!
                 </div>
 
@@ -201,7 +201,7 @@
                         <div class="d-flex align-items-start">
                             <div class="avatar-sm me-3">
                                 <span class="avatar-title bg-success rounded-circle">
-                                    <i data-feather="plus-circle"></i>
+                                    <i class="fas fa-plus-circle"></i>
                                 </span>
                             </div>
                             <div class="flex-grow-1">
@@ -261,7 +261,7 @@
             </div>
             <div class="card-body">
                 <div class="text-center py-4">
-                    <i data-feather="clock" style="width: 48px; height: 48px;" class="text-muted mb-2"></i>
+                    <i class="fas fa-clock" style="width: 48px; height: 48px;" class="text-muted mb-2"></i>
                     <h5 class="text-muted">Không có mục nào chờ phê duyệt</h5>
                     <p class="text-muted mb-0">Tất cả sản phẩm và nhà bán hàng đã được xử lý</p>
                 </div>
@@ -316,14 +316,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Feather Icons
-    if (typeof feather !== 'undefined') {
-        try {
-            feather.replace();
-        } catch (error) {
-            console.warn('Feather Icons error in marketplace page:', error);
-        }
-    }
 
     // Initialize Revenue Chart (placeholder)
     var options = {

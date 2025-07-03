@@ -14,6 +14,7 @@
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1c84ee">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="MechaMap Admin">
@@ -42,91 +43,38 @@
     <!-- Mobile Admin Css -->
     <link href="{{ asset('assets/css/admin-mobile.css') }}" rel="stylesheet" type="text/css" />
 
+    <!-- Hide PWA Install Prompt -->
+    <link href="{{ asset('assets/css/hide-pwa-prompt.css') }}" rel="stylesheet" type="text/css" />
+
     <!-- Custom Admin Styles -->
     <style>
-        /* Feather Icons Styling */
-        .btn i[data-feather] {
-            width: 16px;
-            height: 16px;
-            stroke-width: 2;
-        }
-
-        .btn-sm i[data-feather] {
-            width: 14px;
-            height: 14px;
-            stroke-width: 2.5;
-        }
-
-        .btn-lg i[data-feather] {
-            width: 20px;
-            height: 20px;
-            stroke-width: 1.5;
-        }
-
-        /* Header icons */
-        .header-item i[data-feather] {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2;
-        }
-
-        /* Table action icons */
-        .table .btn-group i[data-feather] {
-            width: 14px;
-            height: 14px;
-            stroke-width: 2.5;
-        }
-
-        /* Input group icons */
-        .input-group-text i[data-feather] {
-            width: 16px;
-            height: 16px;
-            stroke-width: 2;
-        }
-
-        /* Mini stat icons */
-        .mini-stat-icon i[data-feather] {
-            width: 24px;
-            height: 24px;
-            stroke-width: 1.5;
-        }
-
-        /* Stats icons */
-        .stats-icon i[data-feather] {
-            width: 24px;
-            height: 24px;
-            stroke-width: 1.5;
-        }
-
-        /* Card trend icons */
-        .card-trend i[data-feather] {
-            width: 14px;
-            height: 14px;
-            stroke-width: 2.5;
-        }
-
-        /* Ensure proper alignment */
-        i[data-feather] {
-            vertical-align: middle;
-            display: inline-block;
-        }
-
         /* Font Awesome icons styling */
         .fas, .far, .fab {
             vertical-align: middle;
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            font-size: 16px;
+        }
+
+        /* Button icons */
+        .btn .fas, .btn .far, .btn .fab {
+            margin-right: 0.25rem;
         }
 
         /* Sidebar icon alignment */
         .sidebar-menu i.fas,
-        .sidebar-menu i.far,
-        .sidebar-menu i.mdi {
+        .sidebar-menu i.far {
             width: 20px;
             text-align: center;
             margin-right: 8px;
+        }
+
+        /* Table action icons */
+        .table .btn-group .fas {
+            font-size: 14px;
+        }
+
+        /* Stats card icons */
+        .stats-icon .fas {
+            font-size: 24px;
         }
     </style>
 
@@ -276,10 +224,10 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        @include('admin.layouts.partials.unified-header')
+        @include('admin.layouts.partials.header')
 
         <!-- ========== Left Sidebar Start ========== -->
-        @include('admin.layouts.partials.unified-sidebar')
+        @include('admin.layouts.partials.sidebar')
         <!-- Left Sidebar End -->
 
         <!-- ============================================================== -->
@@ -301,7 +249,7 @@
             </div>
             <!-- End Page-content -->
 
-            @include('layouts.partials.dason-footer')
+            @include('admin.layouts.partials.dason-footer')
 
         </div>
         <!-- end main content-->
@@ -324,8 +272,7 @@
     <script src="{{ asset('assets/libs/node-waves/node-waves.min.js') }}"></script>
 
     <!-- Chart.js for Phase 2 -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
     @yield('script')
 
@@ -334,36 +281,13 @@
 
     <!-- Initialize Font Awesome Icons -->
     <script>
-        // Create mock feather object to prevent "feather is not defined" errors
-        window.feather = {
-            icons: {},
-            replace: function() {
-                console.log('Feather replace disabled - using Font Awesome');
-            },
-            toSvg: function() {
-                return '';
-            }
-        };
-
-        // Override initFeathericon function before app.min.js loads
+        // Override initFeathericon function to prevent errors
         window.initFeathericon = function() {
             console.log('Feather icons disabled - using Font Awesome');
         };
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Font Awesome icons loaded successfully');
-
-            // Remove any remaining data-feather attributes
-            document.querySelectorAll('[data-feather]').forEach(function(element) {
-                const iconName = element.getAttribute('data-feather');
-                console.log('Removing data-feather:', iconName);
-                element.removeAttribute('data-feather');
-
-                // Add Font Awesome class if not already present
-                if (!element.className.includes('fa')) {
-                    element.className = 'fas fa-' + iconName.replace(/-/g, '-');
-                }
-            });
 
             // Initialize Theme Toggle Functionality
             initializeThemeToggle();

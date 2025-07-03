@@ -58,7 +58,7 @@
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="class="fas fa-filter" me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter"></i> {{ __('Lọc') }}
                     </button>
                     <a href="{{ route('admin.comments.index') }}" class="btn btn-secondary">
                         <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
@@ -124,13 +124,13 @@
                                 <td>
                                     <div class="btn-group">
                                         <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
-                                            <i class="class="fas fa-eye""></i>
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
-                                            <i class="class="fas fa-edit""></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $comment->id }}" title="{{ __('Xóa') }}">
-                                            <i class="class="fas fa-trash""></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
 

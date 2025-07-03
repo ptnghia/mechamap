@@ -10,14 +10,14 @@ class AdminPWA {
         this.isOnline = navigator.onLine;
         this.swRegistration = null;
         this.updateAvailable = false;
-        
+
         this.init();
     }
 
     async init() {
         this.checkInstallation();
         this.setupServiceWorker();
-        this.setupInstallPrompt();
+        // this.setupInstallPrompt(); // Disabled - PWA install prompt removed
         this.setupOnlineOfflineHandlers();
         this.setupUpdateHandlers();
         this.setupNotifications();
@@ -27,7 +27,7 @@ class AdminPWA {
 
     checkInstallation() {
         // Check if app is installed
-        if (window.matchMedia('(display-mode: standalone)').matches || 
+        if (window.matchMedia('(display-mode: standalone)').matches ||
             window.navigator.standalone === true) {
             this.isInstalled = true;
             document.body.classList.add('pwa-installed');
@@ -41,19 +41,19 @@ class AdminPWA {
                 this.swRegistration = await navigator.serviceWorker.register('/admin-sw.js', {
                     scope: '/admin/'
                 });
-                
+
                 console.log('[PWA] Service Worker registered:', this.swRegistration);
-                
+
                 // Listen for service worker messages
                 navigator.serviceWorker.addEventListener('message', (event) => {
                     this.handleServiceWorkerMessage(event);
                 });
-                
+
                 // Check for updates
                 this.swRegistration.addEventListener('updatefound', () => {
                     this.handleServiceWorkerUpdate();
                 });
-                
+
             } catch (error) {
                 console.error('[PWA] Service Worker registration failed:', error);
             }
@@ -61,22 +61,9 @@ class AdminPWA {
     }
 
     setupInstallPrompt() {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('[PWA] Install prompt available');
-            e.preventDefault();
-            this.deferredPrompt = e;
-            this.showInstallBanner();
-        });
-
-        window.addEventListener('appinstalled', () => {
-            console.log('[PWA] App installed successfully');
-            this.isInstalled = true;
-            this.hideInstallBanner();
-            this.showNotification('App installed successfully!', 'success');
-            
-            // Track installation
-            this.trackEvent('pwa_installed');
-        });
+        // PWA Install Prompt disabled
+        console.log('[PWA] Install prompt disabled');
+        return;
     }
 
     setupOnlineOfflineHandlers() {
@@ -142,10 +129,10 @@ class AdminPWA {
                         'YOUR_VAPID_PUBLIC_KEY' // Replace with actual VAPID key
                     )
                 });
-                
+
                 // Send subscription to server
                 await this.sendSubscriptionToServer(subscription);
-                
+
             } catch (error) {
                 console.error('[PWA] Push subscription failed:', error);
             }
@@ -173,34 +160,25 @@ class AdminPWA {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(banner);
     }
 
     showInstallBanner() {
-        const banner = document.getElementById('pwa-install-banner');
-        if (banner && !this.isInstalled) {
-            banner.classList.remove('hidden');
-            
-            // Auto-hide after 10 seconds
-            setTimeout(() => {
-                this.hideInstallBanner();
-            }, 10000);
-        }
+        // Install banner disabled
+        return;
     }
 
     hideInstallBanner() {
-        const banner = document.getElementById('pwa-install-banner');
-        if (banner) {
-            banner.classList.add('hidden');
-        }
+        // Install banner disabled
+        return;
     }
 
     async installApp() {
         if (this.deferredPrompt) {
             this.deferredPrompt.prompt();
             const { outcome } = await this.deferredPrompt.userChoice;
-            
+
             if (outcome === 'accepted') {
                 console.log('[PWA] User accepted install prompt');
                 this.trackEvent('pwa_install_accepted');
@@ -208,7 +186,7 @@ class AdminPWA {
                 console.log('[PWA] User dismissed install prompt');
                 this.trackEvent('pwa_install_dismissed');
             }
-            
+
             this.deferredPrompt = null;
             this.hideInstallBanner();
         }
@@ -216,12 +194,12 @@ class AdminPWA {
 
     handleServiceWorkerMessage(event) {
         const { data } = event;
-        
+
         if (data.type === 'SYNC_COMPLETE') {
             console.log('[PWA] Background sync completed');
             this.showNotification('Data synchronized', 'info');
         }
-        
+
         if (data.type === 'CACHE_UPDATED') {
             console.log('[PWA] Cache updated');
         }
@@ -229,7 +207,7 @@ class AdminPWA {
 
     handleServiceWorkerUpdate() {
         const newWorker = this.swRegistration.installing;
-        
+
         newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                 this.updateAvailable = true;
@@ -255,7 +233,7 @@ class AdminPWA {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(notification);
     }
 
@@ -285,7 +263,7 @@ class AdminPWA {
                     this.installApp();
                 }
             }
-            
+
             // Ctrl/Cmd + Shift + U - Check for updates
             if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'U') {
                 e.preventDefault();
@@ -303,18 +281,18 @@ class AdminPWA {
             window.showMobileNotification(message, type);
             return;
         }
-        
+
         // Fallback notification
         const notification = document.createElement('div');
         notification.className = `pwa-notification pwa-notification-${type}`;
         notification.textContent = message;
-        
+
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
@@ -329,7 +307,7 @@ class AdminPWA {
                 ...data
             });
         }
-        
+
         console.log('[PWA] Event tracked:', eventName, data);
     }
 
@@ -339,14 +317,14 @@ class AdminPWA {
         const base64 = (base64String + padding)
             .replace(/-/g, '+')
             .replace(/_/g, '/');
-        
+
         const rawData = window.atob(base64);
         const outputArray = new Uint8Array(rawData.length);
-        
+
         for (let i = 0; i < rawData.length; ++i) {
             outputArray[i] = rawData.charCodeAt(i);
         }
-        
+
         return outputArray;
     }
 
@@ -360,7 +338,7 @@ class AdminPWA {
                 },
                 body: JSON.stringify(subscription)
             });
-            
+
             if (response.ok) {
                 console.log('[PWA] Push subscription sent to server');
             }
@@ -525,16 +503,17 @@ const pwaCSS = `
     z-index: 9999;
 }
 
-/* PWA installed styles */
-.pwa-installed .install-prompt {
-    display: none;
-}
+/* PWA installed styles - REMOVED */
 `;
 
 // Inject CSS
-const style = document.createElement('style');
-style.textContent = pwaCSS;
-document.head.appendChild(style);
+const adminPwaStyle = document.createElement('style');
+adminPwaStyle.textContent = pwaCSS;
+adminPwaStyle.id = 'admin-pwa-styles';
+// Check if already exists
+if (!document.getElementById('admin-pwa-styles')) {
+    document.head.appendChild(adminPwaStyle);
+}
 
 // Initialize PWA when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {

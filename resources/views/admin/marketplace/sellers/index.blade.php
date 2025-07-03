@@ -75,7 +75,7 @@
                             <div class="flex-shrink-0 align-self-center">
                                 <div class="mini-stat-icon avatar-sm rounded-circle bg-warning">
                                     <span class="avatar-title">
-                                        <i data-feather="clock"></i>
+                                        <i class="fas fa-clock"></i>
                                     </span>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                 <i class="fas fa-plus" class="me-1"></i> Thêm Nhà Bán Hàng
                             </a>
                             <button type="button" class="btn btn-success btn-sm" onclick="exportSellers()">
-                                <i data-feather="download" class="me-1"></i> Xuất Excel
+                                <i class="fas fa-download" class="me-1"></i> Xuất Excel
                             </button>
                         </div>
                     </div>
@@ -263,9 +263,9 @@
                                             <div class="me-2">
                                                 @for($i = 1; $i <= 5; $i++)
                                                     @if($i <= $seller->rating_average)
-                                                        <i data-feather="star" class="text-warning" style="width: 14px; height: 14px; fill: currentColor;"></i>
+                                                        <i class="fas fa-star" class="text-warning" style="width: 14px; height: 14px; fill: currentColor;"></i>
                                                     @else
-                                                        <i data-feather="star" class="text-muted" style="width: 14px; height: 14px;"></i>
+                                                        <i class="fas fa-star" class="text-muted" style="width: 14px; height: 14px;"></i>
                                                     @endif
                                                 @endfor
                                             </div>
@@ -301,7 +301,7 @@
                                                 </button>
                                             @endif
                                             <button type="button" class="btn btn-outline-info" onclick="toggleFeatured({{ $seller->id }})" title="Nổi bật">
-                                                <i data-feather="star"></i>
+                                                <i class="fas fa-star"></i>
                                             </button>
                                         </div>
                                     </td>
