@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CacheInvalidationObserver;
+use App\Observers\MarketplaceOrderObserver;
 use App\Models\Thread;
 use App\Models\Post;
 use App\Models\MarketplaceProduct;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +37,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Đặt độ dài mặc định cho chuỗi trong migration
         Schema::defaultStringLength(191);
+
+        // Force HTTPS và absolute URLs
+        if (config('app.env') === 'production' || config('app.url')) {
+            URL::forceScheme('https');
+            URL::forceRootUrl(config('app.url'));
+        }
 
         // Sử dụng Bootstrap 5 cho phân trang
         Paginator::useBootstrapFive();
@@ -67,10 +75,13 @@ class AppServiceProvider extends ServiceProvider
         Thread::observe(CacheInvalidationObserver::class);
         Post::observe(CacheInvalidationObserver::class);
         MarketplaceProduct::observe(CacheInvalidationObserver::class);
-        MarketplaceOrder::observe(CacheInvalidationObserver::class);
         User::observe(CacheInvalidationObserver::class);
         Category::observe(CacheInvalidationObserver::class);
         Forum::observe(CacheInvalidationObserver::class);
         Notification::observe(CacheInvalidationObserver::class);
+
+        // Register marketplace order observer for download access
+        MarketplaceOrder::observe(CacheInvalidationObserver::class);
+        MarketplaceOrder::observe(MarketplaceOrderObserver::class);
     }
 }

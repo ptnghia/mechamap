@@ -205,7 +205,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($product->featured_image)
-                                                <img src="{{ Storage::url($product->featured_image) }}" alt="{{ $product->name }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                <img src="{{ get_product_image_url($product->featured_image) }}" alt="{{ $product->name }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
                                             @else
                                                 <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                                     <i class="fas fa-image" class="text-muted"></i>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Models\MarketplaceOrder;
 use App\Services\UserActivityService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -290,5 +291,20 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'Đã đăng bài viết thành công.');
+    }
+
+    /**
+     * Display user's orders.
+     */
+    public function orders(Request $request): View
+    {
+        $user = Auth::user();
+
+        $orders = MarketplaceOrder::where('customer_id', $user->id)
+            ->with(['items.product'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('profile.orders', compact('orders'));
     }
 }

@@ -16,7 +16,7 @@ class MarketplaceOrder extends Model
     protected $fillable = [
         'uuid',
         'order_number',
-        'user_id',
+        'customer_id',
         'customer_email',
         'customer_phone',
         'status',
@@ -86,12 +86,12 @@ class MarketplaceOrder extends Model
     // Relationships
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function customer()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function items()
@@ -181,5 +181,67 @@ class MarketplaceOrder extends Model
     public function canBeCompleted()
     {
         return $this->status === 'delivered';
+    }
+
+    public function getStatusColor()
+    {
+        $colors = [
+            'pending' => 'warning',
+            'confirmed' => 'info',
+            'processing' => 'primary',
+            'shipped' => 'secondary',
+            'delivered' => 'success',
+            'completed' => 'success',
+            'cancelled' => 'danger',
+            'refunded' => 'dark',
+        ];
+
+        return $colors[$this->status] ?? 'secondary';
+    }
+
+    public function getPaymentStatusColor()
+    {
+        $colors = [
+            'pending' => 'warning',
+            'processing' => 'info',
+            'paid' => 'success',
+            'failed' => 'danger',
+            'refunded' => 'dark',
+            'partially_refunded' => 'warning',
+        ];
+
+        return $colors[$this->payment_status] ?? 'secondary';
+    }
+
+    public function canReorder()
+    {
+        // Allow reorder if order is completed or delivered and payment is successful
+        return in_array($this->status, ['completed', 'delivered']) &&
+               $this->payment_status === 'paid';
+    }
+
+    public function hasTimeline()
+    {
+        // Check if order has any timeline events (you can implement this based on your timeline logic)
+        return !empty($this->tracking_number) ||
+               in_array($this->status, ['shipped', 'delivered', 'completed']);
+    }
+
+    public function isStatusPassed($status)
+    {
+        // Define status order progression
+        $statusOrder = [
+            'pending' => 1,
+            'confirmed' => 2,
+            'processing' => 3,
+            'shipped' => 4,
+            'delivered' => 5,
+            'completed' => 6
+        ];
+
+        $currentStatusOrder = $statusOrder[$this->status] ?? 0;
+        $checkStatusOrder = $statusOrder[$status] ?? 0;
+
+        return $currentStatusOrder > $checkStatusOrder;
     }
 }

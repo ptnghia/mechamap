@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Services\PermissionService;
 
 class MarketplaceCheckoutController extends Controller
 {
@@ -20,6 +21,12 @@ class MarketplaceCheckoutController extends Controller
      */
     public function index(): View|RedirectResponse
     {
+        // Kiểm tra quyền mua hàng
+        if (!PermissionService::canBuy(auth()->user())) {
+            return redirect()->route('marketplace.index')
+                ->with('error', 'Bạn không có quyền mua hàng. Vui lòng liên hệ admin để được hỗ trợ.');
+        }
+
         $cart = $this->getCart();
 
         if (!$cart || $cart->isEmpty()) {
@@ -36,8 +43,13 @@ class MarketplaceCheckoutController extends Controller
     /**
      * Process shipping information step
      */
-    public function shipping(Request $request): JsonResponse
+    public function shipping(Request $request)
     {
+        // Convert checkbox value to boolean
+        $billingSameAsShipping = $request->has('billing_same_as_shipping') ? true : false;
+        $request->merge(['billing_same_as_shipping' => $billingSameAsShipping]);
+
+        // Validate input
         $request->validate([
             'shipping_address.first_name' => 'required|string|max:255',
             'shipping_address.last_name' => 'required|string|max:255',
@@ -54,14 +66,7 @@ class MarketplaceCheckoutController extends Controller
         ]);
 
         try {
-            $cart = $this->getCart();
-
-            if (!$cart) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Cart not found'
-                ], 404);
-            }
+            $cart = $this->getOrCreateCart();
 
             // Store shipping information in session
             Session::put('checkout.shipping_address', $request->shipping_address);
@@ -77,76 +82,104 @@ class MarketplaceCheckoutController extends Controller
             $shippingCost = $this->calculateShipping($cart, $request->shipping_address);
             Session::put('checkout.shipping_cost', $shippingCost);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Shipping information saved',
-                'shipping_cost' => number_format($shippingCost, 2),
-                'next_step' => 'payment'
-            ]);
+            // Handle AJAX request
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Shipping information saved',
+                    'shipping_cost' => number_format($shippingCost, 2),
+                    'next_step' => 'payment'
+                ]);
+            }
+
+            // Handle regular form submission - redirect to payment step
+            return redirect()->route('marketplace.checkout.index')
+                ->with('success', 'Shipping information saved successfully')
+                ->with('step', 'payment');
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to save shipping information: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to save shipping information: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Failed to save shipping information: ' . $e->getMessage()])
+                ->withInput();
         }
     }
 
     /**
      * Process payment information step
      */
-    public function payment(Request $request): JsonResponse
+    public function payment(Request $request)
     {
         $request->validate([
             'payment_method' => 'required|in:credit_card,paypal,bank_transfer,cod',
-            'payment_details' => 'required|array',
+            'payment_details' => 'required_unless:payment_method,cod,paypal,bank_transfer|array',
         ]);
 
         try {
             // Store payment information in session
             Session::put('checkout.payment_method', $request->payment_method);
-            Session::put('checkout.payment_details', $request->payment_details);
+            Session::put('checkout.payment_details', $request->payment_details ?? []);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Payment information saved',
-                'next_step' => 'review'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment information saved',
+                    'next_step' => 'review'
+                ]);
+            }
+
+            // Handle regular form submission - redirect to review step
+            return redirect()->route('marketplace.checkout.index')
+                ->with('success', 'Payment information saved')
+                ->with('step', 'review');
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to save payment information: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to save payment information: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Failed to save payment information: ' . $e->getMessage()])
+                ->withInput();
         }
     }
 
     /**
      * Display order review step
      */
-    public function review(): JsonResponse
+    public function review(Request $request)
     {
-        try {
-            $cart = $this->getCart();
+        if ($request->ajax()) {
+            try {
+                $cart = $this->getCart();
 
-            if (!$cart) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Cart not found'
-                ], 404);
-            }
+                if (!$cart) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Cart not found'
+                    ], 404);
+                }
 
-            $shippingAddress = Session::get('checkout.shipping_address');
-            $billingAddress = Session::get('checkout.billing_address');
-            $paymentMethod = Session::get('checkout.payment_method');
-            $shippingCost = Session::get('checkout.shipping_cost', 0);
+                $shippingAddress = Session::get('checkout.shipping_address');
+                $billingAddress = Session::get('checkout.billing_address');
+                $paymentMethod = Session::get('checkout.payment_method');
+                $shippingCost = Session::get('checkout.shipping_cost', 0);
 
-            if (!$shippingAddress || !$paymentMethod) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Missing checkout information'
-                ], 400);
-            }
+                if (!$shippingAddress || !$paymentMethod) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Missing checkout information'
+                    ], 400);
+                }
 
             // Calculate final totals
             $subtotal = $cart->subtotal;
@@ -177,19 +210,34 @@ class MarketplaceCheckoutController extends Controller
                 })
             ]);
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to load order review: ' . $e->getMessage()
-            ], 500);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to load order review: ' . $e->getMessage()
+                ], 500);
+            }
         }
+
+        return redirect()->back()->with('error', 'Invalid request method');
     }
 
     /**
      * Place the order
      */
-    public function placeOrder(Request $request): JsonResponse
+    public function placeOrder(Request $request)
     {
+        // Kiểm tra quyền mua hàng
+        if (!PermissionService::canBuy(auth()->user())) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền mua hàng.'
+                ], 403);
+            }
+            return redirect()->route('marketplace.index')
+                ->with('error', 'Bạn không có quyền mua hàng. Vui lòng liên hệ admin để được hỗ trợ.');
+        }
+
         try {
             DB::beginTransaction();
 
@@ -249,21 +297,33 @@ class MarketplaceCheckoutController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Order placed successfully',
-                'order_id' => $order->id,
-                'order_number' => $order->order_number,
-                'redirect_url' => route('marketplace.checkout.success', $order->uuid)
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Order placed successfully',
+                    'order_id' => $order->id,
+                    'order_number' => $order->order_number,
+                    'redirect_url' => route('marketplace.checkout.success', $order->uuid)
+                ]);
+            }
+
+            // Handle regular form submission
+            return redirect()->route('marketplace.checkout.success', $order->uuid)
+                ->with('success', 'Đơn hàng đã được đặt thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to place order: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to place order: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Không thể đặt hàng: ' . $e->getMessage()])
+                ->withInput();
         }
     }
 
@@ -304,6 +364,24 @@ class MarketplaceCheckoutController extends Controller
     }
 
     /**
+     * Get or create cart for current user/session
+     */
+    protected function getOrCreateCart(): MarketplaceShoppingCart
+    {
+        $userId = auth()->id();
+        $sessionId = session()->getId();
+
+        // If user is logged in, merge guest cart if exists
+        if ($userId && session()->has('guest_cart_merged') === false) {
+            $cart = MarketplaceShoppingCart::mergeGuestCart($sessionId, $userId);
+            session()->put('guest_cart_merged', true);
+            return $cart;
+        }
+
+        return MarketplaceShoppingCart::getOrCreateForUser($userId, $sessionId);
+    }
+
+    /**
      * Validate cart items before checkout
      */
     protected function validateCartItems(MarketplaceShoppingCart $cart): void
@@ -324,7 +402,17 @@ class MarketplaceCheckoutController extends Controller
      */
     protected function calculateShipping(MarketplaceShoppingCart $cart, array $shippingAddress): float
     {
-        // Basic shipping calculation
+        // Check if cart contains only digital products
+        $hasPhysicalProducts = $cart->items()->whereHas('product', function($query) {
+            $query->where('product_type', '!=', 'digital');
+        })->exists();
+
+        // No shipping for digital-only carts
+        if (!$hasPhysicalProducts) {
+            return 0.00;
+        }
+
+        // Basic shipping calculation for physical products
         $baseShipping = 10.00;
         $freeShippingThreshold = 100.00;
 
@@ -358,10 +446,16 @@ class MarketplaceCheckoutController extends Controller
     ): MarketplaceOrder {
         $orderNumber = 'ORD-' . strtoupper(Str::random(8));
 
+        // Ensure user is authenticated
+        $customerId = auth()->id();
+        if (!$customerId) {
+            throw new \Exception('User not authenticated');
+        }
+
         return MarketplaceOrder::create([
             'uuid' => Str::uuid(),
             'order_number' => $orderNumber,
-            'customer_id' => auth()->id(),
+            'customer_id' => $customerId,
             'customer_email' => $shippingAddress['email'],
             'customer_phone' => $shippingAddress['phone'] ?? null,
             'order_type' => 'product_purchase',
@@ -388,6 +482,15 @@ class MarketplaceCheckoutController extends Controller
     protected function createOrderItems(MarketplaceOrder $order, MarketplaceShoppingCart $cart): void
     {
         foreach ($cart->items as $cartItem) {
+            $itemSubtotal = $cartItem->total_price;
+            $itemTax = 0; // Calculate if needed
+            $itemTotal = $itemSubtotal + $itemTax;
+
+            // Calculate commission (15% platform fee)
+            $commissionRate = 15.00;
+            $commissionAmount = $itemSubtotal * ($commissionRate / 100);
+            $sellerEarnings = $itemSubtotal - $commissionAmount;
+
             MarketplaceOrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $cartItem->product_id,
@@ -399,9 +502,12 @@ class MarketplaceCheckoutController extends Controller
                 'unit_price' => $cartItem->unit_price,
                 'sale_price' => $cartItem->sale_price,
                 'quantity' => $cartItem->quantity,
-                'subtotal' => $cartItem->total_price,
-                'tax_amount' => 0, // Calculate if needed
-                'total_amount' => $cartItem->total_price,
+                'subtotal' => $itemSubtotal,
+                'tax_amount' => $itemTax,
+                'total_amount' => $itemTotal,
+                'commission_rate' => $commissionRate,
+                'commission_amount' => $commissionAmount,
+                'seller_earnings' => $sellerEarnings,
                 'fulfillment_status' => 'pending',
             ]);
 

@@ -33,6 +33,7 @@
         "files": [
             "app/Helpers/SettingHelper.php",
             "app/Helpers/ImageHelper.php",
+            "app/Helpers/FileHelper.php",
             "app/Helpers/functions.php",
             "app/helpers.php"
         ]

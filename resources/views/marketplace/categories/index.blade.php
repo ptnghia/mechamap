@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Product Categories - MechaMap Marketplace')
+@section('title', __('messages.marketplace.product_categories') . ' - ' . config('app.name'))
 
 @section('content')
 <div class="container py-4">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('marketplace.index') }}">Marketplace</a></li>
-            <li class="breadcrumb-item active">Categories</li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('marketplace.index') }}">{{ __('messages.marketplace.title') }}</a></li>
+            <li class="breadcrumb-item active">{{ __('messages.marketplace.categories') }}</li>
         </ol>
     </nav>
 
@@ -20,33 +20,33 @@
                 <div>
                     <h1 class="h2 mb-1">
                         <i class="bx bx-category text-primary me-2"></i>
-                        Product Categories
+                        {{ __('messages.marketplace.product_categories') }}
                     </h1>
-                    <p class="text-muted mb-0">Browse products by category to find exactly what you need</p>
+                    <p class="text-muted mb-0">{{ __('messages.marketplace.browse_products_by_category') }}</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <a href="{{ route('marketplace.search.advanced') }}" class="btn btn-outline-primary">
+                    <a href="{{ route('marketplace.index') }}?search=advanced" class="btn btn-outline-primary">
                         <i class="bx bx-search me-1"></i>
-                        Advanced Search
+                        {{ __('messages.marketplace.advanced_search') }}
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="bx bx-filter me-1"></i>
-                            View Options
+                            {{ __('messages.marketplace.view_options') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#" onclick="changeView('grid')">
-                                <i class="bx bx-grid-alt me-2"></i>Grid View
+                                <i class="bx bx-grid-alt me-2"></i>{{ __('messages.marketplace.grid_view') }}
                             </a></li>
                             <li><a class="dropdown-item" href="#" onclick="changeView('list')">
-                                <i class="bx bx-list-ul me-2"></i>List View
+                                <i class="bx bx-list-ul me-2"></i>{{ __('messages.marketplace.list_view') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="sortCategories('name')">
-                                <i class="bx bx-sort-a-z me-2"></i>Sort by Name
+                                <i class="bx bx-sort-a-z me-2"></i>{{ __('messages.marketplace.sort_by_name') }}
                             </a></li>
                             <li><a class="dropdown-item" href="#" onclick="sortCategories('products')">
-                                <i class="bx bx-package me-2"></i>Sort by Product Count
+                                <i class="bx bx-package me-2"></i>{{ __('messages.marketplace.sort_by_product_count') }}
                             </a></li>
                         </ul>
                     </div>
@@ -63,7 +63,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $totalCategories }}</h3>
-                            <p class="mb-0">Total Categories</p>
+                            <p class="mb-0">{{ __('messages.marketplace.total_categories') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-category display-6"></i>
@@ -78,7 +78,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $totalProducts }}</h3>
-                            <p class="mb-0">Total Products</p>
+                            <p class="mb-0">{{ __('messages.marketplace.total_products') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-package display-6"></i>
@@ -93,7 +93,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $activeSellers }}</h3>
-                            <p class="mb-0">Active Sellers</p>
+                            <p class="mb-0">{{ __('messages.marketplace.active_sellers') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-store display-6"></i>
@@ -108,7 +108,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $newThisWeek }}</h3>
-                            <p class="mb-0">New This Week</p>
+                            <p class="mb-0">{{ __('messages.marketplace.new_this_week') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-trending-up display-6"></i>
@@ -125,17 +125,17 @@
         <div class="col-12">
             <h3 class="h4 mb-3">
                 <i class="bx bx-star text-warning me-2"></i>
-                Featured Categories
+                {{ __('messages.marketplace.featured_categories') }}
             </h3>
             <div class="row">
                 @foreach($featuredCategories as $category)
                 <div class="col-lg-4 col-md-6 mb-3">
                     <div class="card featured-category h-100">
-                        <div class="card-img-top category-banner" 
+                        <div class="card-img-top category-banner"
                              style="background-image: url('{{ $category->banner_image ?? '/images/default-category.jpg' }}');">
                             <div class="category-overlay">
                                 <div class="category-badge">
-                                    <span class="badge bg-warning">Featured</span>
+                                    <span class="badge bg-warning">{{ __('messages.marketplace.featured') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -148,10 +148,10 @@
                             <p class="card-text text-muted">{{ Str::limit($category->description, 100) }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    {{ $category->products_count }} products
+                                    {{ $category->products_count }} {{ __('messages.marketplace.products') }}
                                 </small>
                                 <a href="{{ route('marketplace.categories.show', $category) }}" class="btn btn-sm btn-primary">
-                                    Browse
+                                    {{ __('messages.marketplace.browse') }}
                                 </a>
                             </div>
                         </div>
@@ -168,9 +168,9 @@
         <div class="col-12">
             <h3 class="h4 mb-3">
                 <i class="bx bx-grid-alt text-primary me-2"></i>
-                All Categories
+                {{ __('messages.marketplace.all_categories') }}
             </h3>
-            
+
             <div id="categoriesContainer" class="categories-grid">
                 @foreach($categories as $category)
                 <div class="category-item" data-name="{{ $category->name }}" data-products="{{ $category->products_count }}">
@@ -186,12 +186,12 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <h5 class="card-title mb-2">
-                                        <a href="{{ route('marketplace.categories.show', $category) }}" 
+                                        <a href="{{ route('marketplace.categories.show', $category) }}"
                                            class="text-decoration-none">
                                             {{ $category->name }}
                                         </a>
                                     </h5>
-                                    
+
                                     @if($category->description)
                                     <p class="card-text text-muted small mb-3">
                                         {{ Str::limit($category->description, 80) }}
@@ -202,32 +202,32 @@
                                     <div class="row text-center mb-3">
                                         <div class="col-4">
                                             <div class="stat-item">
-                                                <div class="stat-number">{{ $category->products_count }}</div>
-                                                <div class="stat-label">Products</div>
+                                                <div class="stat-number">{{ $category->marketplace_products_count ?? 0 }}</div>
+                                                <div class="stat-label">{{ __('messages.marketplace.products') }}</div>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="stat-item">
-                                                <div class="stat-number">{{ $category->sellers_count ?? 0 }}</div>
-                                                <div class="stat-label">Sellers</div>
+                                                <div class="stat-number">{{ $category->children->count() ?? 0 }}</div>
+                                                <div class="stat-label">{{ __('messages.marketplace.subcategories') }}</div>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="stat-item">
-                                                <div class="stat-number">{{ $category->avg_rating ?? 0 }}</div>
-                                                <div class="stat-label">Rating</div>
+                                                <div class="stat-number">{{ number_format($category->commission_rate ?? 0, 1) }}%</div>
+                                                <div class="stat-label">{{ __('messages.marketplace.commission') }}</div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- Popular Products Preview -->
-                                    @if($category->popularProducts && $category->popularProducts->count() > 0)
+                                    @if($category->marketplaceProducts && $category->marketplaceProducts->count() > 0)
                                     <div class="popular-products mb-3">
-                                        <h6 class="small text-muted mb-2">POPULAR PRODUCTS</h6>
+                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('messages.marketplace.popular_products')) }}</h6>
                                         <div class="d-flex flex-wrap gap-1">
-                                            @foreach($category->popularProducts->take(3) as $product)
-                                            <a href="{{ route('marketplace.products.show', $product) }}" 
-                                               class="badge bg-light text-dark text-decoration-none" 
+                                            @foreach($category->marketplaceProducts->take(3) as $product)
+                                            <a href="{{ route('marketplace.products.show', $product) }}"
+                                               class="badge bg-light text-dark text-decoration-none"
                                                title="{{ $product->name }}">
                                                 {{ Str::limit($product->name, 20) }}
                                             </a>
@@ -237,19 +237,19 @@
                                     @endif
 
                                     <!-- Subcategories -->
-                                    @if($category->subcategories && $category->subcategories->count() > 0)
+                                    @if($category->children && $category->children->count() > 0)
                                     <div class="subcategories mb-3">
-                                        <h6 class="small text-muted mb-2">SUBCATEGORIES</h6>
+                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('messages.marketplace.subcategories')) }}</h6>
                                         <div class="d-flex flex-wrap gap-1">
-                                            @foreach($category->subcategories->take(4) as $subcategory)
-                                            <a href="{{ route('marketplace.categories.show', $subcategory) }}" 
+                                            @foreach($category->children->take(4) as $subcategory)
+                                            <a href="{{ route('marketplace.categories.show', $subcategory) }}"
                                                class="badge bg-secondary text-decoration-none">
                                                 {{ $subcategory->name }}
                                             </a>
                                             @endforeach
-                                            @if($category->subcategories->count() > 4)
+                                            @if($category->children->count() > 4)
                                             <span class="badge bg-light text-muted">
-                                                +{{ $category->subcategories->count() - 4 }} more
+                                                +{{ $category->children->count() - 4 }} {{ __('messages.marketplace.more') }}
                                             </span>
                                             @endif
                                         </div>
@@ -258,14 +258,14 @@
 
                                     <!-- Action Buttons -->
                                     <div class="d-flex gap-2">
-                                        <a href="{{ route('marketplace.categories.show', $category) }}" 
+                                        <a href="{{ route('marketplace.categories.show', $category) }}"
                                            class="btn btn-primary btn-sm flex-grow-1">
                                             <i class="bx bx-show me-1"></i>
-                                            Browse Products
+                                            {{ __('messages.marketplace.browse_products') }}
                                         </a>
-                                        <button class="btn btn-outline-secondary btn-sm" 
+                                        <button class="btn btn-outline-secondary btn-sm"
                                                 onclick="toggleWatchCategory({{ $category->id }})"
-                                                title="Watch for new products">
+                                                title="{{ __('messages.marketplace.watch_for_new_products') }}">
                                             <i class="bx bx-bell"></i>
                                         </button>
                                     </div>
@@ -277,11 +277,11 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    Updated {{ $category->updated_at->diffForHumans() }}
+                                    {{ __('messages.marketplace.updated') }} {{ $category->updated_at->diffForHumans() }}
                                 </small>
                                 @if($category->is_trending)
                                 <span class="badge bg-success">
-                                    <i class="bx bx-trending-up me-1"></i>Trending
+                                    <i class="bx bx-trending-up me-1"></i>{{ __('messages.marketplace.trending') }}
                                 </span>
                                 @endif
                             </div>
@@ -385,12 +385,12 @@
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .category-icon {
         width: 50px;
         height: 50px;
     }
-    
+
     .stat-number {
         font-size: 1rem;
     }
@@ -403,7 +403,7 @@
 function changeView(viewType) {
     const container = document.getElementById('categoriesContainer');
     container.className = `categories-${viewType}`;
-    
+
     // Save preference
     localStorage.setItem('categoryViewType', viewType);
 }
@@ -411,7 +411,7 @@ function changeView(viewType) {
 function sortCategories(sortBy) {
     const container = document.getElementById('categoriesContainer');
     const items = Array.from(container.children);
-    
+
     items.sort((a, b) => {
         if (sortBy === 'name') {
             return a.dataset.name.localeCompare(b.dataset.name);
@@ -420,7 +420,7 @@ function sortCategories(sortBy) {
         }
         return 0;
     });
-    
+
     // Re-append sorted items
     items.forEach(item => container.appendChild(item));
 }
@@ -439,7 +439,7 @@ function toggleWatchCategory(categoryId) {
         if (data.success) {
             const button = event.target.closest('button');
             const icon = button.querySelector('i');
-            
+
             if (data.watching) {
                 icon.className = 'bx bxs-bell';
                 button.classList.remove('btn-outline-secondary');

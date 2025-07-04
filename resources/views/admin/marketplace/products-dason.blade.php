@@ -184,8 +184,9 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar-sm me-3">
-                                                <img src="{{ $product->image_url ?? '/images/placeholder-product.jpg' }}"
-                                                     alt="{{ $product->name }}" class="img-fluid rounded">
+                                                <img src="{{ get_product_image_url($product->image_url ?? $product->featured_image) }}"
+                                                     alt="{{ $product->name }}" class="img-fluid rounded"
+                                                     onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
                                             </div>
                                             <div>
                                                 <h6 class="mb-0">{{ $product->name }}</h6>

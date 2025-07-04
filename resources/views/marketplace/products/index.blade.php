@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Marketplace - Products')
+@section('title', __('messages.nav.marketplace') . ' - ' . __('messages.marketplace.products'))
 
 @section('content')
 <div class="min-vh-100 bg-light">
@@ -11,43 +11,40 @@
             <nav aria-label="breadcrumb" class="mb-3">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('home') }}" class="text-decoration-none">
+                        <a href="{{ url('/') }}" class="text-decoration-none">
                             <i class="bi bi-house me-2"></i>
-                            Home
+                            {{ __('messages.home') }}
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">Marketplace</a>
+                        <a href="{{ url('/marketplace') }}" class="text-decoration-none">{{ __('messages.nav.marketplace') }}</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Products</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('messages.marketplace.products') }}</li>
                 </ol>
             </nav>
 
             <!-- Page Title & Controls -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
                 <div>
-                    <h1 class="h2 fw-bold text-dark">Products</h1>
-                    <p class="text-muted mb-0">Discover mechanical engineering products and solutions</p>
+                    <h1 class="h2 fw-bold text-dark">{{ __('messages.marketplace.products') }}</h1>
+                    <p class="text-muted mb-0">{{ __('messages.marketplace.discover_products') }}</p>
                 </div>
                 <div class="mt-3 mt-sm-0 d-flex gap-2">
                     <button class="btn btn-outline-secondary btn-sm" id="advancedSearchToggle" onclick="toggleAdvancedSearch()">
-                        <i class="bi bi-search me-2"></i> Advanced Search
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm d-lg-none" id="filterToggle">
-                        <i class="bi bi-funnel me-2"></i> Filters
+                        <i class="bi bi-search me-2"></i> {{ __('messages.marketplace.advanced_search') }}
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-sort-down me-2"></i> Sort
+                            <i class="bi bi-sort-down me-2"></i> {{ __('messages.marketplace.sort') }}
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}">Relevance</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'created_at']) }}">Latest</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}">Price: Low to High</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}">Price: High to Low</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}">Highest Rated</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">Most Popular</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'name']) }}">Name A-Z</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}">{{ __('messages.marketplace.relevance') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'created_at']) }}">{{ __('messages.marketplace.latest') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}">{{ __('messages.marketplace.price_low_to_high') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}">{{ __('messages.marketplace.price_high_to_low') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}">{{ __('messages.marketplace.highest_rated') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">{{ __('messages.marketplace.most_popular') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'name']) }}">{{ __('messages.marketplace.name_a_z') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -60,133 +57,22 @@
         <!-- Advanced Search Panel -->
         <x-marketplace.advanced-search :categories="$categories" />
 
+        <!-- Products Grid -->
         <div class="row">
-            <!-- Filters Sidebar -->
-            <div class="col-lg-3 mb-4">
-                <div class="card" id="filtersCard">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Filters</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="GET" action="{{ route('marketplace.products.index') }}" id="filtersForm">
-                            <!-- Search -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Search</label>
-                                <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search products...">
-                            </div>
-
-                            <!-- Category Filter -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Category</label>
-                                <select class="form-select" name="category">
-                                    <option value="">All Categories</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Product Type Filter -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Product Type</label>
-                                <select class="form-select" name="product_type">
-                                    <option value="">All Types</option>
-                                    <option value="physical" {{ request('product_type') == 'physical' ? 'selected' : '' }}>Physical Products</option>
-                                    <option value="digital" {{ request('product_type') == 'digital' ? 'selected' : '' }}>Digital Products</option>
-                                    <option value="service" {{ request('product_type') == 'service' ? 'selected' : '' }}>Services</option>
-                                </select>
-                            </div>
-
-                            <!-- Seller Type Filter -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Seller Type</label>
-                                <select class="form-select" name="seller_type">
-                                    <option value="">All Sellers</option>
-                                    <option value="supplier" {{ request('seller_type') == 'supplier' ? 'selected' : '' }}>Suppliers</option>
-                                    <option value="manufacturer" {{ request('seller_type') == 'manufacturer' ? 'selected' : '' }}>Manufacturers</option>
-                                    <option value="brand" {{ request('seller_type') == 'brand' ? 'selected' : '' }}>Brands</option>
-                                </select>
-                            </div>
-
-                            <!-- Price Range -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Price Range</label>
-                                @foreach($priceRanges as $range)
-                                    <div class="form-check">
-                                        <input type="radio" name="price_range" value="{{ $range['min'] }}-{{ $range['max'] }}"
-                                               id="price_{{ $loop->index }}" class="form-check-input"
-                                               {{ (request('min_price') == $range['min'] && request('max_price') == $range['max']) ? 'checked' : '' }}>
-                                        <label for="price_{{ $loop->index }}" class="form-check-label">
-                                            {{ $range['label'] }}
-                                        </label>
-                                    </div>
-                                @endforeach
-
-                                <!-- Custom Price Range -->
-                                <div class="mt-3">
-                                    <div class="row g-2">
-                                        <div class="col-6">
-                                            <input type="number" class="form-control form-control-sm"
-                                                   name="min_price" value="{{ request('min_price') }}" placeholder="Min $" min="0">
-                                        </div>
-                                        <div class="col-6">
-                                            <input type="number" class="form-control form-control-sm"
-                                                   name="max_price" value="{{ request('max_price') }}" placeholder="Max $" min="0">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Rating Filter -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Minimum Rating</label>
-                                <select class="form-select" name="min_rating">
-                                    <option value="">Any Rating</option>
-                                    <option value="4" {{ request('min_rating') == '4' ? 'selected' : '' }}>4+ Stars</option>
-                                    <option value="3" {{ request('min_rating') == '3' ? 'selected' : '' }}>3+ Stars</option>
-                                    <option value="2" {{ request('min_rating') == '2' ? 'selected' : '' }}>2+ Stars</option>
-                                </select>
-                            </div>
-
-                            <!-- Availability -->
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" name="in_stock" value="1" id="inStock"
-                                           class="form-check-input"
-                                           {{ request('in_stock') ? 'checked' : '' }}>
-                                    <label for="inStock" class="form-check-label">
-                                        In Stock Only
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    Apply Filters
-                                </button>
-                                <a href="{{ route('marketplace.products.index') }}" class="btn btn-outline-secondary">
-                                    Clear All
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Grid -->
-            <div class="col-lg-9">
+            <div class="col-12">
                 <!-- Results Info -->
                 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4">
                     <div>
                         <p class="text-muted mb-0">
-                            Showing {{ $products->firstItem() ?? 0 }} - {{ $products->lastItem() ?? 0 }}
-                            of {{ $products->total() }} products
+                            {{ __('messages.marketplace.showing_results', [
+                                'first' => $products->firstItem() ?? 0,
+                                'last' => $products->lastItem() ?? 0,
+                                'total' => $products->total()
+                            ]) }}
                         </p>
                     </div>
                     <div class="mt-3 mt-sm-0 d-flex align-items-center gap-3">
-                        <span class="text-muted small">View:</span>
+                        <span class="text-muted small">{{ __('messages.marketplace.view') }}:</span>
                         <div class="btn-group btn-group-sm" role="group">
                             <button type="button" class="btn btn-outline-secondary active" id="gridView">
                                 <i class="bi bi-grid"></i>
@@ -201,102 +87,15 @@
                 <!-- Products Grid -->
                 <div class="row" id="productsGrid">
                     @forelse($products as $product)
-                        <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
-                            <div class="card product-card h-100">
-                                <!-- Product Image -->
-                                <div class="position-relative">
-                                    @if($product->featured_image)
-                                        <img src="{{ $product->featured_image }}" class="card-img-top product-image" alt="{{ $product->name }}">
-                                    @else
-                                        <div class="card-img-top product-image bg-light d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
-                                        </div>
-                                    @endif
-
-                                    <!-- Badges -->
-                                    <div class="position-absolute top-0 start-0 p-2">
-                                        @if($product->is_featured)
-                                            <span class="badge bg-warning text-dark">Featured</span>
-                                        @endif
-                                        @if($product->is_on_sale)
-                                            <span class="badge bg-danger">Sale</span>
-                                        @endif
-                                    </div>
-
-                                    <!-- Quick Actions -->
-                                    <div class="position-absolute top-0 end-0 p-2">
-                                        <button class="btn btn-sm btn-light rounded-circle" title="Add to Wishlist">
-                                            <i class="bi bi-heart"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body d-flex flex-column">
-                                    <!-- Product Info -->
-                                    <div class="mb-2">
-                                        <h6 class="card-title mb-1">
-                                            <a href="{{ route('marketplace.products.show', $product->slug) }}" class="text-decoration-none">
-                                                {{ $product->name }}
-                                            </a>
-                                        </h6>
-                                        <p class="card-text text-muted small mb-2">{{ Str::limit($product->short_description, 80) }}</p>
-                                    </div>
-
-                                    <!-- Seller Info -->
-                                    <div class="mb-2">
-                                        <small class="text-muted">
-                                            by <a href="{{ route('marketplace.sellers.show', $product->seller->store_slug) }}" class="text-decoration-none">
-                                                {{ $product->seller->business_name ?? $product->seller->user->name }}
-                                            </a>
-                                        </small>
-                                    </div>
-
-                                    <!-- Rating -->
-                                    @if($product->rating_average > 0)
-                                        <div class="mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <div class="text-warning me-1">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        @if($i <= $product->rating_average)
-                                                            <i class="bi bi-star-fill"></i>
-                                                        @else
-                                                            <i class="bi bi-star"></i>
-                                                        @endif
-                                                    @endfor
-                                                </div>
-                                                <small class="text-muted">({{ $product->rating_count }})</small>
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <!-- Price -->
-                                    <div class="mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                @if($product->is_on_sale && $product->sale_price)
-                                                    <span class="h6 text-danger mb-0">${{ number_format($product->sale_price, 2) }}</span>
-                                                    <small class="text-muted text-decoration-line-through ms-1">${{ number_format($product->price, 2) }}</small>
-                                                @else
-                                                    <span class="h6 text-primary mb-0">${{ number_format($product->price, 2) }}</span>
-                                                @endif
-                                            </div>
-                                            <button class="btn btn-sm btn-primary" onclick="addToCart({{ $product->id }}, 1)" title="Add to Cart">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <x-product-card :product="$product" card-class="col-lg-4 col-md-6 mb-4" />
                     @empty
                         <div class="col-12">
                             <div class="text-center py-5">
                                 <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
-                                <h4 class="mt-3">No products found</h4>
-                                <p class="text-muted">Try adjusting your filters or search terms</p>
+                                <h4 class="mt-3">{{ __('messages.marketplace.no_products_found') }}</h4>
+                                <p class="text-muted">{{ __('messages.marketplace.try_adjusting_filters') }}</p>
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
-                                    View All Products
+                                    {{ __('messages.marketplace.view_all_products') }}
                                 </a>
                             </div>
                         </div>
@@ -314,48 +113,8 @@
     </div>
 </div>
 
-<style>
-.product-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.product-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.product-image {
-    height: 200px;
-    object-fit: cover;
-}
-
-#filtersCard {
-    position: sticky;
-    top: 20px;
-}
-
-@media (max-width: 991.98px) {
-    #filtersCard {
-        position: static;
-    }
-    #filtersCard.d-none {
-        display: none !important;
-    }
-}
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Filter toggle for mobile
-    const filterToggle = document.getElementById('filterToggle');
-    const filtersCard = document.getElementById('filtersCard');
-
-    if (filterToggle && filtersCard) {
-        filterToggle.addEventListener('click', function() {
-            filtersCard.classList.toggle('d-none');
-        });
-    }
-
     // View toggle functionality
     const gridView = document.getElementById('gridView');
     const listView = document.getElementById('listView');
@@ -367,10 +126,39 @@ document.addEventListener('DOMContentLoaded', function() {
             gridView.classList.add('active');
             listView.classList.remove('active');
 
-            // Update each product card to use grid layout
+            // Update each product card to use grid layout (3 columns)
             const productCards = productsGrid.querySelectorAll('[class*="col-"]');
             productCards.forEach(card => {
-                card.className = 'col-xl-4 col-lg-6 col-md-6 mb-4';
+                card.className = 'col-lg-4 col-md-6 mb-4';
+
+                // Reset card structure to vertical layout
+                const productCard = card.querySelector('.product-card');
+                if (productCard) {
+                    productCard.classList.remove('list-view');
+
+                    // Reset card body
+                    const cardBody = productCard.querySelector('.card-body');
+                    if (cardBody) {
+                        cardBody.style.display = 'flex';
+                        cardBody.style.flexDirection = 'column';
+                        cardBody.style.alignItems = 'stretch';
+                        cardBody.style.gap = '';
+                    }
+
+                    // Reset image container
+                    const imageContainer = productCard.querySelector('.position-relative');
+                    if (imageContainer) {
+                        imageContainer.style.width = '';
+                        imageContainer.style.flexShrink = '';
+                    }
+
+                    // Reset image
+                    const image = productCard.querySelector('.product-image');
+                    if (image) {
+                        image.style.height = '200px';
+                        image.style.width = '';
+                    }
+                }
             });
         });
 
@@ -383,49 +171,35 @@ document.addEventListener('DOMContentLoaded', function() {
             const productCards = productsGrid.querySelectorAll('[class*="col-"]');
             productCards.forEach(card => {
                 card.className = 'col-12 mb-3';
+
+                // Change card structure to horizontal layout
+                const productCard = card.querySelector('.product-card');
+                if (productCard) {
+                    productCard.classList.add('list-view');
+
+                    // Find card body and make it flex
+                    const cardBody = productCard.querySelector('.card-body');
+                    if (cardBody) {
+                        cardBody.style.display = 'flex';
+                        cardBody.style.alignItems = 'center';
+                        cardBody.style.gap = '1rem';
+                    }
+
+                    // Adjust image container
+                    const imageContainer = productCard.querySelector('.position-relative');
+                    if (imageContainer) {
+                        imageContainer.style.width = '200px';
+                        imageContainer.style.flexShrink = '0';
+                    }
+
+                    // Adjust image
+                    const image = productCard.querySelector('.product-image');
+                    if (image) {
+                        image.style.height = '150px';
+                        image.style.width = '100%';
+                    }
+                }
             });
-        });
-    }
-
-    // Price range radio buttons
-    const priceRangeInputs = document.querySelectorAll('input[name="price_range"]');
-    const minPriceInput = document.querySelector('input[name="min_price"]');
-    const maxPriceInput = document.querySelector('input[name="max_price"]');
-
-    priceRangeInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            if (this.checked) {
-                const [min, max] = this.value.split('-');
-                minPriceInput.value = min;
-                maxPriceInput.value = max === 'null' ? '' : max;
-            }
-        });
-    });
-
-    // Auto-submit form on filter change
-    const filterInputs = document.querySelectorAll('#filtersForm select, #filtersForm input[type="checkbox"]');
-    filterInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            document.getElementById('filtersForm').submit();
-        });
-    });
-
-    // View toggle buttons
-    const gridView = document.getElementById('gridView');
-    const listView = document.getElementById('listView');
-    const productsGrid = document.getElementById('productsGrid');
-
-    if (gridView && listView && productsGrid) {
-        gridView.addEventListener('click', function() {
-            productsGrid.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6';
-            gridView.classList.add('bg-gray-100');
-            listView.classList.remove('bg-gray-100');
-        });
-
-        listView.addEventListener('click', function() {
-            productsGrid.className = 'space-y-4';
-            listView.classList.add('bg-gray-100');
-            gridView.classList.remove('bg-gray-100');
         });
     }
 
@@ -519,4 +293,50 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartCount();
 });
 </script>
+
+<style>
+/* List View Styles */
+.product-card.list-view {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+}
+
+.product-card.list-view .position-relative {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.product-card.list-view .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    padding: 1rem;
+}
+
+.product-card.list-view .product-image {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.product-card.list-view .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-card.list-view .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+/* View Toggle Buttons */
+.btn-group .btn.active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+</style>
+
 @endsection

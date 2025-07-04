@@ -138,12 +138,12 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ $item->product->getFirstImageUrl() }}" 
-                                                 alt="{{ $item->product_name }}" 
+                                            <img src="{{ $item->product->getFirstImageUrl() }}"
+                                                 alt="{{ $item->product_name }}"
                                                  class="rounded me-3" width="60" height="60">
                                             <div>
                                                 <h6 class="mb-1">
-                                                    <a href="{{ route('marketplace.products.show', $item->product) }}" 
+                                                    <a href="{{ route('marketplace.products.show', $item->product) }}"
                                                        class="text-decoration-none">
                                                         {{ $item->product_name }}
                                                     </a>
@@ -161,7 +161,7 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <a href="{{ route('marketplace.sellers.show', $item->seller) }}" 
+                                            <a href="{{ route('marketplace.sellers.show', $item->seller) }}"
                                                class="text-decoration-none">
                                                 {{ $item->seller->store_name }}
                                             </a>
@@ -204,28 +204,34 @@
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
                                                     type="button" data-bs-toggle="dropdown">
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" 
+                                                <li><a class="dropdown-item"
                                                        href="{{ route('marketplace.products.show', $item->product) }}">
                                                     <i class="bx bx-show me-2"></i>View Product
                                                 </a></li>
+                                                @if($item->product && $item->product->product_type === 'digital' && $order->payment_status === 'paid')
+                                                <li><a class="dropdown-item text-success"
+                                                       href="{{ route('marketplace.orders.download-file', [$order, $item]) }}">
+                                                    <i class="bx bx-download me-2"></i>Download Files
+                                                </a></li>
+                                                @endif
                                                 @if($item->canBeReviewed())
-                                                <li><a class="dropdown-item" href="#" 
+                                                <li><a class="dropdown-item" href="#"
                                                        onclick="reviewProduct({{ $item->product->id }})">
                                                     <i class="bx bx-star me-2"></i>Write Review
                                                 </a></li>
                                                 @endif
                                                 @if($item->canBeReturned())
-                                                <li><a class="dropdown-item text-warning" href="#" 
+                                                <li><a class="dropdown-item text-warning" href="#"
                                                        onclick="returnItem({{ $item->id }})">
                                                     <i class="bx bx-undo me-2"></i>Return Item
                                                 </a></li>
                                                 @endif
-                                                <li><a class="dropdown-item" href="#" 
+                                                <li><a class="dropdown-item" href="#"
                                                        onclick="contactSeller({{ $item->seller->id }})">
                                                     <i class="bx bx-message me-2"></i>Contact Seller
                                                 </a></li>
@@ -371,8 +377,8 @@
                             @if($order->shipping_address['address_line_2'] ?? '')
                                 {{ $order->shipping_address['address_line_2'] }}<br>
                             @endif
-                            {{ $order->shipping_address['city'] ?? '' }}, 
-                            {{ $order->shipping_address['state'] ?? '' }} 
+                            {{ $order->shipping_address['city'] ?? '' }},
+                            {{ $order->shipping_address['state'] ?? '' }}
                             {{ $order->shipping_address['postal_code'] ?? '' }}<br>
                             {{ $order->shipping_address['country'] ?? '' }}
                         </div>
@@ -426,7 +432,7 @@
                     </div>
                     @endif
                     <div class="mb-2">
-                        <strong>Status:</strong> 
+                        <strong>Status:</strong>
                         <span class="badge bg-{{ $order->getPaymentStatusColor() }}">
                             {{ ucfirst($order->payment_status) }}
                         </span>
@@ -501,7 +507,7 @@
     .timeline {
         padding-left: 1.5rem;
     }
-    
+
     .timeline-marker {
         left: -1.5rem;
         width: 1rem;
@@ -621,9 +627,9 @@ function showToast(message, type) {
     toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
     toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
     toast.textContent = message;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.remove();
     }, 3000);

@@ -74,6 +74,7 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     Route::get('/products/{slug}', [App\Http\Controllers\MarketplaceController::class, 'show'])->name('products.show');
     Route::get('/suppliers', [App\Http\Controllers\MarketplaceController::class, 'suppliers'])->name('suppliers.index');
     Route::get('/suppliers/{slug}', [App\Http\Controllers\MarketplaceController::class, 'seller'])->name('sellers.show');
+    Route::get('/categories', [App\Http\Controllers\MarketplaceController::class, 'categories'])->name('categories.index');
     Route::get('/categories/{slug}', [App\Http\Controllers\MarketplaceController::class, 'category'])->name('categories.show');
 
     // Enhanced Business Tools
@@ -89,8 +90,43 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
 
     Route::get('/bulk-orders', [App\Http\Controllers\MarketplaceController::class, 'bulkOrders'])->name('bulk-orders');
     Route::get('/orders', [App\Http\Controllers\MarketplaceOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [App\Http\Controllers\MarketplaceOrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/items/{item}/download', [App\Http\Controllers\MarketplaceOrderController::class, 'downloadFile'])->name('orders.download-file')->where(['order' => '[0-9]+', 'item' => '[0-9]+']);
+    Route::get('/orders/{order}/items/{item}/download-test', function($order, $item) {
+        return response()->json(['order' => $order, 'item' => $item, 'message' => 'Route works']);
+    });
+    Route::get('/orders/{order}/items/{item}/download-simple', function($orderId, $itemId) {
+        $order = App\Models\MarketplaceOrder::findOrFail($orderId);
+        $item = App\Models\MarketplaceOrderItem::findOrFail($itemId);
+        return response()->json([
+            'order' => $order->order_number,
+            'item' => $item->product_name,
+            'product_type' => $item->product->product_type,
+            'digital_files' => $item->product->digital_files,
+            'message' => 'Simple route works'
+        ]);
+    });
+
+    // Secure Download routes
+    Route::prefix('downloads')->name('downloads.')->group(function () {
+        Route::get('/', [App\Http\Controllers\MarketplaceDownloadController::class, 'index'])->name('index');
+        Route::get('/orders/{order}/files', [App\Http\Controllers\MarketplaceDownloadController::class, 'orderFiles'])->name('order-files');
+        Route::get('/items/{orderItem}/files', [App\Http\Controllers\MarketplaceDownloadController::class, 'itemFiles'])->name('item-files');
+        Route::post('/generate-token', [App\Http\Controllers\MarketplaceDownloadController::class, 'generateToken'])->name('generate-token');
+        Route::get('/stats', [App\Http\Controllers\MarketplaceDownloadController::class, 'downloadStats'])->name('stats');
+        Route::get('/history', [App\Http\Controllers\MarketplaceDownloadController::class, 'downloadHistory'])->name('history');
+        Route::post('/redownload/{download}', [App\Http\Controllers\MarketplaceDownloadController::class, 'redownload'])->name('redownload');
+    });
+
     Route::get('/wishlist', [App\Http\Controllers\MarketplaceWishlistController::class, 'index'])->name('wishlist.index');
 
+});
+
+// Public download route (no auth required, token-based)
+Route::get('/download/{token}', [App\Http\Controllers\MarketplaceDownloadController::class, 'downloadFile'])->name('marketplace.download.file');
+
+// Marketplace routes (public)
+Route::prefix('marketplace')->name('marketplace.')->group(function () {
     // Shopping Cart routes
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [App\Http\Controllers\MarketplaceCartController::class, 'index'])->name('index');
@@ -100,13 +136,13 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
         Route::delete('/clear', [App\Http\Controllers\MarketplaceCartController::class, 'clear'])->name('clear');
         Route::get('/data', [App\Http\Controllers\MarketplaceCartController::class, 'data'])->name('data');
         Route::get('/count', [App\Http\Controllers\MarketplaceCartController::class, 'count'])->name('count');
-        Route::post('/validate', [App\Http\Controllers\MarketplaceCartController::class, 'validateCart'])->name('validate');
+        Route::post('/validate', [App\Http\Controllers\MarketplaceCartController::class, 'validateCartItems'])->name('validate');
         Route::post('/coupon', [App\Http\Controllers\MarketplaceCartController::class, 'applyCoupon'])->name('coupon');
         Route::get('/checkout', [App\Http\Controllers\MarketplaceCartController::class, 'checkout'])->name('checkout');
     });
 
-    // Checkout Routes
-    Route::prefix('checkout')->name('checkout.')->group(function () {
+    // Checkout Routes - Require authentication and purchase permission
+    Route::prefix('checkout')->name('checkout.')->middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [App\Http\Controllers\MarketplaceCheckoutController::class, 'index'])->name('index');
         Route::post('/shipping', [App\Http\Controllers\MarketplaceCheckoutController::class, 'shipping'])->name('shipping');
         Route::post('/payment', [App\Http\Controllers\MarketplaceCheckoutController::class, 'payment'])->name('payment');
@@ -362,6 +398,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 
+    // Profile orders route
+    Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+
     // Follow/unfollow routes
     Route::post('/users/{user:username}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
     Route::delete('/users/{user:username}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
@@ -461,9 +500,12 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
     // Bookmark management
     Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
     Route::post('/bookmarks/search', [UserDashboardController::class, 'searchBookmarks'])->name('bookmarks.search');
-    Route::post('/bookmarks/folders', [UserDashboardController::class, 'createFolder'])->name('bookmarks.folders.create');
+    Route::post('/bookmarks/folders', [UserDashboardController::class, 'createBookmarkFolder'])->name('bookmarks.create-folder');
     Route::put('/bookmarks/folders/{folder}', [UserDashboardController::class, 'updateFolder'])->name('bookmarks.folders.update');
     Route::delete('/bookmarks/folders/{folder}', [UserDashboardController::class, 'deleteFolder'])->name('bookmarks.folders.delete');
+    Route::put('/bookmarks/{bookmark}', [UserDashboardController::class, 'updateBookmark'])->name('bookmarks.update');
+    Route::delete('/bookmarks/{bookmark}', [UserDashboardController::class, 'deleteBookmark'])->name('bookmarks.delete');
+    Route::post('/bookmarks/bulk-delete', [UserDashboardController::class, 'bulkDeleteBookmarks'])->name('bookmarks.bulk-delete');
 
     // Rating management
     Route::get('/ratings', [UserDashboardController::class, 'ratings'])->name('ratings');

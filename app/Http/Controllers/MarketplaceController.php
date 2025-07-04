@@ -254,7 +254,7 @@ class MarketplaceController extends Controller
                       ->orWhere('seller_id', $product->seller_id);
             })
             ->orderBy('rating_average', 'desc')
-            ->limit(8)
+            ->limit(6)
             ->get();
 
         // Check if user has purchased this product
@@ -262,7 +262,7 @@ class MarketplaceController extends Controller
         if (auth()->check()) {
             $hasPurchased = $product->orderItems()
                 ->whereHas('order', function($query) {
-                    $query->where('user_id', auth()->id())
+                    $query->where('customer_id', auth()->id())
                           ->where('status', 'completed');
                 })
                 ->exists();
@@ -296,11 +296,74 @@ class MarketplaceController extends Controller
     }
 
     /**
+     * Display all categories
+     */
+    public function categories(): View
+    {
+        $categories = ProductCategory::withCount(['marketplaceProducts' => function($query) {
+            $query->where('status', 'approved')->where('is_active', true);
+        }])
+        ->with(['children', 'marketplaceProducts' => function($query) {
+            $query->where('status', 'approved')->where('is_active', true)->take(3);
+        }])
+        ->where('is_active', true)
+        ->orderBy('name')
+        ->paginate(12);
+
+        // Featured categories (categories with high product count)
+        $featuredCategories = ProductCategory::withCount(['marketplaceProducts' => function($query) {
+            $query->where('status', 'approved')->where('is_active', true);
+        }])
+        ->where('is_active', true)
+        ->whereHas('marketplaceProducts', function($query) {
+            $query->where('status', 'approved')->where('is_active', true);
+        }, '>=', 3)
+        ->orderBy('marketplace_products_count', 'desc')
+        ->take(6)
+        ->get();
+
+        // Calculate stats
+        $totalCategories = ProductCategory::where('is_active', true)->count();
+        $totalProducts = MarketplaceProduct::where('status', 'approved')->where('is_active', true)->count();
+        $totalSellers = MarketplaceSeller::where('status', 'active')->count();
+        $activeCategories = ProductCategory::where('is_active', true)
+            ->whereHas('marketplaceProducts', function($query) {
+                $query->where('status', 'approved')->where('is_active', true);
+            })->count();
+        $activeSellers = MarketplaceSeller::where('status', 'active')->where('verification_status', 'verified')->count();
+
+        // New products this week
+        $newThisWeek = MarketplaceProduct::where('status', 'approved')
+            ->where('is_active', true)
+            ->where('created_at', '>=', now()->subWeek())
+            ->count();
+
+        return view('marketplace.categories.index', compact(
+            'categories',
+            'featuredCategories',
+            'totalCategories',
+            'totalProducts',
+            'totalSellers',
+            'activeCategories',
+            'activeSellers',
+            'newThisWeek'
+        ));
+    }
+
+    /**
      * Display products by category
      */
     public function category(string $slug): View
     {
-        $category = ProductCategory::where('slug', $slug)->firstOrFail();
+        $category = ProductCategory::with(['children' => function($query) {
+            $query->where('is_active', true)
+                  ->withCount(['marketplaceProducts' => function($subQuery) {
+                      $subQuery->where('status', 'approved')->where('is_active', true);
+                  }]);
+        }])
+        ->where('slug', $slug)
+        ->where('is_active', true)
+        ->firstOrFail();
 
         $products = MarketplaceProduct::with(['seller.user', 'category'])
             ->where('product_category_id', $category->id)

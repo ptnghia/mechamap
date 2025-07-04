@@ -156,7 +156,17 @@ class MarketplaceShoppingCart extends Model
      */
     protected function calculateShipping(): float
     {
-        // Basic shipping calculation
+        // Check if cart contains only digital products
+        $hasPhysicalProducts = $this->items()->whereHas('product', function($query) {
+            $query->where('product_type', '!=', 'digital');
+        })->exists();
+
+        // No shipping for digital-only carts
+        if (!$hasPhysicalProducts) {
+            return 0.00;
+        }
+
+        // Basic shipping calculation for physical products
         if ($this->subtotal >= 100) {
             return 0; // Free shipping over $100
         }

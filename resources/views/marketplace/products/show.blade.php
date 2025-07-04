@@ -13,14 +13,14 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}" class="text-decoration-none">
                             <i class="bi bi-house me-2"></i>
-                            Home
+                            {{ __('messages.marketplace.home') }}
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">Marketplace</a>
+                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">{{ __('messages.marketplace.marketplace') }}</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('marketplace.products.index') }}" class="text-decoration-none">Products</a>
+                        <a href="{{ route('marketplace.products.index') }}" class="text-decoration-none">{{ __('messages.marketplace.products') }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($product->name, 30) }}</li>
                 </ol>
@@ -29,194 +29,290 @@
     </div>
 
     <!-- Product Details -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="container-fluid py-4">
+        <div class="row">
             <!-- Product Images -->
-            <div>
-                <div class="bg-white rounded-lg shadow-sm border p-6">
-                    @if($product->featured_image)
-                        <img src="{{ $product->featured_image }}" alt="{{ $product->name }}" class="w-full h-96 object-cover rounded-lg">
-                    @else
-                        <div class="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <i class="bi bi-image text-gray-400 text-6xl"></i>
-                        </div>
-                    @endif
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        @if($product->featured_image)
+                            <img src="{{ get_product_image_url($product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid rounded" style="width: 100%; height: 400px; object-fit: cover;" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
+                        @else
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded" style="width: 100%; height: 400px;">
+                                <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                            </div>
+                        @endif
 
-                    <!-- Additional Images -->
-                    @if($product->images && count($product->images) > 1)
-                        <div class="grid grid-cols-4 gap-2 mt-4">
-                            @foreach(array_slice($product->images, 1, 4) as $image)
-                                <img src="{{ $image }}" alt="{{ $product->name }}" class="w-full h-20 object-cover rounded border cursor-pointer hover:opacity-75">
-                            @endforeach
-                        </div>
-                    @endif
+                        <!-- Additional Images -->
+                        @if($product->images && count($product->images) > 1)
+                            <div class="row g-2 mt-3">
+                                @foreach(array_slice($product->images, 1, 4) as $image)
+                                    <div class="col-3">
+                                        <img src="{{ get_product_image_url($image) }}" alt="{{ $product->name }}" class="img-fluid rounded border" style="height: 80px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this.src)" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
 
             <!-- Product Info -->
-            <div>
-                <div class="bg-white rounded-lg shadow-sm border p-6">
-                    <!-- Product Title -->
-                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $product->name }}</h1>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Product Title -->
+                        <h1 class="h2 fw-bold text-dark mb-3">{{ $product->name }}</h1>
 
-                    <!-- Seller Info -->
-                    <div class="flex items-center mb-4">
-                        <span class="text-sm text-gray-600">Sold by</span>
-                        <a href="{{ route('marketplace.sellers.show', $product->seller->store_slug) }}" class="ml-2 text-blue-600 hover:text-blue-800 font-medium">
-                            {{ $product->seller->business_name ?? $product->seller->user->name }}
-                        </a>
-                        <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-{{ $product->seller->verification_status === 'verified' ? 'green' : 'gray' }}-100 text-{{ $product->seller->verification_status === 'verified' ? 'green' : 'gray' }}-800">
-                            {{ ucfirst($product->seller->verification_status) }}
-                        </span>
-                    </div>
-
-                    <!-- Rating -->
-                    @if($product->rating_average > 0)
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400 mr-2">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= $product->rating_average)
-                                        <i class="bi bi-star-fill"></i>
-                                    @else
-                                        <i class="bi bi-star"></i>
-                                    @endif
-                                @endfor
-                            </div>
-                            <span class="text-sm text-gray-600">({{ $product->rating_count }} reviews)</span>
-                        </div>
-                    @endif
-
-                    <!-- Price -->
-                    <div class="mb-6">
-                        @if($product->is_on_sale && $product->sale_price)
-                            <div class="flex items-center">
-                                <span class="text-3xl font-bold text-red-600">${{ number_format($product->sale_price, 2) }}</span>
-                                <span class="text-lg text-gray-500 line-through ml-3">${{ number_format($product->price, 2) }}</span>
-                                <span class="ml-3 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF
-                                </span>
-                            </div>
-                        @else
-                            <span class="text-3xl font-bold text-blue-600">${{ number_format($product->price, 2) }}</span>
-                        @endif
-                    </div>
-
-                    <!-- Stock Status -->
-                    <div class="mb-6">
-                        @if($product->in_stock)
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                <i class="bi bi-check-circle mr-1"></i>
-                                In Stock
-                            </span>
-                            @if($product->stock_quantity <= 5)
-                                <span class="ml-2 text-sm text-orange-600">Only {{ $product->stock_quantity }} left!</span>
-                            @endif
-                        @else
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                <i class="bi bi-x-circle mr-1"></i>
-                                Out of Stock
-                            </span>
-                        @endif
-                    </div>
-
-                    <!-- Product Type & Category -->
-                    <div class="mb-6">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {{ ucfirst($product->product_type) }}
-                            </span>
-                            @if($product->category)
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    {{ $product->category->name }}
-                                </span>
-                            @endif
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                {{ ucfirst($product->seller_type) }}
+                        <!-- Seller Info -->
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-muted small">{{ __('messages.marketplace.sold_by') }}</span>
+                            <a href="{{ route('marketplace.sellers.show', $product->seller->store_slug) }}" class="ms-2 text-primary text-decoration-none fw-medium">
+                                {{ $product->seller->business_name ?? $product->seller->user->name }}
+                            </a>
+                            <span class="ms-2 badge bg-{{ $product->seller->verification_status === 'verified' ? 'success' : 'secondary' }}">
+                                {{ $product->seller->verification_status === 'verified' ? __('messages.marketplace.verified') : ucfirst($product->seller->verification_status) }}
                             </span>
                         </div>
-                    </div>
 
-                    <!-- Action Buttons -->
-                    <div class="space-y-3">
-                        @if($product->in_stock)
-                            <button class="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-medium">
-                                <i class="bi bi-cart-plus mr-2"></i>
-                                Add to Cart
-                            </button>
-                        @else
-                            <button class="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-md cursor-not-allowed font-medium" disabled>
-                                Out of Stock
-                            </button>
+                        <!-- Rating -->
+                        @if($product->rating_average > 0)
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="text-warning me-2">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $product->rating_average)
+                                            <i class="bi bi-star-fill"></i>
+                                        @else
+                                            <i class="bi bi-star"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <span class="text-muted small">({{ $product->rating_count }} {{ __('messages.marketplace.reviews') }})</span>
+                            </div>
                         @endif
 
-                        <button class="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 font-medium">
-                            <i class="bi bi-heart mr-2"></i>
-                            Add to Wishlist
-                        </button>
+                        <!-- Price -->
+                        <div class="mb-4">
+                            @if($product->is_on_sale && $product->sale_price)
+                                <div class="d-flex align-items-center">
+                                    <span class="h3 fw-bold text-danger mb-0">${{ number_format($product->sale_price, 2) }}</span>
+                                    <span class="h5 text-muted text-decoration-line-through ms-3 mb-0">${{ number_format($product->price, 2) }}</span>
+                                    <span class="ms-3 badge bg-danger">
+                                        {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF
+                                    </span>
+                                </div>
+                            @else
+                                <span class="h3 fw-bold text-primary mb-0">${{ number_format($product->price, 2) }}</span>
+                            @endif
+                        </div>
+
+                        <!-- Stock Status -->
+                        <div class="mb-4">
+                            @if($product->in_stock)
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    {{ __('messages.marketplace.in_stock') }}
+                                </span>
+                                @if($product->stock_quantity <= 5)
+                                    <span class="ms-2 text-warning small">Only {{ $product->stock_quantity }} left!</span>
+                                @endif
+                            @else
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    {{ __('messages.marketplace.out_of_stock') }}
+                                </span>
+                            @endif
+                        </div>
+
+                        <!-- Product Type & Category -->
+                        <div class="mb-4">
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-primary">
+                                    {{ $product->product_type === 'service' ? __('messages.marketplace.service') : ucfirst($product->product_type) }}
+                                </span>
+                                @if($product->category)
+                                    <span class="badge bg-secondary">
+                                        {{ $product->category->name }}
+                                    </span>
+                                @endif
+                                <span class="badge bg-info">
+                                    {{ $product->seller_type === 'manufacturer' ? __('messages.marketplace.manufacturer') : ucfirst($product->seller_type) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2">
+                            @if($product->in_stock)
+                                <button class="btn btn-primary btn-lg" onclick="addToCart({{ $product->id }})">
+                                    <i class="bi bi-cart-plus me-2"></i>
+                                    {{ __('messages.marketplace.add_to_cart') }}
+                                </button>
+                            @else
+                                <button class="btn btn-secondary btn-lg" disabled>
+                                    {{ __('messages.marketplace.out_of_stock') }}
+                                </button>
+                            @endif
+
+                            <button class="btn btn-outline-secondary" onclick="addToWishlist({{ $product->id }})">
+                                <i class="bi bi-heart me-2"></i>
+                                {{ __('messages.marketplace.add_to_wishlist') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Product Description -->
-        <div class="mt-8">
-            <div class="bg-white rounded-lg shadow-sm border p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Product Description</h2>
-                <div class="prose max-w-none">
-                    {!! nl2br(e($product->description)) !!}
-                </div>
-
-                <!-- Technical Specifications -->
-                @if($product->technical_specs)
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Technical Specifications</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @foreach($product->technical_specs as $key => $value)
-                                <div class="flex justify-between py-2 border-b border-gray-200">
-                                    <span class="font-medium text-gray-700">{{ ucfirst(str_replace('_', ' ', $key)) }}:</span>
-                                    <span class="text-gray-600">{{ $value }}</span>
-                                </div>
-                            @endforeach
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="h4 fw-bold mb-3">{{ __('messages.marketplace.product_description') }}</h2>
+                        <div class="mb-4">
+                            {!! nl2br(e($product->description)) !!}
                         </div>
+
+                        <!-- Technical Specifications -->
+                        @if($product->technical_specs)
+                            @php
+                                $specs = is_string($product->technical_specs) ? json_decode($product->technical_specs, true) : $product->technical_specs;
+                            @endphp
+                            @if($specs && is_array($specs))
+                                <div class="mt-4">
+                                    <h3 class="h5 fw-semibold mb-3">{{ __('messages.marketplace.technical_specifications') }}</h3>
+                                    <div class="row">
+                                        @foreach($specs as $key => $value)
+                                            <div class="col-md-6 mb-2">
+                                                <div class="d-flex justify-content-between py-2 border-bottom">
+                                                    <span class="fw-medium text-dark">
+                                                        @switch($key)
+                                                            @case('lead_time')
+                                                                {{ __('messages.marketplace.lead_time') }}:
+                                                                @break
+                                                            @case('minimum_order')
+                                                                {{ __('messages.marketplace.minimum_order') }}:
+                                                                @break
+                                                            @case('precision')
+                                                                {{ __('messages.marketplace.precision') }}:
+                                                                @break
+                                                            @case('quality_standard')
+                                                                {{ __('messages.marketplace.quality_standard') }}:
+                                                                @break
+                                                            @case('material_options')
+                                                                {{ __('messages.marketplace.material_options') }}:
+                                                                @break
+                                                            @case('delivery')
+                                                                {{ __('messages.marketplace.delivery') }}:
+                                                                @break
+                                                            @default
+                                                                {{ ucfirst(str_replace('_', ' ', $key)) }}:
+                                                        @endswitch
+                                                    </span>
+                                                    <span class="text-muted">{{ $value }}</span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
                     </div>
-                @endif
+                </div>
             </div>
         </div>
 
         <!-- Related Products -->
         @if($relatedProducts->count() > 0)
-            <div class="mt-8">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Related Products</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @foreach($relatedProducts as $relatedProduct)
-                        <div class="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow duration-200">
-                            <div class="relative">
-                                @if($relatedProduct->featured_image)
-                                    <img src="{{ $relatedProduct->featured_image }}" class="w-full h-48 object-cover rounded-t-lg" alt="{{ $relatedProduct->name }}">
-                                @else
-                                    <div class="w-full h-48 bg-gray-100 rounded-t-lg flex items-center justify-center">
-                                        <i class="bi bi-image text-gray-400 text-4xl"></i>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-semibold text-gray-900 mb-2">
-                                    <a href="{{ route('marketplace.products.show', $relatedProduct->slug) }}" class="hover:text-blue-600">
-                                        {{ Str::limit($relatedProduct->name, 50) }}
-                                    </a>
-                                </h3>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-lg font-bold text-blue-600">${{ number_format($relatedProduct->price, 2) }}</span>
-                                    <button class="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
-                                        <i class="bi bi-cart-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h2 class="h4 fw-bold mb-4">{{ __('messages.marketplace.related_products') }}</h2>
+                    <div class="row">
+                        @foreach($relatedProducts as $relatedProduct)
+                            <x-product-card :product="$relatedProduct" card-class="col-lg-4 col-md-6 mb-4" />
+                        @endforeach
+                    </div>
                 </div>
             </div>
         @endif
     </div>
 </div>
+
+<script>
+function changeMainImage(src) {
+    const mainImage = document.querySelector('.card-body img:first-child');
+    if (mainImage) {
+        mainImage.src = src;
+    }
+}
+
+function addToCart(productId) {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalContent = button.innerHTML;
+    button.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div>';
+    button.disabled = true;
+
+    fetch('{{ route("marketplace.cart.add") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('success', data.message);
+            button.innerHTML = '<i class="bi bi-check"></i> Added';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-success');
+
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+                button.disabled = false;
+            }, 2000);
+        } else {
+            showToast('error', data.message);
+            button.innerHTML = originalContent;
+            button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('error', 'Failed to add product to cart');
+        button.innerHTML = originalContent;
+        button.disabled = false;
+    });
+}
+
+function addToWishlist(productId) {
+    showToast('info', 'Wishlist feature coming soon!');
+}
+
+function showToast(type, message) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 5000);
+}
+</script>
 @endsection

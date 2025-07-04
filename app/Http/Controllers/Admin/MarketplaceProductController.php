@@ -100,11 +100,33 @@ class MarketplaceProductController extends Controller
             'material' => 'nullable|string',
             'manufacturing_process' => 'nullable|string',
             'technical_specs' => 'nullable|array',
+            'file_formats' => 'nullable|string',
+            'software_compatibility' => 'nullable|string',
+            'digital_files' => 'nullable|array',
+            'digital_files.*' => 'file|mimes:dwg,dxf,step,stp,iges,igs,stl,pdf,doc,docx,zip,rar|max:51200', // 50MB
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:draft,pending,approved,rejected',
         ]);
+
+        // Handle digital files upload for digital products
+        $digitalFilesData = [];
+        if ($request->hasFile('digital_files') && ($validated['product_type'] === 'digital' || $validated['seller_type'] === 'manufacturer')) {
+            foreach ($request->file('digital_files') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('marketplace/digital-files', $fileName, 'private');
+
+                $digitalFilesData[] = [
+                    'name' => $file->getClientOriginalName(),
+                    'path' => $filePath,
+                    'size' => $file->getSize(),
+                    'mime_type' => $file->getMimeType(),
+                    'extension' => $file->getClientOriginalExtension(),
+                    'uploaded_at' => now()->toISOString(),
+                ];
+            }
+        }
 
         // Handle image uploads
         if ($request->hasFile('featured_image')) {
@@ -117,6 +139,24 @@ class MarketplaceProductController extends Controller
                 $images[] = $image->store('marketplace/products', 'public');
             }
             $validated['images'] = $images;
+        }
+
+        // Process file formats and software compatibility
+        if (!empty($validated['file_formats'])) {
+            $validated['file_formats'] = array_map('trim', explode(',', $validated['file_formats']));
+        }
+
+        if (!empty($validated['software_compatibility'])) {
+            $validated['software_compatibility'] = array_map('trim', explode(',', $validated['software_compatibility']));
+        }
+
+        // Add digital files data
+        if (!empty($digitalFilesData)) {
+            $validated['digital_files'] = $digitalFilesData;
+
+            // Calculate total file size
+            $totalSize = array_sum(array_column($digitalFilesData, 'size'));
+            $validated['file_size_mb'] = round($totalSize / (1024 * 1024), 2);
         }
 
         // Auto-approve if admin is creating

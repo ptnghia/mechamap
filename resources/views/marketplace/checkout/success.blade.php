@@ -92,7 +92,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     @if($item->product && $item->product->featured_image)
-                                                        <img src="{{ $item->product->featured_image }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}">
+                                                        <img src="{{ get_product_image_url($item->product->featured_image) }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
                                                     @else
                                                         <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                                             <i class="bi bi-image text-muted"></i>
@@ -204,7 +204,7 @@
                 <div class="text-center mt-4">
                     <p class="text-muted">
                         <i class="bi bi-headset me-1"></i>
-                        Need help? Contact our support team at 
+                        Need help? Contact our support team at
                         <a href="mailto:support@mechamap.com" class="text-decoration-none">support@mechamap.com</a>
                         or call <a href="tel:+1234567890" class="text-decoration-none">+1 (234) 567-890</a>
                     </p>
@@ -240,12 +240,12 @@
     .btn, .breadcrumb, .navbar, .footer {
         display: none !important;
     }
-    
+
     .card {
         border: 1px solid #000 !important;
         box-shadow: none !important;
     }
-    
+
     .bg-light {
         background: white !important;
     }
@@ -258,7 +258,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Auto-scroll to top
     window.scrollTo(0, 0);
-    
+
     // Show success animation
     setTimeout(() => {
         const successIcon = document.querySelector('.success-icon i');

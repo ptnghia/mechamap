@@ -23,7 +23,7 @@ class MarketplaceOrderController extends Controller
     public function index(Request $request): View
     {
         $user = Auth::user();
-        
+
         $query = MarketplaceOrder::where('customer_id', $user->id)
             ->with(['items.product', 'items.seller.user']);
 
@@ -63,6 +63,7 @@ class MarketplaceOrderController extends Controller
             'total_orders' => MarketplaceOrder::where('customer_id', $user->id)->count(),
             'pending_orders' => MarketplaceOrder::where('customer_id', $user->id)->where('status', 'pending')->count(),
             'completed_orders' => MarketplaceOrder::where('customer_id', $user->id)->where('status', 'completed')->count(),
+            'delivered_orders' => MarketplaceOrder::where('customer_id', $user->id)->where('status', 'delivered')->count(),
             'total_spent' => MarketplaceOrder::where('customer_id', $user->id)->where('payment_status', 'paid')->sum('total_amount'),
         ];
 
@@ -101,8 +102,54 @@ class MarketplaceOrderController extends Controller
         // Generate and return PDF invoice
         $pdf = app('dompdf.wrapper');
         $pdf->loadView('marketplace.orders.invoice', compact('order'));
-        
+
         return $pdf->download("invoice-{$order->order_number}.pdf");
+    }
+
+    /**
+     * Show digital files available for download
+     */
+    public function downloadFile($orderId, $itemId)
+    {
+        \Log::info('Download file accessed', [
+            'order_id' => $orderId,
+            'item_id' => $itemId,
+            'user_id' => Auth::id()
+        ]);
+
+        // Find the order and item manually
+        $order = MarketplaceOrder::findOrFail($orderId);
+        $item = MarketplaceOrderItem::findOrFail($itemId);
+
+        // Ensure user can only download their own order files
+        if ($order->customer_id !== Auth::id()) {
+            abort(403, 'Unauthorized access to order files');
+        }
+
+        // Ensure the item belongs to this order
+        if ($item->order_id !== $order->id) {
+            abort(403, 'Invalid order item');
+        }
+
+        // Ensure the product is digital and has files
+        if (!$item->product || $item->product->product_type !== 'digital') {
+            abort(404, 'This product does not have downloadable files');
+        }
+
+        // Check if order is paid
+        if ($order->payment_status !== 'paid') {
+            abort(403, 'Order must be paid before downloading files');
+        }
+
+        // Get digital files from Media relationship
+        $digitalFiles = $item->product->digitalFiles;
+
+        if ($digitalFiles->isEmpty()) {
+            abort(404, 'No downloadable files found for this product');
+        }
+
+        // Return view with available files for download
+        return view('marketplace.orders.download', compact('order', 'item', 'digitalFiles'));
     }
 
     /**
@@ -143,7 +190,7 @@ class MarketplaceOrderController extends Controller
                         'quantity' => $item->quantity,
                         'seller_id' => $item->seller_id
                     ]);
-                    
+
                     $result = $cartController->add($addRequest);
                     if ($result->getStatusCode() === 200) {
                         $addedItems++;

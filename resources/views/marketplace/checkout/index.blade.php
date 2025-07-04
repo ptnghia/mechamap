@@ -44,6 +44,24 @@
                         </h5>
                     </div>
                     <div class="card-body">
+                        <!-- Success/Error Messages -->
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle me-2"></i>
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                @foreach($errors->all() as $error)
+                                    {{ $error }}<br>
+                                @endforeach
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
                         <!-- Progress Steps -->
                         <div class="checkout-progress mb-4">
                             <div class="d-flex justify-content-between align-items-center">
@@ -76,49 +94,50 @@
                         <!-- Step Content -->
                         <div id="checkoutSteps">
                             <!-- Step 1: Shipping Information -->
-                            <div class="step-content active" id="step1">
+                            <div class="step-content {{ session('step') !== 'payment' ? 'active' : '' }}" id="step1">
                                 <h6 class="mb-3">Shipping Information</h6>
-                                <form id="shippingForm">
+                                <form action="{{ route('marketplace.checkout.shipping') }}" method="POST" id="shippingForm">
+                                    @csrf
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">First Name *</label>
-                                            <input type="text" class="form-control" name="shipping_address[first_name]" required>
+                                            <input type="text" class="form-control" name="shipping_address[first_name]" value="{{ old('shipping_address.first_name') }}" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Last Name *</label>
-                                            <input type="text" class="form-control" name="shipping_address[last_name]" required>
+                                            <input type="text" class="form-control" name="shipping_address[last_name]" value="{{ old('shipping_address.last_name') }}" required>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Email Address *</label>
-                                            <input type="email" class="form-control" name="shipping_address[email]" required>
+                                            <input type="email" class="form-control" name="shipping_address[email]" value="{{ old('shipping_address.email') }}" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" name="shipping_address[phone]">
+                                            <input type="tel" class="form-control" name="shipping_address[phone]" value="{{ old('shipping_address.phone') }}">
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Address Line 1 *</label>
-                                        <input type="text" class="form-control" name="shipping_address[address_line_1]" required>
+                                        <input type="text" class="form-control" name="shipping_address[address_line_1]" value="{{ old('shipping_address.address_line_1') }}" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Address Line 2</label>
-                                        <input type="text" class="form-control" name="shipping_address[address_line_2]">
+                                        <input type="text" class="form-control" name="shipping_address[address_line_2]" value="{{ old('shipping_address.address_line_2') }}">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label">City *</label>
-                                            <input type="text" class="form-control" name="shipping_address[city]" required>
+                                            <input type="text" class="form-control" name="shipping_address[city]" value="{{ old('shipping_address.city') }}" required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label">State/Province *</label>
-                                            <input type="text" class="form-control" name="shipping_address[state]" required>
+                                            <input type="text" class="form-control" name="shipping_address[state]" value="{{ old('shipping_address.state') }}" required>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label">Postal Code *</label>
-                                            <input type="text" class="form-control" name="shipping_address[postal_code]" required>
+                                            <input type="text" class="form-control" name="shipping_address[postal_code]" value="{{ old('shipping_address.postal_code') }}" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -172,9 +191,10 @@
                             </div>
 
                             <!-- Step 2: Payment Information -->
-                            <div class="step-content" id="step2">
+                            <div class="step-content {{ session('step') === 'payment' ? 'active' : '' }}" id="step2">
                                 <h6 class="mb-3">Payment Information</h6>
-                                <form id="paymentForm">
+                                <form id="paymentForm" action="{{ route('marketplace.checkout.payment') }}" method="POST">
+                                    @csrf
                                     <div class="mb-4">
                                         <label class="form-label">Payment Method</label>
                                         <div class="payment-methods">
@@ -269,11 +289,68 @@
                             </div>
 
                             <!-- Step 3: Order Review -->
-                            <div class="step-content" id="step3">
+                            <div class="step-content {{ session('step') === 'review' ? 'active' : '' }}" id="step3">
                                 <h6 class="mb-3">Review Your Order</h6>
-                                <div id="orderReview">
-                                    <!-- Order review content will be loaded here -->
-                                </div>
+                                @if(session('step') === 'review')
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Shipping Address</h6>
+                                            @if(session('checkout.shipping_address'))
+                                                @php $shipping = session('checkout.shipping_address'); @endphp
+                                                <address>
+                                                    {{ $shipping['first_name'] }} {{ $shipping['last_name'] }}<br>
+                                                    {{ $shipping['address_line_1'] }}<br>
+                                                    @if($shipping['address_line_2'])
+                                                        {{ $shipping['address_line_2'] }}<br>
+                                                    @endif
+                                                    {{ $shipping['city'] }}, {{ $shipping['state'] }} {{ $shipping['postal_code'] }}<br>
+                                                    {{ $shipping['country'] }}
+                                                </address>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Payment Method</h6>
+                                            @if(session('checkout.payment_method'))
+                                                <p class="mb-3">
+                                                    @switch(session('checkout.payment_method'))
+                                                        @case('credit_card')
+                                                            Credit/Debit Card
+                                                            @break
+                                                        @case('paypal')
+                                                            PayPal
+                                                            @break
+                                                        @case('bank_transfer')
+                                                            Bank Transfer
+                                                            @break
+                                                        @case('cod')
+                                                            Cash on Delivery
+                                                            @break
+                                                        @default
+                                                            {{ session('checkout.payment_method') }}
+                                                    @endswitch
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="previousStep()">
+                                            <i class="bi bi-arrow-left me-2"></i>
+                                            Back to Payment
+                                        </button>
+                                        <form action="{{ route('marketplace.checkout.place-order') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-check-circle me-2"></i>
+                                                Complete Order
+                                            </button>
+                                        </form>
+                                    </div>
+                                @else
+                                    <div id="orderReview">
+                                        <!-- Order review content will be loaded here -->
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -293,7 +370,19 @@
                                 <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
                                     <div class="flex-shrink-0 me-3">
                                         @if($item->product_image)
-                                            <img src="{{ $item->product_image }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}">
+                                            @php
+                                                // Xử lý đường dẫn hình ảnh
+                                                $imageUrl = $item->product_image;
+                                                if (!filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                                                    // Nếu không phải URL đầy đủ, tạo URL từ storage
+                                                    if (strpos($imageUrl, '/images/') === 0) {
+                                                        $imageUrl = asset($imageUrl);
+                                                    } else {
+                                                        $imageUrl = Storage::url($imageUrl);
+                                                    }
+                                                }
+                                            @endphp
+                                            <img src="{{ $imageUrl }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}">
                                         @else
                                             <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                                 <i class="bi bi-image text-muted"></i>
@@ -549,7 +638,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeCheckout() {
     // Initialize form handlers
-    initializeShippingForm();
     initializePaymentForm();
     initializeBillingToggle();
     initializePaymentMethods();
@@ -558,24 +646,11 @@ function initializeCheckout() {
     prefillUserData();
 }
 
-function initializeShippingForm() {
-    const shippingForm = document.getElementById('shippingForm');
-    if (shippingForm) {
-        shippingForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            processShippingStep();
-        });
-    }
-}
+// Shipping form sẽ submit tự nhiên đến Laravel controller
 
 function initializePaymentForm() {
-    const paymentForm = document.getElementById('paymentForm');
-    if (paymentForm) {
-        paymentForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            processPaymentStep();
-        });
-    }
+    // Payment form sẽ submit tự nhiên đến Laravel controller
+    // Không cần prevent default
 }
 
 function initializeBillingToggle() {
@@ -622,62 +697,7 @@ function showPaymentDetails(method) {
     }
 }
 
-function processShippingStep() {
-    const form = document.getElementById('shippingForm');
-    const formData = new FormData(form);
-    const data = {};
-
-    // Convert FormData to object
-    for (let [key, value] of formData.entries()) {
-        if (key.includes('[') && key.includes(']')) {
-            // Handle nested objects like shipping_address[first_name]
-            const matches = key.match(/^([^[]+)\[([^]]+)\]$/);
-            if (matches) {
-                const parentKey = matches[1];
-                const childKey = matches[2];
-                if (!data[parentKey]) data[parentKey] = {};
-                data[parentKey][childKey] = value;
-            }
-        } else {
-            data[key] = value;
-        }
-    }
-
-    // Add billing same as shipping flag
-    data.billing_same_as_shipping = document.getElementById('billingSameAsShipping').checked;
-
-    showLoading(true);
-
-    fetch('/marketplace/checkout/shipping', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update shipping cost in summary
-            document.getElementById('shippingCost').textContent = '$' + data.shipping_cost;
-
-            // Move to next step
-            nextStep();
-
-            showToast('success', data.message);
-        } else {
-            showToast('error', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast('error', 'Failed to process shipping information');
-    })
-    .finally(() => {
-        showLoading(false);
-    });
-}
+// Form submit sẽ được xử lý bởi Laravel tự động
 
 function processPaymentStep() {
     const form = document.getElementById('paymentForm');
@@ -705,7 +725,8 @@ function processPaymentStep() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest'
         },
         body: JSON.stringify(data)
     })
@@ -914,7 +935,8 @@ function placeOrder() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest'
         }
     })
     .then(response => response.json())
