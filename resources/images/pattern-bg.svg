@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M54 0H6C2.7 0 0 2.7 0 6V54C0 57.3 2.7 60 6 60H54C57.3 60 60 57.3 60 54V6C60 2.7 57.3 0 54 0Z" fill="#3366CC" fill-opacity="0.05"/>
-  <path d="M30 10L35.3 20.7L47 22.1L38.5 30.4L40.6 42L30 36.5L19.4 42L21.5 30.4L13 22.1L24.7 20.7L30 10Z" stroke="#3366CC" stroke-opacity="0.2" stroke-width="1"/>
-</svg>

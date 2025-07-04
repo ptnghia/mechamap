@@ -9,8 +9,12 @@
     <meta content="MechaMap" name="author" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1c84ee">
@@ -25,8 +29,8 @@
     <link rel="manifest" href="{{ asset('admin-manifest.json') }}">
 
     <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="{{ asset('assets/images/icons/admin-icon-152x152.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/icons/admin-icon-180x180.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('android-chrome-512x512.png') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('android-chrome-192x192.png') }}">
 
     @yield('css')
 
@@ -35,9 +39,7 @@
     <!-- Icons Css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
     <!-- Mobile Admin Css -->
@@ -47,174 +49,9 @@
     <link href="{{ asset('assets/css/hide-pwa-prompt.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Custom Admin Styles -->
-    <style>
-        /* Font Awesome icons styling */
-        .fas, .far, .fab {
-            vertical-align: middle;
-            display: inline-block;
-        }
-
-        /* Button icons */
-        .btn .fas, .btn .far, .btn .fab {
-            margin-right: 0.25rem;
-        }
-
-        /* Sidebar icon alignment */
-        .sidebar-menu i.fas,
-        .sidebar-menu i.far {
-            width: 20px;
-            text-align: center;
-            margin-right: 8px;
-        }
-
-        /* Table action icons */
-        .table .btn-group .fas {
-            font-size: 14px;
-        }
-
-        /* Stats card icons */
-        .stats-icon .fas {
-            font-size: 24px;
-        }
-    </style>
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
     @stack('styles')
-
-    <!-- Enhanced Header Styles -->
-    <style>
-        /* Quick Actions Button Enhancement */
-        .quick-actions-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white !important;
-            border: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .quick-actions-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            color: white !important;
-        }
-
-        /* Dropdown Section Headers */
-        .dropdown-section-header {
-            padding: 8px 12px 4px 12px;
-            border-bottom: 1px solid #e9ecef;
-            margin-bottom: 8px;
-        }
-
-        .dropdown-section-header:first-child {
-            margin-top: 8px;
-        }
-
-        /* Enhanced Dropdown Icon Items */
-        .dropdown-icon-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px 8px;
-            text-decoration: none;
-            color: #495057;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            margin: 2px;
-        }
-
-        .dropdown-icon-item:hover {
-            background-color: #f8f9fa;
-            color: #495057;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .dropdown-icon-item i {
-            font-size: 1.5rem;
-            margin-bottom: 4px;
-        }
-
-        .dropdown-icon-item span {
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        /* Custom Colors for Icons */
-        .text-purple { color: #6f42c1 !important; }
-        .text-orange { color: #fd7e14 !important; }
-        .text-teal { color: #20c997 !important; }
-
-        /* Header Item Enhancements */
-        .header-item {
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .header-item:hover {
-            background-color: rgba(0,0,0,0.05);
-            transform: translateY(-1px);
-        }
-
-        /* Notification Badge Improvements */
-        .noti-icon .badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            font-size: 0.65rem;
-            min-width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Messages specific styling */
-        .notification-item {
-            padding: 12px 16px;
-            border-bottom: 1px solid #f1f3f4;
-            transition: background-color 0.2s ease;
-        }
-
-        .notification-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Help dropdown styling */
-        .dropdown-header h6 {
-            color: #495057;
-            font-weight: 600;
-        }
-
-        /* Responsive improvements */
-        @media (max-width: 768px) {
-            .quick-actions-btn span {
-                display: none !important;
-            }
-
-            .dropdown-icon-item span {
-                font-size: 0.7rem;
-            }
-        }
-
-        /* Dark mode adjustments */
-        [data-layout-mode="dark"] .quick-actions-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-
-        [data-layout-mode="dark"] .dropdown-icon-item:hover {
-            background-color: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
-        [data-layout-mode="dark"] .notification-item:hover {
-            background-color: rgba(255,255,255,0.05);
-        }
-    </style>
 </head>
 
 <body data-sidebar="dark" data-layout-mode="light">

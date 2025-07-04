@@ -73,7 +73,7 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="fas fa-graduation-cap"></i>
-                        <span data-key="t-knowledge">📄 Trang & Tri Thức</span>
+                        <span data-key="t-knowledge">Trang & Tri Thức</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <!-- Knowledge Base -->
@@ -545,18 +545,6 @@
                 </li>
 
             </ul>
-
-            <!-- Promotional Card -->
-            <div class="card sidebar-alert border-0 text-center mx-4 mb-0 mt-5">
-                <div class="card-body">
-                    <img src="{{ asset('assets/images/giftbox.png') }}" alt="Upgrade">
-                    <div class="mt-4">
-                        <h5 class="alertcard-title font-size-16">Truy Cập Không Giới Hạn</h5>
-                        <p class="font-size-13">Nâng cấp gói từ dùng thử miễn phí lên 'Gói Doanh Nghiệp'.</p>
-                        <a href="#!" class="btn btn-primary mt-2">Nâng Cấp Ngay</a>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- Sidebar -->
     </div>
