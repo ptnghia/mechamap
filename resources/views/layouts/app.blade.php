@@ -73,7 +73,7 @@
     <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js" integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css" integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -297,8 +297,11 @@
     <!-- Manual Dropdown Script -->
     <script src="{{ asset('js/manual-dropdown.js') }}"></script>
 
-    <!-- Enhanced Menu Script -->
-    <script src="{{ asset('js/enhanced-menu.js') }}"></script>
+    <!-- Unified Search Script -->
+    <script src="{{ asset('js/unified-search.js') }}"></script>
+
+    <!-- Simplified Menu Script -->
+    <script src="{{ asset('js/enhanced-menu-simplified.js') }}"></script>
 
     <!-- Performance Optimization Script -->
     <script src="{{ asset('js/performance-optimization.js') }}"></script>

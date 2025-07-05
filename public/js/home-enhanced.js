@@ -429,49 +429,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Enhanced search functionality
-function initEnhancedSearch() {
-    const searchInput = document.querySelector('input[type="search"], .search-input');
-    if (!searchInput) return;
-
-    let searchTimeout;
-
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        const query = this.value.trim();
-
-        if (query.length < 2) {
-            hideSearchSuggestions();
-            return;
-        }
-
-        searchTimeout = setTimeout(() => {
-            fetchSearchSuggestions(query);
-        }, 300);
-    });
-}
-
-function fetchSearchSuggestions(query) {
-    fetch(`/api/search-suggestions?q=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            showSearchSuggestions(data);
-        })
-        .catch(error => {
-            console.error('Search suggestions error:', error);
-        });
-}
-
-function showSearchSuggestions(data) {
-    // Implementation for showing search suggestions
-    console.log('Search suggestions:', data);
-}
-
-function hideSearchSuggestions() {
-    // Implementation for hiding search suggestions
-}
-
-// Initialize enhanced search
-document.addEventListener('DOMContentLoaded', function() {
-    initEnhancedSearch();
-});
+// Search functionality moved to unified-search.js
+// This file now focuses on homepage-specific enhancements only
