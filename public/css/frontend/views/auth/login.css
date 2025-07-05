@@ -1,0 +1,14 @@
+/*
+ * MechaMap - Login Page Styles
+ * Extracted from resources/views/auth/login.blade.php
+ * Authentication page specific styles
+ */
+
+/* ========================================
+   LOGO STYLES
+   ======================================== */
+
+.auth-logo {
+    height: 50px;
+    filter: brightness(0) invert(1);
+}

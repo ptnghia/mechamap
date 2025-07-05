@@ -8,81 +8,7 @@
 @endsection
 
 @push('styles')
-<style>
-
-    /* Category Cards */
-    .category-card {
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        min-height: 150px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        text-decoration: none;
-        color: white;
-    }
-
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 4rem 0;
-        margin: -1.5rem -15px 2rem -15px;
-    }
-
-    /* Search Bar */
-    .search-container {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    /* Stats Cards */
-    .stats-card {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease;
-    }
-
-    .stats-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .stats-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #667eea;
-    }
-
-    .stats-label {
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .hero-section {
-            padding: 2rem 0;
-        }
-
-        .category-card {
-            min-height: 120px;
-            padding: 1.5rem;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/frontend/views/marketplace/index.css') }}">
 @endpush
 
 @section('content')
@@ -171,7 +97,7 @@
             @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <i class="box text-muted" style="font-size: 4rem;"></i>
+                        <i class="box text-muted empty-state-icon"></i>
                         <h4 class="mt-3">{{ __('messages.marketplace.no_featured_products_available') }}</h4>
                         <p class="text-muted">{{ __('messages.marketplace.check_back_later') }}</p>
                     </div>

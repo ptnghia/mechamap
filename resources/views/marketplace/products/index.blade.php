@@ -294,49 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<style>
-/* List View Styles */
-.product-card.list-view {
-    display: flex;
-    flex-direction: row;
-    height: auto;
-}
-
-.product-card.list-view .position-relative {
-    width: 200px;
-    flex-shrink: 0;
-}
-
-.product-card.list-view .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-    padding: 1rem;
-}
-
-.product-card.list-view .product-image {
-    height: 150px;
-    width: 100%;
-    object-fit: cover;
-}
-
-.product-card.list-view .card-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-.product-card.list-view .card-text {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-/* View Toggle Buttons */
-.btn-group .btn.active {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
-    color: white;
-}
-</style>
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/marketplace/products/index.css') }}">
+@endpush
 
 @endsection

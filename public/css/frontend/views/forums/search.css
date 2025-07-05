@@ -1,0 +1,39 @@
+/*
+ * MechaMap - Forums Search Page Styles
+ * Extracted from resources/views/forums/search.blade.php
+ * Search results and highlighting styles
+ */
+
+/* ========================================
+   SEARCH HEADER
+   ======================================== */
+
+.search-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* ========================================
+   SEARCH RESULTS
+   ======================================== */
+
+.search-result-item {
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.search-result-item:hover {
+    border-left-color: #007bff;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   TEXT HIGHLIGHTING
+   ======================================== */
+
+.highlight {
+    background-color: #fff3cd;
+    padding: 1px 3px;
+    border-radius: 3px;
+}

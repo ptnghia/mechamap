@@ -5,28 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
-<style>
-    .showcase-breadcrumb {
-        background-color: #f8f9fa;
-        padding: 0.75rem 1rem;
-        border-radius: 0.375rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .showcase-image-gallery img {
-        transition: transform 0.2s ease;
-        cursor: pointer;
-    }
-
-    .showcase-image-gallery img:hover {
-        transform: scale(1.05);
-    }
-
-    .social-share-buttons .btn {
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase/show.css') }}">
 @endpush
 
 @section('content')
@@ -93,7 +72,7 @@
         </div>
 
         {{-- Author Info (giống thread author) --}}
-        <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom: none;">
+        <div class="card-header d-flex justify-content-between align-items-center showcase-card-header">
             <div class="d-flex align-items-center">
                 <img src="{{ $showcase->user->getAvatarUrl() }}" alt="{{ $showcase->user->name }}"
                     class="rounded-circle me-2" width="40" height="40"
@@ -135,7 +114,7 @@
                         data-lightbox="showcase-gallery" data-title="{{ $showcase->title }}">
                         <img src="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}"
                             class="img-fluid rounded shadow" alt="{{ $showcase->title }}"
-                            style="max-height: 500px; width: 100%; object-fit: cover;"
+                            class="showcase-featured-image"
                             onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                     </a>
                 </div>
@@ -154,7 +133,7 @@
                             data-lightbox="showcase-gallery" data-title="{{ $media->title ?? $showcase->title }}">
                             <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
                                 class="img-fluid rounded shadow-sm" alt="{{ $media->title ?? 'Showcase image' }}"
-                                style="height: 200px; width: 100%; object-fit: cover;"
+                                class="showcase-gallery-image"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
                         </a>
                     </div>
@@ -298,7 +277,7 @@
                             <div class="flex-grow-1">
                                 <div class="form-floating">
                                     <textarea class="form-control" id="comment-content" name="content"
-                                        placeholder="Viết bình luận của bạn..." style="height: 80px;"
+                                        placeholder="Viết bình luận của bạn..." class="showcase-comment-textarea"
                                         required></textarea>
                                     <label for="comment-content">Viết bình luận của bạn...</label>
                                 </div>
@@ -416,7 +395,7 @@
 
                                 {{-- Form trả lời bình luận --}}
                                 @auth
-                                <div class="reply-form mt-2" style="display: none;" id="reply-form-{{ $comment->id }}">
+                                <div class="reply-form mt-2" id="reply-form-{{ $comment->id }}">
                                     <form action="{{ route('showcase.comment', $showcase) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">

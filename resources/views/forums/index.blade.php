@@ -3,33 +3,7 @@
 @section('title', 'Forums - MechaMap Community')
 
 @push('styles')
-<style>
-    .forum-stats-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-
-    .forum-stats-card .stats-item {
-        transition: transform 0.2s ease;
-    }
-
-    .forum-stats-card .stats-item:hover {
-        transform: translateY(-2px);
-    }
-
-    .forum-icon {
-        transition: transform 0.2s ease;
-    }
-
-    .forum-item:hover .forum-icon {
-        transform: scale(1.05);
-    }
-
-    .category-header {
-        background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
-        border-left: 4px solid #007bff;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/frontend/views/forums/index.css') }}">
 @endpush
 
 @section('content')

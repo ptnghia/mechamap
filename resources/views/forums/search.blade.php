@@ -3,29 +3,7 @@
 @section('title', "Search Results for '{$query}' - MechaMap Forums")
 
 @push('styles')
-<style>
-    .search-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
-
-    .search-result-item {
-        transition: all 0.2s ease;
-        border-left: 3px solid transparent;
-    }
-
-    .search-result-item:hover {
-        border-left-color: #007bff;
-        transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .highlight {
-        background-color: #fff3cd;
-        padding: 1px 3px;
-        border-radius: 3px;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/frontend/views/forums/search.css') }}">
 @endpush
 
 @section('content')

@@ -1,0 +1,43 @@
+/*
+ * MechaMap - Forums Index Page Styles
+ * Extracted from resources/views/forums/index.blade.php
+ * Forum listing and statistics styles
+ */
+
+/* ========================================
+   FORUM STATISTICS CARD
+   ======================================== */
+
+.forum-stats-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.forum-stats-card .stats-item {
+    transition: transform 0.2s ease;
+}
+
+.forum-stats-card .stats-item:hover {
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   FORUM ITEMS
+   ======================================== */
+
+.forum-icon {
+    transition: transform 0.2s ease;
+}
+
+.forum-item:hover .forum-icon {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   CATEGORY HEADERS
+   ======================================== */
+
+.category-header {
+    background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 4px solid #007bff;
+}

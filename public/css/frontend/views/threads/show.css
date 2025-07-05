@@ -1,0 +1,616 @@
+/*
+ * MechaMap - Thread Show Page Styles
+ * Extracted from resources/views/threads/show.blade.php
+ * Thread detail page styles including file upload, image previews, and modals
+ */
+
+/* ========================================
+   THREAD HEADER STYLES
+   ======================================== */
+
+.thread-header {
+    border-bottom: none;
+}
+
+.thread-featured-image img {
+    max-height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* ========================================
+   REPLY FORM STYLES
+   ======================================== */
+
+.content-error {
+    display: none;
+}
+
+.upload-progress {
+    display: none;
+}
+
+.upload-progress .progress-bar {
+    width: 0%;
+}
+
+.reply-to-info {
+    display: none;
+}
+
+/* ========================================
+   FILE UPLOAD STYLES
+   ======================================== */
+
+.file-upload-area {
+    border: 2px dashed #e0e7ff;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8faff 0%, #f1f5ff 100%);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-zone {
+    position: relative;
+    padding: 2rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-zone:hover {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f2ff 100%);
+    border-color: #c7d2fe;
+    transform: translateY(-2px);
+}
+
+.upload-zone.drag-over {
+    border-color: #4f46e5;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-content {
+    pointer-events: none;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #6366f1;
+    margin-bottom: 1rem;
+    animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.upload-text h6 {
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.upload-text p {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.upload-text .text-primary {
+    color: #4f46e5 !important;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* ========================================
+   IMAGE PREVIEWS GRID
+   ======================================== */
+
+.image-previews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    padding: 0;
+}
+
+.image-preview {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    border: 2px solid #f3f4f6;
+    transition: all 0.3s ease;
+    aspect-ratio: 1;
+    cursor: pointer;
+}
+
+.image-preview:hover {
+    border-color: #d1d5db;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.preview-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-preview:hover .preview-image img {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.1) 50%,
+            rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-preview:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-info {
+    align-self: flex-start;
+}
+
+.file-name {
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+}
+
+.file-size {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.7rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.image-actions {
+    align-self: flex-end;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.btn-action {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.btn-action:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.btn-action.btn-remove {
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+}
+
+.btn-action.btn-remove:hover {
+    background: rgba(220, 38, 38, 1);
+}
+
+.btn-action.btn-view {
+    color: #374151;
+}
+
+/* ========================================
+   ADD MORE BUTTON
+   ======================================== */
+
+.add-more-btn {
+    border: 2px dashed #d1d5db;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-more-btn:hover {
+    border-color: #6366f1;
+    background: #f0f4ff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+}
+
+.add-more-content {
+    text-align: center;
+    color: #6b7280;
+}
+
+.add-more-content i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.add-more-content span {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.add-more-btn:hover .add-more-content {
+    color: #6366f1;
+}
+
+/* ========================================
+   FILE PREVIEW (NON-IMAGE)
+   ======================================== */
+
+.file-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    background: #f8fafc;
+}
+
+.file-icon {
+    font-size: 2rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.file-preview .file-info {
+    flex: 1;
+    margin-bottom: 0.5rem;
+}
+
+.file-preview .btn-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+}
+
+/* ========================================
+   UPLOAD PROGRESS
+   ======================================== */
+
+.upload-progress {
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.progress {
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   IMAGE MODAL
+   ======================================== */
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1060;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.image-modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.image-modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+
+.image-modal-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #374151;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.image-modal-body {
+    padding: 0;
+    max-height: 70vh;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-modal-body img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .image-previews-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .upload-zone {
+        padding: 1.5rem 1rem;
+        min-height: 120px;
+    }
+
+    .upload-icon {
+        font-size: 2.5rem;
+    }
+
+    .upload-text h6 {
+        font-size: 0.9rem;
+    }
+
+    .upload-text p {
+        font-size: 0.8rem;
+    }
+
+    .image-modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .image-modal-header {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* ========================================
+   DARK MODE SUPPORT
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .file-upload-area {
+        border-color: #4a5568;
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    }
+
+    .upload-zone:hover {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        border-color: #718096;
+    }
+
+    .upload-zone.drag-over {
+        border-color: #805ad5;
+        background: linear-gradient(135deg, #553c9a 0%, #4c51bf 100%);
+    }
+
+    .upload-text h6 {
+        color: #e2e8f0;
+    }
+
+    .upload-text p {
+        color: #a0aec0;
+    }
+
+    .image-preview {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+
+    .image-preview:hover {
+        border-color: #718096;
+    }
+
+    .add-more-btn {
+        border-color: #4a5568;
+        background: #2d3748;
+    }
+
+    .add-more-btn:hover {
+        border-color: #805ad5;
+        background: #553c9a;
+    }
+
+    .file-preview {
+        background: #2d3748;
+    }
+
+    .image-modal-content {
+        background: #2d3748;
+    }
+
+    .image-modal-header {
+        background: #1a202c;
+        border-color: #4a5568;
+    }
+
+    .image-modal-header h5 {
+        color: #e2e8f0;
+    }
+
+    .btn-close-modal {
+        color: #a0aec0;
+    }
+
+    .btn-close-modal:hover {
+        background: #4a5568;
+        color: #e2e8f0;
+    }
+}
+
+/* ========================================
+   ADDITIONAL THREAD STYLES
+   ======================================== */
+
+.image-preview {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+
+.image-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(220, 53, 69, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-image:hover {
+    background: rgba(220, 53, 69, 1);
+}
+
+/* Thread Action Buttons */
+.btn-save,
+.btn-follow,
+.btn-share,
+.btn-traloi {
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover,
+.btn-follow:hover,
+.btn-share:hover,
+.btn-traloi:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

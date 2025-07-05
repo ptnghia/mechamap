@@ -2,6 +2,10 @@
 
 @section('title', __('auth.login'))
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/auth/login.css') }}">
+@endpush
+
 @section('content')
 <div class="min-vh-100 d-flex align-items-center bg-light">
     <div class="container">
@@ -29,7 +33,7 @@
                                 <div class="position-relative">
                                     <!-- Logo -->
                                     <div class="mb-4">
-                                        <img src="{{ get_logo_url() }}" alt="MechaMap" class="mb-3" style="height: 50px; filter: brightness(0) invert(1);">
+                                        <img src="{{ get_logo_url() }}" alt="MechaMap" class="mb-3 auth-logo">
                                         <h3 class="fw-bold mb-2">MechaMap</h3>
                                         <p class="fs-5 mb-0 opacity-90">{{ __('content.knowledge_hub') }}</p>
                                     </div>
