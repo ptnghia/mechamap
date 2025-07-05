@@ -288,6 +288,9 @@
     <!-- Search Script - Disabled, using unified header search -->
     {{-- <script src="{{ asset('js/search.js') }}"></script> --}}
 
+    <!-- Header System - Consolidated search, menu, and navigation -->
+    <script src="{{ asset('js/header.js') }}"></script>
+
     <!-- Thread Item Script -->
     <script src="{{ asset('js/thread-item.js') }}"></script>
 
@@ -296,15 +299,6 @@
 
     <!-- Manual Dropdown Script -->
     <script src="{{ asset('js/manual-dropdown.js') }}"></script>
-
-    <!-- Unified Search Script -->
-    <script src="{{ asset('js/unified-search.js') }}"></script>
-
-    <!-- Simplified Menu Script -->
-    <script src="{{ asset('js/enhanced-menu-simplified.js') }}"></script>
-
-    <!-- Performance Optimization Script -->
-    <script src="{{ asset('js/performance-optimization.js') }}"></script>
 
     <!-- CKEditor Script - Only load on pages that need it -->
     @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))
