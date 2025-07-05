@@ -168,19 +168,3 @@ ANIMATION:
    ======================================== */
 
 /*
-ĐÃ THỰC HIỆN:
-✅ Loại bỏ Vite dependencies khỏi package.json
-✅ Xóa vite.config.js, tailwind.config.js, postcss.config.js
-✅ Xóa thư mục resources/css/ và resources/js/
-✅ Tạo public/css/main.css làm file CSS chính
-✅ Cập nhật tất cả layout blade files
-✅ Load Bootstrap qua CDN
-✅ Tạo CSS riêng cho các view chính
-✅ Tạo cấu trúc import trong main.css
-
-CẦN LƯU Ý:
-- File app.css cũ vẫn tồn tại nhưng không được sử dụng
-- Node modules không cần thiết cho CSS/JS traditional
-- Performance có thể tốt hơn do ít build steps
-- Easier deployment vì không cần build process
-*/

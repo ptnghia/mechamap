@@ -258,3 +258,77 @@ if (!function_exists('get_banner_url')) {
         return get_setting('banner_url', '/images/banner.jpg');
     }
 }
+
+if (!function_exists('asset_versioned')) {
+    /**
+     * Generate versioned asset URL for cache busting
+     * Sử dụng file modification time để tạo version
+     *
+     * @param string $path
+     * @return string
+     */
+    function asset_versioned($path)
+    {
+        // Kiểm tra nếu versioning bị tắt
+        if (!config('assets.versioning_enabled', true)) {
+            return asset($path);
+        }
+
+        // Trong development mode, có thể force reload
+        if (config('assets.development.force_reload', false)) {
+            return asset($path) . '?v=' . time();
+        }
+
+        $fullPath = public_path($path);
+
+        // Nếu file không tồn tại, trả về asset bình thường
+        if (!file_exists($fullPath)) {
+            return asset($path);
+        }
+
+        // Kiểm tra nếu path bị loại trừ
+        $excludedPaths = config('assets.excluded_paths', []);
+        foreach ($excludedPaths as $excludedPath) {
+            if (str_starts_with($path, $excludedPath)) {
+                return asset($path);
+            }
+        }
+
+        // Tạo version dựa trên method được cấu hình
+        $method = config('assets.versioning_method', 'filemtime');
+        $version = match($method) {
+            'filemtime' => filemtime($fullPath),
+            'manual' => config('assets.manual_version', '1.0.0'),
+            'git' => substr(exec('git rev-parse HEAD'), 0, 8),
+            default => filemtime($fullPath)
+        };
+
+        return asset($path) . '?v=' . $version;
+    }
+}
+
+if (!function_exists('css_versioned')) {
+    /**
+     * Generate versioned CSS link tag
+     *
+     * @param string $path
+     * @return string
+     */
+    function css_versioned($path)
+    {
+        return '<link rel="stylesheet" href="' . asset_versioned($path) . '">';
+    }
+}
+
+if (!function_exists('js_versioned')) {
+    /**
+     * Generate versioned JS script tag
+     *
+     * @param string $path
+     * @return string
+     */
+    function js_versioned($path)
+    {
+        return '<script src="' . asset_versioned($path) . '"></script>';
+    }
+}

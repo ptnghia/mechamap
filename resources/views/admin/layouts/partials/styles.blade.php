@@ -3,4 +3,4 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Main Admin CSS - Thay thế toàn bộ CSS inline -->
-<link href="{{ asset('css/main-admin.css') }}" rel="stylesheet">
+<link href="{{ asset_versioned('css/main-admin.css') }}" rel="stylesheet">
