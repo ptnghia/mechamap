@@ -3,21 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Observers\CacheInvalidationObserver;
-use App\Observers\MarketplaceOrderObserver;
-use App\Models\Thread;
-use App\Models\Post;
-use App\Models\MarketplaceProduct;
-use App\Models\MarketplaceOrder;
-use App\Models\User;
-use App\Models\Category;
-use App\Models\Forum;
-use App\Models\Notification;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,8 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Register LayoutHelper
-        require_once app_path('Helpers/LayoutHelper.php');
+        //
     }
 
     /**
@@ -55,33 +44,13 @@ class AppServiceProvider extends ServiceProvider
             return \App\Helpers\AdminPermissionHelper::can($permission);
         });
 
-        Blade::if('adminCanAny', function ($permissions) {
-            return \App\Helpers\AdminPermissionHelper::canAny($permissions);
+        // Register Blade directives for versioned assets
+        Blade::directive('css', function ($expression) {
+            return "<?php echo '<link rel=\"stylesheet\" href=\"' . asset_versioned($expression) . '\">'; ?>";
         });
 
-        Blade::if('adminCanAll', function ($permissions) {
-            return \App\Helpers\AdminPermissionHelper::canAll($permissions);
+        Blade::directive('js', function ($expression) {
+            return "<?php echo '<script src=\"' . asset_versioned($expression) . '\"></script>'; ?>";
         });
-
-        Blade::if('isAdmin', function () {
-            return \App\Helpers\AdminPermissionHelper::isAdmin();
-        });
-
-        Blade::if('isModerator', function () {
-            return \App\Helpers\AdminPermissionHelper::isModerator();
-        });
-
-        // Register cache invalidation observers for database optimization
-        Thread::observe(CacheInvalidationObserver::class);
-        Post::observe(CacheInvalidationObserver::class);
-        MarketplaceProduct::observe(CacheInvalidationObserver::class);
-        User::observe(CacheInvalidationObserver::class);
-        Category::observe(CacheInvalidationObserver::class);
-        Forum::observe(CacheInvalidationObserver::class);
-        Notification::observe(CacheInvalidationObserver::class);
-
-        // Register marketplace order observer for download access
-        MarketplaceOrder::observe(CacheInvalidationObserver::class);
-        MarketplaceOrder::observe(MarketplaceOrderObserver::class);
     }
 }

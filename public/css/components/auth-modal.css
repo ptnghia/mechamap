@@ -1,0 +1,199 @@
+/* Auth Modal Styles */
+.auth-modal .modal-content {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.auth-modal .modal-header {
+    border-bottom: none;
+    padding: 20px 20px 0;
+}
+
+.auth-modal .modal-body {
+    padding: 20px;
+}
+
+.auth-modal .modal-footer {
+    border-top: none;
+    padding: 0 20px 20px;
+    justify-content: center;
+}
+
+.auth-modal .close {
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.auth-modal .close:hover {
+    opacity: 0.75;
+}
+
+.auth-modal .form-control {
+    border-radius: 5px;
+    height: auto;
+    font-size: 14px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    font-family: "Roboto Condensed", sans-serif;
+    padding-left: 40px !IMPORTANT;
+}
+/* CSS cho phần kiểm tra độ mạnh mật khẩu */
+.password-strength-meter .progress-bar {
+    transition: width 0.5s ease;
+}
+
+.password-requirements li {
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+.password-requirements li .fa-check-circle {
+    color: #198754; /* Bootstrap success color */
+}
+
+.password-requirements li .fa-times-circle {
+    color: #dc3545; /* Bootstrap danger color */
+}
+
+.password-strength-feedback {
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+.auth-modal .form-control:focus {
+}
+
+.auth-modal .btn-primary {
+    border-radius: 5px;
+    /* padding: 10px 15px; */
+    width: 100%;
+}
+
+.auth-modal .btn-primary:hover {
+}
+
+.auth-modal .social-login {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.auth-modal .social-login .btn {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: 1px solid #ccc !important;
+    font-size: 12px;
+}
+
+.auth-modal .social-login .btn-google {
+    background-color: #fff;
+}
+
+.auth-modal .social-login .btn-facebook {
+}
+
+.auth-modal .social-login .btn-google:hover {
+    background-color: #f8f9fa;
+}
+
+.auth-modal .social-login .btn-facebook:hover {
+    background-color: #166fe5;
+    border-color: #166fe5;
+}
+
+.auth-modal .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.auth-modal .divider::before,
+.auth-modal .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.auth-modal .divider span {
+    padding: 0 10px;
+    color: #718096;
+    font-size: 14px;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.auth-modal .form-check-input:checked {
+    background-color: #3366CC;
+    border-color: #3366CC;
+}
+
+.auth-modal .form-text,
+.auth-modal .forgot-password {
+    font-size: 14px;
+    color: #718096;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.auth-modal .forgot-password:hover {
+    color: #3366CC;
+    text-decoration: none;
+}
+
+.auth-modal .tab-content {
+    padding-top: 20px;
+}
+
+.auth-modal .nav-tabs {
+    border-bottom: none;
+    margin-bottom: 15px;
+}
+
+.auth-modal .nav-tabs .nav-link {
+    border: none;
+    color: #7e7757;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 0;
+    border: 1px solid #7e7757;
+    border-radius: 5px;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.auth-modal .nav-tabs .nav-link.active {
+    color: #fffffe;
+    background-color: #7e7757;
+    border-bottom: 0;
+    border-radius: 5px;
+}
+
+.auth-modal .alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Animation */
+.auth-modal .modal-content {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
