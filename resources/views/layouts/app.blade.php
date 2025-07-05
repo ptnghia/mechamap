@@ -93,26 +93,7 @@
     <!-- Optimized Frontend CSS - New Structure -->
     <link rel="stylesheet" href="{{ asset('css/frontend/main-user-optimized.css') }}">
 
-    <!-- Page-specific CSS - Now loaded from frontend/views/ -->
-    @if(Route::currentRouteName() === 'home')
-    <link rel="stylesheet" href="{{ asset('css/frontend/views/home.css') }}">
-    @endif
-
-    @if(str_starts_with(Route::currentRouteName(), 'whats-new'))
-    <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
-    @endif
-
-    @if(str_contains(Route::currentRouteName(), 'search'))
-    <link rel="stylesheet" href="{{ asset('css/frontend/views/search.css') }}">
-    @endif
-
-    @if(str_contains(Route::currentRouteName(), 'thread'))
-    <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
-    @endif
-
-    @if(str_contains(Route::currentRouteName(), 'profile'))
-    <link rel="stylesheet" href="{{ asset('css/frontend/views/profile.css') }}">
-    @endif
+    <!-- Page-specific CSS now loaded in individual views via @push('styles') -->
 
     <!-- Custom CSS -->
     @if(!empty($seo['custom_css'] ?? ''))

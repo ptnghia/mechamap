@@ -2,6 +2,10 @@
 
 @section('title', 'Page Title')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/profile.css') }}">
+@endpush
+
 @section('content')<div class="container py-4">
         <!-- Profile Header -->
         <div class="card mb-4">

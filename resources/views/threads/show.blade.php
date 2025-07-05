@@ -3,7 +3,7 @@
 @section('title', $thread->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
+<link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
 @endpush
 
 @section('content')

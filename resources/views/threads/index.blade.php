@@ -2,6 +2,10 @@
 
 @section('title', __('nav.forums'))
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">

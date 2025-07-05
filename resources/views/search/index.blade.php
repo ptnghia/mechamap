@@ -2,6 +2,10 @@
 
 @section('title', 'Page Title')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/search.css') }}">
+@endpush
+
 @section('content')
 
     <div class="py-5">
@@ -26,7 +30,7 @@
                     </form>
                 </div>
             </div>
-            
+
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     @if($query)
@@ -39,7 +43,7 @@
                     </a>
                 </div>
             </div>
-            
+
             @if($query)
                 @if(($type == 'all' || $type == 'threads') && $threads->count() > 0)
                     <div class="card shadow-sm rounded-3 mb-4">
@@ -58,11 +62,11 @@
                                         </div>
                                         <p class="mb-1">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
                                         <small>
-                                            {{ __('By') }} 
+                                            {{ __('By') }}
                                             <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
                                                 {{ $thread->user->name }}
-                                            </a> 
-                                            {{ __('in') }} 
+                                            </a>
+                                            {{ __('in') }}
                                             <a href="{{ route('forums.show', $thread->forum) }}" class="text-decoration-none fw-bold">
                                                 {{ $thread->forum->name }}
                                             </a>
@@ -73,7 +77,7 @@
                         </div>
                     </div>
                 @endif
-                
+
                 @if(($type == 'all' || $type == 'posts') && $posts->count() > 0)
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header">
@@ -91,7 +95,7 @@
                                         </div>
                                         <p class="mb-1">{{ Str::limit(strip_tags($post->content), 150) }}</p>
                                         <small>
-                                            {{ __('By') }} 
+                                            {{ __('By') }}
                                             <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none">
                                                 {{ $post->user->name }}
                                             </a>
@@ -102,7 +106,7 @@
                         </div>
                     </div>
                 @endif
-                
+
                 @if(($type == 'all' || $type == 'users') && $users->count() > 0)
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
@@ -131,10 +135,10 @@
                         </div>
                     </div>
                 @endif
-                
-                @if(($type == 'all' && $threads->count() == 0 && $posts->count() == 0 && $users->count() == 0) || 
-                    ($type == 'threads' && $threads->count() == 0) || 
-                    ($type == 'posts' && $posts->count() == 0) || 
+
+                @if(($type == 'all' && $threads->count() == 0 && $posts->count() == 0 && $users->count() == 0) ||
+                    ($type == 'threads' && $threads->count() == 0) ||
+                    ($type == 'posts' && $posts->count() == 0) ||
                     ($type == 'users' && $users->count() == 0))
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body text-center py-5">

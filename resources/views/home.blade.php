@@ -5,6 +5,8 @@
 @push('styles')
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<!-- Home Page Specific CSS -->
+<link rel="stylesheet" href="{{ asset('css/frontend/views/home.css') }}">
 @endpush
 
 @section('content')

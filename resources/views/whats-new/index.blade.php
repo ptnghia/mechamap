@@ -2,6 +2,10 @@
 
 @section('title', 'What\'s New - MechaMap')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+@endpush
+
 @section('content')
 <div class="container mt-4">
     <div class="row">

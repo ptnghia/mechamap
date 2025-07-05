@@ -2,6 +2,10 @@
 
 @section('title', '{{ __("messages.new_media") }} - MechaMap')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+@endpush
+
 @section('content')
 <div class="container_2 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">

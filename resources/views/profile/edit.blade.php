@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
+<link rel="stylesheet" href="{{ asset('css/frontend/views/profile.css') }}">
 @endpush
 
 @section('content')
