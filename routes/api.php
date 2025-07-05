@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // Direct test route outside of all middleware
 Route::get('/marketplace-test', function() {
@@ -27,7 +28,7 @@ Route::get('/threads-test', function() {
 // Test API ThreadController directly
 Route::get('/threads-controller-test', [App\Http\Controllers\Api\ThreadController::class, 'index']);
 
-// Notifications API endpoint
+// Notifications API endpoint (public - for header badge)
 Route::get('/notifications', function() {
     return response()->json([
         'success' => true,
@@ -35,6 +36,34 @@ Route::get('/notifications', function() {
         'unread_count' => 0,
         'message' => 'Notifications endpoint working'
     ]);
+});
+
+// Notifications count endpoint (public - for header badge)
+Route::get('/notifications/count', function() {
+    // Check if user is authenticated
+    if (Auth::check()) {
+        $user = Auth::user();
+        $unreadCount = $user->unreadNotifications()->count();
+        $totalCount = $user->notifications()->count();
+
+        return response()->json([
+            'success' => true,
+            'unread_count' => $unreadCount,
+            'total_count' => $totalCount,
+            'notifications' => $unreadCount,  // For header.js compatibility
+            'messages' => 0,  // For header.js compatibility
+            'message' => 'Notifications count retrieved successfully'
+        ]);
+    } else {
+        return response()->json([
+            'success' => true,
+            'unread_count' => 0,
+            'total_count' => 0,
+            'notifications' => 0,  // For header.js compatibility
+            'messages' => 0,  // For header.js compatibility
+            'message' => 'User not authenticated'
+        ]);
+    }
 });
 
 /*
