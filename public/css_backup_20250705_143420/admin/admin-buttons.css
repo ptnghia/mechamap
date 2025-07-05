@@ -1,0 +1,601 @@
+/*
+ * MechaMap - Admin Buttons CSS
+ * Styling cho tất cả buttons trong admin panel
+ */
+
+/* ========================================
+   ADMIN BUTTON BASE
+   ======================================== */
+
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--admin-space-xs);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--admin-radius-sm);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--admin-transition-normal);
+    user-select: none;
+    white-space: nowrap;
+    background: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(51, 102, 204, 0.25);
+}
+
+.admin-btn:disabled,
+.admin-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.admin-btn:not(:disabled):not(.disabled):active {
+    transform: translateY(1px);
+}
+
+/* ========================================
+   ADMIN BUTTON SIZES
+   ======================================== */
+
+.admin-btn.small {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+}
+
+.admin-btn.large {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+}
+
+.admin-btn.extra-large {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.125rem;
+}
+
+.admin-btn.icon-only {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+}
+
+.admin-btn.icon-only.small {
+    width: 2rem;
+    height: 2rem;
+}
+
+.admin-btn.icon-only.large {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* ========================================
+   ADMIN BUTTON VARIANTS
+   ======================================== */
+
+/* Primary Button */
+.admin-btn.primary {
+    background: var(--admin-primary);
+    color: var(--admin-text-white);
+    border-color: var(--admin-primary);
+}
+
+.admin-btn.primary:hover {
+    background: var(--admin-primary-hover);
+    border-color: var(--admin-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Secondary Button */
+.admin-btn.secondary {
+    background: var(--admin-secondary);
+    color: var(--admin-text-white);
+    border-color: var(--admin-secondary);
+}
+
+.admin-btn.secondary:hover {
+    background: var(--admin-secondary-hover);
+    border-color: var(--admin-secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Success Button */
+.admin-btn.success {
+    background: var(--admin-success);
+    color: var(--admin-text-white);
+    border-color: var(--admin-success);
+}
+
+.admin-btn.success:hover {
+    background: #16A34A;
+    border-color: #16A34A;
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Danger Button */
+.admin-btn.danger {
+    background: var(--admin-danger);
+    color: var(--admin-text-white);
+    border-color: var(--admin-danger);
+}
+
+.admin-btn.danger:hover {
+    background: #DC2626;
+    border-color: #DC2626;
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Warning Button */
+.admin-btn.warning {
+    background: var(--admin-warning);
+    color: var(--admin-text-white);
+    border-color: var(--admin-warning);
+}
+
+.admin-btn.warning:hover {
+    background: #D97706;
+    border-color: #D97706;
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Info Button */
+.admin-btn.info {
+    background: var(--admin-info);
+    color: var(--admin-text-white);
+    border-color: var(--admin-info);
+}
+
+.admin-btn.info:hover {
+    background: #0284C7;
+    border-color: #0284C7;
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Light Button */
+.admin-btn.light {
+    background: var(--admin-bg-secondary);
+    color: var(--admin-text-primary);
+    border-color: var(--admin-border-color);
+}
+
+.admin-btn.light:hover {
+    background: var(--admin-bg-tertiary);
+    border-color: var(--admin-border-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* Dark Button */
+.admin-btn.dark {
+    background: var(--admin-bg-dark);
+    color: var(--admin-text-white);
+    border-color: var(--admin-bg-dark);
+}
+
+.admin-btn.dark:hover {
+    background: #0F172A;
+    border-color: #0F172A;
+    transform: translateY(-1px);
+    box-shadow: var(--admin-shadow-md);
+}
+
+/* ========================================
+   ADMIN BUTTON OUTLINE VARIANTS
+   ======================================== */
+
+.admin-btn.outline-primary {
+    color: var(--admin-primary);
+    border-color: var(--admin-primary);
+}
+
+.admin-btn.outline-primary:hover {
+    background: var(--admin-primary);
+    color: var(--admin-text-white);
+}
+
+.admin-btn.outline-secondary {
+    color: var(--admin-secondary);
+    border-color: var(--admin-secondary);
+}
+
+.admin-btn.outline-secondary:hover {
+    background: var(--admin-secondary);
+    color: var(--admin-text-white);
+}
+
+.admin-btn.outline-success {
+    color: var(--admin-success);
+    border-color: var(--admin-success);
+}
+
+.admin-btn.outline-success:hover {
+    background: var(--admin-success);
+    color: var(--admin-text-white);
+}
+
+.admin-btn.outline-danger {
+    color: var(--admin-danger);
+    border-color: var(--admin-danger);
+}
+
+.admin-btn.outline-danger:hover {
+    background: var(--admin-danger);
+    color: var(--admin-text-white);
+}
+
+.admin-btn.outline-warning {
+    color: var(--admin-warning);
+    border-color: var(--admin-warning);
+}
+
+.admin-btn.outline-warning:hover {
+    background: var(--admin-warning);
+    color: var(--admin-text-white);
+}
+
+.admin-btn.outline-info {
+    color: var(--admin-info);
+    border-color: var(--admin-info);
+}
+
+.admin-btn.outline-info:hover {
+    background: var(--admin-info);
+    color: var(--admin-text-white);
+}
+
+/* ========================================
+   ADMIN BUTTON GHOST VARIANTS
+   ======================================== */
+
+.admin-btn.ghost {
+    background: transparent;
+    border: none;
+    color: var(--admin-text-secondary);
+}
+
+.admin-btn.ghost:hover {
+    background: var(--admin-bg-secondary);
+    color: var(--admin-text-primary);
+}
+
+.admin-btn.ghost.primary {
+    color: var(--admin-primary);
+}
+
+.admin-btn.ghost.primary:hover {
+    background: var(--admin-primary-light);
+    color: var(--admin-primary);
+}
+
+.admin-btn.ghost.danger {
+    color: var(--admin-danger);
+}
+
+.admin-btn.ghost.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+}
+
+/* ========================================
+   ADMIN BUTTON LOADING STATE
+   ======================================== */
+
+.admin-btn.loading {
+    pointer-events: none;
+    position: relative;
+}
+
+.admin-btn.loading .admin-btn-text {
+    opacity: 0;
+}
+
+.admin-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: adminBtnSpin 0.8s linear infinite;
+}
+
+/* ========================================
+   ADMIN BUTTON GROUPS
+   ======================================== */
+
+.admin-btn-group {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.admin-btn-group .admin-btn {
+    border-radius: 0;
+    border-right-width: 0;
+}
+
+.admin-btn-group .admin-btn:first-child {
+    border-top-left-radius: var(--admin-radius-sm);
+    border-bottom-left-radius: var(--admin-radius-sm);
+}
+
+.admin-btn-group .admin-btn:last-child {
+    border-top-right-radius: var(--admin-radius-sm);
+    border-bottom-right-radius: var(--admin-radius-sm);
+    border-right-width: 1px;
+}
+
+.admin-btn-group .admin-btn:only-child {
+    border-radius: var(--admin-radius-sm);
+    border-right-width: 1px;
+}
+
+.admin-btn-group .admin-btn:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+
+.admin-btn-group .admin-btn:focus {
+    z-index: 1;
+}
+
+/* ========================================
+   ADMIN BUTTON DROPDOWN
+   ======================================== */
+
+.admin-btn-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.admin-btn-dropdown-toggle::after {
+    content: '\F13A';
+    font-family: 'bootstrap-icons';
+    margin-left: var(--admin-space-xs);
+    font-size: 0.8rem;
+}
+
+.admin-btn-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--admin-bg-primary);
+    border: 1px solid var(--admin-border-color);
+    border-radius: var(--admin-radius-md);
+    box-shadow: var(--admin-shadow-lg);
+    min-width: 160px;
+    z-index: 1000;
+    display: none;
+    margin-top: var(--admin-space-xs);
+    padding: var(--admin-space-xs) 0;
+}
+
+.admin-btn-dropdown-menu.show {
+    display: block;
+}
+
+.admin-btn-dropdown-menu.right {
+    left: auto;
+    right: 0;
+}
+
+.admin-btn-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--admin-space-sm) var(--admin-space-md);
+    color: var(--admin-text-primary);
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--admin-transition-fast);
+}
+
+.admin-btn-dropdown-item:hover {
+    background: var(--admin-bg-secondary);
+    color: var(--admin-text-primary);
+}
+
+.admin-btn-dropdown-item.active {
+    background: var(--admin-primary);
+    color: var(--admin-text-white);
+}
+
+.admin-btn-dropdown-item:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-btn-dropdown-divider {
+    height: 1px;
+    background: var(--admin-border-color);
+    margin: var(--admin-space-xs) 0;
+}
+
+/* ========================================
+   ADMIN BUTTON ICONS
+   ======================================== */
+
+.admin-btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.admin-btn.small .admin-btn-icon {
+    font-size: 0.875rem;
+}
+
+.admin-btn.large .admin-btn-icon {
+    font-size: 1.125rem;
+}
+
+.admin-btn-icon-left {
+    margin-right: var(--admin-space-xs);
+}
+
+.admin-btn-icon-right {
+    margin-left: var(--admin-space-xs);
+}
+
+/* ========================================
+   ADMIN FLOATING ACTION BUTTON
+   ======================================== */
+
+.admin-fab {
+    position: fixed;
+    bottom: var(--admin-space-xl);
+    right: var(--admin-space-xl);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--admin-primary);
+    color: var(--admin-text-white);
+    border: none;
+    box-shadow: var(--admin-shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--admin-transition-normal);
+    z-index: 1000;
+}
+
+.admin-fab:hover {
+    background: var(--admin-primary-hover);
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(51, 102, 204, 0.4);
+}
+
+.admin-fab.small {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+}
+
+.admin-fab.large {
+    width: 72px;
+    height: 72px;
+    font-size: 2rem;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes adminBtnSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .admin-btn {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .admin-btn.small {
+        padding: 0.5rem 0.875rem;
+    }
+
+    .admin-btn.large {
+        padding: 1rem 1.75rem;
+    }
+
+    .admin-btn-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-btn-group .admin-btn {
+        border-radius: 0;
+        border-right-width: 1px;
+        border-bottom-width: 0;
+    }
+
+    .admin-btn-group .admin-btn:first-child {
+        border-top-left-radius: var(--admin-radius-sm);
+        border-top-right-radius: var(--admin-radius-sm);
+        border-bottom-left-radius: 0;
+    }
+
+    .admin-btn-group .admin-btn:last-child {
+        border-bottom-left-radius: var(--admin-radius-sm);
+        border-bottom-right-radius: var(--admin-radius-sm);
+        border-top-right-radius: 0;
+        border-bottom-width: 1px;
+    }
+
+    .admin-fab {
+        bottom: var(--admin-space-lg);
+        right: var(--admin-space-lg);
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+    }
+}
+
+/* ========================================
+   ADMIN BUTTON UTILITIES
+   ======================================== */
+
+.admin-btn-block {
+    display: block;
+    width: 100%;
+}
+
+.admin-btn-rounded {
+    border-radius: var(--admin-radius-lg);
+}
+
+.admin-btn-pill {
+    border-radius: 999px;
+}
+
+.admin-btn-square {
+    border-radius: 0;
+}
+
+.admin-btn-elevated {
+    box-shadow: var(--admin-shadow-md);
+}
+
+.admin-btn-elevated:hover {
+    box-shadow: var(--admin-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.admin-btn-gradient-primary {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-hover) 100%);
+    border: none;
+    color: var(--admin-text-white);
+}
+
+.admin-btn-gradient-primary:hover {
+    background: linear-gradient(135deg, var(--admin-primary-hover) 0%, #1A4480 100%);
+}

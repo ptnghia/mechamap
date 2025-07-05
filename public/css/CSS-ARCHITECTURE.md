@@ -12,30 +12,45 @@
 
 /*
 public/css/
-├── main.css                 # File CSS chính (import tất cả)
-├── app.css                  # CSS cũ (deprecated, sẽ được thay thế bởi main.css)
-├── dark-mode.css           # Theme tối
-├── compact-theme.css       # Theme compact
+├── main.css                 # File CSS cũ (deprecated)
+├── main-user.css           # File CSS cũ (deprecated)
+├── main-admin.css          # CSS cho admin panel (KHÔNG THAY ĐỔI)
+├── admin/                  # Thư mục admin CSS (KHÔNG THAY ĐỔI)
+│   ├── admin-*.css         # Các file admin
+│   └── main-admin.css      # Main admin CSS
 │
-├── components/             # CSS cho các component
-│   ├── buttons.css
-│   ├── forms.css
-│   ├── alerts.css
-│   ├── avatar.css
-│   ├── custom-header.css
-│   ├── sidebar.css
-│   ├── mobile-nav.css
-│   ├── auth.css
-│   ├── auth-modal.css
-│   └── admin-pagination.css
+├── frontend/               # ✨ CẤU TRÚC MỚI - Frontend User CSS
+│   ├── main-user-optimized.css  # File CSS chính được tối ưu hóa
+│   │
+│   ├── components/         # CSS cho các component
+│   │   ├── buttons.css
+│   │   ├── forms.css
+│   │   ├── alerts.css
+│   │   ├── avatar.css
+│   │   ├── auth-modal.css
+│   │   ├── mobile-nav.css
+│   │   ├── sidebar.css
+│   │   └── thread-form.css
+│   │
+│   ├── views/              # CSS riêng cho từng view
+│   │   ├── homepage.css    # Trang chủ
+│   │   ├── threads.css     # Danh sách & chi tiết threads
+│   │   ├── profile.css     # Trang profile
+│   │   ├── auth.css        # Authentication pages
+│   │   ├── search.css      # Trang tìm kiếm
+│   │   ├── home.css        # Home page styles
+│   │   ├── activity.css    # Activity page
+│   │   ├── whats-new.css   # What's new page
+│   │   ├── thread-*.css    # Thread related styles
+│   │   └── showcase-*.css  # Showcase styles
+│   │
+│   └── utilities/          # CSS utilities và themes
+│       ├── utilities.css   # File utilities tổng hợp
+│       ├── dark-mode.css   # Theme tối
+│       ├── compact-theme.css # Theme compact
+│       └── enhanced-menu.css # Enhanced menu
 │
-└── views/                  # CSS riêng cho từng view
-    ├── homepage.css        # Trang chủ
-    ├── threads.css         # Danh sách & chi tiết threads
-    ├── profile.css         # Trang profile
-    ├── admin.css          # Admin panel
-    ├── auth.css           # Authentication pages
-    └── search.css         # Trang tìm kiếm
+└── [legacy files]          # Các file CSS cũ còn lại (auth.css, sidebar.css, etc.)
 */
 
 /* ========================================
@@ -43,24 +58,34 @@ public/css/
    ======================================== */
 
 /*
-1. TRONG BLADE LAYOUTS:
-   Thay thế @vite() bằng asset('css/main.css')
-   
-   Cũ: @vite(['resources/css/app.css', 'resources/js/app.js'])
-   Mới: <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+1. FRONTEND USER LAYOUTS:
+   Sử dụng file CSS tối ưu hóa mới:
 
-2. BOOTSTRAP:
+   Mới: <link rel="stylesheet" href="{{ asset('css/frontend/main-user-optimized.css') }}">
+
+   Page-specific CSS (conditional loading):
+   @if(Route::currentRouteName() === 'home')
+   <link rel="stylesheet" href="{{ asset('css/frontend/views/home.css') }}">
+   @endif
+
+2. ADMIN LAYOUTS:
+   Giữ nguyên cấu trúc admin (KHÔNG THAY ĐỔI):
+   <link href="{{ asset_versioned('css/main-admin.css') }}" rel="stylesheet">
+
+3. BOOTSTRAP:
    Load Bootstrap qua CDN trong layout:
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-3. CSS RIÊNG CHO VIEW:
-   Nếu view cần CSS đặc biệt, tạo file trong views/ và import vào main.css
-   Hoặc load trực tiếp trong blade template:
-   <link rel="stylesheet" href="{{ asset('css/views/custom-view.css') }}">
-
 4. CSS VARIABLES:
-   Sử dụng CSS variables đã định nghĩa trong main.css:
-   var(--primary-color), var(--text-primary), etc.
+   Sử dụng CSS variables đã định nghĩa:
+   - User frontend: var(--user-primary), var(--user-text-primary), etc.
+   - Admin panel: var(--admin-primary), var(--admin-text-primary), etc.
+
+5. THÊM CSS MỚI:
+   - Components: Thêm vào frontend/components/
+   - Views: Thêm vào frontend/views/
+   - Utilities: Thêm vào frontend/utilities/
+   - Import vào main-user-optimized.css nếu cần
 */
 
 /* ========================================
@@ -164,7 +189,40 @@ ANIMATION:
 */
 
 /* ========================================
-   MIGRATION NOTES
+   MIGRATION NOTES - CSS OPTIMIZATION COMPLETED
    ======================================== */
+
+/*
+✅ COMPLETED OPTIMIZATION (2025-07-05):
+
+1. CREATED NEW STRUCTURE:
+   - frontend/components/ - All reusable components
+   - frontend/views/ - Page-specific styles
+   - frontend/utilities/ - Themes, utilities, helpers
+   - main-user-optimized.css - Single optimized entry point
+
+2. PERFORMANCE IMPROVEMENTS:
+   - Reduced HTTP requests by consolidating imports
+   - Organized CSS by functionality
+   - Removed duplicate files
+   - Optimized import structure
+
+3. MAINTAINED COMPATIBILITY:
+   - Admin panel CSS untouched (admin/ directory)
+   - All existing functionality preserved
+   - Backward compatibility maintained
+
+4. REMOVED FILES:
+   - Old component CSS from root (buttons.css, forms.css, etc.)
+   - Old view CSS from root (home.css, search.css, etc.)
+   - Old utility CSS from root (dark-mode.css, etc.)
+   - Duplicate directories (components/, views/)
+
+5. UPDATED REFERENCES:
+   - app.blade.php now uses frontend/main-user-optimized.css
+   - Conditional loading for page-specific CSS
+   - Removed redundant CSS links
+
+BACKUP LOCATION: public/css_backup_[timestamp]/
 
 /*

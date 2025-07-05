@@ -84,24 +84,35 @@
     <!-- Lightbox CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 
-    <!-- Auth Modal CSS -->
-    <link rel="stylesheet" href="{{ asset('css/auth-modal.css') }}">
-
-    <!-- Search CSS -->
-    <link rel="stylesheet" href="{{ asset('css/search.css') }}">
-
-    <!-- Enhanced Menu CSS -->
-    <link rel="stylesheet" href="{{ asset('css/enhanced-menu.css') }}">
+    <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
     <script src="{{ asset('js/theme-preload.js') }}"></script>
 
-    <!-- Thay thế Vite bằng asset() truyền thống -->
-    <link rel="stylesheet" href="{{ asset('css/main-user.css') }}">
+    <!-- Optimized Frontend CSS - New Structure -->
+    <link rel="stylesheet" href="{{ asset('css/frontend/main-user-optimized.css') }}">
 
-    <!-- Dark Mode CSS -->
-    <link rel="stylesheet" href="{{ asset('css/dark-mode.css') }}">
+    <!-- Page-specific CSS - Now loaded from frontend/views/ -->
+    @if(Route::currentRouteName() === 'home')
+    <link rel="stylesheet" href="{{ asset('css/frontend/views/home.css') }}">
+    @endif
+
+    @if(str_starts_with(Route::currentRouteName(), 'whats-new'))
+    <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+    @endif
+
+    @if(str_contains(Route::currentRouteName(), 'search'))
+    <link rel="stylesheet" href="{{ asset('css/frontend/views/search.css') }}">
+    @endif
+
+    @if(str_contains(Route::currentRouteName(), 'thread'))
+    <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
+    @endif
+
+    @if(str_contains(Route::currentRouteName(), 'profile'))
+    <link rel="stylesheet" href="{{ asset('css/frontend/views/profile.css') }}">
+    @endif
 
     <!-- Custom CSS -->
     @if(!empty($seo['custom_css'] ?? ''))
@@ -112,42 +123,7 @@
     </style>
     @endif
 
-    <!-- Page-specific CSS -->
-    @if(Route::currentRouteName() === 'home')
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-    @endif
-
-    <!-- What's New CSS -->
-    @if(str_starts_with(Route::currentRouteName(), 'whats-new'))
-    <link rel="stylesheet" href="{{ asset('css/whats-new.css') }}">
-    @endif
-
-    <!-- Activity CSS -->
-    <link rel="stylesheet" href="{{ asset('css/activity.css') }}">
-
-    <!-- Alerts CSS -->
-    <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
-
-    <!-- Sidebar CSS -->
-    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
-
-    <!-- Compact Theme CSS -->
-    <link rel="stylesheet" href="{{ asset('css/compact-theme.css') }}">
-
-    <!-- Unified Button Styles -->
-    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-
-    <!-- Unified Form Styles -->
-    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
-
-    <!-- Avatar Styles -->
-    <link rel="stylesheet" href="{{ asset('css/avatar.css') }}">
-
-    <!-- Thread Item Styles -->
-    <link rel="stylesheet" href="{{ asset('css/thread-item.css') }}">
-
-    <!-- Showcase Item Styles -->
-    <link rel="stylesheet" href="{{ asset('css/showcase-item.css') }}">
+    <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Extra Meta Tags -->
     @if(!empty($seo['extra_meta'] ?? ''))

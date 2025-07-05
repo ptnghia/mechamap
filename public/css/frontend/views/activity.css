@@ -1,0 +1,57 @@
+/* Activity section styles */
+.activity-section .card-body {
+    padding: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-avatar {
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex-grow: 1;
+}
+
+.activity-title {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem 0;
+    color: #6c757d;
+}
+
+.see-all-link {
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+/* Dark mode styles */
+.dark .activity-item {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .activity-time {
+    color: #adb5bd;
+}
+
+.dark .empty-state {
+    color: #adb5bd;
+}

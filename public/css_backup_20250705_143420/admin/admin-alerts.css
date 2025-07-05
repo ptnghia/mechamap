@@ -1,0 +1,478 @@
+/*
+ * MechaMap - Admin Alerts CSS
+ * Styling cho alerts, notifications và messages trong admin panel
+ */
+
+/* ========================================
+   ADMIN ALERT BASE
+   ======================================== */
+
+.admin-alert {
+    padding: var(--admin-space-md) var(--admin-space-lg);
+    border-radius: var(--admin-radius-md);
+    border-left: 4px solid;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: var(--admin-space-lg);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--admin-space-sm);
+    animation: slideIn 0.3s ease-out;
+}
+
+.admin-alert-icon {
+    font-size: 1.25rem;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+}
+
+.admin-alert-content {
+    flex: 1;
+}
+
+.admin-alert-title {
+    font-weight: 600;
+    margin-bottom: var(--admin-space-xs);
+    font-size: 0.95rem;
+}
+
+.admin-alert-message {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.admin-alert-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 1.25rem;
+    opacity: 0.7;
+    transition: var(--admin-transition-fast);
+}
+
+.admin-alert-close:hover {
+    opacity: 1;
+}
+
+/* ========================================
+   ADMIN ALERT VARIANTS
+   ======================================== */
+
+.admin-alert.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--admin-success);
+    border-left-color: var(--admin-success);
+}
+
+.admin-alert.danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+    border-left-color: var(--admin-danger);
+}
+
+.admin-alert.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--admin-warning);
+    border-left-color: var(--admin-warning);
+}
+
+.admin-alert.info {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--admin-info);
+    border-left-color: var(--admin-info);
+}
+
+.admin-alert.primary {
+    background: var(--admin-primary-light);
+    color: var(--admin-primary);
+    border-left-color: var(--admin-primary);
+}
+
+/* ========================================
+   ADMIN TOAST NOTIFICATIONS
+   ======================================== */
+
+.admin-toast-container {
+    position: fixed;
+    top: var(--admin-space-lg);
+    right: var(--admin-space-lg);
+    z-index: var(--admin-z-tooltip);
+    width: 320px;
+    max-width: calc(100vw - 2rem);
+}
+
+.admin-toast {
+    background: var(--admin-bg-primary);
+    border-radius: var(--admin-radius-md);
+    box-shadow: var(--admin-shadow-lg);
+    border: 1px solid var(--admin-border-color);
+    margin-bottom: var(--admin-space-sm);
+    overflow: hidden;
+    animation: toastSlideIn 0.3s ease-out;
+    position: relative;
+}
+
+.admin-toast.removing {
+    animation: toastSlideOut 0.3s ease-in forwards;
+}
+
+.admin-toast-header {
+    padding: var(--admin-space-sm) var(--admin-space-md);
+    border-bottom: 1px solid var(--admin-border-color);
+    display: flex;
+    align-items: center;
+    gap: var(--admin-space-sm);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.admin-toast-body {
+    padding: var(--admin-space-md);
+    color: var(--admin-text-primary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.admin-toast-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    font-size: 1.125rem;
+    color: var(--admin-text-muted);
+    transition: var(--admin-transition-fast);
+}
+
+.admin-toast-close:hover {
+    color: var(--admin-text-primary);
+}
+
+.admin-toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--admin-primary);
+    animation: toastProgress 5s linear forwards;
+}
+
+/* Toast variants */
+.admin-toast.success .admin-toast-header {
+    color: var(--admin-success);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.admin-toast.danger .admin-toast-header {
+    color: var(--admin-danger);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.admin-toast.warning .admin-toast-header {
+    color: var(--admin-warning);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.admin-toast.info .admin-toast-header {
+    color: var(--admin-info);
+    background: rgba(14, 165, 233, 0.1);
+}
+
+/* ========================================
+   ADMIN FLASH MESSAGES
+   ======================================== */
+
+.admin-flash-container {
+    margin-bottom: var(--admin-space-lg);
+}
+
+.admin-flash-message {
+    padding: var(--admin-space-md) var(--admin-space-lg);
+    border-radius: var(--admin-radius-md);
+    margin-bottom: var(--admin-space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--admin-space-sm);
+    font-size: 0.9rem;
+    animation: flashSlideIn 0.4s ease-out;
+}
+
+.admin-flash-message.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--admin-success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.admin-flash-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.admin-flash-message.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--admin-warning);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.admin-flash-message.info {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--admin-info);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+/* ========================================
+   ADMIN VALIDATION ERRORS
+   ======================================== */
+
+.admin-validation-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--admin-radius-md);
+    padding: var(--admin-space-lg);
+    margin-bottom: var(--admin-space-lg);
+    color: var(--admin-danger);
+}
+
+.admin-validation-errors-title {
+    font-weight: 600;
+    margin-bottom: var(--admin-space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--admin-space-sm);
+}
+
+.admin-validation-errors-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-validation-errors-item {
+    padding: var(--admin-space-xs) 0;
+    position: relative;
+    padding-left: var(--admin-space-lg);
+}
+
+.admin-validation-errors-item::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: var(--admin-space-xs);
+}
+
+/* ========================================
+   ADMIN SYSTEM MESSAGES
+   ======================================== */
+
+.admin-system-message {
+    background: var(--admin-bg-dark);
+    color: var(--admin-text-white);
+    padding: var(--admin-space-sm) var(--admin-space-lg);
+    text-align: center;
+    font-size: 0.875rem;
+    border-radius: 0;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: calc(var(--admin-z-header) + 1);
+}
+
+.admin-system-message.maintenance {
+    background: var(--admin-warning);
+    color: var(--admin-text-primary);
+}
+
+.admin-system-message.emergency {
+    background: var(--admin-danger);
+    color: var(--admin-text-white);
+    animation: urgentPulse 2s infinite;
+}
+
+/* ========================================
+   ADMIN CONFIRMATION DIALOGS
+   ======================================== */
+
+.admin-confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--admin-z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.admin-confirm-dialog {
+    background: var(--admin-bg-primary);
+    border-radius: var(--admin-radius-lg);
+    box-shadow: var(--admin-shadow-lg);
+    max-width: 400px;
+    width: 90%;
+    animation: scaleIn 0.2s ease-out;
+}
+
+.admin-confirm-header {
+    padding: var(--admin-space-lg);
+    border-bottom: 1px solid var(--admin-border-color);
+    display: flex;
+    align-items: center;
+    gap: var(--admin-space-sm);
+}
+
+.admin-confirm-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.admin-confirm-icon.danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+}
+
+.admin-confirm-icon.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--admin-warning);
+}
+
+.admin-confirm-content {
+    flex: 1;
+}
+
+.admin-confirm-title {
+    font-weight: 600;
+    margin-bottom: var(--admin-space-xs);
+    color: var(--admin-text-primary);
+}
+
+.admin-confirm-message {
+    color: var(--admin-text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.admin-confirm-actions {
+    padding: var(--admin-space-lg);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--admin-space-sm);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideOut {
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes toastProgress {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}
+
+@keyframes flashSlideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes urgentPulse {
+    0%, 100% {
+        background: var(--admin-danger);
+    }
+    50% {
+        background: #dc2626;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .admin-toast-container {
+        top: var(--admin-space-md);
+        right: var(--admin-space-md);
+        left: var(--admin-space-md);
+        width: auto;
+    }
+
+    .admin-confirm-dialog {
+        width: 95%;
+        margin: var(--admin-space-md);
+    }
+
+    .admin-alert {
+        padding: var(--admin-space-md);
+        font-size: 0.875rem;
+    }
+}

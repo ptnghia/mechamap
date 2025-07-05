@@ -1,0 +1,291 @@
+/*
+ * MechaMap - Optimized Frontend User CSS
+ * File CSS chính được tối ưu hóa cho Frontend User
+ * Cấu trúc mới: frontend/components/, frontend/views/, frontend/utilities/
+ *
+ * Cấu trúc:
+ * 1. External Libraries (Bootstrap, Fonts)
+ * 2. User Variables & Base Styles
+ * 3. Components (buttons, forms, alerts, etc.)
+ * 4. Views (homepage, threads, profile, etc.)
+ * 5. Utilities (dark-mode, responsive, animations)
+ */
+
+/* ========================================
+   GOOGLE FONTS FOR USER FRONTEND
+   ======================================== */
+
+/* Roboto font family cho user frontend */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ========================================
+   FRONTEND COMPONENTS
+   ======================================== */
+
+/* Import các component từ thư mục mới */
+@import url('./components/buttons.css');
+@import url('./components/forms.css');
+@import url('./components/alerts.css');
+@import url('./components/avatar.css');
+@import url('./components/auth-modal.css');
+@import url('./components/mobile-nav.css');
+@import url('./components/sidebar.css');
+@import url('./components/thread-form.css');
+
+/* ========================================
+   FRONTEND VIEWS
+   ======================================== */
+
+/* Import các view-specific CSS từ thư mục mới */
+@import url('./views/homepage.css');
+@import url('./views/threads.css');
+@import url('./views/profile.css');
+@import url('./views/auth.css');
+
+/* ========================================
+   FRONTEND UTILITIES
+   ======================================== */
+
+/* Import utilities tổng hợp */
+@import url('./utilities/utilities.css');
+
+/* ========================================
+   USER CSS VARIABLES
+   ======================================== */
+
+:root {
+    /* User Primary Colors - Khác với admin */
+    --user-primary: #7e7656;
+    --user-primary-hover: #0556cd;
+    --user-primary-light: #EFF6FF;
+
+    /* User Secondary Colors */
+    --user-secondary: #686245;
+    --user-secondary-hover: #059669;
+
+    /* User Status Colors */
+    --user-success: #10B981;
+    --user-danger: #EF4444;
+    --user-warning: #F59E0B;
+    --user-info: #3B82F6;
+
+    /* User Background Colors */
+    --user-bg-primary: #FFFFFF;
+    --user-bg-secondary: #F9FAFB;
+    --user-bg-tertiary: #F3F4F6;
+    --user-bg-dark: #111827;
+
+    /* User Text Colors */
+    --user-text-primary: #111827;
+    --user-text-secondary: #6B7280;
+    --user-text-muted: #9CA3AF;
+    --user-text-white: #FFFFFF;
+
+    /* User Border & Shadow */
+    --user-border-color: #E5E7EB;
+    --user-border-dark: #D1D5DB;
+    --user-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    /* User Transitions */
+    --user-transition-fast: 0.15s ease;
+    --user-transition-normal: 0.3s ease;
+
+    /* User Border Radius */
+    --user-radius-sm: 0.375rem;
+    --user-radius-md: 0.5rem;
+    --user-radius-lg: 0.75rem;
+    --user-radius-xl: 1rem;
+
+    /* User Z-index */
+    --user-z-header: 1000;
+    --user-z-sidebar: 1010;
+    --user-z-modal: 1050;
+    --user-z-tooltip: 1070;
+
+    /* User Spacing */
+    --user-space-xs: 0.25rem;
+    --user-space-sm: 0.5rem;
+    --user-space-md: 1rem;
+    --user-space-lg: 1.5rem;
+    --user-space-xl: 2rem;
+}
+
+/* ========================================
+   USER DARK MODE VARIABLES
+   ======================================== */
+
+[data-theme="dark"] {
+    /* Dark mode colors for user frontend */
+    --user-bg-primary: #1F2937;
+    --user-bg-secondary: #111827;
+    --user-bg-tertiary: #0F172A;
+    --user-bg-dark: #000000;
+
+    --user-text-primary: #F9FAFB;
+    --user-text-secondary: #D1D5DB;
+    --user-text-muted: #9CA3AF;
+
+    --user-border-color: #374151;
+    --user-border-dark: #4B5563;
+
+    --user-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --user-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --user-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   USER GLOBAL BASE STYLES
+   ======================================== */
+
+body.user-frontend {
+    font-family: "Roboto Condensed", sans-serif;
+    background: var(--user-bg-secondary);
+    color: var(--user-text-primary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   USER LAYOUT CONTAINERS
+   ======================================== */
+
+/* Header */
+.site-header { position: relative; }
+.header-banner { }
+.header-banner img { width: 100%; height: 194px; object-fit: cover; }
+.header-content { 
+    background-color: #000000d1 !important; 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+}
+.header-content .navbar { background-color: transparent !important; padding: 0; }
+.navbar-brand.logo { }
+.navbar-brand.logo img { height: 50px; }
+
+.nav-link {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-transform: uppercase;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: #7e7757;
+}
+
+.nav-icon .nav-link i { font-size: 18px; margin-right: 5px; }
+.nav-icon .nav-link > span { 
+    font-family: "Roboto Condensed", sans-serif; 
+    text-transform: uppercase; 
+}
+
+.navbar-nav .dropdown-menu {
+    border: none;
+    box-shadow: 1px 1px 10px 1px #1212124a;
+    min-width: 300px;
+    right: 0;
+    left: auto;
+    padding: 0;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    font-family: "Roboto Condensed", sans-serif;
+    color: #1e1e1e;
+}
+
+.dropdown-item i { margin-right: 10px; color: #9d9d9d; }
+
+.dropdown-item.active, 
+.dropdown-item:active, 
+.dropdown-item:hover {
+    background-color: #7e7757;
+    color: #fff;
+}
+
+.dropdown-item .form-switch input {
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.user-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--user-space-md);
+}
+
+.user-main-content {
+    min-height: 100vh;
+    background: var(--user-bg-secondary);
+    transition: var(--user-transition-normal);
+}
+
+.user-content-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.user-sidebar-wrapper {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.user-main-wrapper {
+    flex: 1;
+    padding: var(--user-space-lg);
+    overflow-x: hidden;
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Reduce repaints and reflows */
+* {
+    box-sizing: border-box;
+}
+
+/* Optimize animations */
+.user-fade-in,
+.user-slide-up,
+.user-scale-in {
+    will-change: transform, opacity;
+}
+
+/* Optimize images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Optimize scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--user-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--user-border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--user-text-secondary);
+}
