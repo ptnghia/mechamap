@@ -461,7 +461,7 @@
 </div>
 
 @push('scripts')
-<script src="{{ asset('js/showcase-rating.js') }}"></script>
+<script src="{{ asset('js/rating.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 <script>
     // Configure Lightbox

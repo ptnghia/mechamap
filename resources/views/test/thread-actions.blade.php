@@ -50,7 +50,7 @@
                             <li><strong>Authenticated:</strong> {{ Auth::check() ? 'Yes (' . Auth::user()->name . ')' :
                                 'No' }}</li>
                             <li><strong>Total threads:</strong> {{ $threads->count() }}</li>
-                            <li><strong>JavaScript loaded:</strong> thread-actions-simple.js</li>
+                            <li><strong>JavaScript loaded:</strong> threads.js</li>
                             <li><strong>Forms use:</strong> POST/DELETE với CSRF tokens</li>
                         </ul>
                     </div>

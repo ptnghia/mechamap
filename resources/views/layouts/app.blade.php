@@ -87,8 +87,8 @@
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
     <script src="{{ asset('js/theme-preload.js') }}"></script>
 
-    <!-- Optimized Frontend CSS - New Structure -->
-    <link rel="stylesheet" href="{{ asset('css/frontend/main-user-optimized.css') }}">
+    <!-- Frontend CSS - Optimized Structure -->
+    <link rel="stylesheet" href="{{ asset('css/frontend/main-user.css') }}">
 
     <!-- Page-specific CSS now loaded in individual views via @push('styles') -->
 
@@ -291,14 +291,14 @@
     <!-- Header System - Consolidated search, menu, and navigation -->
     <script src="{{ asset('js/header.js') }}"></script>
 
-    <!-- Thread Item Script -->
-    <script src="{{ asset('js/thread-item.js') }}"></script>
+    <!-- Components Script -->
+    <script src="{{ asset('js/components.js') }}"></script>
 
     <!-- Thread Actions Script -->
-    <script src="{{ asset('js/thread-actions-simple.js') }}"></script>
+    <script src="{{ asset('js/threads.js') }}"></script>
 
-    <!-- Manual Dropdown Script -->
-    <script src="{{ asset('js/manual-dropdown.js') }}"></script>
+    <!-- Dropdown Script -->
+    <script src="{{ asset('js/dropdown.js') }}"></script>
 
     <!-- CKEditor Script - Only load on pages that need it -->
     @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))

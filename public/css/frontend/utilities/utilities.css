@@ -11,11 +11,11 @@
 /* Dark Mode Support */
 @import url('./dark-mode.css');
 
-/* Enhanced Menu Functionality */
-@import url('./enhanced-menu.css');
+/* Menu Functionality */
+@import url('./menu.css');
 
-/* Compact Theme */
-@import url('./compact-theme.css');
+/* Theme Support */
+@import url('./theme.css');
 
 /* ========================================
    ADDITIONAL UTILITIES
