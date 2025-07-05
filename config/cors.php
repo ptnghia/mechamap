@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => env('APP_ENV') === 'local'
         ? ['https://mechamap.test', 'http://mechamap.test', 'http://localhost:3000', 'https://localhost:3000', 'http://127.0.0.1:3000', 'https://127.0.0.1:3000']
-        : explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.test,http://mechamap.test')),
+        : explode(',', env('CORS_ALLOWED_ORIGINS', 'https://mechamap.com,https://www.mechamap.com')),
 
     'allowed_origins_patterns' => [],
 

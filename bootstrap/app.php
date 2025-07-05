@@ -15,6 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust proxies for HTTPS support
         $middleware->trustProxies(at: '*');
 
+        // Production security middleware
+        if (config('app.env') === 'production') {
+            $middleware->web(append: [
+                \App\Http\Middleware\ProductionSecurity::class,
+            ]);
+        }
+
         // Do not append as global middleware - these should only be for web routes
         // $middleware->append(\App\Http\Middleware\TrackUserActivity::class);
         // $middleware->append(\App\Http\Middleware\ApplySeoSettings::class);

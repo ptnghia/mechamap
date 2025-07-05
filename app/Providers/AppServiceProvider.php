@@ -28,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
         // Force HTTPS in production and when APP_URL uses HTTPS
         if (config('app.env') === 'production' || str_starts_with(config('app.url'), 'https://')) {
             URL::forceScheme('https');
+
+            // Additional production configurations
+            if (config('app.env') === 'production') {
+                $this->configureProductionSettings();
+            }
         }
 
         // Register custom Blade directives for admin permissions
@@ -68,5 +73,45 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('endadminCannot', function () {
             return "<?php endif; ?>";
         });
+    }
+
+    /**
+     * Configure production-specific settings
+     */
+    private function configureProductionSettings(): void
+    {
+        // Force root URL for production domain
+        if (str_contains(config('app.url'), 'mechamap.com')) {
+            URL::forceRootUrl(config('app.url'));
+        }
+
+        // Set secure asset URL if CDN is configured
+        if ($cdnUrl = config('production.domain.cdn')) {
+            URL::forceAssetUrl($cdnUrl);
+        }
+
+        // Configure trusted proxies for production
+        $this->configureTrustedProxies();
+    }
+
+    /**
+     * Configure trusted proxies for production environment
+     */
+    private function configureTrustedProxies(): void
+    {
+        // Trust common proxy headers in production
+        $trustedProxies = ['*']; // Configure specific IPs in production
+
+        if (config('production.ssl.enabled')) {
+            // Additional proxy configuration for SSL termination
+            $this->app['request']->setTrustedProxies(
+                $trustedProxies,
+                \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
+                \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST |
+                \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT |
+                \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO |
+                \Illuminate\Http\Request::HEADER_X_FORWARDED_AWS_ELB
+            );
+        }
     }
 }
