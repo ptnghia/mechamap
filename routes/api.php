@@ -25,6 +25,37 @@ Route::get('/threads-test', function() {
     ]);
 });
 
+// Sidebar stats endpoint (public - for sidebar statistics)
+Route::get('/sidebar/stats', function() {
+    try {
+        // Get basic statistics for sidebar
+        $stats = [
+            'total_threads' => \App\Models\Thread::where('status', 'published')->count(),
+            'total_users' => \App\Models\User::count(),
+            'weekly_activity' => \App\Models\Thread::where('created_at', '>=', now()->subWeek())->count(),
+            'growth_rate' => '+100%' // This could be calculated dynamically
+        ];
+
+        return response()->json([
+            'success' => true,
+            'stats' => $stats,
+            'message' => 'Sidebar stats retrieved successfully'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'stats' => [
+                'total_threads' => 0,
+                'total_users' => 0,
+                'weekly_activity' => 0,
+                'growth_rate' => '0%'
+            ],
+            'error' => 'Failed to retrieve sidebar stats',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
 // Test API ThreadController directly
 Route::get('/threads-controller-test', [App\Http\Controllers\Api\ThreadController::class, 'index']);
 
@@ -40,29 +71,43 @@ Route::get('/notifications', function() {
 
 // Notifications count endpoint (public - for header badge)
 Route::get('/notifications/count', function() {
-    // Check if user is authenticated
-    if (Auth::check()) {
-        $user = Auth::user();
-        $unreadCount = $user->unreadNotifications()->count();
-        $totalCount = $user->notifications()->count();
+    try {
+        // Check if user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
 
+            // Use Laravel's built-in notifications instead of custom model
+            $unreadCount = $user->unreadNotifications()->count();
+            $totalCount = $user->notifications()->count();
+
+            return response()->json([
+                'success' => true,
+                'unread_count' => $unreadCount,
+                'total_count' => $totalCount,
+                'notifications' => $unreadCount,  // For header.js compatibility
+                'messages' => 0,  // For header.js compatibility
+                'message' => 'Notifications count retrieved successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'unread_count' => 0,
+                'total_count' => 0,
+                'notifications' => 0,  // For header.js compatibility
+                'messages' => 0,  // For header.js compatibility
+                'message' => 'User not authenticated'
+            ]);
+        }
+    } catch (\Exception $e) {
         return response()->json([
-            'success' => true,
-            'unread_count' => $unreadCount,
-            'total_count' => $totalCount,
-            'notifications' => $unreadCount,  // For header.js compatibility
-            'messages' => 0,  // For header.js compatibility
-            'message' => 'Notifications count retrieved successfully'
-        ]);
-    } else {
-        return response()->json([
-            'success' => true,
+            'success' => false,
             'unread_count' => 0,
             'total_count' => 0,
-            'notifications' => 0,  // For header.js compatibility
-            'messages' => 0,  // For header.js compatibility
-            'message' => 'User not authenticated'
-        ]);
+            'notifications' => 0,
+            'messages' => 0,
+            'error' => 'Failed to retrieve notifications count',
+            'message' => $e->getMessage()
+        ], 500);
     }
 });
 
