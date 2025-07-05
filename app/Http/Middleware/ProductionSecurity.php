@@ -16,12 +16,12 @@ class ProductionSecurity
         $response = $next($request);
 
         // Only apply in production environment
-        if (config('app.env') !== 'production') {
+        if (env('APP_ENV') !== 'production') {
             return $response;
         }
 
         // Force HTTPS redirect
-        if (config('production.ssl.force_https') && !$request->secure() && !$request->header('X-Forwarded-Proto') === 'https') {
+        if (config('production.ssl.force_https', true) && !$request->secure() && $request->header('X-Forwarded-Proto') !== 'https') {
             return redirect()->secure($request->getRequestUri(), 301);
         }
 

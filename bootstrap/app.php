@@ -15,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust proxies for HTTPS support
         $middleware->trustProxies(at: '*');
 
-        // Production security middleware
-        if (config('app.env') === 'production') {
+        // Production security middleware - use environment variable directly
+        if (env('APP_ENV') === 'production') {
             $middleware->web(append: [
                 \App\Http\Middleware\ProductionSecurity::class,
             ]);
