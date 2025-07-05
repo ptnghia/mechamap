@@ -2,7 +2,7 @@
 // Không cần AJAX, chỉ sử dụng native form submissions
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Thread Actions: Form-based approach initialized');
+    // console.log('Thread Actions: Form-based approach initialized');
 
     // Optional: Add confirmation dialogs for certain actions
     const bookmarkForms = document.querySelectorAll('form[action*="bookmark"]');

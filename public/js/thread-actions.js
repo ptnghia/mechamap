@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     if (!csrfToken) {
-        console.warn('CSRF token không tìm thấy');
+        // console.warn('CSRF token không tìm thấy');
         return;
     }
 
@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = `/api/threads/${threadId}/bookmark`;
             const method = isBookmarked ? 'DELETE' : 'POST';
 
-            console.log(`🔗 Making ${method} request to:`, url);
-            console.log('🔑 CSRF Token:', csrfToken ? 'Present' : 'Missing');
+            // console.log(`🔗 Making ${method} request to:`, url);
+            // console.log('🔑 CSRF Token:', csrfToken ? 'Present' : 'Missing');
 
             const response = await fetch(url, {
                 method: method,
@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            console.log('📡 Response status:', response.status);
+            // console.log('📡 Response status:', response.status);
             const data = await response.json();
-            console.log('📦 Response data:', data);
+            // console.log('📦 Response data:', data);
 
             if (response.ok) {
                 // Cập nhật trạng thái button
@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = `/api/threads/${threadId}/follow`;
             const method = isFollowed ? 'DELETE' : 'POST';
 
-            console.log(`🔗 Making ${method} request to:`, url);
-            console.log('🔑 CSRF Token:', csrfToken ? 'Present' : 'Missing');
+            // console.log(`🔗 Making ${method} request to:`, url);
+            // console.log('🔑 CSRF Token:', csrfToken ? 'Present' : 'Missing');
 
             const response = await fetch(url, {
                 method: method,
@@ -112,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            console.log('📡 Response status:', response.status);
+            // console.log('📡 Response status:', response.status);
             const data = await response.json();
-            console.log('📦 Response data:', data);
+            // console.log('📦 Response data:', data);
 
             if (response.ok) {
                 // Cập nhật trạng thái button

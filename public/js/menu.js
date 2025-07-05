@@ -338,7 +338,7 @@ window.openMobileSearch = function() {
 
 window.toggleBookmarks = function() {
     // Implement bookmarks functionality
-    console.log('Bookmarks functionality to be implemented');
+    // console.log('Bookmarks functionality to be implemented');
 };
 
 /**

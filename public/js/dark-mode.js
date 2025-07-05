@@ -7,7 +7,7 @@
     'use strict';
 
     // Debug mode
-    const DEBUG = true;
+    const DEBUG = false;
 
     // Log function that only works in debug mode
     function log(message) {
@@ -348,7 +348,7 @@
     // Chạy debugger nếu được yêu cầu qua URL
     if (window.location.search.includes('debug-theme')) {
         window.addEventListener('load', function() {
-            console.log('Theme Debugger:', window.themeManager.debug());
+            // console.log('Theme Debugger:', window.themeManager.debug());
         });
     }
 

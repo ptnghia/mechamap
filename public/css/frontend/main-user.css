@@ -3,6 +3,8 @@
  * File CSS chính được tối ưu hóa cho Frontend User
  * Cấu trúc mới: frontend/components/, frontend/views/, frontend/utilities/
  *
+ * DEVELOPMENT MODE: Cache disabled for easy CSS/JS editing
+ *
  * Cấu trúc:
  * 1. External Libraries (Bootstrap, Fonts)
  * 2. User Variables & Base Styles

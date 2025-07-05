@@ -5,7 +5,7 @@
 
 (function() {
     'use strict';
-    
+
     window.ThemeDiagnostics = {
         // Check theme system health
         checkThemeHealth: function() {
@@ -16,11 +16,11 @@
                 cssVariables: this.checkCSSVariables(),
                 timestamp: new Date().toISOString()
             };
-            
-            console.log('[Theme Diagnostics] Health check:', diagnostics);
+
+            // console.log('[Theme Diagnostics] Health check:', diagnostics);
             return diagnostics;
         },
-        
+
         // Check localStorage functionality
         checkLocalStorage: function() {
             try {
@@ -33,17 +33,17 @@
                 return { working: false, error: e.message };
             }
         },
-        
+
         // Check theme attribute
         checkThemeAttribute: function() {
             const attr = document.documentElement.getAttribute('data-theme');
-            return { 
-                present: !!attr, 
+            return {
+                present: !!attr,
                 value: attr,
                 classList: Array.from(document.documentElement.classList)
             };
         },
-        
+
         // Check theme button
         checkThemeButton: function() {
             const button = document.querySelector('[data-theme-toggle]');
@@ -52,7 +52,7 @@
                 visible: button ? window.getComputedStyle(button).display !== 'none' : false
             };
         },
-        
+
         // Check CSS variables
         checkCSSVariables: function() {
             const style = getComputedStyle(document.documentElement);
@@ -61,7 +61,7 @@
                 textColor: style.getPropertyValue('--bs-body-color') || style.color
             };
         },
-        
+
         // Auto-run diagnostics on load
         init: function() {
             if (window.location.search.includes('theme-debug')) {
@@ -69,7 +69,7 @@
             }
         }
     };
-    
+
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => window.ThemeDiagnostics.init());

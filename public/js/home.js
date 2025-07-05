@@ -341,7 +341,7 @@ function initPerformanceMonitoring() {
     // Monitor page load time
     window.addEventListener('load', function() {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        console.log(`Page loaded in ${loadTime}ms`);
+        // console.log(`Page loaded in ${loadTime}ms`);
 
         // Send analytics if needed
         if (typeof gtag !== 'undefined') {

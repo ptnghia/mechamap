@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    console.log('MechaMap JavaScript initialized successfully!');
+    // console.log('MechaMap JavaScript initialized successfully!');
 });
 
 // ========================================
