@@ -73,13 +73,13 @@
     <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js" integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Lightbox CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <!-- Iconsax -->
+    <link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet">
 
     <!-- All component CSS now included in main-user-optimized.css -->
 
@@ -302,19 +302,6 @@
 
     <!-- Performance Optimization Script -->
     <script src="{{ asset('js/performance-optimization.js') }}"></script>
-
-    <!-- Lightbox Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-    <script>
-        // Lightbox configuration
-            lightbox.option({
-                'resizeDuration': 200,
-                'wrapAround': true,
-                'albumLabel': 'Hình %1 / %2',
-                'fadeDuration': 300,
-                'imageFadeDuration': 300
-            });
-    </script>
 
     <!-- CKEditor Script - Only load on pages that need it -->
     @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))

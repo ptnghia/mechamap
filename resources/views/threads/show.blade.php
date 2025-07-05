@@ -4,6 +4,8 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
+<!-- Lightbox CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 @endpush
 
 @section('content')
@@ -1913,4 +1915,19 @@ function initializeEventHandlers() {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 </style>
+@endpush
+
+@push('scripts')
+<!-- Lightbox Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script>
+    // Lightbox configuration
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true,
+        'albumLabel': 'Hình %1 / %2',
+        'fadeDuration': 300,
+        'imageFadeDuration': 300
+    });
+</script>
 @endpush

@@ -4,6 +4,8 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+<!-- Lightbox CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 @endpush
 
 @section('content')
@@ -256,7 +258,19 @@
             }
         });
     });
+
+    // Lightbox configuration
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true,
+        'albumLabel': 'Hình %1 / %2',
+        'fadeDuration': 300,
+        'imageFadeDuration': 300
+    });
 </script>
+
+<!-- Lightbox Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 @endpush
 
 @endsection

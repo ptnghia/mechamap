@@ -4,7 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 <style>
     .showcase-breadcrumb {
         background-color: #f8f9fa;
@@ -462,13 +462,15 @@
 
 @push('scripts')
 <script src="{{ asset('js/showcase-rating.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 <script>
     // Configure Lightbox
 lightbox.option({
     'resizeDuration': 200,
     'wrapAround': true,
-    'albumLabel': 'Ảnh %1 / %2'
+    'albumLabel': 'Ảnh %1 / %2',
+    'fadeDuration': 300,
+    'imageFadeDuration': 300
 });
 
 // Social Sharing Functions
