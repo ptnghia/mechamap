@@ -85,14 +85,14 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                                <i class="bi bi-person-dash"></i> Bỏ theo dõi
+                                                                <i class="person-dash"></i> Bỏ theo dõi
                                                             </button>
                                                         </form>
                                                     @else
                                                         <form action="{{ route('profile.follow', $user->username) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                                <i class="bi bi-person-plus"></i> Theo dõi
+                                                                <i class="fas fa-user-plus"></i> Theo dõi
                                                             </button>
                                                         </form>
                                                     @endif
@@ -107,16 +107,16 @@
                                     
                                     <div class="d-flex mt-2">
                                         <div class="me-3">
-                                            <i class="bi bi-chat-left-text"></i>
+                                            <i class="fas fa-comment-left-text"></i>
                                             <span>{{ $user->posts_count }} bài viết</span>
                                         </div>
                                         <div class="me-3">
-                                            <i class="bi bi-file-text"></i>
+                                            <i class="fas fa-file-alt"></i>
                                             <span>{{ $user->threads_count }} chủ đề</span>
                                         </div>
                                         @if($user->location)
                                             <div>
-                                                <i class="bi bi-geo-alt"></i>
+                                                <i class="fas fa-map-marker-alt"></i>
                                                 <span>{{ $user->location }}</span>
                                             </div>
                                         @endif

@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
+                        <i class="fas fa-info-circle me-2"></i>
                         {{ __('Members who have been active in the last 15 minutes are shown here.') }}
                     </div>
                     
@@ -87,7 +87,7 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-people fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-users fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('No members are currently online.') }}</p>
                         </div>
                     @endif

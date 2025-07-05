@@ -19,10 +19,10 @@
                             <div class="d-flex justify-content-md-end mt-3 mt-md-0">
                                 <div class="btn-group" role="group">
                                     <a href="{{ route('members.index') }}" class="btn btn-outline-secondary {{ !request('view') ? 'active' : '' }}">
-                                        <i class="bi bi-list"></i> {{ __('List') }}
+                                        <i class="fas fa-list"></i> {{ __('List') }}
                                     </a>
                                     <a href="{{ route('members.index') }}?view=grid" class="btn btn-outline-secondary {{ request('view') == 'grid' ? 'active' : '' }}">
-                                        <i class="bi bi-grid-3x3-gap"></i> {{ __('Grid') }}
+                                        <i class="fas fa-th-3x3-gap"></i> {{ __('Grid') }}
                                     </a>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-people fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-users fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('No members found.') }}</p>
                             @if($filter)
                                 <p class="text-muted">{{ __('Try a different search term.') }}</p>

@@ -20,7 +20,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0">{{ __('My Showcase Items') }}</h5>
                 <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>{{ __('Create New Showcase') }}
+                    <i class="fas fa-plus-circle me-2"></i>{{ __('Create New Showcase') }}
                 </a>
             </div>
             <div class="card-body">
@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 @if($item->showcaseable_type === 'App\\Models\\Thread')
                                 <h5 class="card-title">
-                                    <i class="bi bi-chat-left-text me-2"></i>
+                                    <i class="fas fa-comment-left-text me-2"></i>
                                     <a href="{{ route('threads.show', $item->showcaseable) }}"
                                         class="text-decoration-none">
                                         {{ $item->showcaseable->title }}
@@ -48,7 +48,7 @@
                                 </p>
                                 @elseif($item->showcaseable_type === 'App\\Models\\Post')
                                 <h5 class="card-title">
-                                    <i class="bi bi-chat-right me-2"></i>
+                                    <i class="fas fa-comment-right me-2"></i>
                                     <a href="{{ route('threads.show', $item->showcaseable->thread_id) }}#post-{{ $item->showcaseable->id }}"
                                         class="text-decoration-none">
                                         {{ __('Reply in') }} {{ $item->showcaseable->thread->title }}
@@ -59,7 +59,7 @@
                                 </p>
                                 @elseif($item->showcaseable_type === 'App\\Models\\Project')
                                 <h5 class="card-title">
-                                    <i class="bi bi-briefcase me-2"></i>
+                                    <i class="fas fa-briefcase me-2"></i>
                                     <a href="{{ route('projects.show', $item->showcaseable) }}"
                                         class="text-decoration-none">
                                         {{ $item->showcaseable->title }}
@@ -70,7 +70,7 @@
                                 </p>
                                 @else
                                 <h5 class="card-title">
-                                    <i class="bi bi-star me-2"></i>
+                                    <i class="fas fa-star me-2"></i>
                                     {{ __('Showcase item') }}
                                 </h5>
                                 @endif
@@ -89,7 +89,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i> {{ __('Remove') }}
+                                            <i class="fas fa-trash"></i> {{ __('Remove') }}
                                         </button>
                                     </form>
                                 </div>
@@ -104,7 +104,7 @@
                 </div>
                 @else
                 <div class="text-center py-5">
-                    <i class="bi bi-stars fs-1 text-muted mb-3"></i>
+                    <i class="stars fs-1 text-muted mb-3"></i>
                     <p class="mb-0">{{ __('You don\'t have any showcase items yet.') }}</p>
                     <p class="text-muted">{{ __('Add your best content to your showcase to highlight it on your
                         profile.') }}</p>

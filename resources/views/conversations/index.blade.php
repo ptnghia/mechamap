@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 mb-0">Conversations</h1>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newConversationModal">
-                <i class="bi bi-pencil-square me-1"></i> Start conversation
+                <i class="fas fa-edit-square me-1"></i> Start conversation
             </button>
         </div>
 
@@ -20,7 +20,7 @@
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                             id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-funnel me-1"></i> Filters
+                            <i class="fas fa-filter me-1"></i> Filters
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
                             <li><a class="dropdown-item" href="{{ route('conversations.index') }}">All messages</a></li>
@@ -53,7 +53,7 @@
                                 @else
                                 <div class="rounded-circle bg-secondary me-3 d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="bi bi-people-fill text-white"></i>
+                                    <i class="fas fa-users-fill text-white"></i>
                                 </div>
                                 @endif
 
@@ -95,12 +95,12 @@
                 </div>
                 @else
                 <div class="text-center py-5">
-                    <i class="bi bi-chat-dots fs-1 text-muted mb-3"></i>
+                    <i class="fas fa-comment-dots fs-1 text-muted mb-3"></i>
                     <p class="mb-0">{{ __('There are no conversations to display.') }}</p>
                     <p class="text-muted">{{ __('Start a new conversation to connect with other users.') }}</p>
                     <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
                         data-bs-target="#newConversationModal">
-                        <i class="bi bi-pencil-square me-1"></i> {{ __('Start conversation') }}
+                        <i class="fas fa-edit-square me-1"></i> {{ __('Start conversation') }}
                     </button>
                 </div>
                 @endif
@@ -163,7 +163,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-send me-1"></i> {{ __('Start conversation') }}
+                        <i class="fas fa-paper-plane me-1"></i> {{ __('Start conversation') }}
                     </button>
                 </div>
             </form>

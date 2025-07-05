@@ -31,7 +31,7 @@
                                                 <ul class="list-group list-group-flush mb-4 flex-grow-1">
                                                     @foreach($plan['features'] as $feature)
                                                         <li class="list-group-item border-0">
-                                                            <i class="bi bi-check-circle-fill text-success me-2"></i> {{ $feature }}
+                                                            <i class="fas fa-check-circle-fill text-success me-2"></i> {{ $feature }}
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -75,7 +75,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <i class="bi bi-shield-check fs-1 text-primary"></i>
+                                            <i class="fas fa-shield-alt-check fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5>{{ __('Ad-Free Experience') }}</h5>
@@ -86,7 +86,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <i class="bi bi-chat-square-dots fs-1 text-primary"></i>
+                                            <i class="fas fa-comment-square-dots fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5>{{ __('Unlimited Messages') }}</h5>
@@ -97,7 +97,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <i class="bi bi-person-badge fs-1 text-primary"></i>
+                                            <i class="person-badge fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5>{{ __('Premium Badge') }}</h5>
@@ -108,7 +108,7 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0">
-                                            <i class="bi bi-headset fs-1 text-primary"></i>
+                                            <i class="headset fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5>{{ __('Priority Support') }}</h5>

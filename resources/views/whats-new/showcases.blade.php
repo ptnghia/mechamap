@@ -8,13 +8,13 @@
         <h1 class="mb-0">What's New</h1>
 
         <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i> Create Showcase
+            <i class="fas fa-plus-lg me-1"></i> Create Showcase
         </a>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="whats-new-tabs mb-4">
-        <ul class="nav nav-pills  nav-fill">
+        <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
             </li>
@@ -50,7 +50,7 @@
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                            <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                            <span aria-hidden="true"><i class="chevron-left"></i></span>
                         </a>
                     </li>
 
@@ -104,7 +104,7 @@
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
                                         <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                            <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                            <span aria-hidden="true"><i class="chevron-right"></i></span>
                                         </a>
                                     </li>
                 </ul>
@@ -146,11 +146,11 @@
                             <h5 class="card-title">
                                 <a href="{{ $showcase->showcase_url }}" class="text-decoration-none">
                                     @if($showcase->showcase_type === 'Thread')
-                                    <i class="bi bi-chat-left-text me-1"></i>
+                                    <i class="fas fa-comment-left-text me-1"></i>
                                     @elseif($showcase->showcase_type === 'Post')
-                                    <i class="bi bi-chat-right me-1"></i>
+                                    <i class="fas fa-comment-right me-1"></i>
                                     @else
-                                    <i class="bi bi-star me-1"></i>
+                                    <i class="fas fa-star me-1"></i>
                                     @endif
                                     {{ $showcase->showcase_title }}
                                 </a>
@@ -163,7 +163,7 @@
                             @if($showcase->description)
                             <div class="mt-2 p-2 bg-light rounded">
                                 <small class="text-description">
-                                    <i class="bi bi-quote me-1"></i>
+                                    <i class="quote me-1"></i>
                                     <strong>Showcase reason:</strong> {{ $showcase->description }}
                                 </small>
                             </div>
@@ -175,18 +175,18 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ $showcase->showcase_url }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye me-1"></i> Xem chi tiết
+                                        <i class="fas fa-eye me-1"></i> Xem chi tiết
                                     </a>
                                     <a href="{{ route('showcase.show', $showcase) }}"
                                         class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-star me-1"></i> Showcase
+                                        <i class="fas fa-star me-1"></i> Showcase
                                     </a>
                                 </div>
 
                                 @if($showcase->showcaseable && $showcase->showcaseable_type ===
                                 'App\Models\Thread')
                                 <small class="text-muted">
-                                    <i class="bi bi-folder me-1"></i>
+                                    <i class="folder me-1"></i>
                                     {{ $showcase->showcaseable->forum->name ?? 'Forum' }}
                                 </small>
                                 @endif
@@ -199,7 +199,7 @@
         </div>
         @else
         <div class="card-body text-center py-5">
-            <i class="bi bi-star display-4 text-muted"></i>
+            <i class="fas fa-star display-4 text-muted"></i>
             <p class="mt-3">No showcases found.</p>
             <a href="{{ route('showcase.create') }}" class="btn btn-primary">Create First Showcase</a>
         </div>
@@ -218,7 +218,7 @@
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
                         <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                            <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                            <span aria-hidden="true"><i class="chevron-left"></i></span>
                         </a>
                     </li>
 
@@ -272,7 +272,7 @@
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
                                         <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                            <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                            <span aria-hidden="true"><i class="chevron-right"></i></span>
                                         </a>
                                     </li>
                 </ul>

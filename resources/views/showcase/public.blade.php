@@ -23,7 +23,7 @@
                             @else
                             <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
                                 style="height: 180px;">
-                                <i class="bi bi-image text-muted fs-1"></i>
+                                <i class="fas fa-image text-muted fs-1"></i>
                             </div>
                             @endif
                             <div class="card-body">
@@ -85,14 +85,14 @@
                                     <div>
                                         <h5 class="mb-1">
                                             @if($showcase->showcaseable_type === 'App\\Models\\Thread')
-                                            <i class="bi bi-chat-left-text me-2"></i>
+                                            <i class="fas fa-comment-left-text me-2"></i>
                                             <a href="{{ route('showcase.show', $showcase) }}"
                                                 class="text-decoration-none">
                                                 {{ $showcase->showcaseable ? $showcase->showcaseable->title :
                                                 __('Unknown Title') }}
                                             </a>
                                             @elseif($showcase->showcaseable_type === 'App\\Models\\Post')
-                                            <i class="bi bi-chat-right me-2"></i>
+                                            <i class="fas fa-comment-right me-2"></i>
                                             <a href="{{ route('showcase.show', $showcase) }}"
                                                 class="text-decoration-none">
                                                 {{ __('Reply in') }} {{ ($showcase->showcaseable &&
@@ -100,14 +100,14 @@
                                                 $showcase->showcaseable->thread->title : __('Unknown Thread') }}
                                             </a>
                                             @elseif($showcase->showcaseable_type === 'App\\Models\\Project')
-                                            <i class="bi bi-briefcase me-2"></i>
+                                            <i class="fas fa-briefcase me-2"></i>
                                             <a href="{{ route('showcase.show', $showcase) }}"
                                                 class="text-decoration-none">
                                                 {{ $showcase->showcaseable ? $showcase->showcaseable->title :
                                                 __('Unknown Title') }}
                                             </a>
                                             @else
-                                            <i class="bi bi-star me-2"></i>
+                                            <i class="fas fa-star me-2"></i>
                                             <a href="{{ route('showcase.show', $showcase) }}"
                                                 class="text-decoration-none">
                                                 {{ $showcase->title ?? __('Showcase item') }}
@@ -186,7 +186,7 @@
                         <p>{{ __('Showcase your best content and contributions to the community.') }}</p>
                         <div class="d-grid gap-2">
                             <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-2"></i>{{ __('Create New Showcase') }}
+                                <i class="fas fa-plus-circle me-2"></i>{{ __('Create New Showcase') }}
                             </a>
                             <a href="{{ route('showcase.index') }}" class="btn btn-outline-secondary">
                                 {{ __('Manage Your Showcase') }}

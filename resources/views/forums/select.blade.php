@@ -26,7 +26,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search for a forum" id="forum-search">
                                 <button class="btn btn-outline-secondary" type="button" id="search-button">
-                                    <i class="bi bi-search"></i>
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </form>

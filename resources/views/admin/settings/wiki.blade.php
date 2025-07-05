@@ -100,7 +100,7 @@
                 id="wikiStatus">
                 <h6 class="mb-2">
                     <i
-                        class="bi {{ ($settings['wiki_enabled'] ?? false) ? 'bi-check-circle' : 'bi-x-circle' }} me-2"></i>
+                        class="{{ ($settings['wiki_enabled'] ?? false) ? 'fas fa-check-circle' : 'fas fa-times-circle' }} me-2"></i>
                     <span id="wikiStatusText">
                         {{ ($settings['wiki_enabled'] ?? false) ? 'Wiki đang hoạt động' : 'Wiki đã tắt' }}
                     </span>

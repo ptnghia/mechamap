@@ -12,7 +12,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{ url('/') }}" class="text-decoration-none">
-                            <i class="bi bi-house me-2"></i>
+                            <i class="fas fa-home me-2"></i>
                             {{ __('messages.home') }}
                         </a>
                     </li>
@@ -31,11 +31,11 @@
                 </div>
                 <div class="mt-3 mt-sm-0 d-flex gap-2">
                     <button class="btn btn-outline-secondary btn-sm" id="advancedSearchToggle" onclick="toggleAdvancedSearch()">
-                        <i class="bi bi-search me-2"></i> {{ __('messages.marketplace.advanced_search') }}
+                        <i class="fas fa-search me-2"></i> {{ __('messages.marketplace.advanced_search') }}
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-sort-down me-2"></i> {{ __('messages.marketplace.sort') }}
+                            <i class="fas fa-sort-down me-2"></i> {{ __('messages.marketplace.sort') }}
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                             <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}">{{ __('messages.marketplace.relevance') }}</a></li>
@@ -75,10 +75,10 @@
                         <span class="text-muted small">{{ __('messages.marketplace.view') }}:</span>
                         <div class="btn-group btn-group-sm" role="group">
                             <button type="button" class="btn btn-outline-secondary active" id="gridView">
-                                <i class="bi bi-grid"></i>
+                                <i class="fas fa-th"></i>
                             </button>
                             <button type="button" class="btn btn-outline-secondary" id="listView">
-                                <i class="bi bi-list"></i>
+                                <i class="fas fa-list"></i>
                             </button>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                     @empty
                         <div class="col-12">
                             <div class="text-center py-5">
-                                <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
+                                <i class="fas fa-search text-muted" style="font-size: 4rem;"></i>
                                 <h4 class="mt-3">{{ __('messages.marketplace.no_products_found') }}</h4>
                                 <p class="text-muted">{{ __('messages.marketplace.try_adjusting_filters') }}</p>
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateCartCount();
 
                 // Change button to "Added" state temporarily
-                button.innerHTML = '<i class="bi bi-check"></i>';
+                button.innerHTML = '<i class="fas fa-check"></i>';
                 button.classList.remove('btn-primary');
                 button.classList.add('btn-success');
 

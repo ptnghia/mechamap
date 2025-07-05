@@ -78,9 +78,9 @@
                                         <div class="col-md-4">
                                             <div class="setup-item {{ $user->email_verified_at ? 'completed' : '' }}">
                                                 @if($user->email_verified_at)
-                                                    <i class="bi bi-check-circle-fill"></i>
+                                                    <i class="fas fa-check-circle-fill"></i>
                                                 @else
-                                                    <i class="bi bi-circle"></i>
+                                                    <i class="circle"></i>
                                                 @endif
                                                 <span>{{ __('Verify your email') }}</span>
                                             </div>
@@ -88,9 +88,9 @@
                                         <div class="col-md-4">
                                             <div class="setup-item {{ $user->avatar ? 'completed' : '' }}">
                                                 @if($user->avatar)
-                                                    <i class="bi bi-check-circle-fill"></i>
+                                                    <i class="fas fa-check-circle-fill"></i>
                                                 @else
-                                                    <i class="bi bi-circle"></i>
+                                                    <i class="circle"></i>
                                                 @endif
                                                 <span>{{ __('Add an avatar') }}</span>
                                             </div>
@@ -98,9 +98,9 @@
                                         <div class="col-md-4">
                                             <div class="setup-item {{ $user->about_me ? 'completed' : '' }}">
                                                 @if($user->about_me)
-                                                    <i class="bi bi-check-circle-fill"></i>
+                                                    <i class="fas fa-check-circle-fill"></i>
                                                 @else
-                                                    <i class="bi bi-circle"></i>
+                                                    <i class="circle"></i>
                                                 @endif
                                                 <span>{{ __('Like a post') }}</span>
                                             </div>

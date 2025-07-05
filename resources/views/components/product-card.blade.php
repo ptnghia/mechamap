@@ -94,12 +94,12 @@
                         <button type="button" class="btn btn-outline-primary btn-sm"
                                 onclick="addToWishlist({{ $product->id }})"
                                 title="{{ __('messages.marketplace.add_to_wishlist') }}">
-                            <i class="bi bi-heart"></i>
+                            <i class="heart"></i>
                         </button>
                         <button type="button" class="btn btn-primary btn-sm"
                                 onclick="addToCart({{ $product->id }})"
                                 title="{{ __('messages.marketplace.add_to_cart') }}">
-                            <i class="bi bi-cart-plus"></i>
+                            <i class="fas fa-shopping-cart-plus"></i>
                         </button>
                     </div>
                 </div>

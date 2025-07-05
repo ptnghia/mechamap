@@ -2,7 +2,7 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">{{ __('About') }}</h5>
         @if(!isset($showAll))
-            <a href="#about" class="see-all-link">{{ __('See All') }} <i class="bi bi-arrow-right"></i></a>
+            <a href="#about" class="see-all-link">{{ __('See All') }} <i class="fas fa-arrow-right"></i></a>
         @endif
     </div>
     <div class="card-body">

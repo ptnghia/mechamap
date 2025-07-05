@@ -12,7 +12,7 @@
                 <div class="col-12">
                     <label class="form-label fw-semibold">{{ __('messages.marketplace.keywords') }}</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="text"
                                name="search"
                                value="{{ request('search') }}"
@@ -205,11 +205,11 @@
             <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-search me-2"></i>
+                        <i class="fas fa-search me-2"></i>
                         {{ __('messages.marketplace.search_products') }}
                     </button>
                     <a href="{{ route('marketplace.products.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-clockwise me-2"></i>
+                        <i class="arrow-clockwise me-2"></i>
                         {{ __('messages.marketplace.clear_all') }}
                     </a>
                 </div>
@@ -228,10 +228,10 @@ function toggleAdvancedSearch() {
 
     if (panel.style.display === 'none') {
         panel.style.display = 'block';
-        if (button) button.innerHTML = '<i class="bi bi-search mr-2"></i> Hide Advanced Search';
+        if (button) button.innerHTML = '<i class="fas fa-search mr-2"></i> Hide Advanced Search';
     } else {
         panel.style.display = 'none';
-        if (button) button.innerHTML = '<i class="bi bi-search mr-2"></i> Advanced Search';
+        if (button) button.innerHTML = '<i class="fas fa-search mr-2"></i> Advanced Search';
     }
 }
 

@@ -31,7 +31,7 @@
 
                 <!-- Mobile Cart -->
                 <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
-                    <i class="bi bi-cart3"></i>
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
                 </a>
 
@@ -431,8 +431,8 @@
                             <li>
                                 <div class="dropdown-item d-flex justify-content-between align-items-center">
                                     <span id="themeLabel">
-                                        <i class="bi bi-moon theme-icon-dark me-2"></i>
-                                        <i class="bi bi-sun theme-icon-light me-2 d-none"></i>
+                                        <i class="fas fa-moon theme-icon-dark me-2"></i>
+                                        <i class="fas fa-sun theme-icon-light me-2 d-none"></i>
                                         <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? 'Light Mode' : 'Dark Mode' }}</span>
                                     </span>
                                     <div class="form-check form-switch">
@@ -450,7 +450,7 @@
                         <input type="text" class="form-control search-input" id="unified-search" name="query" autocomplete="off"
                             placeholder="{{ $isMarketplace ? __('messages.common.search_placeholder') : __('messages.common.search_placeholder') }}" aria-label="{{ __('messages.common.search') }}">
                         <button class="btn btn-outline-secondary" type="button" id="unified-search-btn">
-                            <i class="bi bi-search"></i>
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
 
@@ -480,7 +480,7 @@
                     <!-- Cart (always show) -->
                     <li class="nav-item dropdown">
                         <a class="nav-link position-relative" href="#" id="cartToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-cart3"></i>
+                            <i class="fas fa-shopping-cart"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount" style="display: none;">
                                 0
                             </span>
@@ -494,7 +494,7 @@
                             <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
                                 <!-- Empty state -->
                                 <div class="text-center text-muted py-4" id="miniCartEmpty">
-                                    <i class="bi bi-cart-x" style="font-size: 2.5rem;"></i>
+                                    <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
                                     <p class="mb-0 mt-2">{{ __('messages.cart.cart_empty') }}</p>
                                     <small>{{ __('messages.cart.add_products') }}</small>
                                 </div>
@@ -510,11 +510,11 @@
                                 </div>
                                 <div class="d-grid gap-2">
                                     <a href="{{ route('marketplace.cart.index') }}" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-cart me-1"></i>
+                                        <i class="fas fa-shopping-cart me-1"></i>
                                         View Cart
                                     </a>
                                     <button type="button" class="btn btn-primary btn-sm" onclick="proceedToCheckout()">
-                                        <i class="bi bi-credit-card me-1"></i>
+                                        <i class="fas fa-credit-card me-1"></i>
                                         Checkout
                                     </button>
                                 </div>
@@ -677,13 +677,13 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                    <i class="bi bi-image me-2"></i>
+                                    <i class="fas fa-image me-2"></i>
                                     {{ __('messages.nav.my_showcase') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="bi bi-gear me-2"></i>
+                                    <i class="fas fa-cog me-2"></i>
                                     {{ __('user.settings') }}
                                 </a>
                             </li>
@@ -693,7 +693,7 @@
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('business.index') }}">
-                                    <i class="bi bi-briefcase me-2"></i>
+                                    <i class="fas fa-briefcase me-2"></i>
                                     {{ __('messages.nav.my_business') }}
                                 </a>
                             </li>
@@ -709,7 +709,7 @@
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('subscription.index') }}">
-                                    <i class="bi bi-star me-2"></i>
+                                    <i class="fas fa-star me-2"></i>
                                     {{ __('messages.nav.my_subscription') }}
                                 </a>
                             </li>
@@ -718,7 +718,7 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item">
-                                        <i class="bi bi-box-arrow-right me-2"></i>
+                                        <i class="fas fa-sign-out-alt me-2"></i>
                                         {{ __('auth.logout') }}
                                     </button>
                                 </form>
@@ -895,7 +895,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query.length >= 2) {
             // Show loading state
             showSearchResults();
-            searchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="bi bi-hourglass-split me-2"></i>Searching...</div>';
+            searchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="fas fa-hourglass-half me-2"></i>Searching...</div>';
 
             // Set a timeout to avoid too many requests
             searchTimeout = setTimeout(function() {
@@ -1014,10 +1014,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!hasThreads && !hasPosts && !hasForum && !hasThread) {
             searchResultsContent.innerHTML = `
                 <div class="search-no-results p-3 text-center">
-                    <i class="bi bi-search me-2"></i>No results found for "${searchInput.value}".
+                    <i class="fas fa-search me-2"></i>No results found for "${searchInput.value}".
                     <p class="mt-2">
                         <a href="${data.advanced_search_url || '/advanced-search'}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
-                            <i class="bi bi-sliders me-1"></i>THỬ TÌM KIẾM NÂNG CAO
+                            <i class="fas fa-sliders-h me-1"></i>THỬ TÌM KIẾM NÂNG CAO
                         </a>
                     </p>
                 </div>
@@ -1192,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (miniCartFooter) miniCartFooter.style.display = 'none';
             miniCartItems.innerHTML = `
                 <div class="text-center text-muted py-4">
-                    <i class="bi bi-cart-x" style="font-size: 2.5rem;"></i>
+                    <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
                     <p class="mb-0 mt-2">Your cart is empty</p>
                     <small>Add some products to get started</small>
                 </div>
@@ -1210,7 +1210,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${item.product_image ?
                                     `<img src="${item.product_image}" class="img-fluid rounded" alt="${item.product_name}" style="height: 50px; object-fit: cover;">` :
                                     `<div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 50px;">
-                                        <i class="bi bi-image text-muted"></i>
+                                        <i class="fas fa-image text-muted"></i>
                                     </div>`
                                 }
                             </div>

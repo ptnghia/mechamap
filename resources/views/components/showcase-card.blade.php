@@ -27,11 +27,11 @@
         <h5 class="showcase-title {{ $compact ? 'h6' : 'h5' }}">
             <a href="{{ route('showcase.show', $showcase) }}" class="text-decoration-none">
                 @if($showcase->showcaseable_type === 'App\Models\Thread')
-                <i class="bi bi-chat-left-text me-1"></i>
+                <i class="fas fa-comment-left-text me-1"></i>
                 @elseif($showcase->showcaseable_type === 'App\Models\Post')
-                <i class="bi bi-chat-right me-1"></i>
+                <i class="fas fa-comment-right me-1"></i>
                 @else
-                <i class="bi bi-star me-1"></i>
+                <i class="fas fa-star me-1"></i>
                 @endif
                 {{ $showcase->title ?? $showcase->showcaseable->title ?? __('content.showcase_item') }}
             </a>
@@ -67,13 +67,13 @@
             <div class="showcase-stats text-muted small">
                 @if(method_exists($showcase, 'likesCount'))
                 <span class="me-2">
-                    <i class="bi bi-heart"></i> {{ $showcase->likesCount() }}
+                    <i class="heart"></i> {{ $showcase->likesCount() }}
                 </span>
                 @endif
 
                 @if($showcase->media && $showcase->media->count() > 0)
                 <span>
-                    <i class="bi bi-images"></i> {{ $showcase->media->count() }}
+                    <i class="images"></i> {{ $showcase->media->count() }}
                 </span>
                 @endif
             </div>

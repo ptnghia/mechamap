@@ -15,7 +15,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}" class="text-decoration-none">
-                            <i class="bi bi-house me-2"></i>
+                            <i class="fas fa-home me-2"></i>
                             Home
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-credit-card me-2"></i>
+                            <i class="fas fa-credit-card me-2"></i>
                             Secure Checkout
                         </h5>
                     </div>
@@ -47,7 +47,7 @@
                         <!-- Success/Error Messages -->
                         @if(session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle me-2"></i>
+                                <i class="fas fa-check-circle me-2"></i>
                                 {{ session('success') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
@@ -55,7 +55,7 @@
 
                         @if($errors->any())
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <i class="fas fa-exclamation-triangle me-2"></i>
                                 @foreach($errors->all() as $error)
                                     {{ $error }}<br>
                                 @endforeach
@@ -68,7 +68,7 @@
                                 <div class="step active" data-step="1">
                                     <div class="step-circle">
                                         <span class="step-number">1</span>
-                                        <i class="bi bi-check step-check d-none"></i>
+                                        <i class="fas fa-check step-check d-none"></i>
                                     </div>
                                     <div class="step-label">Shipping</div>
                                 </div>
@@ -76,7 +76,7 @@
                                 <div class="step" data-step="2">
                                     <div class="step-circle">
                                         <span class="step-number">2</span>
-                                        <i class="bi bi-check step-check d-none"></i>
+                                        <i class="fas fa-check step-check d-none"></i>
                                     </div>
                                     <div class="step-label">Payment</div>
                                 </div>
@@ -84,7 +84,7 @@
                                 <div class="step" data-step="3">
                                     <div class="step-circle">
                                         <span class="step-number">3</span>
-                                        <i class="bi bi-check step-check d-none"></i>
+                                        <i class="fas fa-check step-check d-none"></i>
                                     </div>
                                     <div class="step-label">Review</div>
                                 </div>
@@ -179,12 +179,12 @@
 
                                     <div class="d-flex justify-content-between">
                                         <a href="{{ route('marketplace.cart.index') }}" class="btn btn-outline-secondary">
-                                            <i class="bi bi-arrow-left me-2"></i>
+                                            <i class="fas fa-arrow-left me-2"></i>
                                             Back to Cart
                                         </a>
                                         <button type="submit" class="btn btn-primary">
                                             Continue to Payment
-                                            <i class="bi bi-arrow-right ms-2"></i>
+                                            <i class="fas fa-arrow-right ms-2"></i>
                                         </button>
                                     </div>
                                 </form>
@@ -201,28 +201,28 @@
                                             <div class="form-check payment-option">
                                                 <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="credit_card" checked>
                                                 <label class="form-check-label" for="creditCard">
-                                                    <i class="bi bi-credit-card me-2"></i>
+                                                    <i class="fas fa-credit-card me-2"></i>
                                                     Credit/Debit Card
                                                 </label>
                                             </div>
                                             <div class="form-check payment-option">
                                                 <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
                                                 <label class="form-check-label" for="paypal">
-                                                    <i class="bi bi-paypal me-2"></i>
+                                                    <i class="paypal me-2"></i>
                                                     PayPal
                                                 </label>
                                             </div>
                                             <div class="form-check payment-option">
                                                 <input class="form-check-input" type="radio" name="payment_method" id="bankTransfer" value="bank_transfer">
                                                 <label class="form-check-label" for="bankTransfer">
-                                                    <i class="bi bi-bank me-2"></i>
+                                                    <i class="bank me-2"></i>
                                                     Bank Transfer
                                                 </label>
                                             </div>
                                             <div class="form-check payment-option">
                                                 <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
                                                 <label class="form-check-label" for="cod">
-                                                    <i class="bi bi-cash me-2"></i>
+                                                    <i class="cash me-2"></i>
                                                     Cash on Delivery
                                                 </label>
                                             </div>
@@ -254,7 +254,7 @@
                                     <!-- PayPal Details -->
                                     <div id="paypalDetails" class="payment-details d-none">
                                         <div class="alert alert-info">
-                                            <i class="bi bi-info-circle me-2"></i>
+                                            <i class="fas fa-info-circle me-2"></i>
                                             You will be redirected to PayPal to complete your payment.
                                         </div>
                                     </div>
@@ -262,7 +262,7 @@
                                     <!-- Bank Transfer Details -->
                                     <div id="bankTransferDetails" class="payment-details d-none">
                                         <div class="alert alert-warning">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
                                             Bank transfer details will be provided after order confirmation.
                                         </div>
                                     </div>
@@ -270,19 +270,19 @@
                                     <!-- COD Details -->
                                     <div id="codDetails" class="payment-details d-none">
                                         <div class="alert alert-success">
-                                            <i class="bi bi-check-circle me-2"></i>
+                                            <i class="fas fa-check-circle me-2"></i>
                                             You will pay when your order is delivered.
                                         </div>
                                     </div>
 
                                     <div class="d-flex justify-content-between">
                                         <button type="button" class="btn btn-outline-secondary" onclick="previousStep()">
-                                            <i class="bi bi-arrow-left me-2"></i>
+                                            <i class="fas fa-arrow-left me-2"></i>
                                             Back to Shipping
                                         </button>
                                         <button type="submit" class="btn btn-primary">
                                             Review Order
-                                            <i class="bi bi-arrow-right ms-2"></i>
+                                            <i class="fas fa-arrow-right ms-2"></i>
                                         </button>
                                     </div>
                                 </form>
@@ -335,13 +335,13 @@
 
                                     <div class="d-flex justify-content-between">
                                         <button type="button" class="btn btn-outline-secondary" onclick="previousStep()">
-                                            <i class="bi bi-arrow-left me-2"></i>
+                                            <i class="fas fa-arrow-left me-2"></i>
                                             Back to Payment
                                         </button>
                                         <form action="{{ route('marketplace.checkout.place-order') }}" method="POST" style="display: inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-success">
-                                                <i class="bi bi-check-circle me-2"></i>
+                                                <i class="fas fa-check-circle me-2"></i>
                                                 Complete Order
                                             </button>
                                         </form>
@@ -385,7 +385,7 @@
                                             <img src="{{ $imageUrl }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}">
                                         @else
                                             <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                <i class="bi bi-image text-muted"></i>
+                                                <i class="fas fa-image text-muted"></i>
                                             </div>
                                         @endif
                                     </div>
@@ -428,7 +428,7 @@
                         <!-- Security Info -->
                         <div class="mt-3 text-center">
                             <small class="text-muted">
-                                <i class="bi bi-shield-check me-1"></i>
+                                <i class="fas fa-shield-alt-check me-1"></i>
                                 Your payment information is secure and encrypted
                             </small>
                         </div>
@@ -846,11 +846,11 @@ function generateOrderReviewHTML(data) {
 
         <div class="d-flex justify-content-between mt-4">
             <button type="button" class="btn btn-outline-secondary" onclick="previousStep()">
-                <i class="bi bi-arrow-left me-2"></i>
+                <i class="fas fa-arrow-left me-2"></i>
                 Back to Payment
             </button>
             <button type="button" class="btn btn-success btn-lg" onclick="placeOrder()">
-                <i class="bi bi-check-circle me-2"></i>
+                <i class="fas fa-check-circle me-2"></i>
                 Place Order
             </button>
         </div>

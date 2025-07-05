@@ -9,7 +9,7 @@
     </a>
     <div class="btn-group me-2">
         <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal">
-            <i class="bi {{ $user->banned_at ? 'bi-person-check me-1' : 'bi-person-x me-1' }}"></i>
+            <i class="{{ $user->banned_at ? 'person-check me-1' : 'person-x me-1' }}"></i>
             {{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -368,12 +368,12 @@
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
+                icon.classList.remove('fas fa-eye');
+                icon.classList.add('fas fa-eye-slash');
             } else {
                 passwordInput.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
+                icon.classList.remove('fas fa-eye-slash');
+                icon.classList.add('fas fa-eye');
             }
         });
     });

@@ -5,7 +5,7 @@
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0">
-                <i class="bi bi-lightbulb-fill me-2 text-warning"></i>
+                <i class="lightbulb-fill me-2 text-warning"></i>
                 {{ __('sidebar.writing_tips') }}
             </h5>
         </div>
@@ -13,7 +13,7 @@
             <div class="writing-tips">
                 <div class="tip-item mb-3">
                     <div class="d-flex align-items-start">
-                        <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                        <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
                             <strong>{{ __('sidebar.clear_title') }}</strong>
                             <p class="text-muted small mb-0">{{ __('sidebar.clear_title_desc') }}</p>
@@ -23,7 +23,7 @@
 
                 <div class="tip-item mb-3">
                     <div class="d-flex align-items-start">
-                        <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                        <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
                             <strong>{{ __('sidebar.detailed_content') }}</strong>
                             <p class="text-muted small mb-0">{{ __('sidebar.detailed_content_desc') }}</p>
@@ -33,7 +33,7 @@
 
                 <div class="tip-item mb-3">
                     <div class="d-flex align-items-start">
-                        <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                        <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
                             <strong>{{ __('sidebar.use_images') }}</strong>
                             <p class="text-muted small mb-0">{{ __('sidebar.use_images_desc') }}</p>
@@ -43,7 +43,7 @@
 
                 <div class="tip-item">
                     <div class="d-flex align-items-start">
-                        <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                        <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
                             <strong>{{ __('sidebar.choose_right_category') }}</strong>
                             <p class="text-muted small mb-0">{{ __('sidebar.choose_right_category_desc') }}</p>
@@ -58,36 +58,36 @@
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0">
-                <i class="bi bi-shield-check-fill me-2 text-primary"></i>
+                <i class="fas fa-shield-alt-check-fill me-2 text-primary"></i>
                 {{ __('sidebar.community_rules') }}
             </h5>
         </div>
         <div class="card-body">
             <div class="rules-list">
                 <div class="rule-item mb-2">
-                    <i class="bi bi-dot text-primary"></i>
+                    <i class="dot text-primary"></i>
                     <span class="small">{{ __('sidebar.respect_opinions') }}</span>
                 </div>
                 <div class="rule-item mb-2">
-                    <i class="bi bi-dot text-primary"></i>
+                    <i class="dot text-primary"></i>
                     <span class="small">{{ __('sidebar.no_spam') }}</span>
                 </div>
                 <div class="rule-item mb-2">
-                    <i class="bi bi-dot text-primary"></i>
+                    <i class="dot text-primary"></i>
                     <span class="small">{{ __('sidebar.appropriate_language') }}</span>
                 </div>
                 <div class="rule-item mb-2">
-                    <i class="bi bi-dot text-primary"></i>
+                    <i class="dot text-primary"></i>
                     <span class="small">{{ __('sidebar.no_personal_info') }}</span>
                 </div>
                 <div class="rule-item">
-                    <i class="bi bi-dot text-primary"></i>
+                    <i class="dot text-primary"></i>
                     <span class="small">{{ __('sidebar.verify_info') }}</span>
                 </div>
             </div>
             <div class="mt-3">
                 <a href="{{ route('rules') ?? '/rules' }}" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-book me-1"></i>
+                    <i class="book me-1"></i>
                     {{ __('sidebar.read_full_rules') }}
                 </a>
             </div>
@@ -98,7 +98,7 @@
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0">
-                <i class="bi bi-collection-fill me-2 text-info"></i>
+                <i class="fas fa-folder me-2 text-info"></i>
                 {{ __('sidebar.popular_categories') }}
             </h5>
         </div>
@@ -121,7 +121,7 @@
                             @if(isset($forum->icon) && $forum->icon)
                             <i class="{{ $forum->icon }} me-2 text-primary" aria-hidden="true"></i>
                             @else
-                            <i class="bi bi-folder me-2 text-primary" aria-hidden="true"></i>
+                            <i class="folder me-2 text-primary" aria-hidden="true"></i>
                             @endif
                             <div>
                                 <span class="fw-medium">{{ $forum->name }}</span>
@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <small class="text-muted">
-                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </small>
                     </a>
                 </div>
@@ -146,7 +146,7 @@
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0">
-                <i class="bi bi-question-circle-fill me-2 text-secondary"></i>
+                <i class="question-circle-fill me-2 text-secondary"></i>
                 {{ __('sidebar.need_support') }}
             </h5>
         </div>
@@ -156,11 +156,11 @@
             </p>
             <div class="d-grid gap-2">
                 <a href="{{ route('help.writing-guide') }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-chat-dots me-1"></i>
+                    <i class="fas fa-comment-dots me-1"></i>
                     {{ __('sidebar.detailed_guide') }}
                 </a>
                 <a href="{{ route('contact') }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-envelope me-1"></i>
+                    <i class="fas fa-envelope me-1"></i>
                     {{ __('sidebar.contact_support') }}
                 </a>
             </div>
@@ -172,7 +172,7 @@
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0">
-                <i class="bi bi-person-circle me-2 text-success"></i>
+                <i class="person-circle me-2 text-success"></i>
                 {{ __('sidebar.your_activity') }}
             </h5>
         </div>
@@ -202,7 +202,7 @@
                 <div class="last-activity">
                     <p class="text-muted small mb-1">{{ __('sidebar.recent_post') }}</p>
                     <a href="{{ route('threads.show', $userLastThread) }}" class="text-decoration-none small">
-                        <i class="bi bi-arrow-right me-1"></i>
+                        <i class="fas fa-arrow-right me-1"></i>
                         {{ Str::limit($userLastThread->title, 30) }}
                     </a>
                 </div>

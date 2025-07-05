@@ -12,16 +12,16 @@
                         <div class="card-body">
                             <div class="list-group list-group-flush">
                                 <a href="{{ route('following.index') }}" class="list-group-item list-group-item-action active">
-                                    <i class="bi bi-people-fill me-2"></i> {{ __('Following') }}
+                                    <i class="fas fa-users-fill me-2"></i> {{ __('Following') }}
                                 </a>
                                 <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-person-fill me-2"></i> {{ __('Followers') }}
+                                    <i class="fas fa-user me-2"></i> {{ __('Followers') }}
                                 </a>
                                 <a href="{{ route('following.threads') }}" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                    <i class="far fa-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
                                 </a>
                                 <a href="{{ route('following.participated') }}" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-chat-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                    <i class="fas fa-comment-dots-fill me-2"></i> {{ __('Participated Discussions') }}
                                 </a>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                                 </div>
                             @else
                                 <div class="text-center py-5">
-                                    <i class="bi bi-people fs-1 text-muted mb-3"></i>
+                                    <i class="fas fa-users fs-1 text-muted mb-3"></i>
                                     <p class="mb-0">{{ __('You are not following anyone yet.') }}</p>
                                     <p class="text-muted">{{ __('Follow other users to see their updates in your feed.') }}</p>
                                 </div>

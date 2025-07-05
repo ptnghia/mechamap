@@ -34,7 +34,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                     </div>
                 </div>
                 <div class="text-muted small mb-3">
-                    <i class="bi bi-calendar-check me-1"></i> {{ __('content.active_since') }} {{
+                    <i class="fas fa-calendar-check me-1"></i> {{ __('content.active_since') }} {{
                     \Carbon\Carbon::parse(config('app.established_year', '2023'))->format('Y') }}
                 </div>
             </div>
@@ -45,11 +45,11 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
             <div class="d-grid gap-2">
                 @guest
                 <a href="{{ route('login') }}" class="btn btn-primary">
-                    <i class="bi bi-person-plus me-2"></i>{{ __('content.join_community') }}
+                    <i class="fas fa-user-plus me-2"></i>{{ __('content.join_community') }}
                 </a>
                 @endguest
                 <a href="{{ route('business.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-graph-up me-2"></i>{{ __('content.business_development') }}
+                    <i class="fas fa-chart-line me-2"></i>{{ __('content.business_development') }}
                 </a>
             </div>
         </div>
@@ -58,7 +58,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các chủ đề mới/nổi bật -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="bi bi-star-fill me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-star-fill me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -82,9 +82,9 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                         <div>
                             <h6 class="mb-1 text-truncate" style="max-width: 100%;">{{ $thread->title }}</h6>
                             <div class="d-flex align-items-center small text-muted">
-                                <span class="me-2"><i class="bi bi-person-fill me-1"></i>{{ $thread->user->name
+                                <span class="me-2"><i class="fas fa-user me-1"></i>{{ $thread->user->name
                                     }}</span>
-                                <span class="me-2"><i class="bi bi-chat-dots me-1"></i>{{ $thread->comments->count()
+                                <span class="me-2"><i class="fas fa-comment-dots me-1"></i>{{ $thread->comments->count()
                                     }}</span>
                             </div>
                         </div>
@@ -106,7 +106,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các diễn đàn hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="bi bi-collection-fill me-2 text-primary"></i>{{ __('content.popular_forums') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-folder me-2 text-primary"></i>{{ __('content.popular_forums') }}</h5>
             <a href="{{ route('forums.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
@@ -140,7 +140,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Những người đóng góp hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="bi bi-people-fill me-2 text-success"></i>{{ __('content.active_members') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-users-fill me-2 text-success"></i>{{ __('content.active_members') }}</h5>
             <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
@@ -180,7 +180,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các cộng đồng được đề xuất -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="bi bi-globe2 me-2 text-info"></i>{{ __('content.related_communities') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-globe me-2 text-info"></i>{{ __('content.related_communities') }}</h5>
         </div>
         <div class="card-body">
             @php
@@ -227,7 +227,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                             }}</a>
                     </h6>
                     <p class="text-muted small mb-0">
-                        <i class="bi bi-chat-text me-1"></i>{{ $forum->threads_count }}
+                        <i class="fas fa-comment-text me-1"></i>{{ $forum->threads_count }}
                         {{ __('content.topics') }}
                     </p>
                 </div>

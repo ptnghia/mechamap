@@ -20,7 +20,7 @@
 
                 <div class="thread-actions">
                     <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn-jump">
-                        <i class="bi bi-arrow-right"></i> Đến bình luận cuối
+                        <i class="fas fa-arrow-right"></i> Đến bình luận cuối
                     </a>
 
                     @php
@@ -31,14 +31,14 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-follow">
-                            <i class="bi bi-bell-fill"></i> Đang theo dõi
+                            <i class="fas fa-bell-fill"></i> Đang theo dõi
                         </button>
                     </form>
                     @else
                     <form action="{{ route('threads.follow.add', $thread) }}" method="POST">
                         @csrf
                         <button type="submit" class="btn-follow">
-                            <i class="bi bi-bell"></i> Theo dõi
+                            <i class="fas fa-bell"></i> Theo dõi
                         </button>
                     </form>
                     @endif
@@ -48,17 +48,17 @@
 
                 <div class="d-flex justify-content-start g-3">
                     <div class="thread-meta-item">
-                        <i class="bi bi-eye"></i> {{ number_format($thread->view_count) }} Lượt xem
+                        <i class="fas fa-eye"></i> {{ number_format($thread->view_count) }} Lượt xem
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-chat"></i> {{ number_format($thread->comments_count ?? 0) }} Phản hồi
+                        <i class="fas fa-comment"></i> {{ number_format($thread->comments_count ?? 0) }} Phản hồi
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-people"></i> {{ number_format($thread->participant_count) }} Người tham gia
+                        <i class="fas fa-users"></i> {{ number_format($thread->participant_count) }} Người tham gia
                     </div>
                 </div>
                 <div class="thread-meta-item">
-                    <i class="bi bi-clock"></i> Bài viết cuối bởi
+                    <i class="fas fa-clock"></i> Bài viết cuối bởi
                     <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
                         {{ $thread->lastCommenter->name ?? $thread->user->name }}
                     </a>
@@ -140,7 +140,7 @@
                     @csrf
                     <button type="submit"
                         class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
-                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="fas fa-thumbs-up"></i>
                         Thích
                         <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
                     </button>
@@ -151,7 +151,7 @@
                     @csrf
                     <button type="submit"
                         class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }} btn-save">
-                        <i class="bi {{ Auth::check() && $isSaved ? 'bi-bookmark-fill' : 'bi-bookmark' }}"></i>
+                        <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
                         {{ Auth::check() && $isSaved ? 'Đã lưu' : 'Lưu' }}
                     </button>
                 </form>
@@ -165,7 +165,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-info btn-theodoi">
-                        <i class="bi bi-bell-fill"></i>
+                        <i class="fas fa-bell-fill"></i>
                         Đang theo dõi
                     </button>
                 </form>
@@ -173,7 +173,7 @@
                 <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-info btn-theodoi">
-                        <i class="bi bi-bell"></i>
+                        <i class="fas fa-bell"></i>
                         Theo dõi
                     </button>
                 </form>
@@ -185,41 +185,41 @@
                 <div class="dropdown d-inline">
                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle btn-share" type="button"
                         id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-share"></i> Chia sẻ
+                        <i class="fas fa-share-alt"></i> Chia sẻ
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="shareDropdown">
                         <li><a class="dropdown-item"
                                 href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
-                                target="_blank"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
+                                target="_blank"><i class="fab fa-facebook-f me-2"></i>Facebook</a></li>
                         <li><a class="dropdown-item"
                                 href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($thread->title) }}"
-                                target="_blank"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+                                target="_blank"><i class="fab fa-twitter me-2"></i>Twitter</a></li>
                         <li><a class="dropdown-item"
                                 href="https://wa.me/?text={{ urlencode($thread->title . ' ' . request()->url()) }}"
-                                target="_blank"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a></li>
+                                target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="#"
                                 onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('Đã sao chép liên kết!'); return false;"><i
-                                    class="bi bi-clipboard me-2"></i>Sao chép liên kết</a></li>
+                                    class="fas fa-clipboard me-2"></i>Sao chép liên kết</a></li>
                     </ul>
                 </div>
 
                 <!-- Reply Button -->
                 <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
-                    <i class="bi bi-reply"></i> Trả lời
+                    <i class="fas fa-reply"></i> Trả lời
                 </a>
 
                 <!-- Edit/Delete Buttons (if owner) -->
                 @can('update', $thread)
                 <div class="btn-group ms-2">
                     <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-pencil"></i> Chỉnh sửa
+                        <i class="fas fa-edit"></i> Chỉnh sửa
                     </a>
                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                         data-bs-target="#deleteThreadModal">
-                        <i class="bi bi-trash"></i> Xóa
+                        <i class="fas fa-trash"></i> Xóa
                     </button>
                 </div>
 
@@ -362,7 +362,7 @@
                                     @csrf
                                     <button type="submit"
                                         class="btn btn-sm {{ Auth::check() && $reply->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        <i class="bi bi-hand-thumbs-up"></i>
+                                        <i class="fas fa-thumbs-up"></i>
                                         <span class="badge bg-secondary">{{ $reply->like_count }}</span>
                                     </button>
                                 </form>
@@ -372,7 +372,7 @@
                                 <!-- Reply Button -->
                                 <button class="btn btn-sm btn-outline-secondary reply-button"
                                     data-parent-id="{{ $comment->id }}">
-                                    <i class="bi bi-reply"></i> Trả lời
+                                    <i class="fas fa-reply"></i> Trả lời
                                 </button>
 
                                 <!-- Edit/Delete Buttons (if owner) -->
@@ -380,7 +380,7 @@
                                 <div class="btn-group ms-2">
                                     <button class="btn btn-sm btn-outline-secondary edit-comment-button"
                                         data-comment-id="{{ $reply->id }}" data-comment-content="{{ $reply->content }}">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                     <form action="{{ route('comments.destroy', $reply) }}" method="POST"
                                         class="d-inline"
@@ -388,7 +388,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -407,7 +407,7 @@
                         @csrf
                         <button type="submit"
                             class="btn btn-sm {{ Auth::check() && $comment->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="bi bi-hand-thumbs-up"></i>
+                            <i class="fas fa-thumbs-up"></i>
                             <span class="badge bg-secondary">{{ $comment->like_count }}</span>
                         </button>
                     </form>
@@ -417,13 +417,13 @@
                     <!-- Quote Button -->
                     <button class="btn btn-sm btn-outline-secondary quote-button" data-comment-id="{{ $comment->id }}"
                         data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
-                        <i class="bi bi-chat-quote"></i> Trích dẫn
+                        <i class="fas fa-comment-quote"></i> Trích dẫn
                     </button>
 
                     <!-- Reply Button -->
                     <button class="btn btn-sm btn-outline-secondary reply-button ms-2"
                         data-parent-id="{{ $comment->id }}">
-                        <i class="bi bi-reply"></i> Trả lời
+                        <i class="fas fa-reply"></i> Trả lời
                     </button>
 
                     <!-- Edit/Delete Buttons (if owner) -->
@@ -431,14 +431,14 @@
                     <div class="btn-group ms-2">
                         <button class="btn btn-sm btn-outline-secondary edit-comment-button"
                             data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}">
-                            <i class="bi bi-pencil"></i>
+                            <i class="fas fa-edit"></i>
                         </button>
                         <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline"
                             onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash"></i>
+                                <i class="fas fa-trash"></i>
                             </button>
                         </form>
                     </div>
@@ -472,7 +472,7 @@
 
                 <div class="mb-3">
                     <label for="content" class="form-label">
-                        <i class="bi bi-chat-text me-2"></i>Nội dung phản hồi <span class="text-danger">*</span>
+                        <i class="fas fa-comment-text me-2"></i>Nội dung phản hồi <span class="text-danger">*</span>
                     </label>
                     <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content"
                         placeholder="Nhập nội dung phản hồi của bạn...">{{ old('content') }}</textarea>
@@ -486,7 +486,7 @@
 
                 <div class="mb-3">
                     <label for="images" class="form-label">
-                        <i class="bi bi-image me-2"></i>Đính kèm hình ảnh (tùy chọn)
+                        <i class="fas fa-image me-2"></i>Đính kèm hình ảnh (tùy chọn)
                     </label>
 
                     <!-- Custom File Upload Area -->
@@ -494,7 +494,7 @@
                         <div class="upload-zone" id="upload-zone">
                             <div class="upload-content">
                                 <div class="upload-icon">
-                                    <i class="bi bi-cloud-upload"></i>
+                                    <i class="fas fa-cloud-upload-alt"></i>
                                 </div>
                                 <div class="upload-text">
                                     <h6 class="mb-1">Kéo thả hình ảnh vào đây</h6>
@@ -521,7 +521,7 @@
 
                     @error('images.*')
                     <div class="text-danger small mt-2">
-                        <i class="bi bi-exclamation-triangle me-1"></i>{{ $message }}
+                        <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
                     </div>
                     @enderror
                 </div>
@@ -533,7 +533,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="submit-reply-btn">
-                        <i class="bi bi-send"></i> Gửi phản hồi
+                        <i class="fas fa-paper-plane"></i> Gửi phản hồi
                     </button>
                 </div>
             </form>
@@ -807,7 +807,7 @@ function initializeFileUpload() {
         addMoreBtn.className = 'image-preview add-more-btn';
         addMoreBtn.innerHTML = `
             <div class="add-more-content">
-                <i class="bi bi-plus-lg"></i>
+                <i class="fas fa-plus"></i>
                 <span>Thêm ảnh</span>
             </div>
         `;
@@ -830,10 +830,10 @@ function initializeFileUpload() {
                         </div>
                         <div class="image-actions">
                             <button type="button" class="btn-action btn-view" title="Xem">
-                                <i class="bi bi-eye"></i>
+                                <i class="fas fa-eye"></i>
                             </button>
                             <button type="button" class="btn-action btn-remove" title="Xóa">
-                                <i class="bi bi-trash"></i>
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
@@ -862,14 +862,14 @@ function initializeFileUpload() {
         preview.className = 'image-preview file-preview';
         preview.innerHTML = `
             <div class="file-icon">
-                <i class="bi bi-file-earmark"></i>
+                <i class="fas fa-file"></i>
             </div>
             <div class="file-info">
                 <div class="file-name" title="${file.name}">${truncateFileName(file.name, 15)}</div>
                 <div class="file-size">${formatFileSize(file.size)}</div>
             </div>
             <button type="button" class="btn-action btn-remove" title="Xóa">
-                <i class="bi bi-trash"></i>
+                <i class="fas fa-trash"></i>
             </button>
         `;
 
@@ -917,7 +917,7 @@ function initializeFileUpload() {
                     <div class="image-modal-header">
                         <h5>${title}</h5>
                         <button type="button" class="btn-close-modal">
-                            <i class="bi bi-x-lg"></i>
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <div class="image-modal-body">
@@ -1014,7 +1014,7 @@ function initializeFormSubmission() {
 
             // Reset button state
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-send"></i> Gửi phản hồi';
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi phản hồi';
 
             alert('Có lỗi xảy ra khi gửi phản hồi. Vui lòng thử lại.');
         }

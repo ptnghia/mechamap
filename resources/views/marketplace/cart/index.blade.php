@@ -15,7 +15,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}" class="text-decoration-none">
-                            <i class="bi bi-house me-2"></i>
+                            <i class="house me-2"></i>
                             Home
                         </a>
                     </li>
@@ -36,7 +36,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-cart3 me-2"></i>
+                            <i class="fas fa-shopping-cart me-2"></i>
                             Shopping Cart
                             @if(!$cart->isEmpty())
                                 <span class="badge bg-primary ms-2">{{ $cart->total_items }} items</span>
@@ -51,11 +51,11 @@
                                     </label>
                                 </div>
                                 <button type="button" class="btn btn-outline-warning btn-sm" onclick="removeSelected()" id="removeSelectedBtn" style="display: none;">
-                                    <i class="bi bi-trash me-1"></i>
+                                    <i class="fas fa-trash me-1"></i>
                                     Remove Selected
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearCart()">
-                                    <i class="bi bi-trash me-1"></i>
+                                    <i class="fas fa-trash me-1"></i>
                                     Clear Cart
                                 </button>
                             </div>
@@ -65,11 +65,11 @@
                         @if($cart->isEmpty())
                             <!-- Empty Cart State -->
                             <div class="text-center py-5">
-                                <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
+                                <i class="fas fa-shopping-cart-x text-muted" style="font-size: 4rem;"></i>
                                 <h4 class="mt-3">Your cart is empty</h4>
                                 <p class="text-muted">Add some products to get started</p>
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
-                                    <i class="bi bi-arrow-left me-2"></i>
+                                    <i class="fas fa-arrow-left me-2"></i>
                                     Continue Shopping
                                 </a>
                             </div>
@@ -92,7 +92,7 @@
                                                     <img src="{{ $item->product_image }}" class="img-fluid rounded" alt="{{ $item->product_name }}" style="height: 80px; object-fit: cover;">
                                                 @else
                                                     <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
-                                                        <i class="bi bi-image text-muted"></i>
+                                                        <i class="fas fa-image text-muted"></i>
                                                     </div>
                                                 @endif
                                             </div>
@@ -178,7 +178,7 @@
                             <!-- Continue Shopping -->
                             <div class="mt-4">
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-outline-primary">
-                                    <i class="bi bi-arrow-left me-2"></i>
+                                    <i class="fas fa-arrow-left me-2"></i>
                                     Continue Shopping
                                 </a>
                             </div>
@@ -261,7 +261,7 @@
                             <!-- Checkout Button -->
                             <div class="d-grid mt-4">
                                 <button type="button" class="btn btn-primary btn-lg" onclick="proceedToCheckout()">
-                                    <i class="bi bi-credit-card me-2"></i>
+                                    <i class="fas fa-credit-card me-2"></i>
                                     Proceed to Checkout
                                 </button>
                             </div>
@@ -269,7 +269,7 @@
                             <!-- Security Info -->
                             <div class="mt-3 text-center">
                                 <small class="text-muted">
-                                    <i class="bi bi-shield-check me-1"></i>
+                                    <i class="shield-check me-1"></i>
                                     Secure checkout with SSL encryption
                                 </small>
                             </div>
@@ -280,20 +280,20 @@
                     <div class="card mt-3">
                         <div class="card-body">
                             <h6 class="card-title">
-                                <i class="bi bi-truck me-2"></i>
+                                <i class="truck me-2"></i>
                                 Shipping Information
                             </h6>
                             <ul class="list-unstyled mb-0 small">
                                 <li class="mb-1">
-                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    <i class="fas fa-check-circle text-success me-2"></i>
                                     Free shipping on orders over $100
                                 </li>
                                 <li class="mb-1">
-                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    <i class="fas fa-check-circle text-success me-2"></i>
                                     Standard delivery: 3-5 business days
                                 </li>
                                 <li class="mb-1">
-                                    <i class="bi bi-check-circle text-success me-2"></i>
+                                    <i class="fas fa-check-circle text-success me-2"></i>
                                     Express delivery available
                                 </li>
                             </ul>
@@ -309,14 +309,14 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-clock-history me-2"></i>
+                            <i class="fas fa-clock-history me-2"></i>
                             Recently Viewed Products
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row" id="recentlyViewedProducts">
                             <div class="col-12 text-center text-muted py-3">
-                                <i class="bi bi-eye" style="font-size: 2rem;"></i>
+                                <i class="fas fa-eye" style="font-size: 2rem;"></i>
                                 <p class="mb-0 mt-2">No recently viewed products</p>
                             </div>
                         </div>
@@ -332,7 +332,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-lightbulb me-2"></i>
+                            <i class="lightbulb me-2"></i>
                             You Might Also Like
                         </h5>
                     </div>

@@ -67,7 +67,7 @@
                             @else
                             <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
                                  style="width: 48px; height: 48px;">
-                                <i class="bi bi-collection fs-4 text-primary"></i>
+                                <i class="collection fs-4 text-primary"></i>
                             </div>
                             @endif
                             <div>
@@ -81,7 +81,7 @@
                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
                         @auth
                         <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i>
+                            <i class="fas fa-plus-circle me-1"></i>
                             Tạo bài đăng mới
                         </a>
                         @endauth
@@ -146,7 +146,7 @@
                                     @else
                                     <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
                                          style="width: 40px; height: 40px;">
-                                        <i class="bi bi-chat-square-text text-primary"></i>
+                                        <i class="fas fa-comment-square-text text-primary"></i>
                                     </div>
                                     @endif
                                     <div>
@@ -173,7 +173,7 @@
                 </div>
                 @else
                 <div class="text-center py-5">
-                    <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
+                    <i class="fas fa-comment-square-text fs-1 text-muted opacity-50"></i>
                     <p class="text-muted mt-3">Chưa có diễn đàn nào trong danh mục này</p>
                 </div>
                 @endif
@@ -200,11 +200,11 @@
                 </div>
                 @else
                 <div class="text-center py-5">
-                    <i class="bi bi-chat-square-text fs-1 text-muted opacity-50"></i>
+                    <i class="fas fa-comment-square-text fs-1 text-muted opacity-50"></i>
                     <p class="text-muted mt-3 mb-0">Chưa có bài đăng nào trong danh mục này</p>
                     @auth
                     <a href="{{ route('threads.create') }}" class="btn btn-primary mt-3">
-                        <i class="bi bi-plus-circle me-1"></i>
+                        <i class="fas fa-plus-circle me-1"></i>
                         Tạo bài đăng đầu tiên
                     </a>
                     @endauth

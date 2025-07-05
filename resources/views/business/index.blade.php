@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm rounded-3 h-100">
                     <div class="card-body text-center">
-                        <i class="bi bi-graph-up fs-1 text-primary mb-3"></i>
+                        <i class="fas fa-chart-line fs-1 text-primary mb-3"></i>
                         <h4>{{ __('Increase Visibility') }}</h4>
                         <p>{{ __('Get your business in front of thousands of potential customers with premium listings
                             and sponsored content.') }}</p>
@@ -42,7 +42,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm rounded-3 h-100">
                     <div class="card-body text-center">
-                        <i class="bi bi-people fs-1 text-primary mb-3"></i>
+                        <i class="fas fa-users fs-1 text-primary mb-3"></i>
                         <h4>{{ __('Build Connections') }}</h4>
                         <p>{{ __('Connect with industry professionals, potential clients, and partners to expand your
                             network.') }}</p>
@@ -52,7 +52,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm rounded-3 h-100">
                     <div class="card-body text-center">
-                        <i class="bi bi-bar-chart fs-1 text-primary mb-3"></i>
+                        <i class="fas fa-chart-bar fs-1 text-primary mb-3"></i>
                         <h4>{{ __('Track Performance') }}</h4>
                         <p>{{ __('Access detailed analytics to measure the impact of your business presence and optimize
                             your strategy.') }}</p>

@@ -74,7 +74,7 @@
                         </div>
                     @else
                         <div class="alert alert-info mb-5">
-                            <i class="bi bi-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2"></i>
                             {{ __('No administrators found.') }}
                         </div>
                     @endif
@@ -126,7 +126,7 @@
                         </div>
                     @else
                         <div class="alert alert-info">
-                            <i class="bi bi-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2"></i>
                             {{ __('No moderators found.') }}
                         </div>
                     @endif

@@ -10,7 +10,7 @@
                 <!-- Success Message -->
                 <div class="text-center mb-5">
                     <div class="success-icon mb-4">
-                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                        <i class="fas fa-check-circle-fill text-success" style="font-size: 4rem;"></i>
                     </div>
                     <h1 class="h2 mb-3">Order Confirmed!</h1>
                     <p class="lead text-muted">
@@ -24,7 +24,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h5 class="card-title mb-0">
-                                    <i class="bi bi-receipt me-2"></i>
+                                    <i class="receipt me-2"></i>
                                     Order Details
                                 </h5>
                             </div>
@@ -95,7 +95,7 @@
                                                         <img src="{{ get_product_image_url($item->product->featured_image) }}" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ $item->product_name }}" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
                                                     @else
                                                         <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="bi bi-image text-muted"></i>
+                                                            <i class="fas fa-image text-muted"></i>
                                                         </div>
                                                     @endif
                                                     <div>
@@ -149,7 +149,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-info-circle me-2"></i>
+                            <i class="fas fa-info-circle me-2"></i>
                             What's Next?
                         </h5>
                     </div>
@@ -157,21 +157,21 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div class="text-center">
-                                    <i class="bi bi-envelope text-primary mb-2" style="font-size: 2rem;"></i>
+                                    <i class="fas fa-envelope text-primary mb-2" style="font-size: 2rem;"></i>
                                     <h6>Order Confirmation</h6>
                                     <p class="small text-muted">You'll receive an email confirmation shortly with your order details.</p>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="text-center">
-                                    <i class="bi bi-box-seam text-warning mb-2" style="font-size: 2rem;"></i>
+                                    <i class="box-seam text-warning mb-2" style="font-size: 2rem;"></i>
                                     <h6>Processing</h6>
                                     <p class="small text-muted">Your order will be processed and prepared for shipping within 1-2 business days.</p>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <div class="text-center">
-                                    <i class="bi bi-truck text-success mb-2" style="font-size: 2rem;"></i>
+                                    <i class="truck text-success mb-2" style="font-size: 2rem;"></i>
                                     <h6>Shipping</h6>
                                     <p class="small text-muted">You'll receive tracking information once your order ships.</p>
                                 </div>
@@ -184,16 +184,16 @@
                 <div class="text-center">
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <a href="{{ route('marketplace.index') }}" class="btn btn-primary">
-                            <i class="bi bi-shop me-2"></i>
+                            <i class="shop me-2"></i>
                             Continue Shopping
                         </a>
                         <a href="#" class="btn btn-outline-primary" onclick="window.print()">
-                            <i class="bi bi-printer me-2"></i>
+                            <i class="printer me-2"></i>
                             Print Order
                         </a>
                         @auth
                             <a href="{{ route('profile.orders') }}" class="btn btn-outline-secondary">
-                                <i class="bi bi-list-ul me-2"></i>
+                                <i class="fas fa-list-ul me-2"></i>
                                 View All Orders
                             </a>
                         @endauth
@@ -203,7 +203,7 @@
                 <!-- Support Info -->
                 <div class="text-center mt-4">
                     <p class="text-muted">
-                        <i class="bi bi-headset me-1"></i>
+                        <i class="headset me-1"></i>
                         Need help? Contact our support team at
                         <a href="mailto:support@mechamap.com" class="text-decoration-none">support@mechamap.com</a>
                         or call <a href="tel:+1234567890" class="text-decoration-none">+1 (234) 567-890</a>

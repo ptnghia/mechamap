@@ -12,7 +12,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}" class="text-decoration-none">
-                            <i class="bi bi-house me-2"></i>
+                            <i class="house me-2"></i>
                             {{ __('messages.marketplace.home') }}
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                             <img src="{{ get_product_image_url($product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid rounded" style="width: 100%; height: 400px; object-fit: cover;" onerror="this.src='{{ asset('images/placeholder-product.jpg') }}'">
                         @else
                             <div class="d-flex align-items-center justify-content-center bg-light rounded" style="width: 100%; height: 400px;">
-                                <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                                <i class="fas fa-image text-muted" style="font-size: 4rem;"></i>
                             </div>
                         @endif
 
@@ -81,9 +81,9 @@
                                 <div class="text-warning me-2">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= $product->rating_average)
-                                            <i class="bi bi-star-fill"></i>
+                                            <i class="fas fa-star-fill"></i>
                                         @else
-                                            <i class="bi bi-star"></i>
+                                            <i class="fas fa-star"></i>
                                         @endif
                                     @endfor
                                 </div>
@@ -110,7 +110,7 @@
                         <div class="mb-4">
                             @if($product->in_stock)
                                 <span class="badge bg-success">
-                                    <i class="bi bi-check-circle me-1"></i>
+                                    <i class="fas fa-check-circle me-1"></i>
                                     {{ __('messages.marketplace.in_stock') }}
                                 </span>
                                 @if($product->stock_quantity <= 5)
@@ -118,7 +118,7 @@
                                 @endif
                             @else
                                 <span class="badge bg-danger">
-                                    <i class="bi bi-x-circle me-1"></i>
+                                    <i class="fas fa-times-circle me-1"></i>
                                     {{ __('messages.marketplace.out_of_stock') }}
                                 </span>
                             @endif
@@ -145,7 +145,7 @@
                         <div class="d-grid gap-2">
                             @if($product->in_stock)
                                 <button class="btn btn-primary btn-lg" onclick="addToCart({{ $product->id }})">
-                                    <i class="bi bi-cart-plus me-2"></i>
+                                    <i class="fas fa-shopping-cart-plus me-2"></i>
                                     {{ __('messages.marketplace.add_to_cart') }}
                                 </button>
                             @else
@@ -155,7 +155,7 @@
                             @endif
 
                             <button class="btn btn-outline-secondary" onclick="addToWishlist({{ $product->id }})">
-                                <i class="bi bi-heart me-2"></i>
+                                <i class="heart me-2"></i>
                                 {{ __('messages.marketplace.add_to_wishlist') }}
                             </button>
                         </div>
@@ -269,7 +269,7 @@ function addToCart(productId) {
     .then(data => {
         if (data.success) {
             showToast('success', data.message);
-            button.innerHTML = '<i class="bi bi-check"></i> Added';
+            button.innerHTML = '<i class="fas fa-check"></i> Added';
             button.classList.remove('btn-primary');
             button.classList.add('btn-success');
 

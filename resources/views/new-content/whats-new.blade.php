@@ -19,7 +19,7 @@
             <h1 class="mb-0">What's New</h1>
             @auth
             <a href="{{ route('forums.select') }}" class="btn btn-primary create-thread">
-                <i class="bi bi-plus-lg"></i> <span>Create thread</span>
+                <i class="fas fa-plus"></i> <span>Create thread</span>
             </a>
             @endauth
         </div>
@@ -84,7 +84,7 @@
                             @foreach($threads as $thread)
                             <tr>
                                 <td class="text-center">
-                                    <i class="bi bi-chat-left-text text-primary"></i>
+                                    <i class="fas fa-comment-left-text text-primary"></i>
                                 </td>
                                 <td>
                                     <div>

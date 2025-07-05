@@ -209,12 +209,12 @@
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
+                icon.classList.remove('fas fa-eye');
+                icon.classList.add('fas fa-eye-slash');
             } else {
                 passwordInput.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
+                icon.classList.remove('fas fa-eye-slash');
+                icon.classList.add('fas fa-eye');
             }
         });
     });

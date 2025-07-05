@@ -70,19 +70,19 @@
 
                             @if ($user->location)
                                 <p>
-                                    <i class="bi bi-geo-alt"></i> {{ $user->location }}
+                                    <i class="geo-alt"></i> {{ $user->location }}
                                 </p>
                             @endif
 
                             @if ($user->website)
                                 <p>
-                                    <i class="bi bi-link"></i> 
+                                    <i class="link"></i> 
                                     <a href="{{ $user->website }}" target="_blank" rel="nofollow">{{ $user->website }}</a>
                                 </p>
                             @endif
 
                             <p>
-                                <i class="bi bi-calendar3"></i> 
+                                <i class="calendar3"></i> 
                                 {{ __('Joined:') }} {{ $user->created_at->format('M Y') }}
                             </p>
                         </div>
@@ -124,45 +124,45 @@
                                 <div class="list-group">
                                     <div class="list-group-item {{ $user->email_verified_at ? 'list-group-item-success' : '' }}">
                                         @if ($user->email_verified_at)
-                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
-                                            <i class="bi bi-circle text-muted me-2"></i>
+                                            <i class="circle text-muted me-2"></i>
                                         @endif
                                         {{ __('Verify your email') }}
                                     </div>
                                     
                                     <div class="list-group-item {{ $user->avatar ? 'list-group-item-success' : '' }}">
                                         @if ($user->avatar)
-                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
-                                            <i class="bi bi-circle text-muted me-2"></i>
+                                            <i class="circle text-muted me-2"></i>
                                         @endif
                                         {{ __('Add an avatar') }}
                                     </div>
                                     
                                     <div class="list-group-item {{ $user->about_me ? 'list-group-item-success' : '' }}">
                                         @if ($user->about_me)
-                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
-                                            <i class="bi bi-circle text-muted me-2"></i>
+                                            <i class="circle text-muted me-2"></i>
                                         @endif
                                         {{ __('Add information about yourself') }}
                                     </div>
                                     
                                     <div class="list-group-item {{ $user->location ? 'list-group-item-success' : '' }}">
                                         @if ($user->location)
-                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
-                                            <i class="bi bi-circle text-muted me-2"></i>
+                                            <i class="circle text-muted me-2"></i>
                                         @endif
                                         {{ __('Add your location') }}
                                     </div>
                                     
                                     <div class="list-group-item {{ $stats['replies'] > 0 || $stats['discussions_created'] > 0 ? 'list-group-item-success' : '' }}">
                                         @if ($stats['replies'] > 0 || $stats['discussions_created'] > 0)
-                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
-                                            <i class="bi bi-circle text-muted me-2"></i>
+                                            <i class="circle text-muted me-2"></i>
                                         @endif
                                         {{ __('Create a post or reply to a thread') }}
                                     </div>
@@ -232,19 +232,19 @@
                                                 <div>
                                                     @switch($activity->activity_type)
                                                         @case('thread_created')
-                                                            <i class="bi bi-plus-circle text-success me-2"></i>
+                                                            <i class="fas fa-plus-circle text-success me-2"></i>
                                                             {{ __('Created a new thread') }}
                                                             @break
                                                         @case('post_created')
-                                                            <i class="bi bi-chat-left-text text-primary me-2"></i>
+                                                            <i class="fas fa-comment-left-text text-primary me-2"></i>
                                                             {{ __('Replied to a thread') }}
                                                             @break
                                                         @case('profile_updated')
-                                                            <i class="bi bi-person text-info me-2"></i>
+                                                            <i class="person text-info me-2"></i>
                                                             {{ __('Updated profile information') }}
                                                             @break
                                                         @default
-                                                            <i class="bi bi-activity text-secondary me-2"></i>
+                                                            <i class="activity text-secondary me-2"></i>
                                                             {{ $activity->activity_type }}
                                                     @endswitch
                                                 </div>

@@ -13,7 +13,7 @@
                     <form action="{{ route('alerts.read-all') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-outline-primary">
-                            <i class="bi bi-check-all me-1"></i> {{ __('Mark All as Read') }}
+                            <i class="fas fa-check-all me-1"></i> {{ __('Mark All as Read') }}
                         </button>
                     </form>
                 @endif
@@ -26,7 +26,7 @@
                         <div class="d-flex align-items-center">
                             <div class="dropdown me-3">
                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-funnel me-1"></i> {{ __('Filter') }}
+                                    <i class="fas fa-filter me-1"></i> {{ __('Filter') }}
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
                                     <li><a class="dropdown-item {{ !isset($filter) ? 'active' : '' }}" href="{{ route('alerts.index') }}">{{ __('All notifications') }}</a></li>
@@ -50,23 +50,23 @@
                                             <div class="alert-icon me-3">
                                                 @if($alert->alertable_type === 'App\\Models\\Conversation')
                                                     <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-chat-dots text-white"></i>
+                                                        <i class="fas fa-comment-dots text-white"></i>
                                                     </div>
                                                 @elseif($alert->type === 'success')
                                                     <div class="rounded-circle bg-success d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-check-lg text-white"></i>
+                                                        <i class="fas fa-check-lg text-white"></i>
                                                     </div>
                                                 @elseif($alert->type === 'warning')
                                                     <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-exclamation-triangle text-white"></i>
+                                                        <i class="fas fa-exclamation-triangle text-white"></i>
                                                     </div>
                                                 @elseif($alert->type === 'danger')
                                                     <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-x-circle text-white"></i>
+                                                        <i class="fas fa-times-circle text-white"></i>
                                                     </div>
                                                 @else
                                                     <div class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                                        <i class="bi bi-info-circle text-white"></i>
+                                                        <i class="fas fa-info-circle text-white"></i>
                                                     </div>
                                                 @endif
                                             </div>
@@ -83,11 +83,11 @@
 
                                                     @if($alert->alertable_type === 'App\\Models\\Conversation' && $alert->alertable)
                                                         <a href="{{ route('conversations.show', $alert->alertable_id) }}" class="btn btn-sm btn-link ms-2 p-0">
-                                                            {{ __('View conversation') }} <i class="bi bi-arrow-right"></i>
+                                                            {{ __('View conversation') }} <i class="fas fa-arrow-right"></i>
                                                         </a>
                                                     @elseif($alert->alertable_type === 'App\\Models\\Comment' && $alert->alertable)
                                                         <a href="{{ route('threads.show', $alert->alertable->thread_id) }}#comment-{{ $alert->alertable_id }}" class="btn btn-sm btn-link ms-2 p-0">
-                                                            {{ __('View comment') }} <i class="bi bi-arrow-right"></i>
+                                                            {{ __('View comment') }} <i class="fas fa-arrow-right"></i>
                                                         </a>
                                                     @endif
                                                 </div>
@@ -99,7 +99,7 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="bi bi-check"></i> {{ __('Mark as Read') }}
+                                                        <i class="fas fa-check"></i> {{ __('Mark as Read') }}
                                                     </button>
                                                 </form>
                                             @endif
@@ -107,7 +107,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-trash"></i>
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -121,7 +121,7 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-bell fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-bell fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('You don\'t have any notifications.') }}</p>
                             <p class="text-muted">{{ __('When you receive alerts or messages, they will appear here.') }}</p>
                         </div>

@@ -10,11 +10,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
-                        <i class="bi bi-bag-check me-2"></i>
+                        <i class="bag-check me-2"></i>
                         Đơn hàng của tôi
                     </h5>
                     <a href="{{ route('marketplace.index') }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-shop me-1"></i>
+                        <i class="shop me-1"></i>
                         Tiếp tục mua sắm
                     </a>
                 </div>
@@ -67,7 +67,7 @@
                                                     @else
                                                         <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center"
                                                              style="width: 50px; height: 50px;">
-                                                            <i class="bi bi-image text-muted"></i>
+                                                            <i class="fas fa-image text-muted"></i>
                                                         </div>
                                                     @endif
                                                     <div class="flex-grow-1">
@@ -104,18 +104,18 @@
 
                                             <div class="btn-group-vertical w-100" role="group">
                                                 <a href="{{ route('marketplace.orders.show', $order) }}" class="btn btn-outline-primary btn-sm">
-                                                    <i class="bi bi-eye me-1"></i>
+                                                    <i class="fas fa-eye me-1"></i>
                                                     Xem chi tiết
                                                 </a>
                                                 @if($order->status === 'delivered')
                                                     <a href="#" class="btn btn-outline-secondary btn-sm">
-                                                        <i class="bi bi-download me-1"></i>
+                                                        <i class="fas fa-download me-1"></i>
                                                         Tải hóa đơn
                                                     </a>
                                                 @endif
                                                 @if(in_array($order->status, ['pending', 'processing']))
                                                     <button class="btn btn-outline-danger btn-sm">
-                                                        <i class="bi bi-x-circle me-1"></i>
+                                                        <i class="fas fa-times-circle me-1"></i>
                                                         Hủy đơn
                                                     </button>
                                                 @endif
@@ -132,11 +132,11 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-bag-x display-1 text-muted mb-3"></i>
+                            <i class="bag-x display-1 text-muted mb-3"></i>
                             <h5>Chưa có đơn hàng nào</h5>
                             <p class="text-muted">Bạn chưa có đơn hàng nào. Hãy khám phá marketplace để tìm sản phẩm yêu thích!</p>
                             <a href="{{ route('marketplace.index') }}" class="btn btn-primary">
-                                <i class="bi bi-shop me-2"></i>
+                                <i class="shop me-2"></i>
                                 Khám phá Marketplace
                             </a>
                         </div>
@@ -150,30 +150,30 @@
             <div class="card">
                 <div class="card-header">
                     <h6 class="mb-0">
-                        <i class="bi bi-person-circle me-2"></i>
+                        <i class="person-circle me-2"></i>
                         Tài khoản của tôi
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('profile.edit') }}" class="list-group-item list-group-item-action">
-                            <i class="bi bi-person me-2"></i>
+                            <i class="person me-2"></i>
                             Thông tin cá nhân
                         </a>
                         <a href="{{ route('profile.orders') }}" class="list-group-item list-group-item-action active">
-                            <i class="bi bi-bag-check me-2"></i>
+                            <i class="bag-check me-2"></i>
                             Đơn hàng của tôi
                         </a>
                         <a href="#" class="list-group-item list-group-item-action">
-                            <i class="bi bi-heart me-2"></i>
+                            <i class="fas fa-heart me-2"></i>
                             Sản phẩm yêu thích
                         </a>
                         <a href="#" class="list-group-item list-group-item-action">
-                            <i class="bi bi-geo-alt me-2"></i>
+                            <i class="fas fa-map-marker-alt me-2"></i>
                             Địa chỉ giao hàng
                         </a>
                         <a href="#" class="list-group-item list-group-item-action">
-                            <i class="bi bi-credit-card me-2"></i>
+                            <i class="fas fa-credit-card me-2"></i>
                             Phương thức thanh toán
                         </a>
                     </div>
@@ -184,7 +184,7 @@
             <div class="card mt-3">
                 <div class="card-header">
                     <h6 class="mb-0">
-                        <i class="bi bi-graph-up me-2"></i>
+                        <i class="fas fa-chart-line me-2"></i>
                         Thống kê đơn hàng
                     </h6>
                 </div>

@@ -15,7 +15,7 @@
                 <h1>{{ __('nav.forums') }}</h1>
                 @auth
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg"></i> {{ __('forum.new_thread') }}
+                    <i class="fas fa-plus"></i> {{ __('forum.new_thread') }}
                 </a>
                 @endauth
             </div>
@@ -96,7 +96,7 @@
                 </div>
                 @else
                 <div class="card-body text-center py-5">
-                    <i class="bi bi-search display-4 text-muted"></i>
+                    <i class="fas fa-search display-4 text-muted"></i>
                     <p class="mt-3">No threads found matching your criteria.</p>
                     <a href="{{ route('threads.index') }}" class="btn btn-outline-primary">Clear Filters</a>
                 </div>

@@ -4,7 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@1.11.0/font/.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -13,14 +13,14 @@
     <div class="d-flex justify-content-between align-items-center">
         <div>
             <h1 class="page-title mb-2">
-                <i class="bi bi-plus-circle"></i>
+                <i class="fas fa-plus-circle"></i>
                 Tạo Chủ Đề Mới
             </h1>
             <p class="page-subtitle text-muted mb-0">Chia sẻ ý tưởng, thảo luận và kết nối với cộng đồng</p>
         </div>
         <div>
             <a href="{{ url()->previous() }}" class="btn btn-secondary btn-modern">
-                <i class="bi bi-arrow-left"></i>
+                <i class="fas fa-arrow-left"></i>
                 <span>Quay Lại</span>
             </a>
         </div>
@@ -62,7 +62,7 @@
         <div class="form-card">
             <div class="card-header-modern">
                 <div class="card-title">
-                    <i class="bi bi-info-circle"></i>
+                    <i class="info-circle"></i>
                     <span>Thông Tin Cơ Bản</span>
                 </div>
                 <div class="card-subtitle">Nhập thông tin cơ bản cho chủ đề của bạn</div>
@@ -78,17 +78,17 @@
                             name="title" value="{{ old('title') }}" required
                             placeholder="Nhập tiêu đề mô tả cho chủ đề của bạn">
                         <div class="input-icon">
-                            <i class="bi bi-pencil-square"></i>
+                            <i class="fas fa-edit-square"></i>
                         </div>
                     </div>
                     <div class="form-help-text">
-                        <i class="bi bi-lightbulb"></i>
+                        <i class="lightbulb"></i>
                         <span>Gợi ý: THÀNH PHỐ | Tên Dự Án | Số Tầng | Trạng Thái (VD: HÀ NỘI | Landmark 81 |
                             81T | Hoàn Thành)</span>
                     </div>
                     @error('title')
                     <div class="error-message">
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle"></i>
                         {{ $message }}
                     </div>
                     @enderror
@@ -112,12 +112,12 @@
                                 @endforeach
                             </select>
                             <div class="select-icon">
-                                <i class="bi bi-chevron-down"></i>
+                                <i class="chevron-down"></i>
                             </div>
                         </div>
                         @error('category_id')
                         <div class="error-message">
-                            <i class="bi bi-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle"></i>
                             {{ $message }}
                         </div>
                         @enderror
@@ -140,12 +140,12 @@
                                 @endforeach
                             </select>
                             <div class="select-icon">
-                                <i class="bi bi-chevron-down"></i>
+                                <i class="chevron-down"></i>
                             </div>
                         </div>
                         @error('forum_id')
                         <div class="error-message">
-                            <i class="bi bi-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle"></i>
                             {{ $message }}
                         </div>
                         @enderror
@@ -157,12 +157,12 @@
         <!-- Navigation Buttons -->
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" disabled>
-                <i class="bi bi-chevron-left"></i>
+                <i class="chevron-left"></i>
                 <span>Trước</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
                 <span>Tiếp Theo</span>
-                <i class="bi bi-chevron-right"></i>
+                <i class="chevron-right"></i>
             </button>
         </div>
     </div>
@@ -172,7 +172,7 @@
         <div class="form-card">
             <div class="card-header-modern">
                 <div class="card-title">
-                    <i class="bi bi-file-text"></i>
+                    <i class="file-text"></i>
                     <span>Nội Dung Chủ Đề</span>
                 </div>
                 <div class="card-subtitle">Viết nội dung chi tiết cho chủ đề của bạn</div>
@@ -189,13 +189,13 @@
                             placeholder="Viết nội dung chi tiết cho chủ đề của bạn...">{{ old('content') }}</textarea>
                     </div>
                     <div class="form-help-text">
-                        <i class="bi bi-magic"></i>
+                        <i class="magic"></i>
                         <span>Sử dụng trình soạn thảo để định dạng văn bản, thêm liên kết và chèn hình
                             ảnh</span>
                     </div>
                     @error('content')
                     <div class="error-message">
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle"></i>
                         {{ $message }}
                     </div>
                     @enderror
@@ -204,14 +204,14 @@
                 <div class="form-group-modern">
                     <label for="images" class="form-label-modern">
                         <span class="label-text">
-                            <i class="bi bi-images"></i>
+                            <i class="images"></i>
                             Tải Lên Hình Ảnh
                         </span>
                     </label>
                     <div class="upload-area" id="upload-area">
                         <div class="upload-content">
                             <div class="upload-icon">
-                                <i class="bi bi-cloud-upload"></i>
+                                <i class="fas fa-cloud-upload-alt"></i>
                             </div>
                             <div class="upload-text">
                                 <h4>Kéo thả hình ảnh vào đây</h4>
@@ -222,18 +222,18 @@
                         </div>
                     </div>
                     <div class="form-help-text">
-                        <i class="bi bi-info-circle"></i>
+                        <i class="info-circle"></i>
                         <span>Tối đa 10 hình ảnh, mỗi file không quá 5MB. Hỗ trợ: JPG, PNG, GIF, WebP</span>
                     </div>
                     @error('images')
                     <div class="error-message">
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle"></i>
                         {{ $message }}
                     </div>
                     @enderror
                     @error('images.*')
                     <div class="error-message">
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <i class="fas fa-exclamation-triangle"></i>
                         {{ $message }}
                     </div>
                     @enderror
@@ -246,12 +246,12 @@
         <!-- Navigation Buttons -->
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
-                <i class="bi bi-chevron-left"></i>
+                <i class="chevron-left"></i>
                 <span>Trước</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
                 <span>Tiếp Theo</span>
-                <i class="bi bi-chevron-right"></i>
+                <i class="chevron-right"></i>
             </button>
         </div>
     </div>
@@ -261,7 +261,7 @@
         <div class="form-card">
             <div class="card-header-modern">
                 <div class="card-title">
-                    <i class="bi bi-bar-chart"></i>
+                    <i class="bar-chart"></i>
                     <span>Khảo Sát (Tùy Chọn)</span>
                 </div>
                 <div class="card-subtitle">Tạo một cuộc khảo sát để thu thập ý kiến từ cộng đồng</div>
@@ -295,12 +295,12 @@
                                 id="poll_question" name="poll_question" value="{{ old('poll_question') }}"
                                 placeholder="Nhập câu hỏi cho cuộc khảo sát">
                             <div class="input-icon">
-                                <i class="bi bi-question-circle"></i>
+                                <i class="question-circle"></i>
                             </div>
                         </div>
                         @error('poll_question')
                         <div class="error-message">
-                            <i class="bi bi-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle"></i>
                             {{ $message }}
                         </div>
                         @enderror
@@ -319,7 +319,7 @@
                                         name="poll_options[]" value="{{ old('poll_options.0') }}"
                                         placeholder="Lựa chọn 1">
                                     <button type="button" class="remove-option-btn" disabled>
-                                        <i class="bi bi-trash"></i>
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
@@ -330,7 +330,7 @@
                                         name="poll_options[]" value="{{ old('poll_options.1') }}"
                                         placeholder="Lựa chọn 2">
                                     <button type="button" class="remove-option-btn" disabled>
-                                        <i class="bi bi-trash"></i>
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
@@ -344,7 +344,7 @@
                                         name="poll_options[]" value="{{ $option }}"
                                         placeholder="Lựa chọn {{ $index + 1 }}">
                                     <button type="button" class="remove-option-btn">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
@@ -353,12 +353,12 @@
                             @endif
                         </div>
                         <button type="button" class="add-option-btn" id="add-option">
-                            <i class="bi bi-plus-circle"></i>
+                            <i class="fas fa-plus-circle"></i>
                             <span>Thêm Lựa Chọn</span>
                         </button>
                         @error('poll_options')
                         <div class="error-message">
-                            <i class="bi bi-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle"></i>
                             {{ $message }}
                         </div>
                         @enderror
@@ -390,7 +390,7 @@
                                     <input type="checkbox" name="poll_allow_change_vote" value="1" {{
                                         old('poll_allow_change_vote', 1) ? 'checked' : '' }}>
                                     <span class="checkbox-check">
-                                        <i class="bi bi-check"></i>
+                                        <i class="fas fa-check"></i>
                                     </span>
                                     <span class="checkbox-text">Cho phép thay đổi lựa chọn</span>
                                 </label>
@@ -398,7 +398,7 @@
                                     <input type="checkbox" name="poll_show_votes_publicly" value="1" {{
                                         old('poll_show_votes_publicly') ? 'checked' : '' }}>
                                     <span class="checkbox-check">
-                                        <i class="bi bi-check"></i>
+                                        <i class="fas fa-check"></i>
                                     </span>
                                     <span class="checkbox-text">Hiển thị kết quả công khai</span>
                                 </label>
@@ -406,7 +406,7 @@
                                     <input type="checkbox" name="poll_allow_view_without_vote" value="1" {{
                                         old('poll_allow_view_without_vote', 1) ? 'checked' : '' }}>
                                     <span class="checkbox-check">
-                                        <i class="bi bi-check"></i>
+                                        <i class="fas fa-check"></i>
                                     </span>
                                     <span class="checkbox-text">Cho phép xem kết quả mà không cần bình
                                         chọn</span>
@@ -420,7 +420,7 @@
                                 <input type="checkbox" id="poll_has_close_date" name="poll_has_close_date" value="1" {{
                                     old('poll_has_close_date') ? 'checked' : '' }}>
                                 <span class="checkbox-check">
-                                    <i class="bi bi-check"></i>
+                                    <i class="fas fa-check"></i>
                                 </span>
                                 <span class="checkbox-text">Đóng khảo sát sau</span>
                             </label>
@@ -428,13 +428,13 @@
                                 style="{{ old('poll_has_close_date') ? '' : 'display: none;' }}">
                                 <div class="number-input-group">
                                     <button type="button" class="number-btn decrease" id="decrease-days">
-                                        <i class="bi bi-dash"></i>
+                                        <i class="dash"></i>
                                     </button>
                                     <input type="number" class="number-input" id="poll_close_after_days"
                                         name="poll_close_after_days" value="{{ old('poll_close_after_days', 7) }}"
                                         min="1" max="365">
                                     <button type="button" class="number-btn increase" id="increase-days">
-                                        <i class="bi bi-plus"></i>
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                     <span class="number-unit">ngày</span>
                                 </div>
@@ -448,12 +448,12 @@
         <!-- Navigation Buttons -->
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
-                <i class="bi bi-chevron-left"></i>
+                <i class="chevron-left"></i>
                 <span>Trước</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
                 <span>Tiếp Theo</span>
-                <i class="bi bi-chevron-right"></i>
+                <i class="chevron-right"></i>
             </button>
         </div>
     </div>
@@ -463,7 +463,7 @@
         <div class="form-card">
             <div class="card-header-modern">
                 <div class="card-title">
-                    <i class="bi bi-eye"></i>
+                    <i class="fas fa-eye"></i>
                     <span>Xem Lại Thông Tin</span>
                 </div>
                 <div class="card-subtitle">Kiểm tra lại tất cả thông tin trước khi tạo chủ đề</div>
@@ -501,11 +501,11 @@
         <!-- Final Submit -->
         <div class="final-submit">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
-                <i class="bi bi-chevron-left"></i>
+                <i class="chevron-left"></i>
                 <span>Trước</span>
             </button>
             <button type="submit" class="btn btn-success btn-modern btn-submit">
-                <i class="bi bi-check-circle"></i>
+                <i class="fas fa-check-circle"></i>
                 <span>Tạo Chủ Đề</span>
             </button>
         </div>
@@ -701,7 +701,7 @@ function createImagePreview(file, src, index) {
             <img src="${src}" alt="${file.name}">
             <div class="image-overlay">
                 <button type="button" class="remove-image-btn" onclick="removeImagePreview(this)">
-                    <i class="bi bi-trash"></i>
+                    <i class="fas fa-trash"></i>
                 </button>
             </div>
         </div>
@@ -795,7 +795,7 @@ function addPollOption() {
                    name="poll_options[]"
                    placeholder="Lựa chọn ${optionCount}">
             <button type="button" class="remove-option-btn">
-                <i class="bi bi-trash"></i>
+                <i class="fas fa-trash"></i>
             </button>
         </div>
     `;
@@ -1019,7 +1019,7 @@ function showFieldError(field, message) {
         field.parentNode.appendChild(errorDiv);
     }
 
-    errorDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> ${message}`;
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
 }
 
 // Xóa lỗi field
@@ -1038,7 +1038,7 @@ function showValidationMessage(message, type = 'info', duration = 5000) {
     toast.className = `toast-notification toast-${type}`;
     toast.innerHTML = `
         <div class="toast-content">
-            <i class="bi bi-${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+            <i class="${type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
             <span>${message}</span>
         </div>
     `;
@@ -1252,7 +1252,7 @@ document.getElementById('thread-form').addEventListener('submit', function(e) {
     const submitButton = document.querySelector('.btn-submit');
     if (submitButton) {
         submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="bi bi-hourglass-split"></i> <span>Đang tạo...</span>';
+        submitButton.innerHTML = '<i class="fas fa-hourglass-half"></i> <span>Đang tạo...</span>';
     }
 });
 </script>

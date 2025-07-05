@@ -56,7 +56,7 @@
 
                 <div class="thread-actions">
                     <a href="#comments" class="btn-jump">
-                        <i class="bi bi-arrow-right"></i> Đến bình luận
+                        <i class="fas fa-arrow-right"></i> Đến bình luận
                     </a>
 
                     @auth
@@ -64,7 +64,7 @@
                     <form action="{{ route('showcase.toggle-follow', $showcase) }}" method="POST" class="follow-form d-inline">
                         @csrf
                         <button type="submit" class="btn-follow">
-                            <i class="bi {{ $showcase->isFollowedBy(auth()->user()) ? 'bi-bell-fill' : 'bi-bell' }}"></i>
+                            <i class="{{ $showcase->isFollowedBy(auth()->user()) ? 'fas fa-bell-fill' : 'fas fa-bell' }}"></i>
                             {{ $showcase->isFollowedBy(auth()->user()) ? 'Đang theo dõi' : 'Theo dõi' }}
                         </button>
                     </form>
@@ -77,16 +77,16 @@
             <div class="thread-meta">
                 <div class="d-flex justify-content-start g-3">
                     <div class="thread-meta-item">
-                        <i class="bi bi-eye"></i> {{ number_format($showcase->view_count ?? 0) }} Lượt xem
+                        <i class="fas fa-eye"></i> {{ number_format($showcase->view_count ?? 0) }} Lượt xem
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-star"></i> {{ number_format($showcase->average_rating, 1) }} Đánh giá
+                        <i class="fas fa-star"></i> {{ number_format($showcase->average_rating, 1) }} Đánh giá
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-chat"></i> {{ number_format($showcase->commentsCount()) }} Bình luận
+                        <i class="fas fa-comment"></i> {{ number_format($showcase->commentsCount()) }} Bình luận
                     </div>
                     <div class="thread-meta-item">
-                        <i class="bi bi-heart"></i> {{ number_format($showcase->likesCount()) }} Thích
+                        <i class="heart"></i> {{ number_format($showcase->likesCount()) }} Thích
                     </div>
                 </div>
             </div>

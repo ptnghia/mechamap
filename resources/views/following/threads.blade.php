@@ -11,18 +11,18 @@
                     <div class="card-body">
                         <div class="list-group list-group-flush">
                             <a href="{{ route('following.index') }}" class="list-group-item list-group-item-action">
-                                <i class="bi bi-people-fill me-2"></i> {{ __('Following') }}
+                                <i class="fas fa-users-fill me-2"></i> {{ __('Following') }}
                             </a>
                             <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action">
-                                <i class="bi bi-person-fill me-2"></i> {{ __('Followers') }}
+                                <i class="fas fa-user me-2"></i> {{ __('Followers') }}
                             </a>
                             <a href="{{ route('following.threads') }}"
                                 class="list-group-item list-group-item-action active">
-                                <i class="bi bi-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                <i class="far fa-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
                             </a>
                             <a href="{{ route('following.participated') }}"
                                 class="list-group-item list-group-item-action">
-                                <i class="bi bi-chat-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                <i class="fas fa-comment-dots-fill me-2"></i> {{ __('Participated Discussions') }}
                             </a>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                                 id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-funnel me-1"></i> {{ __('Filters') }}
+                                <i class="fas fa-filter me-1"></i> {{ __('Filters') }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
                                 <li><a class="dropdown-item" href="{{ route('following.threads') }}">{{ __('All Forums')
@@ -74,7 +74,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="bi bi-bookmark-x"></i> {{ __('Unfollow') }}
+                                                        <i class="far fa-bookmark-x"></i> {{ __('Unfollow') }}
                                                     </button>
                                                 </form>
                                             </div>
@@ -87,11 +87,11 @@
                                             {{ $thread->created_at->diffForHumans() }}
                                         </div>
                                         <div class="d-flex align-items-center small text-muted">
-                                            <span class="me-3"><i class="bi bi-eye me-1"></i> {{ $thread->view_count
+                                            <span class="me-3"><i class="fas fa-eye me-1"></i> {{ $thread->view_count
                                                 }}</span>
-                                            <span class="me-3"><i class="bi bi-chat-dots me-1"></i> {{
+                                            <span class="me-3"><i class="fas fa-comment-dots me-1"></i> {{
                                                 $thread->comments->count() }}</span>
-                                            <span><i class="bi bi-heart me-1"></i> {{ $thread->likes->count() }}</span>
+                                            <span><i class="fas fa-heart me-1"></i> {{ $thread->likes->count() }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                         </div>
                         @else
                         <div class="text-center py-5">
-                            <i class="bi bi-bookmark fs-1 text-muted mb-3"></i>
+                            <i class="far fa-bookmark fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('You are not watching any threads.') }}</p>
                             <p class="text-muted">{{ __('Follow threads to see them here.') }}</p>
                         </div>

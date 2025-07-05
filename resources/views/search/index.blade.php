@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <a href="{{ route('search.advanced') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-sliders me-1"></i> {{ __('Advanced Search') }}
+                        <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
                     </a>
                 </div>
             </div>
@@ -142,11 +142,11 @@
                     ($type == 'users' && $users->count() == 0))
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body text-center py-5">
-                            <i class="bi bi-search fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-search fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('No results found for your search.') }}</p>
                             <p class="text-muted">{{ __('Try different keywords or use the advanced search.') }}</p>
                             <a href="{{ route('search.advanced') }}" class="btn btn-primary mt-3">
-                                <i class="bi bi-sliders me-1"></i> {{ __('Advanced Search') }}
+                                <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
                             </a>
                         </div>
                     </div>
@@ -154,11 +154,11 @@
             @else
                 <div class="card shadow-sm rounded-3">
                     <div class="card-body text-center py-5">
-                        <i class="bi bi-search fs-1 text-muted mb-3"></i>
+                        <i class="fas fa-search fs-1 text-muted mb-3"></i>
                         <p class="mb-0">{{ __('Enter a search term to find content.') }}</p>
                         <p class="text-muted">{{ __('You can search for threads, posts, and users.') }}</p>
                         <a href="{{ route('search.advanced') }}" class="btn btn-primary mt-3">
-                            <i class="bi bi-sliders me-1"></i> {{ __('Advanced Search') }}
+                            <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
                         </a>
                     </div>
                 </div>

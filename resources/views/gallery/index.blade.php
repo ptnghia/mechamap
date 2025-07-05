@@ -21,11 +21,11 @@
                             <div class="btn-group" role="group">
                                 <a href="{{ route('gallery.index') }}?view=grid"
                                     class="btn btn-outline-secondary {{ request('view', 'grid') == 'grid' ? 'active' : '' }}">
-                                    <i class="bi bi-grid-3x3-gap"></i>
+                                    <i class="fas fa-th-3x3-gap"></i>
                                 </a>
                                 <a href="{{ route('gallery.index') }}?view=list"
                                     class="btn btn-outline-secondary {{ request('view') == 'list' ? 'active' : '' }}">
-                                    <i class="bi bi-list"></i>
+                                    <i class="fas fa-list"></i>
                                 </a>
                             </div>
                         </div>
@@ -119,11 +119,11 @@
                 </div>
                 @else
                 <div class="text-center py-5">
-                    <i class="bi bi-images fs-1 text-muted mb-3"></i>
+                    <i class="images fs-1 text-muted mb-3"></i>
                     <p class="mb-0">{{ __('No media items found.') }}</p>
                     @auth
                     <a href="{{ route('gallery.create') }}" class="btn btn-primary mt-3">
-                        <i class="bi bi-upload me-1"></i> {{ __('Upload Media') }}
+                        <i class="fas fa-upload me-1"></i> {{ __('Upload Media') }}
                     </a>
                     @endauth
                 </div>

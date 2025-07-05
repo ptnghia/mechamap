@@ -13,7 +13,7 @@
 
                 <div class="d-flex align-items-center">
                     <a href="{{ route('conversations.index') }}" class="btn btn-outline-secondary me-3">
-                        <i class="bi bi-arrow-left"></i>
+                        <i class="fas fa-arrow-left"></i>
                     </a>
                     <h1 class="h3 mb-0">
                         @if($conversation->title)
@@ -28,14 +28,14 @@
 
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="conversationActions" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots"></i>
+                        <i class="three-dots"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="conversationActions">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-person-plus me-2"></i> {{ __('Invite participants') }}</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash me-2"></i> {{ __('Mute conversation') }}</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i> {{ __('Report') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2"></i> {{ __('Invite participants') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash me-2"></i> {{ __('Mute conversation') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> {{ __('Report') }}</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i> {{ __('Leave conversation') }}</a></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> {{ __('Leave conversation') }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                             @endforeach
                         @else
                             <div class="text-center py-5">
-                                <i class="bi bi-chat fs-1 text-muted mb-3"></i>
+                                <i class="fas fa-comment fs-1 text-muted mb-3"></i>
                                 <p class="mb-0">{{ __('No messages yet.') }}</p>
                                 <p class="text-muted">{{ __('Send a message to start the conversation.') }}</p>
                             </div>
@@ -126,7 +126,7 @@
                             <div class="input-group">
                                 <textarea name="message" id="messageInput" class="form-control" placeholder="{{ __('Type your message...') }}" required rows="2"></textarea>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-send"></i> {{ __('Send') }}
+                                    <i class="fas fa-paper-plane"></i> {{ __('Send') }}
                                 </button>
                             </div>
                         </form>

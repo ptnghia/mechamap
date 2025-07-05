@@ -46,7 +46,7 @@
                     
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ route('search.advanced') }}" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-pencil me-1"></i> {{ __('Modify Search') }}
+                            <i class="fas fa-edit me-1"></i> {{ __('Modify Search') }}
                         </a>
                         
                         <div>

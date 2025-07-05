@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3">{{ $user->name }} - {{ __('Activities') }}</h1>
                 <a href="{{ route('profile.show', $user) }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> {{ __('Back to Profile') }}
+                    <i class="fas fa-arrow-left"></i> {{ __('Back to Profile') }}
                 </a>
             </div>
             

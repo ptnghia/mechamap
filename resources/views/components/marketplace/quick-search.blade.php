@@ -27,14 +27,14 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
         
         <!-- Search Icon -->
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="bi bi-search text-gray-400"></i>
+            <i class="fas fa-search text-gray-400"></i>
         </div>
         
         <!-- Submit Button -->
         <button 
             type="submit"
             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-blue-600 transition-colors">
-            <i class="bi bi-arrow-right"></i>
+            <i class="fas fa-arrow-right"></i>
         </button>
         
         <!-- Loading Spinner -->
@@ -82,7 +82,7 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
                         <div class="flex-shrink-0 w-10 h-10 bg-gray-200 rounded mr-3">
                             <img x-show="product.featured_image" :src="product.featured_image" :alt="product.name" class="w-10 h-10 object-cover rounded">
                             <div x-show="!product.featured_image" class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
-                                <i class="bi bi-image text-gray-400"></i>
+                                <i class="fas fa-image text-gray-400"></i>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -105,7 +105,7 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
                     <a 
                         :href="'/marketplace/products?category=' + category.slug"
                         class="flex items-center px-4 py-3 hover:bg-gray-50 cursor-pointer">
-                        <i class="bi bi-folder text-gray-400 mr-3"></i>
+                        <i class="folder text-gray-400 mr-3"></i>
                         <span class="text-sm text-gray-900" x-text="category.name"></span>
                         <span class="ml-auto text-xs text-gray-500" x-text="category.products_count + ' products'"></span>
                     </a>
@@ -114,7 +114,7 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
 
             <!-- No Results -->
             <div x-show="suggestions.products && suggestions.products.length === 0 && suggestions.categories && suggestions.categories.length === 0" class="px-4 py-6 text-center">
-                <i class="bi bi-search text-gray-400 text-2xl mb-2"></i>
+                <i class="fas fa-search text-gray-400 text-2xl mb-2"></i>
                 <p class="text-sm text-gray-500">No results found</p>
                 <p class="text-xs text-gray-400 mt-1">Try different keywords or check spelling</p>
             </div>

@@ -86,7 +86,7 @@
 
                         <div class="d-grid gap-2">
                             <a href="{{ $media->url }}" class="btn btn-primary" download="{{ $media->file_name }}">
-                                <i class="bi bi-download me-1"></i> {{ __('Download') }}
+                                <i class="fas fa-download me-1"></i> {{ __('Download') }}
                             </a>
 
                             @if(Auth::check() && (Auth::id() === $media->user_id || Auth::user()->isAdmin()))
@@ -95,7 +95,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger w-100">
-                                    <i class="bi bi-trash me-1"></i> {{ __('Delete') }}
+                                    <i class="fas fa-trash me-1"></i> {{ __('Delete') }}
                                 </button>
                             </form>
                             @endif
@@ -112,22 +112,22 @@
                             <input type="text" class="form-control" value="{{ route('gallery.show', $media) }}"
                                 id="shareUrl" readonly>
                             <button class="btn btn-outline-secondary" type="button" onclick="copyShareUrl()">
-                                <i class="bi bi-clipboard"></i>
+                                <i class="fas fa-clipboard"></i>
                             </button>
                         </div>
 
                         <div class="d-flex justify-content-center gap-3">
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('gallery.show', $media)) }}"
                                 target="_blank" class="btn btn-outline-primary">
-                                <i class="bi bi-facebook"></i>
+                                <i class="fab fa-facebook-f"></i>
                             </a>
                             <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('gallery.show', $media)) }}&text={{ urlencode($media->title ?: __('Check out this image')) }}"
                                 target="_blank" class="btn btn-outline-info">
-                                <i class="bi bi-twitter"></i>
+                                <i class="fab fa-twitter"></i>
                             </a>
                             <a href="https://pinterest.com/pin/create/button/?url={{ urlencode(route('gallery.show', $media)) }}&media={{ urlencode(asset('storage/' . $media->file_path)) }}&description={{ urlencode($media->title ?: __('Check out this image')) }}"
                                 target="_blank" class="btn btn-outline-danger">
-                                <i class="bi bi-pinterest"></i>
+                                <i class="pinterest"></i>
                             </a>
                         </div>
                     </div>

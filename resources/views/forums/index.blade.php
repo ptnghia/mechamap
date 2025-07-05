@@ -52,7 +52,7 @@
             @auth
             <div>
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-1"></i>
+                    <i class="fas fa-plus-circle me-1"></i>
                     {{ __('Create Thread') }}
                 </a>
             </div>
@@ -157,7 +157,7 @@
                         @else
                         <div class="bg-primary bg-opacity-10 rounded me-3 d-flex align-items-center justify-content-center"
                             style="width: 36px; height: 36px;">
-                            <i class="bi bi-collection text-primary"></i>
+                            <i class="collection text-primary"></i>
                         </div>
                         @endif
                         <div>
@@ -216,7 +216,7 @@
                             <h6 class="text-muted mb-0">{{ __('forums.category.recent_threads', ['count' => 5]) }}:</h6>
                             <a href="{{ route('categories.show', $category->slug) }}"
                                class="btn btn-sm btn-outline-secondary">
-                                {{ __('forums.actions.view_more') }} <i class="bi bi-arrow-right"></i>
+                                {{ __('forums.actions.view_more') }} <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
 
@@ -239,8 +239,8 @@
                                     </div>
                                     <div class="text-end ms-3">
                                         <div class="d-flex gap-2 small text-muted">
-                                            <span><i class="bi bi-eye"></i> {{ number_format($thread->view_count ?? 0) }}</span>
-                                            <span><i class="bi bi-chat"></i> {{ number_format($thread->comments_count ?? 0) }}</span>
+                                            <span><i class="fas fa-eye"></i> {{ number_format($thread->view_count ?? 0) }}</span>
+                                            <span><i class="fas fa-comment"></i> {{ number_format($thread->comments_count ?? 0) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@
                 </div>
                 @else
                 <div class="text-center text-muted py-4">
-                    <i class="bi bi-chat-square-text fs-1 opacity-50"></i>
+                    <i class="fas fa-comment-square-text fs-1 opacity-50"></i>
                     <p class="mt-2 mb-0">{{ __('forums.category.no_threads') }}</p>
                 </div>
                 @endif

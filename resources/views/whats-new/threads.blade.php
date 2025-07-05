@@ -10,7 +10,7 @@
                 <h1 class="mb-0">Cập nhật mới</h1>
 
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i> Tạo chủ đề mới
+                    <i class="fas fa-plus-lg me-1"></i> Tạo chủ đề mới
                 </a>
             </div>
 
@@ -53,7 +53,7 @@
                             <!-- Previous Page -->
                             <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
                                 <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                                    <span aria-hidden="true"><i class="chevron-left"></i></span>
                                 </a>
                             </li>
 
@@ -107,7 +107,7 @@
                                             <!-- Next Page -->
                                             <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
                                                 <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                    <span aria-hidden="true"><i class="chevron-right"></i></span>
                                                 </a>
                                             </li>
                         </ul>
@@ -138,7 +138,7 @@
                             <!-- Previous Page -->
                             <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
                                 <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                                    <span aria-hidden="true"><i class="chevron-left"></i></span>
                                 </a>
                             </li>
 
@@ -192,7 +192,7 @@
                                             <!-- Next Page -->
                                             <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
                                                 <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                                    <span aria-hidden="true"><i class="chevron-right"></i></span>
                                                 </a>
                                             </li>
                         </ul>

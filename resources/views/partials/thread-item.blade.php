@@ -46,7 +46,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <strong class="thread-user-name">{{ $userName }}</strong><br>
                 <!-- Status badge nếu có -->
                 @if(isset($thread->status) && $thread->status)
-                <!--span class="badge bg-light text-dark"><i class="bi bi-info-circle me-1"></i>{{ $thread->status
+                <!--span class="badge bg-light text-dark"><i class="fas fa-info-circle me-1"></i>{{ $thread->status
                     }}</span-->
                 @endif
                 <span class="d-none d-md-inline text-muted">{{ $createdAt }}</span>
@@ -55,12 +55,12 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         </div>
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
-            <span class="btn btn-sm bg-primary thread_status"><i class="bi bi-pin-angle"></i>
+            <span class="btn btn-sm bg-primary thread_status"><i class="pin-angle"></i>
                 Ghim
             </span>
             @endif
             @if($thread->is_locked ?? false)
-            <span class="btn btn-sm bg-danger thread_status"><i class="bi bi-lock-fill"></i>
+            <span class="btn btn-sm bg-danger thread_status"><i class="fas fa-lock-fill"></i>
                 Khóa
             </span>
             @endif
@@ -74,7 +74,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
-                        <i class="bi bi-bookmark-fill"></i>
+                        <i class="far fa-bookmark-fill"></i>
                         <span class="d-none d-md-inline ms-1">Đã lưu</span>
                     </button>
                 </form>
@@ -83,7 +83,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <form method="POST" action="{{ route('threads.bookmark.add', $thread) }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
-                        <i class="bi bi-bookmark"></i>
+                        <i class="far fa-bookmark"></i>
                         <span class="d-none d-md-inline ms-1">Lưu</span>
                     </button>
                 </form>
@@ -95,7 +95,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
-                        <i class="bi bi-bell-fill"></i>
+                        <i class="fas fa-bell-fill"></i>
                         <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
                     </button>
                 </form>
@@ -104,7 +104,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <form method="POST" action="{{ route('threads.follow.add', $thread) }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
-                        <i class="bi bi-bell"></i>
+                        <i class="fas fa-bell"></i>
                         <span class="d-none d-md-inline ms-1">Theo dõi</span>
                     </button>
                 </form>
@@ -144,22 +144,22 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
     <div class="thread-item-footer">
         <div class="thread-meta-left">
             <div class="thread-meta">
-                <span class="meta-item"><i class="bi bi-eye"></i> {{ $viewCount }} lượt xem</span>
-                <span class="meta-item"><i class="bi bi-chat"></i> {{ $commentsCount }} phản hồi</span>
+                <span class="meta-item"><i class="fas fa-eye"></i> {{ $viewCount }} lượt xem</span>
+                <span class="meta-item"><i class="fas fa-comment"></i> {{ $commentsCount }} phản hồi</span>
             </div>
 
             <div class="thread-category-badges">
                 @if(isset($thread->category) && $thread->category)
                 <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
                     class="badge bg-secondary text-decoration-none">
-                    <i class="bi bi-tag"></i> {{ $thread->category->name }}
+                    <i class="tag"></i> {{ $thread->category->name }}
                 </a>
                 @endif
 
                 @if(isset($thread->forum) && $thread->forum)
                 <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
                     class="badge bg-info text-decoration-none">
-                    <i class="bi bi-folder"></i> {{ $thread->forum->name }}
+                    <i class="folder"></i> {{ $thread->forum->name }}
                 </a>
                 @endif
             </div>

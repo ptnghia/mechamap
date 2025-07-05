@@ -156,7 +156,7 @@
 
                                 <div class="message-item mb-3 {{ $isMine ? 'text-end' : 'text-start' }}">
                                     <div class="d-inline-block {{ $isMine ? 'bg-primary text-white' : 'bg-light' }}
-                                                rounded-3 p-3 position-relative"
+                                               rounded-3 p-3 position-relative"
                                          style="max-width: 70%;">
 
                                         @if(!$isMine)
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageHtml = `
             <div class="message-item mb-3 ${isMine ? 'text-end' : 'text-start'}">
                 <div class="d-inline-block ${isMine ? 'bg-primary text-white' : 'bg-light'}
-                            rounded-3 p-3 position-relative"
+                           rounded-3 p-3 position-relative"
                      style="max-width: 70%;">
 
                     ${!isMine ? `<div class="small text-muted mb-1">${message.user.name}</div>` : ''}

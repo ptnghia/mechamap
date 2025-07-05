@@ -9,7 +9,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Saved Threads</h1>
                 <a href="{{ route('threads.index') }}" class="btn btn-outline-primary">
-                    <i class="bi bi-arrow-left"></i> Back to Forums
+                    <i class="fas fa-arrow-left"></i> Back to Forums
                 </a>
             </div>
 
@@ -49,7 +49,7 @@
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-outline-danger"
                                                 title="Remove from saved">
-                                                <i class="bi bi-bookmark-x"></i>
+                                                <i class="far fa-bookmark-x"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -66,12 +66,12 @@
 
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="small">
-                                        <span class="me-3"><i class="bi bi-person"></i> {{ $thread->user->name }}</span>
-                                        <span class="me-3"><i class="bi bi-eye"></i> {{ $thread->view_count }}
+                                        <span class="me-3"><i class="person"></i> {{ $thread->user->name }}</span>
+                                        <span class="me-3"><i class="fas fa-eye"></i> {{ $thread->view_count }}
                                             views</span>
-                                        <span class="me-3"><i class="bi bi-chat"></i> {{ $thread->allComments->count()
+                                        <span class="me-3"><i class="fas fa-comment"></i> {{ $thread->allComments->count()
                                             }} {{ __('messages.replies') }}</span>
-                                        <span><i class="bi bi-people"></i> {{ $thread->participant_count }}
+                                        <span><i class="fas fa-users"></i> {{ $thread->participant_count }}
                                             participants</span>
                                     </div>
 
@@ -99,7 +99,7 @@
                 </div>
                 @else
                 <div class="card-body text-center py-5">
-                    <i class="bi bi-bookmark display-4 text-muted"></i>
+                    <i class="far fa-bookmark display-4 text-muted"></i>
                     <p class="mt-3">You haven't saved any threads yet.</p>
                     <a href="{{ route('threads.index') }}" class="btn btn-primary">Browse Threads</a>
                 </div>

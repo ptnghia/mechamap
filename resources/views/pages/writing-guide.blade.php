@@ -9,7 +9,7 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-success text-white">
                     <h1 class="h3 mb-0">
-                        <i class="bi bi-book me-2"></i>
+                        <i class="book me-2"></i>
                         Hướng Dẫn Viết Bài Chất Lượng
                     </h1>
                 </div>
@@ -19,19 +19,19 @@
                         <div class="col-lg-3">
                             <div class="list-group sticky-top" style="top: 20px;">
                                 <a href="#section-title" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-1-circle me-2"></i>Viết Tiêu Đề
+                                    <i class="1-circle me-2"></i>Viết Tiêu Đề
                                 </a>
                                 <a href="#section-content" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-2-circle me-2"></i>Cấu Trúc Nội Dung
+                                    <i class="2-circle me-2"></i>Cấu Trúc Nội Dung
                                 </a>
                                 <a href="#section-images" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-3-circle me-2"></i>Sử Dụng Hình Ảnh
+                                    <i class="3-circle me-2"></i>Sử Dụng Hình Ảnh
                                 </a>
                                 <a href="#section-category" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-4-circle me-2"></i>Chọn Danh Mục
+                                    <i class="4-circle me-2"></i>Chọn Danh Mục
                                 </a>
                                 <a href="#section-tips" class="list-group-item list-group-item-action">
-                                    <i class="bi bi-5-circle me-2"></i>Mẹo Bổ Sung
+                                    <i class="5-circle me-2"></i>Mẹo Bổ Sung
                                 </a>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                         <div class="col-lg-9">
                             <section id="section-title" class="mb-5">
                                 <h3 class="text-success mb-3">
-                                    <i class="bi bi-1-circle-fill me-2"></i>
+                                    <i class="1-circle-fill me-2"></i>
                                     Cách Viết Tiêu Đề Hiệu Quả
                                 </h3>
 
@@ -69,7 +69,7 @@
 
                             <section id="section-content" class="mb-5">
                                 <h3 class="text-success mb-3">
-                                    <i class="bi bi-2-circle-fill me-2"></i>
+                                    <i class="2-circle-fill me-2"></i>
                                     Cấu Trúc Nội Dung Hoàn Hảo
                                 </h3>
 
@@ -95,7 +95,7 @@
 
                             <section id="section-images" class="mb-5">
                                 <h3 class="text-success mb-3">
-                                    <i class="bi bi-3-circle-fill me-2"></i>
+                                    <i class="3-circle-fill me-2"></i>
                                     Sử Dụng Hình Ảnh Hiệu Quả
                                 </h3>
 
@@ -128,7 +128,7 @@
 
                             <section id="section-category" class="mb-5">
                                 <h3 class="text-success mb-3">
-                                    <i class="bi bi-4-circle-fill me-2"></i>
+                                    <i class="4-circle-fill me-2"></i>
                                     Chọn Đúng Danh Mục
                                 </h3>
 
@@ -136,13 +136,13 @@
                                     @php
                                     $categories = [
                                     ['name' => 'Kiến Trúc & Thiết Kế', 'desc' => 'Thiết kế nhà, nội thất, cảnh quan',
-                                    'icon' => 'bi-building'],
+                                    'icon' => 'building'],
                                     ['name' => 'Kết Cấu & Xây Dựng', 'desc' => 'Tính toán kết cấu, vật liệu xây dựng',
-                                    'icon' => 'bi-hammer'],
+                                    'icon' => 'hammer'],
                                     ['name' => 'Giao Thông & Hạ Tầng', 'desc' => 'Đường bộ, cầu đường, quy hoạch',
-                                    'icon' => 'bi-signpost'],
+                                    'icon' => 'signpost'],
                                     ['name' => 'Phần Mềm & Công Nghệ', 'desc' => 'AutoCAD, Revit, BIM, GIS', 'icon' =>
-                                    'bi-laptop'],
+                                    'laptop'],
                                     ];
                                     @endphp
 
@@ -164,7 +164,7 @@
 
                             <section id="section-tips" class="mb-5">
                                 <h3 class="text-success mb-3">
-                                    <i class="bi bi-5-circle-fill me-2"></i>
+                                    <i class="5-circle-fill me-2"></i>
                                     Mẹo Bổ Sung Để Bài Viết Nổi Bật
                                 </h3>
 
@@ -234,11 +234,11 @@
 
                             <div class="text-center mt-5">
                                 <div class="alert alert-success">
-                                    <h5><i class="bi bi-check-circle me-2"></i>Sẵn sàng viết bài?</h5>
+                                    <h5><i class="fas fa-check-circle me-2"></i>Sẵn sàng viết bài?</h5>
                                     <p class="mb-3">Áp dụng những hướng dẫn trên và tạo ra những bài viết chất lượng!
                                     </p>
                                     <a href="{{ route('threads.create') }}" class="btn btn-success btn-lg">
-                                        <i class="bi bi-plus-circle me-2"></i>
+                                        <i class="fas fa-plus-circle me-2"></i>
                                         Tạo Bài Viết Ngay
                                     </a>
                                 </div>

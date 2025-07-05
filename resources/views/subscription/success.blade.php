@@ -11,7 +11,7 @@
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body text-center py-5">
                             <div class="mb-4">
-                                <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                                <i class="fas fa-check-circle-fill text-success" style="font-size: 5rem;"></i>
                             </div>
                             <h3 class="mb-4">{{ __('Thank You for Your Subscription!') }}</h3>
                             <p class="lead mb-4">{{ __('Your account has been successfully upgraded.') }}</p>

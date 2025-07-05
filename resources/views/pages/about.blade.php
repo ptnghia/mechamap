@@ -9,7 +9,7 @@
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h1 class="h3 mb-0">
-                        <i class="bi bi-info-circle me-2"></i>
+                        <i class="fas fa-info-circle me-2"></i>
                         Về MechaMap - Cộng đồng Kỹ thuật Cơ khí
                     </h1>
                 </div>
@@ -26,19 +26,19 @@
                             <h3 class="h5 text-primary mt-4 mb-3">Sứ mệnh của chúng tôi</h3>
                             <ul class="list-unstyled">
                                 <li class="mb-2">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="fas fa-check-circle-fill text-success me-2"></i>
                                     Kết nối cộng đồng kỹ sư cơ khí Việt Nam và thế giới
                                 </li>
                                 <li class="mb-2">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="fas fa-check-circle-fill text-success me-2"></i>
                                     Chia sẻ kiến thức chuyên môn về thiết kế, chế tạo và vật liệu
                                 </li>
                                 <li class="mb-2">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="fas fa-check-circle-fill text-success me-2"></i>
                                     Hỗ trợ giải đáp các vấn đề kỹ thuật trong thực tế
                                 </li>
                                 <li class="mb-2">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="fas fa-check-circle-fill text-success me-2"></i>
                                     Cập nhật xu hướng công nghệ mới trong ngành cơ khí
                                 </li>
                             </ul>
@@ -48,19 +48,19 @@
                                 <div class="col-md-6">
                                     <ul class="list-unstyled">
                                         <li class="mb-2">
-                                            <i class="bi bi-gear-fill text-primary me-2"></i>
+                                            <i class="fas fa-cog-fill text-primary me-2"></i>
                                             Thiết kế Cơ khí
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-tools text-primary me-2"></i>
+                                            <i class="tools text-primary me-2"></i>
                                             Công nghệ Chế tạo
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-cpu text-primary me-2"></i>
+                                            <i class="cpu text-primary me-2"></i>
                                             CAD/CAM/CAE
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-robot text-primary me-2"></i>
+                                            <i class="robot text-primary me-2"></i>
                                             Tự động hóa
                                         </li>
                                     </ul>
@@ -68,19 +68,19 @@
                                 <div class="col-md-6">
                                     <ul class="list-unstyled">
                                         <li class="mb-2">
-                                            <i class="bi bi-bricks text-primary me-2"></i>
+                                            <i class="bricks text-primary me-2"></i>
                                             Vật liệu Kỹ thuật
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-wrench-adjustable text-primary me-2"></i>
+                                            <i class="wrench-adjustable text-primary me-2"></i>
                                             Bảo trì & Sửa chữa
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-lightning text-primary me-2"></i>
+                                            <i class="lightning text-primary me-2"></i>
                                             Cơ điện tử
                                         </li>
                                         <li class="mb-2">
-                                            <i class="bi bi-globe text-primary me-2"></i>
+                                            <i class="globe text-primary me-2"></i>
                                             Tin tức Ngành
                                         </li>
                                     </ul>
@@ -96,10 +96,10 @@
 
                             <div class="mt-4">
                                 <a href="{{ route('rules') }}" class="btn btn-outline-primary me-2">
-                                    <i class="bi bi-book me-1"></i>Xem quy tắc chi tiết
+                                    <i class="book me-1"></i>Xem quy tắc chi tiết
                                 </a>
                                 <a href="{{ route('forums.index') }}" class="btn btn-primary">
-                                    <i class="bi bi-arrow-right me-1"></i>Khám phá diễn đàn
+                                    <i class="fas fa-arrow-right me-1"></i>Khám phá diễn đàn
                                 </a>
                             </div>
                         </div>
@@ -133,15 +133,15 @@
                                     @guest
                                     <div class="d-grid gap-2">
                                         <a href="{{ route('register') }}" class="btn btn-primary">
-                                            <i class="bi bi-person-plus me-1"></i>Đăng ký
+                                            <i class="fas fa-user-plus me-1"></i>Đăng ký
                                         </a>
                                         <a href="{{ route('login') }}" class="btn btn-outline-primary">
-                                            <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+                                            <i class="box-arrow-in-right me-1"></i>Đăng nhập
                                         </a>
                                     </div>
                                     @else
                                     <div class="alert alert-success">
-                                        <i class="bi bi-check-circle me-1"></i>
+                                        <i class="fas fa-check-circle me-1"></i>
                                         Chào mừng {{ auth()->user()->name }}!
                                     </div>
                                     @endguest
@@ -155,7 +155,7 @@
                                         Có câu hỏi hoặc góp ý? Chúng tôi luôn sẵn sàng lắng nghe.
                                     </p>
                                     <a href="{{ route('contact') }}" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-envelope me-1"></i>Liên hệ với chúng tôi
+                                        <i class="fas fa-envelope me-1"></i>Liên hệ với chúng tôi
                                     </a>
                                 </div>
                             </div>
@@ -165,9 +165,9 @@
 
                 <div class="card-footer bg-light text-center">
                     <small class="text-muted">
-                        <i class="bi bi-calendar me-1"></i>
+                        <i class="calendar me-1"></i>
                         Hoạt động từ {{ config('app.established_year', '2023') }} |
-                        <i class="bi bi-heart-fill text-danger me-1"></i>
+                        <i class="fas fa-heart-fill text-danger me-1"></i>
                         Được xây dựng với niềm đam mê về kỹ thuật cơ khí
                     </small>
                 </div>

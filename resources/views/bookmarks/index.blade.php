@@ -16,7 +16,7 @@
                                         <div>
                                             @if($bookmark->bookmarkable_type === 'App\\Models\\Thread')
                                                 <h5 class="mb-1">
-                                                    <i class="bi bi-chat-left-text me-2"></i>
+                                                    <i class="fas fa-comment-left-text me-2"></i>
                                                     <a href="{{ route('threads.show', $bookmark->bookmarkable) }}" class="text-decoration-none">
                                                         {{ $bookmark->bookmarkable->title }}
                                                     </a>
@@ -26,7 +26,7 @@
                                                 </p>
                                             @elseif($bookmark->bookmarkable_type === 'App\\Models\\Post')
                                                 <h5 class="mb-1">
-                                                    <i class="bi bi-chat-right me-2"></i>
+                                                    <i class="fas fa-comment-right me-2"></i>
                                                     <a href="{{ route('threads.show', $bookmark->bookmarkable->thread_id) }}#post-{{ $bookmark->bookmarkable->id }}" class="text-decoration-none">
                                                         {{ __('Reply in') }} {{ $bookmark->bookmarkable->thread->title }}
                                                     </a>
@@ -36,7 +36,7 @@
                                                 </p>
                                             @else
                                                 <h5 class="mb-1">
-                                                    <i class="bi bi-bookmark me-2"></i>
+                                                    <i class="far fa-bookmark me-2"></i>
                                                     {{ __('Bookmarked item') }}
                                                 </h5>
                                             @endif
@@ -54,7 +54,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-bookmark-x"></i> {{ __('Remove') }}
+                                                    <i class="far fa-bookmark-x"></i> {{ __('Remove') }}
                                                 </button>
                                             </form>
                                         </div>
@@ -68,7 +68,7 @@
                         </div>
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-bookmark fs-1 text-muted mb-3"></i>
+                            <i class="far fa-bookmark fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('You don\'t have any bookmarks yet.') }}</p>
                             <p class="text-muted">{{ __('Bookmark threads and posts to find them easily later.') }}</p>
                         </div>

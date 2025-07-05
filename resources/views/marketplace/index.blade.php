@@ -171,7 +171,7 @@
             @empty
                 <div class="col-12">
                     <div class="text-center py-5">
-                        <i class="bi bi-box text-muted" style="font-size: 4rem;"></i>
+                        <i class="box text-muted" style="font-size: 4rem;"></i>
                         <h4 class="mt-3">{{ __('messages.marketplace.no_featured_products_available') }}</h4>
                         <p class="text-muted">{{ __('messages.marketplace.check_back_later') }}</p>
                     </div>

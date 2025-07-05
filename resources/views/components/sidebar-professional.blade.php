@@ -53,7 +53,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
             @guest
             <div class="cta-section mt-3">
                 <a href="{{ route('register') }}" class="btn btn-primary w-100">
-                    <i class="bi bi-person-plus me-2"></i>{{ __('content.join_professional_network') }}
+                    <i class="fas fa-user-plus me-2"></i>{{ __('content.join_professional_network') }}
                 </a>
             </div>
             @endguest
@@ -64,7 +64,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Trending Topics Card -->
     <div class="sidebar-card trending-topics" data-aos="fade-up" data-aos-delay="100">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-graph-up me-2 text-success"></i>{{ __('content.weekly_trends') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-chart-line me-2 text-success"></i>{{ __('content.weekly_trends') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="trending-list">
@@ -88,7 +88,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div> <!-- Featured Discussions Card -->
     <div class="sidebar-card featured-discussions" data-aos="fade-up" data-aos-delay="200">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-lightning-fill me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
+            <h6 class="mb-0"><i class="lightning-fill me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
             <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
@@ -98,7 +98,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
                     <div class="discussion-avatar">
                         <img src="{{ $thread['author']['avatar_url'] ?? 'https://ui-avatars.com/api/?name=' . urlencode(strtoupper(substr($thread['author']['name'], 0, 1))) . '&background=6366f1&color=fff&size=200' }}"
                              alt="{{ $thread['author']['name'] }}"
-                             class=""
+                             
                              onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($thread['author']['name'], 0, 1))) }}&background=6366f1&color=fff&size=200'">
                     </div>
                     <div class="discussion-content">
@@ -109,10 +109,10 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         </div>
                         <div class="discussion-metrics">
                             <span class="metric">
-                                <i class="bi bi-eye"></i> {{ number_format($thread['metrics']['views']) }}
+                                <i class="fas fa-eye"></i> {{ number_format($thread['metrics']['views']) }}
                             </span>
                             <span class="metric">
-                                <i class="bi bi-graph-up"></i> {{ $thread['metrics']['engagement_score'] }}
+                                <i class="fas fa-chart-line"></i> {{ $thread['metrics']['engagement_score'] }}
                             </span>
                         </div>
                     </div>
@@ -124,7 +124,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div> <!-- Top Engineers Card -->
     <div class="sidebar-card top-engineers" data-aos="fade-up" data-aos-delay="300">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-award me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
+            <h6 class="mb-0"><i class="award me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
             <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">{{ __('content.leaderboard') }}</a>
         </div>
         <div class="card-body p-0">
@@ -162,7 +162,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @if($user && !empty($sidebarData['user_recommendations'])) <div class="sidebar-card recommendations"
         data-aos="fade-up" data-aos-delay="400">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-stars me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
+            <h6 class="mb-0"><i class="stars me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="recommendations-list">
@@ -185,7 +185,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Popular Forums Card -->
     <div class="sidebar-card popular-forums" data-aos="fade-up" data-aos-delay="500">
         <div class="card-header">
-            <h6 class="mb-0"><i class="bi bi-collection me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
+            <h6 class="mb-0"><i class="collection me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="forums-list">
@@ -234,10 +234,10 @@ function initializeSidebar() {
 
             if (target.classList.contains('show')) {
                 target.classList.remove('show');
-                icon.className = 'bi bi-chevron-down';
+                icon.className = 'chevron-down';
             } else {
                 target.classList.add('show');
-                icon.className = 'bi bi-chevron-up';
+                icon.className = 'chevron-up';
             }
         });
     });

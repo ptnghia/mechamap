@@ -48,11 +48,11 @@ $finalLinkUrl = $linkUrl ?? ($showcase->showcase_url ?? route('showcase.show', $
     <div class="showcase-placeholder bg-light d-flex align-items-center justify-content-center {{ $imageClasses }} {{ $class }}"
         style="{{ $imageStyle }}">
         @if($size === 'small')
-        <i class="bi bi-image text-muted fs-6"></i>
+        <i class="fas fa-image text-muted fs-6"></i>
         @elseif($size === 'medium')
-        <i class="bi bi-image text-muted fs-5"></i>
+        <i class="fas fa-image text-muted fs-5"></i>
         @else
-        <i class="bi bi-image text-muted fs-1"></i>
+        <i class="fas fa-image text-muted fs-1"></i>
         @endif
     </div>
     @if($showLink)

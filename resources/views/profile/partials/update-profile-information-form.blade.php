@@ -17,7 +17,7 @@
                 <div class="avatar-upload">
                     <div class="avatar-edit">
                         <input type="file" id="avatar-upload" form="avatar-form" name="avatar" accept=".png, .jpg, .jpeg" />
-                        <label for="avatar-upload"><i class="bi bi-pencil"></i></label>
+                        <label for="avatar-upload"><i class="fas fa-edit"></i></label>
                     </div>
                     <div class="avatar-preview">
                         <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" id="avatar-preview-image">

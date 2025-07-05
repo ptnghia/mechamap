@@ -9,7 +9,7 @@
             <!-- Header -->
             <div class="text-center mb-5">
                 <h1 class="display-5 fw-bold text-primary">
-                    <i class="bi bi-headset me-3"></i>
+                    <i class="headset me-3"></i>
                     Liên Hệ Hỗ Trợ
                 </h1>
                 <p class="lead text-muted">
@@ -23,14 +23,14 @@
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
                             <div class="text-primary mb-3">
-                                <i class="bi bi-envelope-fill" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-envelope-fill" style="font-size: 2.5rem;"></i>
                             </div>
                             <h5 class="card-title">Email Hỗ Trợ</h5>
                             <p class="card-text text-muted">
                                 Gửi email cho chúng tôi, chúng tôi sẽ phản hồi trong vòng 24 giờ.
                             </p>
                             <a href="mailto:support@mechamap.com" class="btn btn-outline-primary">
-                                <i class="bi bi-envelope me-2"></i>
+                                <i class="fas fa-envelope me-2"></i>
                                 support@mechamap.com
                             </a>
                         </div>
@@ -41,14 +41,14 @@
                     <div class="card h-100 border-0 shadow-sm">
                         <div class="card-body text-center p-4">
                             <div class="text-success mb-3">
-                                <i class="bi bi-chat-dots-fill" style="font-size: 2.5rem;"></i>
+                                <i class="fas fa-comment-dots-fill" style="font-size: 2.5rem;"></i>
                             </div>
                             <h5 class="card-title">Diễn Đàn Cộng Đồng</h5>
                             <p class="card-text text-muted">
                                 Tham gia thảo luận với cộng đồng và được hỗ trợ từ các thành viên khác.
                             </p>
                             <a href="{{ route('forums.index') }}" class="btn btn-outline-success">
-                                <i class="bi bi-people me-2"></i>
+                                <i class="fas fa-users me-2"></i>
                                 Tham Gia Diễn Đàn
                             </a>
                         </div>
@@ -60,7 +60,7 @@
             <div class="card border-0 shadow-sm mb-5">
                 <div class="card-header bg-light">
                     <h5 class="card-title mb-0">
-                        <i class="bi bi-question-circle me-2"></i>
+                        <i class="question-circle me-2"></i>
                         Câu Hỏi Thường Gặp
                     </h5>
                 </div>
@@ -135,7 +135,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title mb-0">
-                        <i class="bi bi-send me-2"></i>
+                        <i class="fas fa-paper-plane me-2"></i>
                         Gửi Tin Nhắn Cho Chúng Tôi
                     </h5>
                 </div>
@@ -181,11 +181,11 @@
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-send me-2"></i>
+                                    <i class="fas fa-paper-plane me-2"></i>
                                     Gửi Tin Nhắn
                                 </button>
                                 <button type="reset" class="btn btn-outline-secondary ms-2">
-                                    <i class="bi bi-arrow-clockwise me-2"></i>
+                                    <i class="arrow-clockwise me-2"></i>
                                     Làm Lại
                                 </button>
                             </div>

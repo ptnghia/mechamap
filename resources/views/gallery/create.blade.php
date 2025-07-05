@@ -42,7 +42,7 @@
                                 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-upload me-1"></i> {{ __('Upload Media') }}
+                                        <i class="fas fa-upload me-1"></i> {{ __('Upload Media') }}
                                     </button>
                                 </div>
                             </form>

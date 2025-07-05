@@ -64,13 +64,13 @@
 
             <!-- Header -->
             <div class="text-center mb-5">
-                <h2><i class="bi bi-stars me-2"></i>Tạo Showcase Mới</h2>
+                <h2><i class="stars me-2"></i>Tạo Showcase Mới</h2>
                 <p class="text-muted">Chia sẻ dự án, sản phẩm hoặc thành tựu kỹ thuật của bạn với cộng đồng</p>
             </div>
 
             <!-- Help Information -->
             <div class="form-help mb-4">
-                <h6><i class="bi bi-info-circle me-2"></i>Về Showcase</h6>
+                <h6><i class="info-circle me-2"></i>Về Showcase</h6>
                 <p class="mb-2">Showcase là nơi bạn có thể trình bày các dự án cơ khí, sản phẩm kỹ thuật, hoặc giải pháp
                     công nghệ của mình. Đây là cơ hội để:</p>
                 <ul class="mb-0">
@@ -87,7 +87,7 @@
 
                 <!-- Basic Information Section -->
                 <div class="form-section">
-                    <h5><i class="bi bi-pencil-square me-2"></i>Thông Tin Cơ Bản</h5>
+                    <h5><i class="fas fa-edit-square me-2"></i>Thông Tin Cơ Bản</h5>
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
@@ -139,13 +139,13 @@
 
                 <!-- Cover Image Section -->
                 <div class="form-section">
-                    <h5><i class="bi bi-image me-2"></i>Hình Ảnh Đại Diện</h5>
+                    <h5><i class="fas fa-image me-2"></i>Hình Ảnh Đại Diện</h5>
 
                     <div class="mb-3">
                         <label for="cover_image" class="form-label">Upload hình ảnh đại diện <span
                                 class="text-danger">*</span></label>
                         <div class="file-upload-area" id="fileUploadArea">
-                            <i class="bi bi-cloud-upload fs-1 text-muted mb-3"></i>
+                            <i class="fas fa-cloud-upload-alt fs-1 text-muted mb-3"></i>
                             <h6>Kéo thả file hoặc click để chọn</h6>
                             <p class="text-muted mb-0">JPG, PNG, WebP (tối đa 5MB)</p>
                             <input type="file" class="d-none @error('cover_image') is-invalid @enderror"
@@ -157,7 +157,7 @@
                             <img id="previewImg" class="image-preview" alt="Preview">
                             <div class="mt-2">
                                 <button type="button" class="btn btn-sm btn-outline-danger" id="removeImage">
-                                    <i class="bi bi-trash"></i> Xóa ảnh
+                                    <i class="fas fa-trash"></i> Xóa ảnh
                                 </button>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
 
                 <!-- Technical Details Section -->
                 <div class="form-section">
-                    <h5><i class="bi bi-gear me-2"></i>Thông Tin Kỹ Thuật</h5>
+                    <h5><i class="fas fa-cog me-2"></i>Thông Tin Kỹ Thuật</h5>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -209,15 +209,15 @@
                 <!-- Action Buttons -->
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('showcase.index') }}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại
                     </a>
 
                     <div>
                         <button type="button" class="btn btn-outline-primary me-2" id="previewBtn">
-                            <i class="bi bi-eye me-2"></i>Xem trước
+                            <i class="fas fa-eye me-2"></i>Xem trước
                         </button>
                         <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="bi bi-check-circle me-2"></i>Tạo Showcase
+                            <i class="fas fa-check-circle me-2"></i>Tạo Showcase
                         </button>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-eye me-2"></i>Xem trước Showcase</h5>
+                <h5 class="modal-title"><i class="fas fa-eye me-2"></i>Xem trước Showcase</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -341,9 +341,9 @@
                     <h5 class="card-title">${title || 'Tiêu đề showcase'}</h5>
                     <p class="card-text">${description || 'Mô tả showcase...'}</p>
 
-                    ${location ? `<p><i class="bi bi-geo-alt"></i> <strong>Địa điểm:</strong> ${location}</p>` : ''}
-                    ${usage ? `<p><i class="bi bi-tools"></i> <strong>Ứng dụng:</strong> ${usage}</p>` : ''}
-                    ${floors ? `<p><i class="bi bi-layers"></i> <strong>Quy mô:</strong> ${floorsText[floors]}</p>` : ''}
+                    ${location ? `<p><i class="geo-alt"></i> <strong>Địa điểm:</strong> ${location}</p>` : ''}
+                    ${usage ? `<p><i class="tools"></i> <strong>Ứng dụng:</strong> ${usage}</p>` : ''}
+                    ${floors ? `<p><i class="layers"></i> <strong>Quy mô:</strong> ${floorsText[floors]}</p>` : ''}
 
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <small class="text-muted">Bởi {{ auth()->user()->name }}</small>
