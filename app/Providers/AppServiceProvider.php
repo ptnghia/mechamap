@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // Set default string length for MySQL compatibility
         Schema::defaultStringLength(191);
+
+        // Force HTTPS in production and when APP_URL uses HTTPS
+        if (config('app.env') === 'production' || str_starts_with(config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
 
         // Register custom Blade directives for admin permissions
         $this->registerAdminBladeDirectives();

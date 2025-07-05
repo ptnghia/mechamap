@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust proxies for HTTPS support
+        $middleware->trustProxies(at: '*');
+
         // Do not append as global middleware - these should only be for web routes
         // $middleware->append(\App\Http\Middleware\TrackUserActivity::class);
         // $middleware->append(\App\Http\Middleware\ApplySeoSettings::class);
