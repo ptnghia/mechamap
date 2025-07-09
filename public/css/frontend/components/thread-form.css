@@ -1,23 +1,6 @@
 /* Modern Thread Creation Form Styles */
 
 /* CSS Variables for consistent theming */
-:root {
-    --primary-color: #007bff;
-    --primary-dark: #0056b3;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --border-color: #e9ecef;
-    --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
-    --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --border-radius: 12px;
-    --border-radius-lg: 16px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
 /* Remove thread-form-wrapper styles since we're using Bootstrap grid */
 

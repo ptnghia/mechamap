@@ -81,6 +81,9 @@
     <!-- Iconsax -->
     <link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet">
 
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
     <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Scripts -->
@@ -117,13 +120,12 @@
     @stack('styles')
 </head>
 
-<body class="min-vh-100">
-    <div class="d-flex flex-column min-vh-100">
+<body class="user-frontend">
+    <div class="">
         <x-header />
-
         <!-- Page Heading -->
         @isset($header)
-        <header class="sticky-top bg-white border-bottom shadow-sm">
+        <header class="sticky-top">
             <div class="container py-3">
                 {{ $header }}
             </div>
@@ -241,6 +243,9 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Fancybox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
     <!-- Main App JS -->
     <script src="{{ asset('js/app.js') }}"></script>
 
@@ -252,6 +257,52 @@
 
     <!-- Theme Recovery System - Restores theme toggle functionality if it breaks -->
     <script src="{{ asset('js/theme-recovery.js') }}"></script>
+
+    <!-- Fancybox Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Fancybox for all images with data-fancybox attribute
+            Fancybox.bind("[data-fancybox]", {
+                // Options
+                Toolbar: {
+                    display: {
+                        left: ["infobar"],
+                        middle: [
+                            "zoomIn",
+                            "zoomOut",
+                            "toggle1to1",
+                            "rotateCCW",
+                            "rotateCW",
+                            "flipX",
+                            "flipY",
+                        ],
+                        right: ["slideshow", "thumbs", "close"],
+                    },
+                },
+                Thumbs: {
+                    autoStart: false,
+                },
+                // Vietnamese labels
+                l10n: {
+                    CLOSE: "Đóng",
+                    NEXT: "Tiếp theo",
+                    PREV: "Trước đó",
+                    MODAL: "Bạn có thể đóng modal này bằng phím ESC",
+                    ERROR: "Có lỗi xảy ra khi tải nội dung. <br/> Vui lòng thử lại sau.",
+                    IMAGE_ERROR: "Không thể tải hình ảnh. <br/> Vui lòng thử lại sau.",
+                    ELEMENT_NOT_FOUND: "Không tìm thấy phần tử HTML.",
+                    AJAX_NOT_FOUND: "Lỗi khi tải AJAX: Không tìm thấy",
+                    AJAX_FORBIDDEN: "Lỗi khi tải AJAX: Bị cấm",
+                    IFRAME_ERROR: "Lỗi khi tải trang",
+                    TOGGLE_ZOOM: "Phóng to/thu nhỏ",
+                    TOGGLE_THUMBS: "Hiện/ẩn thumbnails",
+                    TOGGLE_SLIDESHOW: "Bật/tắt slideshow",
+                    TOGGLE_FULLSCREEN: "Bật/tắt toàn màn hình",
+                    DOWNLOAD: "Tải xuống"
+                }
+            });
+        });
+    </script>
 
     <!-- Theme Debug Script -->
     <script>
@@ -308,7 +359,7 @@
 
     <!-- Authentication Modal -->
     @guest
-    <x-auth-modal id="authModal" size="lg" />
+    <x-auth-modal id="authModal" size="md" />
     @endguest
 </body>
 

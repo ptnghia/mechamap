@@ -4,8 +4,8 @@ return [
     'nav' => [
         // Main Navigation
         'home' => 'Trang chủ',
-        'marketplace' => 'Thị trường',
-        'community' => 'Cộng đồng',
+        'marketplace' => 'Sản phẩm',
+        'community' => 'Diễn đàn',
         'technical_resources' => 'Tài nguyên kỹ thuật',
         'knowledge' => 'Kiến thức',
         'more' => 'Thêm',
@@ -33,7 +33,7 @@ return [
         'job_board' => 'Bảng việc làm',
 
         // Showcase Menu - NEW DEDICATED SECTION
-        'showcase' => 'Triển lãm',
+        'showcase' => 'Dự án',
         'browse_showcases' => 'Duyệt triển lãm',
         'public_gallery' => 'Thư viện công khai',
         'featured_projects' => 'Dự án nổi bật',
@@ -142,6 +142,43 @@ return [
     'common' => [
         'search_placeholder' => 'Tìm kiếm...',
         'search' => 'Tìm kiếm',
+        'views' => 'Lượt xem',
+        'comments' => 'Bình luận',
+        'load_more' => 'Tải thêm',
+        'updated' => 'Cập nhật',
+    ],
+
+    // Site-wide messages
+    'site' => [
+        'community_title' => 'MechaMap Community',
+    ],
+
+    // Navigation messages
+    'navigation' => [
+        'home' => 'Trang chủ',
+        'forums' => 'Diễn đàn',
+        'categories' => 'Danh mục',
+    ],
+
+    // Forums messages
+    'forums' => [
+        'forums' => 'Diễn đàn',
+        'forums_in_category' => 'Diễn đàn trong :category',
+
+        'no_forums_in_category' => 'Chưa có diễn đàn nào trong danh mục này',
+        'no_forums_description' => 'Hãy quay lại sau để xem các diễn đàn mới',
+        'high_activity' => 'Hoạt động cao',
+        'medium_activity' => 'Hoạt động trung bình',
+        'low_activity' => 'Hoạt động thấp',
+    ],
+
+    // Threads messages
+    'threads' => [
+        'threads' => 'Chủ đề',
+        'posts' => 'Bài đăng',
+        'create_new_post' => 'Tạo bài đăng mới',
+        'create_first_post' => 'Tạo bài đăng đầu tiên',
+        'no_posts_in_category' => 'Chưa có bài đăng nào trong danh mục này',
     ],
 
     'search' => [
@@ -155,12 +192,81 @@ return [
     ],
 
     // What's New navigation
+    'whats_new' => 'Cập nhật mới',
     'new_posts' => 'Bài viết mới',
     'popular' => 'Phổ biến',
     'new_threads' => 'Thảo luận mới',
     'new_showcases' => 'Dự án mới',
     'new_media' => 'Media mới',
     'looking_for_replies' => 'Cần phản hồi',
+    'create_new_thread' => 'Tạo chủ đề mới',
+
+    // Pagination
+    'page' => 'Trang',
+    'of' => 'của',
+    'previous' => 'Trước',
+    'next' => 'Tiếp',
+    'go' => 'Đi',
+
+    // Time filters
+    'today' => 'Hôm nay',
+    'this_week' => 'Tuần này',
+    'this_month' => 'Tháng này',
+    'this_year' => 'Năm nay',
+    'all_time' => 'Tất cả',
+
+    // Showcase
+    'create_showcase' => 'Tạo Showcase',
+
+    // Media Gallery
+    'view_thread' => 'Xem chủ đề',
+    'download' => 'Tải về',
+    'no_media_found' => 'Không có media nào',
+    'no_media_description' => 'Chưa có hình ảnh hoặc media nào được chia sẻ.',
+    'image' => 'Hình',
+    'please_enter_valid_page' => 'Vui lòng nhập số trang hợp lệ',
+    'image_not_found' => 'Không tìm thấy hình ảnh',
+    'close' => 'Đóng',
+    'loading' => 'Đang tải',
+
+    // Showcases
+    'showcase_reason' => 'Lý do Showcase:',
+    'view_details' => 'Xem chi tiết',
+    'showcase' => 'Showcase',
+    'forum' => 'Diễn đàn',
+    'no_showcases_found' => 'Không tìm thấy showcase nào.',
+    'create_first_showcase' => 'Tạo Showcase đầu tiên',
+    'thread' => 'Chủ đề',
+    'post' => 'Bài viết',
+    'related_showcase' => 'Showcase liên quan',
+    'showcase_for_thread' => 'Showcase cho chủ đề này',
+    'view_full_showcase' => 'Xem showcase đầy đủ',
+    'by' => 'bởi',
+
+    // Auth Modal
+    'login' => 'Đăng nhập',
+    'register' => 'Đăng ký',
+    'email_or_username' => 'Email hoặc Username',
+    'password' => 'Mật khẩu',
+    'remember_login' => 'Ghi nhớ đăng nhập',
+    'forgot_password' => 'Quên mật khẩu',
+    'or_login_with' => 'hoặc đăng nhập với',
+    'login_with_google' => 'Đăng nhập với Google',
+    'login_with_facebook' => 'Đăng nhập với Facebook',
+    'full_name' => 'Họ và tên',
+    'username' => 'Tên đăng nhập',
+    'email' => 'Email',
+    'confirm_password' => 'Xác nhận mật khẩu',
+    'agree_terms' => 'Tôi đồng ý với',
+    'terms_of_service' => 'Điều khoản dịch vụ',
+    'and' => 'và',
+    'privacy_policy' => 'Chính sách bảo mật',
+    'or_register_with' => 'hoặc đăng ký với',
+    'register_with_google' => 'Đăng ký với Google',
+    'register_with_facebook' => 'Đăng ký với Facebook',
+    'forgot_password_description' => 'Nhập email của bạn để nhận liên kết đặt lại mật khẩu',
+    'send_reset_link' => 'Gửi liên kết đặt lại',
+    'back_to_login' => 'Quay lại đăng nhập',
 
     // Marketplace
     'marketplace' => [

@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $showcase_id
@@ -50,6 +51,20 @@ class ShowcaseComment extends Model
         'user_id',
         'parent_id',
         'comment',
+        'has_media',
+        'like_count',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'has_media' => 'boolean',
+        'like_count' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**
@@ -82,5 +97,29 @@ class ShowcaseComment extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(ShowcaseComment::class, 'parent_id');
+    }
+
+    /**
+     * Get all media attached to this comment (polymorphic).
+     */
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'mediable');
+    }
+
+    /**
+     * Get the likes for the comment.
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(ShowcaseCommentLike::class);
+    }
+
+    /**
+     * Check if the comment is liked by the given user.
+     */
+    public function isLikedBy(User $user): bool
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 }

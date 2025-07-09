@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Page Title')
+@section('title', 'Public Showcase - MechaMap')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase-item.css') }}">
+@endpush
 
 @section('content')
 
@@ -68,67 +72,10 @@
                     </div>
                     <div class="card-body">
                         @if($userShowcases->count() > 0)
-                        <div class="list-group list-group-flush">
+                        <div class="row">
                             @foreach($userShowcases as $showcase)
-                            <div class="list-group-item py-3 px-0">
-                                <div class="d-flex">
-                                    <!-- Unified Featured Image cho tất cả showcase types -->
-                                    <div class="me-3">
-                                        <x-showcase-image :showcase="$showcase" size="medium" />
-                                    </div>
-
-                                    <div class="me-3">
-                                        <img src="{{ $showcase->user->getAvatarUrl() }}"
-                                            alt="{{ $showcase->user->name }}" class="rounded-circle" width="50"
-                                            height="50">
-                                    </div>
-                                    <div>
-                                        <h5 class="mb-1">
-                                            @if($showcase->showcaseable_type === 'App\\Models\\Thread')
-                                            <i class="fas fa-comment-left-text me-2"></i>
-                                            <a href="{{ route('showcase.show', $showcase) }}"
-                                                class="text-decoration-none">
-                                                {{ $showcase->showcaseable ? $showcase->showcaseable->title :
-                                                __('Unknown Title') }}
-                                            </a>
-                                            @elseif($showcase->showcaseable_type === 'App\\Models\\Post')
-                                            <i class="fas fa-comment-right me-2"></i>
-                                            <a href="{{ route('showcase.show', $showcase) }}"
-                                                class="text-decoration-none">
-                                                {{ __('Reply in') }} {{ ($showcase->showcaseable &&
-                                                $showcase->showcaseable->thread) ?
-                                                $showcase->showcaseable->thread->title : __('Unknown Thread') }}
-                                            </a>
-                                            @elseif($showcase->showcaseable_type === 'App\\Models\\Project')
-                                            <i class="fas fa-briefcase me-2"></i>
-                                            <a href="{{ route('showcase.show', $showcase) }}"
-                                                class="text-decoration-none">
-                                                {{ $showcase->showcaseable ? $showcase->showcaseable->title :
-                                                __('Unknown Title') }}
-                                            </a>
-                                            @else
-                                            <i class="fas fa-star me-2"></i>
-                                            <a href="{{ route('showcase.show', $showcase) }}"
-                                                class="text-decoration-none">
-                                                {{ $showcase->title ?? __('Showcase item') }}
-                                            </a>
-                                            @endif
-                                        </h5>
-
-                                        @if($showcase->description)
-                                        <p class="mb-2">{{ $showcase->description }}</p>
-                                        @endif
-
-                                        <p class="mb-0 small text-muted">
-                                            {{ __('Showcased by') }}
-                                            <a href="{{ route('profile.show', $showcase->user->username) }}"
-                                                class="text-decoration-none">
-                                                {{ $showcase->user->name }}
-                                            </a>
-                                            {{ $showcase->created_at->diffForHumans() }}
-                                        </p>
-                                    </div>
-                                </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                @include('partials.showcase-item', ['showcase' => $showcase])
                             </div>
                             @endforeach
                         </div>

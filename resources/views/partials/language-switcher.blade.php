@@ -5,15 +5,14 @@
 @endphp
 
 <div class="language-switcher dropdown">
-    <button class="btn btn-link dropdown-toggle p-0 border-0 bg-transparent"
+    <button class="btn btn-link dropdown-toggle border-0 bg-transparent"
             type="button"
             id="languageDropdown"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             title="{{ __('messages.language.switch_language') }}">
         <i class="flag-icon flag-icon-{{ $currentLanguage['flag'] }} me-1"></i>
-        <span class="d-none d-md-inline">{{ $currentLanguage['name'] }}</span>
-        <i class="fas fa-chevron-down ms-1 small"></i>
+        <!--span class="d-none d-md-inline">{{ $currentLanguage['name'] }}</span-->
     </button>
 
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
@@ -50,63 +49,6 @@
     </ul>
 </div>
 
-<style>
-.language-switcher .dropdown-toggle {
-    color: inherit;
-    text-decoration: none;
-}
-
-.language-switcher .dropdown-toggle:hover {
-    color: var(--bs-primary);
-}
-
-.language-switcher .dropdown-toggle:focus {
-    box-shadow: none;
-}
-
-.language-switcher .dropdown-menu {
-    min-width: 200px;
-    border: 1px solid rgba(0,0,0,.15);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-}
-
-.language-switcher .dropdown-item {
-    padding: 0.5rem 1rem;
-    transition: all 0.2s ease;
-}
-
-.language-switcher .dropdown-item:hover {
-    background-color: var(--bs-primary);
-    color: white;
-}
-
-.language-switcher .dropdown-item:hover .text-muted {
-    color: rgba(255,255,255,0.8) !important;
-}
-
-.flag-icon {
-    width: 20px;
-    height: 15px;
-    background-size: cover;
-    background-position: center;
-    display: inline-block;
-    border-radius: 2px;
-}
-
-.flag-icon-vn {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMSAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjIxIiBoZWlnaHQ9IjE1IiBmaWxsPSIjREEwMjBFIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTAuNSw0IDEyLjM1LDguNSA4LjY1LDguNSIgZmlsbD0iI0ZGRkYwMCIvPgo8L3N2Zz4K');
-}
-
-.flag-icon-us {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAyMSAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjIxIiBoZWlnaHQ9IjE1IiBmaWxsPSIjQjIyMjM0Ii8+CjxyZWN0IHdpZHRoPSI5IiBoZWlnaHQ9IjgiIGZpbGw9IiMzQzNDNDEiLz4KPHN0cmlwZSB3aWR0aD0iMjEiIGhlaWdodD0iMSIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K');
-}
-
-@media (max-width: 768px) {
-    .language-switcher .dropdown-menu {
-        min-width: 150px;
-    }
-}
-</style>
 
 <script>
 /**

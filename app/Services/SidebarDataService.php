@@ -516,14 +516,14 @@ class SidebarDataService
         $totalContributions = $user->threads_count + $commentsCount;
 
         if ($totalContributions >= 100) {
-            return ['name' => 'Kỹ sư Chuyên gia', 'class' => 'badge-gold', 'icon' => 'bi-star-fill'];
+            return ['name' => 'Kỹ sư Chuyên gia', 'class' => 'badge-gold', 'icon' => 'fas fa-star'];
         } elseif ($totalContributions >= 50) {
-            return ['name' => 'Thành viên Cao cấp', 'class' => 'badge-silver', 'icon' => 'bi-shield-check'];
+            return ['name' => 'Thành viên Cao cấp', 'class' => 'badge-silver', 'icon' => 'fas fa-shield-alt'];
         } elseif ($totalContributions >= 20) {
-            return ['name' => 'Thành viên Tích cực', 'class' => 'badge-bronze', 'icon' => 'bi-award'];
+            return ['name' => 'Thành viên Tích cực', 'class' => 'badge-bronze', 'icon' => 'fas fa-trophy'];
         }
 
-        return ['name' => 'Thành viên', 'class' => 'badge-basic', 'icon' => 'bi-person'];
+        return ['name' => 'Thành viên', 'class' => 'badge-basic', 'icon' => 'fas fa-user'];
     }
 
     /**

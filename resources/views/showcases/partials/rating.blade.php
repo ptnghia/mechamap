@@ -43,12 +43,15 @@
     @auth
         @if($showcase->user_id !== auth()->id())
             @php $userRating = $showcase->getUserRating(auth()->user()); @endphp
+
+            @if(!$userRating)
+            {{-- Hiển thị form đánh giá nếu user chưa đánh giá --}}
             <div class="rating-form-section">
                 <div class="card">
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="fas fa-star"></i>
-                            {{ $userRating ? 'Cập nhật đánh giá của bạn' : 'Đánh giá showcase này' }}
+                            Đánh giá showcase này
                         </h6>
                     </div>
                     <div class="card-body">
@@ -60,39 +63,55 @@
                                         <label class="form-label">{{ $name }}</label>
                                         <div class="rating-input" data-category="{{ $key }}">
                                             @for($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star rating-star" 
+                                                <i class="fas fa-star rating-star"
                                                    data-rating="{{ $i }}"
                                                    data-category="{{ $key }}"></i>
                                             @endfor
                                         </div>
-                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" 
-                                               value="{{ $userRating ? $userRating->$key : '' }}">
+                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="">
                                     </div>
                                 @endforeach
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label for="review" class="form-label">Nhận xét (tùy chọn)</label>
-                                <textarea class="form-control" id="review" name="review" rows="3" 
-                                          placeholder="Chia sẻ nhận xét chi tiết về showcase này...">{{ $userRating ? $userRating->review : '' }}</textarea>
+                                <label class="form-label">Nhận xét (tùy chọn)</label>
+                                <x-rich-text-editor
+                                    name="review"
+                                    placeholder="Chia sẻ nhận xét chi tiết về showcase này..."
+                                    id="rating-editor"
+                                    :required="false"
+                                    :allowImages="true"
+                                    minHeight="100px"
+                                    value=""
+                                />
                             </div>
-                            
-                            <div class="d-flex justify-content-between">
+
+                            <div class="rating-actions">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-star"></i>
-                                    {{ $userRating ? 'Cập nhật đánh giá' : 'Gửi đánh giá' }}
+                                    Gửi đánh giá
                                 </button>
-                                @if($userRating)
-                                    <button type="button" class="btn btn-outline-danger" id="delete-rating">
-                                        <i class="fas fa-trash"></i>
-                                        Xóa đánh giá
-                                    </button>
-                                @endif
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            @else
+            {{-- Hiển thị thông báo và nút xóa nếu user đã đánh giá --}}
+            <div class="user-rated-notice">
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="fas fa-check-circle me-3 fs-4"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1">Bạn đã đánh giá showcase này!</h6>
+                        <p class="mb-0 small">Đánh giá của bạn đã được ghi nhận. Muốn đánh giá lại? Hãy xóa đánh giá hiện tại.</p>
+                    </div>
+                    <button type="button" class="btn btn-outline-danger btn-sm ms-3" id="delete-rating">
+                        <i class="fas fa-trash"></i>
+                        Xóa đánh giá
+                    </button>
+                </div>
+            </div>
+            @endif
         @else
             <div class="alert alert-info">
                 <i class="fas fa-info-circle"></i>

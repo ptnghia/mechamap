@@ -5,6 +5,7 @@ return [
     'welcome' => 'Welcome to the application',
     'success' => 'Operation successful',
     'error' => 'An error occurred',
+    'search' => 'Search',
 
     // Navigation & Menu
     'nav' => [
@@ -99,6 +100,7 @@ return [
         'popular_threads' => 'Popular Threads',
         'sticky' => 'Sticky',
         'locked' => 'Locked',
+        'search' => 'Search',
     ],
 
     // User & Profile

@@ -63,7 +63,7 @@
                 </div>
             @endforeach
 
-            @if(isset($showAll) && $activities->hasPages())
+            @if(isset($showAll) && method_exists($activities, 'hasPages') && $activities->hasPages())
                 <div class="d-flex justify-content-center mt-4">
                     {{ $activities->links() }}
                 </div>

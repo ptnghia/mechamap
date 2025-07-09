@@ -6,6 +6,7 @@ use App\Models\Showcase;
 use App\Models\ShowcaseRating;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -136,6 +137,36 @@ class ShowcaseRatingController extends Controller
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi xóa đánh giá.'
             ], 500);
+        }
+    }
+
+    /**
+     * Delete a specific rating (for admin/owner).
+     */
+    public function deleteRating(ShowcaseRating $rating): RedirectResponse
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+        $showcase = $rating->showcase;
+
+        // Chỉ cho phép xóa nếu là chủ rating hoặc chủ showcase
+        if ($rating->user_id !== $user->id && $showcase->user_id !== $user->id) {
+            abort(403);
+        }
+
+        try {
+            DB::transaction(function () use ($rating, $showcase) {
+                $rating->delete();
+                $this->updateShowcaseRatingCache($showcase);
+            });
+
+            return back()->with('success', 'Đánh giá đã được xóa.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Có lỗi xảy ra khi xóa đánh giá.');
         }
     }
 

@@ -142,6 +142,42 @@ return [
     'common' => [
         'search_placeholder' => 'Search...',
         'search' => 'Search',
+        'views' => 'Views',
+        'comments' => 'Comments',
+        'load_more' => 'Load More',
+        'updated' => 'Updated',
+    ],
+
+    // Site-wide messages
+    'site' => [
+        'community_title' => 'MechaMap Community',
+    ],
+
+    // Navigation messages
+    'navigation' => [
+        'home' => 'Home',
+        'forums' => 'Forums',
+        'categories' => 'Categories',
+    ],
+
+    // Forums messages
+    'forums' => [
+        'forums' => 'Forums',
+        'forums_in_category' => 'Forums in :category',
+        'no_forums_in_category' => 'No forums in this category yet',
+        'no_forums_description' => 'Check back later for new forums',
+        'high_activity' => 'High Activity',
+        'medium_activity' => 'Medium Activity',
+        'low_activity' => 'Low Activity',
+    ],
+
+    // Threads messages
+    'threads' => [
+        'threads' => 'Threads',
+        'posts' => 'Posts',
+        'create_new_post' => 'Create New Post',
+        'create_first_post' => 'Create First Post',
+        'no_posts_in_category' => 'No posts in this category yet',
     ],
 
     'search' => [
@@ -155,12 +191,81 @@ return [
     ],
 
     // What's New navigation
+    'whats_new' => 'What\'s New',
     'new_posts' => 'New Posts',
     'popular' => 'Popular',
     'new_threads' => 'New Threads',
     'new_showcases' => 'New Showcases',
     'new_media' => 'New Media',
     'looking_for_replies' => 'Looking for Replies',
+    'create_new_thread' => 'Create New Thread',
+
+    // Pagination
+    'page' => 'Page',
+    'of' => 'of',
+    'previous' => 'Previous',
+    'next' => 'Next',
+    'go' => 'Go',
+
+    // Time filters
+    'today' => 'Today',
+    'this_week' => 'This Week',
+    'this_month' => 'This Month',
+    'this_year' => 'This Year',
+    'all_time' => 'All Time',
+
+    // Showcase
+    'create_showcase' => 'Create Showcase',
+
+    // Media Gallery
+    'view_thread' => 'View Thread',
+    'download' => 'Download',
+    'no_media_found' => 'No Media Found',
+    'no_media_description' => 'No images or media have been shared yet.',
+    'image' => 'Image',
+    'please_enter_valid_page' => 'Please enter a valid page number',
+    'image_not_found' => 'Image not found',
+    'close' => 'Close',
+    'loading' => 'Loading',
+
+    // Showcases
+    'showcase_reason' => 'Showcase reason:',
+    'view_details' => 'View Details',
+    'showcase' => 'Showcase',
+    'forum' => 'Forum',
+    'no_showcases_found' => 'No showcases found.',
+    'create_first_showcase' => 'Create First Showcase',
+    'thread' => 'Thread',
+    'post' => 'Post',
+    'related_showcase' => 'Related Showcase',
+    'showcase_for_thread' => 'Showcase for this thread',
+    'view_full_showcase' => 'View Full Showcase',
+    'by' => 'by',
+
+    // Auth Modal
+    'login' => 'Login',
+    'register' => 'Register',
+    'email_or_username' => 'Email or Username',
+    'password' => 'Password',
+    'remember_login' => 'Remember login',
+    'forgot_password' => 'Forgot password',
+    'or_login_with' => 'or login with',
+    'login_with_google' => 'Login with Google',
+    'login_with_facebook' => 'Login with Facebook',
+    'full_name' => 'Full Name',
+    'username' => 'Username',
+    'email' => 'Email',
+    'confirm_password' => 'Confirm Password',
+    'agree_terms' => 'I agree to the',
+    'terms_of_service' => 'Terms of Service',
+    'and' => 'and',
+    'privacy_policy' => 'Privacy Policy',
+    'or_register_with' => 'or register with',
+    'register_with_google' => 'Register with Google',
+    'register_with_facebook' => 'Register with Facebook',
+    'forgot_password_description' => 'Enter your email to receive a password reset link',
+    'send_reset_link' => 'Send Reset Link',
+    'back_to_login' => 'Back to Login',
 
     // Marketplace
     'marketplace' => [

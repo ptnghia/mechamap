@@ -14,6 +14,7 @@ use App\Services\ShowcaseImageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ShowcaseController extends Controller
@@ -174,14 +175,14 @@ class ShowcaseController extends Controller
             'user',
             'media', // Sửa từ 'attachments' thành 'media'
             'comments' => function ($query) {
-                $query->whereNull('parent_id')->with(['user', 'replies.user'])->latest();
+                $query->whereNull('parent_id')->with(['user', 'replies.user', 'attachments', 'replies.attachments'])->latest();
             },
             'likes.user',
             'follows'
         ]);
 
         // Lấy comments cho view
-        $comments = $showcase->comments()->whereNull('parent_id')->with(['user', 'replies.user'])->latest()->get();
+        $comments = $showcase->comments()->whereNull('parent_id')->with(['user', 'replies.user', 'attachments', 'replies.attachments'])->latest()->get();
 
         // Lấy các showcase khác của tác giả
         $otherShowcases = Showcase::where('user_id', $showcase->user_id)
@@ -293,17 +294,71 @@ class ShowcaseController extends Controller
         }
 
         $request->validate([
-            'content' => 'required|string|max:1000',
+            'content' => 'required|string|max:5000',
             'parent_id' => 'nullable|exists:showcase_comments,id',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
         ]);
 
-        $showcase->comments()->create([
-            'user_id' => Auth::id(),
-            'content' => $request->content,
-            'parent_id' => $request->parent_id,
-        ]);
+        // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+        return DB::transaction(function () use ($request, $showcase) {
+            $hasMedia = $request->hasFile('images');
 
-        return back()->with('success', 'Bình luận đã được thêm thành công.');
+            // Tạo comment
+            $comment = $showcase->comments()->create([
+                'user_id' => Auth::id(),
+                'comment' => $request->content,
+                'parent_id' => $request->parent_id,
+                'has_media' => $hasMedia,
+            ]);
+
+            // Xử lý upload hình ảnh nếu có
+            if ($hasMedia) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('showcase-comment-images', 'public');
+                    $comment->attachments()->create([
+                        'user_id' => Auth::id(),
+                        'file_path' => $path,
+                        'file_name' => $image->getClientOriginalName(),
+                        'mime_type' => $image->getMimeType(),
+                        'file_size' => $image->getSize(),
+                        'file_extension' => $image->getClientOriginalExtension(),
+                        'file_category' => 'comment_image',
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Bình luận đã được thêm thành công.');
+        });
+    }
+
+    /**
+     * Xử lý upload ảnh cho comment.
+     */
+    private function handleCommentImages($images, $comment)
+    {
+        foreach ($images as $image) {
+            if ($image->isValid()) {
+                // Tạo tên file unique
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                // Lưu ảnh vào thư mục public/images/comments
+                $path = $image->move(public_path('images/comments'), $filename);
+
+                // Lưu thông tin ảnh vào database (nếu có bảng comment_images)
+                // Hoặc lưu vào field images của comment (JSON format)
+                $existingImages = json_decode($comment->images ?? '[]', true);
+                $existingImages[] = [
+                    'filename' => $filename,
+                    'original_name' => $image->getClientOriginalName(),
+                    'size' => $image->getSize(),
+                    'uploaded_at' => now()->toISOString()
+                ];
+
+                $comment->update(['images' => json_encode($existingImages)]);
+            }
+        }
     }
 
     /**
@@ -387,7 +442,8 @@ class ShowcaseController extends Controller
      */
     public function featured(): View
     {
-        $showcases = Showcase::where('is_featured', true)
+        $showcases = Showcase::where('status', 'featured')
+            ->where('is_public', true)
             ->with(['user', 'showcaseable'])
             ->latest()
             ->paginate(20);
@@ -433,7 +489,7 @@ class ShowcaseController extends Controller
             ->with(['user', 'showcaseable'])
             ->orderByDesc('likes_count')
             ->orderByDesc('comments_count')
-            ->orderByDesc('views')
+            ->orderByDesc('view_count')
             ->paginate(20);
 
         return view('showcase.trending', compact('showcases'));
@@ -445,8 +501,8 @@ class ShowcaseController extends Controller
     public function leaderboard(): View
     {
         $topCreators = User::withCount(['showcaseItems as showcases_count'])
-            ->withSum('showcaseItems as total_likes', 'likes_count')
-            ->withSum('showcaseItems as total_views', 'views')
+            ->withSum('showcaseItems as total_likes', 'like_count')
+            ->withSum('showcaseItems as total_views', 'view_count')
             ->having('showcases_count', '>', 0)
             ->orderByDesc('total_likes')
             ->orderByDesc('showcases_count')

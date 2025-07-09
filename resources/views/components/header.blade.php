@@ -4,746 +4,733 @@
 --}}
 @props(['showBanner' => true, 'isMarketplace' => false])
 
-<header class="bg-white shadow-sm border-b border-gray-200 sticky-top">
+<header class="site-header">
     <!-- Banner (optional) -->
     @if($showBanner && get_setting('show_banner', true))
-    <div class="header-banner bg-gradient-to-r from-blue-600 to-blue-800" style="height: 80px;">
-        <img src="{{ get_banner_url() }}" alt="Banner" class="w-100 h-100" style="object-fit: cover;">
+    <div class="header-banner">
+        <img src="{{ get_banner_url() }}" alt="Banner" class="w-100">
     </div>
     @endif
-
+    <div class="header-content" id="header-content">
     <!-- Main Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Logo -->
-            <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                <img src="{{ get_logo_url() }}" alt="{{ get_site_name() }}" class="me-2" style="height: 32px;">
-                <span class="fw-bold text-dark d-none d-md-inline">{{ get_site_name() }}</span>
-                <span class="fw-bold text-dark d-md-none">MechaMap</span>
-            </a>
-
-            <!-- Mobile Quick Actions -->
-            <div class="d-flex d-lg-none align-items-center">
-                <!-- Mobile Search Button -->
-                <button class="btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="modal" data-bs-target="#mobileSearchModal">
-                    <i class="fa-solid fa-search"></i>
-                </button>
-
-                <!-- Mobile Cart -->
-                <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand logo" href="{{ url('/') }}">
+                    <img src="{{ get_logo_url() }}" alt="{{ get_site_name() }}" class="me-2">
                 </a>
 
-                <!-- Mobile Menu Button -->
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+                <!-- Mobile Quick Actions -->
+                <div class="d-flex d-lg-none align-items-center">
+                    <!-- Mobile Search Button -->
+                    <button class="btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="modal" data-bs-target="#mobileSearchModal">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
 
-            <!-- Navigation Menu -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <!-- 1. Trang chủ -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') || request()->is('homepage') ? 'active' : '' }}" href="{{ url('/') }}">
-                            <i class="fa-solid fa-home me-1"></i>
-                            {{ __('messages.nav.home') }}
-                        </a>
-                    </li>
+                    <!-- Mobile Cart -->
+                    <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
+                    </a>
 
-                    <!-- 2. Community/Forum - PRIORITY #1 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-users me-1"></i>
-                            {{ __('messages.nav.community') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="communityDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('forums.index') }}">
-                                <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
-                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.popular_topics') }}
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('members.index') }}">
-                                <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('events.index') }}">
-                                <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- 3. Showcase - PRIORITY #2 - NEW DEDICATED MENU -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="#" id="showcaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-trophy me-1"></i>
-                            {{ __('messages.nav.showcase') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="showcaseDropdown">
-                            <!-- Browse Showcases -->
-                            <li><h6 class="dropdown-header">
-                                <i class="fa-solid fa-eye me-2"></i>{{ __('messages.nav.browse_showcases') }}
-                            </h6></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
-                                <i class="fa-solid fa-globe me-2"></i>{{ __('messages.nav.public_gallery') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.featured') }}">
-                                <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_projects') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.categories') }}">
-                                <i class="fa-solid fa-folder-tree me-2"></i>{{ __('messages.nav.by_category') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.trending') }}">
-                                <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.trending_projects') }}
-                            </a></li>
-
-                            <li><hr class="dropdown-divider"></li>
-
-                            <!-- Create & Manage -->
-                            <li><h6 class="dropdown-header">
-                                <i class="fa-solid fa-plus me-2"></i>{{ __('messages.nav.create_manage') }}
-                            </h6></li>
-                            @auth
-                            <li><a class="dropdown-item" href="{{ route('showcase.create') }}">
-                                <i class="fa-solid fa-plus-circle me-2"></i>{{ __('messages.nav.create_showcase') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                <i class="fa-solid fa-folder-user me-2"></i>{{ __('messages.nav.my_showcases') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.drafts') }}">
-                                <i class="fa-solid fa-file-pen me-2"></i>{{ __('messages.nav.drafts') }}
-                            </a></li>
-                            @else
-                            <li><a class="dropdown-item" href="{{ route('login') }}">
-                                <i class="fa-solid fa-sign-in-alt me-2"></i>{{ __('messages.nav.login_to_create') }}
-                            </a></li>
-                            @endauth
-
-                            <li><hr class="dropdown-divider"></li>
-
-                            <!-- Community Features -->
-                            <li><h6 class="dropdown-header">
-                                <i class="fa-solid fa-users me-2"></i>{{ __('messages.nav.community') }}
-                            </h6></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.leaderboard') }}">
-                                <i class="fa-solid fa-medal me-2"></i>{{ __('messages.nav.top_creators') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.competitions') }}">
-                                <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.competitions') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('showcase.guidelines') }}">
-                                <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.submission_guidelines') }}
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- 4. Marketplace - PRIORITY #3 -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-store me-1"></i>
-                            {{ __('messages.nav.marketplace') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.browse_products') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.index') }}">
-                                <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.all_categories') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.supplier_directory') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.products.new') }}">
-                                <i class="fa-solid fa-sparkles me-2"></i>{{ __('messages.nav.new_arrivals') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.products.popular') }}">
-                                <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.best_sellers') }}
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_for_quote') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
-                                <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('messages.nav.bulk_orders') }}
-                            </a></li>
-                            @auth
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
-                                <i class="fa-solid fa-list-check me-2"></i>{{ __('messages.nav.my_orders') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('marketplace.wishlist.index') }}">
-                                <i class="fa-solid fa-heart me-2"></i>{{ __('messages.nav.saved_items') }}
-                            </a></li>
-                            @endauth
-                        </ul>
-                    </li>
-
-                    <!-- 5. Technical Resources - UPDATED (removed showcase) -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-screwdriver-wrench me-1"></i>
-                            {{ __('messages.nav.technical_resources') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('messages.nav.technical_database') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('materials.index') }}">
-                                <i class="fa-solid fa-cube me-2"></i>{{ __('messages.nav.materials_database') }}
-                                <span class="badge bg-primary ms-2">10</span>
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('standards.index') }}">
-                                <i class="fa-solid fa-certificate me-2"></i>{{ __('messages.nav.engineering_standards') }}
-                                <span class="badge bg-success ms-2">8</span>
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('manufacturing.processes.index') }}">
-                                <i class="fa-solid fa-gears me-2"></i>{{ __('messages.nav.manufacturing_processes') }}
-                                <span class="badge bg-info ms-2">10</span>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('messages.nav.design_resources') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('cad.library.index') }}">
-                                <i class="fa-solid fa-file-code me-2"></i>{{ __('messages.nav.cad_library') }}
-                                <span class="badge bg-warning ms-2">20+</span>
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('technical.drawings.index') }}">
-                                <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
-                                <span class="badge bg-secondary ms-2">15+</span>
-                            </a></li>
-                            <!-- Showcase đã được chuyển sang menu riêng -->
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.tools_calculators') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
-                                <i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.material_cost_calculator') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.process-selector') }}">
-                                <i class="fa-solid fa-route me-2"></i>{{ __('messages.nav.process_selector') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.standards-checker') }}">
-                                <i class="fa-solid fa-check-circle me-2"></i>{{ __('messages.nav.standards_compliance') }}
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- 6. Knowledge -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-graduation-cap me-1"></i>
-                            {{ __('messages.nav.knowledge') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('messages.nav.learning_resources') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
-                                <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.knowledge_base') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
-                                <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('messages.nav.tutorials_guides') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('documentation.index') }}">
-                                <i class="fa-solid fa-file-lines me-2"></i>{{ __('messages.nav.technical_documentation') }}
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_updates') }}</h6></li>
-                            <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
-                                <i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_news') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('messages.nav.whats_new') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('reports.industry.index') }}">
-                                <i class="fa-solid fa-chart-line me-2"></i>{{ __('messages.nav.industry_reports') }}
-                            </a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Role-based Quick Access -->
-                    @auth
-                        @if(Auth::user()->hasAnyRole(['admin', 'moderator']))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bx bx-shield-check me-1"></i>
-                                Quản trị
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.admin_dashboard') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                    <i class="bx bx-user me-2"></i>{{ __('messages.nav.user_management') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.threads.index') }}">
-                                    <i class="bx bx-chat me-2"></i>{{ __('messages.nav.forum_management') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                                    <i class="bx bx-package me-2"></i>{{ __('messages.nav.marketplace_management') }}
-                                </a></li>
-                            </ul>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->hasRole('supplier'))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="supplierDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bx bx-store me-1"></i>
-                                Nhà cung cấp
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="supplierDropdown">
-                                <li><a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('supplier.products.index') }}">
-                                    <i class="bx bx-package me-2"></i>{{ __('messages.nav.my_products') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
-                                    <i class="bx bx-list-ul me-2"></i>{{ __('messages.nav.orders') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('supplier.analytics.index') }}">
-                                    <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.reports') }}
-                                </a></li>
-                            </ul>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->hasRole('manufacturer'))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="manufacturerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bx bx-cube me-1"></i>
-                                Nhà sản xuất
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="manufacturerDropdown">
-                                <li><a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
-                                    <i class="bx bx-cube-alt me-2"></i>{{ __('messages.nav.my_designs') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
-                                    <i class="bx bx-download me-2"></i>{{ __('messages.nav.download_orders') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('manufacturer.analytics.index') }}">
-                                    <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.analytics') }}
-                                </a></li>
-                            </ul>
-                        </li>
-                        @endif
-
-                        @if(Auth::user()->hasRole('brand'))
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="brandDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bx bx-bullhorn me-1"></i>
-                                Thương hiệu
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="brandDropdown">
-                                <li><a class="dropdown-item" href="{{ route('brand.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('brand.insights.index') }}">
-                                    <i class="bx bx-bulb me-2"></i>{{ __('messages.nav.market_insights') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('brand.marketplace.analytics') }}">
-                                    <i class="bx bx-store me-2"></i>{{ __('messages.nav.marketplace_analytics') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('brand.promotion.index') }}">
-                                    <i class="bx bx-megaphone me-2"></i>{{ __('messages.nav.promotion_opportunities') }}
-                                </a></li>
-                            </ul>
-                        </li>
-                        @endif
-                    @endauth
-
-                    <!-- More Dropdown - Enhanced -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis me-1"></i>
-                            {{ __('messages.nav.more') }}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.search_discovery') }}</h6></li>
-                            <li>
-                                <a class="dropdown-item" href="/search/advanced">
-                                    <i class="fa-brands fa-searchengin me-2"></i>
-                                    {{ __('messages.nav.advanced_search') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('gallery.index') }}">
-                                    <i class="fa-regular fa-images me-2"></i>
-                                    {{ __('messages.nav.photo_gallery') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('tags.index') }}">
-                                    <i class="fa-solid fa-tags me-2"></i>
-                                    {{ __('messages.nav.browse_by_tags') }}
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ __('messages.nav.help_support') }}</h6></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('faq.index') }}">
-                                    <i class="fa-solid fa-question me-2"></i>
-                                    {{ __('messages.nav.faq') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('help.index') }}">
-                                    <i class="fa-solid fa-life-ring me-2"></i>
-                                    {{ __('messages.nav.help_center') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('contact') }}">
-                                    <i class="fa-solid fa-envelope me-2"></i>
-                                    {{ __('messages.nav.contact_support') }}
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ __('messages.nav.about_mechamap') }}</h6></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('about.index') }}">
-                                    <i class="fa-solid fa-building me-2"></i>
-                                    {{ __('messages.nav.about_us') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('terms.index') }}">
-                                    <i class="fa-solid fa-file-contract me-2"></i>
-                                    {{ __('messages.nav.terms_of_service') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('privacy.index') }}">
-                                    <i class="fa-solid fa-shield-halved me-2"></i>
-                                    {{ __('messages.nav.privacy_policy') }}
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <div class="dropdown-item d-flex justify-content-between align-items-center">
-                                    <span id="themeLabel">
-                                        <i class="fas fa-moon theme-icon-dark me-2"></i>
-                                        <i class="fas fa-sun theme-icon-light me-2 d-none"></i>
-                                        <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? 'Light Mode' : 'Dark Mode' }}</span>
-                                    </span>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked' : '' }}>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <!-- Search Bar - Using old header structure -->
-                <div class="search-container position-relative" style="min-width: 300px;">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-input" id="unified-search" name="query" autocomplete="off"
-                            placeholder="{{ $isMarketplace ? __('messages.common.search_placeholder') : __('messages.common.search_placeholder') }}" aria-label="{{ __('messages.common.search') }}">
-                        <button class="btn btn-outline-secondary" type="button" id="unified-search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-
-                    <!-- Search Results Dropdown - Exact structure from old header -->
-                    <div class="search-results-dropdown" id="search-results-dropdown">
-                        <div class="search-scope-options">
-                            <div class="search-scope-option active" data-scope="site">{{ __('content.all_content') }}</div>
-                            <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('content.search_in_thread') }}</div>
-                            <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('content.search_in_forum') }}</div>
-                            @if($isMarketplace)
-                            <div class="search-scope-option" data-scope="marketplace">{{ __('nav.marketplace') }}</div>
-                            @endif
-                        </div>
-                        <div class="search-results-content" id="search-results-content">
-                            <!-- Results will be loaded here via AJAX -->
-                        </div>
-                        <div class="search-results-footer">
-                            <a href="/advanced-search" class="advanced-search-link">
-                                🔍 {{ __('content.advanced_search') }}
-                            </a>
-                        </div>
-                    </div>
+                    <!-- Mobile Menu Button -->
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                 </div>
 
-                <!-- Right Side Actions -->
-                <ul class="navbar-nav">
-                    <!-- Cart (always show) -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link position-relative" href="#" id="cartToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount" style="display: none;">
-                                0
-                            </span>
-                        </a>
-                        <!-- Mini Cart Dropdown -->
-                        <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
-                            <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
-                                <span class="badge bg-primary" id="miniCartItemCount">0</span>
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <!-- Search Bar - Using old header structure -->
+                    <div class="search-container position-relative" style="min-width: 300px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-input" id="unified-search" name="query" autocomplete="off"
+                                placeholder="{{ $isMarketplace ? __('messages.common.search_placeholder') : __('messages.common.search_placeholder') }}" aria-label="{{ __('messages.common.search') }}">
+                            <button class="btn btn-outline-secondary" type="button" id="unified-search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+
+                        <!-- Search Results Dropdown - Exact structure from old header -->
+                        <div class="search-results-dropdown" id="search-results-dropdown">
+                            <div class="search-scope-options">
+                                <div class="search-scope-option active" data-scope="site">{{ __('content.all_content') }}</div>
+                                <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('content.search_in_thread') }}</div>
+                                <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('content.search_in_forum') }}</div>
+                                @if($isMarketplace)
+                                <div class="search-scope-option" data-scope="marketplace">{{ __('nav.marketplace') }}</div>
+                                @endif
                             </div>
-                            <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
-                                <!-- Empty state -->
-                                <div class="text-center text-muted py-4" id="miniCartEmpty">
-                                    <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
-                                    <p class="mb-0 mt-2">{{ __('messages.cart.cart_empty') }}</p>
-                                    <small>{{ __('messages.cart.add_products') }}</small>
-                                </div>
-                                <!-- Cart items will be loaded here -->
+                            <div class="search-results-content" id="search-results-content">
+                                <!-- Results will be loaded here via AJAX -->
                             </div>
-                            <div class="p-3 border-top" id="miniCartFooter" style="display: none;">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Subtotal:</span>
-                                    <span class="fw-bold" id="miniCartSubtotal">$0.00</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-3 small text-muted">
-                                    <span>Shipping & taxes calculated at checkout</span>
-                                </div>
-                                <div class="d-grid gap-2">
-                                    <a href="{{ route('marketplace.cart.index') }}" class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-shopping-cart me-1"></i>
-                                        View Cart
-                                    </a>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="proceedToCheckout()">
-                                        <i class="fas fa-credit-card me-1"></i>
-                                        Checkout
-                                    </button>
-                                </div>
+                            <div class="search-results-footer">
+                                <a href="/advanced-search" class="advanced-search-link">
+                                    🔍 {{ __('content.advanced_search') }}
+                                </a>
                             </div>
                         </div>
-                    </li>
+                    </div>
+                    <ul class="navbar-nav">
+                        <!-- 2. Community/Forum - PRIORITY #1 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-users me-1"></i>
+                                {{ __('messages.nav.community') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="communityDropdown">
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('forums.index') }}">
+                                    <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new') }}">
+                                    <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
+                                    <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.popular_topics') }}
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('members.index') }}">
+                                    <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('companies.index') }}">
+                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('events.index') }}">
+                                    <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
+                                    <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
+                                </a></li>
+                            </ul>
+                        </li>
 
-                    <!-- Language Switcher -->
-                    <li class="nav-item">
-                        @include('partials.language-switcher')
-                    </li>
+                        <!-- 3. Showcase - PRIORITY #2 - NEW DEDICATED MENU -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="#" id="showcaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-trophy me-1"></i>
+                                {{ __('messages.nav.showcase') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="showcaseDropdown">
+                                <!-- Browse Showcases -->
+                                <li><h6 class="dropdown-header">
+                                    <i class="fa-solid fa-eye me-2"></i>{{ __('messages.nav.browse_showcases') }}
+                                </h6></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
+                                    <i class="fa-solid fa-globe me-2"></i>{{ __('messages.nav.public_gallery') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.featured') }}">
+                                    <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_projects') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.categories') }}">
+                                    <i class="fa-solid fa-folder-tree me-2"></i>{{ __('messages.nav.by_category') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.trending') }}">
+                                    <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.trending_projects') }}
+                                </a></li>
 
-                    @auth
-                    <!-- User Menu -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="24" height="24">
-                            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <!-- User Info Header -->
-                            <li class="dropdown-header">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="32" height="32">
-                                    <div>
-                                        <h6 class="mb-0">{{ Auth::user()->name }}</h6>
-                                        <small class="text-muted">{{ Auth::user()->getRoleDisplayName() }}</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
+                                <li><hr class="dropdown-divider"></li>
 
-                            <!-- Role-based Dashboard Links -->
+                                <!-- Create & Manage -->
+                                <li><h6 class="dropdown-header">
+                                    <i class="fa-solid fa-plus me-2"></i>{{ __('messages.nav.create_manage') }}
+                                </h6></li>
+                                @auth
+                                <li><a class="dropdown-item" href="{{ route('showcase.create') }}">
+                                    <i class="fa-solid fa-plus-circle me-2"></i>{{ __('messages.nav.create_showcase') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
+                                    <i class="fa-solid fa-folder-user me-2"></i>{{ __('messages.nav.my_showcases') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.drafts') }}">
+                                    <i class="fa-solid fa-file-pen me-2"></i>{{ __('messages.nav.drafts') }}
+                                </a></li>
+                                @else
+                                <li><a class="dropdown-item" href="{{ route('login') }}">
+                                    <i class="fa-solid fa-sign-in-alt me-2"></i>{{ __('messages.nav.login_to_create') }}
+                                </a></li>
+                                @endauth
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <!-- Community Features -->
+                                <li><h6 class="dropdown-header">
+                                    <i class="fa-solid fa-users me-2"></i>{{ __('messages.nav.community') }}
+                                </h6></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.leaderboard') }}">
+                                    <i class="fa-solid fa-medal me-2"></i>{{ __('messages.nav.top_creators') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.competitions') }}">
+                                    <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.competitions') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('showcase.guidelines') }}">
+                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.submission_guidelines') }}
+                                </a></li>
+                            </ul>
+                        </li>
+
+                        <!-- 4. Marketplace - PRIORITY #3 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-store me-1"></i>
+                                {{ __('messages.nav.marketplace') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.browse_products') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.index') }}">
+                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.all_categories') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
+                                    <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.supplier_directory') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.products.new') }}">
+                                    <i class="fa-solid fa-sparkles me-2"></i>{{ __('messages.nav.new_arrivals') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.products.popular') }}">
+                                    <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.best_sellers') }}
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
+                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_for_quote') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
+                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('messages.nav.bulk_orders') }}
+                                </a></li>
+                                @auth
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
+                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('messages.nav.my_orders') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.wishlist.index') }}">
+                                    <i class="fa-solid fa-heart me-2"></i>{{ __('messages.nav.saved_items') }}
+                                </a></li>
+                                @endauth
+                            </ul>
+                        </li>
+
+                        <!-- 5. Technical Resources - UPDATED (removed showcase) -->
+                        <!--li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-screwdriver-wrench me-1"></i>
+                                {{ __('messages.nav.technical_resources') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('messages.nav.technical_database') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('materials.index') }}">
+                                    <i class="fa-solid fa-cube me-2"></i>{{ __('messages.nav.materials_database') }}
+                                    <span class="badge bg-primary ms-2">10</span>
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('standards.index') }}">
+                                    <i class="fa-solid fa-certificate me-2"></i>{{ __('messages.nav.engineering_standards') }}
+                                    <span class="badge bg-success ms-2">8</span>
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('manufacturing.processes.index') }}">
+                                    <i class="fa-solid fa-gears me-2"></i>{{ __('messages.nav.manufacturing_processes') }}
+                                    <span class="badge bg-info ms-2">10</span>
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('messages.nav.design_resources') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('cad.library.index') }}">
+                                    <i class="fa-solid fa-file-code me-2"></i>{{ __('messages.nav.cad_library') }}
+                                    <span class="badge bg-warning ms-2">20+</span>
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('technical.drawings.index') }}">
+                                    <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
+                                    <span class="badge bg-secondary ms-2">15+</span>
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.tools_calculators') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
+                                    <i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.material_cost_calculator') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('tools.process-selector') }}">
+                                    <i class="fa-solid fa-route me-2"></i>{{ __('messages.nav.process_selector') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('tools.standards-checker') }}">
+                                    <i class="fa-solid fa-check-circle me-2"></i>{{ __('messages.nav.standards_compliance') }}
+                                </a></li>
+                            </ul>
+                        </li-->
+
+                        <!-- 6. Knowledge -->
+                        <!--li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-graduation-cap me-1"></i>
+                                {{ __('messages.nav.knowledge') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('messages.nav.learning_resources') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
+                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.knowledge_base') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
+                                    <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('messages.nav.tutorials_guides') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('documentation.index') }}">
+                                    <i class="fa-solid fa-file-lines me-2"></i>{{ __('messages.nav.technical_documentation') }}
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_updates') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
+                                    <i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_news') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new') }}">
+                                    <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('messages.nav.whats_new') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('reports.industry.index') }}">
+                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('messages.nav.industry_reports') }}
+                                </a></li>
+                            </ul>
+                        </li-->
+
+                        <!-- Role-based Quick Access -->
+                        @auth
                             @if(Auth::user()->hasAnyRole(['admin', 'moderator']))
-                            <li>
-                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                    <i class="bx bx-tachometer me-2"></i>
-                                    {{ __('messages.nav.admin_dashboard') }}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-shield-check me-1"></i>
+                                    Quản trị
                                 </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.admin_dashboard') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                                        <i class="bx bx-user me-2"></i>{{ __('messages.nav.user_management') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.threads.index') }}">
+                                        <i class="bx bx-chat me-2"></i>{{ __('messages.nav.forum_management') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.products.index') }}">
+                                        <i class="bx bx-package me-2"></i>{{ __('messages.nav.marketplace_management') }}
+                                    </a></li>
+                                </ul>
                             </li>
                             @endif
 
                             @if(Auth::user()->hasRole('supplier'))
-                            <li>
-                                <a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
-                                    <i class="bx bx-store me-2"></i>
-                                    {{ __('messages.nav.supplier_dashboard') }}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="supplierDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-store me-1"></i>
+                                    Nhà cung cấp
                                 </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('supplier.products.index') }}">
-                                    <i class="bx bx-package me-2"></i>
-                                    {{ __('messages.nav.product_management') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
-                                    <i class="bx bx-list-ul me-2"></i>
-                                    {{ __('messages.nav.my_orders') }}
-                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="supplierDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('supplier.products.index') }}">
+                                        <i class="bx bx-package me-2"></i>{{ __('messages.nav.my_products') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
+                                        <i class="bx bx-list-ul me-2"></i>{{ __('messages.nav.orders') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('supplier.analytics.index') }}">
+                                        <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.reports') }}
+                                    </a></li>
+                                </ul>
                             </li>
                             @endif
 
                             @if(Auth::user()->hasRole('manufacturer'))
-                            <li>
-                                <a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
-                                    <i class="bx bx-cube me-2"></i>
-                                    {{ __('messages.nav.manufacturer_dashboard') }}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="manufacturerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-cube me-1"></i>
+                                    Nhà sản xuất
                                 </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
-                                    <i class="bx bx-cube-alt me-2"></i>
-                                    {{ __('messages.nav.design_management') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
-                                    <i class="bx bx-download me-2"></i>
-                                    {{ __('messages.nav.download_orders') }}
-                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="manufacturerDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
+                                        <i class="bx bx-cube-alt me-2"></i>{{ __('messages.nav.my_designs') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
+                                        <i class="bx bx-download me-2"></i>{{ __('messages.nav.download_orders') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('manufacturer.analytics.index') }}">
+                                        <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.analytics') }}
+                                    </a></li>
+                                </ul>
                             </li>
                             @endif
 
                             @if(Auth::user()->hasRole('brand'))
-                            <li>
-                                <a class="dropdown-item" href="{{ route('brand.dashboard') }}">
-                                    <i class="bx bx-bullhorn me-2"></i>
-                                    {{ __('messages.nav.brand_dashboard') }}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="brandDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-bullhorn me-1"></i>
+                                    Thương hiệu
                                 </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('brand.insights.index') }}">
-                                    <i class="bx bx-bar-chart me-2"></i>
-                                    {{ __('messages.nav.market_analysis') }}
-                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="brandDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('brand.dashboard') }}">
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('brand.insights.index') }}">
+                                        <i class="bx bx-bulb me-2"></i>{{ __('messages.nav.market_insights') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('brand.marketplace.analytics') }}">
+                                        <i class="bx bx-store me-2"></i>{{ __('messages.nav.marketplace_analytics') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('brand.promotion.index') }}">
+                                        <i class="bx bx-megaphone me-2"></i>{{ __('messages.nav.promotion_opportunities') }}
+                                    </a></li>
+                                </ul>
                             </li>
                             @endif
+                        @endauth
 
-                            @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer', 'brand']))
-                            <li><hr class="dropdown-divider"></li>
-                            @endif
+                        <!-- More Dropdown - Enhanced -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis me-1"></i>
+                                {{ __('messages.nav.more') }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.search_discovery') }}</h6></li>
+                                <li>
+                                    <a class="dropdown-item" href="/search/advanced">
+                                        <i class="fa-brands fa-searchengin me-2"></i>
+                                        {{ __('messages.nav.advanced_search') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('gallery.index') }}">
+                                        <i class="fa-regular fa-images me-2"></i>
+                                        {{ __('messages.nav.photo_gallery') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('tags.index') }}">
+                                        <i class="fa-solid fa-tags me-2"></i>
+                                        {{ __('messages.nav.browse_by_tags') }}
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ __('messages.nav.help_support') }}</h6></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('faq.index') }}">
+                                        <i class="fa-solid fa-question me-2"></i>
+                                        {{ __('messages.nav.faq') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('help.index') }}">
+                                        <i class="fa-solid fa-life-ring me-2"></i>
+                                        {{ __('messages.nav.help_center') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('contact') }}">
+                                        <i class="fa-solid fa-envelope me-2"></i>
+                                        {{ __('messages.nav.contact_support') }}
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ __('messages.nav.about_mechamap') }}</h6></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('about.index') }}">
+                                        <i class="fa-solid fa-building me-2"></i>
+                                        {{ __('messages.nav.about_us') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('terms.index') }}">
+                                        <i class="fa-solid fa-file-contract me-2"></i>
+                                        {{ __('messages.nav.terms_of_service') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('privacy.index') }}">
+                                        <i class="fa-solid fa-shield-halved me-2"></i>
+                                        {{ __('messages.nav.privacy_policy') }}
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <div class="dropdown-item d-flex justify-content-between align-items-center">
+                                        <span id="themeLabel">
+                                            <i class="fas fa-moon theme-icon-dark me-2"></i>
+                                            <i class="fas fa-sun theme-icon-light me-2 d-none"></i>
+                                            <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? 'Light Mode' : 'Dark Mode' }}</span>
+                                        </span>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
-                            <!-- Common User Menu Items -->
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
-                                    <i class="fa-regular fa-address-card me-2"></i>
-                                    {{ __('user.profile') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('following.index') }}">
-                                    <i class="fa-solid fa-circle-plus me-2"></i>
-                                    {{ __('messages.nav.following') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('chat.index') }}">
-                                    <i class="fa-solid fa-comments me-2"></i>
-                                    {{ __('messages.nav.messages') }}
-                                    @php
-                                    $unreadMessagesCount = \App\Models\Message::whereHas('conversation.participants', function ($query) {
-                                        $query->where('user_id', Auth::id())
-                                              ->where(function ($q) {
-                                                  $q->whereNull('last_read_at')
-                                                     ->orWhereColumn('messages.created_at', '>', 'conversation_participants.last_read_at');
-                                              });
-                                    })
-                                    ->where('user_id', '!=', Auth::id())
-                                    ->count();
-                                    @endphp
-                                    @if($unreadMessagesCount > 0)
-                                    <span class="badge bg-primary rounded-pill ms-auto" id="headerMessagesBadge">{{ $unreadMessagesCount }}</span>
-                                    @endif
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('alerts.index') }}">
-                                    <i class="fa-solid fa-bell me-2"></i>
-                                    {{ __('messages.nav.notifications') }}
-                                    @php
-                                    $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
-                                    @endphp
-                                    @if($unreadAlertsCount > 0)
-                                    <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadAlertsCount }}</span>
-                                    @endif
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('conversations.index') }}">
-                                    <i class="fa-regular fa-envelope me-2"></i>
-                                    {{ __('messages.nav.messages') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
-                                    <i class="fa-regular fa-bookmark me-2"></i>
-                                    {{ __('messages.nav.saved') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                    <i class="fas fa-image me-2"></i>
-                                    {{ __('messages.nav.my_showcase') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i class="fas fa-cog me-2"></i>
-                                    {{ __('user.settings') }}
-                                </a>
-                            </li>
+                    <!-- Right Side Actions -->
+                    <ul class="navbar-nav">
+                        <!-- Cart (always show) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link position-relative" href="#" id="cartToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount" style="display: none;">
+                                    0
+                                </span>
+                            </a>
+                            <!-- Mini Cart Dropdown -->
+                            <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
+                                <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
+                                    <span class="badge bg-primary" id="miniCartItemCount">0</span>
+                                </div>
+                                <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
+                                    <!-- Empty state -->
+                                    <div class="text-center text-muted py-4" id="miniCartEmpty">
+                                        <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
+                                        <p class="mb-0 mt-2">{{ __('messages.cart.cart_empty') }}</p>
+                                        <small>{{ __('messages.cart.add_products') }}</small>
+                                    </div>
+                                    <!-- Cart items will be loaded here -->
+                                </div>
+                                <div class="p-3 border-top" id="miniCartFooter" style="display: none;">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Subtotal:</span>
+                                        <span class="fw-bold" id="miniCartSubtotal">$0.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3 small text-muted">
+                                        <span>Shipping & taxes calculated at checkout</span>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ route('marketplace.cart.index') }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-shopping-cart me-1"></i>
+                                            View Cart
+                                        </a>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="proceedToCheckout()">
+                                            <i class="fas fa-credit-card me-1"></i>
+                                            Checkout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
 
-                            <!-- Business Features -->
-                            @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer', 'brand']))
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('business.index') }}">
-                                    <i class="fas fa-briefcase me-2"></i>
-                                    {{ __('messages.nav.my_business') }}
-                                </a>
-                            </li>
-                            @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer']))
-                            <li>
-                                <a class="dropdown-item" href="{{ route('marketplace.seller.verification-status') }}">
-                                    <i class="bx bx-shield-check me-2"></i>
-                                    {{ __('messages.nav.verification_status') }}
-                                </a>
-                            </li>
-                            @endif
-                            @endif
+                        <!-- Language Switcher -->
+                        <li class="nav-item">
+                            @include('partials.language-switcher')
+                        </li>
 
-                            <li>
-                                <a class="dropdown-item" href="{{ route('subscription.index') }}">
-                                    <i class="fas fa-star me-2"></i>
-                                    {{ __('messages.nav.my_subscription') }}
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item">
-                                        <i class="fas fa-sign-out-alt me-2"></i>
-                                        {{ __('auth.logout') }}
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                    @else
-                    <!-- Login/Register -->
-                    <li class="nav-item">
-                        <button type="button" class="nav-link btn btn-link" onclick="openLoginModal()">
-                            <i class="fa-regular fa-user me-1"></i>
-                            {{ __('messages.auth.login') }}
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="btn btn-primary btn-sm ms-2" onclick="openRegisterModal()">
-                            {{ __('messages.auth.register') }}
-                        </button>
-                    </li>
-                    @endauth
-                </ul>
+                        @auth
+                        <!-- User Menu -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="24" height="24">
+                                <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <!-- User Info Header -->
+                                <li class="dropdown-header">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="32" height="32">
+                                        <div>
+                                            <h6 class="mb-0">{{ Auth::user()->name }}</h6>
+                                            <small class="text-muted">{{ Auth::user()->getRoleDisplayName() }}</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+
+                                <!-- Role-based Dashboard Links -->
+                                @if(Auth::user()->hasAnyRole(['admin', 'moderator']))
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                        <i class="bx bx-tachometer me-2"></i>
+                                        {{ __('messages.nav.admin_dashboard') }}
+                                    </a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->hasRole('supplier'))
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
+                                        <i class="bx bx-store me-2"></i>
+                                        {{ __('messages.nav.supplier_dashboard') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('supplier.products.index') }}">
+                                        <i class="bx bx-package me-2"></i>
+                                        {{ __('messages.nav.product_management') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
+                                        <i class="bx bx-list-ul me-2"></i>
+                                        {{ __('messages.nav.my_orders') }}
+                                    </a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->hasRole('manufacturer'))
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
+                                        <i class="bx bx-cube me-2"></i>
+                                        {{ __('messages.nav.manufacturer_dashboard') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
+                                        <i class="bx bx-cube-alt me-2"></i>
+                                        {{ __('messages.nav.design_management') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
+                                        <i class="bx bx-download me-2"></i>
+                                        {{ __('messages.nav.download_orders') }}
+                                    </a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->hasRole('brand'))
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('brand.dashboard') }}">
+                                        <i class="bx bx-bullhorn me-2"></i>
+                                        {{ __('messages.nav.brand_dashboard') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('brand.insights.index') }}">
+                                        <i class="bx bx-bar-chart me-2"></i>
+                                        {{ __('messages.nav.market_analysis') }}
+                                    </a>
+                                </li>
+                                @endif
+
+                                @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer', 'brand']))
+                                <li><hr class="dropdown-divider"></li>
+                                @endif
+
+                                <!-- Common User Menu Items -->
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
+                                        <i class="fa-regular fa-address-card me-2"></i>
+                                        {{ __('user.profile') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('following.index') }}">
+                                        <i class="fa-solid fa-circle-plus me-2"></i>
+                                        {{ __('messages.nav.following') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('chat.index') }}">
+                                        <i class="fa-solid fa-comments me-2"></i>
+                                        {{ __('messages.nav.messages') }}
+                                        @php
+                                        $unreadMessagesCount = \App\Models\Message::whereHas('conversation.participants', function ($query) {
+                                            $query->where('user_id', Auth::id())
+                                                ->where(function ($q) {
+                                                    $q->whereNull('last_read_at')
+                                                        ->orWhereColumn('messages.created_at', '>', 'conversation_participants.last_read_at');
+                                                });
+                                        })
+                                        ->where('user_id', '!=', Auth::id())
+                                        ->count();
+                                        @endphp
+                                        @if($unreadMessagesCount > 0)
+                                        <span class="badge bg-primary rounded-pill ms-auto" id="headerMessagesBadge">{{ $unreadMessagesCount }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('alerts.index') }}">
+                                        <i class="fa-solid fa-bell me-2"></i>
+                                        {{ __('messages.nav.notifications') }}
+                                        @php
+                                        $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
+                                        @endphp
+                                        @if($unreadAlertsCount > 0)
+                                        <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadAlertsCount }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('conversations.index') }}">
+                                        <i class="fa-regular fa-envelope me-2"></i>
+                                        {{ __('messages.nav.messages') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
+                                        <i class="fa-regular fa-bookmark me-2"></i>
+                                        {{ __('messages.nav.saved') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('showcase.index') }}">
+                                        <i class="fas fa-image me-2"></i>
+                                        {{ __('messages.nav.my_showcase') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                        <i class="fas fa-cog me-2"></i>
+                                        {{ __('user.settings') }}
+                                    </a>
+                                </li>
+
+                                <!-- Business Features -->
+                                @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer', 'brand']))
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('business.index') }}">
+                                        <i class="fas fa-briefcase me-2"></i>
+                                        {{ __('messages.nav.my_business') }}
+                                    </a>
+                                </li>
+                                @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer']))
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('marketplace.seller.verification-status') }}">
+                                        <i class="bx bx-shield-check me-2"></i>
+                                        {{ __('messages.nav.verification_status') }}
+                                    </a>
+                                </li>
+                                @endif
+                                @endif
+
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('subscription.index') }}">
+                                        <i class="fas fa-star me-2"></i>
+                                        {{ __('messages.nav.my_subscription') }}
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-2"></i>
+                                            {{ __('auth.logout') }}
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        @else
+                        <!-- Login/Register -->
+                        <li class="nav-item">
+                            <button type="button" class="nav-link btn btn-link" onclick="openLoginModal()">
+                                <i class="fa-regular fa-user me-1"></i>
+                            </button>
+                        </li>
+                        <!--li class="nav-item">
+                            <button type="button" class="btn btn-primary btn-sm ms-2" onclick="openRegisterModal()">
+                                {{ __('messages.auth.register') }}
+                            </button>
+                        </li-->
+                        @endauth
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-
+        </nav>
+    </div>
     <!-- Mobile Search Modal -->
     <div class="modal fade" id="mobileSearchModal" tabindex="-1" aria-labelledby="mobileSearchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen-sm-down">
@@ -813,6 +800,15 @@
 
 <!-- JavaScript for header functionality -->
 <script>
+    window.addEventListener('scroll', function () {
+        const header = document.getElementById('header-content');
+
+        if (window.scrollY > 200) {
+        header.classList.add('sticky-top', 'shadow'); // Thêm sticky-top và hiệu ứng đổ bóng
+        } else {
+        header.classList.remove('sticky-top', 'shadow');
+        }
+    });
 document.addEventListener('DOMContentLoaded', function() {
     // Search functionality - Reusing old header structure
     const searchInput = document.getElementById('unified-search');
@@ -1283,262 +1279,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
-<style>
-.search-results-dropdown {
-    top: 100%;
-    left: 0;
-    right: 0;
-    max-width: 400px;
-}
-
-/* Search dropdown styling - Using old header structure */
-.search-container {
-    position: relative;
-}
-
-.search-results-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1050;
-    max-height: 500px;
-    overflow-y: auto;
-    display: none;
-    min-width: 450px;
-}
-
-.search-results-dropdown.show {
-    display: block;
-}
-
-.search-scope-options {
-    display: flex;
-    border-bottom: 1px solid #eee;
-    background: #f8f9fa;
-}
-
-.search-scope-option {
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #666;
-    border-right: 1px solid #eee;
-    transition: all 0.2s ease;
-}
-
-.search-scope-option:last-child {
-    border-right: none;
-}
-
-.search-scope-option.active {
-    background: #8B7355;
-    color: white;
-}
-
-.search-scope-option:hover:not(.active) {
-    background: #e9ecef;
-}
-
-.search-results-content {
-    max-height: 350px;
-    overflow-y: auto;
-}
-
-.search-result-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.search-result-item:hover {
-    background-color: #f8f9fa;
-}
-
-.search-result-item:last-child {
-    border-bottom: none;
-}
-
-.search-results-footer {
-    padding: 10px 15px;
-    background: #f8f9fa;
-    border-top: 1px solid #eee;
-    text-align: center;
-}
-
-.advanced-search-link {
-    color: #8B7355;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.advanced-search-link:hover {
-    color: #6d5a42;
-}
-
-/* Search result sections */
-.search-result-section-title {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #333;
-}
-
-.search-result-item-title a {
-    text-decoration: none;
-    color: #0066cc;
-}
-
-.search-result-item-title a:hover {
-    text-decoration: underline;
-}
-
-.search-result-item-content {
-    margin: 5px 0;
-    line-height: 1.4;
-}
-
-.search-result-item-meta a {
-    text-decoration: none;
-}
-
-.search-result-item-meta a:hover {
-    text-decoration: underline;
-}
-
-.search-loading, .search-no-results {
-    padding: 20px;
-    text-align: center;
-    color: #666;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .search-results-dropdown {
-        min-width: 300px;
-        left: -50px;
-        right: -50px;
-    }
-}
-
-.search-scope.active {
-    background-color: var(--bs-primary);
-    color: white;
-    border-color: var(--bs-primary);
-}
-
-.navbar-nav .nav-link.active {
-    color: var(--bs-primary) !important;
-    font-weight: 500;
-}
-
-.sticky-top {
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-}
-
-/* Role-based menu styling */
-.dropdown-header {
-    padding: 0.5rem 1rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.dropdown-header h6 {
-    margin: 0;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.dropdown-header small {
-    font-size: 0.75rem;
-}
-
-/* Role-specific colors */
-#adminDropdown {
-    color: #dc3545 !important;
-}
-
-#supplierDropdown {
-    color: #198754 !important;
-}
-
-#manufacturerDropdown {
-    color: #0d6efd !important;
-}
-
-#brandDropdown {
-    color: #fd7e14 !important;
-}
-
-/* Role dropdown hover effects */
-.nav-item.dropdown:hover .dropdown-toggle {
-    background-color: rgba(0,0,0,0.05);
-    border-radius: 0.375rem;
-}
-
-/* User avatar in dropdown */
-.dropdown-header img {
-    border: 2px solid #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Animation for dropdown menus */
-.dropdown-menu {
-    animation: fadeIn 0.15s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Highlight active role menu */
-.nav-item.dropdown .nav-link.dropdown-toggle.show {
-    background-color: var(--bs-primary);
-    color: white !important;
-    border-radius: 0.375rem;
-}
-
-@media (max-width: 991.98px) {
-    .search-results-dropdown {
-        position: relative !important;
-        margin-top: 0.5rem;
-    }
-
-    /* Stack role menus vertically on mobile */
-    .navbar-nav .nav-item.dropdown {
-        margin-bottom: 0.5rem;
-    }
-
-    .dropdown-menu {
-        position: static !important;
-        transform: none !important;
-        box-shadow: none;
-        border: none;
-        background-color: rgba(0,0,0,0.05);
-        margin-left: 1rem;
-    }
-}
-</style>
-
 <!-- Mini Cart Enhancements -->
 <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>

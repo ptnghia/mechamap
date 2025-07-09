@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '{{ __("messages.looking_for_replies") }} - MechaMap')
+@section('title', __('messages.looking_for_replies') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
@@ -11,10 +11,10 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="mb-0">Cập nhật mới</h1>
+                <h1 class="mb-0 title_page"">{{ __('messages.whats_new') }}</h1>
 
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus-lg me-1"></i> Tạo chủ đề mới
+                    <i class="fa-solid fa-plus me-1"></i> {{ __('messages.create_new_thread') }}
                 </a>
             </div>
 
@@ -48,15 +48,15 @@
             <div class="pagination-container mb-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="pagination-info">
-                        <span>Page {{ $page }} of {{ $totalPages }}</span>
+                        <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
                     </div>
 
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-sm mb-0">
                             <!-- Previous Page -->
                             <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="chevron-left"></i></span>
+                                <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                                 </a>
                             </li>
 
@@ -109,8 +109,8 @@
 
                                             <!-- Next Page -->
                                             <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                                    <span aria-hidden="true"><i class="chevron-right"></i></span>
+                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                                 </a>
                                             </li>
                         </ul>
@@ -134,15 +134,15 @@
         <div class="pagination-container mt-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="pagination-info">
-                    <span>Page {{ $page }} of {{ $totalPages }}</span>
+                    <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
                 </div>
 
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-sm mb-0">
                         <!-- Previous Page -->
                         <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                            <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                                <span aria-hidden="true"><i class="chevron-left"></i></span>
+                            <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                                <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                             </a>
                         </li>
 
@@ -195,8 +195,8 @@
 
                                         <!-- Next Page -->
                                         <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                            <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                                <span aria-hidden="true"><i class="chevron-right"></i></span>
+                                            <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                                <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                             </a>
                                         </li>
                     </ul>
@@ -205,8 +205,8 @@
                 <div class="pagination-goto">
                     <div class="input-group input-group-sm">
                         <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
-                            value="{{ $page }}" placeholder="Page">
-                        <button class="btn btn-primary" type="button" id="goToPageBtn">Đến</button>
+                            value="{{ $page }}" placeholder="{{ __('messages.page') }}">
+                        <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('messages.go') }}</button>
                     </div>
                 </div>
             </div>

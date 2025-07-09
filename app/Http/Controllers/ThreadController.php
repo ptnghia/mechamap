@@ -207,7 +207,9 @@ class ThreadController extends Controller
             'user',
             'category',
             'forum',
-            'media'
+            'media',
+            'showcase.user', // Load showcase with its user
+            'showcase.media' // Load showcase media for display
         ]);
 
         $thread->loadCount([

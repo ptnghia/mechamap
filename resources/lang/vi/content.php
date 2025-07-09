@@ -111,7 +111,7 @@ return [
     'discussions' => 'thảo luận',
     'featured_discussions' => 'Thảo luận Nổi bật',
     'in' => 'trong',
-    'top_engineers' => 'Kỹ sư Hàng đầu',
+    'top_engineers' => 'Thành viên hàng đầu',
     'leaderboard' => 'Bảng xếp hạng',
     'recently' => 'gần đây',
     'recommendations_for_you' => 'Đề xuất cho bạn',

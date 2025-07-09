@@ -182,8 +182,13 @@ Route::prefix('companies')->name('companies.')->group(function () {
     Route::get('/{company}', [App\Http\Controllers\CompanyController::class, 'show'])->name('show');
     Route::get('/{company}/products', [App\Http\Controllers\CompanyController::class, 'products'])->name('products');
     Route::get('/{company}/contact', [App\Http\Controllers\CompanyController::class, 'contact'])->name('contact');
-    Route::post('/{company}/contact', [App\Http\Controllers\CompanyController::class, 'sendMessage'])->name('send-message');
+    Route::post('/{company}/contact', [App\Http\Controllers\CompanyController::class, 'sendMessage'])->name('sendMessage');
     Route::get('/{company}/stats', [App\Http\Controllers\CompanyController::class, 'getStats'])->name('stats');
+
+    // Favorite functionality (requires authentication)
+    Route::middleware('auth')->group(function () {
+        Route::post('/{company}/favorite', [App\Http\Controllers\CompanyController::class, 'toggleFavorite'])->name('favorite');
+    });
 });
 
 // Events & Webinars - Enhanced
@@ -561,6 +566,10 @@ Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('s
 Route::post('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'store'])->name('showcase.rating.store');
 Route::get('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'index'])->name('showcase.rating.index');
 Route::delete('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'destroy'])->name('showcase.rating.destroy');
+Route::delete('/ratings/{rating}', [App\Http\Controllers\ShowcaseRatingController::class, 'deleteRating'])->name('showcase.rating.delete');
+
+// Image upload for comments/ratings
+Route::post('/upload-images', [App\Http\Controllers\ImageUploadController::class, 'upload'])->name('images.upload');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/search/advanced', [AdvancedSearchController::class, 'index'])->name('search.advanced');

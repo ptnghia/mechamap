@@ -58,7 +58,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Các chủ đề mới/nổi bật -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="fas fa-star-fill me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-star me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -140,7 +140,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
     <!-- Những người đóng góp hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="fas fa-users-fill me-2 text-success"></i>{{ __('content.active_members') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-users me-2 text-success"></i>{{ __('content.active_members') }}</h5>
             <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
@@ -227,7 +227,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
                             }}</a>
                     </h6>
                     <p class="text-muted small mb-0">
-                        <i class="fas fa-comment-text me-1"></i>{{ $forum->threads_count }}
+                        <i class="fas fa-comments me-1"></i>{{ $forum->threads_count }}
                         {{ __('content.topics') }}
                     </p>
                 </div>

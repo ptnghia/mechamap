@@ -121,7 +121,8 @@
                     @if(str_starts_with($media->file_type ?? '', 'image/'))
                     <div class="col-md-4 mb-3">
                         <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                            data-lightbox="thread-images">
+                            data-fancybox="thread-images"
+                            data-caption="Thread image">
                             <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
                                 class="img-fluid rounded"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">

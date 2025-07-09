@@ -78,10 +78,10 @@ else
     echo "❌ jQuery missing"
 fi
 
-if grep -q "lightbox2" resources/views/layouts/app.blade.php; then
-    echo "✅ Lightbox dependency"
+if grep -q "fancybox" resources/views/layouts/app.blade.php; then
+    echo "✅ Fancybox dependency"
 else
-    echo "❌ Lightbox missing"
+    echo "❌ Fancybox missing"
 fi
 
 if grep -q "bootstrap@5.3.2" resources/views/layouts/app.blade.php; then

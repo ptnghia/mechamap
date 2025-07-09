@@ -12,7 +12,7 @@
                     <span class="text-muted">{{ $users->total() }} thành viên</span>
                 </div>
             </div>
-            
+
             <!-- Filters -->
             <div class="card mb-4">
                 <div class="card-body">
@@ -21,7 +21,7 @@
                             <label for="search" class="form-label">Tìm kiếm</label>
                             <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Tên hoặc username...">
                         </div>
-                        
+
                         <div class="col-md-4">
                             <label for="role" class="form-label">Vai trò</label>
                             <select class="form-select" id="role" name="role">
@@ -31,7 +31,7 @@
                                 <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>Thành viên</option>
                             </select>
                         </div>
-                        
+
                         <div class="col-md-3">
                             <label for="sort" class="form-label">Sắp xếp</label>
                             <select class="form-select" id="sort" name="sort">
@@ -42,7 +42,7 @@
                                 <option value="threads" {{ request('sort') == 'threads' ? 'selected' : '' }}>Số chủ đề</option>
                             </select>
                         </div>
-                        
+
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Lọc</button>
                             <a href="{{ route('users.index') }}" class="btn btn-outline-secondary">Đặt lại</a>
@@ -50,7 +50,7 @@
                     </form>
                 </div>
             </div>
-            
+
             <!-- Users List -->
             <div class="card">
                 <div class="list-group list-group-flush">
@@ -72,7 +72,7 @@
                                                 @endif
                                             </h5>
                                             <div class="text-muted small">
-                                                <span>@{{ $user->username }}</span>
+                                                <span>{{ $user->username }}</span>
                                                 <span class="mx-1">•</span>
                                                 <span>Tham gia {{ $user->created_at->format('d/m/Y') }}</span>
                                             </div>
@@ -100,11 +100,11 @@
                                             @endauth
                                         </div>
                                     </div>
-                                    
+
                                     @if($user->about_me)
                                         <p class="text-muted small mt-2 mb-2">{{ Str::limit($user->about_me, 150) }}</p>
                                     @endif
-                                    
+
                                     <div class="d-flex mt-2">
                                         <div class="me-3">
                                             <i class="fas fa-comment-left-text"></i>
@@ -130,13 +130,13 @@
                         </div>
                     @endforelse
                 </div>
-                
+
                 <div class="card-footer">
                     {{ $users->links() }}
                 </div>
             </div>
         </div>
-        
+
         <div class="col-lg-4 mt-4 mt-lg-0">
             <!-- Stats -->
             <div class="card mb-4">
@@ -157,11 +157,11 @@
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Thành viên online:</span>
-                        <span class="fw-bold">{{ App\Models\User::where('last_active_at', '>=', now()->subMinutes(15))->count() }}</span>
+                        <span class="fw-bold">{{ App\Models\User::where('last_seen_at', '>=', now()->subMinutes(15))->count() }}</span>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Top Contributors -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -178,7 +178,7 @@
                         ->take(5)
                         ->get();
                     @endphp
-                    
+
                     @forelse($topContributors as $user)
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
@@ -192,7 +192,7 @@
                     @endforelse
                 </div>
             </div>
-            
+
             <!-- Staff Members -->
             <div class="card">
                 <div class="card-header">
@@ -200,9 +200,9 @@
                 </div>
                 <div class="list-group list-group-flush">
                     @php
-                        $staffMembers = App\Models\User::role(['admin', 'moderator'])->take(5)->get();
+                        $staffMembers = App\Models\User::whereIn('role', ['admin', 'moderator'])->take(5)->get();
                     @endphp
-                    
+
                     @forelse($staffMembers as $user)
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">

@@ -3,15 +3,25 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Rating system initializing...');
     initializeRatingSystem();
 });
 
 function initializeRatingSystem() {
+    console.log('Looking for rating form...');
     const ratingForm = document.getElementById('rating-form');
-    if (!ratingForm) return;
+    if (!ratingForm) {
+        console.log('Rating form not found!');
+        return;
+    }
 
+    console.log('Rating form found:', ratingForm);
     const showcaseId = ratingForm.dataset.showcaseId;
+    console.log('Showcase ID:', showcaseId);
+
     const ratingStars = document.querySelectorAll('.rating-star');
+    console.log('Found rating stars:', ratingStars.length);
+
     const deleteButton = document.getElementById('delete-rating');
 
     // Initialize existing ratings
@@ -20,8 +30,10 @@ function initializeRatingSystem() {
     // Handle star clicks
     ratingStars.forEach(star => {
         star.addEventListener('click', function() {
+            console.log('Star clicked:', this);
             const category = this.dataset.category;
             const rating = parseInt(this.dataset.rating);
+            console.log('Category:', category, 'Rating:', rating);
             setRating(category, rating);
         });
 
@@ -44,6 +56,7 @@ function initializeRatingSystem() {
     // Handle form submission
     ratingForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        console.log('Form submitted');
         submitRating(showcaseId);
     });
 
@@ -55,11 +68,13 @@ function initializeRatingSystem() {
             }
         });
     }
+
+    console.log('Rating system initialized successfully');
 }
 
 function initializeExistingRatings() {
     const categories = ['technical_quality', 'innovation', 'usefulness', 'documentation'];
-    
+
     categories.forEach(category => {
         const input = document.getElementById(category);
         if (input && input.value) {
@@ -72,14 +87,14 @@ function initializeExistingRatings() {
 function setRating(category, rating) {
     // Update hidden input
     document.getElementById(category).value = rating;
-    
+
     // Update visual stars
     highlightStars(category, rating);
 }
 
 function highlightStars(category, rating) {
     const stars = document.querySelectorAll(`[data-category="${category}"] .rating-star`);
-    
+
     stars.forEach((star, index) => {
         if (index < rating) {
             star.classList.add('active');
@@ -93,12 +108,12 @@ function submitRating(showcaseId) {
     const form = document.getElementById('rating-form');
     const submitButton = form.querySelector('button[type="submit"]');
     const originalText = submitButton.innerHTML;
-    
+
     // Validate ratings
     const categories = ['technical_quality', 'innovation', 'usefulness', 'documentation'];
     const ratings = {};
     let isValid = true;
-    
+
     categories.forEach(category => {
         const value = parseInt(document.getElementById(category).value);
         if (!value || value < 1 || value > 5) {
@@ -108,13 +123,13 @@ function submitRating(showcaseId) {
         }
         ratings[category] = value;
     });
-    
+
     if (!isValid) return;
-    
+
     // Disable submit button
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
-    
+
     // Prepare form data
     const formData = new FormData();
     formData.append('_token', document.querySelector('input[name="_token"]').value);
@@ -123,7 +138,7 @@ function submitRating(showcaseId) {
     formData.append('usefulness', ratings.usefulness);
     formData.append('documentation', ratings.documentation);
     formData.append('review', document.getElementById('review').value);
-    
+
     // Submit rating
     fetch(`/showcases/${showcaseId}/ratings`, {
         method: 'POST',
@@ -137,10 +152,10 @@ function submitRating(showcaseId) {
         if (data.success) {
             showSuccess(data.message);
             updateRatingSummary(data);
-            
+
             // Update form button text
             submitButton.innerHTML = '<i class="fas fa-star"></i> Cập nhật đánh giá';
-            
+
             // Show delete button if not exists
             if (!document.getElementById('delete-rating')) {
                 addDeleteButton();
@@ -162,10 +177,10 @@ function submitRating(showcaseId) {
 function deleteRating(showcaseId) {
     const deleteButton = document.getElementById('delete-rating');
     const originalText = deleteButton.innerHTML;
-    
+
     deleteButton.disabled = true;
     deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xóa...';
-    
+
     fetch(`/showcases/${showcaseId}/ratings`, {
         method: 'DELETE',
         headers: {
@@ -200,16 +215,16 @@ function updateRatingSummary(data) {
     if (ratingNumber) {
         ratingNumber.textContent = parseFloat(data.average_rating).toFixed(1);
     }
-    
+
     // Update rating count
     const ratingCount = document.querySelector('.rating-count');
     if (ratingCount) {
         ratingCount.textContent = `${data.ratings_count} đánh giá`;
     }
-    
+
     // Update overall stars
     updateStarsDisplay('.rating-stars', data.average_rating);
-    
+
     // Update category ratings
     if (data.category_averages) {
         Object.keys(data.category_averages).forEach(category => {
@@ -217,7 +232,7 @@ function updateRatingSummary(data) {
             if (categoryElement) {
                 const stars = categoryElement.querySelector('.stars-small');
                 const value = categoryElement.querySelector('.rating-value');
-                
+
                 if (stars) updateStarsDisplay(stars, data.category_averages[category]);
                 if (value) value.textContent = parseFloat(data.category_averages[category]).toFixed(1);
             }
@@ -226,10 +241,10 @@ function updateRatingSummary(data) {
 }
 
 function updateStarsDisplay(container, rating) {
-    const stars = typeof container === 'string' 
+    const stars = typeof container === 'string'
         ? document.querySelector(container).querySelectorAll('.fa-star')
         : container.querySelectorAll('.fa-star');
-    
+
     stars.forEach((star, index) => {
         if (index < Math.round(rating)) {
             star.classList.remove('text-muted');
@@ -248,14 +263,14 @@ function resetRatingForm() {
         document.getElementById(category).value = '';
         highlightStars(category, 0);
     });
-    
+
     // Clear review
     document.getElementById('review').value = '';
-    
+
     // Update button text
     const submitButton = document.querySelector('#rating-form button[type="submit"]');
     submitButton.innerHTML = '<i class="fas fa-star"></i> Gửi đánh giá';
-    
+
     // Remove delete button
     const deleteButton = document.getElementById('delete-rating');
     if (deleteButton) {
@@ -270,14 +285,14 @@ function addDeleteButton() {
     deleteButton.className = 'btn btn-outline-danger';
     deleteButton.id = 'delete-rating';
     deleteButton.innerHTML = '<i class="fas fa-trash"></i> Xóa đánh giá';
-    
+
     deleteButton.addEventListener('click', function() {
         if (confirm('Bạn có chắc muốn xóa đánh giá này?')) {
             const showcaseId = document.getElementById('rating-form').dataset.showcaseId;
             deleteRating(showcaseId);
         }
     });
-    
+
     submitButton.parentNode.appendChild(deleteButton);
 }
 
@@ -300,3 +315,49 @@ function showError(message) {
     // You can integrate with your existing notification system
     alert(message); // Replace with your notification system
 }
+
+// Delete rating functionality
+document.addEventListener('click', function(e) {
+    if (e.target && (e.target.id === 'delete-rating' || e.target.closest('#delete-rating'))) {
+        e.preventDefault();
+
+        if (confirm('Bạn có chắc muốn xóa đánh giá này? Sau khi xóa, bạn có thể đánh giá lại.')) {
+            const showcaseId = window.location.pathname.split('/').pop();
+            const button = e.target.closest('#delete-rating');
+            const originalText = button.innerHTML;
+
+            // Disable button
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xóa...';
+
+            // Send delete request
+            fetch(`/showcases/${showcaseId}/ratings`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload page để hiển thị lại form đánh giá
+                    location.reload();
+                } else {
+                    showError('Có lỗi xảy ra: ' + data.message);
+                    // Restore button
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('Có lỗi xảy ra khi xóa đánh giá.');
+                // Restore button
+                button.disabled = false;
+                button.innerHTML = originalText;
+            });
+        }
+    }
+});

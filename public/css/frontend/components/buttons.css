@@ -7,7 +7,7 @@
 .btn {
     font-size: 14px;
     font-weight: 400;
-    padding: 10px 20px;
+    padding: 7px 15px;
     border-radius: 0.25rem;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: center;
     line-height: 1.5;
-    border: 1px solid transparent;
+    border: 1px solid var(--bs-primary);
     font-family: "Roboto Condensed", sans-serif;
     text-transform: uppercase;
 }
@@ -277,15 +277,16 @@
 /* Link button */
 .btn-link {
     font-weight: 400;
-    color: #3366CC;
+    color: var(--bs-primary);
     text-decoration: none;
     background-color: transparent;
-    border: none;
 }
-
+.btn-link i{margin-left: 5px;}
 .btn-link:hover, .btn-link:focus {
-    color: #254a9e;
     text-decoration: underline;
+    background-color: var(--bs-primary);
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Button with icon */

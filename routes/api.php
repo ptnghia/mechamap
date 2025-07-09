@@ -601,3 +601,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/pages/{pageId}/view-count', [App\Http\Controllers\Api\AnalyticsController::class, 'getViewCount']);
     Route::get('/analytics/dashboard', [App\Http\Controllers\Api\AnalyticsController::class, 'getDashboardData']);
 });
+
+

@@ -3,11 +3,13 @@
 return [
     // General
     'title' => 'Diễn đàn',
+    'description' => 'Thảo luận các chủ đề kỹ thuật cơ khí với cộng đồng',
     'categories' => 'Danh mục',
     'forums' => 'Diễn đàn',
     'threads' => 'Chủ đề',
     'posts' => 'Bài viết',
     'discussions' => 'Thảo luận',
+    'newest_member' => 'Thành viên mới nhất',
 
     // Statistics
     'stats' => [
@@ -19,6 +21,9 @@ return [
         'members' => 'Thành viên',
         'online' => 'Trực tuyến',
     ],
+
+    // General actions
+    'search' => 'Tìm kiếm',
 
     // Actions
     'actions' => [
@@ -41,6 +46,8 @@ return [
     // Search & Filter
     'search' => [
         'placeholder' => 'Tìm kiếm chủ đề trong diễn đàn này...',
+        'placeholder_main' => 'Tìm kiếm diễn đàn, chủ đề và thảo luận...',
+        'description' => 'Tìm kiếm trên tất cả diễn đàn và thảo luận. Tối thiểu 3 ký tự.',
         'no_results' => 'Không tìm thấy kết quả',
         'results_for' => 'Kết quả cho',
         'results' => 'Kết quả tìm kiếm',
@@ -87,6 +94,7 @@ return [
         'forums_in_category' => 'Diễn đàn trong danh mục này',
         'forums_in' => 'Diễn đàn trong :category',
         'recent_threads' => ':count bài đăng mới nhất',
+        'recent_posts' => ':count bài đăng gần đây',
         'no_threads' => 'Chưa có bài đăng nào trong danh mục này',
         'no_forums' => 'Chưa có diễn đàn nào trong danh mục này',
         'view_category' => 'Xem danh mục',
@@ -146,6 +154,26 @@ return [
         'edit_post' => 'Chỉnh sửa bài viết',
         'delete_post' => 'Xóa bài viết',
         'moderate' => 'Điều hành',
+    ],
+
+    // Sidebar & Widgets
+    'sidebar' => [
+        'technical_discussions' => 'Thảo luận Kỹ thuật',
+        'engineers' => 'Kỹ sư',
+        'weekly_activity' => 'Hoạt động Tuần',
+        'growth_rate' => 'Tỷ lệ Tăng trưởng',
+        'weekly_trends' => 'Xu hướng Tuần',
+        'featured_discussions' => 'Thảo luận Nổi bật',
+        'top_engineers' => 'Kỹ sư Hàng đầu',
+        'active_forums' => 'Diễn đàn Hoạt động',
+        'view_all' => 'Xem tất cả',
+        'leaderboard' => 'Bảng xếp hạng',
+        'low_activity' => 'Hoạt động Thấp',
+        'new_this_month' => 'mới trong tháng',
+        'points' => 'điểm',
+        'discussions' => 'thảo luận',
+        'recently' => 'gần đây',
+        'join_professional_network' => 'Tham gia Mạng lưới Chuyên nghiệp',
     ],
 
     // Navigation

@@ -88,43 +88,59 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div> <!-- Featured Discussions Card -->
     <div class="sidebar-card featured-discussions" data-aos="fade-up" data-aos-delay="200">
         <div class="card-header">
-            <h6 class="mb-0"><i class="lightning-fill me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-bolt me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
             <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="discussion-list">
                 @foreach($sidebarData['featured_threads'] as $thread)
-                <a href="{{ route('threads.show', [$thread['slug']]) }}" class="discussion-item">
+                <div class="discussion-item">
                     <div class="discussion-avatar">
                         <img src="{{ $thread['author']['avatar_url'] ?? 'https://ui-avatars.com/api/?name=' . urlencode(strtoupper(substr($thread['author']['name'], 0, 1))) . '&background=6366f1&color=fff&size=200' }}"
                              alt="{{ $thread['author']['name'] }}"
-                             
+
                              onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($thread['author']['name'], 0, 1))) }}&background=6366f1&color=fff&size=200'">
                     </div>
                     <div class="discussion-content">
-                        <h6 class="discussion-title">{{ Str::limit($thread['title'], 60) }}</h6>
+                        <h6 class="discussion-title"><a href="{{ route('threads.show', [$thread['slug']]) }}" class="text-decoration-none">{{ Str::limit($thread['title'], 60) }}</a></h6>
                         <div class="discussion-meta">
-                            <span class="author">{{ $thread['author']['name'] }}</span>
-                            <span class="forum">{{ __('content.in') }} {{ $thread['forum']['name'] }}</span>
+                            <span class="author">
+                                <i class="fas fa-user me-1"></i>
+                                <a href="{{ route('profile.show', $thread['author']['username'] ?? $thread['author']['id']) }}"
+                                   class="text-decoration-none" onclick="event.stopPropagation();">
+                                    {{ $thread['author']['name'] }}
+                                </a>
+                            </span>
+                            <span class="forum">
+                                <i class="fas fa-comments me-1"></i>
+                                <a href="{{ route('forums.show', $thread['forum']['slug'] ?? $thread['forum']['id']) }}"
+                                   class="text-decoration-none" onclick="event.stopPropagation();">
+                                    {{ $thread['forum']['name'] }}
+                                </a>
+                            </span>
                         </div>
-                        <div class="discussion-metrics">
-                            <span class="metric">
-                                <i class="fas fa-eye"></i> {{ number_format($thread['metrics']['views']) }}
-                            </span>
-                            <span class="metric">
-                                <i class="fas fa-chart-line"></i> {{ $thread['metrics']['engagement_score'] }}
-                            </span>
+                        <div class="discussion-metrics d-flex align-items-center justify-content-between">
+                            <div class="">
+                                <span class="metric">
+                                    <i class="fas fa-eye"></i> {{ number_format($thread['metrics']['views']) }}
+                                </span>
+                                <span class="metric">
+                                    <i class="fas fa-chart-line"></i> {{ $thread['metrics']['engagement_score'] }}
+                                </span>
+                            </div>
+                            <div class="discussion-time">{{ $thread['time_ago'] }}</div>
                         </div>
                     </div>
-                    <div class="discussion-time">{{ $thread['time_ago'] }}</div>
-                </a>
+
+                </div>
                 @endforeach
             </div>
         </div>
-    </div> <!-- Top Engineers Card -->
+    </div>
+    <!-- Top Engineers Card -->
     <div class="sidebar-card top-engineers" data-aos="fade-up" data-aos-delay="300">
         <div class="card-header">
-            <h6 class="mb-0"><i class="award me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-trophy me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
             <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">{{ __('content.leaderboard') }}</a>
         </div>
         <div class="card-body p-0">
@@ -162,7 +178,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @if($user && !empty($sidebarData['user_recommendations'])) <div class="sidebar-card recommendations"
         data-aos="fade-up" data-aos-delay="400">
         <div class="card-header">
-            <h6 class="mb-0"><i class="stars me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-star me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="recommendations-list">
@@ -185,15 +201,12 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Popular Forums Card -->
     <div class="sidebar-card popular-forums" data-aos="fade-up" data-aos-delay="500">
         <div class="card-header">
-            <h6 class="mb-0"><i class="collection me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-layer-group me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="forums-list">
                 @foreach($sidebarData['top_forums'] as $forum)
                 <a href="{{ route('forums.show', $forum['slug']) }}" class="forum-item">
-                    <div class="forum-avatar">
-                        <img src="{{ $forum['image_url'] }}" alt="{{ $forum['name'] }}" class="rounded">
-                    </div>
                     <div class="forum-info">
                         <h6 class="forum-name">{{ $forum['name'] }}</h6>
                         <p class="forum-desc">{{ $forum['description'] }}</p>
@@ -234,10 +247,10 @@ function initializeSidebar() {
 
             if (target.classList.contains('show')) {
                 target.classList.remove('show');
-                icon.className = 'chevron-down';
+                icon.className = 'fas fa-chevron-down';
             } else {
                 target.classList.add('show');
-                icon.className = 'chevron-up';
+                icon.className = 'fas fa-chevron-up';
             }
         });
     });

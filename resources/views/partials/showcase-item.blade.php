@@ -65,14 +65,16 @@ $category = $showcase->category ?? null;
         <p class="showcase-description">{{ $showcaseDescription }}</p>
         @endif
         <div class="showcase-stats">
-            <span class="stat-item">
-                <i class="fas fa-eye"></i> {{ number_format($viewCount) }}
-            </span>
-            <span class="stat-item">
-                <i class="fas fa-heart"></i> {{ number_format($likesCount) }}
-            </span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="stat-item">
+                    <i class="fas fa-eye"></i> {{ number_format($viewCount) }}
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-heart"></i> {{ number_format($likesCount) }}
+                </span>
+            </div>
             @if($category)
-            <span class="badge bg-primary">{{ $category }}</span>
+            <span class="badge bg-info">{{ $category }}</span>
             @endif
         </div>
     </div>

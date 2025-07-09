@@ -4,8 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
-<!-- Lightbox CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 @endpush
 
 @section('content')
@@ -123,7 +121,8 @@
                     @if(str_starts_with($media->file_type ?? '', 'image/'))
                     <div class="col-md-4 mb-3">
                         <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                            data-lightbox="thread-images">
+                            data-fancybox="thread-images"
+                            data-caption="Thread image">
                             <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
                                 class="img-fluid rounded"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
@@ -254,6 +253,91 @@
         </div>
     </div>
 
+    <!-- Related Showcase Section -->
+    @if($thread->showcase)
+    <div class="showcase-section mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-star text-warning me-2"></i>
+                    {{ __('messages.related_showcase') }}
+                </h5>
+                <small class="text-muted">{{ __('messages.showcase_for_thread') }}</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Showcase Image -->
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        @if($thread->showcase->media && $thread->showcase->media->count() > 0)
+                            @php
+                                $firstMedia = $thread->showcase->media->first();
+                            @endphp
+                            <img src="{{ $firstMedia->url ?? asset('storage/' . $firstMedia->file_path) }}"
+                                 alt="{{ $thread->showcase->title }}"
+                                 class="img-fluid rounded shadow-sm"
+                                 style="width: 100%; height: 200px; object-fit: cover;"
+                                 onerror="this.src='{{ asset('images/placeholder.jpg') }}'">
+                        @else
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                                 style="width: 100%; height: 200px;">
+                                <i class="fas fa-image text-muted fs-1"></i>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Showcase Content -->
+                    <div class="col-md-8">
+                        <h6 class="fw-bold mb-2">{{ $thread->showcase->title }}</h6>
+
+                        @if($thread->showcase->description)
+                        <p class="text-muted mb-3">{{ Str::limit($thread->showcase->description, 200) }}</p>
+                        @endif
+
+                        <!-- Showcase Meta -->
+                        <div class="showcase-meta mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ get_avatar_url($thread->showcase->user) }}"
+                                     alt="{{ $thread->showcase->user->name }}"
+                                     class="rounded-circle me-2"
+                                     width="24" height="24">
+                                <small class="text-muted">
+                                    {{ __('messages.by') }}
+                                    <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
+                                       class="text-decoration-none">
+                                        {{ $thread->showcase->user->name }}
+                                    </a>
+                                </small>
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ $thread->showcase->created_at->diffForHumans() }}
+                            </small>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="showcase-actions">
+                            <a href="{{ route('showcase.show', $thread->showcase) }}"
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-external-link-alt me-1"></i>
+                                {{ __('messages.view_full_showcase') }}
+                            </a>
+
+                            @if($thread->showcase->showcase_url)
+                            <a href="{{ $thread->showcase->showcase_url }}"
+                               target="_blank"
+                               class="btn btn-outline-secondary btn-sm ms-2">
+                                <i class="fas fa-link me-1"></i>
+                                {{ __('messages.view_details') }}
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Comments Section -->
     <div class="comments-section mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -305,8 +389,8 @@
                         @foreach($comment->attachments as $attachment)
                         <div class="col-md-3 col-sm-4 col-6">
                             <a href="{{ $attachment->url }}" class="d-block"
-                                data-lightbox="comment-{{ $comment->id }}-images"
-                                data-title="{{ $attachment->file_name }}">
+                                data-fancybox="comment-{{ $comment->id }}-images"
+                                data-caption="{{ $attachment->file_name }}">
                                 <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
                                     class="img-fluid rounded">
                             </a>
@@ -346,8 +430,8 @@
                                     @foreach($reply->attachments as $attachment)
                                     <div class="col-md-3 col-sm-4 col-6">
                                         <a href="{{ $attachment->url }}" class="d-block"
-                                            data-lightbox="reply-{{ $reply->id }}-images"
-                                            data-title="{{ $attachment->file_name }}">
+                                            data-fancybox="reply-{{ $reply->id }}-images"
+                                            data-caption="{{ $attachment->file_name }}">
                                             <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
                                                 class="img-fluid rounded">
                                         </a>
@@ -1197,22 +1281,12 @@ function initializeEventHandlers() {
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads/show.css') }}">
 @endpush
 
-
-
-
-@endpush
-
 @push('scripts')
-<!-- Lightbox Script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 <script>
-    // Lightbox configuration
-    lightbox.option({
-        'resizeDuration': 200,
-        'wrapAround': true,
-        'albumLabel': 'Hình %1 / %2',
-        'fadeDuration': 300,
-        'imageFadeDuration': 300
+    // Additional Fancybox configuration for threads if needed
+    document.addEventListener('DOMContentLoaded', function() {
+        // Thread-specific Fancybox configuration
+        console.log('Thread images ready for Fancybox');
     });
 </script>
 @endpush

@@ -119,14 +119,26 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         <div class="{{ $hasImage ? 'col-md-8' : 'col-12' }}">
             <div class="thread-title-section">
                 <div class="thread-title">
-                    <a href="{{ $threadUrl }}">{{ $thread->title }}</a>
+                    <a href="{{ $threadUrl }}">
+                        @if(request()->routeIs('forums.search') && str_contains($thread->title, '<span class="highlight">'))
+                            {!! $thread->title !!}
+                        @else
+                            {{ $thread->title }}
+                        @endif
+                    </a>
                 </div>
                 <small class="text-muted d-md-none">{{ $createdAt }}</small>
             </div>
 
             <!-- Mô tả ngắn thread -->
             @if($contentPreview)
-            <div class="thread-content">{{ $contentPreview }}</div>
+            <div class="thread-content">
+                @if(request()->routeIs('forums.search') && isset($thread->content) && str_contains($thread->content, '<span class="highlight">'))
+                    {!! Str::limit($thread->content, 220) !!}
+                @else
+                    {{ $contentPreview }}
+                @endif
+            </div>
             @endif
         </div>
 

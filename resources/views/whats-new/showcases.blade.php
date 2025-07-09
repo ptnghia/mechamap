@@ -1,14 +1,18 @@
 @extends('layouts.app')
 
-@section('title', '{{ __("messages.new_showcases") }} - MechaMap')
+@section('title', __('messages.new_showcases') . ' - MechaMap')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+@endpush
 
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">What's New</h1>
+        <h1 class="mb-0 title_page">{{ __('messages.whats_new') }}</h1>
 
         <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-lg me-1"></i> Create Showcase
+            <i class="fa-solid fa-plus me-1"></i> {{ __('messages.create_showcase') }}
         </a>
     </div>
 
@@ -42,15 +46,15 @@
     <div class="pagination-container mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <div class="pagination-info">
-                <span>Page {{ $page }} of {{ $totalPages }}</span>
+                <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
             </div>
 
             <nav aria-label="Page navigation">
                 <ul class="pagination pagination-sm mb-0">
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                            <span aria-hidden="true"><i class="chevron-left"></i></span>
+                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                         </a>
                     </li>
 
@@ -103,8 +107,8 @@
 
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                            <span aria-hidden="true"><i class="chevron-right"></i></span>
+                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                         </a>
                                     </li>
                 </ul>
@@ -134,7 +138,7 @@
                                     <small class="text-muted">{{ $showcase->created_at->diffForHumans()
                                         }}</small>
                                 </div>
-                                <span class="badge bg-primary">{{ $showcase->showcase_type }}</span>
+                                <span class="badge bg-primary">{{ __('messages.' . strtolower($showcase->showcase_type)) }}</span>
                             </div>
                         </div>
 
@@ -163,8 +167,8 @@
                             @if($showcase->description)
                             <div class="mt-2 p-2 bg-light rounded">
                                 <small class="text-description">
-                                    <i class="quote me-1"></i>
-                                    <strong>Showcase reason:</strong> {{ $showcase->description }}
+                                    <i class="fa-solid fa-quote-left me-1"></i>
+                                    <strong>{{ __('messages.showcase_reason') }}</strong> {{ $showcase->description }}
                                 </small>
                             </div>
                             @endif
@@ -175,19 +179,19 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ $showcase->showcase_url }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye me-1"></i> Xem chi tiết
+                                        <i class="fas fa-eye me-1"></i> {{ __('messages.view_details') }}
                                     </a>
                                     <a href="{{ route('showcase.show', $showcase) }}"
                                         class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-star me-1"></i> Showcase
+                                        <i class="fas fa-star me-1"></i> {{ __('messages.showcase') }}
                                     </a>
                                 </div>
 
                                 @if($showcase->showcaseable && $showcase->showcaseable_type ===
                                 'App\Models\Thread')
                                 <small class="text-muted">
-                                    <i class="folder me-1"></i>
-                                    {{ $showcase->showcaseable->forum->name ?? 'Forum' }}
+                                    <i class="fa-solid fa-folder-closed"></i>
+                                    {{ $showcase->showcaseable->forum->name ?? __('messages.forum') }}
                                 </small>
                                 @endif
                             </div>
@@ -200,8 +204,8 @@
         @else
         <div class="card-body text-center py-5">
             <i class="fas fa-star display-4 text-muted"></i>
-            <p class="mt-3">No showcases found.</p>
-            <a href="{{ route('showcase.create') }}" class="btn btn-primary">Create First Showcase</a>
+            <p class="mt-3">{{ __('messages.no_showcases_found') }}</p>
+            <a href="{{ route('showcase.create') }}" class="btn btn-primary">{{ __('messages.create_first_showcase') }}</a>
         </div>
         @endif
     </div>
@@ -210,15 +214,15 @@
     <div class="pagination-container mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <div class="pagination-info">
-                <span>Page {{ $page }} of {{ $totalPages }}</span>
+                <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
             </div>
 
             <nav aria-label="Page navigation">
                 <ul class="pagination pagination-sm mb-0">
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="Previous">
-                            <span aria-hidden="true"><i class="chevron-left"></i></span>
+                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                         </a>
                     </li>
 
@@ -271,8 +275,8 @@
 
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="Next">
-                                            <span aria-hidden="true"><i class="chevron-right"></i></span>
+                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                         </a>
                                     </li>
                 </ul>
@@ -283,7 +287,4 @@
 @endsection
 
 @push('styles')
-<style>
-
-</style>
 @endpush

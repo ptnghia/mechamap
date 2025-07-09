@@ -19,7 +19,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h2 class="section-title mb-1">{{ __('home.featured_showcases') }}</h2>
-                        <p class="text-muted">{{ __('home.featured_showcases_desc') }}</p>
+                        <p class="text-muted mb-0">{{ __('home.featured_showcases_desc') }}</p>
                     </div>
                     <a href="{{ route('showcase.public') }}" class="btn btn-outline-primary">
                         {{ __('buttons.view_all') }}
@@ -30,18 +30,13 @@
 
         <!-- Swiper Container -->
         <div class="swiper showcases-swiper">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper pb-5">
                 @foreach($featuredShowcases as $showcase)
                 <div class="swiper-slide">
                     @include('partials.showcase-item', ['showcase' => $showcase])
                 </div>
                 @endforeach
             </div>
-
-            <!-- Navigation buttons -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
             <!-- Pagination -->
             <div class="swiper-pagination"></div>
         </div>
@@ -149,17 +144,13 @@ document.addEventListener('DOMContentLoaded', function() {
         slidesPerView: 1,
         spaceBetween: 20,
         loop: false, // Tắt loop để tránh warning khi ít slides
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
+        //autoplay: {
+        //    delay: 5000,
+        //    disableOnInteraction: false,
+        //},
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
         },
         breakpoints: {
             640: {
@@ -168,11 +159,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             768: {
                 slidesPerView: 2,
-                spaceBetween: 20,
+                spaceBetween: 10,
             },
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 20,
+                spaceBetween: 10,
             }
         }
     });

@@ -5,7 +5,7 @@ return [
     'welcome' => 'Chào mừng bạn đến với ứng dụng',
     'success' => 'Thao tác thành công',
     'error' => 'Có lỗi xảy ra',
-
+    'search' => 'Tìm kiếm',
     // Navigation & Menu
     'nav' => [
         'home' => 'Trang chủ',
@@ -99,6 +99,7 @@ return [
         'popular_threads' => 'Chủ đề phổ biến',
         'sticky' => 'Ghim',
         'locked' => 'Khóa',
+        'search' => 'Tìm kiếm',
     ],
 
     // User & Profile

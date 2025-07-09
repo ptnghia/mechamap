@@ -16,6 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Showcase;
 use App\Models\Country;
 use App\Models\Region;
+use App\Models\MarketplaceSeller;
 // use Spatie\Permission\Traits\HasRoles; // Temporarily disabled
 
 /**
@@ -896,6 +897,23 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the marketplace seller profile for the user.
+     */
+    public function marketplaceSeller(): HasOne
+    {
+        return $this->hasOne(MarketplaceSeller::class, 'user_id');
+    }
+
+    /**
+     * Get the user's favorite companies.
+     */
+    public function favoriteCompanies(): BelongsToMany
+    {
+        return $this->belongsToMany(MarketplaceSeller::class, 'user_favorite_companies', 'user_id', 'marketplace_seller_id')
+                    ->withTimestamps();
+    }
+
+    /**
      * Get the thread follows created by the user.
      */
     public function threadFollows(): HasMany
@@ -910,6 +928,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Thread::class, 'thread_follows')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the showcase items created by the user.
+     */
+    public function showcaseItems(): HasMany
+    {
+        return $this->hasMany(Showcase::class);
     }
 
     /**

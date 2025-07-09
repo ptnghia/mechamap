@@ -4,7 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 <link rel="stylesheet" href="{{ asset('css/frontend/views/showcase/show.css') }}">
 @endpush
 
@@ -111,7 +110,7 @@
             <div class="showcase-main-image mb-4">
                 <div class="showcase-image-gallery">
                     <a href="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}"
-                        data-lightbox="showcase-gallery" data-title="{{ $showcase->title }}">
+                        data-fancybox="showcase-gallery" data-caption="{{ $showcase->title }}">
                         <img src="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}"
                             class="img-fluid rounded shadow" alt="{{ $showcase->title }}"
                             class="showcase-featured-image"
@@ -130,7 +129,7 @@
                     @if(str_starts_with($media->file_type ?? '', 'image/'))
                     <div class="col-md-4 col-sm-6 mb-3">
                         <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                            data-lightbox="showcase-gallery" data-title="{{ $media->title ?? $showcase->title }}">
+                            data-fancybox="showcase-gallery" data-caption="{{ $media->title ?? $showcase->title }}">
                             <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
                                 class="img-fluid rounded shadow-sm" alt="{{ $media->title ?? 'Showcase image' }}"
                                 class="showcase-gallery-image"
@@ -253,34 +252,94 @@
 
             <hr>
 
-            {{-- Rating System (thay thế polls) --}}
-            @include('showcases.partials.rating', ['showcase' => $showcase])
+            {{-- Tab Navigation --}}
+            <div class="showcase-tabs">
+                <ul class="nav nav-tabs" id="showcaseTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ratings-tab" data-bs-toggle="tab" data-bs-target="#ratings"
+                            type="button" role="tab" aria-controls="ratings" aria-selected="true">
+                            <i class="fas fa-star"></i>
+                            Đánh giá ({{ $showcase->ratings_count ?? 0 }})
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments"
+                            type="button" role="tab" aria-controls="comments" aria-selected="false">
+                            <i class="fas fa-comments"></i>
+                            Bình luận ({{ $showcase->commentsCount() }})
+                        </button>
+                    </li>
+                </ul>
 
-            <hr>
+                <div class="tab-content" id="showcaseTabsContent">
+                    {{-- Tab Đánh giá --}}
+                    <div class="tab-pane fade show active" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
+                        <div class="tab-content-wrapper">
+                            {{-- Rating System --}}
+                            @include('showcases.partials.rating', ['showcase' => $showcase])
 
-            {{-- Phần bình luận --}}
+                            <hr>
+
+                            {{-- Danh sách đánh giá --}}
+                            <div class="showcase-ratings">
+                                <div class="ratings-list">
+                                    @php
+                                        $ratings = $showcase->ratings()->with('user')->latest()->get();
+                                    @endphp
+
+                                    @forelse($ratings as $rating)
+                                        @include('showcases.partials.rating-item', ['rating' => $rating, 'showcase' => $showcase])
+                                    @empty
+                                        <div class="text-center text-muted py-4">
+                                            <i class="fas fa-star fa-2x mb-2"></i>
+                                            <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá showcase này!</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Tab Bình luận --}}
+                    <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                        <div class="tab-content-wrapper">
+                            {{-- Phần bình luận --}}
             <div class="showcase-comments">
-                <h5 class="mb-3">
-                    <i class="fas fa-comments"></i>
-                    Bình luận ({{ $showcase->commentsCount() }})
-                </h5>
 
                 {{-- Form thêm bình luận --}}
                 @auth
                 <div class="comment-form mb-4">
-                    <form action="{{ route('showcase.comment', $showcase) }}" method="POST">
+                    <form action="{{ route('showcase.comment', $showcase) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="d-flex gap-3">
                             <img src="{{ auth()->user()->getAvatarUrl() }}" class="rounded-circle" width="40" height="40"
                                 alt="Avatar của bạn"
                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
                             <div class="flex-grow-1">
-                                <div class="form-floating">
-                                    <textarea class="form-control" id="comment-content" name="content"
-                                        placeholder="Viết bình luận của bạn..." class="showcase-comment-textarea"
-                                        required></textarea>
-                                    <label for="comment-content">Viết bình luận của bạn...</label>
+                                <x-rich-text-editor
+                                    name="content"
+                                    placeholder="Viết bình luận của bạn..."
+                                    id="comment-editor"
+                                    :required="true"
+                                    :allowImages="true"
+                                    minHeight="100px"
+                                />
+
+                                {{-- Image upload section --}}
+                                <div class="mt-2">
+                                    <label class="form-label small">
+                                        <i class="fas fa-images"></i>
+                                        Đính kèm ảnh (tùy chọn)
+                                    </label>
+                                    <input type="file" name="images[]" id="comment-images-main" accept="image/*" multiple
+                                        class="form-control form-control-sm">
+                                    <small class="text-muted">Chọn tối đa 5 ảnh (JPG, PNG, GIF, WebP). Kích thước tối đa:
+                                        5MB mỗi ảnh.</small>
+
+                                    {{-- Image Preview --}}
+                                    <div class="image-preview mt-2" id="image-preview-main"></div>
                                 </div>
+
                                 <div class="mt-2">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-paper-plane"></i>
@@ -339,7 +398,29 @@
                                         </div>
                                     </div>
                                     <div class="comment-body">
-                                        {!! nl2br(e($comment->content)) !!}
+                                        {!! nl2br(e($comment->comment)) !!}
+
+                                        {{-- Hiển thị attachments nếu có --}}
+                                        @if($comment->has_media && $comment->attachments->count() > 0)
+                                        <div class="comment-attachments mt-3">
+                                            <div class="row g-2">
+                                                @foreach($comment->attachments as $attachment)
+                                                <div class="col-auto">
+                                                    <div class="attachment-item">
+                                                        <a href="{{ $attachment->url }}"
+                                                           data-fancybox="comment-{{ $comment->id }}-images"
+                                                           data-caption="{{ $attachment->file_name }}">
+                                                            <img src="{{ $attachment->url }}"
+                                                                 alt="{{ $attachment->file_name }}"
+                                                                 class="img-thumbnail comment-image"
+                                                                 style="max-width: 150px; max-height: 150px; object-fit: cover; cursor: pointer;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -383,7 +464,29 @@
                                                         @endauth
                                                     </div>
                                                     <div class="small mt-1">
-                                                        {!! nl2br(e($reply->content)) !!}
+                                                        {!! nl2br(e($reply->comment)) !!}
+
+                                                        {{-- Hiển thị attachments cho reply nếu có --}}
+                                                        @if($reply->has_media && $reply->attachments->count() > 0)
+                                                        <div class="reply-attachments mt-2">
+                                                            <div class="row g-1">
+                                                                @foreach($reply->attachments as $attachment)
+                                                                <div class="col-auto">
+                                                                    <div class="attachment-item">
+                                                                        <a href="{{ $attachment->url }}"
+                                                                           data-fancybox="reply-{{ $reply->id }}-images"
+                                                                           data-caption="{{ $attachment->file_name }}">
+                                                                            <img src="{{ $attachment->url }}"
+                                                                                 alt="{{ $attachment->file_name }}"
+                                                                                 class="img-thumbnail reply-image"
+                                                                                 style="max-width: 100px; max-height: 100px; object-fit: cover; cursor: pointer;">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -395,8 +498,8 @@
 
                                 {{-- Form trả lời bình luận --}}
                                 @auth
-                                <div class="reply-form mt-2" id="reply-form-{{ $comment->id }}">
-                                    <form action="{{ route('showcase.comment', $showcase) }}" method="POST">
+                                <div class="reply-form mt-2" id="reply-form-{{ $comment->id }}" style="display: none;">
+                                    <form action="{{ route('showcase.comment', $showcase) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                                         <div class="d-flex gap-2">
@@ -404,10 +507,38 @@
                                                 width="30" height="30" alt="Avatar của bạn"
                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
                                             <div class="flex-grow-1">
-                                                <div class="input-group">
-                                                    <textarea class="form-control form-control-sm" name="content"
-                                                        placeholder="Trả lời bình luận..." rows="2" required></textarea>
-                                                    <button type="submit" class="btn btn-primary btn-sm">Gửi</button>
+                                                <x-rich-text-editor
+                                                    name="content"
+                                                    placeholder="Trả lời bình luận..."
+                                                    id="reply-editor-{{ $comment->id }}"
+                                                    :required="true"
+                                                    :allowImages="true"
+                                                    minHeight="80px"
+                                                />
+
+                                                {{-- Image upload for reply --}}
+                                                <div class="mt-2">
+                                                    <label class="form-label small">
+                                                        <i class="fas fa-images"></i>
+                                                        Đính kèm ảnh (tùy chọn)
+                                                    </label>
+                                                    <input type="file" name="images[]" id="reply-images-{{ $comment->id }}"
+                                                           accept="image/*" multiple class="form-control form-control-sm">
+                                                    <small class="text-muted">Chọn tối đa 5 ảnh (JPG, PNG, GIF, WebP). Kích thước tối đa: 5MB mỗi ảnh.</small>
+
+                                                    {{-- Image Preview --}}
+                                                    <div class="image-preview mt-2" id="reply-preview-{{ $comment->id }}"></div>
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-paper-plane"></i>
+                                                        Gửi
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary btn-sm ms-2"
+                                                        onclick="toggleReplyForm({{ $comment->id }})">
+                                                        Hủy
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -431,6 +562,10 @@
                     @endforelse
                 </div>
             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -441,16 +576,12 @@
 
 @push('scripts')
 <script src="{{ asset('js/rating.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script src="{{ asset('js/rich-text-editor.js') }}"></script>
 <script>
-    // Configure Lightbox
-lightbox.option({
-    'resizeDuration': 200,
-    'wrapAround': true,
-    'albumLabel': 'Ảnh %1 / %2',
-    'fadeDuration': 300,
-    'imageFadeDuration': 300
-});
+    // Showcase-specific Fancybox configuration
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Showcase images ready for Fancybox');
+    });
 
 // Social Sharing Functions
 function shareOnFacebook() {
@@ -495,7 +626,11 @@ function toggleReplyForm(commentId) {
     const replyForm = document.getElementById('reply-form-' + commentId);
     if (replyForm.style.display === 'none' || replyForm.style.display === '') {
         replyForm.style.display = 'block';
-        replyForm.querySelector('textarea').focus();
+        // Focus on rich text editor content
+        const editorContent = replyForm.querySelector('.editor-content');
+        if (editorContent) {
+            editorContent.focus();
+        }
     } else {
         replyForm.style.display = 'none';
     }
@@ -701,6 +836,82 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Image preview for comment forms
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle image preview for main comment form
+    const mainImageInput = document.getElementById('comment-images-main');
+    if (mainImageInput) {
+        mainImageInput.addEventListener('change', function() {
+            previewImages(this.files, document.getElementById('image-preview-main'));
+        });
+    }
+
+    // Handle image preview for reply forms
+    document.querySelectorAll('[id^="reply-images-"]').forEach(input => {
+        input.addEventListener('change', function() {
+            const replyId = this.id.replace('reply-images-', '');
+            const previewContainer = document.getElementById(`reply-preview-${replyId}`);
+            if (previewContainer) {
+                previewImages(this.files, previewContainer);
+            }
+        });
+    });
+});
+
+function previewImages(files, previewContainer) {
+    previewContainer.innerHTML = '';
+
+    if (files.length > 5) {
+        alert('Chỉ được chọn tối đa 5 ảnh.');
+        return;
+    }
+
+    Array.from(files).forEach((file, index) => {
+        if (file.size > 5 * 1024 * 1024) {
+            alert(`Ảnh "${file.name}" quá lớn. Kích thước tối đa: 5MB.`);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'image-preview-item d-inline-block me-2 mb-2';
+            previewItem.innerHTML = `
+                <div class="position-relative">
+                    <img src="${e.target.result}" alt="Preview"
+                         class="img-thumbnail"
+                         style="width: 80px; height: 80px; object-fit: cover;">
+                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle"
+                            style="width: 20px; height: 20px; padding: 0; font-size: 10px;"
+                            onclick="removeImagePreview(this, ${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            previewContainer.appendChild(previewItem);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function removeImagePreview(button, index) {
+    const previewItem = button.closest('.image-preview-item');
+    previewItem.remove();
+
+    // Reset file input to remove the file
+    const fileInput = button.closest('form').querySelector('input[type="file"]');
+    const dt = new DataTransfer();
+    const files = fileInput.files;
+
+    for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+            dt.items.add(files[i]);
+        }
+    }
+
+    fileInput.files = dt.files;
+}
 </script>
 @endpush
 
