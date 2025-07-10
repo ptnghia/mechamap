@@ -18,30 +18,11 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1 class="thread-title">{{ $thread->title }}</h1>
 
-                <div class="thread-actions">
-                    <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn-jump">
-                        <i class="fas fa-arrow-right"></i> Đến bình luận cuối
+                <div class="thread-actions d-flex gap-2 align-items-center">
+                    <x-thread-follow-button :thread="$thread" size="normal" />
+                    <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-down"></i> Đến cuối
                     </a>
-
-                    @php
-                    $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
-                    @endphp
-                    @if($isFollowed)
-                    <form action="{{ route('threads.follow.remove', $thread) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-follow">
-                            <i class="fas fa-bell-fill"></i> Đang theo dõi
-                        </button>
-                    </form>
-                    @else
-                    <form action="{{ route('threads.follow.add', $thread) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn-follow">
-                            <i class="fas fa-bell"></i> Theo dõi
-                        </button>
-                    </form>
-                    @endif
                 </div>
             </div>
             <div class="thread-meta">

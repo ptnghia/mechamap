@@ -525,48 +525,10 @@
                             @endif
                         @endauth
 
-                        <!-- Notifications - Only show when authenticated -->
-                        @auth
-                            <li class="nav-item dropdown">
-                                <a class="nav-link position-relative" href="#" id="notificationToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-bell"></i>
-                                    @php
-                                        $unreadNotifications = auth()->user()->userNotifications()->where('is_read', false)->count();
-                                        $unreadAlerts = auth()->user()->alerts()->whereNull('read_at')->count();
-                                        $totalUnread = $unreadNotifications + $unreadAlerts;
-                                    @endphp
-                                    @if($totalUnread > 0)
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationCount">
-                                            {{ $totalUnread > 99 ? '99+' : $totalUnread }}
-                                        </span>
-                                    @endif
-                                </a>
-                                <!-- Notifications Dropdown -->
-                                <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="notificationDropdown">
-                                    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0">Thông báo</h6>
-                                        @if($totalUnread > 0)
-                                            <button class="btn btn-sm btn-outline-primary" onclick="markAllNotificationsRead()">
-                                                Đánh dấu đã đọc
-                                            </button>
-                                        @endif
-                                    </div>
-                                    <div id="notificationItems" style="max-height: 350px; overflow-y: auto;">
-                                        <!-- Notifications will be loaded here -->
-                                        <div class="text-center text-muted py-4" id="notificationEmpty">
-                                            <i class="fas fa-bell-slash" style="font-size: 2.5rem;"></i>
-                                            <p class="mb-0 mt-2">Không có thông báo mới</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 border-top text-center">
-                                        <a href="{{ route('alerts.index') }}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-list me-1"></i>
-                                            Xem tất cả thông báo
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                        @endauth
+                        <!-- Notifications - Enhanced with new system -->
+                        <li class="nav-item">
+                            <x-notification-dropdown position="end" />
+                        </li>
 
                         <!-- Language Switcher -->
                         <li class="nav-item">

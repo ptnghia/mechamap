@@ -827,6 +827,52 @@ Route::middleware(['webapi', 'auth'])->prefix('api/threads/{thread}')->group(fun
     Route::delete('/follow', [App\Http\Controllers\Api\ThreadQualityController::class, 'unfollowThread']);
 });
 
+// Thread Follow AJAX API routes
+Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () {
+    Route::post('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'follow'])->name('ajax.threads.follow');
+    Route::delete('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'unfollow'])->name('ajax.threads.unfollow');
+    Route::get('/follow-status', [\App\Http\Controllers\ThreadFollowController::class, 'status'])->name('ajax.threads.follow.status');
+});
+
+// Notification AJAX API routes
+Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
+    Route::get('/dropdown', [\App\Http\Controllers\NotificationController::class, 'dropdown'])->name('ajax.notifications.dropdown');
+    Route::get('/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('ajax.notifications.unread-count');
+    Route::patch('/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read');
+    Route::patch('/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read');
+    Route::delete('/{notification}', [\App\Http\Controllers\NotificationController::class, 'delete'])->name('ajax.notifications.delete');
+});
+
+// Notification pages
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+});
+
+// Device management AJAX API routes
+Route::middleware(['auth'])->prefix('ajax/devices')->group(function () {
+    Route::get('/{device}', [\App\Http\Controllers\DeviceController::class, 'show'])->name('ajax.devices.show');
+    Route::patch('/{device}/trust', [\App\Http\Controllers\DeviceController::class, 'trust'])->name('ajax.devices.trust');
+    Route::patch('/{device}/untrust', [\App\Http\Controllers\DeviceController::class, 'untrust'])->name('ajax.devices.untrust');
+    Route::delete('/{device}', [\App\Http\Controllers\DeviceController::class, 'remove'])->name('ajax.devices.remove');
+    Route::post('/clean-old', [\App\Http\Controllers\DeviceController::class, 'cleanOld'])->name('ajax.devices.clean-old');
+});
+
+// Device management pages
+Route::middleware(['auth'])->group(function () {
+    Route::get('/devices', [\App\Http\Controllers\DeviceController::class, 'index'])->name('devices.index');
+});
+
+// Notification preferences AJAX API routes
+Route::middleware(['auth'])->prefix('ajax/notification-preferences')->group(function () {
+    Route::patch('/', [\App\Http\Controllers\NotificationPreferencesController::class, 'update'])->name('ajax.notification-preferences.update');
+    Route::post('/reset', [\App\Http\Controllers\NotificationPreferencesController::class, 'reset'])->name('ajax.notification-preferences.reset');
+});
+
+// Notification preferences pages
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notification-preferences', [\App\Http\Controllers\NotificationPreferencesController::class, 'index'])->name('notification-preferences.index');
+});
+
 // Test route for thread actions (only in development)
 if (app()->environment('local')) {
     Route::get('/test-thread-actions-simple', function () {

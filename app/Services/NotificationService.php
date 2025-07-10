@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Events\NotificationBroadcastEvent;
 
 /**
  * Advanced Notification Service - Phase 3
@@ -58,6 +59,7 @@ class NotificationService
                 }
 
                 // Send real-time notification (WebSocket/Pusher)
+                self::broadcastNotification($user, $notification);
                 self::sendRealtime($user, $notification);
             }
 
@@ -214,6 +216,30 @@ class NotificationService
     }
 
     /**
+     * Broadcast real-time notification
+     */
+    private static function broadcastNotification(User $user, Notification $notification): void
+    {
+        try {
+            // Broadcast the notification event
+            broadcast(new NotificationBroadcastEvent($user, $notification))->toOthers();
+
+            Log::info('Real-time notification broadcasted', [
+                'user_id' => $user->id,
+                'notification_id' => $notification->id,
+                'type' => $notification->type,
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to broadcast notification', [
+                'user_id' => $user->id,
+                'notification_id' => $notification->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
      * Send email notification
      */
     private static function sendEmail(User $user, Notification $notification): void
@@ -259,6 +285,69 @@ class NotificationService
 
                 case 'password_changed':
                     \Mail::to($user->email)->queue(new \App\Mail\PasswordChangedNotification($user, $notification->data));
+                    break;
+
+                case 'product_out_of_stock':
+                    if (isset($notification->data['product_id'])) {
+                        $product = \App\Models\MarketplaceProduct::find($notification->data['product_id']);
+                        if ($product) {
+                            \Mail::to($user->email)->queue(new \App\Mail\ProductOutOfStockNotification($product, $user, $notification->data));
+                        }
+                    }
+                    break;
+
+                case 'wishlist_available':
+                    if (isset($notification->data['product_id'])) {
+                        $product = \App\Models\MarketplaceProduct::find($notification->data['product_id']);
+                        if ($product) {
+                            \Mail::to($user->email)->queue(new \App\Mail\WishlistAvailableNotification($product, $user, $notification->data));
+                        }
+                    }
+                    break;
+
+                case 'review_received':
+                    if (isset($notification->data['review_id'])) {
+                        $review = \App\Models\ProductReview::find($notification->data['review_id']);
+                        if ($review) {
+                            \Mail::to($user->email)->queue(new \App\Mail\ReviewReceivedNotification($review, $user, $notification->data));
+                        }
+                    }
+                    break;
+
+                case 'seller_message':
+                case 'buyer_message':
+                case 'marketplace_message':
+                    if (isset($notification->data['message_id'])) {
+                        $message = \App\Models\Message::find($notification->data['message_id']);
+                        if ($message) {
+                            $sender = \App\Models\User::find($notification->data['sender_id']);
+                            if ($sender) {
+                                \Mail::to($user->email)->queue(new \App\Mail\SellerMessageNotification($message, $sender, $user, $notification->data));
+                            }
+                        }
+                    }
+                    break;
+
+                case 'order_status_changed':
+                case 'order_payment_status_changed':
+                case 'seller_order_status_changed':
+                case 'seller_payment_received':
+                    if (isset($notification->data['order_id'])) {
+                        $order = \App\Models\MarketplaceOrder::find($notification->data['order_id']);
+                        if ($order) {
+                            \Mail::to($user->email)->queue(new \App\Mail\OrderStatusNotification($order, $user, $notification->data));
+                        }
+                    }
+                    break;
+
+                case 'product_approved':
+                case 'product_rejected':
+                    if (isset($notification->data['product_id'])) {
+                        $product = \App\Models\MarketplaceProduct::find($notification->data['product_id']);
+                        if ($product) {
+                            \Mail::to($user->email)->queue(new \App\Mail\ProductApprovalNotification($product, $user, $notification->data));
+                        }
+                    }
                     break;
 
                 default:

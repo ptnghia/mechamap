@@ -43,7 +43,7 @@
         <div class="card-body">
             <form method="GET" class="row g-3">
                 <!-- Search Input -->
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="input-group input_group_search">
                         <input type="text" name="search" class="form-control"
                             placeholder="{{ __('forums.search.placeholder') }}" value="{{ request('search') }}">
@@ -72,7 +72,7 @@
                 </div>
 
                 <!-- Filter Buttons -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="btn-group btn_group_search w-100" role="group">
                         <input type="radio" name="filter" value="" id="all" class="btn-check" {{
                             !request('filter') ? 'checked' : '' }}>

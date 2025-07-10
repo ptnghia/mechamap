@@ -28,6 +28,30 @@ class MarketplaceOrderObserver
      */
     public function updated(MarketplaceOrder $marketplaceOrder): void
     {
+        // Handle order status changes
+        if ($marketplaceOrder->isDirty('status')) {
+            $oldStatus = $marketplaceOrder->getOriginal('status');
+            $newStatus = $marketplaceOrder->status;
+
+            \App\Services\MarketplaceNotificationService::handleOrderStatusChange(
+                $marketplaceOrder,
+                $oldStatus,
+                $newStatus
+            );
+        }
+
+        // Handle payment status changes
+        if ($marketplaceOrder->isDirty('payment_status')) {
+            $oldPaymentStatus = $marketplaceOrder->getOriginal('payment_status');
+            $newPaymentStatus = $marketplaceOrder->payment_status;
+
+            \App\Services\MarketplaceNotificationService::handleOrderPaymentStatusChange(
+                $marketplaceOrder,
+                $oldPaymentStatus,
+                $newPaymentStatus
+            );
+        }
+
         // Check if order status changed to completed and payment is paid
         if ($marketplaceOrder->isDirty('status') &&
             $marketplaceOrder->status === 'completed' &&

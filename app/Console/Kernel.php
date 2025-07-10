@@ -14,20 +14,25 @@ class Kernel extends ConsoleKernel
     {
         // Generate sitemap weekly
         $schedule->command('sitemap:generate')->weekly();
-        
+
         // Clean up old database records
         $schedule->command('queue:prune-batches --hours=48')->daily();
         $schedule->command('queue:prune-failed --hours=720')->weekly();
-        
+
         // Database maintenance
         $schedule->command('db:check')->weekly()->emailOutputTo(env('ADMIN_EMAIL'));
-        
+
         // Cache maintenance
         $schedule->command('cache:prune-stale-tags')->hourly();
-        
+
         // Backup database (if backup package is installed)
         // $schedule->command('backup:clean')->daily()->at('01:00');
         // $schedule->command('backup:run')->daily()->at('02:00');
+
+        // WebSocket connection monitoring
+        $schedule->command('websocket:monitor --health')->everyMinute();
+        $schedule->command('websocket:monitor --cleanup')->everyFiveMinutes();
+        $schedule->command('websocket:monitor --stats')->hourly();
     }
 
     /**

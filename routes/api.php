@@ -603,4 +603,16 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/dashboard', [App\Http\Controllers\Api\AnalyticsController::class, 'getDashboardData']);
 });
 
+// WebSocket API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('websocket')->group(function () {
+    Route::post('/connect', [App\Http\Controllers\WebSocketController::class, 'connect']);
+    Route::post('/disconnect', [App\Http\Controllers\WebSocketController::class, 'disconnect']);
+    Route::post('/reconnect', [App\Http\Controllers\WebSocketController::class, 'reconnect']);
+    Route::post('/heartbeat', [App\Http\Controllers\WebSocketController::class, 'heartbeat']);
+    Route::get('/status', [App\Http\Controllers\WebSocketController::class, 'getOnlineStatus']);
+    Route::get('/health', [App\Http\Controllers\WebSocketController::class, 'getConnectionHealth']);
+    Route::post('/test-notification', [App\Http\Controllers\WebSocketController::class, 'sendTestNotification']);
+    Route::get('/statistics', [App\Http\Controllers\WebSocketController::class, 'getStatistics']);
+});
+
 

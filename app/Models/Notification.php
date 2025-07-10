@@ -235,4 +235,28 @@ class Notification extends Model
             ->where('is_read', true)
             ->delete();
     }
+
+    /**
+     * Get notification type label
+     */
+    public function getTypeLabel(): string
+    {
+        return match($this->type) {
+            'thread_created' => 'Thread mới',
+            'thread_replied' => 'Reply thread',
+            'comment_mention' => 'Được nhắc đến',
+            'login_from_new_device' => 'Đăng nhập thiết bị mới',
+            'password_changed' => 'Đổi mật khẩu',
+            'product_out_of_stock' => 'Hết hàng',
+            'price_drop_alert' => 'Giảm giá',
+            'wishlist_available' => 'Wishlist có hàng',
+            'review_received' => 'Nhận đánh giá',
+            'seller_message' => 'Tin nhắn seller',
+            'user_followed' => 'Được theo dõi',
+            'achievement_unlocked' => 'Thành tựu mới',
+            'weekly_digest' => 'Tổng hợp tuần',
+            default => ucfirst(str_replace('_', ' ', $this->type))
+        };
+    }
+
 }
