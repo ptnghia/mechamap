@@ -65,6 +65,7 @@
                         <h1 class="h2 fw-bold text-dark mb-3">{{ $product->name }}</h1>
 
                         <!-- Seller Info -->
+                        @if($product->seller)
                         <div class="d-flex align-items-center mb-3">
                             <span class="text-muted small">{{ __('messages.marketplace.sold_by') }}</span>
                             <a href="{{ route('marketplace.sellers.show', $product->seller->store_slug) }}" class="ms-2 text-primary text-decoration-none fw-medium">
@@ -74,6 +75,12 @@
                                 {{ $product->seller->verification_status === 'verified' ? __('messages.marketplace.verified') : ucfirst($product->seller->verification_status) }}
                             </span>
                         </div>
+                        @else
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-muted small">{{ __('messages.marketplace.sold_by') }}</span>
+                            <span class="ms-2 text-muted">Người bán không có sẵn</span>
+                        </div>
+                        @endif
 
                         <!-- Rating -->
                         @if($product->rating_average > 0)
