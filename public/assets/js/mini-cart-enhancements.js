@@ -66,7 +66,7 @@ class MiniCartEnhancements {
                 this.animateItemRemoval(itemElement, () => {
                     this.loadMiniCart();
                     this.showMiniToast('success', 'Item removed from cart');
-                    
+
                     // Dispatch event for other components
                     window.dispatchEvent(new CustomEvent('cart-updated'));
                 });
@@ -104,12 +104,12 @@ class MiniCartEnhancements {
     toggleMiniCart() {
         const miniCart = document.getElementById('miniCart');
         const cartToggle = document.getElementById('cartToggle');
-        
+
         if (miniCart && cartToggle) {
             // Use Bootstrap dropdown
             const dropdown = new bootstrap.Dropdown(cartToggle);
             dropdown.toggle();
-            
+
             // Add animation class
             miniCart.classList.add('mini-cart-animated');
         }
@@ -144,6 +144,12 @@ class MiniCartEnhancements {
         this.animateCountUpdate(cartCount, cart.total_items);
         this.animateCountUpdate(mobileCartCount, cart.total_items);
         this.animateCountUpdate(miniCartItemCount, cart.total_items);
+
+        // Check if mini cart elements exist before updating
+        if (!miniCartItems) {
+            console.warn('Mini cart elements not found in DOM');
+            return;
+        }
 
         if (cart.total_items === 0) {
             // Show enhanced empty state
@@ -197,7 +203,7 @@ class MiniCartEnhancements {
                                 </div>
                                 <div class="col-3 text-end">
                                     <div class="fw-bold text-primary mb-2">$${item.total_price}</div>
-                                    <button type="button" class="btn btn-sm btn-outline-danger mini-cart-remove-btn" 
+                                    <button type="button" class="btn btn-sm btn-outline-danger mini-cart-remove-btn"
                                             data-item-id="${item.id}" title="Remove item">
                                         <i class="fas fa-times"></i>
                                     </button>
@@ -208,7 +214,9 @@ class MiniCartEnhancements {
                 `;
             });
 
-            miniCartItems.innerHTML = itemsHTML;
+            if (miniCartItems) {
+                miniCartItems.innerHTML = itemsHTML;
+            }
 
             // Update subtotal with animation
             if (miniCartSubtotal) {
@@ -224,11 +232,11 @@ class MiniCartEnhancements {
         if (!element) return;
 
         const oldCount = parseInt(element.textContent) || 0;
-        
+
         if (oldCount !== newCount) {
             element.style.transform = 'scale(1.2)';
             element.style.transition = 'transform 0.2s ease';
-            
+
             setTimeout(() => {
                 element.textContent = newCount;
                 element.style.display = newCount > 0 ? 'inline' : 'none';
@@ -245,7 +253,7 @@ class MiniCartEnhancements {
 
         element.style.opacity = '0.5';
         element.style.transition = 'opacity 0.2s ease';
-        
+
         setTimeout(() => {
             element.textContent = newValue;
             element.style.opacity = '1';
@@ -268,10 +276,10 @@ class MiniCartEnhancements {
         toastContainer.insertAdjacentHTML('beforeend', toastHTML);
 
         const toast = toastContainer.lastElementChild;
-        
+
         // Show toast
         setTimeout(() => toast.classList.add('show'), 100);
-        
+
         // Hide and remove toast
         setTimeout(() => {
             toast.classList.remove('show');
@@ -289,7 +297,7 @@ class MiniCartEnhancements {
             .mini-cart-animated {
                 animation: miniCartSlideIn 0.3s ease;
             }
-            
+
             @keyframes miniCartSlideIn {
                 from {
                     opacity: 0;
@@ -300,30 +308,30 @@ class MiniCartEnhancements {
                     transform: translateY(0);
                 }
             }
-            
+
             .mini-cart-item {
                 animation: fadeInUp 0.3s ease forwards;
                 opacity: 0;
                 transform: translateY(10px);
             }
-            
+
             @keyframes fadeInUp {
                 to {
                     opacity: 1;
                     transform: translateY(0);
                 }
             }
-            
+
             .mini-cart-item:hover {
                 background-color: #f8f9fa;
                 transition: background-color 0.2s ease;
             }
-            
+
             .mini-cart-remove-btn:hover {
                 transform: scale(1.1);
                 transition: transform 0.2s ease;
             }
-            
+
             .mini-toast {
                 position: fixed;
                 top: 80px;
@@ -339,26 +347,26 @@ class MiniCartEnhancements {
                 font-size: 14px;
                 border-left: 4px solid;
             }
-            
+
             .mini-toast.show {
                 opacity: 1;
                 transform: translateX(0);
             }
-            
+
             .mini-toast-success {
                 border-left-color: #28a745;
                 color: #28a745;
             }
-            
+
             .mini-toast-error {
                 border-left-color: #dc3545;
                 color: #dc3545;
             }
-            
+
             .mini-cart-empty {
                 animation: fadeIn 0.5s ease;
             }
-            
+
             @keyframes fadeIn {
                 from { opacity: 0; }
                 to { opacity: 1; }
@@ -371,7 +379,7 @@ class MiniCartEnhancements {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.miniCartUX = new MiniCartEnhancements();
-    
+
     // Override global functions for compatibility
     window.loadMiniCart = () => window.miniCartUX.loadMiniCart();
     window.updateMiniCartUI = (cart) => window.miniCartUX.updateMiniCartUI(cart);

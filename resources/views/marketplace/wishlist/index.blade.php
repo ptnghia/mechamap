@@ -51,11 +51,11 @@
                         </ul>
                     </div>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                        <button type="button" class="btn btn-outline-secondary btn-sm"
                                 onclick="changeView('grid')" id="gridView">
                             <i class="bx bx-grid-alt"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" 
+                        <button type="button" class="btn btn-outline-secondary btn-sm"
                                 onclick="changeView('list')" id="listView">
                             <i class="bx bx-list-ul"></i>
                         </button>
@@ -97,24 +97,24 @@
                 <div class="position-relative">
                     <!-- Product Image -->
                     <div class="product-image">
-                        <img src="{{ $item->product->getFirstImageUrl() }}" 
-                             alt="{{ $item->product->name }}" 
+                        <img src="{{ $item->product->getFirstImageUrl() }}"
+                             alt="{{ $item->product->name }}"
                              class="card-img-top">
-                        
+
                         <!-- Overlay Actions -->
                         <div class="image-overlay">
                             <div class="overlay-actions">
-                                <button class="btn btn-sm btn-light rounded-circle" 
+                                <button class="btn btn-sm btn-light rounded-circle"
                                         onclick="removeFromWishlist({{ $item->product->id }})"
                                         title="Remove from wishlist">
                                     <i class="bx bx-x"></i>
                                 </button>
-                                <button class="btn btn-sm btn-light rounded-circle" 
+                                <button class="btn btn-sm btn-light rounded-circle"
                                         onclick="addToCompare({{ $item->product->id }})"
                                         title="Add to compare">
                                     <i class="bx bx-git-compare"></i>
                                 </button>
-                                <button class="btn btn-sm btn-light rounded-circle" 
+                                <button class="btn btn-sm btn-light rounded-circle"
                                         onclick="shareProduct({{ $item->product->id }})"
                                         title="Share product">
                                     <i class="bx bx-share"></i>
@@ -141,7 +141,7 @@
 
                         <!-- Selection Checkbox -->
                         <div class="selection-checkbox">
-                            <input type="checkbox" class="form-check-input product-select" 
+                            <input type="checkbox" class="form-check-input product-select"
                                    value="{{ $item->product->id }}" id="select_{{ $item->product->id }}">
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                     <div class="card-body">
                         <!-- Product Title -->
                         <h6 class="card-title mb-2">
-                            <a href="{{ route('marketplace.products.show', $item->product) }}" 
+                            <a href="{{ route('marketplace.products.show', $item->product) }}"
                                class="text-decoration-none">
                                 {{ $item->product->name }}
                             </a>
@@ -164,8 +164,8 @@
                                 Category: {{ $item->product->category->name ?? 'Uncategorized' }}
                             </div>
                             <div class="text-muted small">
-                                Seller: 
-                                <a href="{{ route('marketplace.sellers.show', $item->product->seller) }}" 
+                                Seller:
+                                <a href="{{ route('marketplace.sellers.show', $item->product->seller) }}"
                                    class="text-decoration-none">
                                     {{ $item->product->seller->store_name }}
                                 </a>
@@ -216,12 +216,12 @@
                             @if($item->product->getCurrentPrice() < $item->price_when_added)
                                 <div class="alert alert-success alert-sm py-2">
                                     <i class="bx bx-trending-down me-1"></i>
-                                    Price dropped by ${{ number_format($item->price_when_added - $item->product->getCurrentPrice(), 2) }}!
+                                    Giá giảm {{ number_format($item->price_when_added - $item->product->getCurrentPrice(), 0, ',', '.') }}₫!
                                 </div>
                             @else
                                 <div class="alert alert-warning alert-sm py-2">
                                     <i class="bx bx-trending-up me-1"></i>
-                                    Price increased by ${{ number_format($item->product->getCurrentPrice() - $item->price_when_added, 2) }}
+                                    Giá tăng {{ number_format($item->product->getCurrentPrice() - $item->price_when_added, 0, ',', '.') }}₫
                                 </div>
                             @endif
                         </div>
@@ -232,7 +232,7 @@
                     <div class="card-footer bg-transparent">
                         <div class="d-grid gap-2">
                             @if($item->product->stock_quantity > 0)
-                                <button class="btn btn-primary" 
+                                <button class="btn btn-primary"
                                         onclick="addToCart({{ $item->product->id }})">
                                     <i class="bx bx-cart-add me-1"></i>
                                     Add to Cart
@@ -244,12 +244,12 @@
                                 </button>
                             @endif
                             <div class="d-flex gap-2">
-                                <a href="{{ route('marketplace.products.show', $item->product) }}" 
+                                <a href="{{ route('marketplace.products.show', $item->product) }}"
                                    class="btn btn-outline-primary btn-sm flex-grow-1">
                                     <i class="bx bx-show me-1"></i>
                                     View
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm" 
+                                <button class="btn btn-outline-danger btn-sm"
                                         onclick="removeFromWishlist({{ $item->product->id }})">
                                     <i class="bx bx-heart-circle"></i>
                                 </button>
@@ -421,11 +421,11 @@
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 1rem;
     }
-    
+
     .wishlist-list .card {
         flex-direction: column;
     }
-    
+
     .wishlist-list .product-image {
         width: 100%;
     }
@@ -439,12 +439,12 @@ function changeView(viewType) {
     const container = document.getElementById('wishlistContainer');
     const gridBtn = document.getElementById('gridView');
     const listBtn = document.getElementById('listView');
-    
+
     container.className = `wishlist-${viewType}`;
-    
+
     gridBtn.classList.toggle('active', viewType === 'grid');
     listBtn.classList.toggle('active', viewType === 'list');
-    
+
     localStorage.setItem('wishlistViewType', viewType);
 }
 
@@ -461,7 +461,7 @@ function removeFromWishlist(productId) {
             if (data.success) {
                 document.querySelector(`[data-product-id="${productId}"]`).remove();
                 showToast('Item removed from wishlist', 'success');
-                
+
                 // Check if wishlist is empty
                 if (document.querySelectorAll('.wishlist-item').length === 0) {
                     location.reload();
@@ -559,7 +559,7 @@ function updateBulkActions() {
     const selected = document.querySelectorAll('.product-select:checked');
     const bulkBar = document.getElementById('bulkActionsBar');
     const countSpan = document.getElementById('selectedCount');
-    
+
     if (selected.length > 0) {
         bulkBar.style.display = 'block';
         countSpan.textContent = selected.length;
@@ -571,10 +571,10 @@ function updateBulkActions() {
 function addSelectedToCart() {
     const selected = Array.from(document.querySelectorAll('.product-select:checked'))
                           .map(cb => cb.value);
-    
+
     if (selected.length === 0) return;
-    
-    Promise.all(selected.map(productId => 
+
+    Promise.all(selected.map(productId =>
         fetch(`/marketplace/cart/add/${productId}`, {
             method: 'POST',
             headers: {
@@ -598,17 +598,17 @@ function addSelectedToCart() {
 function compareSelected() {
     const selected = Array.from(document.querySelectorAll('.product-select:checked'))
                           .map(cb => cb.value);
-    
+
     if (selected.length < 2) {
         showToast('Please select at least 2 products to compare', 'warning');
         return;
     }
-    
+
     if (selected.length > 4) {
         showToast('You can compare up to 4 products at once', 'warning');
         return;
     }
-    
+
     const url = new URL('{{ route("marketplace.products.compare") }}');
     selected.forEach(id => url.searchParams.append('products[]', id));
     window.open(url.toString(), '_blank');
@@ -617,11 +617,11 @@ function compareSelected() {
 function removeSelected() {
     const selected = Array.from(document.querySelectorAll('.product-select:checked'))
                           .map(cb => cb.value);
-    
+
     if (selected.length === 0) return;
-    
+
     if (confirm(`Remove ${selected.length} items from your wishlist?`)) {
-        Promise.all(selected.map(productId => 
+        Promise.all(selected.map(productId =>
             fetch(`/marketplace/wishlist/remove/${productId}`, {
                 method: 'DELETE',
                 headers: {
@@ -635,7 +635,7 @@ function removeSelected() {
             });
             showToast(`${selected.length} items removed from wishlist`, 'success');
             clearSelection();
-            
+
             if (document.querySelectorAll('.wishlist-item').length === 0) {
                 location.reload();
             }
@@ -657,9 +657,9 @@ function clearSelection() {
 function addAllToCart() {
     const allProducts = Array.from(document.querySelectorAll('.wishlist-item'))
                              .map(item => item.dataset.productId);
-    
+
     if (confirm(`Add all ${allProducts.length} items to cart?`)) {
-        Promise.all(allProducts.map(productId => 
+        Promise.all(allProducts.map(productId =>
             fetch(`/marketplace/cart/add/${productId}`, {
                 method: 'POST',
                 headers: {
@@ -685,9 +685,9 @@ function showToast(message, type) {
     toast.className = `alert alert-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'danger'} position-fixed`;
     toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
     toast.textContent = message;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.remove();
     }, 3000);

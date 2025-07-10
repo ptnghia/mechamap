@@ -16,7 +16,7 @@ class NotificationService {
             onDisconnect: [],
             onError: []
         };
-        
+
         // Initialize if user is authenticated
         this.init();
     }
@@ -43,12 +43,20 @@ class NotificationService {
         }
 
         try {
-            // Use Laravel Echo or direct WebSocket connection
-            if (window.Echo) {
-                this.connectWithEcho();
-            } else {
-                this.connectDirectly();
-            }
+            // Temporarily disable WebSocket and use HTTP polling only
+            console.log('NotificationService: WebSocket disabled, using HTTP polling only');
+            this.isConnected = true; // Mark as connected for HTTP polling
+            this.triggerCallbacks('onConnect');
+
+            // Start HTTP polling for notifications
+            this.startPolling();
+
+            // Use Laravel Echo or direct WebSocket connection (disabled for now)
+            // if (window.Echo) {
+            //     this.connectWithEcho();
+            // } else {
+            //     this.connectDirectly();
+            // }
         } catch (error) {
             console.error('NotificationService: Connection failed', error);
             this.handleConnectionError(error);
@@ -151,19 +159,19 @@ class NotificationService {
      */
     handleNotification(data) {
         console.log('NotificationService: New notification', data);
-        
+
         // Update notification counter
         this.updateNotificationCounter(1);
-        
+
         // Show notification popup
         this.showNotificationPopup(data.notification);
-        
+
         // Add to notification list
         this.addToNotificationList(data.notification);
-        
+
         // Play notification sound
         this.playNotificationSound();
-        
+
         // Trigger callbacks
         this.triggerCallbacks('onNotification', data.notification);
     }
@@ -173,10 +181,10 @@ class NotificationService {
      */
     handleNotificationRead(data) {
         console.log('NotificationService: Notification read', data);
-        
+
         // Update notification counter
         this.updateNotificationCounter(-1);
-        
+
         // Update UI
         this.markNotificationAsRead(data.notification_id);
     }
@@ -186,10 +194,10 @@ class NotificationService {
      */
     handleNotificationDeleted(data) {
         console.log('NotificationService: Notification deleted', data);
-        
+
         // Remove from UI
         this.removeNotificationFromList(data.notification_id);
-        
+
         // Update counter if it was unread
         if (!data.was_read) {
             this.updateNotificationCounter(-1);
@@ -201,7 +209,7 @@ class NotificationService {
      */
     handleTypingStarted(data) {
         console.log('NotificationService: Typing started', data);
-        
+
         // Show typing indicator
         this.showTypingIndicator(data.indicator);
     }
@@ -211,7 +219,7 @@ class NotificationService {
      */
     handleTypingStopped(data) {
         console.log('NotificationService: Typing stopped', data);
-        
+
         // Hide typing indicator
         this.hideTypingIndicator(data.indicator);
     }
@@ -224,10 +232,10 @@ class NotificationService {
         if (counter) {
             const currentCount = parseInt(counter.textContent) || 0;
             const newCount = Math.max(0, currentCount + change);
-            
+
             counter.textContent = newCount;
             counter.style.display = newCount > 0 ? 'inline' : 'none';
-            
+
             // Update page title
             this.updatePageTitle(newCount);
         }
@@ -347,7 +355,7 @@ class NotificationService {
         if (notificationList) {
             const notificationItem = this.createNotificationItem(notification);
             notificationList.insertBefore(notificationItem, notificationList.firstChild);
-            
+
             // Limit to 50 notifications in DOM
             const items = notificationList.querySelectorAll('.notification-item');
             if (items.length > 50) {
@@ -363,9 +371,9 @@ class NotificationService {
         const item = document.createElement('div');
         item.className = 'notification-item';
         item.setAttribute('data-notification-id', notification.id);
-        
+
         const timeAgo = this.formatTimeAgo(new Date(notification.created_at));
-        
+
         item.innerHTML = `
             <div class="notification-content">
                 <div class="notification-header">
@@ -500,7 +508,7 @@ class NotificationService {
     showTypingIndicator(indicator) {
         const contextSelector = `[data-context-type="${indicator.context_type}"][data-context-id="${indicator.context_id}"]`;
         const contextElement = document.querySelector(contextSelector);
-        
+
         if (contextElement) {
             let typingContainer = contextElement.querySelector('.typing-indicators');
             if (!typingContainer) {
@@ -548,7 +556,7 @@ class NotificationService {
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
             this.reconnectAttempts++;
             console.log(`NotificationService: Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-            
+
             setTimeout(() => {
                 this.connect();
             }, this.reconnectDelay * this.reconnectAttempts);
@@ -644,12 +652,72 @@ class NotificationService {
     }
 
     /**
+     * Start HTTP polling for notifications
+     */
+    startPolling() {
+        // Poll every 30 seconds for new notifications
+        this.pollingInterval = setInterval(() => {
+            this.pollNotifications();
+        }, 30000);
+
+        // Initial poll
+        this.pollNotifications();
+    }
+
+    /**
+     * Poll notifications via HTTP
+     */
+    async pollNotifications() {
+        try {
+            const response = await fetch('/api/notifications/recent', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.data) {
+                    this.handlePolledNotifications(data.data);
+                }
+            }
+        } catch (error) {
+            console.warn('NotificationService: Polling failed', error);
+        }
+    }
+
+    /**
+     * Handle polled notifications
+     */
+    handlePolledNotifications(notifications) {
+        // Update notification count and trigger callbacks
+        if (notifications.length > 0) {
+            this.triggerCallbacks('onNotification', notifications);
+        }
+    }
+
+    /**
+     * Stop polling
+     */
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
+    }
+
+    /**
      * Disconnect
      */
     disconnect() {
         if (this.socket) {
             this.socket.close();
         }
+        this.stopPolling();
         this.isConnected = false;
     }
 

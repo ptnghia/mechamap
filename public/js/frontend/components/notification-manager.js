@@ -12,7 +12,7 @@ class NotificationManager {
         this.connectionStatus = null;
         this.currentNotifications = [];
         this.unreadCount = 0;
-        
+
         this.init();
     }
 
@@ -24,22 +24,22 @@ class NotificationManager {
 
         // Find DOM elements
         this.findElements();
-        
+
         // Setup event listeners
         this.setupEventListeners();
-        
+
         // Initialize connection status
         this.initConnectionStatus();
-        
+
         // Load initial notifications
         this.loadNotifications();
-        
+
         // Setup real-time service callbacks
         this.setupRealTimeCallbacks();
-        
+
         // Request notification permission
         this.requestNotificationPermission();
-        
+
         this.isInitialized = true;
         console.log('NotificationManager: Initialized');
     }
@@ -52,12 +52,12 @@ class NotificationManager {
         this.notificationCounter = document.querySelector('.notification-counter, .badge');
         this.notificationDropdown = document.querySelector('#notificationDropdown');
         this.notificationList = document.querySelector('#notificationItems, .notification-list');
-        
+
         // Create elements if they don't exist
         if (!this.notificationCounter && this.notificationBell) {
             this.createNotificationCounter();
         }
-        
+
         if (!this.connectionStatus) {
             this.createConnectionStatus();
         }
@@ -114,8 +114,8 @@ class NotificationManager {
 
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
-            if (this.notificationDropdown && 
-                !this.notificationDropdown.contains(e.target) && 
+            if (this.notificationDropdown &&
+                !this.notificationDropdown.contains(e.target) &&
                 !this.notificationBell.contains(e.target)) {
                 this.hideNotificationDropdown();
             }
@@ -176,10 +176,10 @@ class NotificationManager {
         if (this.connectionStatus) {
             this.connectionStatus.className = `connection-status ${status}`;
             this.connectionStatus.textContent = message;
-            
+
             // Show status for a few seconds
             this.connectionStatus.style.display = 'block';
-            
+
             if (status === 'connected') {
                 setTimeout(() => {
                     this.connectionStatus.style.display = 'none';
@@ -203,8 +203,19 @@ class NotificationManager {
             if (response.ok) {
                 const data = await response.json();
                 if (data.success) {
-                    this.currentNotifications = data.data.notifications;
-                    this.unreadCount = data.data.unread_count;
+                    // Handle different response structures
+                    if (data.notifications) {
+                        // Direct route structure: /api/notifications/recent
+                        this.currentNotifications = data.notifications;
+                        this.unreadCount = data.total_unread || 0;
+                    } else if (data.data) {
+                        // Controller route structure: /api/v1/notifications/recent
+                        this.currentNotifications = data.data;
+                        this.unreadCount = data.count || 0;
+                    } else {
+                        this.currentNotifications = [];
+                        this.unreadCount = 0;
+                    }
                     this.updateNotificationCounter();
                     this.renderNotifications();
                 }
@@ -220,17 +231,17 @@ class NotificationManager {
     handleNewNotification(notification) {
         // Add to current notifications
         this.currentNotifications.unshift(notification);
-        
+
         // Update unread count
         if (!notification.is_read) {
             this.unreadCount++;
         }
-        
+
         // Update UI
         this.updateNotificationCounter();
         this.addNotificationToList(notification);
         this.animateNotificationBell();
-        
+
         // Limit notifications in memory
         if (this.currentNotifications.length > 50) {
             this.currentNotifications = this.currentNotifications.slice(0, 50);
@@ -293,7 +304,7 @@ class NotificationManager {
     showNotificationDropdown() {
         if (this.notificationDropdown) {
             this.notificationDropdown.classList.add('show');
-            
+
             // Load fresh notifications
             this.loadNotifications();
         }
@@ -327,7 +338,7 @@ class NotificationManager {
         }
 
         this.notificationList.innerHTML = '';
-        
+
         this.currentNotifications.forEach(notification => {
             const notificationElement = this.createNotificationElement(notification);
             this.notificationList.appendChild(notificationElement);
@@ -359,9 +370,9 @@ class NotificationManager {
         const element = document.createElement('div');
         element.className = `notification-item ${notification.is_read ? 'read' : 'unread'}`;
         element.setAttribute('data-notification-id', notification.id);
-        
+
         const timeAgo = this.formatTimeAgo(new Date(notification.created_at));
-        
+
         element.innerHTML = `
             <div class="notification-content">
                 <div class="notification-header">
@@ -423,7 +434,7 @@ class NotificationManager {
             if (!notification.is_read) {
                 this.markNotificationAsRead(notification.id);
             }
-            
+
             if (notification.data && notification.data.action_url) {
                 window.location.href = notification.data.action_url;
             }
@@ -444,14 +455,14 @@ class NotificationManager {
 
         const notificationElement = this.createNotificationElement(notification);
         notificationElement.classList.add('real-time-new');
-        
+
         this.notificationList.insertBefore(notificationElement, this.notificationList.firstChild);
-        
+
         // Remove animation class after animation completes
         setTimeout(() => {
             notificationElement.classList.remove('real-time-new');
         }, 500);
-        
+
         // Limit DOM elements
         const items = this.notificationList.querySelectorAll('.notification-item');
         if (items.length > 20) {
@@ -535,7 +546,7 @@ class NotificationManager {
                             if (element.parentNode) {
                                 element.parentNode.removeChild(element);
                             }
-                            
+
                             // Show empty state if no notifications left
                             if (this.currentNotifications.length === 0) {
                                 this.renderEmptyState();
@@ -687,7 +698,7 @@ class NotificationManager {
     destroy() {
         // Remove event listeners and clean up
         this.isInitialized = false;
-        
+
         if (this.connectionStatus && this.connectionStatus.parentNode) {
             this.connectionStatus.parentNode.removeChild(this.connectionStatus);
         }

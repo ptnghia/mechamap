@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shopping Cart - MechaMap')
+@section('title', __('marketplace.cart.title') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
@@ -22,7 +22,7 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('marketplace.index') }}" class="text-decoration-none">Marketplace</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('marketplace.cart.shopping_cart') }}</li>
                 </ol>
             </nav>
         </div>
@@ -37,9 +37,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-shopping-cart me-2"></i>
-                            Shopping Cart
+                            {{ __('marketplace.cart.shopping_cart') }}
                             @if(!$cart->isEmpty())
-                                <span class="badge bg-primary ms-2">{{ $cart->total_items }} items</span>
+                                <span class="badge bg-primary ms-2">{{ $cart->total_items }} {{ __('marketplace.cart.items') }}</span>
                             @endif
                         </h5>
                         @if(!$cart->isEmpty())
@@ -47,16 +47,16 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="selectAll" onchange="toggleSelectAll()">
                                     <label class="form-check-label" for="selectAll">
-                                        Select All
+                                        {{ __('marketplace.cart.select_all') }}
                                     </label>
                                 </div>
                                 <button type="button" class="btn btn-outline-warning btn-sm" onclick="removeSelected()" id="removeSelectedBtn" style="display: none;">
                                     <i class="fas fa-trash me-1"></i>
-                                    Remove Selected
+                                    {{ __('marketplace.cart.remove_selected') }}
                                 </button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearCart()">
                                     <i class="fas fa-trash me-1"></i>
-                                    Clear Cart
+                                    {{ __('marketplace.cart.clear_cart') }}
                                 </button>
                             </div>
                         @endif
@@ -106,7 +106,7 @@
                                                         </a>
                                                     @else
                                                         {{ $item->product_name }}
-                                                        <small class="text-danger">(Product no longer available)</small>
+                                                        <small class="text-danger">({{ __('marketplace.cart.product_no_longer_available') }})</small>
                                                     @endif
                                                 </h6>
                                                 @if($item->product_sku)
@@ -122,11 +122,11 @@
                                             <!-- Price -->
                                             <div class="col-md-2 col-6">
                                                 @if($item->is_on_sale)
-                                                    <div class="text-danger fw-bold">${{ number_format($item->sale_price, 2) }}</div>
-                                                    <div class="text-muted text-decoration-line-through small">${{ number_format($item->unit_price, 2) }}</div>
-                                                    <div class="text-success small">Save ${{ number_format($item->savings, 2) }}</div>
+                                                    <div class="text-danger fw-bold">{{ number_format($item->sale_price) }} VNĐ</div>
+                                                    <div class="text-muted text-decoration-line-through small">{{ number_format($item->unit_price) }} VNĐ</div>
+                                                    <div class="text-success small">Tiết kiệm {{ number_format($item->savings) }} VNĐ</div>
                                                 @else
-                                                    <div class="fw-bold">${{ number_format($item->unit_price, 2) }}</div>
+                                                    <div class="fw-bold">{{ number_format($item->unit_price) }} VNĐ</div>
                                                 @endif
                                             </div>
 
@@ -151,7 +151,7 @@
                                                     </button>
                                                 </div>
                                                 @if($item->product && $item->product->manage_stock)
-                                                    <small class="text-muted">{{ $item->product->stock_quantity }} available</small>
+                                                    <small class="text-muted">{{ $item->product->stock_quantity }} {{ __('marketplace.cart.available') }}</small>
                                                 @endif
                                             </div>
 
@@ -161,10 +161,10 @@
                                                     <div class="fw-bold mb-2 item-total-price">${{ number_format($item->total_price, 2) }}</div>
                                                     <div class="d-flex flex-column gap-1">
                                                         <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn"
-                                                                data-item-id="{{ $item->id }}" title="Remove">
+                                                                data-item-id="{{ $item->id }}" title="{{ __('marketplace.cart.remove') }}">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="saveForLater({{ $item->id }})" title="Save for Later">
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="saveForLater({{ $item->id }})" title="{{ __('marketplace.cart.save_for_later') }}">
                                                             <i class="fas fa-heart"></i>
                                                         </button>
                                                     </div>
@@ -179,7 +179,7 @@
                             <div class="mt-4">
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-outline-primary">
                                     <i class="fas fa-arrow-left me-2"></i>
-                                    Continue Shopping
+                                    {{ __('marketplace.cart.continue_shopping') }}
                                 </a>
                             </div>
                         @endif
@@ -192,20 +192,20 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Order Summary</h5>
+                            <h5 class="card-title mb-0">{{ __('marketplace.cart.order_summary') }}</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Subtotal ({{ $cart->total_items }} items)</span>
-                                <span class="cart-subtotal">${{ number_format($cart->subtotal, 2) }}</span>
+                                <span>{{ __('marketplace.cart.subtotal') }} ({{ $cart->total_items }} {{ __('marketplace.cart.items') }})</span>
+                                <span class="cart-subtotal">{{ number_format($cart->subtotal) }} VNĐ</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Shipping</span>
+                                <span>{{ __('marketplace.cart.shipping') }}</span>
                                 <span>
                                     @if($cart->shipping_amount > 0)
-                                        ${{ number_format($cart->shipping_amount, 2) }}
+                                        {{ number_format($cart->shipping_amount) }} VNĐ
                                     @else
-                                        <span class="text-success">Free</span>
+                                        <span class="text-success">{{ __('marketplace.cart.free') }}</span>
                                     @endif
                                 </span>
                             </div>
@@ -214,7 +214,7 @@
                             <div class="mb-3">
                                 <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#shippingCalculator">
                                     <i class="fas fa-calculator me-1"></i>
-                                    Calculate shipping
+                                    {{ __('marketplace.cart.calculate_shipping') }}
                                 </button>
                                 <div class="collapse mt-2" id="shippingCalculator">
                                     <div class="border rounded p-3">
@@ -235,26 +235,26 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Tax</span>
-                                <span>${{ number_format($cart->tax_amount, 2) }}</span>
+                                <span>{{ __('marketplace.cart.tax') }}</span>
+                                <span>{{ number_format($cart->tax_amount) }} VNĐ</span>
                             </div>
                             @if($cart->discount_amount > 0)
                                 <div class="d-flex justify-content-between mb-2 text-success">
                                     <span>Discount</span>
-                                    <span>-${{ number_format($cart->discount_amount, 2) }}</span>
+                                    <span>-{{ number_format($cart->discount_amount) }} VNĐ</span>
                                 </div>
                             @endif
                             <hr>
                             <div class="d-flex justify-content-between fw-bold h5">
-                                <span>Total</span>
-                                <span class="cart-total">${{ number_format($cart->total_amount, 2) }}</span>
+                                <span>{{ __('marketplace.cart.total') }}</span>
+                                <span class="cart-total">{{ number_format($cart->total_amount) }} VNĐ</span>
                             </div>
 
                             <!-- Coupon Code -->
                             <div class="mt-3">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Coupon code" id="couponCode">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">Apply</button>
+                                    <input type="text" class="form-control" placeholder="{{ __('marketplace.cart.coupon_code') }}" id="couponCode">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="applyCoupon()">{{ __('marketplace.cart.apply') }}</button>
                                 </div>
                             </div>
 
@@ -262,7 +262,7 @@
                             <div class="d-grid mt-4">
                                 <button type="button" class="btn btn-primary btn-lg" onclick="proceedToCheckout()">
                                     <i class="fas fa-credit-card me-2"></i>
-                                    Proceed to Checkout
+                                    {{ __('marketplace.cart.proceed_to_checkout') }}
                                 </button>
                             </div>
 
@@ -270,7 +270,7 @@
                             <div class="mt-3 text-center">
                                 <small class="text-muted">
                                     <i class="shield-check me-1"></i>
-                                    Secure checkout with SSL encryption
+                                    {{ __('marketplace.cart.ssl_encryption') }}
                                 </small>
                             </div>
                         </div>
@@ -281,20 +281,20 @@
                         <div class="card-body">
                             <h6 class="card-title">
                                 <i class="truck me-2"></i>
-                                Shipping Information
+                                {{ __('marketplace.cart.shipping_information') }}
                             </h6>
                             <ul class="list-unstyled mb-0 small">
                                 <li class="mb-1">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Free shipping on orders over $100
+                                    {{ __('marketplace.cart.free_shipping_over') }}
                                 </li>
                                 <li class="mb-1">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Standard delivery: 3-5 business days
+                                    {{ __('marketplace.cart.standard_delivery') }}
                                 </li>
                                 <li class="mb-1">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Express delivery available
+                                    {{ __('marketplace.cart.express_delivery_available') }}
                                 </li>
                             </ul>
                         </div>
@@ -390,6 +390,26 @@
 <script src="{{ asset('assets/js/cart-ux-enhancements.js') }}"></script>
 
 <script>
+// Translation keys for JavaScript
+window.cartTranslations = {
+    clearCart: '{{ __('marketplace.cart.clear_cart') }}',
+    clearCartConfirm: '{{ __('marketplace.cart.clear_cart_confirm') }}',
+    clearCartSuccess: '{{ __('marketplace.cart.clear_cart_success') }}',
+    clearCartFailed: '{{ __('marketplace.cart.clear_cart_failed') }}',
+    removeSelectedConfirm: '{{ __('marketplace.cart.remove_selected_confirm', ['count' => ':count']) }}',
+    removeSelectedFailed: '{{ __('marketplace.cart.remove_selected_failed') }}',
+    pleaseSelectItems: '{{ __('marketplace.cart.please_select_items') }}',
+    couponRequired: '{{ __('marketplace.cart.coupon_required') }}',
+    couponApplyFailed: '{{ __('marketplace.cart.coupon_apply_failed') }}',
+    saveForLaterMessage: '{{ __('marketplace.cart.save_for_later_message') }}',
+    loading: '{{ __('marketplace.loading') }}',
+    error: '{{ __('marketplace.error') }}',
+    success: '{{ __('marketplace.success') }}',
+    warning: '{{ __('marketplace.warning') }}'
+};
+</script>
+
+<script>
 // Legacy function wrappers for backward compatibility
 function updateQuantity(itemId, quantity) {
     // Use new UX enhancement system
@@ -413,10 +433,10 @@ function clearCart() {
     // Use new UX enhancement system
     if (window.cartUX) {
         window.cartUX.showConfirmation({
-            title: 'Clear Cart',
-            message: 'Are you sure you want to clear your entire cart? This action cannot be undone.',
+            title: window.cartTranslations.clearCart,
+            message: window.cartTranslations.clearCartConfirm,
             icon: 'fa-trash text-danger',
-            confirmText: 'Clear Cart',
+            confirmText: window.cartTranslations.clearCart,
             confirmClass: 'btn-danger',
             onConfirm: () => {
                 performClearCart();
@@ -446,7 +466,7 @@ function performClearCart() {
             }
         } else {
             if (window.cartUX) {
-                window.cartUX.showToast('error', 'Error', data.message || 'Failed to clear cart');
+                window.cartUX.showToast('error', window.cartTranslations.error, data.message || window.cartTranslations.clearCartFailed);
             } else {
                 alert(data.message);
             }
@@ -455,9 +475,9 @@ function performClearCart() {
     .catch(error => {
         console.error('Error:', error);
         if (window.cartUX) {
-            window.cartUX.showToast('error', 'Error', 'Failed to clear cart');
+            window.cartUX.showToast('error', window.cartTranslations.error, window.cartTranslations.clearCartFailed);
         } else {
-            alert('Failed to clear cart');
+            alert(window.cartTranslations.clearCartFailed);
         }
     })
     .finally(() => {
@@ -469,9 +489,9 @@ function applyCoupon() {
     const couponCode = document.getElementById('couponCode').value.trim();
     if (!couponCode) {
         if (window.cartUX) {
-            window.cartUX.showToast('warning', 'Warning', 'Please enter a coupon code');
+            window.cartUX.showToast('warning', window.cartTranslations.warning, window.cartTranslations.couponRequired);
         } else {
-            alert('Please enter a coupon code');
+            alert(window.cartTranslations.couponRequired);
         }
         return;
     }
@@ -496,7 +516,7 @@ function applyCoupon() {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Failed to apply coupon');
+        alert(window.cartTranslations.couponApplyFailed);
     })
     .finally(() => {
         showLoading(false);
@@ -558,11 +578,11 @@ function updateSelectedItems() {
 function removeSelected() {
     const selectedItems = document.querySelectorAll('.item-checkbox:checked');
     if (selectedItems.length === 0) {
-        alert('Please select items to remove');
+        alert(window.cartTranslations.pleaseSelectItems);
         return;
     }
 
-    if (!confirm(`Are you sure you want to remove ${selectedItems.length} selected item(s)?`)) {
+    if (!confirm(window.cartTranslations.removeSelectedConfirm.replace(':count', selectedItems.length))) {
         return;
     }
 
@@ -585,12 +605,12 @@ function removeSelected() {
             if (successful > 0) {
                 location.reload();
             } else {
-                alert('Failed to remove selected items');
+                alert(window.cartTranslations.removeSelectedFailed);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to remove selected items');
+            alert(window.cartTranslations.removeSelectedFailed);
         })
         .finally(() => {
             showLoading(false);
@@ -599,7 +619,7 @@ function removeSelected() {
 
 function saveForLater(itemId) {
     // TODO: Implement save for later functionality
-    alert('Save for later functionality will be implemented in future updates');
+    alert(window.cartTranslations.saveForLaterMessage);
 }
 
 // Auto-save cart changes

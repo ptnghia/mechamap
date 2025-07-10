@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Services\PermissionService;
+use App\Services\MarketplacePermissionService;
 
 class MarketplaceCheckoutController extends Controller
 {
@@ -21,12 +22,7 @@ class MarketplaceCheckoutController extends Controller
      */
     public function index(): View|RedirectResponse
     {
-        // Kiểm tra quyền mua hàng
-        if (!PermissionService::canBuy(auth()->user())) {
-            return redirect()->route('marketplace.index')
-                ->with('error', 'Bạn không có quyền mua hàng. Vui lòng liên hệ admin để được hỗ trợ.');
-        }
-
+        $user = auth()->user();
         $cart = $this->getCart();
 
         if (!$cart || $cart->isEmpty()) {
@@ -34,8 +30,9 @@ class MarketplaceCheckoutController extends Controller
                 ->with('error', 'Your cart is empty');
         }
 
-        // Validate cart items before checkout
+        // Validate cart items and permissions before checkout
         $this->validateCartItems($cart);
+        $this->validateCartPermissions($cart, $user);
 
         return view('marketplace.checkout.index', compact('cart'));
     }
@@ -226,16 +223,33 @@ class MarketplaceCheckoutController extends Controller
      */
     public function placeOrder(Request $request)
     {
-        // Kiểm tra quyền mua hàng
-        if (!PermissionService::canBuy(auth()->user())) {
+        $user = auth()->user();
+        $cart = $this->getCart();
+
+        if (!$cart || $cart->isEmpty()) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Bạn không có quyền mua hàng.'
+                    'message' => 'Your cart is empty'
+                ], 400);
+            }
+            return redirect()->route('marketplace.cart.index')
+                ->with('error', 'Your cart is empty');
+        }
+
+        // Validate cart items and permissions
+        try {
+            $this->validateCartItems($cart);
+            $this->validateCartPermissions($cart, $user);
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
                 ], 403);
             }
-            return redirect()->route('marketplace.index')
-                ->with('error', 'Bạn không có quyền mua hàng. Vui lòng liên hệ admin để được hỗ trợ.');
+            return redirect()->route('marketplace.cart.index')
+                ->with('error', $e->getMessage());
         }
 
         try {
@@ -270,26 +284,7 @@ class MarketplaceCheckoutController extends Controller
             // Create order items
             $this->createOrderItems($order, $cart);
 
-            // Process payment
-            $paymentResult = $this->processPayment($order, $paymentMethod, $paymentDetails);
-
-            if (!$paymentResult['success']) {
-                DB::rollBack();
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Payment failed: ' . $paymentResult['message']
-                ], 400);
-            }
-
-            // Update order status
-            $order->update([
-                'status' => 'confirmed',
-                'payment_status' => 'paid',
-                'confirmed_at' => now(),
-                'payment_gateway_id' => $paymentResult['transaction_id'] ?? null,
-            ]);
-
-            // Clear cart
+            // Clear cart after successful order creation
             $cart->convertToOrder();
 
             // Clear checkout session
@@ -300,16 +295,18 @@ class MarketplaceCheckoutController extends Controller
             if ($request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Order placed successfully',
+                    'message' => 'Order created successfully',
                     'order_id' => $order->id,
                     'order_number' => $order->order_number,
+                    'payment_required' => true,
+                    'payment_method' => $paymentMethod,
                     'redirect_url' => route('marketplace.checkout.success', $order->uuid)
                 ]);
             }
 
-            // Handle regular form submission
-            return redirect()->route('marketplace.checkout.success', $order->uuid)
-                ->with('success', 'Đơn hàng đã được đặt thành công!');
+            // Handle regular form submission - redirect to payment
+            return redirect()->route('marketplace.checkout.payment-gateway', $order->uuid)
+                ->with('success', 'Đơn hàng đã được tạo thành công!');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -393,6 +390,28 @@ class MarketplaceCheckoutController extends Controller
 
             if ($item->product->manage_stock && $item->product->stock_quantity < $item->quantity) {
                 throw new \Exception("Insufficient stock for '{$item->product_name}'. Only {$item->product->stock_quantity} available");
+            }
+        }
+    }
+
+    /**
+     * Validate cart permissions before checkout
+     */
+    protected function validateCartPermissions(MarketplaceShoppingCart $cart, $user): void
+    {
+        if (!$user) {
+            throw new \Exception('Bạn cần đăng nhập để thực hiện thanh toán');
+        }
+
+        foreach ($cart->items as $item) {
+            if (!$item->product) {
+                continue;
+            }
+
+            // Check if user has permission to buy this product type
+            if (!MarketplacePermissionService::canBuy($user, $item->product->product_type)) {
+                $allowedTypes = MarketplacePermissionService::getAllowedBuyTypes($user->role ?? 'guest');
+                throw new \Exception("Bạn không có quyền mua sản phẩm '{$item->product_name}'. Bạn chỉ có thể mua: " . implode(', ', $allowedTypes));
             }
         }
     }
@@ -564,5 +583,157 @@ class MarketplaceCheckoutController extends Controller
             'api_endpoint' => '/api/v1/payment/sepay/create-payment',
             'order_id' => $order->id
         ];
+    }
+
+    /**
+     * Display payment gateway page
+     */
+    public function paymentGateway(Request $request, $uuid)
+    {
+        $order = MarketplaceOrder::where('uuid', $uuid)->firstOrFail();
+
+        // Check if user owns this order
+        if ($order->customer_id !== auth()->id()) {
+            abort(403, 'Unauthorized access to order');
+        }
+
+        // Check if order is in correct status
+        if ($order->status !== 'pending') {
+            return redirect()->route('marketplace.orders.show', $order->uuid)
+                ->with('info', 'Đơn hàng này đã được xử lý');
+        }
+
+        // Generate payment data based on payment method
+        $paymentData = $this->generatePaymentData($order);
+
+        return view('marketplace.checkout.payment-gateway', $paymentData);
+    }
+
+    /**
+     * Check payment status via AJAX
+     */
+    public function checkPaymentStatus(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|integer|exists:marketplace_orders,id'
+        ]);
+
+        $order = MarketplaceOrder::where('id', $request->order_id)
+            ->where('customer_id', auth()->id())
+            ->firstOrFail();
+
+        return response()->json([
+            'success' => true,
+            'payment_status' => $order->payment_status,
+            'order_status' => $order->status
+        ]);
+    }
+
+    /**
+     * Generate payment data for the order
+     */
+    private function generatePaymentData(MarketplaceOrder $order)
+    {
+        // SePay configuration from config/services.php
+        $bankInfo = [
+            'bank_code' => config('services.sepay.bank_code', 'MBBank'),
+            'bank_name' => config('services.sepay.bank_code', 'MBBank'),
+            'account_number' => config('services.sepay.account_number'),
+            'account_name' => config('services.sepay.account_name'),
+        ];
+
+        // Generate transfer content with order ID
+        $transferContent = 'DH' . $order->id;
+
+        // Generate QR URL
+        $qrUrl = 'https://qr.sepay.vn/img?' . http_build_query([
+            'bank' => $bankInfo['bank_code'],
+            'acc' => $bankInfo['account_number'],
+            'template' => 'compact',
+            'amount' => intval($order->total_amount),
+            'des' => $transferContent
+        ]);
+
+        return [
+            'order' => $order,
+            'bank_info' => $bankInfo,
+            'transfer_content' => $transferContent,
+            'qr_url' => $qrUrl
+        ];
+    }
+
+    /**
+     * Handle SePay webhook
+     */
+    public function sepayWebhook(Request $request)
+    {
+        try {
+            // Get webhook data
+            $data = json_decode($request->getContent(), true);
+
+            if (!$data) {
+                return response()->json(['success' => false, 'message' => 'No data'], 400);
+            }
+
+            // Log webhook for debugging
+            \Log::info('SePay Webhook received', $data);
+
+            // Extract order ID from transaction content using regex
+            $transactionContent = $data['content'] ?? '';
+            $regex = '/DH(\d+)/';
+
+            if (!preg_match($regex, $transactionContent, $matches)) {
+                \Log::warning('SePay Webhook: Order ID not found in content', ['content' => $transactionContent]);
+                return response()->json(['success' => false, 'message' => 'Order ID not found'], 400);
+            }
+
+            $orderId = $matches[1];
+            $transferAmount = $data['transferAmount'] ?? 0;
+            $transferType = $data['transferType'] ?? '';
+
+            // Only process incoming transfers
+            if ($transferType !== 'in') {
+                return response()->json(['success' => false, 'message' => 'Not an incoming transfer'], 400);
+            }
+
+            // Find the order
+            $order = MarketplaceOrder::where('id', $orderId)
+                ->where('total_amount', $transferAmount)
+                ->where('payment_status', 'pending')
+                ->first();
+
+            if (!$order) {
+                \Log::warning('SePay Webhook: Order not found or already processed', [
+                    'order_id' => $orderId,
+                    'amount' => $transferAmount
+                ]);
+                return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+            }
+
+            // Update order status
+            $order->update([
+                'payment_status' => 'paid',
+                'status' => 'confirmed',
+                'confirmed_at' => now(),
+                'payment_gateway_id' => $data['id'] ?? null,
+            ]);
+
+            // Log successful payment
+            \Log::info('SePay Webhook: Payment processed successfully', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'amount' => $transferAmount
+            ]);
+
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            \Log::error('SePay Webhook error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json(['success' => false, 'message' => 'Internal error'], 500);
+        }
     }
 }

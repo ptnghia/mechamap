@@ -14,11 +14,11 @@ class MarketplacePermissionService
     {
         $permissions = self::getPermissionMatrix();
         $role = $user->role ?? 'guest';
-        
+
         if (!isset($permissions[$role]['buy'])) {
             return false;
         }
-        
+
         $buyPermissions = $permissions[$role]['buy'];
         return is_array($buyPermissions) && in_array($productType, $buyPermissions);
     }
@@ -30,11 +30,11 @@ class MarketplacePermissionService
     {
         $permissions = self::getPermissionMatrix();
         $role = $user->role ?? 'guest';
-        
+
         if (!isset($permissions[$role]['sell'])) {
             return false;
         }
-        
+
         $sellPermissions = $permissions[$role]['sell'];
         return is_array($sellPermissions) && in_array($productType, $sellPermissions);
     }
@@ -63,6 +63,32 @@ class MarketplacePermissionService
     private static function getPermissionMatrix(): array
     {
         return [
+            // Admin roles - full permissions
+            'super_admin' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+            'system_admin' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+            'admin' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+            'content_admin' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+            'marketplace_moderator' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+            'moderator' => [
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
+            ],
+
             // Cá nhân (Guest/Member) - chỉ được mua/bán sản phẩm kỹ thuật số
             'guest' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL],
@@ -142,7 +168,7 @@ class MarketplacePermissionService
     {
         $errors = [];
         $productType = $productData['product_type'] ?? null;
-        
+
         if (!$productType) {
             $errors[] = 'Loại sản phẩm là bắt buộc';
             return $errors;
@@ -153,7 +179,7 @@ class MarketplacePermissionService
             $typeNames = array_map(function($type) {
                 return MarketplaceProduct::getProductTypes()[$type] ?? $type;
             }, $allowedTypes);
-            
+
             $errors[] = sprintf(
                 'Bạn không có quyền bán loại sản phẩm này. Các loại được phép: %s',
                 implode(', ', $typeNames)

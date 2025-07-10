@@ -149,8 +149,13 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
         Route::post('/payment', [App\Http\Controllers\MarketplaceCheckoutController::class, 'payment'])->name('payment');
         Route::get('/review', [App\Http\Controllers\MarketplaceCheckoutController::class, 'review'])->name('review');
         Route::post('/place-order', [App\Http\Controllers\MarketplaceCheckoutController::class, 'placeOrder'])->name('place-order');
+        Route::get('/payment-gateway/{uuid}', [App\Http\Controllers\MarketplaceCheckoutController::class, 'paymentGateway'])->name('payment-gateway');
+        Route::post('/check-payment-status', [App\Http\Controllers\MarketplaceCheckoutController::class, 'checkPaymentStatus'])->name('check-payment-status');
         Route::get('/success/{uuid}', [App\Http\Controllers\MarketplaceCheckoutController::class, 'success'])->name('success');
     });
+
+    // SePay Webhook (public - no auth required)
+    Route::post('/sepay-webhook', [App\Http\Controllers\MarketplaceCheckoutController::class, 'sepayWebhook'])->name('sepay-webhook');
 
     // Seller Setup routes
     Route::prefix('seller')->name('seller.')->middleware('auth')->group(function () {

@@ -111,6 +111,57 @@ Route::get('/notifications/count', function() {
     }
 });
 
+// Notifications recent endpoint (public - for header dropdown)
+Route::get('/notifications/recent', function() {
+    try {
+        // Check if user is authenticated
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Simple recent notifications using Laravel's built-in system
+            $notifications = $user->notifications()
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get()
+                ->map(function ($notification) {
+                    return [
+                        'id' => $notification->id,
+                        'title' => $notification->data['title'] ?? 'Thông báo',
+                        'message' => $notification->data['message'] ?? 'Bạn có thông báo mới',
+                        'icon' => $notification->data['icon'] ?? 'bell',
+                        'color' => $notification->data['color'] ?? 'primary',
+                        'time_ago' => $notification->created_at->diffForHumans(),
+                        'is_read' => !is_null($notification->read_at),
+                        'action_url' => $notification->data['action_url'] ?? null,
+                        'created_at' => $notification->created_at,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'notifications' => $notifications,
+                'total_unread' => $user->unreadNotifications()->count(),
+                'message' => 'Recent notifications retrieved successfully'
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'notifications' => [],
+                'total_unread' => 0,
+                'message' => 'User not authenticated'
+            ]);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'notifications' => [],
+            'total_unread' => 0,
+            'error' => 'Failed to retrieve recent notifications',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -384,7 +435,7 @@ Route::prefix('v1')->group(function () {
         // Payment processing routes (protected)
         Route::prefix('payment')->group(function () {
             Route::post('/initiate', [App\Http\Controllers\Api\PaymentController::class, 'initiate']);
-            Route::post('/stripe/create-intent', [App\Http\Controllers\Api\PaymentController::class, 'createStripeIntent']);
+            Route::post('/stripe/create-intent', [App\Http\Controllers\Api\PaymentController::class, 'createMarketplaceStripeIntent']);
             Route::post('/vnpay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createVNPayPayment']);
             Route::post('/sepay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createSePayPayment']);
             Route::post('/confirm/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);

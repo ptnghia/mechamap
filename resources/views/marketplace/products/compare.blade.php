@@ -68,13 +68,13 @@
                             <th class="comparison-product-col text-center">
                                 <div class="product-header">
                                     <div class="product-image mb-2">
-                                        <img src="{{ $product->getFirstImageUrl() }}" 
-                                             alt="{{ $product->name }}" 
-                                             class="img-fluid rounded" 
+                                        <img src="{{ $product->getFirstImageUrl() }}"
+                                             alt="{{ $product->name }}"
+                                             class="img-fluid rounded"
                                              style="max-height: 80px; max-width: 80px;">
                                     </div>
                                     <h6 class="mb-1">
-                                        <a href="{{ route('marketplace.products.show', $product) }}" 
+                                        <a href="{{ route('marketplace.products.show', $product) }}"
                                            class="text-decoration-none">
                                             {{ Str::limit($product->name, 30) }}
                                         </a>
@@ -82,7 +82,7 @@
                                     <div class="text-muted small">
                                         SKU: {{ $product->sku }}
                                     </div>
-                                    <button class="btn btn-sm btn-outline-danger mt-2" 
+                                    <button class="btn btn-sm btn-outline-danger mt-2"
                                             onclick="removeProduct({{ $product->id }})">
                                         <i class="bx bx-x"></i>
                                     </button>
@@ -114,11 +114,11 @@
                             <td class="text-center">
                                 <div class="price-display">
                                     @if($product->sale_price && $product->sale_price < $product->price)
-                                        <span class="text-decoration-line-through text-muted">${{ number_format($product->price, 2) }}</span>
-                                        <div class="text-success fw-bold">${{ number_format($product->sale_price, 2) }}</div>
+                                        <span class="text-decoration-line-through text-muted">{{ number_format($product->price, 0, ',', '.') }}₫</span>
+                                        <div class="text-success fw-bold">{{ number_format($product->sale_price, 0, ',', '.') }}₫</div>
                                         <small class="badge bg-success">{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF</small>
                                     @else
-                                        <div class="fw-bold">${{ number_format($product->price, 2) }}</div>
+                                        <div class="fw-bold">{{ number_format($product->price, 0, ',', '.') }}₫</div>
                                     @endif
                                 </div>
                             </td>
@@ -141,7 +141,7 @@
                             @foreach($products as $product)
                             <td class="text-center">
                                 <div class="seller-info">
-                                    <a href="{{ route('marketplace.sellers.show', $product->seller) }}" 
+                                    <a href="{{ route('marketplace.sellers.show', $product->seller) }}"
                                        class="text-decoration-none">
                                         {{ $product->seller->store_name }}
                                     </a>
@@ -238,8 +238,8 @@
                             @foreach($products as $product)
                             <td class="text-center">
                                 @if($product->dimensions)
-                                    {{ $product->dimensions['length'] ?? '-' }} × 
-                                    {{ $product->dimensions['width'] ?? '-' }} × 
+                                    {{ $product->dimensions['length'] ?? '-' }} ×
+                                    {{ $product->dimensions['width'] ?? '-' }} ×
                                     {{ $product->dimensions['height'] ?? '-' }} cm
                                 @else
                                     -
@@ -271,7 +271,7 @@
                             <td class="text-center">
                                 <div class="d-grid gap-2">
                                     @if($product->stock_quantity > 0)
-                                        <button class="btn btn-primary btn-sm" 
+                                        <button class="btn btn-primary btn-sm"
                                                 onclick="addToCart({{ $product->id }})">
                                             <i class="bx bx-cart-add me-1"></i>
                                             Add to Cart
@@ -281,12 +281,12 @@
                                             Out of Stock
                                         </button>
                                     @endif
-                                    <a href="{{ route('marketplace.products.show', $product) }}" 
+                                    <a href="{{ route('marketplace.products.show', $product) }}"
                                        class="btn btn-outline-primary btn-sm">
                                         <i class="bx bx-show me-1"></i>
                                         View Details
                                     </a>
-                                    <button class="btn btn-outline-info btn-sm" 
+                                    <button class="btn btn-outline-info btn-sm"
                                             onclick="addToWishlist({{ $product->id }})">
                                         <i class="bx bx-heart me-1"></i>
                                         Wishlist
@@ -318,8 +318,8 @@
                                 <h6 class="text-success">Best Value</h6>
                                 @php $bestValue = collect($products)->sortBy('price')->first(); @endphp
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $bestValue->getFirstImageUrl() }}" 
-                                         alt="{{ $bestValue->name }}" 
+                                    <img src="{{ $bestValue->getFirstImageUrl() }}"
+                                         alt="{{ $bestValue->name }}"
                                          class="rounded me-2" width="40" height="40">
                                     <div>
                                         <div class="fw-medium">{{ Str::limit($bestValue->name, 25) }}</div>
@@ -333,8 +333,8 @@
                                 <h6 class="text-warning">Highest Rated</h6>
                                 @php $highestRated = collect($products)->sortByDesc('rating_average')->first(); @endphp
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $highestRated->getFirstImageUrl() }}" 
-                                         alt="{{ $highestRated->name }}" 
+                                    <img src="{{ $highestRated->getFirstImageUrl() }}"
+                                         alt="{{ $highestRated->name }}"
                                          class="rounded me-2" width="40" height="40">
                                     <div>
                                         <div class="fw-medium">{{ Str::limit($highestRated->name, 25) }}</div>
@@ -350,8 +350,8 @@
                                 <h6 class="text-info">Most Features</h6>
                                 @php $mostFeatures = collect($products)->sortByDesc(function($p) { return count($p->features ?? []); })->first(); @endphp
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $mostFeatures->getFirstImageUrl() }}" 
-                                         alt="{{ $mostFeatures->name }}" 
+                                    <img src="{{ $mostFeatures->getFirstImageUrl() }}"
+                                         alt="{{ $mostFeatures->name }}"
                                          class="rounded me-2" width="40" height="40">
                                     <div>
                                         <div class="fw-medium">{{ Str::limit($mostFeatures->name, 25) }}</div>
@@ -365,8 +365,8 @@
                                 <h6 class="text-primary">Best Seller</h6>
                                 @php $bestSeller = collect($products)->sortByDesc('sales_count')->first(); @endphp
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $bestSeller->getFirstImageUrl() }}" 
-                                         alt="{{ $bestSeller->name }}" 
+                                    <img src="{{ $bestSeller->getFirstImageUrl() }}"
+                                         alt="{{ $bestSeller->name }}"
                                          class="rounded me-2" width="40" height="40">
                                     <div>
                                         <div class="fw-medium">{{ Str::limit($bestSeller->name, 25) }}</div>
@@ -406,7 +406,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="productSearch" 
+                    <input type="text" class="form-control" id="productSearch"
                            placeholder="Search for products to compare...">
                 </div>
                 <div id="productSearchResults">
@@ -467,11 +467,11 @@
     .comparison-feature-col {
         width: 150px;
     }
-    
+
     .comparison-product-col {
         min-width: 150px;
     }
-    
+
     .product-header {
         padding: 0.5rem;
     }
@@ -491,10 +491,10 @@ function removeProduct(productId) {
         const url = new URL(window.location);
         const products = url.searchParams.getAll('products[]');
         const newProducts = products.filter(id => id != productId);
-        
+
         url.searchParams.delete('products[]');
         newProducts.forEach(id => url.searchParams.append('products[]', id));
-        
+
         window.location.href = url.toString();
     }
 }
@@ -519,7 +519,7 @@ function addToCart(productId) {
         if (data.success) {
             // Update cart count in header
             updateCartCount();
-            
+
             // Show success message
             showToast('Product added to cart!', 'success');
         }
@@ -579,7 +579,7 @@ document.getElementById('productSearch').addEventListener('input', function() {
             .then(data => {
                 const resultsContainer = document.getElementById('productSearchResults');
                 resultsContainer.innerHTML = '';
-                
+
                 data.products.forEach(product => {
                     const productItem = document.createElement('div');
                     productItem.className = 'product-search-item d-flex align-items-center p-2 border-bottom';
@@ -611,9 +611,9 @@ function showToast(message, type) {
     toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
     toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
     toast.textContent = message;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.remove();
     }, 3000);

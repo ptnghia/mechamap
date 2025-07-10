@@ -18,7 +18,7 @@
         </button>
 
         <!-- Dropdown Menu -->
-        <div class="dropdown-menu dropdown-menu-{{ $position }} notification-dropdown show"
+        <div class="dropdown-menu dropdown-menu-{{ $position }} notification-dropdown"
              id="notificationDropdown"
              aria-labelledby="notificationBell"
              style="width: 380px; max-height: 500px;">

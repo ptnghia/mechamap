@@ -37,7 +37,7 @@ class SePayService
             // Tạo payment transaction
             $transaction = PaymentTransaction::create([
                 'order_id' => $order->id,
-                'user_id' => $order->user_id,
+                'user_id' => $order->customer_id,
                 'payment_method' => 'sepay',
                 'type' => 'payment',
                 'status' => 'pending',

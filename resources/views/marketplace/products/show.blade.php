@@ -102,14 +102,14 @@
                         <div class="mb-4">
                             @if($product->is_on_sale && $product->sale_price)
                                 <div class="d-flex align-items-center">
-                                    <span class="h3 fw-bold text-danger mb-0">${{ number_format($product->sale_price, 2) }}</span>
-                                    <span class="h5 text-muted text-decoration-line-through ms-3 mb-0">${{ number_format($product->price, 2) }}</span>
+                                    <span class="h3 fw-bold text-danger mb-0">{{ number_format($product->sale_price, 0, ',', '.') }}₫</span>
+                                    <span class="h5 text-muted text-decoration-line-through ms-3 mb-0">{{ number_format($product->price, 0, ',', '.') }}₫</span>
                                     <span class="ms-3 badge bg-danger">
                                         {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}% OFF
                                     </span>
                                 </div>
                             @else
-                                <span class="h3 fw-bold text-primary mb-0">${{ number_format($product->price, 2) }}</span>
+                                <span class="h3 fw-bold text-primary mb-0">{{ number_format($product->price, 0, ',', '.') }}₫</span>
                             @endif
                         </div>
 

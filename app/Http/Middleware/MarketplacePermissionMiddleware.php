@@ -29,6 +29,11 @@ class MarketplacePermissionMiddleware
 
         // For authenticated users, check permissions
         if ($user && $action !== 'view') {
+            // Admin roles have full marketplace permissions
+            if ($this->isAdminRole($user->role)) {
+                return $next($request);
+            }
+
             $productType = $this->getProductTypeFromRequest($request);
 
             if (!$this->hasPermission($user->role, $action, $productType)) {
@@ -43,6 +48,21 @@ class MarketplacePermissionMiddleware
     }
 
     /**
+     * Check if user role is admin role with full marketplace permissions
+     */
+    private function isAdminRole(string $role): bool
+    {
+        return in_array($role, [
+            'super_admin',
+            'system_admin',
+            'admin',
+            'content_admin',
+            'marketplace_moderator',
+            'moderator'
+        ]);
+    }
+
+    /**
      * Extract product type from request
      */
     private function getProductTypeFromRequest(Request $request): ?string
@@ -53,8 +73,22 @@ class MarketplacePermissionMiddleware
             return is_object($product) ? $product->product_type : null;
         }
 
-        // From request data
-        return $request->input('product_type');
+        // From request data - direct product_type
+        if ($request->has('product_type')) {
+            return $request->input('product_type');
+        }
+
+        // From product_id - lookup product in database
+        if ($request->has('product_id')) {
+            try {
+                $product = MarketplaceProduct::find($request->input('product_id'));
+                return $product ? $product->product_type : null;
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -75,14 +109,20 @@ class MarketplacePermissionMiddleware
             return false;
         }
 
-        // If no product type specified, check general permission
+        $actionPermissions = $rolePermissions[$action];
+
+        // If no product type specified (e.g., checkout), check if user has any permission for this action
         if (!$productType) {
-            return $rolePermissions[$action] === true;
+            if (is_bool($actionPermissions)) {
+                return $actionPermissions;
+            }
+            if (is_array($actionPermissions)) {
+                return !empty($actionPermissions); // Has permission if array is not empty
+            }
+            return false;
         }
 
         // Check specific product type permission
-        $actionPermissions = $rolePermissions[$action];
-
         if (is_bool($actionPermissions)) {
             return $actionPermissions;
         }

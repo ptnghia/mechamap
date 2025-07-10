@@ -16,6 +16,7 @@
     @auth
     <meta name="user-id" content="{{ auth()->id() }}">
     <meta name="user-name" content="{{ auth()->user()->name }}">
+    <meta name="api-token" content="{{ auth()->user()->createToken('api-access')->plainTextToken }}">
     @endauth
 
     <!-- SEO Meta Tags -->
@@ -227,9 +228,9 @@
 
     <!-- Real-time Notification System -->
     @auth
-    <script src="{{ asset('js/frontend/services/notification-service.js') }}"></script>
-    <script src="{{ asset('js/frontend/components/notification-manager.js') }}"></script>
-    <script src="{{ asset('js/frontend/components/typing-indicator.js') }}"></script>
+    <script src="{{ asset('js/frontend/services/notification-service.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/frontend/components/notification-manager.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/frontend/components/typing-indicator.js') }}?v={{ time() }}"></script>
     @endauth
 
     <!-- Dark Mode JS -->

@@ -80,12 +80,12 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         @if($product->discount_percentage > 0)
-                            <h5 class="text-primary mb-0">${{ number_format($product->discounted_price, 2) }}</h5>
+                            <h5 class="text-primary mb-0">{{ number_format($product->discounted_price, 0, ',', '.') }}₫</h5>
                             <small class="text-muted text-decoration-line-through">
-                                ${{ number_format($product->price, 2) }}
+                                {{ number_format($product->price, 0, ',', '.') }}₫
                             </small>
                         @else
-                            <h5 class="text-primary mb-0">${{ number_format($product->price, 2) }}</h5>
+                            <h5 class="text-primary mb-0">{{ number_format($product->price, 0, ',', '.') }}₫</h5>
                         @endif
                     </div>
 

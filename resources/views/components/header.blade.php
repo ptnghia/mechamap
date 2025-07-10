@@ -344,28 +344,7 @@
                             </li>
                             @endif
 
-                            @if(Auth::user()->hasRole('manufacturer'))
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="manufacturerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bx bx-cube me-1"></i>
-                                    Nhà sản xuất
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="manufacturerDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
-                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
-                                        <i class="bx bx-cube-alt me-2"></i>{{ __('messages.nav.my_designs') }}
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
-                                        <i class="bx bx-download me-2"></i>{{ __('messages.nav.download_orders') }}
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ route('manufacturer.analytics.index') }}">
-                                        <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.analytics') }}
-                                    </a></li>
-                                </ul>
-                            </li>
-                            @endif
+
 
                             @if(Auth::user()->hasRole('brand'))
                             <li class="nav-item dropdown">

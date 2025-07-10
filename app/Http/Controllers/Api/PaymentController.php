@@ -687,7 +687,7 @@ class PaymentController extends Controller
         try {
             $user = Auth::user();
             $order = \App\Models\MarketplaceOrder::where('id', $request->order_id)
-                ->where('user_id', $user->id)
+                ->where('customer_id', $user->id)
                 ->where('status', 'pending')
                 ->firstOrFail();
 
@@ -813,6 +813,86 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi xác nhận thanh toán'
+            ], 500);
+        }
+    }
+
+    /**
+     * Create Stripe payment intent for marketplace order
+     */
+    public function createMarketplaceStripeIntent(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|integer|exists:marketplace_orders,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user = Auth::user();
+            $order = \App\Models\MarketplaceOrder::where('id', $request->order_id)
+                ->where('customer_id', $user->id)
+                ->where('status', 'pending')
+                ->firstOrFail();
+
+            if (!$this->stripeService->isConfigured()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stripe payment gateway không được cấu hình'
+                ], 503);
+            }
+
+            // Convert MarketplaceOrder to Order format for StripeService
+            $orderData = (object) [
+                'id' => $order->id,
+                'order_number' => $order->order_number,
+                'total_amount' => $order->total_amount,
+                'user_id' => $order->customer_id,
+                'user' => $user,
+            ];
+
+            $paymentData = $this->stripeService->createPaymentIntent($orderData);
+
+            if (!$paymentData['success']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $paymentData['message']
+                ], 400);
+            }
+
+            // Cập nhật order status
+            $order->update([
+                'status' => 'processing',
+                'payment_method' => 'stripe',
+                'payment_intent_id' => $paymentData['data']['payment_intent_id'] ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'payment_url' => $paymentData['data']['payment_url'] ?? null,
+                    'payment_intent_id' => $paymentData['data']['payment_intent_id'] ?? null,
+                    'client_secret' => $paymentData['data']['client_secret'] ?? null,
+                ],
+                'message' => 'Tạo Stripe Payment Intent thành công'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Stripe payment creation failed', [
+                'order_id' => $request->order_id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi hệ thống khi tạo thanh toán Stripe'
             ], 500);
         }
     }
