@@ -35,6 +35,10 @@ class AjaxAuthController extends Controller
             if (Auth::attempt([$loginField => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
                 $request->session()->regenerate();
 
+                // Detect and track device for security
+                $user = Auth::user();
+                \App\Services\DeviceDetectionService::detectAndTrackDevice($user, $request);
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Đăng nhập thành công.',

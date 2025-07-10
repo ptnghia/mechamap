@@ -123,7 +123,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
 .user-m-md{margin:var(--user-space-md)!important}
 .user-m-lg{margin:var(--user-space-lg)!important}
 .user-m-xl{margin:var(--user-space-xl)!important}
-.title_page{text-transform:uppercase;font-size:21px!important}
+.title_page{text-transform:uppercase;font-size:21px!important;font-weight: 700;}
 .timeframe-filter .btn-group{width:100%}
 .timeframe-filter .btn-group a{padding-top:7px;padding-bottom:7px;font-size:13px;text-transform:capitalize}
 .showcase-image{border:none!important}

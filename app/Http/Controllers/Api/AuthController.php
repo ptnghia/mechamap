@@ -344,7 +344,7 @@ class AuthController extends Controller
 
             $status = Password::reset(
                 $request->only('email', 'password', 'password_confirmation', 'token'),
-                function ($user, $password) {
+                function ($user, $password) use ($request) {
                     $user->forceFill([
                         'password' => Hash::make($password)
                     ])->setRememberToken(Str::random(60));
@@ -352,6 +352,9 @@ class AuthController extends Controller
                     $user->save();
 
                     event(new PasswordReset($user));
+
+                    // Send password changed notification
+                    \App\Services\NotificationService::sendPasswordChangedNotification($user, $request->ip());
                 }
             );
 

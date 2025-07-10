@@ -94,6 +94,13 @@ class Notification extends Model
             'user_registered' => 'user-plus',
             'forum_activity' => 'comments',
             'marketplace_activity' => 'store',
+            // New forum notification types
+            'thread_created' => 'plus-circle',
+            'thread_replied' => 'reply',
+            'comment_mention' => 'at',
+            // Security notification types
+            'login_from_new_device' => 'shield-alt',
+            'password_changed' => 'key',
             default => 'bell',
         };
     }
@@ -114,6 +121,13 @@ class Notification extends Model
             'role_changed' => 'warning',
             'system_announcement' => 'primary',
             'quote_request' => 'info',
+            // New forum notification colors
+            'thread_created' => 'success',
+            'thread_replied' => 'info',
+            'comment_mention' => 'warning',
+            // Security notification colors
+            'login_from_new_device' => 'warning',
+            'password_changed' => 'danger',
             default => 'secondary',
         };
     }
@@ -142,5 +156,83 @@ class Notification extends Model
     public function getActionUrl(): ?string
     {
         return $this->data['action_url'] ?? null;
+    }
+
+    /**
+     * Scope for read notifications
+     */
+    public function scopeRead($query)
+    {
+        return $query->where('is_read', true);
+    }
+
+    /**
+     * Scope for recent notifications
+     */
+    public function scopeRecent($query, int $days = 30)
+    {
+        return $query->where('created_at', '>=', now()->subDays($days));
+    }
+
+    /**
+     * Get notifications with optimized queries
+     */
+    public static function getOptimizedNotifications(User $user, int $limit = 20)
+    {
+        return static::select(['id', 'user_id', 'type', 'title', 'message', 'data', 'priority', 'is_read', 'read_at', 'created_at'])
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Get unread count efficiently
+     */
+    public static function getUnreadCount(User $user): int
+    {
+        return static::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->count();
+    }
+
+    /**
+     * Mark multiple notifications as read efficiently
+     */
+    public static function markAsReadBulk(User $user, array $notificationIds = []): int
+    {
+        $query = static::where('user_id', $user->id)
+            ->where('is_read', false);
+
+        if (!empty($notificationIds)) {
+            $query->whereIn('id', $notificationIds);
+        }
+
+        return $query->update([
+            'is_read' => true,
+            'read_at' => now()
+        ]);
+    }
+
+    /**
+     * Get notifications by type with pagination
+     */
+    public static function getByTypeOptimized(User $user, string $type, int $perPage = 15)
+    {
+        return static::where('user_id', $user->id)
+            ->where('type', $type)
+            ->with(['user:id,name,avatar'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Clean old notifications (older than specified days)
+     */
+    public static function cleanOldNotifications(int $days = 90): int
+    {
+        return static::where('created_at', '<', now()->subDays($days))
+            ->where('is_read', true)
+            ->delete();
     }
 }

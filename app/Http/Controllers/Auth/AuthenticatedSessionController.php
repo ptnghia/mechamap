@@ -28,6 +28,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Detect and track device for security
+        $user = $request->user();
+        \App\Services\DeviceDetectionService::detectAndTrackDevice($user, $request);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

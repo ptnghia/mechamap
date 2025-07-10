@@ -44,14 +44,14 @@
                     </div>
                 </div>
                 @endif
-                
+
                 <div class="card-body">
                     <h5 class="card-title">
                         <a href="{{ route('forums.categories.show', $category) }}" class="text-decoration-none">
                             {{ $category->name }}
                         </a>
                     </h5>
-                    
+
                     @if($category->description)
                     <p class="card-text text-muted">{{ Str::limit($category->description, 120) }}</p>
                     @endif
@@ -83,11 +83,11 @@
                     <div class="mt-3 pt-3 border-top">
                         <small class="text-muted">Latest:</small>
                         <div class="d-flex align-items-center mt-1">
-                            <img src="{{ $category->latest_thread->user->getAvatarUrl() }}" 
-                                 alt="{{ $category->latest_thread->user->name }}" 
+                            <img src="{{ $category->latest_thread->user->getAvatarUrl() }}"
+                                 alt="{{ $category->latest_thread->user->name }}"
                                  class="rounded-circle me-2" width="24" height="24">
                             <div class="flex-grow-1 min-w-0">
-                                <a href="{{ route('threads.show', $category->latest_thread) }}" 
+                                <a href="{{ route('threads.show', $category->latest_thread) }}"
                                    class="text-decoration-none small">
                                     {{ Str::limit($category->latest_thread->title, 40) }}
                                 </a>
@@ -104,12 +104,12 @@
                 @can('update', $category)
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-end">
-                        <a href="{{ route('forums.categories.edit', $category) }}" 
+                        <a href="{{ route('forums.categories.edit', $category) }}"
                            class="btn btn-sm btn-outline-primary me-2">
                             <i class="bx bx-edit"></i>
                         </a>
                         @can('delete', $category)
-                        <form action="{{ route('forums.categories.destroy', $category) }}" 
+                        <form action="{{ route('forums.categories.destroy', $category) }}"
                               method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
@@ -209,7 +209,7 @@
     .category-image {
         height: 120px;
     }
-    
+
     .stat-number {
         font-size: 1rem;
     }

@@ -82,7 +82,16 @@ class CommentController extends Controller
             // Log activity
             $this->activityService->logCommentCreated(Auth::user(), $comment);
 
-            // Tạo thông báo cho người theo dõi thread và chủ thread
+            // Send thread replied notification
+            \App\Services\NotificationService::sendThreadRepliedNotification($comment);
+
+            // Extract and send mention notifications
+            $mentions = \App\Services\NotificationService::extractMentions($comment->content);
+            if (!empty($mentions)) {
+                \App\Services\NotificationService::sendCommentMentionNotification($comment, $mentions);
+            }
+
+            // Tạo thông báo cho người theo dõi thread và chủ thread (legacy)
             $this->alertService->createCommentAlert(Auth::user(), $thread, $comment);
 
             return back()->with('success', 'Bình luận đã được đăng thành công.');

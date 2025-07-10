@@ -48,6 +48,9 @@ class NewPasswordController extends Controller
                 ])->save();
 
                 event(new PasswordReset($user));
+
+                // Send password changed notification
+                \App\Services\NotificationService::sendPasswordChangedNotification($user, $request->ip());
             }
         );
 

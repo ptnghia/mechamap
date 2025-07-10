@@ -190,6 +190,9 @@ class ThreadController extends Controller
             // Log activity
             $this->activityService->logThreadCreated(Auth::user(), $thread);
 
+            // Send thread created notification
+            \App\Services\NotificationService::sendThreadCreatedNotification($thread);
+
             return redirect()->route('threads.show', $thread)
                 ->with('success', 'Bài viết đã được tạo thành công.');
         });

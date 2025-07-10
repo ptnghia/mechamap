@@ -619,6 +619,9 @@ class UserDashboardController extends Controller
             'password' => Hash::make($request->new_password)
         ]);
 
+        // Send password changed notification
+        \App\Services\NotificationService::sendPasswordChangedNotification($user, $request->ip());
+
         return response()->json([
             'success' => true,
             'message' => 'Mật khẩu đã được thay đổi thành công'

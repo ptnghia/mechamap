@@ -283,6 +283,9 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // Send password changed notification
+        \App\Services\NotificationService::sendPasswordChangedNotification($user, $request->ip());
+
         return back()->with('success', 'Mật khẩu đã được đặt lại thành công.');
     }
 

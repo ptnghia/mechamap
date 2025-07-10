@@ -71,11 +71,15 @@ class AuthController extends Controller
             // Đăng nhập thành công
             $request->session()->regenerate();
 
+            // Detect and track device for security
+            $authenticatedUser = Auth::user();
+            \App\Services\DeviceDetectionService::detectAndTrackDevice($authenticatedUser, $request);
+
             // Ghi log hoạt động đăng nhập (có thể thêm sau này)
 
             // Thông báo thành công và chuyển hướng
             return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Đăng nhập thành công. Chào mừng ' . $user->name . '!');
+                ->with('success', 'Đăng nhập thành công. Chào mừng ' . $authenticatedUser->name . '!');
         }
 
         // Đăng nhập thất bại
