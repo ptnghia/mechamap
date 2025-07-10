@@ -8,6 +8,7 @@ use App\Models\PaymentTransaction;
 use App\Services\OrderService;
 use App\Services\StripeService;
 use App\Services\VNPayService;
+use App\Services\SePayService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,15 +20,18 @@ class PaymentController extends Controller
     protected OrderService $orderService;
     protected StripeService $stripeService;
     protected VNPayService $vnpayService;
+    protected SePayService $sepayService;
 
     public function __construct(
         OrderService $orderService,
         StripeService $stripeService,
-        VNPayService $vnpayService
+        VNPayService $vnpayService,
+        SePayService $sepayService
     ) {
         $this->orderService = $orderService;
         $this->stripeService = $stripeService;
         $this->vnpayService = $vnpayService;
+        $this->sepayService = $sepayService;
         $this->middleware('auth:sanctum')->except(['webhook', 'vnpayCallback', 'vnpayIpn', 'paymentMethods']);
     }
 
@@ -76,6 +80,8 @@ class PaymentController extends Controller
             } elseif ($paymentMethod === 'vnpay') {
                 $clientIp = $request->ip();
                 $paymentData = $this->vnpayService->createPaymentUrl($order, $clientIp);
+            } elseif ($paymentMethod === 'sepay') {
+                $paymentData = $this->sepayService->createPaymentUrl($order);
             }
 
             // Cập nhật order status
@@ -426,13 +432,27 @@ class PaymentController extends Controller
                     'is_active' => true,
                     'supported_currencies' => ['USD', 'EUR', 'VND'],
                 ];
-            }            // Check if VNPay is configured
+            }
+
+            // Check if VNPay is configured (DEPRECATED)
             if ($this->vnpayService->isConfigured()) {
                 $availableMethods[] = [
                     'id' => 'vnpay',
                     'name' => 'VNPay',
                     'description' => 'Thanh toán qua VNPay (ATM, Internet Banking, QR Code)',
                     'icon' => 'vnpay',
+                    'is_active' => false, // Deprecated
+                    'supported_currencies' => ['VND'],
+                ];
+            }
+
+            // Check if SePay is configured
+            if ($this->sepayService->isConfigured()) {
+                $availableMethods[] = [
+                    'id' => 'sepay',
+                    'name' => 'SePay',
+                    'description' => 'Thanh toán qua chuyển khoản ngân hàng (QR Code)',
+                    'icon' => 'bank',
                     'is_active' => true,
                     'supported_currencies' => ['VND'],
                 ];

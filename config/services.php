@@ -58,4 +58,12 @@ return [
         'ipn_url' => env('VNPAY_IPN_URL'),
     ],
 
+    'sepay' => [
+        'bank_code' => env('SEPAY_BANK_CODE', 'MBBank'),
+        'account_number' => env('SEPAY_ACCOUNT_NUMBER'),
+        'account_name' => env('SEPAY_ACCOUNT_NAME'),
+        'webhook_secret' => env('SEPAY_WEBHOOK_SECRET'),
+        'webhook_url' => env('SEPAY_WEBHOOK_URL'),
+    ],
+
 ];

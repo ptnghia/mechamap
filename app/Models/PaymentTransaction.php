@@ -239,7 +239,8 @@ class PaymentTransaction extends Model
     {
         return match($this->payment_method) {
             'stripe' => 'Stripe (Card)',
-            'vnpay' => 'VNPay',
+            'vnpay' => 'VNPay (Deprecated)',
+            'sepay' => 'SePay (Bank Transfer)',
             'bank_transfer' => 'Chuyển khoản ngân hàng',
             default => 'Unknown',
         };

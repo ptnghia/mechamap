@@ -323,6 +323,10 @@ Route::prefix('v1')->group(function () {
             ->middleware('stripe.webhook');
         Route::get('/vnpay/callback', [App\Http\Controllers\Api\PaymentController::class, 'vnpayCallback']);
         Route::post('/vnpay/ipn', [App\Http\Controllers\Api\PaymentController::class, 'vnpayIpn']);
+
+        // SePay webhook
+        Route::post('/sepay/webhook', [App\Http\Controllers\Api\SePayWebhookController::class, 'handleWebhook']);
+        Route::post('/sepay/check-status', [App\Http\Controllers\Api\SePayWebhookController::class, 'checkPaymentStatus']);
     });
 
     // Payment Testing Routes (Development only)
