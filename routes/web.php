@@ -130,7 +130,8 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     // Shopping Cart routes
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [App\Http\Controllers\MarketplaceCartController::class, 'index'])->name('index');
-        Route::post('/add', [App\Http\Controllers\MarketplaceCartController::class, 'add'])->name('add');
+        Route::post('/add', [App\Http\Controllers\MarketplaceCartController::class, 'add'])
+            ->middleware('marketplace.permission:buy')->name('add');
         Route::put('/update/{item}', [App\Http\Controllers\MarketplaceCartController::class, 'update'])->name('update');
         Route::delete('/remove/{item}', [App\Http\Controllers\MarketplaceCartController::class, 'remove'])->name('remove');
         Route::delete('/clear', [App\Http\Controllers\MarketplaceCartController::class, 'clear'])->name('clear');
@@ -142,7 +143,7 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     });
 
     // Checkout Routes - Require authentication and purchase permission
-    Route::prefix('checkout')->name('checkout.')->middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('checkout')->name('checkout.')->middleware(['auth', 'verified', 'marketplace.permission:buy'])->group(function () {
         Route::get('/', [App\Http\Controllers\MarketplaceCheckoutController::class, 'index'])->name('index');
         Route::post('/shipping', [App\Http\Controllers\MarketplaceCheckoutController::class, 'shipping'])->name('shipping');
         Route::post('/payment', [App\Http\Controllers\MarketplaceCheckoutController::class, 'payment'])->name('payment');
@@ -487,6 +488,11 @@ Route::get('/categories/trending', [\App\Http\Controllers\CategoryController::cl
 // Thread routes (MUST be before wildcard routes)
 Route::resource('threads', \App\Http\Controllers\ThreadController::class);
 
+// Thread to Showcase conversion
+Route::post('/threads/{thread}/create-showcase', [\App\Http\Controllers\ThreadController::class, 'createShowcase'])
+    ->name('threads.create-showcase')
+    ->middleware('auth');
+
 // User Thread Browse Routes (Public and Authenticated)
 Route::prefix('browse')->name('browse.threads.')->group(function () {
     // Public routes
@@ -714,7 +720,15 @@ Route::get('/contact/support', function () {
 // Supplier Dashboard routes
 Route::middleware(['auth', 'role:supplier'])->prefix('supplier')->name('supplier.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Supplier\DashboardController::class, 'index'])->name('dashboard');
+
+    // Product management routes
     Route::get('/products', [App\Http\Controllers\Supplier\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [App\Http\Controllers\Supplier\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [App\Http\Controllers\Supplier\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [App\Http\Controllers\Supplier\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [App\Http\Controllers\Supplier\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [App\Http\Controllers\Supplier\ProductController::class, 'destroy'])->name('products.destroy');
+
     Route::get('/orders', [App\Http\Controllers\Supplier\OrderController::class, 'index'])->name('orders.index');
     Route::get('/analytics', [App\Http\Controllers\Supplier\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/settings', [App\Http\Controllers\Supplier\SettingsController::class, 'index'])->name('settings.index');
@@ -723,6 +737,15 @@ Route::middleware(['auth', 'role:supplier'])->prefix('supplier')->name('supplier
 // Manufacturer Dashboard routes
 Route::middleware(['auth', 'role:manufacturer'])->prefix('manufacturer')->name('manufacturer.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Manufacturer\DashboardController::class, 'index'])->name('dashboard');
+
+    // Product management routes
+    Route::get('/products', [App\Http\Controllers\Manufacturer\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [App\Http\Controllers\Manufacturer\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [App\Http\Controllers\Manufacturer\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [App\Http\Controllers\Manufacturer\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [App\Http\Controllers\Manufacturer\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [App\Http\Controllers\Manufacturer\ProductController::class, 'destroy'])->name('products.destroy');
+
     Route::get('/designs', [App\Http\Controllers\Manufacturer\DesignController::class, 'index'])->name('designs.index');
     Route::get('/orders', [App\Http\Controllers\Manufacturer\OrderController::class, 'index'])->name('orders.index');
     Route::get('/analytics', [App\Http\Controllers\Manufacturer\AnalyticsController::class, 'index'])->name('analytics.index');
@@ -732,6 +755,15 @@ Route::middleware(['auth', 'role:manufacturer'])->prefix('manufacturer')->name('
 // Brand Dashboard routes - View only access
 Route::middleware(['auth', 'role:brand'])->prefix('brand')->name('brand.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Brand\DashboardController::class, 'index'])->name('dashboard');
+
+    // Product management routes (showcase products)
+    Route::get('/products', [App\Http\Controllers\Brand\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [App\Http\Controllers\Brand\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [App\Http\Controllers\Brand\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [App\Http\Controllers\Brand\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [App\Http\Controllers\Brand\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [App\Http\Controllers\Brand\ProductController::class, 'destroy'])->name('products.destroy');
+
     Route::get('/insights', [App\Http\Controllers\Brand\InsightsController::class, 'index'])->name('insights.index');
     Route::get('/marketplace-analytics', [App\Http\Controllers\Brand\MarketplaceAnalyticsController::class, 'index'])->name('marketplace.analytics');
     Route::get('/forum-analytics', [App\Http\Controllers\Brand\ForumAnalyticsController::class, 'index'])->name('forum.analytics');
@@ -808,4 +840,8 @@ if (app()->environment('local')) {
     Route::get('/test-auth-actions', function () {
         return view('test-auth-actions');
     })->name('test.auth-actions');
+
+    Route::get('/test/header-features', function () {
+        return view('test.header-features');
+    })->name('test.header-features');
 }

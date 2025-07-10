@@ -11,6 +11,40 @@ class MarketplaceProduct extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Product Type Constants
+    const TYPE_DIGITAL = 'digital';
+    const TYPE_NEW_PRODUCT = 'new_product';
+    const TYPE_USED_PRODUCT = 'used_product';
+
+    // Seller Type Constants
+    const SELLER_SUPPLIER = 'supplier';
+    const SELLER_MANUFACTURER = 'manufacturer';
+    const SELLER_BRAND = 'brand';
+
+    /**
+     * Get all available product types
+     */
+    public static function getProductTypes(): array
+    {
+        return [
+            self::TYPE_DIGITAL => 'Sản phẩm kỹ thuật số',
+            self::TYPE_NEW_PRODUCT => 'Sản phẩm mới',
+            self::TYPE_USED_PRODUCT => 'Sản phẩm cũ',
+        ];
+    }
+
+    /**
+     * Get all available seller types
+     */
+    public static function getSellerTypes(): array
+    {
+        return [
+            self::SELLER_SUPPLIER => 'Nhà cung cấp',
+            self::SELLER_MANUFACTURER => 'Nhà sản xuất',
+            self::SELLER_BRAND => 'Thương hiệu',
+        ];
+    }
+
     protected $fillable = [
         'uuid',
         'name',

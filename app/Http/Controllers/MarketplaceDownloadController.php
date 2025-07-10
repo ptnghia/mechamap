@@ -46,14 +46,11 @@ class MarketplaceDownloadController extends Controller
             abort(403, 'Bạn không có quyền truy cập đơn hàng này');
         }
 
-        // Get order items with digital products
+        // Get order items with digital products only
         $digitalItems = $order->items()
             ->whereHas('product', function ($query) {
-                $query->where(function ($q) {
-                    $q->where('product_type', 'digital')
-                      ->orWhere('seller_type', 'manufacturer')
-                      ->orWhereNotNull('digital_files');
-                });
+                $query->where('product_type', 'digital')
+                      ->whereNotNull('digital_files');
             })
             ->with(['product'])
             ->get();
@@ -118,7 +115,7 @@ class MarketplaceDownloadController extends Controller
         try {
             // Get downloadable files
             $files = $this->downloadService->getDownloadableFiles($orderItem);
-            
+
             if (!isset($files[$request->file_index])) {
                 return response()->json([
                     'success' => false,
@@ -200,17 +197,17 @@ class MarketplaceDownloadController extends Controller
             'total_downloads' => MarketplaceDownloadHistory::where('user_id', $user->id)
                 ->where('is_valid_download', true)
                 ->count(),
-            
+
             'unique_products' => MarketplaceDownloadHistory::where('user_id', $user->id)
                 ->where('is_valid_download', true)
                 ->distinct('product_id')
                 ->count(),
-            
+
             'recent_downloads' => MarketplaceDownloadHistory::where('user_id', $user->id)
                 ->where('is_valid_download', true)
                 ->where('downloaded_at', '>=', now()->subDays(30))
                 ->count(),
-            
+
             'total_file_size' => MarketplaceDownloadHistory::where('user_id', $user->id)
                 ->where('is_valid_download', true)
                 ->sum('file_size'),
@@ -228,7 +225,7 @@ class MarketplaceDownloadController extends Controller
     public function downloadHistory(Request $request)
     {
         $user = Auth::user();
-        
+
         $query = MarketplaceDownloadHistory::where('user_id', $user->id)
             ->with(['order', 'orderItem', 'product']);
 
@@ -268,7 +265,7 @@ class MarketplaceDownloadController extends Controller
 
         // Get order item
         $orderItem = $download->orderItem;
-        
+
         // Check if user still has access
         $accessCheck = $this->downloadService->canUserDownload($user, $orderItem);
         if (!$accessCheck['can_download']) {

@@ -26,22 +26,20 @@ class ForumSelectionController extends Controller
      */
     public function index(): View
     {
-        // Get all parent forums (categories)
-        $parentForums = Forum::whereNull('parent_id')
-            ->with(['subForums' => function($query) {
-                $query->orderBy('order');
-            }])
+        // Get all forums grouped by category
+        $forums = Forum::with('category')
+            ->orderBy('category_id')
             ->orderBy('order')
-            ->get();
+            ->get()
+            ->groupBy('category.name');
 
         // Get popular forums
-        $popularForums = Forum::whereNotNull('parent_id')
-            ->withCount('threads')
+        $popularForums = Forum::withCount('threads')
             ->orderBy('threads_count', 'desc')
             ->take(5)
             ->get();
 
-        return view('forums.select', compact('parentForums', 'popularForums'));
+        return view('forums.select', compact('forums', 'popularForums'));
     }
 
     /**

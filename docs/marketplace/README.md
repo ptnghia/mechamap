@@ -1,20 +1,42 @@
-# 🛒 **MechaMap Marketplace System**
+# 🛒 **MechaMap Marketplace System - Phiên bản 2.0**
 
 ## **📋 Tổng quan**
 
-MechaMap Marketplace là hệ thống thương mại điện tử chuyên biệt cho cộng đồng kỹ sư cơ khí, cho phép:
+MechaMap Marketplace là hệ thống thương mại điện tử chuyên biệt cho cộng đồng kỹ sư cơ khí với **3 loại sản phẩm** và **ma trận phân quyền** rõ ràng:
 
-- **Suppliers (Nhà cung cấp)**: Bán sản phẩm vật lý (linh kiện, vật liệu, thiết bị)
-- **Manufacturers (Nhà sản xuất)**: Bán thông tin kỹ thuật, thiết kế, file CAD
-- **Brands (Thương hiệu)**: Trưng bày sản phẩm để quảng bá (chỉ xem)
+### **🎯 3 Loại Sản Phẩm Chính:**
+
+1. **🔧 Sản phẩm kỹ thuật số (digital)**
+   - File thiết kế CAD (SolidWorks, AutoCAD, Fusion 360)
+   - Hình ảnh kỹ thuật và bản vẽ
+   - Tài liệu technical và hướng dẫn
+
+2. **📦 Sản phẩm mới (new_product)**
+   - Thiết bị cơ khí mới
+   - Linh kiện và phụ tùng mới
+   - Vật liệu và nguyên liệu mới
+
+3. **♻️ Sản phẩm cũ (used_product)**
+   - Thiết bị đã qua sử dụng
+   - Linh kiện tái chế
+   - Máy móc second-hand
+
+### **👥 Ma Trận Phân Quyền:**
+
+| Loại Người Dùng | Quyền Mua | Quyền Bán | Mô Tả |
+|------------------|-----------|-----------|-------|
+| **Cá nhân** (Guest/Member) | ✅ Digital | ✅ Digital | Chỉ được mua/bán sản phẩm kỹ thuật số |
+| **Nhà cung cấp** (Supplier) | ✅ Digital | ✅ Digital + New | Có thể bán thiết bị, linh kiện mới |
+| **Nhà sản xuất** (Manufacturer) | ✅ Digital + New | ✅ Digital | Mua nguyên liệu, bán file kỹ thuật |
+| **Thương hiệu** (Brand) | ❌ Không | ❌ Không | Chỉ xem và liên hệ |
 
 ---
 
-## **🏗️ Kiến trúc hệ thống**
+## **🏗️ Kiến trúc hệ thống mới**
 
 ### **Models chính**
 ```
-TechnicalProduct     # Sản phẩm kỹ thuật
+MarketplaceProduct   # Sản phẩm marketplace (bảng chính)
 ├── ProductCategory  # Danh mục sản phẩm
 ├── ShoppingCart     # Giỏ hàng
 ├── Order           # Đơn hàng
@@ -23,12 +45,17 @@ TechnicalProduct     # Sản phẩm kỹ thuật
 └── ProductReview   # Đánh giá sản phẩm
 ```
 
-### **Controllers API**
+### **Services & Middleware**
 ```
-Api/ProductController        # Quản lý sản phẩm
-Api/ShoppingCartController   # Quản lý giỏ hàng
-Api/OrderController         # Quản lý đơn hàng
-Api/PaymentController       # Xử lý thanh toán
+MarketplacePermissionService      # Service quản lý phân quyền
+MarketplacePermissionMiddleware   # Middleware kiểm tra quyền
+```
+
+### **Controllers**
+```
+Admin/MarketplaceProductController  # Quản lý sản phẩm (Admin)
+MarketplaceController              # Frontend marketplace
+Api/MarketplaceController          # API endpoints
 ```
 
 ---
@@ -37,18 +64,22 @@ Api/PaymentController       # Xử lý thanh toán
 
 ### **1. Chạy Migrations**
 ```bash
+# Chạy tất cả migrations
 php artisan migrate
+
+# Hoặc chạy migration cụ thể cho marketplace
+php artisan migrate --path=database/migrations/2025_07_09_145430_update_marketplace_products_enum_types.php
 ```
 
 ### **2. Seed dữ liệu mẫu**
 ```bash
-# Tạo categories
+# Tạo categories (bắt buộc chạy trước)
 php artisan db:seed --class=ProductCategorySeeder
 
-# Tạo sản phẩm mẫu
-php artisan db:seed --class=SampleProductSeeder
+# Tạo sản phẩm mẫu với 3 loại mới
+php artisan db:seed --class=NewMarketplaceProductSeeder
 
-# Tạo dữ liệu marketplace
+# Tạo dữ liệu marketplace (optional)
 php artisan db:seed --class=MarketplaceDataSeeder
 ```
 
@@ -65,20 +96,61 @@ VNPAY_HASH_SECRET=your_hash_secret
 
 ---
 
+## **🔐 Hệ Thống Phân Quyền Chi Tiết**
+
+### **Permission Service Usage:**
+```php
+use App\Services\MarketplacePermissionService;
+
+// Kiểm tra quyền mua
+if (MarketplacePermissionService::canBuy($user, 'digital')) {
+    // User có thể mua sản phẩm kỹ thuật số
+}
+
+// Kiểm tra quyền bán
+if (MarketplacePermissionService::canSell($user, 'new_product')) {
+    // User có thể bán sản phẩm mới
+}
+
+// Lấy danh sách loại sản phẩm được phép bán
+$allowedTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+```
+
+### **Middleware Protection:**
+```php
+// Trong routes
+Route::post('/marketplace/products', [ProductController::class, 'store'])
+    ->middleware('marketplace.permission:sell');
+
+Route::post('/marketplace/cart/add', [CartController::class, 'add'])
+    ->middleware('marketplace.permission:buy');
+```
+
+---
+
 ## **📊 Dữ liệu hiện tại**
 
-### **Thống kê sau khi seed:**
-- ✅ **TechnicalProducts**: 13 sản phẩm
-- ✅ **ProductCategories**: 20 danh mục
-- ✅ **ShoppingCarts**: 71 giỏ hàng
-- ✅ **Orders**: 48 đơn hàng
-- ✅ **OrderItems**: 73 chi tiết đơn hàng
-- ✅ **PaymentTransactions**: 42 giao dịch
+### **Thống kê sau khi restructure (Cập nhật 2025):**
+- ✅ **MarketplaceProducts**: 78+ sản phẩm
+  - 22+ sản phẩm kỹ thuật số (digital)
+  - 56+ sản phẩm mới (new_product)
+  - 0 sản phẩm cũ (used_product) - *Chưa có role nào được phép bán*
+- ✅ **ProductCategories**: 20+ danh mục
+- ✅ **ShoppingCarts**: Hỗ trợ permission-based shopping
+- ✅ **Orders**: Hỗ trợ digital file downloads
+- ✅ **PaymentTransactions**: Tích hợp với download system
 
-### **Phân bố theo vai trò:**
-- **Suppliers**: 5 users → Sản phẩm vật lý
-- **Manufacturers**: 4 users → File CAD, thiết kế
-- **Brands**: 4 users → Sản phẩm trưng bày
+### **Phân bố theo vai trò (Ma trận phân quyền mới):**
+- **Suppliers**: Bán digital + new_product, mua digital
+- **Manufacturers**: Bán digital, mua digital + new_product
+- **Brands**: Chỉ xem và liên hệ (không mua/bán)
+- **Members/Guests**: Mua/bán digital only
+
+### **Admin Panel Features:**
+- ✅ **Dashboard mới** với thống kê real-time
+- ✅ **Permission Matrix** visualization
+- ✅ **Product Management** với UI cải tiến
+- ✅ **Approval Workflow** cho sản phẩm mới
 
 ---
 
@@ -166,16 +238,27 @@ const response = await fetch('/api/v1/marketplace/v2/products', {
 
 ---
 
-## **🔒 Phân quyền**
+## **🔒 Phân quyền (Cập nhật 2025)**
 
-### **Vai trò và quyền hạn:**
+### **Ma trận phân quyền mới:**
 
-| Vai trò | Xem sản phẩm | Mua sản phẩm | Tạo sản phẩm | Quản lý đơn hàng |
-|---------|--------------|--------------|--------------|------------------|
-| **Guest** | ✅ | ❌ | ❌ | ❌ |
-| **Member** | ✅ | ✅ | ❌ | ✅ |
-| **Supplier** | ✅ | ✅ | ✅ (Vật lý) | ✅ |
-| **Manufacturer** | ✅ | ✅ | ✅ (Kỹ thuật) | ✅ |
+| Vai trò | Mua Digital | Bán Digital | Mua New Product | Bán New Product | Mua Used Product | Bán Used Product |
+|---------|-------------|-------------|-----------------|-----------------|------------------|------------------|
+| **Guest** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Member** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Senior Member** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Supplier** | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| **Manufacturer** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Brand** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+### **Giải thích loại sản phẩm:**
+- **Digital**: File CAD, hình ảnh kỹ thuật, tài liệu technical
+- **New Product**: Thiết bị, linh kiện, vật liệu mới
+- **Used Product**: Thiết bị, linh kiện đã qua sử dụng (chưa có role nào được phép bán)
+
+### **Lưu ý đặc biệt:**
+- **Brand**: Chỉ được xem sản phẩm và liên hệ với người bán
+- **Used Product**: Hiện tại chưa có role nào được phép bán loại này
 | **Brand** | ✅ | ❌ | ✅ (Trưng bày) | ❌ |
 | **Admin** | ✅ | ✅ | ✅ | ✅ |
 
@@ -225,6 +308,96 @@ const response = await fetch('/api/v1/marketplace/v2/products', {
 - 📋 Advanced recommendation engine
 - 📋 Multi-language support
 - 📋 International payment methods
+
+---
+
+## **🧪 Testing & Validation**
+
+### **Permission Testing:**
+```bash
+# Test permission matrix
+php artisan tinker --execute="
+\$supplier = \App\Models\User::where('role', 'supplier')->first();
+echo 'Supplier can sell new_product: ' . (\App\Services\MarketplacePermissionService::canSell(\$supplier, 'new_product') ? 'YES' : 'NO');
+"
+
+# Test middleware protection
+curl -X POST http://mechamap.test/marketplace/cart/add \
+  -H "Content-Type: application/json" \
+  -d '{"product_id": 1, "quantity": 1}'
+```
+
+### **Download System Testing:**
+```bash
+# Test digital file access
+php artisan tinker --execute="
+\$order = \App\Models\MarketplaceOrder::where('payment_status', 'paid')->first();
+\$digitalItems = \$order->items()->whereHas('product', function(\$q) {
+    \$q->where('product_type', 'digital');
+})->get();
+echo 'Digital items: ' . \$digitalItems->count();
+"
+```
+
+### **Admin Dashboard Testing:**
+```bash
+# Access admin dashboard
+http://mechamap.test/admin/marketplace
+
+# Check statistics
+php artisan tinker --execute="
+\$stats = [
+    'total' => \App\Models\MarketplaceProduct::count(),
+    'digital' => \App\Models\MarketplaceProduct::where('product_type', 'digital')->count(),
+    'new' => \App\Models\MarketplaceProduct::where('product_type', 'new_product')->count(),
+    'used' => \App\Models\MarketplaceProduct::where('product_type', 'used_product')->count()
+];
+print_r(\$stats);
+"
+```
+
+---
+
+## **🔧 Troubleshooting**
+
+### **Common Issues:**
+
+#### **Permission Denied Errors:**
+```bash
+# Check user role
+php artisan tinker --execute="
+\$user = \App\Models\User::find(1);
+echo 'User role: ' . \$user->role;
+"
+
+# Check allowed product types
+php artisan tinker --execute="
+\$user = \App\Models\User::find(1);
+\$allowedBuy = \App\Services\MarketplacePermissionService::getAllowedBuyTypes(\$user->role);
+\$allowedSell = \App\Services\MarketplacePermissionService::getAllowedSellTypes(\$user->role);
+echo 'Can buy: ' . implode(', ', \$allowedBuy) . '\n';
+echo 'Can sell: ' . implode(', ', \$allowedSell) . '\n';
+"
+```
+
+#### **Download Issues:**
+```bash
+# Check if product has digital files
+php artisan tinker --execute="
+\$product = \App\Models\MarketplaceProduct::find(1);
+echo 'Product type: ' . \$product->product_type . '\n';
+echo 'Has digital files: ' . (\$product->digital_files ? 'YES' : 'NO') . '\n';
+"
+```
+
+#### **Cart Issues:**
+```bash
+# Clear all carts
+php artisan tinker --execute="
+\App\Models\MarketplaceShoppingCart::truncate();
+echo 'All carts cleared';
+"
+```
 
 ---
 

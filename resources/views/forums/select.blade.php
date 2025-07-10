@@ -32,13 +32,13 @@
                         </form>
 
                         <div id="forum-list">
-                            @foreach($parentForums as $parentForum)
+                            @foreach($forums as $categoryName => $categoryForums)
                                 <div class="forum-category mb-4">
-                                    <h6 class="fw-bold mb-3">{{ $parentForum->name }}</h6>
-                                    
-                                    @if($parentForum->subForums->count() > 0)
+                                    <h6 class="fw-bold mb-3">{{ $categoryName ?? 'Uncategorized' }}</h6>
+
+                                    @if($categoryForums->count() > 0)
                                         <div class="list-group">
-                                            @foreach($parentForum->subForums as $forum)
+                                            @foreach($categoryForums as $forum)
                                                 <div class="list-group-item list-group-item-action forum-item">
                                                     <form action="{{ route('forums.select.submit') }}" method="POST">
                                                         @csrf
@@ -66,7 +66,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-header">
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="card">
                             <div class="card-header">
                                 <h6 class="card-title mb-0">Help</h6>
@@ -119,26 +119,26 @@
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('forum-search');
         const forumItems = document.querySelectorAll('.forum-item');
-        
+
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
-            
+
             forumItems.forEach(item => {
                 const forumName = item.querySelector('h6').textContent.toLowerCase();
                 const forumDesc = item.querySelector('p').textContent.toLowerCase();
-                
+
                 if (forumName.includes(searchTerm) || forumDesc.includes(searchTerm)) {
                     item.style.display = 'block';
                 } else {
                     item.style.display = 'none';
                 }
             });
-            
+
             // Show/hide category headers based on visible forums
             document.querySelectorAll('.forum-category').forEach(category => {
                 const visibleForums = category.querySelectorAll('.forum-item[style="display: block"]').length;
                 const categoryHeader = category.querySelector('h6');
-                
+
                 if (visibleForums === 0 && searchTerm !== '') {
                     category.style.display = 'none';
                 } else {

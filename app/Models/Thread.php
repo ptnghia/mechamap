@@ -649,6 +649,47 @@ class Thread extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    /**
+     * Check if thread can have a showcase created
+     *
+     * @return bool
+     */
+    public function canCreateShowcase(): bool
+    {
+        // Thread must not already have a showcase
+        if ($this->showcase) {
+            return false;
+        }
+
+        // Thread must have content
+        if (empty($this->content) || strlen(strip_tags($this->content)) < 50) {
+            return false;
+        }
+
+        // Thread must be published
+        if ($this->status !== 'published') {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if user can create showcase for this thread
+     *
+     * @param \App\Models\User $user
+     * @return bool
+     */
+    public function userCanCreateShowcase($user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        // User must be thread owner or have admin/moderator role
+        return $user->id === $this->user_id || $user->hasRole(['admin', 'moderator']);
+    }
+
     // =================
     // NEW RELATIONSHIPS FOR ENHANCED STATES
     // =================

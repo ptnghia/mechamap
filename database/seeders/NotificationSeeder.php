@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Notification;
+use App\Models\Alert;
 use Illuminate\Support\Facades\DB;
 
 class NotificationSeeder extends Seeder
@@ -16,11 +17,13 @@ class NotificationSeeder extends Seeder
     {
         $this->command->info('🔔 Bắt đầu seed notifications...');
 
-        // Get admin and moderator users
+        // Get admin, moderator and some frontend users
         $adminUsers = User::whereIn('role', ['admin', 'moderator'])->get();
+        $frontendUsers = User::whereIn('role', ['member', 'supplier', 'manufacturer', 'guest'])->limit(5)->get();
+        $allUsers = $adminUsers->merge($frontendUsers);
 
-        if ($adminUsers->isEmpty()) {
-            $this->command->error('❌ Cần có admin/moderator users trước khi seed notifications!');
+        if ($allUsers->isEmpty()) {
+            $this->command->error('❌ Cần có users trước khi seed notifications!');
             return;
         }
 
@@ -29,9 +32,9 @@ class NotificationSeeder extends Seeder
 
         $notifications = [];
 
-        foreach ($adminUsers as $user) {
+        foreach ($allUsers as $user) {
             $userNotifications = $this->getNotificationsForUser($user);
-            
+
             foreach ($userNotifications as $notificationData) {
                 $notifications[] = [
                     'user_id' => $user->id,
@@ -54,7 +57,7 @@ class NotificationSeeder extends Seeder
             DB::table('notifications')->insert($chunk);
         }
 
-        $this->command->info("✅ Tạo " . count($notifications) . " notifications cho " . $adminUsers->count() . " admin users");
+        $this->command->info("✅ Tạo " . count($notifications) . " notifications cho " . $allUsers->count() . " users");
     }
 
     private function getNotificationsForUser(User $user): array
@@ -164,6 +167,64 @@ class NotificationSeeder extends Seeder
                 ]
             ];
             $notifications = array_merge($notifications, $moderatorNotifications);
+        }
+
+        // Frontend user notifications
+        if (in_array($user->role, ['member', 'supplier', 'manufacturer', 'guest'])) {
+            $frontendNotifications = [
+                [
+                    'type' => 'forum_activity',
+                    'title' => 'Bình luận mới trong thread của bạn',
+                    'message' => 'Có 2 bình luận mới trong thread "Hướng dẫn thiết kế CAD cơ bản".',
+                    'data' => ['action_url' => '/threads/123'],
+                    'priority' => 'normal',
+                    'is_read' => false,
+                    'read_at' => null,
+                    'created_at' => now()->subMinutes(15),
+                    'days_ago' => 0
+                ],
+                [
+                    'type' => 'marketplace_activity',
+                    'title' => 'Sản phẩm được phê duyệt',
+                    'message' => 'Sản phẩm "Thiết kế CAD Engine V1.0" đã được phê duyệt và đăng lên marketplace.',
+                    'data' => ['action_url' => '/marketplace/products/1'],
+                    'priority' => 'normal',
+                    'is_read' => rand(0, 100) < 50,
+                    'read_at' => rand(0, 100) < 50 ? now()->subHours(rand(1, 6)) : null,
+                    'created_at' => now()->subHours(rand(1, 12)),
+                    'days_ago' => 0
+                ]
+            ];
+
+            if ($user->role === 'supplier' || $user->role === 'manufacturer') {
+                $businessNotifications = [
+                    [
+                        'type' => 'business_verified',
+                        'title' => 'Tài khoản doanh nghiệp đã xác thực',
+                        'message' => 'Chúc mừng! Tài khoản doanh nghiệp của bạn đã được xác thực thành công.',
+                        'data' => ['action_url' => '/business/dashboard'],
+                        'priority' => 'high',
+                        'is_read' => false,
+                        'read_at' => null,
+                        'created_at' => now()->subHours(2),
+                        'days_ago' => 0
+                    ],
+                    [
+                        'type' => 'order_update',
+                        'title' => 'Đơn hàng mới',
+                        'message' => 'Bạn có đơn hàng mới #12345 cần xử lý.',
+                        'data' => ['action_url' => '/orders/12345'],
+                        'priority' => 'normal',
+                        'is_read' => false,
+                        'read_at' => null,
+                        'created_at' => now()->subMinutes(30),
+                        'days_ago' => 0
+                    ]
+                ];
+                $frontendNotifications = array_merge($frontendNotifications, $businessNotifications);
+            }
+
+            $notifications = array_merge($notifications, $frontendNotifications);
         }
 
         // Add system notifications for all users

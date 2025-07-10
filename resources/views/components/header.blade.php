@@ -27,11 +27,15 @@
                         <i class="fa-solid fa-search"></i>
                     </button>
 
-                    <!-- Mobile Cart -->
-                    <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
-                    </a>
+                    <!-- Mobile Cart - Only show if user can buy products -->
+                    @auth
+                        @if(auth()->user()->canBuyAnyProduct())
+                            <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
+                            </a>
+                        @endif
+                    @endauth
 
                     <!-- Mobile Menu Button -->
                     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -177,34 +181,41 @@
                                 {{ __('messages.nav.marketplace') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.browse_products') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.index') }}">
-                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.all_categories') }}
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('messages.nav.shop') }}</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.products.index') }}">
+                                    <i class="fa-solid fa-box me-2"></i>{{ __('messages.nav.all_products') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.categories.index') }}">
+                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.categories') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                    <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.supplier_directory') }}
+                                    <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.suppliers') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.products.new') }}">
-                                    <i class="fa-solid fa-sparkles me-2"></i>{{ __('messages.nav.new_arrivals') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.products.popular') }}">
-                                    <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.best_sellers') }}
+                                <li><a class="dropdown-item" href="{{ route('marketplace.index') }}#featured">
+                                    <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_products') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_for_quote') }}
+                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_quote') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
                                     <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('messages.nav.bulk_orders') }}
                                 </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.seller.setup') }}">
+                                    <i class="fa-solid fa-store me-2"></i>{{ __('messages.nav.become_seller') }}
+                                </a></li>
                                 @auth
                                 <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('messages.nav.my_account') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
                                     <i class="fa-solid fa-list-check me-2"></i>{{ __('messages.nav.my_orders') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.wishlist.index') }}">
-                                    <i class="fa-solid fa-heart me-2"></i>{{ __('messages.nav.saved_items') }}
+                                <li><a class="dropdown-item" href="{{ route('marketplace.cart.index') }}">
+                                    <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('messages.nav.shopping_cart') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('marketplace.downloads.index') }}">
+                                    <i class="fa-solid fa-download me-2"></i>{{ __('messages.nav.downloads') }}
                                 </a></li>
                                 @endauth
                             </ul>
@@ -465,20 +476,22 @@
 
                     <!-- Right Side Actions -->
                     <ul class="navbar-nav">
-                        <!-- Cart (always show) -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link position-relative" href="#" id="cartToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount" style="display: none;">
-                                    0
-                                </span>
-                            </a>
-                            <!-- Mini Cart Dropdown -->
-                            <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
-                                <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
-                                    <span class="badge bg-primary" id="miniCartItemCount">0</span>
-                                </div>
+                        <!-- Cart - Only show if user can buy products -->
+                        @auth
+                            @if(auth()->user()->canBuyAnyProduct())
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link position-relative" href="#" id="cartToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cartCount" style="display: none;">
+                                            0
+                                        </span>
+                                    </a>
+                                    <!-- Mini Cart Dropdown -->
+                                    <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
+                                        <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
+                                            <span class="badge bg-primary" id="miniCartItemCount">0</span>
+                                        </div>
                                 <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
                                     <!-- Empty state -->
                                     <div class="text-center text-muted py-4" id="miniCartEmpty">
@@ -509,6 +522,51 @@
                                 </div>
                             </div>
                         </li>
+                            @endif
+                        @endauth
+
+                        <!-- Notifications - Only show when authenticated -->
+                        @auth
+                            <li class="nav-item dropdown">
+                                <a class="nav-link position-relative" href="#" id="notificationToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bell"></i>
+                                    @php
+                                        $unreadNotifications = auth()->user()->userNotifications()->where('is_read', false)->count();
+                                        $unreadAlerts = auth()->user()->alerts()->whereNull('read_at')->count();
+                                        $totalUnread = $unreadNotifications + $unreadAlerts;
+                                    @endphp
+                                    @if($totalUnread > 0)
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationCount">
+                                            {{ $totalUnread > 99 ? '99+' : $totalUnread }}
+                                        </span>
+                                    @endif
+                                </a>
+                                <!-- Notifications Dropdown -->
+                                <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="notificationDropdown">
+                                    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Thông báo</h6>
+                                        @if($totalUnread > 0)
+                                            <button class="btn btn-sm btn-outline-primary" onclick="markAllNotificationsRead()">
+                                                Đánh dấu đã đọc
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <div id="notificationItems" style="max-height: 350px; overflow-y: auto;">
+                                        <!-- Notifications will be loaded here -->
+                                        <div class="text-center text-muted py-4" id="notificationEmpty">
+                                            <i class="fas fa-bell-slash" style="font-size: 2.5rem;"></i>
+                                            <p class="mb-0 mt-2">Không có thông báo mới</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 border-top text-center">
+                                        <a href="{{ route('alerts.index') }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-list me-1"></i>
+                                            Xem tất cả thông báo
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        @endauth
 
                         <!-- Language Switcher -->
                         <li class="nav-item">
@@ -1277,6 +1335,107 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => loadMiniCart(), 100);
         });
     }
+
+    // Notification functionality
+    window.loadNotifications = function() {
+        @auth
+        fetch('/api/notifications/recent')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateNotificationUI(data.notifications);
+                    updateNotificationCount(data.total_unread);
+                }
+            })
+            .catch(error => console.error('Error loading notifications:', error));
+        @endauth
+    };
+
+    window.updateNotificationUI = function(notifications) {
+        const notificationItems = document.getElementById('notificationItems');
+        const notificationEmpty = document.getElementById('notificationEmpty');
+
+        if (!notificationItems) return;
+
+        if (notifications.length === 0) {
+            notificationEmpty.style.display = 'block';
+            return;
+        }
+
+        notificationEmpty.style.display = 'none';
+
+        let itemsHTML = '';
+        notifications.forEach(notification => {
+            itemsHTML += `
+                <div class="notification-item p-3 border-bottom" data-id="${notification.id}">
+                    <div class="d-flex">
+                        <div class="avatar-sm me-3">
+                            <span class="avatar-title bg-${notification.color} rounded-circle">
+                                <i class="fas fa-${notification.icon}"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 font-size-14">${notification.title}</h6>
+                            <p class="mb-1 text-muted font-size-13">${notification.message}</p>
+                            <small class="text-muted">${notification.time_ago}</small>
+                        </div>
+                        ${!notification.is_read ? '<div class="ms-2"><span class="badge bg-primary rounded-pill">Mới</span></div>' : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        notificationItems.innerHTML = itemsHTML;
+    };
+
+    window.updateNotificationCount = function(count) {
+        const notificationCount = document.getElementById('notificationCount');
+        if (notificationCount) {
+            if (count > 0) {
+                notificationCount.textContent = count > 99 ? '99+' : count;
+                notificationCount.style.display = 'block';
+            } else {
+                notificationCount.style.display = 'none';
+            }
+        }
+    };
+
+    window.markAllNotificationsRead = function() {
+        @auth
+        fetch('/api/notifications/mark-all-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadNotifications();
+                showNotification('Đã đánh dấu tất cả thông báo là đã đọc', 'success');
+            }
+        })
+        .catch(error => console.error('Error marking notifications as read:', error));
+        @endauth
+    };
+
+    // Load notifications when dropdown is opened
+    const notificationToggle = document.getElementById('notificationToggle');
+    if (notificationToggle) {
+        notificationToggle.addEventListener('click', function() {
+            setTimeout(() => loadNotifications(), 100);
+        });
+    }
+
+    // Auto-refresh notifications every 30 seconds
+    @auth
+    setInterval(() => {
+        if (document.visibilityState === 'visible') {
+            loadNotifications();
+        }
+    }, 30000);
+    @endauth
 });
 </script>
 <!-- Mini Cart Enhancements -->

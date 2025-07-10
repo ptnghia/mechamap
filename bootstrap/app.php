@@ -57,6 +57,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'download.access' => \App\Http\Middleware\VerifyDownloadAccess::class,
             'role' => \App\Http\Middleware\RoleBasedAccessMiddleware::class,
             'db.cache' => \App\Http\Middleware\DatabaseCacheMiddleware::class,
+            'marketplace.permission' => \App\Http\Middleware\MarketplacePermissionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

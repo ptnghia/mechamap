@@ -93,6 +93,9 @@
     <!-- Frontend CSS - Optimized Structure -->
     <link rel="stylesheet" href="{{ asset('css/frontend/main-user.css') }}">
 
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="{{ asset('css/frontend/components/notifications.css') }}">
+
     <!-- Page-specific CSS now loaded in individual views via @push('styles') -->
 
     <!-- Custom CSS -->
@@ -187,36 +190,6 @@
     <!-- Custom Scripts -->
     @stack('scripts')
 
-    <!-- Chat Widget - Chỉ hiển thị khi đăng nhập -->
-    @auth
-    <div id="chatWidget" class="chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 1050;">
-        <button id="chatToggle" class="btn btn-primary rounded-circle" style="width: 60px; height: 60px;">
-            <i class="fas fa-comments"></i>
-        </button>
-        <div id="chatPanel" class="d-none" style="position: absolute; bottom: 80px; right: 0; width: 350px; height: 500px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid #e9ecef;">
-            <div class="p-3 bg-primary text-white rounded-top">
-                <h6 class="mb-0">Tin nhắn</h6>
-            </div>
-            <div class="p-3">
-                <p>Chat widget đang hoạt động!</p>
-                <p>User: {{ auth()->user()->name }}</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const chatToggle = document.getElementById('chatToggle');
-        const chatPanel = document.getElementById('chatPanel');
-
-        if (chatToggle && chatPanel) {
-            chatToggle.addEventListener('click', function() {
-                chatPanel.classList.toggle('d-none');
-            });
-        }
-    });
-    </script>
-    @endauth
 
     <!-- Footer Scripts -->
     @if(!empty($seo['footer_scripts'] ?? ''))
@@ -352,7 +325,7 @@
     <script src="{{ asset('js/dropdown.js') }}"></script>
 
     <!-- CKEditor Script - Only load on pages that need it -->
-    @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit']))
+    @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit', 'showcase.show']))
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
     @endif

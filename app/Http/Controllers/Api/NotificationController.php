@@ -179,4 +179,91 @@ class NotificationController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Lấy thông báo gần đây cho header dropdown
+     */
+    public function getRecent(Request $request): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+            $limit = $request->get('limit', 5);
+
+            // Lấy notifications từ bảng notifications (Phase 3)
+            $notifications = $user->userNotifications()
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get()
+                ->map(function ($notification) {
+                    return [
+                        'id' => $notification->id,
+                        'title' => $notification->title,
+                        'message' => \Str::limit($notification->message, 50),
+                        'icon' => $notification->icon,
+                        'color' => $notification->color,
+                        'time_ago' => $notification->time_ago,
+                        'is_read' => $notification->is_read,
+                        'action_url' => $notification->hasActionUrl() ? $notification->data['action_url'] : null,
+                        'created_at' => $notification->created_at,
+                    ];
+                });
+
+            // Lấy alerts từ bảng alerts (legacy)
+            $alerts = $user->alerts()
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get()
+                ->map(function ($alert) {
+                    return [
+                        'id' => $alert->id,
+                        'title' => $alert->title,
+                        'message' => \Str::limit($alert->content, 50),
+                        'icon' => 'bell',
+                        'color' => $this->getAlertColor($alert->type),
+                        'time_ago' => $alert->created_at->diffForHumans(),
+                        'is_read' => !is_null($alert->read_at),
+                        'action_url' => null,
+                        'created_at' => $alert->created_at,
+                    ];
+                });
+
+            // Merge và sort theo thời gian
+            $allNotifications = $notifications->concat($alerts)
+                ->sortByDesc('created_at')
+                ->take($limit)
+                ->values();
+
+            // Đếm tổng số chưa đọc
+            $unreadNotifications = $user->userNotifications()->where('is_read', false)->count();
+            $unreadAlerts = $user->alerts()->whereNull('read_at')->count();
+            $totalUnread = $unreadNotifications + $unreadAlerts;
+
+            return response()->json([
+                'success' => true,
+                'notifications' => $allNotifications,
+                'total_unread' => $totalUnread,
+                'message' => 'Lấy thông báo gần đây thành công'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi lấy thông báo',
+                'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get alert color based on type
+     */
+    private function getAlertColor(string $type): string
+    {
+        return match ($type) {
+            'success' => 'success',
+            'warning' => 'warning',
+            'error' => 'danger',
+            'system_update' => 'primary',
+            default => 'secondary',
+        };
+    }
 }

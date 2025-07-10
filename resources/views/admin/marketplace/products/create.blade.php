@@ -50,9 +50,9 @@
                                 <select class="form-select @error('product_type') is-invalid @enderror"
                                         id="product_type" name="product_type" required>
                                     <option value="">Chọn loại sản phẩm</option>
-                                    <option value="physical" {{ old('product_type') == 'physical' ? 'selected' : '' }}>Vật Lý</option>
-                                    <option value="digital" {{ old('product_type') == 'digital' ? 'selected' : '' }}>Kỹ Thuật Số</option>
-                                    <option value="service" {{ old('product_type') == 'service' ? 'selected' : '' }}>Dịch Vụ</option>
+                                    <option value="digital" {{ old('product_type') == 'digital' ? 'selected' : '' }}>Sản phẩm kỹ thuật số</option>
+                                    <option value="new_product" {{ old('product_type') == 'new_product' ? 'selected' : '' }}>Sản phẩm mới</option>
+                                    <option value="used_product" {{ old('product_type') == 'used_product' ? 'selected' : '' }}>Sản phẩm cũ</option>
                                 </select>
                                 @error('product_type')
                                     <div class="invalid-feedback">{{ $message }}</div>

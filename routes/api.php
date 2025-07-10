@@ -447,6 +447,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('notifications')->group(function () {
             Route::get('/', [App\Http\Controllers\Api\NotificationController::class, 'index']);
             Route::get('/unread', [App\Http\Controllers\Api\NotificationController::class, 'getUnread']);
+            Route::get('/recent', [App\Http\Controllers\Api\NotificationController::class, 'getRecent']);
             Route::post('/mark-read', [App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
             Route::post('/mark-all-read', [App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
             Route::delete('/{id}', [App\Http\Controllers\Api\NotificationController::class, 'destroy']);

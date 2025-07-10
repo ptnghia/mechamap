@@ -451,9 +451,10 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Marketplace management routes
     Route::prefix('marketplace')->name('marketplace.')->group(function () {
-        Route::get('/', function() {
-            return view('admin.marketplace.index');
-        })->name('index');
+        Route::get('/', [App\Http\Controllers\Admin\MarketplaceDashboardController::class, 'index'])->name('index');
+        Route::get('/dashboard', [App\Http\Controllers\Admin\MarketplaceDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/approval-stats', [App\Http\Controllers\Admin\MarketplaceDashboardController::class, 'approvalStats'])->name('approval-stats');
+        Route::post('/export-products', [App\Http\Controllers\Admin\MarketplaceDashboardController::class, 'exportProducts'])->name('export-products');
 
         // Products management
         Route::prefix('products')->name('products.')->group(function () {
@@ -774,6 +775,14 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
             Route::get('/products', function() {
                 return view('admin.marketplace.products-dason');
             })->name('products.index');
+
+            // Product approval workflow
+            Route::get('/products/pending', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'pending'])->name('products.pending');
+            Route::post('/products/{product}/approve', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'approve'])->name('products.approve');
+            Route::post('/products/{product}/reject', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'reject'])->name('products.reject');
+            Route::post('/products/bulk-approve', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'bulkApprove'])->name('products.bulk-approve');
+            Route::post('/products/bulk-reject', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'bulkReject'])->name('products.bulk-reject');
+            Route::post('/products/{product}/toggle-featured', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'toggleFeatured'])->name('products.toggle-featured');
         });
 
         // Orders (cần quyền view_orders)

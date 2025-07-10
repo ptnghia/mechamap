@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang='vi'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>API Health Check Report - 2025-06-02 08:36:11</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .stats { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat { text-align: center; padding: 15px; border-radius: 8px; background: #f8f9fa; }
+        .stat h3 { margin: 0; font-size: 2em; }
+        .stat p { margin: 5px 0 0 0; color: #666; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .skip { color: orange; }
+        .results { margin-top: 30px; }
+        .test-item { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; }
+        .test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .status-badge { padding: 4px 12px; border-radius: 4px; color: white; font-weight: bold; }
+        .status-pass { background: green; }
+        .status-fail { background: red; }
+        .status-skip { background: orange; }
+        .details { font-size: 0.9em; color: #666; }
+        .response-body { background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.8em; max-height: 200px; overflow-y: auto; }
+        .overall-status { padding: 20px; text-align: center; border-radius: 8px; margin-bottom: 20px; color: white; font-size: 1.2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>🏥 API Health Check Report</h1>
+            <p>Generated: 2025-06-02 08:36:11</p>
+            <p>Base URL: http://localhost:8000/api/v1</p>
+        </div>
+
+        <div class='overall-status' style='background: green;'>
+            Overall Health: 93.8% (15/16 tests passed)
+        </div>
+
+        <div class='stats'>
+            <div class='stat'>
+                <h3 class='pass'>15</h3>
+                <p>Passed</p>
+            </div>
+            <div class='stat'>
+                <h3 class='fail'>1</h3>
+                <p>Failed</p>
+            </div>
+            <div class='stat'>
+                <h3 class='skip'>0</h3>
+                <p>Skipped</p>
+            </div>
+            <div class='stat'>
+                <h3>16</h3>
+                <p>Total</p>
+            </div>
+        </div>
+
+        <div class='results'>
+            <h2>📋 Test Results</h2>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>CORS Test</strong>
+                    <span class='status-badge status-fail'>FAIL</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /cors-test</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 404 | <strong>Duration:</strong> 348.6ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "message": "The route api\/v1\/cors-test could not be found.",
+    "exception": "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
+    "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\AbstractRouteCollection.php",
+    "line": 45,
+    "trace": [
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\CompiledRouteCollection.php",
+            "line": 144,
+            "function": "handleMatchedRoute",
+            "class": "Illuminate\\Routing\\AbstractRouteCollection",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 763,
+            "function": "match",
+            "class": "Illuminate\\Routing\\CompiledRouteCollection",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 750,
+            "function": "findRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 739,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 201,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 170,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\app\\Http\\Middleware\\HandleCors.php",
+            "line": 19,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\app\\Http\\Middleware\\ApplySeoSettings.php",
+            "line": 134,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\ApplySeoSettings",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\app\\Http\\Middleware\\TrackUserActivity.php",
+            "line": 19,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "App\\Http\\Middleware\\TrackUserActivity",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 51,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 110,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 58,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks.php",
+            "line": 22,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 209,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\InvokeDeferredCallbacks",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 127,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 176,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 145,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php",
+            "line": 1220,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\public\\index.php",
+            "line": 17,
+            "function": "handleRequest",
+            "class": "Illuminate\\Foundation\\Application",
+            "type": "->"
+        },
+        {
+            "file": "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php",
+            "line": 23,
+            "function": "require_once"
+        }
+    ]
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>User Login</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> POST | <strong>Endpoint:</strong> /auth/login</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 600.13ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "message": "Đăng nhập thành công.",
+    "data": {
+        "user": {
+            "id": 5,
+            "name": "Admin User",
+            "username": "admin_mechamap",
+            "email": "admin@mechamap.com",
+            "role": "admin",
+            "permissions": null,
+            "status": "active",
+            "avatar": null,
+            "about_me": "Chuyên gia hàng đầu về tự động hóa công nghiệp tại Việt Nam với hơn 15 năm kinh nghiệm trong lĩnh vực thiết kế và triển khai hệ thống robot công nghiệp.",
+            "website": "https:\/\/mechaengineering.vn",
+            "location": "TP. Hồ Chí Minh, Việt Nam",
+            "signature": "Đổi mới trong Tự động hóa - Xây dựng Tương lai Sản xuất",
+            "points": 50000,
+            "reaction_score": 50130,
+            "last_seen_at": "2025-06-02T01:07:45.000000Z",
+            "last_activity": "generated::Ggn9MHkM8YfJ1exP",
+            "setup_progress": 0,
+            "email_verified_at": "2025-06-01T15:33:32.000000Z",
+            "is_active": 1,
+            "last_login_at": null,
+            "created_at": "2025-06-01T04:55:28.000000Z",
+            "updated_at": "2025-06-02T01:07:45.000000Z",
+            "banned_at": null,
+            "banned_reason": null
+        },
+        "tokens": {
+            "access_token": "2|1v2ONhZdUXBchnodbBWbPGgcqxwVYLQrIXEUnNga90f4d583",
+            "refresh_token": "scI4iMrXjqh81YdZbHdmiFQTWtl6kwZypTYp2v6T9aYwsEnEbxktZ5mVVaqw",
+            "token_type": "Bearer",
+            "expires_in": 0
+        }
+    }
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Settings</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /settings</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 336.8ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "general": {
+            "site_name": "MechaMap",
+            "site_tagline": "Diễn đàn cộng đồng kiến trúc và xây dựng",
+            "site_slogan": "Diễn đàn cộng đồng chia sẻ kiến thức",
+            "site_description": "MechaMap là diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm về kiến trúc, xây dựng và nhiều lĩnh vực khác.",
+            "site_keywords": "mechamap, diễn đàn, cộng đồng, forum, kiến trúc, xây dựng, chia sẻ, kiến thức",
+            "site_logo": "\/storage\/settings\/logo.png",
+            "site_favicon": "\/storage\/settings\/favicon.ico",
+            "site_banner": "\/storage\/settings\/banner.jpg",
+            "site_theme": "default",
+            "site_language": "vi",
+            "site_timezone": "Asia\/Ho_Chi_Minh",
+            "site_date_format": "d\/m\/Y",
+            "site_time_format": "H:i",
+            "site_pagination": "15",
+            "site_status": "online",
+            "site_maintenance_mode": "0",
+            "site_maintenance_message": "Trang web đang được bảo trì. Vui lòng quay lại sau.",
+            "site_domain": "mechamap.com"
+        },
+        "company": {
+            "company_name": "MechaMap JSC",
+            "company_address": "Hà Nội, Việt Nam",
+            "company_phone": "+84 123 456 789",
+            "company_email": "info@mechamap.com",
+            "company_tax_id": "0123456789",
+            "company_tax_code": "0123456789",
+            "company_registration_number": "DKKD-123456789",
+            "company_founded_year": "2025",
+            "company_website": "https:\/\/mechamap.com",
+            "company_description": "MechaMap là công ty công nghệ chuyên phát triển các nền tảng cộng đồng và chia sẻ kiến thức."
+        },
+        "contact": {
+            "contact_email": "contact@mechamap.com",
+            "contact_phone": "+84 123 456 789",
+            "contact_address": "Hà Nội, Việt Nam",
+            "contact_working_hours": "Thứ 2 - Thứ 6: 8:00 - 17:30",
+            "contact_map_embed": "<iframe src=\"https:\/\/www.google.com\/maps\/embed?pb=!1m18!1m12!1m3!1d3919.4241674197956!2d106.69916857486087!3d10.777938089387898!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f4670702e31%3A0xa5777fb3a5bb9972!2sBitexco%20Financial%20Tower!5e0!3m2!1sen!2s!4v1682152762005!5m2!1sen!2s\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"><\/iframe>",
+            "contact_latitude": "10.777939",
+            "contact_longitude": "106.701357"
+        },
+        "social": {
+            "social_facebook": "https:\/\/facebook.com\/mechamap",
+            "social_twitter": "https:\/\/twitter.com\/mechamap",
+            "social_instagram": "https:\/\/instagram.com\/mechamap",
+            "social_linkedin": "https:\/\/linkedin.com\/company\/mechamap",
+            "social_youtube": "https:\/\/youtube.com\/c\/mechamap",
+            "social_tiktok": "https:\/\/tiktok.com\/@mechamap",
+            "social_pinterest": "",
+            "social_github": "https:\/\/github.com\/mechamap"
+        },
+        "api": {
+            "api_google_client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+            "api_google_client_secret": "GOCSPX-abcdefghijklmnopqrstuvwxyz",
+            "api_facebook_app_id": "123456789012345",
+            "api_facebook_app_secret": "abcdefghijklmnopqrstuvwxyz123456",
+            "api_recaptcha_site_key": "6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "api_recaptcha_secret_key": "6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        },
+        "copyright": {
+            "copyright_text": " 2025 MechaMap. Tất cả các quyền được bảo lưu.",
+            "copyright_owner": "MechaMap JSC",
+            "copyright_year": "2025"
+        },
+        "forum": {
+            "forum_threads_per_page": "20",
+            "forum_posts_per_page": "15",
+            "forum_allow_guest_view": "1",
+            "forum_require_email_verification": "1",
+            "forum_allow_file_uploads": "1",
+            "forum_max_file_size": "5",
+            "forum_allowed_file_types": "jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,zip",
+            "forum_max_files_per_post": "5",
+            "forum_enable_reactions": "1",
+            "forum_enable_signatures": "1",
+            "forum_signature_max_length": "500",
+            "forum_enable_polls": "1",
+            "forum_poll_max_options": "10",
+            "forum_poll_max_votes": "1"
+        },
+        "user": {
+            "user_allow_registration": "1",
+            "user_require_email_verification": "1",
+            "user_allow_social_login": "1",
+            "user_default_role": "member",
+            "user_avatar_max_size": "2",
+            "user_avatar_allowed_types": "jpg,jpeg,png,gif",
+            "user_min_password_length": "8",
+            "user_require_strong_password": "1",
+            "user_allow_profile_customization": "1",
+            "user_allow_username_change": "0",
+            "user_username_min_length": "3",
+            "user_username_max_length": "20"
+        },
+        "email": {
+            "email_from_address": "noreply@mechamap.com",
+            "email_from_name": "MechaMap",
+            "email_reply_to": "support@mechamap.com",
+            "email_welcome_subject": "Chào mừng bạn đến với MechaMap",
+            "email_verification_subject": "Xác nhận địa chỉ email của bạn",
+            "email_password_reset_subject": "Đặt lại mật khẩu của bạn",
+            "email_notification_subject": "Thông báo mới từ MechaMap"
+        },
+        "seo": {
+            "seo_use_custom_settings": "1",
+            "seo_title_separator": " | ",
+            "seo_title_append_site_name": "1",
+            "seo_enable_sitemap": "1",
+            "seo_sitemap_frequency": "weekly",
+            "seo_sitemap_priority": "0.8"
+        },
+        "wiki": {
+            "wiki_enable": "1",
+            "wiki_articles_per_page": "10",
+            "wiki_allow_guest_view": "1",
+            "wiki_require_approval": "1",
+            "wiki_enable_versions": "1",
+            "wiki_max_versions": "10",
+            "wiki_enable_comments": "1",
+            "wiki_enable_ratings": "1",
+            "wiki_featured_articles": "5"
+        },
+        "showcase": {
+            "showcase_enable": "1",
+            "showcase_projects_per_page": "12",
+            "showcase_allow_guest_view": "1",
+            "showcase_require_approval": "1",
+            "showcase_max_file_size": "10",
+            "showcase_allowed_file_types": "jpg,jpeg,png,gif,pdf,doc,docx,zip",
+            "showcase_max_files_per_project": "10",
+            "showcase_enable_comments": "1",
+            "showcase_enable_ratings": "1",
+            "showcase_featured_projects": "6",
+            "gallery_enable": "1",
+            "gallery_items_per_page": "24",
+            "gallery_max_file_size": "5",
+            "gallery_allowed_file_types": "jpg,jpeg,png,gif,webp"
+        },
+        "search": {
+            "search_enable": "1",
+            "search_results_per_page": "20",
+            "search_min_length": "3",
+            "search_max_length": "100",
+            "search_enable_advanced": "1",
+            "search_include_threads": "1",
+            "search_include_posts": "1",
+            "search_include_users": "1",
+            "search_include_wiki": "1",
+            "search_include_showcase": "1",
+            "search_highlight_results": "1",
+            "enable_search_analytics": "1"
+        },
+        "alerts": {
+            "alerts_enable": "1",
+            "alerts_per_page": "20",
+            "alerts_auto_read": "0",
+            "alerts_auto_delete": "0",
+            "alerts_delete_after": "30",
+            "alerts_enable_email": "1",
+            "alerts_email_frequency": "instant"
+        },
+        "messages": {
+            "messages_enable": "1",
+            "messages_per_page": "20",
+            "messages_max_length": "5000",
+            "messages_allow_attachments": "1",
+            "messages_max_attachments": "5",
+            "messages_max_attachment_size": "2",
+            "messages_allowed_attachment_types": "jpg,jpeg,png,gif,pdf,doc,docx,zip",
+            "messages_enable_group_conversations": "1",
+            "messages_max_participants": "10",
+            "messages_enable_read_receipts": "1"
+        },
+        "security": {
+            "security_enable_recaptcha": "1",
+            "security_recaptcha_site_key": "6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "security_recaptcha_secret_key": "6LcXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "security_enable_2fa": "0",
+            "security_login_attempts": "5",
+            "security_login_lockout_time": "30",
+            "security_password_expiry": "90",
+            "security_session_lifetime": "120",
+            "security_enable_ssl": "1",
+            "security_enable_xss_protection": "1",
+            "security_enable_csrf_protection": "1"
+        }
+    },
+    "message": "Lấy cài đặt thành công"
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Forums</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /forums</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 331.76ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Thảo luận chung",
+            "slug": "thao-luan-chung",
+            "description": "Thảo luận chung về các chủ đề cơ khí và tự động hóa",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z",
+            "threads_count": 35,
+            "latest_thread": {
+                "id": 25,
+                "title": "Quy hoạch: Thành phố thông minh Đông Anh - Hà Nội",
+                "slug": "quy-hoach-thanh-pho-thong-minh-dong-anh-ha-noi-Kz1Sh",
+                "content": "Thành phố thông minh Đông Anh quy mô 30,000 ha với 500,000 dân. Smart city platform tích hợp 15 domain: giao thông, y tế, giáo dục, môi trường, an ninh. 5G coverage 100%, fiber optic đến từng hộ gia đình. Autonomous public transport và sharing economy. Carbon neutral city 2040.",
+                "status": null,
+                "user_id": 8,
+                "forum_id": 1,
+                "category_id": 4,
+                "is_sticky": false,
+                "is_locked": false,
+                "is_featured": true,
+                "view_count": 1585,
+                "created_at": "2025-06-01T04:55:31.000000Z",
+                "updated_at": "2025-06-01T04:55:31.000000Z"
+            }
+        },
+        {
+            "id": 14,
+            "name": "CNC & Gia công chính xác",
+            "slug": "cnc-gia-cong-chinh-xac",
+            "description": "Diễn đàn CNC & Gia công chính xác",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:32.000000Z",
+            "updated_at": "2025-06-01T04:55:32.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 15,
+            "name": "Thiết kế ô tô",
+            "slug": "thiet-ke-o-to",
+            "description": "Diễn đàn Thiết kế ô tô",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:33.000000Z",
+            "updated_at": "2025-06-01T04:55:33.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 16,
+            "name": "Máy công nghiệp",
+            "slug": "may-cong-nghiep",
+            "description": "Diễn đàn Máy công nghiệp",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:36.000000Z",
+            "updated_at": "2025-06-01T04:55:36.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 17,
+            "name": "Tự động hóa sản xuất",
+            "slug": "tu-dong-hoa-san-xuat",
+            "description": "Diễn đàn Tự động hóa sản xuất",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:37.000000Z",
+            "updated_at": "2025-06-01T04:55:37.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 18,
+            "name": "Công nghệ đúc",
+            "slug": "cong-nghe-duc",
+            "description": "Diễn đàn Công nghệ đúc",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:38.000000Z",
+            "updated_at": "2025-06-01T04:55:38.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 19,
+            "name": "Công nghệ nhựa",
+            "slug": "cong-nghe-nhua",
+            "description": "Diễn đàn Công nghệ nhựa",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:42.000000Z",
+            "updated_at": "2025-06-01T04:55:42.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 20,
+            "name": "Xe điện",
+            "slug": "xe-dien",
+            "description": "Diễn đàn Xe điện",
+            "parent_id": null,
+            "order": 0,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:43.000000Z",
+            "updated_at": "2025-06-01T04:55:43.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 5,
+            "name": "Công nghệ",
+            "slug": "cong-nghe",
+            "description": "Thảo luận về công nghệ, thiết bị và phần mềm kỹ thuật",
+            "parent_id": null,
+            "order": 1,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:26.000000Z",
+            "updated_at": "2025-06-01T04:55:26.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        },
+        {
+            "id": 10,
+            "name": "Cộng đồng",
+            "slug": "cong-dong",
+            "description": "Sự kiện cộng đồng, thông báo và phản hồi",
+            "parent_id": null,
+            "order": 2,
+            "is_private": false,
+            "created_at": "2025-06-01T04:55:26.000000Z",
+            "updated_at": "2025-06-01T04:55:26.000000Z",
+            "threads_count": 0,
+            "latest_thread": null
+        }
+    ],
+    "message": "Lấy danh sách diễn đàn thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Categories</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /categories</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 328.14ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "Tin tức",
+            "slug": "tin-tuc",
+            "description": "Tin tức mới nhất về các dự án xây dựng",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z"
+        },
+        {
+            "id": 10,
+            "name": "Thiết kế máy",
+            "slug": "thiet-ke-may",
+            "description": "Danh mục Thiết kế máy",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:32.000000Z",
+            "updated_at": "2025-06-01T04:55:32.000000Z"
+        },
+        {
+            "id": 11,
+            "name": "Động cơ & Hệ thống truyền động",
+            "slug": "dong-co-he-thong-truyen-dong",
+            "description": "Danh mục Động cơ & Hệ thống truyền động",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:33.000000Z",
+            "updated_at": "2025-06-01T04:55:33.000000Z"
+        },
+        {
+            "id": 12,
+            "name": "Hệ thống thủy lực & khí nén",
+            "slug": "he-thong-thuy-luc-khi-nen",
+            "description": "Danh mục Hệ thống thủy lực & khí nén",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:36.000000Z",
+            "updated_at": "2025-06-01T04:55:36.000000Z"
+        },
+        {
+            "id": 13,
+            "name": "Robot & Tự động hóa",
+            "slug": "robot-tu-dong-hoa",
+            "description": "Danh mục Robot & Tự động hóa",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:37.000000Z",
+            "updated_at": "2025-06-01T04:55:37.000000Z"
+        },
+        {
+            "id": 14,
+            "name": "Khuôn mẫu & Đúc",
+            "slug": "khuon-mau-duc",
+            "description": "Danh mục Khuôn mẫu & Đúc",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:38.000000Z",
+            "updated_at": "2025-06-01T04:55:38.000000Z"
+        },
+        {
+            "id": 15,
+            "name": "Hệ thống vận chuyển & Băng tải",
+            "slug": "he-thong-van-chuyen-bang-tai",
+            "description": "Danh mục Hệ thống vận chuyển & Băng tải",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:39.000000Z",
+            "updated_at": "2025-06-01T04:55:39.000000Z"
+        },
+        {
+            "id": 16,
+            "name": "Máy công cụ",
+            "slug": "may-cong-cu",
+            "description": "Danh mục Máy công cụ",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:40.000000Z",
+            "updated_at": "2025-06-01T04:55:40.000000Z"
+        },
+        {
+            "id": 17,
+            "name": "Điều khiển & Tự động hóa",
+            "slug": "dieu-khien-tu-dong-hoa",
+            "description": "Danh mục Điều khiển & Tự động hóa",
+            "parent_id": null,
+            "order": 0,
+            "created_at": "2025-06-01T04:55:44.000000Z",
+            "updated_at": "2025-06-01T04:55:44.000000Z"
+        },
+        {
+            "id": 2,
+            "name": "Dự án",
+            "slug": "du-an",
+            "description": "Thảo luận về các dự án đang triển khai",
+            "parent_id": null,
+            "order": 1,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z"
+        },
+        {
+            "id": 3,
+            "name": "Kiến trúc",
+            "slug": "kien-truc",
+            "description": "Thảo luận về kiến trúc và thiết kế",
+            "parent_id": null,
+            "order": 2,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z"
+        },
+        {
+            "id": 4,
+            "name": "Quy hoạch đô thị",
+            "slug": "quy-hoach-do-thi",
+            "description": "Thảo luận về quy hoạch và phát triển đô thị",
+            "parent_id": null,
+            "order": 3,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z"
+        },
+        {
+            "id": 5,
+            "name": "Hỏi đáp",
+            "slug": "hoi-dap",
+            "description": "Đặt câu hỏi và nhận câu trả lời từ cộng đồng",
+            "parent_id": null,
+            "order": 4,
+            "created_at": "2025-06-01T04:55:25.000000Z",
+            "updated_at": "2025-06-01T04:55:25.000000Z"
+        }
+    ],
+    "message": "Lấy danh sách danh mục thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Threads</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /threads</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 325.36ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "current_page": 1,
+        "data": [],
+        "first_page_url": "http:\/\/localhost:8000\/api\/v1\/threads?page=1",
+        "from": null,
+        "last_page": 1,
+        "last_page_url": "http:\/\/localhost:8000\/api\/v1\/threads?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Trước",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost:8000\/api\/v1\/threads?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Sau &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "http:\/\/localhost:8000\/api\/v1\/threads",
+        "per_page": 15,
+        "prev_page_url": null,
+        "to": null,
+        "total": 0
+    },
+    "message": "Lấy danh sách chủ đề thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Tags</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /tags</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 341.84ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 1,
+                "name": "Skyscraper",
+                "slug": "skyscraper",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 2,
+                "name": "Megatall",
+                "slug": "megatall",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 3,
+                "name": "Supertall",
+                "slug": "supertall",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 4,
+                "name": "Residential",
+                "slug": "residential",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 5,
+                "name": "Office",
+                "slug": "office",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 6,
+                "name": "Mixed-use",
+                "slug": "mixed-use",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 7,
+                "name": "Hotel",
+                "slug": "hotel",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 8,
+                "name": "Retail",
+                "slug": "retail",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 9,
+                "name": "Under Construction",
+                "slug": "under-construction",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 10,
+                "name": "Proposed",
+                "slug": "proposed",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 11,
+                "name": "Completed",
+                "slug": "completed",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 12,
+                "name": "On Hold",
+                "slug": "on-hold",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 13,
+                "name": "Cancelled",
+                "slug": "cancelled",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 14,
+                "name": "New York",
+                "slug": "new-york",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 15,
+                "name": "Chicago",
+                "slug": "chicago",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 16,
+                "name": "Los Angeles",
+                "slug": "los-angeles",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 17,
+                "name": "San Francisco",
+                "slug": "san-francisco",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 18,
+                "name": "Miami",
+                "slug": "miami",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 19,
+                "name": "Houston",
+                "slug": "houston",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 20,
+                "name": "Dallas",
+                "slug": "dallas",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 21,
+                "name": "Boston",
+                "slug": "boston",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 22,
+                "name": "Seattle",
+                "slug": "seattle",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 23,
+                "name": "Philadelphia",
+                "slug": "philadelphia",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 24,
+                "name": "Washington DC",
+                "slug": "washington-dc",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 25,
+                "name": "Atlanta",
+                "slug": "atlanta",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 26,
+                "name": "Denver",
+                "slug": "denver",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 27,
+                "name": "Las Vegas",
+                "slug": "las-vegas",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 28,
+                "name": "Phoenix",
+                "slug": "phoenix",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 29,
+                "name": "Portland",
+                "slug": "portland",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            },
+            {
+                "id": 30,
+                "name": "San Diego",
+                "slug": "san-diego",
+                "description": null,
+                "created_at": "2025-06-01T04:55:26.000000Z",
+                "updated_at": "2025-06-01T04:55:26.000000Z",
+                "threads_count": 0
+            }
+        ],
+        "first_page_url": "http:\/\/localhost:8000\/api\/v1\/tags?page=1",
+        "from": 1,
+        "last_page": 1,
+        "last_page_url": "http:\/\/localhost:8000\/api\/v1\/tags?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Trước",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost:8000\/api\/v1\/tags?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Sau &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "http:\/\/localhost:8000\/api\/v1\/tags",
+        "per_page": 50,
+        "prev_page_url": null,
+        "to": 30,
+        "total": 30
+    },
+    "message": "Lấy danh sách tags thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Get Showcases</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /showcases</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 365.05ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "current_page": 1,
+        "data": [],
+        "first_page_url": "http:\/\/localhost:8000\/api\/v1\/showcases?page=1",
+        "from": null,
+        "last_page": 1,
+        "last_page_url": "http:\/\/localhost:8000\/api\/v1\/showcases?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Trước",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost:8000\/api\/v1\/showcases?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Sau &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "http:\/\/localhost:8000\/api\/v1\/showcases",
+        "per_page": 15,
+        "prev_page_url": null,
+        "to": null,
+        "total": 0
+    },
+    "message": "Lấy danh sách showcase thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Search</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /search?query=test</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 338.75ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "threads": {
+            "current_page": 1,
+            "data": [],
+            "first_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "from": null,
+            "last_page": 1,
+            "last_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "links": [
+                {
+                    "url": null,
+                    "label": "&laquo; Trước",
+                    "active": false
+                },
+                {
+                    "url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+                    "label": "1",
+                    "active": true
+                },
+                {
+                    "url": null,
+                    "label": "Sau &raquo;",
+                    "active": false
+                }
+            ],
+            "next_page_url": null,
+            "path": "http:\/\/localhost:8000\/api\/v1\/search",
+            "per_page": 15,
+            "prev_page_url": null,
+            "to": null,
+            "total": 0
+        },
+        "forums": {
+            "current_page": 1,
+            "data": [],
+            "first_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "from": null,
+            "last_page": 1,
+            "last_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "links": [
+                {
+                    "url": null,
+                    "label": "&laquo; Trước",
+                    "active": false
+                },
+                {
+                    "url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+                    "label": "1",
+                    "active": true
+                },
+                {
+                    "url": null,
+                    "label": "Sau &raquo;",
+                    "active": false
+                }
+            ],
+            "next_page_url": null,
+            "path": "http:\/\/localhost:8000\/api\/v1\/search",
+            "per_page": 15,
+            "prev_page_url": null,
+            "to": null,
+            "total": 0
+        },
+        "users": {
+            "current_page": 1,
+            "data": [],
+            "first_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "from": null,
+            "last_page": 1,
+            "last_page_url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+            "links": [
+                {
+                    "url": null,
+                    "label": "&laquo; Trước",
+                    "active": false
+                },
+                {
+                    "url": "http:\/\/localhost:8000\/api\/v1\/search?page=1",
+                    "label": "1",
+                    "active": true
+                },
+                {
+                    "url": null,
+                    "label": "Sau &raquo;",
+                    "active": false
+                }
+            ],
+            "next_page_url": null,
+            "path": "http:\/\/localhost:8000\/api\/v1\/search",
+            "per_page": 15,
+            "prev_page_url": null,
+            "to": null,
+            "total": 0
+        }
+    },
+    "message": "Tìm kiếm thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Search Suggestions</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /search/suggestions?query=laravel</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 332.39ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": [],
+    "message": "Lấy gợi ý tìm kiếm thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Forum Stats</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /stats/forum</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 336.62ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "threadCount": 35,
+        "userCount": 16,
+        "commentCount": 628,
+        "establishedYear": 2023
+    },
+    "message": "Lấy thống kê diễn đàn thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Popular Forums</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /stats/forums/popular</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 333.01ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "forums": {
+            "data": [
+                {
+                    "id": 1,
+                    "name": "Thảo luận chung",
+                    "slug": "thao-luan-chung",
+                    "description": "Thảo luận chung về các chủ đề cơ khí và tự động hóa",
+                    "parent_id": null,
+                    "order": 0,
+                    "is_private": false,
+                    "created_at": "2025-06-01T04:55:25.000000Z",
+                    "updated_at": "2025-06-01T04:55:25.000000Z",
+                    "threads_count": 35
+                },
+                {
+                    "id": 2,
+                    "name": "Giới thiệu bản thân",
+                    "slug": "gioi-thieu-ban-than",
+                    "description": "Giới thiệu bản thân với cộng đồng MechaMap",
+                    "parent_id": 1,
+                    "order": 0,
+                    "is_private": false,
+                    "created_at": "2025-06-01T04:55:26.000000Z",
+                    "updated_at": "2025-06-01T04:55:26.000000Z",
+                    "threads_count": 0
+                },
+                {
+                    "id": 3,
+                    "name": "Chủ đề tự do",
+                    "slug": "chu-de-tu-do",
+                    "description": "Thảo luận các chủ đề không thuộc các chuyên mục khác",
+                    "parent_id": 1,
+                    "order": 1,
+                    "is_private": false,
+                    "created_at": "2025-06-01T04:55:26.000000Z",
+                    "updated_at": "2025-06-01T04:55:26.000000Z",
+                    "threads_count": 0
+                },
+                {
+                    "id": 4,
+                    "name": "Tin tức & Thông báo",
+                    "slug": "tin-tuc-thong-bao",
+                    "description": "Tin tức mới nhất và thông báo quan trọng",
+                    "parent_id": 1,
+                    "order": 2,
+                    "is_private": false,
+                    "created_at": "2025-06-01T04:55:26.000000Z",
+                    "updated_at": "2025-06-01T04:55:26.000000Z",
+                    "threads_count": 0
+                },
+                {
+                    "id": 5,
+                    "name": "Công nghệ",
+                    "slug": "cong-nghe",
+                    "description": "Thảo luận về công nghệ, thiết bị và phần mềm kỹ thuật",
+                    "parent_id": null,
+                    "order": 1,
+                    "is_private": false,
+                    "created_at": "2025-06-01T04:55:26.000000Z",
+                    "updated_at": "2025-06-01T04:55:26.000000Z",
+                    "threads_count": 0
+                }
+            ],
+            "meta": {
+                "current_page": 1,
+                "from": 1,
+                "last_page": 1,
+                "path": "http:\/\/localhost:8000\/api\/v1\/stats\/forums\/popular",
+                "per_page": 5,
+                "to": 5,
+                "total": 5
+            }
+        }
+    },
+    "message": "Lấy danh sách diễn đàn phổ biến thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Active Users</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /stats/users/active</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 334.93ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "users": {
+            "data": [
+                {
+                    "id": 14,
+                    "name": "Lý Thị Motor",
+                    "username": "motor_specialist",
+                    "email": "motor@mechamap.com",
+                    "role": "member",
+                    "permissions": null,
+                    "status": "active",
+                    "avatar": null,
+                    "about_me": "Chuyên gia động cơ và biến tần. Có kinh nghiệm sửa chữa và lắp đặt các loại motor AC\/DC, servo motor trong công nghiệp.",
+                    "website": null,
+                    "location": "Đà Nẵng, Việt Nam",
+                    "signature": "Động cơ | Biến tần | Điện tử Công suất",
+                    "points": 3200,
+                    "reaction_score": 3365,
+                    "last_seen_at": "2025-05-31T18:55:27.000000Z",
+                    "last_activity": null,
+                    "setup_progress": 0,
+                    "email_verified_at": "2025-06-01T04:55:27.000000Z",
+                    "is_active": 1,
+                    "last_login_at": null,
+                    "created_at": "2025-06-01T04:55:28.000000Z",
+                    "updated_at": "2025-06-01T04:55:46.000000Z",
+                    "banned_at": null,
+                    "banned_reason": null,
+                    "threads_count": 4,
+                    "comments_count": 52,
+                    "avatar_url": "https:\/\/ui-avatars.com\/api\/?name=M&background=random&color=fff",
+                    "contribution_count": 56
+                },
+                {
+                    "id": 5,
+                    "name": "Admin User",
+                    "username": "admin_mechamap",
+                    "email": "admin@mechamap.com",
+                    "role": "admin",
+                    "permissions": null,
+                    "status": "active",
+                    "avatar": null,
+                    "about_me": "Chuyên gia hàng đầu về tự động hóa công nghiệp tại Việt Nam với hơn 15 năm kinh nghiệm trong lĩnh vực thiết kế và triển khai hệ thống robot công nghiệp.",
+                    "website": "https:\/\/mechaengineering.vn",
+                    "location": "TP. Hồ Chí Minh, Việt Nam",
+                    "signature": "Đổi mới trong Tự động hóa - Xây dựng Tương lai Sản xuất",
+                    "points": 50000,
+                    "reaction_score": 50130,
+                    "last_seen_at": "2025-06-02T01:36:07.000000Z",
+                    "last_activity": "generated::Ggn9MHkM8YfJ1exP",
+                    "setup_progress": 0,
+                    "email_verified_at": "2025-06-01T15:33:32.000000Z",
+                    "is_active": 1,
+                    "last_login_at": null,
+                    "created_at": "2025-06-01T04:55:28.000000Z",
+                    "updated_at": "2025-06-02T01:36:07.000000Z",
+                    "banned_at": null,
+                    "banned_reason": null,
+                    "threads_count": 1,
+                    "comments_count": 47,
+                    "avatar_url": "https:\/\/ui-avatars.com\/api\/?name=A&background=random&color=fff",
+                    "contribution_count": 48
+                },
+                {
+                    "id": 10,
+                    "name": "Ngô Văn PLC",
+                    "username": "plc_programmer",
+                    "email": "plc.pro@mechamap.com",
+                    "role": "member",
+                    "permissions": null,
+                    "status": "active",
+                    "avatar": null,
+                    "about_me": "Lập trình viên PLC Siemens, Mitsubishi, Omron với 7 năm kinh nghiệm. Chuyên về hệ thống điều khiển tự động trong sản xuất.",
+                    "website": null,
+                    "location": "Vĩnh Phúc, Việt Nam",
+                    "signature": "Lập trình PLC | SCADA | Mạng Công nghiệp",
+                    "points": 6800,
+                    "reaction_score": 6995,
+                    "last_seen_at": "2025-05-31T23:55:27.000000Z",
+                    "last_activity": null,
+                    "setup_progress": 0,
+                    "email_verified_at": "2025-06-01T04:55:27.000000Z",
+                    "is_active": 1,
+                    "last_login_at": null,
+                    "created_at": "2025-06-01T04:55:28.000000Z",
+                    "updated_at": "2025-06-01T04:55:46.000000Z",
+                    "banned_at": null,
+                    "banned_reason": null,
+                    "threads_count": 3,
+                    "comments_count": 45,
+                    "avatar_url": "https:\/\/ui-avatars.com\/api\/?name=P&background=random&color=fff",
+                    "contribution_count": 48
+                },
+                {
+                    "id": 4,
+                    "name": "Member",
+                    "username": "member",
+                    "email": "member@mechamap.test",
+                    "role": "member",
+                    "permissions": null,
+                    "status": "Registered",
+                    "avatar": null,
+                    "about_me": null,
+                    "website": null,
+                    "location": null,
+                    "signature": null,
+                    "points": 0,
+                    "reaction_score": 75,
+                    "last_seen_at": null,
+                    "last_activity": null,
+                    "setup_progress": 0,
+                    "email_verified_at": "2025-06-01T04:55:25.000000Z",
+                    "is_active": 1,
+                    "last_login_at": null,
+                    "created_at": "2025-06-01T04:55:25.000000Z",
+                    "updated_at": "2025-06-01T04:55:46.000000Z",
+                    "banned_at": null,
+                    "banned_reason": null,
+                    "threads_count": 0,
+                    "comments_count": 46,
+                    "avatar_url": "https:\/\/ui-avatars.com\/api\/?name=M&background=random&color=fff",
+                    "contribution_count": 46
+                },
+                {
+                    "id": 3,
+                    "name": "Senior",
+                    "username": "senior",
+                    "email": "senior@mechamap.test",
+                    "role": "senior",
+                    "permissions": null,
+                    "status": "Registered",
+                    "avatar": null,
+                    "about_me": null,
+                    "website": null,
+                    "location": null,
+                    "signature": null,
+                    "points": 0,
+                    "reaction_score": 95,
+                    "last_seen_at": null,
+                    "last_activity": null,
+                    "setup_progress": 0,
+                    "email_verified_at": "2025-06-01T04:55:25.000000Z",
+                    "is_active": 1,
+                    "last_login_at": null,
+                    "created_at": "2025-06-01T04:55:25.000000Z",
+                    "updated_at": "2025-06-01T04:55:46.000000Z",
+                    "banned_at": null,
+                    "banned_reason": null,
+                    "threads_count": 3,
+                    "comments_count": 41,
+                    "avatar_url": "https:\/\/ui-avatars.com\/api\/?name=S&background=random&color=fff",
+                    "contribution_count": 44
+                }
+            ],
+            "meta": {
+                "current_page": 1,
+                "from": 1,
+                "last_page": 1,
+                "path": "http:\/\/localhost:8000\/api\/v1\/stats\/users\/active",
+                "per_page": 5,
+                "to": 5,
+                "total": 5
+            }
+        }
+    },
+    "message": "Lấy danh sách người dùng tích cực thành công."
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>SEO Settings</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /seo</p>
+                    <p><strong>Expected:</strong> 200 | <strong>Actual:</strong> 200 | <strong>Duration:</strong> 318.99ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": true,
+    "data": {
+        "general": {
+            "site_title": "MechaMap - Diễn đàn cộng đồng",
+            "site_description": "MechaMap là diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm về công nghệ, lập trình, thiết kế và nhiều lĩnh vực khác.",
+            "site_keywords": "mechamap, diễn đàn, cộng đồng, forum, công nghệ, lập trình, thiết kế, chia sẻ, kiến thức",
+            "allow_indexing": "1",
+            "google_analytics_id": "G-XXXXXXXXXX",
+            "google_search_console_id": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "facebook_app_id": "123456789012345",
+            "twitter_username": "mechamap"
+        },
+        "social": {
+            "og_title": "MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức",
+            "og_description": "Tham gia MechaMap để chia sẻ và học hỏi kiến thức từ cộng đồng về công nghệ, lập trình, thiết kế và nhiều lĩnh vực khác.",
+            "og_image": "\/images\/og-image.jpg",
+            "twitter_card": "summary_large_image",
+            "twitter_title": "MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức",
+            "twitter_description": "Tham gia MechaMap để chia sẻ và học hỏi kiến thức từ cộng đồng về công nghệ, lập trình, thiết kế và nhiều lĩnh vực khác.",
+            "twitter_image": "\/images\/twitter-image.jpg"
+        },
+        "advanced": {
+            "header_scripts": "<!-- Header Scripts -->",
+            "footer_scripts": "<!-- Footer Scripts -->",
+            "custom_css": "\/* Custom CSS *\/",
+            "canonical_url": ""
+        },
+        "robots": {
+            "robots_content": "User-agent: *\nAllow: \/\nDisallow: \/admin\/\nDisallow: \/profile\/\nDisallow: \/api\/\n\nSitemap: https:\/\/backend.mechamap.com\/sitemap.xml"
+        }
+    },
+    "message": "Lấy cài đặt SEO thành công"
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Invalid Login</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> POST | <strong>Endpoint:</strong> /auth/login</p>
+                    <p><strong>Expected:</strong> 422 | <strong>Actual:</strong> 422 | <strong>Duration:</strong> 349.77ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": false,
+    "message": "Thông tin đăng nhập không chính xác.",
+    "errors": {
+        "email": [
+            "Trường email phải là một địa chỉ email hợp lệ."
+        ],
+        "password": [
+            "Trường password không được bỏ trống."
+        ]
+    }
+}</pre></div>
+                </div>
+            </div>
+            <div class='test-item'>
+                <div class='test-header'>
+                    <strong>Non-existent Thread</strong>
+                    <span class='status-badge status-pass'>PASS</span>
+                </div>
+                <div class='details'>
+                    <p><strong>Method:</strong> GET | <strong>Endpoint:</strong> /threads/non-existent</p>
+                    <p><strong>Expected:</strong> 404 | <strong>Actual:</strong> 404 | <strong>Duration:</strong> 338.19ms</p><div class='response-body'><strong>Response:</strong><br><pre>{
+    "success": false,
+    "message": "Không tìm thấy chủ đề."
+}</pre></div>
+                </div>
+            </div>
+        </div>
+
+        <div style='margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;'>
+            <h3>📝 Recommendations</h3>
+            <ul><li>Có 1 endpoint(s) failed - kiểm tra logs và cấu hình</li><li>Không thể login - kiểm tra thông tin đăng nhập test</li><li>✅ API hoạt động tốt với pass rate 93.8%</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

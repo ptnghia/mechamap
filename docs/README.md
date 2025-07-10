@@ -1,48 +1,62 @@
 # 📚 MechaMap Documentation Hub
 
-> **Last Updated**: January 2025  
-> **Version**: v2.1 - Comprehensive Documentation Restructure  
-> **Status**: Production Ready Documentation
+> **Nền tảng cộng đồng kỹ sư cơ khí Việt Nam**
+> Version: 2.0 | Last Updated: January 2025 | Status: Production Ready
 
 ---
 
-## 🎯 **QUICK START**
+## 🎯 **BẮT ĐẦU NHANH**
 
-| Role | Start Here | Documentation |
-|------|------------|---------------|
-| **👨‍💻 Developer** | [Development Guide](./development/SETUP_GUIDE.md) | [API Docs](./api/README.md) |
-| **👨‍💼 Administrator** | [Admin Guide](./admin/ADMIN_GUIDE.md) | [Dashboard Docs](./admin/README.md) |
-| **🚀 DevOps** | [Deployment Guide](./deployment/PRODUCTION_GUIDE.md) | [Architecture](./architecture/README.md) |
-| **👥 End User** | [User Guide](./guides/USER_GUIDE.md) | [Features](./features/README.md) |
+### **Tôi là ai?**
+
+| 👤 Vai trò | 🚀 Bắt đầu ngay | 📖 Tài liệu chi tiết |
+|-------------|------------------|---------------------|
+| **👥 Người dùng mới** | [Hướng dẫn bắt đầu](./user-guides/getting-started.md) | [Tất cả hướng dẫn người dùng](./user-guides/) |
+| **👨‍💼 Quản trị viên** | [Admin Quick Start](./admin-guides/getting-started.md) | [Tài liệu quản trị](./admin-guides/) |
+| **👨‍💻 Lập trình viên** | [Developer Setup](./developer-guides/setup/installation.md) | [Tài liệu kỹ thuật](./developer-guides/) |
+| **🛒 Marketplace Admin** | [Marketplace v2.0](./marketplace/README.md) | [Hệ thống phân quyền](./marketplace/PERMISSION_SYSTEM.md) |
+
+### **Tôi muốn làm gì?**
+
+| 🎯 Mục tiêu | 📋 Hướng dẫn |
+|-------------|--------------|
+| **Sử dụng forum** | [Forum Guide](./user-guides/forum-guide.md) |
+| **Mua/bán sản phẩm** | [Marketplace Guide](./user-guides/marketplace-guide.md) |
+| **Quản lý người dùng** | [User Management](./admin-guides/user-management.md) |
+| **Phát triển tính năng** | [Development Guide](./developer-guides/README.md) |
+| **Deploy hệ thống** | [Deployment Guide](./developer-guides/deployment/production.md) |
+| **Tích hợp API** | [API Documentation](./developer-guides/api/README.md) |
 
 ---
 
-## 📁 **DOCUMENTATION STRUCTURE**
+## 🗺️ **BẢN ĐỒ TÀI LIỆU**
 
-### 🔧 **[/admin/](./admin/)** - Administrator Documentation
-- **[Admin Dashboard Audit](./admin/ADMIN_DASHBOARD_AUDIT_2025.md)** - Complete admin system analysis
-- **[Admin Guide](./admin/ADMIN_GUIDE.md)** - Administrator operations manual
-- **[User Management](./admin/USER_MANAGEMENT.md)** - User role and permission system
-- **[Marketplace Management](./admin/MARKETPLACE_MANAGEMENT.md)** - E-commerce administration
-- **[Content Moderation](./admin/CONTENT_MODERATION.md)** - Content management tools
-- **[System Settings](./admin/SYSTEM_SETTINGS.md)** - Configuration management
-- **[📄 Documentation Management](./04-features/admin-panel/documentation-management-guide.md)** - Complete documentation system guide
-- **[🔧 Documentation Technical Specs](./04-features/admin-panel/documentation-technical-specs.md)** - Technical implementation details
+### 📚 **[Hướng dẫn người dùng](./user-guides/)**
+Dành cho end users sử dụng MechaMap
 
-### 🛠️ **[/api/](./api/)** - API Documentation
-- **[API Overview](./api/README.md)** - Complete API reference
-- **[Authentication](./api/AUTHENTICATION.md)** - API authentication methods
-- **[Endpoints](./api/ENDPOINTS.md)** - All API endpoints with examples
-- **[Rate Limiting](./api/RATE_LIMITING.md)** - API usage limits and policies
-- **[Error Handling](./api/ERROR_HANDLING.md)** - Error codes and responses
-- **[Webhooks](./api/WEBHOOKS.md)** - Webhook integration guide
+- 🚀 [Bắt đầu sử dụng](./user-guides/getting-started.md)
+- 💬 [Sử dụng Forum](./user-guides/forum-guide.md)
+- 🛒 [Marketplace](./user-guides/marketplace-guide.md)
+- 🏆 [Showcase](./user-guides/showcase-guide.md)
+- ❓ [FAQ](./user-guides/faq.md)
 
-### 🏗️ **[/architecture/](./architecture/)** - Technical Architecture
-- **[System Architecture](./architecture/SYSTEM_OVERVIEW.md)** - High-level system design
-- **[Database Schema](./architecture/DATABASE_SCHEMA.md)** - Complete database documentation
-- **[Security Model](./architecture/SECURITY_MODEL.md)** - Security implementation details
-- **[Performance](./architecture/PERFORMANCE.md)** - Performance optimization guide
-- **[Scalability](./architecture/SCALABILITY.md)** - Scaling strategies and patterns
+### 👨‍💼 **[Hướng dẫn quản trị](./admin-guides/)**
+Dành cho administrators và moderators
+
+- 🎛️ [Admin Dashboard](./admin-guides/getting-started.md)
+- 👥 [Quản lý người dùng](./admin-guides/user-management.md)
+- 📝 [Kiểm duyệt nội dung](./admin-guides/content-moderation.md)
+- 🛒 [Quản lý Marketplace](./admin-guides/marketplace-admin.md)
+- ⚙️ [Cài đặt hệ thống](./admin-guides/system-settings.md)
+
+### 👨‍💻 **[Hướng dẫn phát triển](./developer-guides/)**
+Dành cho developers và technical team
+
+- 🔧 [Cài đặt môi trường](./developer-guides/setup/)
+- 🏗️ [Kiến trúc hệ thống](./developer-guides/architecture/)
+- 🔌 [API Documentation](./developer-guides/api/)
+- 🧪 [Testing](./developer-guides/testing/)
+- 🚀 [Deployment](./developer-guides/deployment/)
 
 ### 🚀 **[/deployment/](./deployment/)** - Deployment & Operations
 - **[Production Guide](./deployment/PRODUCTION_GUIDE.md)** - Complete production deployment
@@ -60,103 +74,77 @@
 - **[Debugging](./development/DEBUGGING.md)** - Debugging tools and techniques
 - **[Performance Profiling](./development/PROFILING.md)** - Performance analysis tools
 
-### ✨ **[/features/](./features/)** - Feature Documentation
-- **[Forum System](./features/FORUM_SYSTEM.md)** - Community forum features
-- **[Marketplace](./features/MARKETPLACE.md)** - E-commerce functionality
-- **[User Management](./features/USER_MANAGEMENT.md)** - User system features
-- **[Search System](./features/SEARCH_SYSTEM.md)** - Search and discovery
-- **[Messaging](./features/MESSAGING.md)** - Communication features
-- **[Analytics](./features/ANALYTICS.md)** - Analytics and reporting
+### 🛒 **[Marketplace v2.0](./marketplace/)**
+Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 
-### 📖 **[/guides/](./guides/)** - User Guides
-- **[User Guide](./guides/USER_GUIDE.md)** - End user manual
-- **[Getting Started](./guides/GETTING_STARTED.md)** - Quick start for new users
-- **[FAQ](./guides/FAQ.md)** - Frequently asked questions
-- **[Troubleshooting](./guides/TROUBLESHOOTING.md)** - Common issues and solutions
-- **[Best Practices](./guides/BEST_PRACTICES.md)** - Usage recommendations
-
-### 📊 **[/reports/](./reports/)** - Status Reports & Analysis
-- **[Project Status](./reports/PROJECT_STATUS_2025.md)** - Current project status
-- **[Performance Reports](./reports/PERFORMANCE_ANALYSIS.md)** - System performance analysis
-- **[Security Audit](./reports/SECURITY_AUDIT.md)** - Security assessment reports
-- **[Completion Reports](./reports/COMPLETION_REPORTS.md)** - Feature completion tracking
+- 📋 [Tổng quan](./marketplace/README.md)
+- 🔐 [Hệ thống phân quyền](./marketplace/PERMISSION_SYSTEM.md)
+- 🎛️ [Admin Panel](./marketplace/ADMIN_PANEL.md)
+- 🔒 [Download System](./marketplace/DOWNLOAD_SYSTEM.md)
 
 ---
 
-## 🎯 **PROJECT STATUS OVERVIEW**
+## 🆕 **CẬP NHẬT MỚI NHẤT**
 
-### **📊 Current Completion Status**
-| Component | Progress | Status |
-|-----------|----------|--------|
-| **Backend (Laravel)** | **95%** | ✅ Production Ready |
-| **Admin Dashboard** | **95%** | ✅ 16/16 Modules Complete |
-| **API System** | **90%** | ✅ 200+ Endpoints |
-| **Frontend (Blade)** | **85%** | ✅ Responsive UI |
-| **Database** | **100%** | ✅ 61 Tables, Full Schema |
-| **Security** | **95%** | ✅ Multi-layer Security |
-| **Testing** | **90%** | ✅ Comprehensive Tests |
-| **Documentation** | **95%** | ✅ Complete Docs |
+### **Marketplace v2.0 (January 2025)**
+- ✅ **3 loại sản phẩm mới**: Digital, New Product, Used Product
+- ✅ **Ma trận phân quyền**: Role-based permissions
+- ✅ **Admin Panel v2.0**: Dashboard với analytics
+- ✅ **Enhanced Security**: Download system bảo mật
 
-### **🏆 Key Achievements**
-- ✅ **43 Admin Controllers** - Complete admin functionality
-- ✅ **128 Admin Views** - Full administrative interface
-- ✅ **8-Tier Permission System** - Comprehensive role management
-- ✅ **B2B2C Marketplace** - Multi-vendor e-commerce platform
-- ✅ **Multi-language Support** - Vietnamese/English localization
-- ✅ **Advanced Security** - 2FA, rate limiting, audit logging
-
-### **🚀 Next Phase Priorities**
-1. **Mobile App Development** - React Native application
-2. **Advanced Analytics** - Business intelligence dashboard
-3. **Real-time Features** - WebSocket integration
-4. **Third-party Integrations** - External service connections
-5. **Performance Optimization** - Advanced caching and CDN
+### **Documentation Restructure**
+- ✅ **Tổ chức lại hoàn toàn**: Cấu trúc khoa học theo user journey
+- ✅ **Navigation cải thiện**: Quick start và sitemap
+- ✅ **Content chuẩn hóa**: Consistent formatting và style
+- ✅ **Cross-references**: Liên kết giữa các tài liệu
 
 ---
 
-## 🔍 **FINDING INFORMATION**
+## 🔍 **TÌM KIẾM NHANH**
 
-### **By Role**
-- **System Administrators**: Start with [Admin Guide](./admin/ADMIN_GUIDE.md)
-- **Developers**: Begin with [Development Setup](./development/SETUP_GUIDE.md)
-- **DevOps Engineers**: Check [Deployment Guide](./deployment/PRODUCTION_GUIDE.md)
-- **Business Users**: Read [User Guide](./guides/USER_GUIDE.md)
+### **Theo chức năng:**
+- **Forum**: [User Guide](./user-guides/forum-guide.md) | [Admin Guide](./admin-guides/content-moderation.md) | [Developer Guide](./developer-guides/features/forum-system.md)
+- **Marketplace**: [User Guide](./user-guides/marketplace-guide.md) | [Admin Guide](./admin-guides/marketplace-admin.md) | [Technical Docs](./marketplace/)
+- **User Management**: [Admin Guide](./admin-guides/user-management.md) | [API Docs](./developer-guides/api/endpoints.md#users)
+- **API**: [Overview](./developer-guides/api/README.md) | [Authentication](./developer-guides/api/authentication.md) | [Examples](./developer-guides/api/examples.md)
 
-### **By Task**
-- **Setting up development**: [Development Setup](./development/SETUP_GUIDE.md)
-- **Deploying to production**: [Production Deployment](./deployment/PRODUCTION_GUIDE.md)
-- **Managing users**: [User Management](./admin/USER_MANAGEMENT.md)
-- **API integration**: [API Documentation](./api/README.md)
-- **Troubleshooting**: [Troubleshooting Guide](./guides/TROUBLESHOOTING.md)
-
-### **By Component**
-- **Database**: [Database Schema](./architecture/DATABASE_SCHEMA.md)
-- **Security**: [Security Model](./architecture/SECURITY_MODEL.md)
-- **Performance**: [Performance Guide](./architecture/PERFORMANCE.md)
-- **Features**: [Feature Documentation](./features/README.md)
+### **Theo vấn đề:**
+- **Cài đặt**: [Installation](./developer-guides/setup/installation.md) | [Environment](./developer-guides/setup/environment.md)
+- **Lỗi thường gặp**: [Troubleshooting](./user-guides/troubleshooting.md) | [FAQ](./user-guides/faq.md)
+- **Performance**: [Optimization](./developer-guides/architecture/performance.md) | [Monitoring](./developer-guides/deployment/monitoring.md)
+- **Security**: [Security Model](./developer-guides/architecture/security.md) | [Permissions](./marketplace/PERMISSION_SYSTEM.md)
 
 ---
 
-## 📞 **SUPPORT & CONTACT**
+## 📞 **HỖ TRỢ**
 
-- 🌐 **Website**: [mechamap.com](https://mechamap.com)
-- 📧 **Email**: support@mechamap.com
+### **Cần trợ giúp?**
+- 📧 **Email**: support@mechamap.vn
 - 💬 **Discord**: [MechaMap Community](https://discord.gg/mechamap)
-- 📱 **Facebook**: [MechaMap Vietnam](https://facebook.com/mechamap.vn)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/ptnghia/mechamap/issues)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/mechamap/issues)
+- 📖 **Documentation Issues**: [Docs Issues](https://github.com/mechamap/docs/issues)
+
+### **Đóng góp:**
+- 🤝 [Contributing Guidelines](./developer-guides/contributing/code-standards.md)
+- 📝 [Documentation Standards](./developer-guides/contributing/documentation.md)
+- 🔄 [Git Workflow](./developer-guides/contributing/git-workflow.md)
 
 ---
 
-## 📄 **DOCUMENTATION STANDARDS**
+## 📊 **THỐNG KÊ DỰ ÁN**
 
-All documentation follows these standards:
-- ✅ **Markdown format** with consistent styling
-- ✅ **Code examples** with syntax highlighting
-- ✅ **Screenshots** for UI documentation
-- ✅ **Cross-references** between related documents
-- ✅ **Version control** with update timestamps
-- ✅ **Bilingual support** (Vietnamese/English)
+| Metric | Value | Status |
+|--------|-------|--------|
+| **Documentation Coverage** | 95% | ✅ Excellent |
+| **API Endpoints Documented** | 100% | ✅ Complete |
+| **User Guides** | 6 guides | ✅ Comprehensive |
+| **Developer Guides** | 20+ guides | ✅ Detailed |
+| **Last Updated** | January 2025 | ✅ Current |
 
 ---
 
-**🔄 Last Updated**: January 2025 | **📝 Version**: 2.1 | **👥 Contributors**: MechaMap Team
+## 🗂️ **SITEMAP**
+
+📋 **[Xem sitemap đầy đủ](./SITEMAP.md)** - Danh sách tất cả tài liệu có sẵn
+
+

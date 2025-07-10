@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceSeller;
 use App\Models\ProductCategory;
+use App\Notifications\ProductApprovalNotification;
+use App\Services\MarketplacePermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -90,7 +92,7 @@ class MarketplaceProductController extends Controller
             'short_description' => 'nullable|string|max:500',
             'seller_id' => 'required|exists:marketplace_sellers,id',
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'product_type' => 'required|in:physical,digital,service',
+            'product_type' => 'required|in:digital,new_product,used_product',
             'seller_type' => 'required|in:supplier,manufacturer,brand',
             'industry_category' => 'nullable|string',
             'price' => 'required|numeric|min:0',
@@ -205,7 +207,7 @@ class MarketplaceProductController extends Controller
             'short_description' => 'nullable|string|max:500',
             'seller_id' => 'required|exists:marketplace_sellers,id',
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'product_type' => 'required|in:physical,digital,service',
+            'product_type' => 'required|in:digital,new_product,used_product',
             'seller_type' => 'required|in:supplier,manufacturer,brand',
             'industry_category' => 'nullable|string',
             'price' => 'required|numeric|min:0',
@@ -256,22 +258,171 @@ class MarketplaceProductController extends Controller
     }
 
     /**
+     * Display pending products for approval
+     */
+    public function pending(Request $request)
+    {
+        $query = MarketplaceProduct::with(['seller.user', 'category'])
+            ->where('status', 'pending');
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('sku', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('seller.user', function ($sq) use ($request) {
+                      $sq->where('name', 'like', '%' . $request->search . '%');
+                  })
+                  ->orWhereHas('seller', function ($sq) use ($request) {
+                      $sq->where('business_name', 'like', '%' . $request->search . '%');
+                  });
+            });
+        }
+
+        if ($request->filled('seller_type')) {
+            $query->where('seller_type', $request->seller_type);
+        }
+
+        if ($request->filled('product_type')) {
+            $query->where('product_type', $request->product_type);
+        }
+
+        if ($request->filled('created_filter')) {
+            switch ($request->created_filter) {
+                case 'today':
+                    $query->whereDate('created_at', today());
+                    break;
+                case 'yesterday':
+                    $query->whereDate('created_at', today()->subDay());
+                    break;
+                case 'week':
+                    $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $query->whereMonth('created_at', now()->month)
+                          ->whereYear('created_at', now()->year);
+                    break;
+            }
+        }
+
+        $products = $query->orderBy('created_at', 'asc')->paginate(20);
+
+        // Statistics
+        $pendingCount = MarketplaceProduct::where('status', 'pending')->count();
+        $approvedToday = MarketplaceProduct::where('status', 'approved')
+            ->whereDate('approved_at', today())->count();
+        $rejectedToday = MarketplaceProduct::where('status', 'rejected')
+            ->whereDate('updated_at', today())->count();
+
+        // Calculate average approval time
+        $avgApprovalTime = MarketplaceProduct::where('status', 'approved')
+            ->whereNotNull('approved_at')
+            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, approved_at)) as avg_hours')
+            ->value('avg_hours');
+        $avgApprovalTime = round($avgApprovalTime ?? 0, 1);
+
+        return view('admin.marketplace.products.pending', compact(
+            'products', 'pendingCount', 'approvedToday', 'rejectedToday', 'avgApprovalTime'
+        ));
+    }
+
+    /**
+     * Approve a product
+     */
+    public function approve(MarketplaceProduct $product)
+    {
+        if ($product->status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không ở trạng thái chờ duyệt'
+            ], 400);
+        }
+
+        $product->update([
+            'status' => 'approved',
+            'is_active' => true,
+            'approved_at' => now(),
+            'approved_by' => Auth::guard('admin')->id(),
+            'rejection_reason' => null,
+        ]);
+
+        // Update seller stats
+        $product->seller->increment('active_products');
+
+        // Send notification to seller
+        $product->seller->user->notify(new ProductApprovalNotification($product, 'approved'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được duyệt thành công'
+        ]);
+    }
+
+    /**
+     * Reject a product
+     */
+    public function reject(Request $request, MarketplaceProduct $product)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:1000'
+        ]);
+
+        if ($product->status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sản phẩm không ở trạng thái chờ duyệt'
+            ], 400);
+        }
+
+        $product->update([
+            'status' => 'rejected',
+            'is_active' => false,
+            'rejection_reason' => $request->rejection_reason,
+            'approved_at' => null,
+            'approved_by' => null,
+        ]);
+
+        // Send notification to seller
+        $product->seller->user->notify(new ProductApprovalNotification($product, 'rejected', $request->rejection_reason));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được từ chối'
+        ]);
+    }
+
+    /**
      * Bulk approve products
      */
     public function bulkApprove(Request $request)
     {
         $productIds = $request->input('product_ids', []);
 
-        MarketplaceProduct::whereIn('id', $productIds)
+        $approvedCount = MarketplaceProduct::whereIn('id', $productIds)
+            ->where('status', 'pending')
             ->update([
                 'status' => 'approved',
+                'is_active' => true,
                 'approved_at' => now(),
                 'approved_by' => Auth::guard('admin')->id(),
+                'rejection_reason' => null,
             ]);
+
+        // Update seller stats and send notifications
+        $products = MarketplaceProduct::with('seller.user')->whereIn('id', $productIds)->get();
+        foreach ($products->groupBy('seller_id') as $sellerId => $sellerProducts) {
+            MarketplaceSeller::find($sellerId)->increment('active_products', $sellerProducts->count());
+
+            // Send notification to each seller
+            foreach ($sellerProducts as $product) {
+                $product->seller->user->notify(new ProductApprovalNotification($product, 'approved'));
+            }
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã phê duyệt ' . count($productIds) . ' sản phẩm thành công!'
+            'approved_count' => $approvedCount,
+            'message' => "Đã duyệt {$approvedCount} sản phẩm thành công!"
         ]);
     }
 
@@ -280,18 +431,39 @@ class MarketplaceProductController extends Controller
      */
     public function bulkReject(Request $request)
     {
-        $productIds = $request->input('product_ids', []);
-        $reason = $request->input('reason', 'Không đáp ứng tiêu chuẩn chất lượng');
+        $request->validate([
+            'product_ids' => 'required|array',
+            'rejection_reason' => 'required|string|max:1000'
+        ]);
 
-        MarketplaceProduct::whereIn('id', $productIds)
+        $productIds = $request->input('product_ids', []);
+        $reason = $request->input('rejection_reason');
+
+        // Get products before updating
+        $products = MarketplaceProduct::with('seller.user')
+            ->whereIn('id', $productIds)
+            ->where('status', 'pending')
+            ->get();
+
+        $rejectedCount = MarketplaceProduct::whereIn('id', $productIds)
+            ->where('status', 'pending')
             ->update([
                 'status' => 'rejected',
+                'is_active' => false,
                 'rejection_reason' => $reason,
+                'approved_at' => null,
+                'approved_by' => null,
             ]);
+
+        // Send notifications
+        foreach ($products as $product) {
+            $product->seller->user->notify(new ProductApprovalNotification($product, 'rejected', $reason));
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Đã từ chối ' . count($productIds) . ' sản phẩm!'
+            'rejected_count' => $rejectedCount,
+            'message' => "Đã từ chối {$rejectedCount} sản phẩm!"
         ]);
     }
 

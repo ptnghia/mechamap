@@ -1068,6 +1068,19 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Kiểm tra có thể mua bất kỳ loại sản phẩm nào không
+     * Dùng để hiển thị giỏ hàng trên header
+     *
+     * @return bool
+     */
+    public function canBuyAnyProduct(): bool
+    {
+        // Kiểm tra qua MarketplacePermissionService
+        $allowedBuyTypes = \App\Services\MarketplacePermissionService::getAllowedBuyTypes($this->role ?? 'guest');
+        return !empty($allowedBuyTypes);
+    }
+
+    /**
      * Kiểm tra business đã được verify chưa
      *
      * @return bool

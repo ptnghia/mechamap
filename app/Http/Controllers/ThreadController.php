@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Forum;
 use App\Models\Poll;
 use App\Models\PollOption;
+use App\Models\Showcase;
 use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -356,5 +357,120 @@ class ThreadController extends Controller
 
         return redirect()->route('threads.index')
             ->with('success', 'Bài viết đã được xóa thành công.');
+    }
+
+    /**
+     * Create a showcase from thread
+     *
+     * @param Request $request
+     * @param Thread $thread
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createShowcase(Request $request, Thread $thread)
+    {
+        // Authorization check
+        if (Auth::user()->id !== $thread->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
+            abort(403, 'Bạn không có quyền tạo showcase cho thread này.');
+        }
+
+        // Validation: Check if thread already has showcase
+        if ($thread->showcase) {
+            return redirect()->back()
+                ->with('error', 'Thread này đã có showcase. Mỗi thread chỉ có thể có một showcase.');
+        }
+
+        // Validate request
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:50',
+            'category' => 'required|string|max:100',
+            'project_type' => 'nullable|string|max:100',
+            'complexity_level' => 'nullable|string|in:Beginner,Intermediate,Advanced,Expert',
+            'industry_application' => 'nullable|string|max:255',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
+            'agree_terms' => 'required|accepted'
+        ], [
+            'title.required' => 'Tiêu đề showcase là bắt buộc.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'description.required' => 'Mô tả dự án là bắt buộc.',
+            'description.min' => 'Mô tả phải có ít nhất 50 ký tự.',
+            'category.required' => 'Danh mục là bắt buộc.',
+            'cover_image.required' => 'Ảnh đại diện là bắt buộc.',
+            'cover_image.image' => 'File phải là hình ảnh.',
+            'cover_image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif, webp.',
+            'cover_image.max' => 'Kích thước ảnh không được vượt quá 5MB.',
+            'agree_terms.required' => 'Bạn phải đồng ý với điều khoản.',
+            'agree_terms.accepted' => 'Bạn phải đồng ý với điều khoản.'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Handle cover image upload
+            $coverImagePath = null;
+            if ($request->hasFile('cover_image')) {
+                $coverImagePath = $request->file('cover_image')->store('showcases/covers', 'public');
+            }
+
+            // Create showcase
+            $showcase = new \App\Models\Showcase([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'category' => $validated['category'],
+                'project_type' => $validated['project_type'] ?? null,
+                'complexity_level' => $validated['complexity_level'] ?? 'Intermediate',
+                'industry_application' => $validated['industry_application'] ?? null,
+                'cover_image' => $coverImagePath,
+                'user_id' => Auth::id(),
+                'status' => 'published',
+                'showcaseable_type' => Thread::class,
+                'showcaseable_id' => $thread->id,
+                'views_count' => 0,
+                'likes_count' => 0,
+                'comments_count' => 0,
+                'average_rating' => 0.0,
+                'ratings_count' => 0
+            ]);
+
+            $showcase->save();
+
+            // Copy thread images to showcase media if any
+            if ($thread->media && $thread->media->count() > 0) {
+                foreach ($thread->media->take(5) as $media) { // Limit to 5 images
+                    $showcase->media()->create([
+                        'file_path' => $media->file_path,
+                        'file_name' => $media->file_name,
+                        'file_type' => $media->file_type,
+                        'file_size' => $media->file_size,
+                        'is_featured' => false
+                    ]);
+                }
+            }
+
+            // Log activity
+            $this->activityService->logActivity(
+                Auth::user(),
+                'showcase_created_from_thread',
+                'Đã tạo showcase từ thread: ' . $thread->title,
+                $showcase
+            );
+
+            DB::commit();
+
+            return redirect()->route('showcases.show', $showcase)
+                ->with('success', 'Showcase đã được tạo thành công từ thread!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Delete uploaded image if exists
+            if ($coverImagePath) {
+                Storage::disk('public')->delete($coverImagePath);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Có lỗi xảy ra khi tạo showcase: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 }

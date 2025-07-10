@@ -10,16 +10,28 @@ return [
         'knowledge' => 'Kiến thức',
         'more' => 'Thêm',
 
-        // Marketplace Submenu
+        // Marketplace Submenu - UPDATED
+        'shop' => 'Mua sắm',
+        'all_products' => 'Tất cả sản phẩm',
+        'categories' => 'Danh mục',
+        'suppliers' => 'Nhà cung cấp',
+        'featured_products' => 'Sản phẩm nổi bật',
+        'business_tools' => 'Công cụ kinh doanh',
+        'request_quote' => 'Yêu cầu báo giá',
+        'bulk_orders' => 'Đơn hàng số lượng lớn',
+        'become_seller' => 'Trở thành người bán',
+        'my_account' => 'Tài khoản của tôi',
+        'my_orders' => 'Đơn hàng của tôi',
+        'shopping_cart' => 'Giỏ hàng',
+        'downloads' => 'Tải xuống',
+
+        // Legacy labels (for backward compatibility)
         'browse_products' => 'Duyệt sản phẩm',
         'all_categories' => 'Tất cả danh mục',
         'supplier_directory' => 'Thư mục nhà cung cấp',
         'new_arrivals' => 'Hàng mới về',
         'best_sellers' => 'Bán chạy nhất',
-        'business_tools' => 'Công cụ kinh doanh',
         'request_for_quote' => 'Yêu cầu báo giá',
-        'bulk_orders' => 'Đơn hàng số lượng lớn',
-        'my_orders' => 'Đơn hàng của tôi',
         'saved_items' => 'Mục đã lưu',
 
         // Community Submenu

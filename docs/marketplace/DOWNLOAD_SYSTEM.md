@@ -1,8 +1,14 @@
-# 🔐 MechaMap Marketplace Secure Download System
+# 🔐 MechaMap Marketplace Secure Download System v2.0
 
 ## 📋 Tổng Quan
 
 Hệ thống Secure Download System cho phép người dùng tải xuống các file kỹ thuật số một cách an toàn sau khi đã mua sản phẩm. Hệ thống được thiết kế với các tính năng bảo mật cao và không giới hạn thời gian tải xuống.
+
+### **🆕 Cập nhật 2025 - Marketplace Restructure:**
+- ✅ **Chỉ hỗ trợ sản phẩm `digital`** - Loại bỏ logic cũ cho `seller_type`
+- ✅ **Permission-based access** - Kiểm tra quyền theo ma trận phân quyền mới
+- ✅ **Enhanced security** - Token-based download với IP validation
+- ✅ **Admin dashboard** - Thống kê download và quản lý files
 
 ## 🏗️ Kiến Trúc Hệ Thống
 
@@ -51,20 +57,23 @@ CREATE TABLE marketplace_download_history (
 - Token có thời hạn 24 giờ
 - Token chỉ sử dụng được 1 lần cho mỗi file
 
-### **2. Purchase Verification**
-- Kiểm tra user đã mua sản phẩm
-- Xác minh đơn hàng đã thanh toán
-- Validate quyền truy cập file
+### **2. Enhanced Purchase Verification (2025)**
+- ✅ **Permission check** - Kiểm tra quyền mua digital theo role
+- ✅ **Product type validation** - Chỉ `product_type === 'digital'`
+- ✅ **Payment verification** - Xác minh đơn hàng đã thanh toán
+- ✅ **Order ownership** - Validate quyền truy cập file
 
-### **3. Download Tracking**
-- Ghi lại mọi hoạt động download
-- Track IP address và User Agent
-- Lưu trữ metadata cho audit
+### **3. Advanced Download Tracking (2025)**
+- ✅ **Role-based logging** - Ghi lại download với user role context
+- ✅ **Permission audit** - Track permission checks
+- ✅ **IP & User Agent** - Validation và logging
+- ✅ **Rate limiting** - Ngăn chặn download abuse
 
-### **4. File Access Control**
-- File được lưu trong storage private
-- Không thể truy cập trực tiếp qua URL
-- Chỉ download qua secure endpoint
+### **4. Enhanced File Access Control (2025)**
+- ✅ **Private storage** - File được lưu trong storage private
+- ✅ **Secure endpoints** - Không thể truy cập trực tiếp qua URL
+- ✅ **File validation** - Kiểm tra file existence trước download
+- ✅ **Middleware protection** - `marketplace.permission` middleware
 
 ## 🚀 Cách Sử Dụng
 

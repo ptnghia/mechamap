@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceShoppingCart;
+use App\Services\MarketplacePermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
@@ -35,6 +36,7 @@ class MarketplaceCartController extends Controller
 
         try {
             $product = MarketplaceProduct::findOrFail($request->product_id);
+            $user = auth()->user();
 
             // Check if product is available
             if (!$product->is_active || $product->status !== 'approved') {
@@ -42,6 +44,14 @@ class MarketplaceCartController extends Controller
                     'success' => false,
                     'message' => 'Product is not available'
                 ], 400);
+            }
+
+            // Check if user has permission to buy this product type
+            if ($user && !MarketplacePermissionService::canBuy($user, $product->product_type)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền mua loại sản phẩm này'
+                ], 403);
             }
 
             // Check stock

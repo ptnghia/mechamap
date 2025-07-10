@@ -5,10 +5,13 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
 <link rel="stylesheet" href="{{ asset('css/frontend/views/showcase/show.css') }}">
+<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase-comments.css') }}">
 @endpush
 
 @section('content')
-<div class="container2">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
     {{-- Breadcrumb Navigation --}}
     <nav aria-label="breadcrumb" class="showcase-breadcrumb mb-3">
         <ol class="breadcrumb mb-0">
@@ -303,49 +306,52 @@
                     {{-- Tab Bình luận --}}
                     <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
                         <div class="tab-content-wrapper">
-                            {{-- Phần bình luận --}}
-            <div class="showcase-comments">
-
-                {{-- Form thêm bình luận --}}
-                @auth
-                <div class="comment-form mb-4">
-                    <form action="{{ route('showcase.comment', $showcase) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="d-flex gap-3">
-                            <img src="{{ auth()->user()->getAvatarUrl() }}" class="rounded-circle" width="40" height="40"
-                                alt="Avatar của bạn"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
-                            <div class="flex-grow-1">
-                                <x-rich-text-editor
-                                    name="content"
-                                    placeholder="Viết bình luận của bạn..."
-                                    id="comment-editor"
-                                    :required="true"
-                                    :allowImages="true"
-                                    minHeight="100px"
-                                />
-
-                                {{-- Image upload section --}}
-                                <div class="mt-2">
-                                    <label class="form-label small">
-                                        <i class="fas fa-images"></i>
-                                        Đính kèm ảnh (tùy chọn)
-                                    </label>
-                                    <input type="file" name="images[]" id="comment-images-main" accept="image/*" multiple
-                                        class="form-control form-control-sm">
-                                    <small class="text-muted">Chọn tối đa 5 ảnh (JPG, PNG, GIF, WebP). Kích thước tối đa:
-                                        5MB mỗi ảnh.</small>
-
-                                    {{-- Image Preview --}}
-                                    <div class="image-preview mt-2" id="image-preview-main"></div>
+                            <div class="comments-section">
+                                <div class="comments-header">
+                                    <h5>
+                                        <i class="fas fa-comments"></i>
+                                        Bình luận ({{ $comments->count() }})
+                                    </h5>
                                 </div>
+                                <div class="comments-body">
 
-                                <div class="mt-2">
-                                    <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="fas fa-paper-plane"></i>
-                                        Gửi bình luận
-                                    </button>
-                                </div>
+                    {{-- Form thêm bình luận --}}
+                    @auth
+                    <div class="comment-form">
+                        <form action="{{ route('showcase.comment', $showcase) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="d-flex gap-3">
+                                <img src="{{ auth()->user()->getAvatarUrl() }}"
+                                     class="user-avatar"
+                                     alt="Avatar của bạn"
+                                     onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=48'">
+                                <div class="flex-grow-1">
+                                    <x-ckeditor5-comment
+                                        name="content"
+                                        placeholder="Viết bình luận của bạn..."
+                                        id="main-comment-editor"
+                                        :required="true"
+                                        minHeight="100px"
+                                    />
+
+                                    {{-- Enhanced Image Upload --}}
+                                    <x-enhanced-image-upload
+                                        name="images"
+                                        id="main-comment-upload"
+                                        :maxFiles="5"
+                                        :maxSize="5"
+                                    />
+
+                                    <div class="comment-form-actions">
+                                        <div class="comment-form-info">
+                                            <i class="fas fa-info-circle"></i>
+                                            Hỗ trợ định dạng văn bản và ảnh
+                                        </div>
+                                        <button type="submit" class="comment-submit-btn">
+                                            <i class="fas fa-paper-plane"></i>
+                                            Gửi bình luận
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                     </form>
@@ -357,48 +363,50 @@
                 </div>
                 @endauth
 
-                {{-- Danh sách bình luận --}}
-                <div class="comments-list">
-                    @forelse($comments as $comment)
-                    <div class="comment-item mb-3" id="comment-{{ $comment->id }}">
-                        <div class="d-flex gap-3">
-                            <a href="{{ route('profile.show', $comment->user->username) }}">
-                                <img src="{{ $comment->user->getAvatarUrl() }}" class="rounded-circle" width="40"
-                                    height="40" alt="Avatar của {{ $comment->user->display_name }}"
-                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($comment->user->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
-                            </a>
-                            <div class="flex-grow-1">
-                                <div class="comment-content bg-light p-3 rounded">
-                                    <div class="comment-header mb-2">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <a href="{{ route('profile.show', $comment->user->username) }}"
-                                                    class="fw-semibold text-decoration-none">
-                                                    {{ $comment->user->display_name }}
-                                                </a>
-                                                <small class="text-muted ms-2">
-                                                    {{ $comment->created_at->diffForHumans() }}
-                                                </small>
-                                            </div>
-                                            {{-- Nút xóa bình luận (chỉ hiện với chủ sở hữu) --}}
-                                            @auth
-                                            @if($comment->user_id === auth()->id() || $showcase->user_id ===
-                                            auth()->id())
-                                            <form action="{{ route('showcase.comment.delete', $comment) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Bạn có chắc muốn xóa bình luận này?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                            @endif
-                                            @endauth
-                                        </div>
-                                    </div>
-                                    <div class="comment-body">
-                                        {!! nl2br(e($comment->comment)) !!}
+                    {{-- Danh sách bình luận --}}
+                    <div class="comments-list">
+                        @forelse($comments as $comment)
+                        <div class="comment-item" id="comment-{{ $comment->id }}">
+                            <div class="comment-header">
+                                <a href="{{ route('profile.show', $comment->user->username) }}">
+                                    <img src="{{ $comment->user->getAvatarUrl() }}"
+                                         class="comment-avatar"
+                                         alt="Avatar của {{ $comment->user->display_name }}"
+                                         onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($comment->user->name, 0, 1))) }}&background=6366f1&color=fff&size=44'">
+                                </a>
+                                <div class="comment-user-info">
+                                    <h6 class="comment-username">
+                                        <a href="{{ route('profile.show', $comment->user->username) }}" class="text-decoration-none">
+                                            {{ $comment->user->display_name }}
+                                        </a>
+                                    </h6>
+                                    <p class="comment-timestamp">
+                                        <i class="fas fa-clock"></i>
+                                        {{ $comment->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                                <div class="comment-options">
+                                    {{-- Nút xóa bình luận (chỉ hiện với chủ sở hữu) --}}
+                                    @auth
+                                    @if($comment->user_id === auth()->id() || $showcase->user_id === auth()->id())
+                                    <form action="{{ route('showcase.comment.delete', $comment) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Bạn có chắc muốn xóa bình luận này?')"
+                                          class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                    @endauth
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <div class="comment-content">
+                                    {!! nl2br(e($comment->comment)) !!}
+                                </div>
 
                                         {{-- Hiển thị attachments nếu có --}}
                                         @if($comment->has_media && $comment->attachments->count() > 0)
@@ -421,50 +429,67 @@
                                             </div>
                                         </div>
                                         @endif
-                                    </div>
                                 </div>
 
-                                {{-- Bình luận con (nếu có) --}}
-                                @if($comment->replies && $comment->replies->count() > 0)
-                                <div class="replies mt-3 ms-4">
-                                    @foreach($comment->replies as $reply)
-                                    <div class="reply-item mb-2">
-                                        <div class="d-flex gap-2">
-                                            <a href="{{ route('profile.show', $reply->user->username) }}">
-                                                <img src="{{ $reply->user->getAvatarUrl() }}" class="rounded-circle"
-                                                    width="30" height="30"
-                                                    alt="Avatar của {{ $reply->user->display_name }}"
-                                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($reply->user->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
-                                            </a>
-                                            <div class="flex-grow-1">
-                                                <div class="reply-content bg-white p-2 rounded border">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div>
-                                                            <a href="{{ route('profile.show', $reply->user->username) }}"
-                                                                class="fw-semibold text-decoration-none small">
-                                                                {{ $reply->user->display_name }}
-                                                            </a>
-                                                            <small class="text-muted ms-1">
-                                                                {{ $reply->created_at->diffForHumans() }}
-                                                            </small>
-                                                        </div>
-                                                        @auth
-                                                        @if($reply->user_id === auth()->id() || $showcase->user_id ===
-                                                        auth()->id())
-                                                        <form action="{{ route('showcase.comment.delete', $reply) }}"
-                                                            method="POST"
-                                                            onsubmit="return confirm('Bạn có chắc muốn xóa phản hồi này?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                                <i class="fas fa-trash fa-xs"></i>
-                                                            </button>
-                                                        </form>
-                                                        @endif
-                                                        @endauth
-                                                    </div>
-                                                    <div class="small mt-1">
-                                                        {!! nl2br(e($reply->comment)) !!}
+                                {{-- Comment Actions --}}
+                                <div class="comment-actions">
+                                    <button type="button" class="comment-action-btn" onclick="toggleReplyForm({{ $comment->id }})">
+                                        <i class="fas fa-reply"></i>
+                                        Trả lời
+                                    </button>
+                                    <button type="button" class="comment-action-btn">
+                                        <i class="fas fa-heart"></i>
+                                        Thích
+                                    </button>
+                                    <button type="button" class="comment-action-btn">
+                                        <i class="fas fa-share"></i>
+                                        Chia sẻ
+                                    </button>
+                                </div>
+                            </div>
+
+                            {{-- Bình luận con (nếu có) --}}
+                            @if($comment->replies && $comment->replies->count() > 0)
+                            <div class="comment-replies">
+                                @foreach($comment->replies as $reply)
+                                <div class="reply-item">
+                                    <div class="reply-header">
+                                        <a href="{{ route('profile.show', $reply->user->username) }}">
+                                            <img src="{{ $reply->user->getAvatarUrl() }}"
+                                                 class="reply-avatar"
+                                                 alt="Avatar của {{ $reply->user->display_name }}"
+                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($reply->user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'">
+                                        </a>
+                                        <div class="flex-grow-1">
+                                            <h6 class="reply-username">
+                                                <a href="{{ route('profile.show', $reply->user->username) }}" class="text-decoration-none">
+                                                    {{ $reply->user->display_name }}
+                                                </a>
+                                            </h6>
+                                            <p class="reply-timestamp">
+                                                {{ $reply->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <div class="reply-options">
+                                            {{-- Nút xóa reply (chỉ hiện với chủ sở hữu) --}}
+                                            @auth
+                                            @if($reply->user_id === auth()->id() || $showcase->user_id === auth()->id())
+                                            <form action="{{ route('showcase.comment.delete', $reply) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa phản hồi này?')"
+                                                  class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash fa-xs"></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                            @endauth
+                                        </div>
+                                    </div>
+                                    <div class="reply-body">
+                                        {!! nl2br(e($reply->comment)) !!}
 
                                                         {{-- Hiển thị attachments cho reply nếu có --}}
                                                         @if($reply->has_media && $reply->attachments->count() > 0)
@@ -507,35 +532,28 @@
                                                 width="30" height="30" alt="Avatar của bạn"
                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
                                             <div class="flex-grow-1">
-                                                <x-rich-text-editor
+                                                <x-ckeditor5-comment
                                                     name="content"
                                                     placeholder="Trả lời bình luận..."
                                                     id="reply-editor-{{ $comment->id }}"
                                                     :required="true"
-                                                    :allowImages="true"
                                                     minHeight="80px"
                                                 />
 
-                                                {{-- Image upload for reply --}}
-                                                <div class="mt-2">
-                                                    <label class="form-label small">
-                                                        <i class="fas fa-images"></i>
-                                                        Đính kèm ảnh (tùy chọn)
-                                                    </label>
-                                                    <input type="file" name="images[]" id="reply-images-{{ $comment->id }}"
-                                                           accept="image/*" multiple class="form-control form-control-sm">
-                                                    <small class="text-muted">Chọn tối đa 5 ảnh (JPG, PNG, GIF, WebP). Kích thước tối đa: 5MB mỗi ảnh.</small>
+                                                {{-- Enhanced Image Upload for Reply --}}
+                                                <x-enhanced-image-upload
+                                                    name="images"
+                                                    id="reply-upload-{{ $comment->id }}"
+                                                    :maxFiles="3"
+                                                    :maxSize="5"
+                                                />
 
-                                                    {{-- Image Preview --}}
-                                                    <div class="image-preview mt-2" id="reply-preview-{{ $comment->id }}"></div>
-                                                </div>
-
-                                                <div class="mt-2">
-                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                <div class="reply-form-actions">
+                                                    <button type="submit" class="reply-submit-btn">
                                                         <i class="fas fa-paper-plane"></i>
                                                         Gửi
                                                     </button>
-                                                    <button type="button" class="btn btn-secondary btn-sm ms-2"
+                                                    <button type="button" class="reply-cancel-btn"
                                                         onclick="toggleReplyForm({{ $comment->id }})">
                                                         Hủy
                                                     </button>
@@ -554,12 +572,13 @@
                             </div>
                         </div>
                     </div>
-                    @empty
-                    <div class="text-center text-muted py-4">
-                        <i class="fas fa-comments fa-2x mb-2"></i>
-                        <p>Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
+                        @empty
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-comments fa-2x mb-2"></i>
+                            <p>Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</p>
+                        </div>
+                        @endforelse
                     </div>
-                    @endforelse
                 </div>
             </div>
                         </div>
@@ -567,21 +586,29 @@
                 </div>
             </div>
         </div>
-    </div>
+        {{-- End Main Content Column --}}
+        </div>
 
-    {{-- Include Sidebar Component (giống threads) --}}
-    {{-- Include Sidebar Component (giống threads) --}}
-    <x-sidebar />
+        {{-- Sidebar Column --}}
+        <div class="col-lg-4 col-md-12">
+            <x-sidebar />
+        </div>
+    </div>
 </div>
 
 @push('scripts')
 <script src="{{ asset('js/rating.js') }}"></script>
-<script src="{{ asset('js/rich-text-editor.js') }}"></script>
 <script>
-    // Showcase-specific Fancybox configuration
+    // Showcase Comments System
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Showcase images ready for Fancybox');
+        console.log('Showcase comments system initialized');
+        initializeCommentSystem();
     });
+
+    function initializeCommentSystem() {
+        // Initialize comment interactions
+        console.log('CKEditor5 and Enhanced Upload ready');
+    }
 
 // Social Sharing Functions
 function shareOnFacebook() {
@@ -837,81 +864,26 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Image preview for comment forms
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle image preview for main comment form
-    const mainImageInput = document.getElementById('comment-images-main');
-    if (mainImageInput) {
-        mainImageInput.addEventListener('change', function() {
-            previewImages(this.files, document.getElementById('image-preview-main'));
-        });
-    }
+// Comment system functions
+function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById(`reply-form-${commentId}`);
+    if (replyForm) {
+        const isVisible = replyForm.style.display !== 'none';
+        replyForm.style.display = isVisible ? 'none' : 'block';
 
-    // Handle image preview for reply forms
-    document.querySelectorAll('[id^="reply-images-"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const replyId = this.id.replace('reply-images-', '');
-            const previewContainer = document.getElementById(`reply-preview-${replyId}`);
-            if (previewContainer) {
-                previewImages(this.files, previewContainer);
-            }
-        });
-    });
-});
-
-function previewImages(files, previewContainer) {
-    previewContainer.innerHTML = '';
-
-    if (files.length > 5) {
-        alert('Chỉ được chọn tối đa 5 ảnh.');
-        return;
-    }
-
-    Array.from(files).forEach((file, index) => {
-        if (file.size > 5 * 1024 * 1024) {
-            alert(`Ảnh "${file.name}" quá lớn. Kích thước tối đa: 5MB.`);
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const previewItem = document.createElement('div');
-            previewItem.className = 'image-preview-item d-inline-block me-2 mb-2';
-            previewItem.innerHTML = `
-                <div class="position-relative">
-                    <img src="${e.target.result}" alt="Preview"
-                         class="img-thumbnail"
-                         style="width: 80px; height: 80px; object-fit: cover;">
-                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle"
-                            style="width: 20px; height: 20px; padding: 0; font-size: 10px;"
-                            onclick="removeImagePreview(this, ${index})">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            previewContainer.appendChild(previewItem);
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-function removeImagePreview(button, index) {
-    const previewItem = button.closest('.image-preview-item');
-    previewItem.remove();
-
-    // Reset file input to remove the file
-    const fileInput = button.closest('form').querySelector('input[type="file"]');
-    const dt = new DataTransfer();
-    const files = fileInput.files;
-
-    for (let i = 0; i < files.length; i++) {
-        if (i !== index) {
-            dt.items.add(files[i]);
+        if (!isVisible) {
+            // Focus on the CKEditor when showing reply form
+            setTimeout(() => {
+                const editorId = `reply-editor-${commentId}`;
+                if (window[`ckeditor_${editorId}`]) {
+                    window[`ckeditor_${editorId}`].editing.view.focus();
+                }
+            }, 100);
         }
     }
-
-    fileInput.files = dt.files;
 }
+
+// Enhanced comment system ready - using CKEditor5 and Enhanced Upload components
 </script>
 @endpush
 

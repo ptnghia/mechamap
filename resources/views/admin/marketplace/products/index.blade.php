@@ -156,9 +156,9 @@
                         <div class="col-md-2">
                             <select class="form-select" name="product_type">
                                 <option value="">Loại sản phẩm</option>
-                                <option value="physical" {{ request('product_type') === 'physical' ? 'selected' : '' }}>Vật lý</option>
-                                <option value="digital" {{ request('product_type') === 'digital' ? 'selected' : '' }}>Kỹ thuật số</option>
-                                <option value="service" {{ request('product_type') === 'service' ? 'selected' : '' }}>Dịch vụ</option>
+                                <option value="digital" {{ request('product_type') === 'digital' ? 'selected' : '' }}>Sản phẩm kỹ thuật số</option>
+                                <option value="new_product" {{ request('product_type') === 'new_product' ? 'selected' : '' }}>Sản phẩm mới</option>
+                                <option value="used_product" {{ request('product_type') === 'used_product' ? 'selected' : '' }}>Sản phẩm cũ</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -189,6 +189,7 @@
                                 <th>Loại</th>
                                 <th>Giá</th>
                                 <th>Kho</th>
+                                <th>Thông Tin Đặc Biệt</th>
                                 <th>Trạng Thái</th>
                                 <th>Ngày Tạo</th>
                                 <th>Thao Tác</th>
@@ -227,7 +228,21 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-info">{{ ucfirst($product->product_type) }}</span>
+                                        @php
+                                            $typeLabels = [
+                                                'digital' => 'Kỹ thuật số',
+                                                'new_product' => 'Sản phẩm mới',
+                                                'used_product' => 'Sản phẩm cũ'
+                                            ];
+                                            $typeColors = [
+                                                'digital' => 'bg-primary',
+                                                'new_product' => 'bg-success',
+                                                'used_product' => 'bg-warning'
+                                            ];
+                                        @endphp
+                                        <span class="badge {{ $typeColors[$product->product_type] ?? 'bg-info' }}">
+                                            {{ $typeLabels[$product->product_type] ?? $product->product_type }}
+                                        </span>
                                     </td>
                                     <td>
                                         <div>
@@ -240,12 +255,46 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if($product->manage_stock)
+                                        @if($product->product_type === 'digital')
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-infinity me-1"></i>Không giới hạn
+                                            </span>
+                                        @elseif($product->manage_stock)
                                             <span class="badge {{ $product->stock_quantity > 0 ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $product->stock_quantity }}
                                             </span>
                                         @else
                                             <span class="badge bg-secondary">Không quản lý</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($product->product_type === 'digital')
+                                            <div class="small">
+                                                @if($product->digital_files && count($product->digital_files) > 0)
+                                                    <span class="badge bg-success mb-1">
+                                                        <i class="fas fa-file me-1"></i>{{ count($product->digital_files) }} files
+                                                    </span><br>
+                                                @endif
+                                                @if($product->file_formats && count($product->file_formats) > 0)
+                                                    <span class="text-muted">{{ implode(', ', array_slice($product->file_formats, 0, 3)) }}</span>
+                                                @endif
+                                            </div>
+                                        @elseif($product->product_type === 'new_product')
+                                            <div class="small">
+                                                @if($product->material)
+                                                    <span class="badge bg-info mb-1">{{ $product->material }}</span><br>
+                                                @endif
+                                                @if($product->manufacturing_process)
+                                                    <span class="text-muted">{{ Str::limit($product->manufacturing_process, 30) }}</span>
+                                                @endif
+                                            </div>
+                                        @elseif($product->product_type === 'used_product')
+                                            <div class="small">
+                                                <span class="badge bg-warning">Đã qua sử dụng</span><br>
+                                                @if($product->material)
+                                                    <span class="text-muted">{{ $product->material }}</span>
+                                                @endif
+                                            </div>
                                         @endif
                                     </td>
                                     <td>

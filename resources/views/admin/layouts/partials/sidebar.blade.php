@@ -154,8 +154,15 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         @adminCan('view_products')
-                        <li><a href="{{ route('admin.marketplace.products.index') }}" data-key="t-products" class="{{ request()->routeIs('admin.marketplace.products*') ? 'active' : '' }}">
+                        <li><a href="{{ route('admin.marketplace.products.index') }}" data-key="t-products" class="{{ request()->routeIs('admin.marketplace.products.index') ? 'active' : '' }}">
                             <i class="fas fa-box"></i> Sản Phẩm
+                        </a></li>
+                        <li><a href="{{ route('admin.marketplace.products.pending') }}" data-key="t-pending-products" class="{{ request()->routeIs('admin.marketplace.products.pending') ? 'active' : '' }}">
+                            <i class="fas fa-clock"></i> Duyệt Sản Phẩm
+                            @php $pendingCount = \App\Models\MarketplaceProduct::where('status', 'pending')->count(); @endphp
+                            @if($pendingCount > 0)
+                                <span class="badge rounded-pill bg-warning float-end">{{ $pendingCount }}</span>
+                            @endif
                         </a></li>
                         @endadminCan
                         @adminCan('view_orders')
