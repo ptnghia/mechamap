@@ -94,7 +94,7 @@
                                 <div class="product-card">
                                     <div class="card h-100">
                                         @if($product->featured_image)
-                                            <img src="{{ asset('storage/' . $product->featured_image) }}"
+                                            <img src="{{ asset($product->featured_image) }}"
                                                  class="card-img-top"
                                                  style="height: 200px; object-fit: cover;"
                                                  alt="{{ $product->name }}">
