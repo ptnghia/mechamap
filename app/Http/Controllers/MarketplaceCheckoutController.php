@@ -117,8 +117,8 @@ class MarketplaceCheckoutController extends Controller
     public function payment(Request $request)
     {
         $request->validate([
-            'payment_method' => 'required|in:credit_card,paypal,bank_transfer,cod',
-            'payment_details' => 'required_unless:payment_method,cod,paypal,bank_transfer|array',
+            'payment_method' => 'required|in:stripe,sepay',
+            'payment_details' => 'required_unless:payment_method,sepay|array',
         ]);
 
         try {
@@ -523,82 +523,46 @@ class MarketplaceCheckoutController extends Controller
      */
     protected function processPayment(MarketplaceOrder $order, string $paymentMethod, array $paymentDetails): array
     {
-        // Mock payment processing
+        // Process payment with real payment gateways
         switch ($paymentMethod) {
-            case 'credit_card':
-                return $this->processCreditCardPayment($order, $paymentDetails);
-            case 'paypal':
-                return $this->processPayPalPayment($order, $paymentDetails);
-            case 'bank_transfer':
-                return $this->processBankTransferPayment($order, $paymentDetails);
-            case 'cod':
-                return $this->processCODPayment($order, $paymentDetails);
+            case 'stripe':
+                return $this->processStripePayment($order, $paymentDetails);
+            case 'sepay':
+                return $this->processSePayPayment($order, $paymentDetails);
             default:
                 return ['success' => false, 'message' => 'Invalid payment method'];
         }
     }
 
     /**
-     * Process credit card payment
+     * Process Stripe payment
      */
-    protected function processCreditCardPayment(MarketplaceOrder $order, array $paymentDetails): array
+    protected function processStripePayment(MarketplaceOrder $order, array $paymentDetails): array
     {
-        // Mock credit card processing
-        // In real implementation, integrate with payment gateway like Stripe, PayPal, etc.
-
-        // Simulate payment success/failure
-        $success = rand(1, 10) > 1; // 90% success rate for demo
-
-        if ($success) {
-            return [
-                'success' => true,
-                'transaction_id' => 'cc_' . strtoupper(Str::random(12)),
-                'message' => 'Payment processed successfully'
-            ];
-        } else {
-            return [
-                'success' => false,
-                'message' => 'Credit card payment failed'
-            ];
-        }
-    }
-
-    /**
-     * Process PayPal payment
-     */
-    protected function processPayPalPayment(MarketplaceOrder $order, array $paymentDetails): array
-    {
-        // Mock PayPal processing
+        // For marketplace checkout, we'll redirect to API payment flow
+        // This is a simplified implementation
         return [
             'success' => true,
-            'transaction_id' => 'pp_' . strtoupper(Str::random(12)),
-            'message' => 'PayPal payment processed successfully'
+            'redirect_to_api' => true,
+            'message' => 'Redirect to Stripe payment',
+            'api_endpoint' => '/api/v1/payment/stripe/create-intent',
+            'order_id' => $order->id
         ];
     }
 
     /**
-     * Process bank transfer payment
+     * Process SePay payment
      */
-    protected function processBankTransferPayment(MarketplaceOrder $order, array $paymentDetails): array
+    protected function processSePayPayment(MarketplaceOrder $order, array $paymentDetails): array
     {
-        // Bank transfer requires manual verification
+        // For marketplace checkout, we'll redirect to API payment flow
+        // This is a simplified implementation
         return [
             'success' => true,
-            'transaction_id' => 'bt_' . strtoupper(Str::random(12)),
-            'message' => 'Bank transfer initiated. Please complete the transfer and provide proof.'
-        ];
-    }
-
-    /**
-     * Process cash on delivery payment
-     */
-    protected function processCODPayment(MarketplaceOrder $order, array $paymentDetails): array
-    {
-        // COD doesn't require immediate payment
-        return [
-            'success' => true,
-            'transaction_id' => 'cod_' . strtoupper(Str::random(12)),
-            'message' => 'Cash on delivery order confirmed'
+            'redirect_to_api' => true,
+            'message' => 'Redirect to SePay payment',
+            'api_endpoint' => '/api/v1/payment/sepay/create-payment',
+            'order_id' => $order->id
         ];
     }
 }

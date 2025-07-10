@@ -386,6 +386,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/initiate', [App\Http\Controllers\Api\PaymentController::class, 'initiate']);
             Route::post('/stripe/create-intent', [App\Http\Controllers\Api\PaymentController::class, 'createStripeIntent']);
             Route::post('/vnpay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createVNPayPayment']);
+            Route::post('/sepay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createSePayPayment']);
             Route::post('/confirm/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);
             Route::post('/stripe/confirm', [App\Http\Controllers\Api\PaymentController::class, 'confirmStripe']);
             Route::get('/status/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'status']);

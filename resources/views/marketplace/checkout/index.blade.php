@@ -199,79 +199,47 @@
                                         <label class="form-label">Payment Method</label>
                                         <div class="payment-methods">
                                             <div class="form-check payment-option">
-                                                <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="credit_card" checked>
-                                                <label class="form-check-label" for="creditCard">
+                                                <input class="form-check-input" type="radio" name="payment_method" id="stripe" value="stripe" checked>
+                                                <label class="form-check-label" for="stripe">
                                                     <i class="fas fa-credit-card me-2"></i>
-                                                    Credit/Debit Card
+                                                    Credit/Debit Card (Stripe)
                                                 </label>
                                             </div>
                                             <div class="form-check payment-option">
-                                                <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
-                                                <label class="form-check-label" for="paypal">
-                                                    <i class="paypal me-2"></i>
-                                                    PayPal
-                                                </label>
-                                            </div>
-                                            <div class="form-check payment-option">
-                                                <input class="form-check-input" type="radio" name="payment_method" id="bankTransfer" value="bank_transfer">
-                                                <label class="form-check-label" for="bankTransfer">
-                                                    <i class="bank me-2"></i>
-                                                    Bank Transfer
-                                                </label>
-                                            </div>
-                                            <div class="form-check payment-option">
-                                                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
-                                                <label class="form-check-label" for="cod">
-                                                    <i class="cash me-2"></i>
-                                                    Cash on Delivery
+                                                <input class="form-check-input" type="radio" name="payment_method" id="sepay" value="sepay">
+                                                <label class="form-check-label" for="sepay">
+                                                    <i class="fas fa-university me-2"></i>
+                                                    Chuyển khoản ngân hàng (SePay)
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Credit Card Details -->
-                                    <div id="creditCardDetails" class="payment-details">
-                                        <div class="mb-3">
-                                            <label class="form-label">Card Number *</label>
-                                            <input type="text" class="form-control" name="payment_details[card_number]" placeholder="1234 5678 9012 3456">
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Expiry Date *</label>
-                                                <input type="text" class="form-control" name="payment_details[expiry_date]" placeholder="MM/YY">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">CVV *</label>
-                                                <input type="text" class="form-control" name="payment_details[cvv]" placeholder="123">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Cardholder Name *</label>
-                                            <input type="text" class="form-control" name="payment_details[cardholder_name]">
-                                        </div>
-                                    </div>
-
-                                    <!-- PayPal Details -->
-                                    <div id="paypalDetails" class="payment-details d-none">
+                                    <!-- Stripe Details -->
+                                    <div id="stripeDetails" class="payment-details">
                                         <div class="alert alert-info">
                                             <i class="fas fa-info-circle me-2"></i>
-                                            You will be redirected to PayPal to complete your payment.
+                                            You will be redirected to Stripe to complete your payment securely.
                                         </div>
                                     </div>
 
-                                    <!-- Bank Transfer Details -->
-                                    <div id="bankTransferDetails" class="payment-details d-none">
-                                        <div class="alert alert-warning">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>
-                                            Bank transfer details will be provided after order confirmation.
+                                    <!-- SePay Details -->
+                                    <div id="sepayDetails" class="payment-details d-none">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Bạn sẽ được chuyển đến trang thanh toán SePay với QR Code để chuyển khoản ngân hàng.
                                         </div>
-                                    </div>
-
-                                    <!-- COD Details -->
-                                    <div id="codDetails" class="payment-details d-none">
-                                        <div class="alert alert-success">
-                                            <i class="fas fa-check-circle me-2"></i>
-                                            You will pay when your order is delivered.
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong>Ngân hàng:</strong> MBBank<br>
+                                                <strong>Số tài khoản:</strong> 0903252427<br>
+                                                <strong>Chủ tài khoản:</strong> Bùi Tấn Việt
+                                            </div>
+                                            <div class="col-md-6">
+                                                <small class="text-muted">
+                                                    Nội dung chuyển khoản sẽ được tự động tạo theo mã đơn hàng để hệ thống xác nhận thanh toán.
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -313,17 +281,11 @@
                                             @if(session('checkout.payment_method'))
                                                 <p class="mb-3">
                                                     @switch(session('checkout.payment_method'))
-                                                        @case('credit_card')
-                                                            Credit/Debit Card
+                                                        @case('stripe')
+                                                            Credit/Debit Card (Stripe)
                                                             @break
-                                                        @case('paypal')
-                                                            PayPal
-                                                            @break
-                                                        @case('bank_transfer')
-                                                            Bank Transfer
-                                                            @break
-                                                        @case('cod')
-                                                            Cash on Delivery
+                                                        @case('sepay')
+                                                            Chuyển khoản ngân hàng (SePay)
                                                             @break
                                                         @default
                                                             {{ session('checkout.payment_method') }}
@@ -859,10 +821,8 @@ function generateOrderReviewHTML(data) {
 
 function getPaymentMethodLabel(method) {
     const labels = {
-        'credit_card': 'Credit/Debit Card',
-        'paypal': 'PayPal',
-        'bank_transfer': 'Bank Transfer',
-        'cod': 'Cash on Delivery'
+        'stripe': 'Credit/Debit Card (Stripe)',
+        'sepay': 'Chuyển khoản ngân hàng (SePay)'
     };
     return labels[method] || method;
 }

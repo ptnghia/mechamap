@@ -668,6 +668,72 @@ class PaymentController extends Controller
     }
 
     /**
+     * Tạo SePay Payment URL
+     */
+    public function createSePayPayment(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:marketplace_orders,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user = Auth::user();
+            $order = \App\Models\MarketplaceOrder::where('id', $request->order_id)
+                ->where('user_id', $user->id)
+                ->where('status', 'pending')
+                ->firstOrFail();
+
+            if (!$this->sepayService->isConfigured()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'SePay payment gateway không được cấu hình'
+                ], 503);
+            }
+
+            $paymentData = $this->sepayService->createPaymentUrl($order);
+
+            if (!$paymentData['success']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $paymentData['message']
+                ], 400);
+            }
+
+            // Cập nhật order status
+            $order->update([
+                'status' => 'processing',
+                'payment_method' => 'sepay',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => $paymentData['data'],
+                'message' => 'Tạo SePay Payment URL thành công'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Lỗi tạo SePay Payment URL', [
+                'order_id' => $request->order_id,
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi tạo payment URL'
+            ], 500);
+        }
+    }
+
+    /**
      * Xác nhận thanh toán cho order
      */
     public function confirmPayment(Request $request, $orderId): JsonResponse
