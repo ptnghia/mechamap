@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bảng xếp hạng thành viên')
+@section('title', __('messages.members.leaderboard_title'))
 
 @section('content')
 <div class="container-fluid py-4">
@@ -10,10 +10,9 @@
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
                         <i class="fas fa-trophy me-2"></i>
-                        Bảng xếp hạng thành viên MechaMap
+                        {{ __('messages.members.leaderboard_title') }}
                     </h4>
-                    <p class="mb-0 mt-2 opacity-75">Những thành viên đóng góp tích cực nhất cho cộng đồng kỹ thuật cơ
-                        khí</p>
+                    <p class="mb-0 mt-2 opacity-75">{{ __('messages.members.leaderboard_description') }}</p>
                 </div>
                 <div class="card-body">
                     <div class="row">

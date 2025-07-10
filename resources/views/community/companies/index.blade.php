@@ -2,42 +2,22 @@
 
 @section('title', __('companies.directory'))
 
-@section('content')
-<div class="container-fluid">
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/views/community/companies.css') }}">
+@endpush
+
+@section('full-width-content')
+<div class="container mb-5">
     <!-- Header Section -->
-    <div class="row mb-4">
+    <div class="row mb-4 mt-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1 class="h3 mb-1">
+                    <h1 class="h3 mb-1 title_page">
                         <i class="fa-solid fa-building-user text-primary me-2"></i>
                         {{ __('companies.directory') }}
                     </h1>
                     <p class="text-muted mb-0">{{ __('companies.header_description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    @auth
-                    @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer', 'brand']))
-                    <a href="{{ route('companies.create') }}" class="btn btn-primary">
-                        <i class="fa-solid fa-plus me-1"></i>
-                        {{ __('companies.add_company') }}
-                    </a>
-                    @endif
-                    @endauth
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-download me-1"></i>
-                            {{ __('companies.export') }}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('companies.export', ['format' => 'csv']) }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>{{ __('companies.csv_format') }}
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('companies.export', ['format' => 'json']) }}">
-                                <i class="fa-solid fa-file-code me-2"></i>{{ __('companies.json_format') }}
-                            </a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +26,7 @@
     <!-- Quick Stats -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card companies_item_thongke">
                 <div class="card-body">
                     <i class="fa-solid fa-building text-primary mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">{{ $stats['total_companies'] }}</h5>
@@ -55,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card companies_item_thongke">
                 <div class="card-body">
                     <i class="fa-solid fa-industry text-success mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">{{ $stats['total_industries'] }}</h5>
@@ -64,7 +44,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card companies_item_thongke">
                 <div class="card-body">
                     <i class="fa-solid fa-map-marker-alt text-info mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">{{ $stats['total_cities'] }}</h5>
@@ -73,7 +53,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-center">
+            <div class="card companies_item_thongke">
                 <div class="card-body">
                     <i class="fa-solid fa-star text-warning mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">{{ number_format($stats['average_rating'], 1) }}</h5>
@@ -91,13 +71,13 @@
                     <form method="GET" action="{{ route('companies.index') }}" class="row g-3">
                         <div class="col-md-3">
                             <label for="search" class="form-label">{{ __('companies.search_companies') }}</label>
-                            <input type="text" class="form-control" id="search" name="search"
+                            <input type="text" class="form-control input_search" id="search" name="search"
                                    value="{{ request('search') }}"
                                    placeholder="{{ __('companies.search_placeholder') }}">
                         </div>
                         <div class="col-md-2">
                             <label for="industry" class="form-label">{{ __('companies.industry') }}</label>
-                            <select class="form-select" id="industry" name="industry">
+                            <select class="form-select select_search" id="industry" name="industry">
                                 <option value="">{{ __('companies.all_industries') }}</option>
                                 <option value="manufacturing" {{ request('industry') == 'manufacturing' ? 'selected' : '' }}>{{ __('companies.manufacturing') }}</option>
                                 <option value="automotive" {{ request('industry') == 'automotive' ? 'selected' : '' }}>{{ __('companies.automotive') }}</option>
@@ -109,7 +89,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="company_type" class="form-label">{{ __('companies.company_type') }}</label>
-                            <select class="form-select" id="company_type" name="company_type">
+                            <select class="form-select select_search" id="company_type" name="company_type">
                                 <option value="">{{ __('companies.all_types') }}</option>
                                 <option value="supplier" {{ request('company_type') == 'supplier' ? 'selected' : '' }}>{{ __('companies.supplier') }}</option>
                                 <option value="manufacturer" {{ request('company_type') == 'manufacturer' ? 'selected' : '' }}>{{ __('companies.manufacturer') }}</option>
@@ -119,7 +99,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="location" class="form-label">{{ __('companies.location') }}</label>
-                            <select class="form-select" id="location" name="location">
+                            <select class="form-select select_search" id="location" name="location">
                                 <option value="">{{ __('companies.all_locations') }}</option>
                                 <option value="ho-chi-minh" {{ request('location') == 'ho-chi-minh' ? 'selected' : '' }}>{{ __('companies.ho_chi_minh') }}</option>
                                 <option value="hanoi" {{ request('location') == 'hanoi' ? 'selected' : '' }}>{{ __('companies.hanoi') }}</option>
@@ -130,7 +110,7 @@
                         </div>
                         <div class="col-md-2">
                             <label for="verification" class="form-label">{{ __('companies.verification') }}</label>
-                            <select class="form-select" id="verification" name="verification">
+                            <select class="form-select select_search" id="verification" name="verification">
                                 <option value="">{{ __('companies.all_companies') }}</option>
                                 <option value="verified" {{ request('verification') == 'verified' ? 'selected' : '' }}>{{ __('companies.verified_only') }}</option>
                                 <option value="premium" {{ request('verification') == 'premium' ? 'selected' : '' }}>{{ __('companies.premium_members') }}</option>
@@ -139,7 +119,7 @@
                         <div class="col-md-1">
                             <label class="form-label">&nbsp;</label>
                             <div class="d-flex gap-1">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-search">
                                     <i class="fa-solid fa-search"></i>
                                 </button>
                                 <a href="{{ route('companies.index') }}" class="btn btn-outline-secondary">
@@ -158,63 +138,46 @@
         @forelse($companies as $company)
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 company-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <div class="company-logo me-3">
+                        <div class="company-logo me-2">
                             @if($company->store_logo)
                                 <img src="{{ Storage::url($company->store_logo) }}" alt="{{ $company->business_name }}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;">
                             @else
                                 <i class="fa-solid fa-building text-primary" style="font-size: 2rem;"></i>
                             @endif
                         </div>
-                        <div>
+                        <div class="w-100">
                             <h6 class="mb-0">{{ $company->business_name }}</h6>
-                            <small class="text-muted">{{ $company->business_type }}</small>
+                            <div class="d-flex align-items-center justify-content-between ">
+                                <!--small class="text-muted">{{ $company->business_type }}</small-->
+                                <small class="text-muted" style="width: 200px;">
+                                    <i class="fa-solid fa-calendar me-1"></i>
+                                    {{ __('companies.joined') }} {{ $company->created_at->format('M Y') }}
+                                </small>
+                                <div class="d-flex justify-content-end w-100 g-2">
+                                    @if($company->verification_status === 'verified')
+                                    <span class="badge bg-success">
+                                        <i class="fa-solid fa-check-circle me-1"></i>
+                                        {{ __('companies.verified') }}
+                                    </span>
+                                    @endif
+                                    @if($company->is_featured)
+                                    <span class="badge bg-warning ms-2">
+                                        <i class="fa-solid fa-crown me-1"></i>
+                                        {{ __('companies.premium') }}
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="d-flex flex-column align-items-end">
-                        @if($company->verification_status === 'verified')
-                        <span class="badge bg-success mb-1">
-                            <i class="fa-solid fa-check-circle me-1"></i>
-                            {{ __('companies.verified') }}
-                        </span>
-                        @endif
-                        @if($company->is_featured)
-                        <span class="badge bg-warning">
-                            <i class="fa-solid fa-crown me-1"></i>
-                            {{ __('companies.premium') }}
-                        </span>
-                        @endif
-                    </div>
+
                 </div>
 
                 <div class="card-body">
-                    <div class="row g-2 mb-3">
-                        <div class="col-12">
-                            <small class="text-muted">
-                                <i class="fa-solid fa-map-marker-alt me-1"></i>
-                                @if(is_array($company->business_address))
-                                    {{ $company->business_address['city'] ?? 'N/A' }}, {{ $company->business_address['country'] ?? 'Vietnam' }}
-                                @else
-                                    {{ $company->business_address ?? 'N/A' }}
-                                @endif
-                            </small>
-                        </div>
-                        <div class="col-12">
-                            <small class="text-muted">
-                                <i class="fa-solid fa-envelope me-1"></i>
-                                {{ $company->contact_email ?? $company->user->email }}
-                            </small>
-                        </div>
-                        <div class="col-12">
-                            <small class="text-muted">
-                                <i class="fa-solid fa-calendar me-1"></i>
-                                {{ __('companies.joined') }} {{ $company->created_at->format('M Y') }}
-                            </small>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
+                    <div class="mb-2 d-flex justify-content-between">
                         <div class="d-flex align-items-center mb-1">
                             <span class="me-2">{{ __('companies.rating') }}:</span>
                             @for($j = 1; $j <= 5; $j++)
@@ -225,7 +188,7 @@
                         <small class="text-muted">{{ $company->rating_count }} {{ __('companies.reviews') }}</small>
                     </div>
 
-                    <div class="mb-3">
+                    <!--div class="mb-3 d-flex justify-content-between">
                         <small class="text-muted">{{ __('companies.specialties') }}:</small>
                         <div class="mt-1">
                             @if($company->specializations && is_array($company->specializations))
@@ -236,25 +199,33 @@
                                 <span class="badge bg-light text-dark me-1">{{ $company->business_type }}</span>
                             @endif
                         </div>
-                    </div>
+                    </div-->
 
-                    <div class="mb-3">
-                        <small class="text-muted">{{ __('companies.contact') }}:</small>
-                        <div class="mt-1">
+                    <div class="mb-3 company_contact">
+                        <!--small class="text-muted">{{ __('companies.contact') }}:</small-->
+                        <div>
+                            <p class="">
+                                <i class="fa-solid fa-map-marker-alt me-1"></i>
+                                @if(is_array($company->business_address))
+                                    {{ $company->business_address['city'] ?? 'N/A' }}, {{ $company->business_address['country'] ?? 'Vietnam' }}
+                                @else
+                                    {{ $company->business_address ?? 'N/A' }}
+                                @endif
+                            </p>
                             @if($company->contact_phone)
-                            <small class="d-block">
+                            <p class="d-block">
                                 <i class="fa-solid fa-phone me-1"></i>
                                 {{ $company->contact_phone }}
-                            </small>
+                            </p>
                             @endif
-                            <small class="d-block">
+                            <p class="d-block">
                                 <i class="fa-solid fa-envelope me-1"></i>
                                 {{ $company->contact_email ?? $company->user->email }}
-                            </small>
+                            </p>
                         </div>
                     </div>
 
-                    <div class="row g-2 mb-3">
+                    <div class="row g-2 mb-3 company_thongke">
                         <div class="col-6">
                             <small class="text-muted">{{ __('companies.products') }}</small>
                             <div class="fw-medium">{{ $company->total_products }}+</div>
@@ -266,10 +237,10 @@
                     </div>
                 </div>
 
-                <div class="card-footer bg-transparent">
+                <div class="card-footer company_footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex gap-1">
-                            <button class="btn btn-sm btn-outline-secondary" onclick="addToFavorites({{ $company->id }}, this)">
+                            <button class="btn btn-sm" onclick="addToFavorites({{ $company->id }}, this)">
                                 @auth
                                     @if(isset($company->is_favorited) && $company->is_favorited)
                                         <i class="fa-solid fa-heart text-danger"></i>
@@ -280,7 +251,7 @@
                                     <i class="fa-regular fa-heart"></i>
                                 @endauth
                             </button>
-                            <button class="btn btn-sm btn-outline-info" onclick="shareCompany({{ $company->id }}, this)">
+                            <button class="btn btn-sm" onclick="shareCompany({{ $company->id }}, this)">
                                 <i class="fa-solid fa-share"></i>
                             </button>
                         </div>
@@ -313,117 +284,12 @@
     @if($companies->hasPages())
     <div class="row mt-4">
         <div class="col-12">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center list_post_threads_footer">
                 {{ $companies->links() }}
             </div>
         </div>
     </div>
     @endif
-
-    <!-- Industry Categories -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">
-                        <i class="fa-solid fa-industry me-2"></i>
-                        {{ __('companies.browse_by_industry') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach(['manufacturing', 'automotive', 'aerospace', 'construction', 'energy', 'electronics'] as $industry)
-                        <div class="col-md-2 mb-3">
-                            <div class="text-center">
-                                <div class="bg-light rounded p-3 mb-2">
-                                    <i class="fa-solid fa-industry text-primary" style="font-size: 2rem;"></i>
-                                </div>
-                                <h6 class="mb-1">{{ __('companies.' . $industry) }}</h6>
-                                <small class="text-muted">{{ rand(3, 12) }} {{ __('companies.companies_count') }}</small>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Top Rated Companies -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="mb-0">
-                        <i class="fa-solid fa-trophy me-2"></i>
-                        {{ __('companies.top_rated_companies') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @for($i = 1; $i <= 4; $i++)
-                        <div class="col-md-3 mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                        <span class="fw-bold">{{ $i }}</span>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1">{{ ['Precision Tech', 'Quality Manufacturing', 'Steel Solutions', 'Advanced Materials'][$i-1] }}</h6>
-                                    <div class="d-flex align-items-center">
-                                        @for($j = 1; $j <= 5; $j++)
-                                            <i class="fa-solid fa-star text-warning"></i>
-                                        @endfor
-                                        <small class="text-muted ms-2">(5.0)</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Contact Company Modal -->
-<div class="modal fade" id="contactModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ __('companies.contact_modal_title') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="contactForm">
-                    <div class="mb-3">
-                        <label for="contactSubject" class="form-label">{{ __('companies.subject') }}</label>
-                        <select class="form-select" id="contactSubject">
-                            <option value="inquiry">{{ __('companies.general_inquiry') }}</option>
-                            <option value="quote">{{ __('companies.request_quote') }}</option>
-                            <option value="partnership">{{ __('companies.partnership_opportunity') }}</option>
-                            <option value="support">{{ __('companies.technical_support') }}</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactMessage" class="form-label">{{ __('companies.message') }}</label>
-                        <textarea class="form-control" id="contactMessage" rows="4"
-                                  placeholder="{{ __('companies.message_placeholder') }}"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactPhone" class="form-label">{{ __('companies.phone_optional') }}</label>
-                        <input type="tel" class="form-control" id="contactPhone" placeholder="{{ __('companies.phone_placeholder') }}">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('companies.cancel') }}</button>
-                <button type="button" class="btn btn-primary" onclick="sendMessage()">{{ __('companies.send_message') }}</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>

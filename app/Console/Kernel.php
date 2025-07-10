@@ -33,6 +33,29 @@ class Kernel extends ConsoleKernel
         $schedule->command('websocket:monitor --health')->everyMinute();
         $schedule->command('websocket:monitor --cleanup')->everyFiveMinutes();
         $schedule->command('websocket:monitor --stats')->hourly();
+
+        // Notification engagement cleanup
+        $schedule->command('engagement:cleanup')->daily()->at('02:00');
+
+        // Redis Cluster monitoring and maintenance
+        $schedule->command('redis-cluster:monitor --health')->everyFiveMinutes();
+        $schedule->command('redis-cluster:monitor --cleanup')->daily()->at('03:00');
+        $schedule->command('redis-cluster:monitor --warmup')->daily()->at('04:00');
+
+        // A/B Testing management
+        $schedule->command('ab-test:manage --check')->hourly();
+
+        // Notification delivery optimization
+        $schedule->command('delivery:manage --optimize')->daily()->at('01:00');
+        $schedule->command('delivery:manage --clear-cache')->daily()->at('05:00');
+        $schedule->command('delivery:manage --reschedule')->everyThirtyMinutes();
+
+        // Weekly digest notifications
+        $schedule->command('digest:weekly')->weekly()->mondays()->at('09:00');
+
+        // Typing indicators cleanup
+        $schedule->command('typing:cleanup')->everyMinute();
+        $schedule->command('typing:cleanup --auto-stop')->everyFiveMinutes();
     }
 
     /**

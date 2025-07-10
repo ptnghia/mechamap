@@ -615,4 +615,125 @@ Route::middleware('auth:sanctum')->prefix('websocket')->group(function () {
     Route::get('/statistics', [App\Http\Controllers\WebSocketController::class, 'getStatistics']);
 });
 
+// Notification Engagement API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('notifications/engagement')->group(function () {
+    Route::post('/track/view', [App\Http\Controllers\Api\NotificationEngagementController::class, 'trackView']);
+    Route::post('/track/click', [App\Http\Controllers\Api\NotificationEngagementController::class, 'trackClick']);
+    Route::post('/track/dismiss', [App\Http\Controllers\Api\NotificationEngagementController::class, 'trackDismiss']);
+    Route::post('/track/action', [App\Http\Controllers\Api\NotificationEngagementController::class, 'trackAction']);
+    Route::post('/track/bulk', [App\Http\Controllers\Api\NotificationEngagementController::class, 'bulkTrack']);
+    Route::get('/metrics/user', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getUserMetrics']);
+    Route::get('/metrics/type', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getTypeMetrics']);
+    Route::get('/summary', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getEngagementSummary']);
+    Route::get('/top-performing', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getTopPerforming']);
+    Route::get('/leaderboard', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getLeaderboard']);
+});
+
+// User Follow API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('users')->group(function () {
+    Route::post('/{user}/follow', [App\Http\Controllers\UserFollowController::class, 'follow']);
+    Route::delete('/{user}/follow', [App\Http\Controllers\UserFollowController::class, 'unfollow']);
+    Route::get('/{user}/followers', [App\Http\Controllers\UserFollowController::class, 'followers']);
+    Route::get('/{user}/following', [App\Http\Controllers\UserFollowController::class, 'following']);
+    Route::get('/{user}/is-following', [App\Http\Controllers\UserFollowController::class, 'isFollowing']);
+    Route::get('/{user}/mutual-followers', [App\Http\Controllers\UserFollowController::class, 'mutualFollowers']);
+    Route::get('/follow/suggestions', [App\Http\Controllers\UserFollowController::class, 'suggestions']);
+    Route::get('/follow/statistics', [App\Http\Controllers\UserFollowController::class, 'statistics']);
+    Route::post('/follow/bulk', [App\Http\Controllers\UserFollowController::class, 'bulkAction']);
+});
+
+// Achievement API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('achievements')->group(function () {
+    Route::get('/', [App\Http\Controllers\AchievementController::class, 'index']);
+    Route::get('/my', [App\Http\Controllers\AchievementController::class, 'myAchievements']);
+    Route::get('/available', [App\Http\Controllers\AchievementController::class, 'myAvailableAchievements']);
+    Route::post('/check', [App\Http\Controllers\AchievementController::class, 'checkAchievements']);
+    Route::get('/statistics', [App\Http\Controllers\AchievementController::class, 'statistics']);
+    Route::get('/leaderboard', [App\Http\Controllers\AchievementController::class, 'leaderboard']);
+    Route::post('/seed', [App\Http\Controllers\AchievementController::class, 'seedAchievements']);
+    Route::get('/users/{user}', [App\Http\Controllers\AchievementController::class, 'userAchievements']);
+    Route::get('/users/{user}/available', [App\Http\Controllers\AchievementController::class, 'availableAchievements']);
+});
+
+// Weekly Digest API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('digest')->group(function () {
+    Route::get('/latest', [App\Http\Controllers\WeeklyDigestController::class, 'myLatestDigest']);
+    Route::get('/history', [App\Http\Controllers\WeeklyDigestController::class, 'myDigestHistory']);
+    Route::get('/preview', [App\Http\Controllers\WeeklyDigestController::class, 'previewDigest']);
+    Route::put('/preferences', [App\Http\Controllers\WeeklyDigestController::class, 'updatePreferences']);
+    Route::get('/statistics', [App\Http\Controllers\WeeklyDigestController::class, 'statistics']);
+    Route::post('/send', [App\Http\Controllers\WeeklyDigestController::class, 'sendDigest']);
+    Route::get('/engagement', [App\Http\Controllers\WeeklyDigestController::class, 'engagementMetrics']);
+});
+
+// Notification Preferences API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('notification-preferences')->group(function () {
+    Route::get('/', [App\Http\Controllers\NotificationPreferencesController::class, 'getPreferences']);
+    Route::put('/', [App\Http\Controllers\NotificationPreferencesController::class, 'update']);
+    Route::post('/reset', [App\Http\Controllers\NotificationPreferencesController::class, 'resetPreferences']);
+    Route::put('/types/{type}', [App\Http\Controllers\NotificationPreferencesController::class, 'updateNotificationType']);
+});
+
+// Typing Indicator API routes (outside v1 prefix for direct access)
+Route::middleware('auth:sanctum')->prefix('typing')->group(function () {
+    Route::post('/start', [App\Http\Controllers\TypingIndicatorController::class, 'start']);
+    Route::post('/update', [App\Http\Controllers\TypingIndicatorController::class, 'update']);
+    Route::post('/stop', [App\Http\Controllers\TypingIndicatorController::class, 'stop']);
+    Route::get('/active', [App\Http\Controllers\TypingIndicatorController::class, 'getActive']);
+    Route::get('/my-contexts', [App\Http\Controllers\TypingIndicatorController::class, 'myTypingContexts']);
+    Route::post('/stop-all', [App\Http\Controllers\TypingIndicatorController::class, 'stopAll']);
+    Route::post('/heartbeat', [App\Http\Controllers\TypingIndicatorController::class, 'heartbeat']);
+    Route::post('/bulk', [App\Http\Controllers\TypingIndicatorController::class, 'bulk']);
+    Route::get('/statistics', [App\Http\Controllers\TypingIndicatorController::class, 'statistics']);
+    Route::post('/cleanup', [App\Http\Controllers\TypingIndicatorController::class, 'cleanup']);
+});
+
+// Test API routes (only in development)
+if (app()->environment('local')) {
+    Route::middleware('auth:sanctum')->prefix('test')->group(function () {
+        Route::post('/notification', function (Illuminate\Http\Request $request) {
+            $user = auth()->user();
+
+            $notification = App\Models\Notification::create([
+                'user_id' => $user->id,
+                'type' => $request->input('type', 'test'),
+                'title' => $request->input('title', 'Test Notification'),
+                'message' => $request->input('message', 'This is a test notification'),
+                'data' => $request->input('data', []),
+                'priority' => 'normal',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Test notification created',
+                'notification' => $notification
+            ]);
+        });
+
+        Route::post('/follower-notification', function () {
+            $user = auth()->user();
+
+            $notification = App\Models\Notification::create([
+                'user_id' => $user->id,
+                'type' => 'user_followed',
+                'title' => 'Bạn có người theo dõi mới!',
+                'message' => 'Test User đã bắt đầu theo dõi bạn',
+                'data' => [
+                    'follower_id' => $user->id,
+                    'follower_name' => 'Test User',
+                    'action_url' => '/profile/' . $user->id,
+                    'action_text' => 'Xem hồ sơ'
+                ],
+                'priority' => 'normal',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Follower notification created',
+                'notification' => $notification
+            ]);
+        });
+    });
+}
+
 

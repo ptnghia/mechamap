@@ -1,0 +1,21 @@
+# Notification Sound Placeholder
+
+This file serves as a placeholder for the notification sound file.
+
+In production, replace this with an actual audio file:
+- notification.mp3 (preferred)
+- notification.wav
+- notification.ogg
+
+The sound should be:
+- Short (1-2 seconds)
+- Pleasant and not jarring
+- Low volume by default
+- Compatible across browsers
+
+Example sources for notification sounds:
+- https://freesound.org/
+- https://zapsplat.com/
+- Custom recording
+
+File should be placed at: public/sounds/notification.mp3

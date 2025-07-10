@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Notification;
+use App\Services\NotificationLocalizationService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Events\NotificationBroadcastEvent;
@@ -33,13 +34,31 @@ class NotificationService
             }
 
             foreach ($users as $user) {
-                // Create database notification
-                $notification = Notification::create([
-                    'user_id' => $user->id,
+                // Prepare notification data for localization
+                $notificationData = [
                     'type' => $type,
                     'title' => $title,
                     'message' => $message,
                     'data' => $data,
+                    'priority' => $data['priority'] ?? 'normal',
+                ];
+
+                // Localize notification content
+                $localizedData = NotificationLocalizationService::getLocalizedNotification(
+                    $notificationData,
+                    $user->locale
+                );
+
+                // Create database notification with localized content
+                $notification = Notification::create([
+                    'user_id' => $user->id,
+                    'type' => $type,
+                    'title' => $localizedData['title'],
+                    'message' => $localizedData['message'],
+                    'data' => array_merge($data, [
+                        'action_text' => $localizedData['action_text'],
+                        'locale' => $localizedData['locale'],
+                    ]),
                     'is_read' => false,
                     'priority' => $data['priority'] ?? 'normal',
                 ]);

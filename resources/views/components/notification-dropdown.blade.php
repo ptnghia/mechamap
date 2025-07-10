@@ -3,33 +3,43 @@
 <div class="notification-dropdown-wrapper position-relative">
     @auth
         <!-- Notification Bell Button -->
-        <button type="button" 
-                class="btn btn-link position-relative notification-bell-btn p-2"
-                id="notificationDropdownBtn"
-                data-bs-toggle="dropdown" 
+        <button type="button"
+                class="btn btn-link position-relative notification-bell p-2"
+                id="notificationBell"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
                 title="Thông báo">
             <i class="fas fa-bell fs-5 text-muted"></i>
             <!-- Unread Count Badge -->
-            <span class="notification-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
-                <span class="unread-count">0</span>
+            <span class="notification-counter position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                0
                 <span class="visually-hidden">thông báo chưa đọc</span>
             </span>
         </button>
 
         <!-- Dropdown Menu -->
-        <div class="dropdown-menu dropdown-menu-{{ $position }} notification-dropdown-menu shadow-lg border-0" 
-             aria-labelledby="notificationDropdownBtn"
+        <div class="dropdown-menu dropdown-menu-{{ $position }} notification-dropdown show"
+             id="notificationDropdown"
+             aria-labelledby="notificationBell"
              style="width: 380px; max-height: 500px;">
-            
+
             <!-- Header -->
             <div class="dropdown-header d-flex justify-content-between align-items-center py-3 px-3 border-bottom">
                 <h6 class="mb-0 fw-bold">Thông báo</h6>
-                <button type="button" 
-                        class="btn btn-sm btn-outline-primary mark-all-read-btn"
-                        title="Đánh dấu tất cả là đã đọc">
-                    <i class="fas fa-check-double"></i>
-                </button>
+                <div class="d-flex gap-2">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary btn-mark-all-read"
+                            id="markAllRead"
+                            title="Đánh dấu tất cả là đã đọc">
+                        <i class="fas fa-check-double"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary btn-clear-all"
+                            id="clearAll"
+                            title="Xóa tất cả">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Loading State -->
@@ -41,19 +51,19 @@
             </div>
 
             <!-- Notifications List -->
-            <div class="notification-list" style="max-height: 400px; overflow-y: auto;">
-                <!-- Notifications will be loaded here -->
+            <div class="notification-list" id="notificationItems" style="max-height: 400px; overflow-y: auto;">
+                <!-- Notifications will be loaded here by NotificationManager -->
             </div>
 
             <!-- Empty State -->
-            <div class="notification-empty text-center py-4 d-none">
+            <div class="notification-empty text-center py-4" id="notificationEmpty" style="display: none;">
                 <i class="fas fa-bell-slash text-muted fs-1 mb-3"></i>
                 <p class="text-muted mb-0">Không có thông báo nào</p>
             </div>
 
             <!-- Footer -->
             <div class="dropdown-footer border-top">
-                <a href="{{ route('notifications.index') }}" 
+                <a href="{{ route('notifications.index') }}"
                    class="dropdown-item text-center py-3 text-primary fw-medium">
                     <i class="fas fa-list me-1"></i>
                     Xem tất cả thông báo
@@ -62,7 +72,7 @@
         </div>
     @else
         <!-- Guest State -->
-        <button type="button" 
+        <button type="button"
                 class="btn btn-link p-2"
                 onclick="showLoginModal()"
                 title="Đăng nhập để xem thông báo">
@@ -84,18 +94,18 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingState: document.querySelector('.notification-loading'),
         emptyState: document.querySelector('.notification-empty'),
         markAllReadBtn: document.querySelector('.mark-all-read-btn'),
-        
+
         // State
         isLoaded: false,
         notifications: [],
-        
+
         // Initialize
         init() {
             if (!this.bellBtn) return;
-            
+
             this.loadUnreadCount();
             this.bindEvents();
-            
+
             // Auto refresh every 30 seconds
             setInterval(() => {
                 this.loadUnreadCount();
@@ -104,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 30000);
         },
-        
+
         // Bind events
         bindEvents() {
             // Load notifications when dropdown is shown
@@ -113,13 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.loadNotifications();
                 }
             });
-            
+
             // Mark all as read
             this.markAllReadBtn?.addEventListener('click', () => {
                 this.markAllAsRead();
             });
         },
-        
+
         // Load unread count
         async loadUnreadCount() {
             try {
@@ -129,9 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     this.updateUnreadCount(data.unread_count);
                 }
@@ -139,11 +149,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Failed to load unread count:', error);
             }
         },
-        
+
         // Load notifications
         async loadNotifications() {
             this.showLoading();
-            
+
             try {
                 const response = await fetch('/ajax/notifications/dropdown', {
                     headers: {
@@ -151,9 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     this.notifications = data.notifications;
                     this.renderNotifications();
@@ -169,30 +179,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.hideLoading();
             }
         },
-        
+
         // Render notifications
         renderNotifications() {
             if (this.notifications.length === 0) {
                 this.showEmpty();
                 return;
             }
-            
+
             const html = this.notifications.map(notification => this.renderNotification(notification)).join('');
             this.notificationList.innerHTML = html;
-            
+
             // Bind notification events
             this.bindNotificationEvents();
-            
+
             this.hideEmpty();
         },
-        
+
         // Render single notification
         renderNotification(notification) {
             const isUnread = !notification.is_read;
             const actionUrl = notification.action_url || '#';
-            
+
             return `
-                <div class="notification-item dropdown-item-text p-3 border-bottom ${isUnread ? 'bg-light' : ''}" 
+                <div class="notification-item dropdown-item-text p-3 border-bottom ${isUnread ? 'bg-light' : ''}"
                      data-notification-id="${notification.id}">
                     <div class="d-flex">
                         <div class="notification-icon me-3">
@@ -209,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <small class="text-muted">${notification.time_ago}</small>
                                 <div class="notification-actions">
                                     ${isUnread ? '<span class="badge bg-primary">Mới</span>' : ''}
-                                    <button type="button" 
+                                    <button type="button"
                                             class="btn btn-sm btn-link text-muted p-0 ms-2 delete-notification-btn"
                                             title="Xóa thông báo">
                                         <i class="fas fa-times"></i>
@@ -222,31 +232,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         },
-        
+
         // Bind notification events
         bindNotificationEvents() {
             // Mark as read on click
             this.notificationList.querySelectorAll('.notification-item').forEach(item => {
                 item.addEventListener('click', (e) => {
                     if (e.target.closest('.delete-notification-btn')) return;
-                    
+
                     const notificationId = item.dataset.notificationId;
                     this.markAsRead(notificationId);
                 });
             });
-            
+
             // Delete notification
             this.notificationList.querySelectorAll('.delete-notification-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     const notificationId = btn.closest('.notification-item').dataset.notificationId;
                     this.deleteNotification(notificationId);
                 });
             });
         },
-        
+
         // Mark notification as read
         async markAsRead(notificationId) {
             try {
@@ -258,9 +268,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     // Update UI
                     const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
@@ -269,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const badge = item.querySelector('.badge');
                         if (badge) badge.remove();
                     }
-                    
+
                     // Update unread count
                     this.loadUnreadCount();
                 }
@@ -277,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Failed to mark as read:', error);
             }
         },
-        
+
         // Mark all as read
         async markAllAsRead() {
             try {
@@ -289,9 +299,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     // Update UI
                     this.notificationList.querySelectorAll('.notification-item').forEach(item => {
@@ -299,10 +309,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         const badge = item.querySelector('.badge');
                         if (badge) badge.remove();
                     });
-                    
+
                     // Update unread count
                     this.updateUnreadCount(0);
-                    
+
                     showToast(data.message, 'success');
                 }
             } catch (error) {
@@ -310,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showToast('Có lỗi xảy ra', 'error');
             }
         },
-        
+
         // Delete notification
         async deleteNotification(notificationId) {
             try {
@@ -321,27 +331,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     // Remove from UI
                     const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
                     if (item) {
                         item.remove();
                     }
-                    
+
                     // Update notifications array
                     this.notifications = this.notifications.filter(n => n.id != notificationId);
-                    
+
                     // Check if empty
                     if (this.notifications.length === 0) {
                         this.showEmpty();
                     }
-                    
+
                     // Update unread count
                     this.loadUnreadCount();
-                    
+
                     showToast(data.message, 'success');
                 }
             } catch (error) {
@@ -349,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showToast('Có lỗi xảy ra khi xóa thông báo', 'error');
             }
         },
-        
+
         // Update unread count
         updateUnreadCount(count) {
             if (count > 0) {
@@ -363,30 +373,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.bellBtn.classList.add('text-muted');
             }
         },
-        
+
         // Show loading state
         showLoading() {
             this.loadingState.classList.remove('d-none');
             this.notificationList.innerHTML = '';
             this.hideEmpty();
         },
-        
+
         // Hide loading state
         hideLoading() {
             this.loadingState.classList.add('d-none');
         },
-        
+
         // Show empty state
         showEmpty() {
             this.emptyState.classList.remove('d-none');
             this.notificationList.innerHTML = '';
         },
-        
+
         // Hide empty state
         hideEmpty() {
             this.emptyState.classList.add('d-none');
         },
-        
+
         // Show error
         showError(message) {
             this.notificationList.innerHTML = `
@@ -397,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
     };
-    
+
     // Initialize notification dropdown
     notificationDropdown.init();
 });

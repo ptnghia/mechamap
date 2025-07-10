@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\DasonDashboardController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DynamicDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\NotificationAnalyticsController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -597,6 +598,19 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/api/unread-count', [NotificationController::class, 'getUnreadCount'])->name('api.unread-count');
         Route::get('/api/recent', [NotificationController::class, 'getRecent'])->name('api.recent');
         Route::post('/api/test', [NotificationController::class, 'createTest'])->name('api.test');
+    });
+
+    // Notification Analytics routes
+    Route::prefix('analytics/notifications')->name('analytics.notifications.')->group(function () {
+        Route::get('/', [NotificationAnalyticsController::class, 'index'])->name('index');
+        Route::get('/data', [NotificationAnalyticsController::class, 'getData'])->name('data');
+        Route::get('/overview', [NotificationAnalyticsController::class, 'overview'])->name('overview');
+        Route::get('/trends', [NotificationAnalyticsController::class, 'trends'])->name('trends');
+        Route::get('/user-segments', [NotificationAnalyticsController::class, 'userSegments'])->name('user-segments');
+        Route::get('/performance', [NotificationAnalyticsController::class, 'performance'])->name('performance');
+        Route::get('/real-time', [NotificationAnalyticsController::class, 'realTime'])->name('real-time');
+        Route::get('/type-stats', [NotificationAnalyticsController::class, 'typeStats'])->name('type-stats');
+        Route::get('/export', [NotificationAnalyticsController::class, 'export'])->name('export');
     });
 
     // Media management routes (admin và moderator có quyền)

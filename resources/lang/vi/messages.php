@@ -145,6 +145,85 @@ return [
         'add_products' => 'Thêm sản phẩm để bắt đầu mua sắm',
     ],
 
+    // Members Section
+    'members' => [
+        // Page titles
+        'list_title' => 'Danh sách thành viên',
+        'staff_title' => 'Danh sách thành viên quản trị',
+        'online_title' => 'Danh sách thành viên trực tuyến',
+        'leaderboard_title' => 'Bảng xếp hạng thành viên',
+
+        // Page descriptions
+        'list_description' => 'Xem và tìm kiếm thông tin của các thành viên trên MechaMap',
+        'staff_description' => 'Xem và tìm kiếm thông tin của các thành viên quản trị trên MechaMap',
+        'online_description' => 'Xem và tìm kiếm thông tin của các thành viên trên MechaMap đang trực tuyến',
+        'leaderboard_description' => 'Những thành viên đóng góp tích cực nhất cho cộng đồng kỹ thuật cơ khí',
+
+        // Navigation tabs
+        'all_members' => 'Tất cả thành viên',
+        'online_now' => 'Đang trực tuyến',
+        'staff' => 'Nhân viên',
+        'leaderboard' => 'Bảng xếp hạng',
+
+        // User roles
+        'administrator' => 'Quản trị viên',
+        'moderator' => 'Điều hành viên',
+        'admin' => 'Quản trị',
+        'administrators' => 'Quản trị viên',
+        'moderators' => 'Điều hành viên',
+
+        // Statistics
+        'posts' => 'Bài viết',
+        'threads' => 'Chủ đề',
+        'followers' => 'Người theo dõi',
+        'joined' => 'Tham gia',
+        'last_seen' => 'Lần cuối truy cập',
+
+        // Sorting
+        'sort_by' => 'Sắp xếp theo',
+        'name' => 'Tên',
+        'join_date' => 'Ngày tham gia',
+        'ascending' => 'Tăng dần',
+        'descending' => 'Giảm dần',
+        'direction' => 'Hướng',
+
+        // View modes
+        'list_view' => 'Danh sách',
+        'grid_view' => 'Lưới',
+
+        // Search
+        'search_placeholder' => 'Tìm kiếm thành viên...',
+        'search' => 'Tìm kiếm',
+
+        // Counts and filters
+        'total' => 'Tổng',
+        'members_count' => 'thành viên',
+        'filtered_by' => 'Lọc theo',
+        'online' => 'Trực tuyến',
+
+        // Messages
+        'no_members_found' => 'Không tìm thấy thành viên nào.',
+        'no_administrators_found' => 'Không tìm thấy quản trị viên nào.',
+        'no_moderators_found' => 'Không tìm thấy điều hành viên nào.',
+        'no_members_online' => 'Hiện tại không có thành viên nào trực tuyến.',
+        'try_different_search' => 'Thử từ khóa tìm kiếm khác.',
+
+        // Bio
+        'no_bio_available' => 'Chưa có thông tin cá nhân.',
+
+        // Online members info
+        'online_members_info' => 'Các thành viên đã hoạt động trong 15 phút qua được hiển thị ở đây.',
+
+        // Leaderboard
+        'top_contributors_posts' => 'Người đóng góp hàng đầu (Bài viết)',
+        'top_thread_creators' => 'Người tạo chủ đề hàng đầu',
+        'most_active_members' => 'Thành viên tích cực nhất',
+        'newest_members' => 'Thành viên mới nhất',
+        'no_data_available' => 'Không có dữ liệu khả dụng.',
+        'view_profile' => 'Xem hồ sơ',
+        'member_since' => 'Thành viên từ',
+    ],
+
     'auth' => [
         'login' => 'Đăng nhập',
         'register' => 'Đăng ký',

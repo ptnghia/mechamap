@@ -149,17 +149,17 @@
         width: 320px !important;
         max-width: 90vw;
     }
-    
+
     .notification-item .avatar-title {
         width: 2rem;
         height: 2rem;
         font-size: 0.75rem;
     }
-    
+
     .notification-item h6 {
         font-size: 0.8125rem;
     }
-    
+
     .notification-item p {
         font-size: 0.75rem;
     }
@@ -231,29 +231,29 @@
         background-color: #212529;
         border-color: #495057;
     }
-    
+
     .notification-item {
         border-color: #495057 !important;
     }
-    
+
     .notification-item:hover {
         background-color: #343a40;
     }
-    
+
     .notification-item h6 {
         color: #f8f9fa;
     }
-    
+
     .notification-item p {
         color: #adb5bd;
     }
-    
+
     #notificationDropdown .border-bottom,
     #notificationDropdown .border-top {
         background-color: #343a40;
         border-color: #495057 !important;
     }
-    
+
     #notificationEmpty {
         color: #adb5bd;
     }
@@ -264,11 +264,11 @@
     .notification-item {
         border-color: #000 !important;
     }
-    
+
     .notification-item:hover {
         background-color: #e9ecef;
     }
-    
+
     .avatar-title {
         border: 2px solid #000;
     }
@@ -279,8 +279,297 @@
     .notification-item {
         transition: none;
     }
-    
+
     .notification-badge-pulse {
         animation: none;
+    }
+}
+
+/* ===== REAL-TIME NOTIFICATION UI STYLES ===== */
+
+/* Enhanced Notification Counter with Pulse */
+.notification-counter.real-time {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Notification Bell with Shake Animation */
+.notification-bell.has-notifications {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+/* Notification Toast Container */
+.notification-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.notification-toast {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 12px;
+    max-width: 400px;
+    pointer-events: auto;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-toast-content {
+    padding: 16px;
+}
+
+.notification-toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.notification-toast-header strong {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+    flex: 1;
+    margin-right: 8px;
+}
+
+.notification-toast-close {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.notification-toast-close:hover {
+    background: #f0f0f0;
+}
+
+.notification-toast-body {
+    color: #555;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.notification-toast-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.notification-toast-actions .btn {
+    font-size: 12px;
+    padding: 6px 12px;
+}
+
+/* Typing Indicators */
+.typing-indicators {
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #666;
+    animation: fadeIn 0.3s ease;
+}
+
+.typing-indicator.removing {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.typing-user {
+    font-weight: 500;
+    color: #007bff;
+}
+
+.typing-text {
+    font-style: italic;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 2px;
+}
+
+.typing-dots span {
+    width: 4px;
+    height: 4px;
+    background: #007bff;
+    border-radius: 50%;
+    animation: typingDots 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingDots {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Connection Status Indicator */
+.connection-status {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.connection-status.connected {
+    background: #28a745;
+    color: white;
+}
+
+.connection-status.disconnected {
+    background: #dc3545;
+    color: white;
+}
+
+.connection-status.connecting {
+    background: #ffc107;
+    color: #333;
+}
+
+/* Real-time Notification Item Enhancements */
+.notification-item.real-time-new {
+    animation: slideInRight 0.5s ease;
+    border-left: 4px solid #007bff;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-item.removing {
+    animation: slideOutRight 0.3s ease;
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Enhanced Mobile Responsiveness for Real-time Features */
+@media (max-width: 768px) {
+    .notification-toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .notification-toast {
+        max-width: none;
+    }
+
+    .connection-status {
+        bottom: 10px;
+        left: 10px;
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    .typing-indicators {
+        padding: 6px 12px;
+    }
+}
+
+/* Dark Mode Support for Real-time Features */
+@media (prefers-color-scheme: dark) {
+    .notification-toast {
+        background: #2d3748;
+        border-color: #4a5568;
+    }
+
+    .notification-toast-header strong {
+        color: #e2e8f0;
+    }
+
+    .notification-toast-body {
+        color: #cbd5e0;
+    }
+
+    .notification-toast-close:hover {
+        background: #4a5568;
+    }
+
+    .typing-indicators {
+        background: #1a202c;
+        border-color: #4a5568;
+    }
+
+    .typing-indicator {
+        color: #a0aec0;
     }
 }

@@ -12,9 +12,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-authenticated" content="{{ Auth::check() ? 'true' : 'false' }}">
 
-    <!-- User Info for Chat Widget -->
+    <!-- User Info for Real-time Features -->
     @auth
     <meta name="user-id" content="{{ auth()->id() }}">
+    <meta name="user-name" content="{{ auth()->user()->name }}">
     @endauth
 
     <!-- SEO Meta Tags -->
@@ -151,6 +152,8 @@
             'subscription.index',
             'business.index',
             'business.services',
+            'companies.index',
+            'companies.show',
             ];
 
             // Kiểm tra route hiện tại
@@ -221,6 +224,13 @@
 
     <!-- Main App JS -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Real-time Notification System -->
+    @auth
+    <script src="{{ asset('js/frontend/services/notification-service.js') }}"></script>
+    <script src="{{ asset('js/frontend/components/notification-manager.js') }}"></script>
+    <script src="{{ asset('js/frontend/components/typing-indicator.js') }}"></script>
+    @endauth
 
     <!-- Dark Mode JS -->
     <script src="{{ asset('js/dark-mode.js') }}"></script>

@@ -49,6 +49,9 @@ class MemberController extends Controller
                 break;
         }
 
+        // Always load counts for display
+        $query->withCount(['posts', 'threads', 'followers']);
+
         $members = $query->paginate(20);
 
         return view('members.index', compact('members', 'sort', 'direction', 'filter'));
@@ -72,9 +75,19 @@ class MemberController extends Controller
      */
     public function staff(): View
     {
-        // Get admin and moderator users
-        $admins = User::where('role', 'admin')->get();
-        $moderators = User::where('role', 'moderator')->get();
+        // Get admin users (admin, super_admin, system_admin)
+        $admins = User::whereIn('role', ['admin', 'super_admin', 'system_admin'])
+            ->withCount(['posts', 'threads', 'followers'])
+            ->get();
+
+        // Get moderator users (all types of moderators)
+        $moderators = User::whereIn('role', [
+            'community_moderator',
+            'content_moderator',
+            'marketplace_moderator'
+        ])
+        ->withCount(['posts', 'threads', 'followers'])
+        ->get();
 
         return view('members.staff', compact('admins', 'moderators'));
     }

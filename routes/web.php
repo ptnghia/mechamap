@@ -890,4 +890,8 @@ if (app()->environment('local')) {
     Route::get('/test/header-features', function () {
         return view('test.header-features');
     })->name('test.header-features');
+
+    Route::get('/test/real-time-notifications', function () {
+        return view('test.real-time-notifications');
+    })->name('test.real-time-notifications')->middleware('auth');
 }

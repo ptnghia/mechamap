@@ -479,6 +479,85 @@ return [
         'auto_detect' => 'Auto Detect',
     ],
 
+    // Members Section
+    'members' => [
+        // Page titles
+        'list_title' => 'Members List',
+        'staff_title' => 'Staff Members List',
+        'online_title' => 'Online Members List',
+        'leaderboard_title' => 'Members Leaderboard',
+
+        // Page descriptions
+        'list_description' => 'View and search information of members on MechaMap',
+        'staff_description' => 'View and search information of staff members on MechaMap',
+        'online_description' => 'View and search information of members currently online on MechaMap',
+        'leaderboard_description' => 'Most active members contributing to the mechanical engineering community',
+
+        // Navigation tabs
+        'all_members' => 'All Members',
+        'online_now' => 'Online Now',
+        'staff' => 'Staff',
+        'leaderboard' => 'Leaderboard',
+
+        // User roles
+        'administrator' => 'Administrator',
+        'moderator' => 'Moderator',
+        'admin' => 'Admin',
+        'administrators' => 'Administrators',
+        'moderators' => 'Moderators',
+
+        // Statistics
+        'posts' => 'Posts',
+        'threads' => 'Threads',
+        'followers' => 'Followers',
+        'joined' => 'Joined',
+        'last_seen' => 'Last seen',
+
+        // Sorting
+        'sort_by' => 'Sort by',
+        'name' => 'Name',
+        'join_date' => 'Join Date',
+        'ascending' => 'Ascending',
+        'descending' => 'Descending',
+        'direction' => 'Direction',
+
+        // View modes
+        'list_view' => 'List',
+        'grid_view' => 'Grid',
+
+        // Search
+        'search_placeholder' => 'Search members...',
+        'search' => 'Search',
+
+        // Counts and filters
+        'total' => 'Total',
+        'members_count' => 'members',
+        'filtered_by' => 'Filtered by',
+        'online' => 'Online',
+
+        // Messages
+        'no_members_found' => 'No members found.',
+        'no_administrators_found' => 'No administrators found.',
+        'no_moderators_found' => 'No moderators found.',
+        'no_members_online' => 'No members are currently online.',
+        'try_different_search' => 'Try a different search term.',
+
+        // Bio
+        'no_bio_available' => 'No bio available.',
+
+        // Online members info
+        'online_members_info' => 'Members who have been active in the last 15 minutes are shown here.',
+
+        // Leaderboard
+        'top_contributors_posts' => 'Top Contributors (Posts)',
+        'top_thread_creators' => 'Top Thread Creators',
+        'most_active_members' => 'Most Active Members',
+        'newest_members' => 'Newest Members',
+        'no_data_available' => 'No data available.',
+        'view_profile' => 'View Profile',
+        'member_since' => 'Member since',
+    ],
+
     // Common
     'home' => 'Home',
     'loading' => 'Loading',

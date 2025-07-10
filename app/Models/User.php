@@ -17,6 +17,9 @@ use App\Models\Showcase;
 use App\Models\Country;
 use App\Models\Region;
 use App\Models\MarketplaceSeller;
+use App\Models\UserFollow;
+use App\Models\Achievement;
+use App\Models\UserAchievement;
 // use Spatie\Permission\Traits\HasRoles; // Temporarily disabled
 
 /**
@@ -182,6 +185,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'role_group',
         'role_permissions',
         'role_updated_at',
+        // Localization and notification preferences
+        'locale',
+        'email_notifications_enabled',
+        'browser_notifications_enabled',
+        'marketing_emails_enabled',
     ];
 
     /**
@@ -692,8 +700,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function following(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id')
-            ->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'following_id')
+            ->withTimestamps()
+            ->withPivot('followed_at');
     }
 
     /**
@@ -1365,5 +1374,101 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // Use Laravel native Gate system
         return $this->can($permission);
+    }
+
+
+
+    /**
+     * Check if this user is following another user
+     */
+    public function isFollowing(User $user): bool
+    {
+        return UserFollow::isFollowing($this->id, $user->id);
+    }
+
+    /**
+     * Follow another user
+     */
+    public function follow(User $user): bool
+    {
+        if ($this->id === $user->id) {
+            return false; // Can't follow yourself
+        }
+
+        if ($this->isFollowing($user)) {
+            return false; // Already following
+        }
+
+        UserFollow::create([
+            'follower_id' => $this->id,
+            'following_id' => $user->id,
+            'followed_at' => now(),
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Unfollow another user
+     */
+    public function unfollow(User $user): bool
+    {
+        return UserFollow::where('follower_id', $this->id)
+            ->where('following_id', $user->id)
+            ->delete() > 0;
+    }
+
+    /**
+     * Get followers count
+     */
+    public function getFollowersCountAttribute(): int
+    {
+        return UserFollow::getFollowersCount($this->id);
+    }
+
+    /**
+     * Get following count
+     */
+    public function getFollowingCountAttribute(): int
+    {
+        return UserFollow::getFollowingCount($this->id);
+    }
+
+    /**
+     * Get user achievements
+     */
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class, 'user_achievements')
+            ->withPivot(['unlocked_at', 'progress_data', 'current_progress', 'target_progress', 'is_notified'])
+            ->withTimestamps();
+    }
+
+    /**
+     * Get user achievement records
+     */
+    public function userAchievements()
+    {
+        return $this->hasMany(UserAchievement::class);
+    }
+
+    /**
+     * Get total achievement points
+     */
+    public function getTotalAchievementPointsAttribute(): int
+    {
+        return $this->achievements()->sum('points');
+    }
+
+    /**
+     * Get achievement count by rarity
+     */
+    public function getAchievementsByRarity(): array
+    {
+        return $this->achievements()
+            ->selectRaw('rarity, COUNT(*) as count')
+            ->groupBy('rarity')
+            ->pluck('count', 'rarity')
+            ->toArray();
     }
 }

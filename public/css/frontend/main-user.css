@@ -184,7 +184,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
 }
 .input-group.input_group_search input{height: 42px;border: 1px solid var(--bs-primary);}
 .input-group.input_group_search button{background-color: var(--bs-primary);border: 1xp solid var(--bs-primary);color: #fff;}
-.select_search{height: 42px;border: 1px solid var(--bs-primary);font-size: 14px;text-transform: uppercase;font-weight: 500;}
+.select_search{height: 42px;border: 1px solid var(--bs-primary);font-size: 14px;font-weight: 500;color: #444444;}
 .btn_group_search{border-end-end-radius: 4px;overflow: hidden;}
 .btn_group_search label{font-size: 13px;padding: 10px 10px;height: 42px;display: flex;align-items: center;text-transform: uppercase;font-weight: 500;border: 1px solid var(--bs-primary);}
 .btn_group_search.btn-group>.btn-check:checked+.btn{background-color: var(--bs-primary);color: #fff;border: 1px solid var(--bs-primary);}
@@ -219,7 +219,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
 .btn_group_search a{height: 42px;border: 1px solid var(--bs-primary);border-radius: 6px;}
 .btn_group_search a.active{background-color: var(--bs-primary);}
 .btn_group_search a:hover{background-color: var(--bs-primary);}
-.nav-tabs .nav-link{color: var(--bs-primary);}
+.nav-tabs .nav-link{color: var(--bs-primary);padding: 10px 30px !IMPORTANT;}
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{background-color: var(--bs-primary);color: #fff;}
 .dropdown_sort{
 }
