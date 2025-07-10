@@ -17,7 +17,14 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $query = MarketplaceSeller::with(['user', 'products'])
+        $query = MarketplaceSeller::with(['user'])
+                                ->withCount([
+                                    'products as total_products_count',
+                                    'products as active_products_count' => function($query) {
+                                        $query->where('status', 'approved')
+                                              ->where('is_active', true);
+                                    }
+                                ])
                                 ->where('verification_status', 'verified');
 
         // Search functionality
@@ -164,13 +171,16 @@ class CompanyController extends Controller
         $company->load([
             'user',
             'products' => function($query) {
-                $query->where('status', 'active')->latest()->take(6);
+                $query->where('status', 'approved')
+                      ->where('is_active', true)
+                      ->latest()
+                      ->take(6);
             }
         ]);
 
         // Get company statistics
         $stats = [
-            'total_products' => $company->products()->where('status', 'active')->count(),
+            'total_products' => $company->products()->count(),
             'years_in_business' => $company->established_year ? now()->year - $company->established_year : 0,
             'total_orders' => $company->orderItems()->distinct('order_id')->count(),
             'response_rate' => $this->calculateResponseRate($company),
@@ -205,13 +215,13 @@ class CompanyController extends Controller
             abort(404);
         }
 
-        $query = $company->products()->where('status', 'active');
+        $query = $company->products()->where('status', 'approved')->where('is_active', true);
 
         // Search within company products
         if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function($q) use ($search) {
-                $q->where('title', 'LIKE', "%{$search}%")
+                $q->where('name', 'LIKE', "%{$search}%")
                   ->orWhere('description', 'LIKE', "%{$search}%");
             });
         }

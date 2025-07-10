@@ -44,15 +44,15 @@ class ThreadController extends Controller
             ->withCount(['allComments as comments_count', 'bookmarks', 'ratings']);
 
         // Apply filters
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->category) {
             $query->where('category_id', $request->category);
         }
 
-        if ($request->has('forum')) {
+        if ($request->has('forum') && $request->forum) {
             $query->where('forum_id', $request->forum);
         }
 
-        if ($request->has('search')) {
+        if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")

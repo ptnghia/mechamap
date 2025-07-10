@@ -228,7 +228,7 @@
                     <div class="row g-2 mb-3 company_thongke">
                         <div class="col-6">
                             <small class="text-muted">{{ __('companies.products') }}</small>
-                            <div class="fw-medium">{{ $company->total_products }}+</div>
+                            <div class="fw-medium">{{ $company->total_products_count ?? 0 }}+</div>
                         </div>
                         <div class="col-6">
                             <small class="text-muted">{{ __('companies.processing_time') }}</small>

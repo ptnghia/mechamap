@@ -56,12 +56,12 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
             <span class="btn btn-sm bg-primary thread_status"><i class="pin-angle"></i>
-                Ghim
+                {{ __('messages.threads.pinned') }}
             </span>
             @endif
             @if($thread->is_locked ?? false)
             <span class="btn btn-sm bg-danger thread_status"><i class="fas fa-lock-fill"></i>
-                Khóa
+                {{ __('messages.threads.locked') }}
             </span>
             @endif
 
@@ -156,8 +156,8 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
     <div class="thread-item-footer">
         <div class="thread-meta-left">
             <div class="thread-meta">
-                <span class="meta-item"><i class="fas fa-eye"></i> {{ $viewCount }} lượt xem</span>
-                <span class="meta-item"><i class="fas fa-comment"></i> {{ $commentsCount }} phản hồi</span>
+                <span class="meta-item"><i class="fas fa-eye"></i> {{ $viewCount }} {{ __('messages.threads.views') }}</span>
+                <span class="meta-item"><i class="fas fa-comment"></i> {{ $commentsCount }} {{ __('messages.threads.replies') }}</span>
             </div>
 
             <div class="thread-category-badges">

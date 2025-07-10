@@ -224,6 +224,51 @@ return [
         'member_since' => 'Thành viên từ',
     ],
 
+    // Threads & Community Section
+    'threads' => [
+        // Page titles
+        'forums_title' => 'Diễn đàn',
+        'threads_title' => 'Chủ đề',
+        'new_thread' => 'Tạo chủ đề mới',
+
+        // Filters and sorting
+        'category' => 'Danh mục',
+        'forum' => 'Diễn đàn',
+        'all_categories' => 'Tất cả danh mục',
+        'all_forums' => 'Tất cả diễn đàn',
+        'sort_by' => 'Sắp xếp theo',
+        'latest' => 'Mới nhất',
+        'oldest' => 'Cũ nhất',
+        'most_viewed' => 'Xem nhiều nhất',
+        'most_commented' => 'Bình luận nhiều nhất',
+
+        // Search
+        'search' => 'Tìm kiếm',
+        'search_placeholder' => 'Tìm kiếm chủ đề...',
+        'apply_filters' => 'Áp dụng bộ lọc',
+        'clear_filters' => 'Xóa bộ lọc',
+
+        // Thread info
+        'threads_count' => 'chủ đề',
+        'views' => 'lượt xem',
+        'replies' => 'phản hồi',
+        'pinned' => 'Ghim',
+        'locked' => 'Khóa',
+
+        // Messages
+        'no_threads_found' => 'Không tìm thấy chủ đề nào phù hợp với tiêu chí của bạn.',
+        'try_different_criteria' => 'Thử tiêu chí tìm kiếm khác.',
+
+        // Time
+        'ago' => 'trước',
+        'week_ago' => 'tuần trước',
+        'weeks_ago' => 'tuần trước',
+        'day_ago' => 'ngày trước',
+        'days_ago' => 'ngày trước',
+        'month_ago' => 'tháng trước',
+        'months_ago' => 'tháng trước',
+    ],
+
     'auth' => [
         'login' => 'Đăng nhập',
         'register' => 'Đăng ký',
@@ -263,14 +308,7 @@ return [
         'low_activity' => 'Hoạt động thấp',
     ],
 
-    // Threads messages
-    'threads' => [
-        'threads' => 'Chủ đề',
-        'posts' => 'Bài đăng',
-        'create_new_post' => 'Tạo bài đăng mới',
-        'create_first_post' => 'Tạo bài đăng đầu tiên',
-        'no_posts_in_category' => 'Chưa có bài đăng nào trong danh mục này',
-    ],
+
 
     'search' => [
         'recent_searches' => 'Tìm kiếm gần đây',

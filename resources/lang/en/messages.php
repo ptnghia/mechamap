@@ -558,6 +558,51 @@ return [
         'member_since' => 'Member since',
     ],
 
+    // Threads & Community Section
+    'threads' => [
+        // Page titles
+        'forums_title' => 'Forums',
+        'threads_title' => 'Threads',
+        'new_thread' => 'New Thread',
+
+        // Filters and sorting
+        'category' => 'Category',
+        'forum' => 'Forum',
+        'all_categories' => 'All Categories',
+        'all_forums' => 'All Forums',
+        'sort_by' => 'Sort by',
+        'latest' => 'Latest',
+        'oldest' => 'Oldest',
+        'most_viewed' => 'Most Viewed',
+        'most_commented' => 'Most Commented',
+
+        // Search
+        'search' => 'Search',
+        'search_placeholder' => 'Search threads...',
+        'apply_filters' => 'Apply Filters',
+        'clear_filters' => 'Clear Filters',
+
+        // Thread info
+        'threads_count' => 'threads',
+        'views' => 'views',
+        'replies' => 'replies',
+        'pinned' => 'Pinned',
+        'locked' => 'Locked',
+
+        // Messages
+        'no_threads_found' => 'No threads found matching your criteria.',
+        'try_different_criteria' => 'Try different search criteria.',
+
+        // Time
+        'ago' => 'ago',
+        'week_ago' => 'week ago',
+        'weeks_ago' => 'weeks ago',
+        'day_ago' => 'day ago',
+        'days_ago' => 'days ago',
+        'month_ago' => 'month ago',
+        'months_ago' => 'months ago',
+    ],
+
     // Common
     'home' => 'Home',
     'loading' => 'Loading',

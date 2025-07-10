@@ -138,6 +138,54 @@ class MarketplaceProduct extends Model
                 $model->sku = 'MP-' . strtoupper(Str::random(8));
             }
         });
+
+        // Update seller stats when product is created
+        static::created(function ($model) {
+            static::updateSellerStats($model->seller_id);
+        });
+
+        // Update seller stats when product is updated (status or is_active might change)
+        static::updated(function ($model) {
+            if ($model->isDirty('status') || $model->isDirty('is_active') || $model->isDirty('seller_id')) {
+                // If seller changed, update both old and new seller
+                if ($model->isDirty('seller_id') && $model->getOriginal('seller_id')) {
+                    static::updateSellerStats($model->getOriginal('seller_id'));
+                }
+                static::updateSellerStats($model->seller_id);
+            }
+        });
+
+        // Update seller stats when product is deleted
+        static::deleted(function ($model) {
+            static::updateSellerStats($model->seller_id);
+        });
+    }
+
+    /**
+     * Update seller statistics
+     */
+    protected static function updateSellerStats($sellerId)
+    {
+        if (!$sellerId) return;
+
+        try {
+            $seller = MarketplaceSeller::find($sellerId);
+            if ($seller) {
+                $totalProducts = static::where('seller_id', $sellerId)->count();
+                $activeProducts = static::where('seller_id', $sellerId)
+                                        ->where('status', 'approved')
+                                        ->where('is_active', true)
+                                        ->count();
+
+                $seller->update([
+                    'total_products' => $totalProducts,
+                    'active_products' => $activeProducts,
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Log error but don't throw exception to prevent transaction failure
+            \Log::error("Failed to update seller stats for ID {$sellerId}: " . $e->getMessage());
+        }
     }
 
     // Relationships
