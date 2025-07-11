@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
 @endpush
 
-@section('full-width-content')
+@section('content')
 <!-- Page Header -->
 <div class="showcase-page-header">
     <div class="container">
@@ -38,56 +38,7 @@
             <div class="swiper-wrapper">
                 @foreach($featuredShowcases as $showcase)
                 <div class="swiper-slide">
-                    <div class="featured-showcase-card">
-                        <div class="featured-showcase-image">
-                            <img src="{{ $showcase->featured_image ?? asset('images/placeholder-showcase.jpg') }}"
-                                 alt="{{ $showcase->title }}" loading="lazy">
-
-                            @if($showcase->complexity_level)
-                            <div class="showcase-badges">
-                                <span class="badge badge-complexity badge-{{ $showcase->complexity_level }}">
-                                    {{ ucfirst($showcase->complexity_level) }}
-                                </span>
-                            </div>
-                            @endif
-                        </div>
-
-                        <div class="featured-showcase-content">
-                            <h3 class="featured-showcase-title">
-                                <a href="{{ route('showcase.show', $showcase) }}">{{ $showcase->title }}</a>
-                            </h3>
-
-                            <div class="featured-showcase-meta">
-                                @if($showcase->rating_average > 0)
-                                <div class="featured-showcase-rating">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= floor($showcase->rating_average))
-                                        <i class="fas fa-star text-warning"></i>
-                                        @elseif($i - 0.5 <= $showcase->rating_average)
-                                        <i class="fas fa-star-half-alt text-warning"></i>
-                                        @else
-                                        <i class="far fa-star text-muted"></i>
-                                        @endif
-                                    @endfor
-                                    <span class="ms-1">{{ number_format($showcase->rating_average, 1) }}</span>
-                                </div>
-                                @endif
-
-                                <div class="featured-showcase-stats">
-                                    <span><i class="fas fa-eye"></i> {{ number_format($showcase->view_count) }}</span>
-                                    @if($showcase->download_count > 0)
-                                    <span><i class="fas fa-download"></i> {{ number_format($showcase->download_count) }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if($showcase->category)
-                            <div class="showcase-categories">
-                                <span class="badge bg-primary">{{ ucfirst($showcase->category) }}</span>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+                    @include('partials.showcase-item', ['showcase' => $showcase])
                 </div>
                 @endforeach
             </div>
@@ -263,6 +214,7 @@
         @endif
     </div>
 </div>
+@endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
