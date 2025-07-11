@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
 @endpush
 
-@section('content')
+@section('full-width-content')
 <!-- Page Header -->
 <div class="showcase-page-header">
     <div class="container">
