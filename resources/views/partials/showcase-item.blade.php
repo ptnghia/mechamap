@@ -35,11 +35,45 @@ try {
 }
 
 $category = $showcase->category ?? null;
+
+// Rating information
+$ratingAverage = $showcase->rating_average ?? 0;
+$ratingCount = $showcase->rating_count ?? 0;
+$hasRating = $ratingAverage > 0 && $ratingCount > 0;
+
+// Additional showcase info
+$projectType = $showcase->project_type ?? null;
+$complexityLevel = $showcase->complexity_level ?? null;
+$softwareUsed = $showcase->software_used ?? null;
+$hasCadFiles = $showcase->has_cad_files ?? false;
+$allowDownloads = $showcase->allow_downloads ?? false;
 @endphp
 
 <div class="showcase-card h-100">
     <div class="showcase-image">
         <img src="{{ $coverImageUrl }}" alt="{{ $showcaseTitle }}" class="img-fluid">
+
+        {{-- Enhanced: Overlay badges --}}
+        <div class="showcase-badges">
+            @if($complexityLevel)
+            <span class="badge badge-complexity badge-{{ $complexityLevel }}">
+                {{ ucfirst($complexityLevel) }}
+            </span>
+            @endif
+
+            @if($hasCadFiles)
+            <span class="badge badge-feature bg-success">
+                <i class="fas fa-cube me-1"></i>CAD
+            </span>
+            @endif
+
+            @if($allowDownloads)
+            <span class="badge badge-feature bg-info">
+                <i class="fas fa-download me-1"></i>Download
+            </span>
+            @endif
+        </div>
+
         <div class="showcase-overlay">
             <div class="showcase-actions">
                 <a href="{{ $showcaseUrl }}" class="btn btn-light btn-sm">
@@ -64,6 +98,54 @@ $category = $showcase->category ?? null;
         @if($showcaseDescription)
         <p class="showcase-description">{{ $showcaseDescription }}</p>
         @endif
+
+        {{-- Enhanced: Category & Project Type --}}
+        <div class="showcase-categories mb-2">
+            @if($category)
+            <span class="badge bg-primary me-1">
+                {{ ucfirst($category) }}
+            </span>
+            @endif
+
+            @if($projectType)
+            <span class="badge bg-secondary">
+                {{ ucfirst($projectType) }}
+            </span>
+            @endif
+        </div>
+
+        {{-- Enhanced: Technical Info --}}
+        @if($softwareUsed)
+        <div class="showcase-tech-info mb-2">
+            <div class="tech-item">
+                <i class="fas fa-tools text-muted me-1"></i>
+                <span class="small text-muted">{{ Str::limit($softwareUsed, 40) }}</span>
+            </div>
+        </div>
+        @endif
+
+        {{-- Enhanced: Rating Display --}}
+        @if($hasRating)
+        <div class="showcase-rating mb-2">
+            <div class="rating-display">
+                <div class="stars">
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= floor($ratingAverage))
+                        <i class="fas fa-star text-warning"></i>
+                        @elseif($i - 0.5 <= $ratingAverage)
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                        @else
+                        <i class="far fa-star text-muted"></i>
+                        @endif
+                    @endfor
+                </div>
+                <span class="rating-text small text-muted ms-2">
+                    {{ number_format($ratingAverage, 1) }} ({{ $ratingCount }} đánh giá)
+                </span>
+            </div>
+        </div>
+        @endif
+
         <div class="showcase-stats">
             <div class="d-flex align-items-center gap-3">
                 <span class="stat-item">
@@ -72,10 +154,12 @@ $category = $showcase->category ?? null;
                 <span class="stat-item">
                     <i class="fas fa-heart"></i> {{ number_format($likesCount) }}
                 </span>
+                @if($showcase->download_count > 0)
+                <span class="stat-item">
+                    <i class="fas fa-download"></i> {{ number_format($showcase->download_count) }}
+                </span>
+                @endif
             </div>
-            @if($category)
-            <span class="badge bg-info"><i class="fa-solid fa-tag"></i> {{ $category }}</span>
-            @endif
         </div>
     </div>
 </div>

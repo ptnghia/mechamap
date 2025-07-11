@@ -33,6 +33,8 @@ Route::get('/test', function () {
 
 
 
+
+
 // Trang chủ chính tại route /
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

@@ -129,6 +129,54 @@ class Showcase extends Model
         'status',
         'category',
         'order',
+        // Enhanced fields for mechanical engineering showcases
+        'project_type',
+        'software_used',
+        'materials',
+        'manufacturing_process',
+        'technical_specs',
+        'complexity_level',
+        'industry_application',
+        'has_tutorial',
+        'has_calculations',
+        'has_cad_files',
+        'learning_objectives',
+        'image_gallery',
+        'file_attachments',
+        'is_public',
+        'allow_downloads',
+        'allow_comments',
+        'view_count',
+        'like_count',
+        'download_count',
+        'share_count',
+        'rating_average',
+        'rating_count',
+        'technical_quality_score',
+        'display_order',
+        'featured_at',
+        'approved_at',
+        'approved_by',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'technical_specs' => 'array',
+        'learning_objectives' => 'array',
+        'image_gallery' => 'array',
+        'file_attachments' => 'array',
+        'has_tutorial' => 'boolean',
+        'has_calculations' => 'boolean',
+        'has_cad_files' => 'boolean',
+        'is_public' => 'boolean',
+        'allow_downloads' => 'boolean',
+        'allow_comments' => 'boolean',
+        'rating_average' => 'decimal:2',
+        'technical_quality_score' => 'decimal:2',
+        'featured_at' => 'datetime',
+        'approved_at' => 'datetime',
     ];
 
     /**
