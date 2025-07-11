@@ -29,3 +29,12 @@ Route::get('/whats-new/replies', [WhatsNewController::class, 'replies'])->name('
 
 // New showcases
 Route::get('/whats-new/showcases', [WhatsNewController::class, 'showcases'])->name('whats-new.showcases');
+
+// Trending content
+Route::get('/whats-new/trending', [WhatsNewController::class, 'trending'])->name('whats-new.trending');
+
+// Most viewed content
+Route::get('/whats-new/most-viewed', [WhatsNewController::class, 'mostViewed'])->name('whats-new.most-viewed');
+
+// Hot topics
+Route::get('/whats-new/hot-topics', [WhatsNewController::class, 'hotTopics'])->name('whats-new.hot-topics');

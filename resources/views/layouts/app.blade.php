@@ -162,6 +162,7 @@
             'jobs.index',
             'events.index',
             'events.show',
+            'showcase.public',
             ];
 
             // Kiểm tra route hiện tại

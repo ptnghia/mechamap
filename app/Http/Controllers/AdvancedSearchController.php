@@ -328,7 +328,7 @@ class AdvancedSearchController extends Controller
     {
         // Implement database fallback search
         $results = [];
-        
+
         // Search in threads
         $threads = \App\Models\Thread::where('title', 'LIKE', "%{$query}%")
             ->orWhere('content', 'LIKE', "%{$query}%")
@@ -350,10 +350,12 @@ class AdvancedSearchController extends Controller
             ];
         }
 
-        // Search in products
+        // TODO: Marketplace search - disabled for forum focus
+        // Will be enabled later when marketplace is priority
+        /*
         $products = \App\Models\MarketplaceProduct::where('name', 'LIKE', "%{$query}%")
             ->orWhere('description', 'LIKE', "%{$query}%")
-            ->with(['user', 'category'])
+            ->with(['seller', 'category'])
             ->limit(10)
             ->get();
 
@@ -364,12 +366,13 @@ class AdvancedSearchController extends Controller
                 'title' => $product->name,
                 'content' => substr(strip_tags($product->description), 0, 200),
                 'url' => route('marketplace.products.show', $product),
-                'user' => $product->user->name,
+                'user' => $product->seller ? $product->seller->business_name : 'Unknown Seller',
                 'price' => $product->price,
                 'created_at' => $product->created_at,
                 'score' => $this->calculateRelevanceScore($query, $product->name . ' ' . $product->description),
             ];
         }
+        */
 
         // Sort by relevance score
         usort($results, function ($a, $b) {
@@ -390,15 +393,15 @@ class AdvancedSearchController extends Controller
     {
         $query = strtolower($query);
         $content = strtolower($content);
-        
+
         // Simple relevance scoring
         $score = 0;
-        
+
         // Exact match in title gets highest score
         if (strpos($content, $query) !== false) {
             $score += 10;
         }
-        
+
         // Word matches
         $queryWords = explode(' ', $query);
         foreach ($queryWords as $word) {
@@ -406,7 +409,7 @@ class AdvancedSearchController extends Controller
                 $score += 2;
             }
         }
-        
+
         return $score;
     }
 
@@ -420,7 +423,7 @@ class AdvancedSearchController extends Controller
                 ->limit($limit)
                 ->pluck('title')
                 ->toArray();
-            
+
             foreach ($threads as $title) {
                 $suggestions[] = [
                     'text' => $title,
@@ -435,7 +438,7 @@ class AdvancedSearchController extends Controller
                 ->limit($limit)
                 ->pluck('name')
                 ->toArray();
-            
+
             foreach ($products as $name) {
                 $suggestions[] = [
                     'text' => $name,

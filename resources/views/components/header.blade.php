@@ -93,6 +93,26 @@
                                 <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
                                     <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.popular_topics') }}
                                 </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new.trending') }}">
+                                    <i class="fa-solid fa-chart-line me-2"></i>Trending
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new.most-viewed') }}">
+                                    <i class="fa-solid fa-eye me-2"></i>Most Viewed
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('whats-new.hot-topics') }}">
+                                    <i class="fa-solid fa-flame me-2"></i>Hot Topics
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Tìm kiếm</h6></li>
+                                <li><a class="dropdown-item" href="{{ route('forums.search.advanced') }}">
+                                    <i class="fa-solid fa-search-plus me-2"></i>Tìm kiếm nâng cao
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('forums.search.categories') }}">
+                                    <i class="fa-solid fa-folder-tree me-2"></i>Tìm theo danh mục
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('forums.search') }}">
+                                    <i class="fa-solid fa-magnifying-glass me-2"></i>Tìm kiếm diễn đàn
+                                </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('members.index') }}">

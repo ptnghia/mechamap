@@ -135,4 +135,140 @@ class ForumController extends Controller
 
         return view('forums.search', compact('threads', 'posts', 'query'));
     }
+
+    /**
+     * Advanced search for forums
+     */
+    public function advancedSearch(Request $request): View
+    {
+        $request->validate([
+            'q' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
+            'forum_id' => 'nullable|exists:forums,id',
+            'author' => 'nullable|string|max:100',
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date|after_or_equal:date_from',
+            'sort_by' => 'nullable|in:relevance,date,replies,views',
+            'sort_dir' => 'nullable|in:asc,desc',
+        ]);
+
+        $query = $request->get('q');
+        $categoryId = $request->get('category_id');
+        $forumId = $request->get('forum_id');
+        $author = $request->get('author');
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
+        $sortBy = $request->get('sort_by', 'date');
+        $sortDir = $request->get('sort_dir', 'desc');
+
+        // Build threads query
+        $threadsQuery = Thread::query()->with(['forum', 'user', 'category'])
+            ->withCount('allComments as comments_count');
+
+        // Apply search filters
+        if ($query) {
+            $threadsQuery->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                    ->orWhere('content', 'like', "%{$query}%");
+            });
+        }
+
+        if ($categoryId) {
+            $threadsQuery->whereHas('forum', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            });
+        }
+
+        if ($forumId) {
+            $threadsQuery->where('forum_id', $forumId);
+        }
+
+        if ($author) {
+            $user = \App\Models\User::where('username', $author)->first();
+            if ($user) {
+                $threadsQuery->where('user_id', $user->id);
+            } else {
+                $threadsQuery->where('user_id', 0); // No results
+            }
+        }
+
+        if ($dateFrom) {
+            $threadsQuery->whereDate('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $threadsQuery->whereDate('created_at', '<=', $dateTo);
+        }
+
+        // Apply sorting
+        switch ($sortBy) {
+            case 'replies':
+                $threadsQuery->orderBy('comments_count', $sortDir);
+                break;
+            case 'views':
+                $threadsQuery->orderBy('views', $sortDir);
+                break;
+            case 'date':
+            default:
+                $threadsQuery->orderBy('created_at', $sortDir);
+                break;
+        }
+
+        $threads = $threadsQuery->paginate(20);
+
+        // Get categories and forums for filters
+        $categories = \App\Models\Category::with('forums')->get();
+        $forums = \App\Models\Forum::all();
+
+        return view('forums.search-advanced', compact(
+            'threads', 'query', 'categoryId', 'forumId', 'author',
+            'dateFrom', 'dateTo', 'sortBy', 'sortDir', 'categories', 'forums'
+        ));
+    }
+
+    /**
+     * Search by category
+     */
+    public function searchByCategory(Request $request): View
+    {
+        $request->validate([
+            'category_id' => 'nullable|exists:categories,id',
+            'q' => 'nullable|string|max:255',
+        ]);
+
+        $categoryId = $request->get('category_id');
+        $query = $request->get('q');
+
+        // Get all categories for navigation
+        $categories = \App\Models\Category::with('forums')->get();
+
+        // If no category selected, show category selection form
+        if (!$categoryId) {
+            return view('forums.search-by-category', compact('categories'));
+        }
+
+        $category = \App\Models\Category::with('forums')->findOrFail($categoryId);
+
+        // Build threads query for this category
+        $threadsQuery = Thread::query()
+            ->whereHas('forum', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            })
+            ->with(['forum', 'user'])
+            ->withCount('allComments as comments_count');
+
+        // Apply search if provided
+        if ($query) {
+            $threadsQuery->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                    ->orWhere('content', 'like', "%{$query}%");
+            });
+        }
+
+        $threads = $threadsQuery->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('forums.search-by-category', compact(
+            'threads', 'category', 'categories', 'query'
+        ));
+    }
 }

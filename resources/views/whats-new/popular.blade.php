@@ -29,6 +29,21 @@
                             }}</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('whats-new.trending') }}">
+                            <i class="fas fa-fire me-1"></i>Trending
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('whats-new.most-viewed') }}">
+                            <i class="fas fa-eye me-1"></i>Most Viewed
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">
+                            <i class="fas fa-flame me-1"></i>Hot Topics
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
                     </li>
                     <li class="nav-item">

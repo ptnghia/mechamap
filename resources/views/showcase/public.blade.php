@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
 @endpush
 
-@section('content')
+@section('full-width-content')
 <!-- Page Header with Bootstrap 5 -->
 <div class="bg-light py-4 mb-4">
     <div class="container">
@@ -26,34 +26,6 @@
 </div>
 
 <div class="container">
-    <!-- SECTION 1: FEATURED SHOWCASES with Bootstrap 5 -->
-    <section class="mb-5">
-        <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-star text-warning me-3 fs-4"></i>
-            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.featured_projects') }}</h2>
-        </div>
-
-        @if($featuredShowcases->count() > 0)
-        <div class="swiper featured-swiper">
-            <div class="swiper-wrapper">
-                @foreach($featuredShowcases as $showcase)
-                <div class="swiper-slide">
-                    @include('partials.showcase-item', ['showcase' => $showcase])
-                </div>
-                @endforeach
-            </div>
-            <div class="swiper-pagination"></div>
-        </div>
-        @else
-        <div class="text-center py-5">
-            <div class="text-muted">
-                <i class="fas fa-star fs-1 mb-3 opacity-50"></i>
-                <p class="mb-0">{{ __('showcase.no_featured_projects') }}</p>
-            </div>
-        </div>
-        @endif
-    </section>
-
     <!-- SECTION 2: CATEGORIES GRID with Bootstrap 5 -->
     <section class="mb-5">
         <div class="d-flex align-items-center mb-4">
@@ -61,9 +33,9 @@
             <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.project_categories') }}</h2>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-3">
             @foreach($categories as $category)
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-3 col-lg-2 col-sm-4 col-6">
                 <a href="{{ $category['url'] }}" class="text-decoration-none">
                     <div class="card h-100 shadow-sm border-0 category-card-hover">
                         <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
@@ -96,6 +68,35 @@
             @endforeach
         </div>
     </section>
+    <!-- SECTION 1: FEATURED SHOWCASES with Bootstrap 5 -->
+    <section class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-star text-warning me-3 fs-4"></i>
+            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.featured_projects') }}</h2>
+        </div>
+
+        @if($featuredShowcases->count() > 0)
+        <div class="swiper featured-swiper">
+            <div class="swiper-wrapper">
+                @foreach($featuredShowcases as $showcase)
+                <div class="swiper-slide">
+                    @include('partials.showcase-item', ['showcase' => $showcase])
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        @else
+        <div class="text-center py-5">
+            <div class="text-muted">
+                <i class="fas fa-star fs-1 mb-3 opacity-50"></i>
+                <p class="mb-0">{{ __('showcase.no_featured_projects') }}</p>
+            </div>
+        </div>
+        @endif
+    </section>
+
+
 
     <!-- SECTION 3: ADVANCED SEARCH FORM with Bootstrap 5 -->
     <section class="mb-5">
@@ -108,7 +109,7 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('showcase.public') }}" id="showcaseSearchForm">
                     <div class="row g-3">
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-4 col-lg-3 col-sm-6">
                             <label for="search" class="form-label fw-semibold">{{ __('showcase.project_name') }}</label>
                             <input type="text" id="search" name="search" value="{{ request('search') }}"
                                    class="form-control" placeholder="{{ __('showcase.search_placeholder') }}">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', "Search Results for '{$query}' - MechaMap Forums")
+@section('title', __('forum.search.results_for') . " '{$query}' - MechaMap Forums")
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/forums/search.css') }}">
@@ -19,19 +19,19 @@
                         <div class="col-md-8">
                             <h1 class="h3 mb-2">
                                 <i class="fas fa-search me-2"></i>
-                                {{ __('forums.search.results') }}
+                                {{ __('forum.search.results') }}
                             </h1>
                             <p class="mb-0 opacity-90">
-                                {{ __('forums.search.results_for') }}: <strong>"{{ $query }}"</strong>
+                                {{ __('forum.search.results_for') }}: <strong>"{{ $query }}"</strong>
                             </p>
                         </div>
                         <div class="col-md-4 text-md-end">
                             <div class="stats">
                                 <span class="badge bg-light text-dark me-2">
-                                    {{ $threads->total() }} threads
+                                    {{ $threads->total() }} {{ __('forum.threads') }}
                                 </span>
                                 <span class="badge bg-light text-dark">
-                                    {{ $posts->total() }} posts
+                                    {{ $posts->total() }} {{ __('forum.posts') }}
                                 </span>
                             </div>
                         </div>
@@ -44,13 +44,13 @@
                         <form method="GET" action="{{ route('forums.search') }}" class="row g-3">
                             <div class="col-md-10">
                                 <input type="text" name="q" class="form-control"
-                                    placeholder="Search threads, posts, and discussions..." value="{{ $query }}" required
+                                    placeholder="{{ __('forum.search.search_placeholder') }}" value="{{ $query }}" required
                                     minlength="3">
                             </div>
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-primary w-100">
                                     <i class="fas fa-search me-1"></i>
-                                    Search
+                                    {{ __('forum.search.search_button') }}
                                 </button>
                             </div>
                         </form>
@@ -63,7 +63,7 @@
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0">
                             <i class="fas fa-comments me-2"></i>
-                            Thread Results ({{ $threads->total() }})
+                            {{ __('forum.search.thread_results') }} ({{ $threads->total() }})
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -101,7 +101,7 @@
                     <div class="card-header bg-success text-white">
                         <h5 class="mb-0">
                             <i class="fas fa-comment me-2"></i>
-                            Post Results ({{ $posts->total() }})
+                            {{ __('forum.search.post_results') }} ({{ $posts->total() }})
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -157,17 +157,17 @@
                 <div class="card">
                     <div class="card-body text-center py-5">
                         <i class="fas fa-search text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h4 class="text-muted mb-2">Không tìm thấy kết quả</h4>
+                        <h4 class="text-muted mb-2">{{ __('forum.search.no_results_found') }}</h4>
                         <p class="text-muted mb-4">
-                            Chúng tôi không thể tìm thấy bất kỳ thread hoặc bài viết nào phù hợp với "<strong>{{ $query }}</strong>".
+                            {{ __('forum.search.no_results_message') }} "<strong>{{ $query }}</strong>".
                         </p>
                         <div class="suggestions">
-                            <h6 class="text-muted mb-2">Hãy thử:</h6>
+                            <h6 class="text-muted mb-2">{{ __('forum.search.suggestions') }}:</h6>
                             <ul class="list-unstyled text-muted">
-                                <li>• Kiểm tra chính tả</li>
-                                <li>• Sử dụng từ khóa tổng quát hơn</li>
-                                <li>• Thử các từ khóa khác</li>
-                                <li>• Duyệt qua <a href="{{ route('forums.index') }}">các danh mục forum</a></li>
+                                <li>• {{ __('forum.search.check_spelling') }}</li>
+                                <li>• {{ __('forum.search.use_general_keywords') }}</li>
+                                <li>• {{ __('forum.search.try_different_keywords') }}</li>
+                                <li>• <a href="{{ route('forums.index') }}">{{ __('forum.search.browse_forum_categories') }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -182,22 +182,22 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="fas fa-lightbulb me-2"></i>
-                            Mẹo tìm kiếm
+                            {{ __('forum.search.search_tips') }}
                         </h6>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled small">
                             <li class="mb-2">
-                                <strong>Sử dụng dấu ngoặc kép</strong> cho cụm từ chính xác: "thiết kế cơ khí"
+                                {{ __('forum.search.tip_quotes') }}: "thiết kế cơ khí"
                             </li>
                             <li class="mb-2">
-                                <strong>Nhiều từ</strong> sẽ tìm kiếm threads chứa tất cả các từ
+                                {{ __('forum.search.tip_multiple_words') }}
                             </li>
                             <li class="mb-2">
-                                <strong>Tối thiểu 3 ký tự</strong> cần thiết để tìm kiếm
+                                {{ __('forum.search.tip_minimum_chars') }}
                             </li>
                             <li class="mb-0">
-                                <strong>Duyệt danh mục</strong> để tìm chủ đề cụ thể hơn
+                                {{ __('forum.search.tip_browse_categories') }}
                             </li>
                         </ul>
                     </div>
@@ -208,7 +208,7 @@
                     <div class="card-header">
                         <h6 class="mb-0">
                             <i class="fas fa-fire me-2"></i>
-                            Danh mục phổ biến
+                            {{ __('forum.search.popular_categories') }}
                         </h6>
                     </div>
                     <div class="card-body">

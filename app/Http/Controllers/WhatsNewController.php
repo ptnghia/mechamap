@@ -441,6 +441,153 @@ class WhatsNewController extends Controller
     }
 
     /**
+     * Display trending content this week
+     */
+    public function trending(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $perPage = 20;
+        $timeframe = $request->input('timeframe', 'week'); // day, week, month
+
+        // Calculate date range for trending
+        $dateFrom = match($timeframe) {
+            'day' => now()->subDay(),
+            'week' => now()->subWeek(),
+            'month' => now()->subMonth(),
+            default => now()->subWeek()
+        };
+
+        // Cache key for trending content
+        $cacheKey = "whats_new_trending_{$timeframe}_page_{$page}";
+
+        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($dateFrom, $page, $perPage) {
+            // Calculate trending score based on:
+            // - Recent activity (comments, views)
+            // - Time decay (newer content gets higher score)
+            // - Engagement rate
+            $threads = Thread::select([
+                'threads.*',
+                DB::raw('(
+                    (threads.view_count * 0.3) +
+                    (threads.cached_comments_count * 2) +
+                    (CASE
+                        WHEN threads.created_at > NOW() - INTERVAL 1 DAY THEN 10
+                        WHEN threads.created_at > NOW() - INTERVAL 3 DAY THEN 5
+                        WHEN threads.created_at > NOW() - INTERVAL 7 DAY THEN 2
+                        ELSE 1
+                    END)
+                ) as trending_score')
+            ])
+            ->with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
+            ->withCount('allComments as comment_count')
+            ->where('created_at', '>=', $dateFrom)
+            ->orderBy('trending_score', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+            return $threads;
+        });
+
+        // Optimize thread statistics
+        $threads = $this->optimizeThreadStatistics($result);
+
+        // Generate pagination info
+        $pagination = $this->generatePaginationData($result, 'whats-new.trending', $page, ['timeframe' => $timeframe]);
+
+        return view('whats-new.trending', compact('threads', 'pagination', 'timeframe'));
+    }
+
+    /**
+     * Display most viewed content
+     */
+    public function mostViewed(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $perPage = 20;
+        $timeframe = $request->input('timeframe', 'week'); // day, week, month, all
+
+        // Calculate date range for most viewed
+        $dateFrom = match($timeframe) {
+            'day' => now()->subDay(),
+            'week' => now()->subWeek(),
+            'month' => now()->subMonth(),
+            'all' => null,
+            default => now()->subWeek()
+        };
+
+        // Cache key for most viewed content
+        $cacheKey = "whats_new_most_viewed_{$timeframe}_page_{$page}";
+
+        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($dateFrom, $page, $perPage) {
+            $query = Thread::with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
+                ->withCount('allComments as comment_count')
+                ->where('view_count', '>', 0)
+                ->orderBy('view_count', 'desc')
+                ->orderBy('created_at', 'desc');
+
+            if ($dateFrom) {
+                $query->where('created_at', '>=', $dateFrom);
+            }
+
+            return $query->paginate($perPage, ['*'], 'page', $page);
+        });
+
+        // Optimize thread statistics
+        $threads = $this->optimizeThreadStatistics($result);
+
+        // Generate pagination info
+        $pagination = $this->generatePaginationData($result, 'whats-new.most-viewed', $page, ['timeframe' => $timeframe]);
+
+        return view('whats-new.most-viewed', compact('threads', 'pagination', 'timeframe'));
+    }
+
+    /**
+     * Display hot topics (high engagement recently)
+     */
+    public function hotTopics(Request $request)
+    {
+        $page = $request->input('page', 1);
+        $perPage = 20;
+
+        // Cache key for hot topics
+        $cacheKey = "whats_new_hot_topics_page_{$page}";
+
+        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($page, $perPage) {
+            // Hot topics are threads with high recent activity
+            $threads = Thread::select([
+                'threads.*',
+                DB::raw('(
+                    SELECT COUNT(*)
+                    FROM comments
+                    WHERE comments.thread_id = threads.id
+                    AND comments.created_at > NOW() - INTERVAL 24 HOUR
+                ) as recent_comments'),
+                DB::raw('(
+                    (threads.view_count * 0.1) +
+                    (threads.cached_comments_count * 1.5) +
+                    ((SELECT COUNT(*) FROM comments WHERE comments.thread_id = threads.id AND comments.created_at > NOW() - INTERVAL 24 HOUR) * 5)
+                ) as hot_score')
+            ])
+            ->with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
+            ->withCount('allComments as comment_count')
+            ->having('hot_score', '>', 0)
+            ->orderBy('hot_score', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+            return $threads;
+        });
+
+        // Optimize thread statistics
+        $threads = $this->optimizeThreadStatistics($result);
+
+        // Generate pagination info
+        $pagination = $this->generatePaginationData($result, 'whats-new.hot-topics', $page);
+
+        return view('whats-new.hot-topics', compact('threads', 'pagination'));
+    }
+
+    /**
      * Clear all What's New caches
      * Call this method when new threads/comments are created
      */
@@ -451,7 +598,10 @@ class WhatsNewController extends Controller
             'whats_new_popular_*',
             'whats_new_threads_*',
             'whats_new_media_*',
-            'whats_new_replies_*'
+            'whats_new_replies_*',
+            'whats_new_trending_*',
+            'whats_new_most_viewed_*',
+            'whats_new_hot_topics_*'
         ];
 
         foreach ($patterns as $pattern) {

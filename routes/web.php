@@ -485,6 +485,8 @@ Route::get('/new', [NewContentController::class, 'index'])->name('new');
 Route::middleware('forum.cache')->group(function () {
     Route::get('/forums', [\App\Http\Controllers\CategoryController::class, 'index'])->name('forums.index');
     Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
+    Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch'])->name('forums.search.advanced');
+    Route::get('/forums/search/categories', [ForumController::class, 'searchByCategory'])->name('forums.search.categories');
     Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
 });
 
