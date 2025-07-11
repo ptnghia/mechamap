@@ -47,7 +47,19 @@ Dành cho administrators và moderators
 - 👥 [Quản lý người dùng](./admin-guides/user-management.md)
 - 📝 [Kiểm duyệt nội dung](./admin-guides/content-moderation.md)
 - 🛒 [Quản lý Marketplace](./admin-guides/marketplace-admin.md)
+- 🏢 [Xác thực doanh nghiệp](./business-verification/admin-guide.md)
 - ⚙️ [Cài đặt hệ thống](./admin-guides/system-settings.md)
+
+### 🏢 **[Business Verification System](./business-verification/)**
+Hệ thống xác thực doanh nghiệp enterprise-grade
+
+- 📋 [Tổng quan hệ thống](./business-verification/README.md)
+- 👤 [Hướng dẫn người dùng](./business-verification/user-manual.md)
+- 👨‍💼 [Hướng dẫn admin](./business-verification/admin-guide.md)
+- 🔌 [API Documentation](./business-verification/api-documentation.md)
+- 🔒 [Security Guide](./business-verification/security-guide.md)
+- 🚀 [Deployment Guide](./business-verification/deployment-guide.md)
+- 📋 [Changelog](./business-verification/CHANGELOG.md)
 
 ### 👨‍💻 **[Hướng dẫn phát triển](./developer-guides/)**
 Dành cho developers và technical team

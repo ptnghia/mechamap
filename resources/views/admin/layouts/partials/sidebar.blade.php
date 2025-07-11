@@ -277,6 +277,91 @@
                 </li>
                 @endadminCanAny
 
+                <!-- Business Verification - Phase 2 -->
+                @adminCanAny(['view-users', 'manage-admins'])
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-building"></i>
+                        <span data-key="t-business-verification">Xác Thực Doanh Nghiệp</span>
+                        @php
+                            $pendingApplications = \App\Models\BusinessVerificationApplication::where('status', 'pending')->count();
+                            $underReviewApplications = \App\Models\BusinessVerificationApplication::where('status', 'under_review')->count();
+                            $totalPending = $pendingApplications + $underReviewApplications;
+                        @endphp
+                        @if($totalPending > 0)
+                            <span class="badge rounded-pill bg-warning float-end">{{ $totalPending }}</span>
+                        @endif
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.verification.index') }}" data-key="t-verification-dashboard" class="{{ request()->routeIs('admin.verification.*') ? 'active' : '' }}">
+                            <i class="fas fa-tachometer-alt"></i> Bảng Điều Khiển
+                            @if($totalPending > 0)
+                                <span class="badge rounded-pill bg-warning float-end">{{ $totalPending }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.verification.index', ['status' => 'pending']) }}" data-key="t-pending-applications" class="{{ request()->routeIs('admin.verification.index') && request('status') === 'pending' ? 'active' : '' }}">
+                            <i class="fas fa-clock"></i> Chờ Xử Lý
+                            @if($pendingApplications > 0)
+                                <span class="badge rounded-pill bg-warning float-end">{{ $pendingApplications }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.verification.index', ['status' => 'under_review']) }}" data-key="t-under-review-applications" class="{{ request()->routeIs('admin.verification.index') && request('status') === 'under_review' ? 'active' : '' }}">
+                            <i class="fas fa-search"></i> Đang Xem Xét
+                            @if($underReviewApplications > 0)
+                                <span class="badge rounded-pill bg-info float-end">{{ $underReviewApplications }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.verification.index', ['status' => 'approved']) }}" data-key="t-approved-applications" class="{{ request()->routeIs('admin.verification.index') && request('status') === 'approved' ? 'active' : '' }}">
+                            <i class="fas fa-check-circle"></i> Đã Duyệt
+                        </a></li>
+                        <li><a href="{{ route('admin.verification.index', ['status' => 'rejected']) }}" data-key="t-rejected-applications" class="{{ request()->routeIs('admin.verification.index') && request('status') === 'rejected' ? 'active' : '' }}">
+                            <i class="fas fa-times-circle"></i> Từ Chối
+                        </a></li>
+                        <li><a href="{{ route('admin.verification.analytics') }}" data-key="t-verification-analytics" class="{{ request()->routeIs('admin.verification.analytics') ? 'active' : '' }}">
+                            <i class="fas fa-chart-bar"></i> Thống Kê & Báo Cáo
+                        </a></li>
+                    </ul>
+                </li>
+                @endadminCanAny
+
+                <!-- Security & Compliance - Phase 4 -->
+                @adminCanAny(['view-users', 'manage-admins'])
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-key="t-security-compliance">Bảo Mật & Tuân Thủ</span>
+                        @php
+                            $securityIncidents = \App\Models\BusinessVerificationAuditTrail::where('action', 'security_incident')
+                                ->where('created_at', '>=', now()->subDays(7))
+                                ->count();
+                        @endphp
+                        @if($securityIncidents > 0)
+                            <span class="badge rounded-pill bg-danger float-end">{{ $securityIncidents }}</span>
+                        @endif
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.compliance.index') }}" data-key="t-compliance-dashboard" class="{{ request()->routeIs('admin.compliance.*') ? 'active' : '' }}">
+                            <i class="fas fa-tachometer-alt"></i> Bảng Điều Khiển
+                        </a></li>
+                        <li><a href="{{ route('admin.compliance.index', ['tab' => 'audit']) }}" data-key="t-audit-trail" class="{{ request()->routeIs('admin.compliance.index') && request('tab') === 'audit' ? 'active' : '' }}">
+                            <i class="fas fa-history"></i> Nhật Ký Kiểm Toán
+                        </a></li>
+                        <li><a href="{{ route('admin.compliance.index', ['tab' => 'security']) }}" data-key="t-security-monitoring" class="{{ request()->routeIs('admin.compliance.index') && request('tab') === 'security' ? 'active' : '' }}">
+                            <i class="fas fa-eye"></i> Giám Sát Bảo Mật
+                            @if($securityIncidents > 0)
+                                <span class="badge rounded-pill bg-danger float-end">{{ $securityIncidents }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.compliance.index', ['tab' => 'privacy']) }}" data-key="t-data-privacy" class="{{ request()->routeIs('admin.compliance.index') && request('tab') === 'privacy' ? 'active' : '' }}">
+                            <i class="fas fa-user-shield"></i> Quyền Riêng Tư Dữ Liệu
+                        </a></li>
+                        <li><a href="{{ route('admin.compliance.index', ['tab' => 'reports']) }}" data-key="t-compliance-reports" class="{{ request()->routeIs('admin.compliance.index') && request('tab') === 'reports' ? 'active' : '' }}">
+                            <i class="fas fa-file-alt"></i> Báo Cáo Tuân Thủ
+                        </a></li>
+                    </ul>
+                </li>
+                @endadminCanAny
+
                 <!-- Moderation -->
                 @adminCanAny(['moderate-content', 'approve-content', 'view-reports', 'manage-reports'])
                 <li>

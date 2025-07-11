@@ -96,6 +96,10 @@
 
     <!-- Frontend CSS - Optimized Structure with Cache Busting -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/animation.css') }}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/responsive.css    ') }}">
 
     <!-- Dark Mode CSS -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/dark-mode.css') }}">
@@ -146,6 +150,24 @@
             @php
             // Xác định các trang không hiển thị sidebar
             $excludedRoutes = [
+            // Authentication routes
+            'login',
+            'register',
+            'password.request',
+            'password.email',
+            'password.reset',
+            'password.update',
+            'verification.notice',
+            'verification.verify',
+            'verification.send',
+            'password.confirm',
+
+            // Registration wizard
+            'register.wizard.step1',
+            'register.wizard.step2',
+            'register.wizard.step3',
+
+            // Profile and user management
             'threads.edit',
             'profile.edit',
             'profile.update',
@@ -153,7 +175,10 @@
             'conversations.show',
             'conversations.create',
             'bookmarks.index',
+
+            // Public pages
             'showcase.index',
+            'showcase.public',
             'subscription.index',
             'business.index',
             'business.services',
@@ -162,7 +187,6 @@
             'jobs.index',
             'events.index',
             'events.show',
-            'showcase.public',
             ];
 
             // Kiểm tra route hiện tại

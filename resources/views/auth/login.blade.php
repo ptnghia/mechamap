@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="{{ asset('css/frontend/views/auth/login.css') }}">
 @endpush
 
-@section('content')
-<div class="min-vh-100 d-flex align-items-center bg-light">
+@section('full-width-content')
+<div class="min-vh-100 d-flex align-items-center bg-light my-4">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
@@ -53,8 +53,8 @@
                                             <span>{{ __('content.share_experience') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <i class="fas fa-graduation-cap me-3 fs-5"></i>
-                                            <span>Học hỏi từ chuyên gia hàng đầu</span>
+                                            <i class="fas fa-store me-3 fs-5"></i>
+                                            <span>Marketplace sản phẩm kỹ thuật số</span>
                                         </div>
                                     </div>
 
@@ -62,9 +62,9 @@
                                     <div class="border-top border-white border-opacity-25 pt-4">
                                         <p class="small mb-2 opacity-75">Được tin tưởng bởi:</p>
                                         <div class="d-flex align-items-center">
-                                            <span class="badge bg-white text-primary me-2">Kỹ sư CAD</span>
-                                            <span class="badge bg-white text-primary me-2">Chuyên gia CNC</span>
-                                            <span class="badge bg-white text-primary">Nhà sản xuất</span>
+                                            <span class="badge bg-white text-primary me-2">Thành viên</span>
+                                            <span class="badge bg-white text-primary me-2">Đối tác cá nhân</span>
+                                            <span class="badge bg-white text-primary">Doanh nghiệp</span>
                                         </div>
                                     </div>
                                 </div>

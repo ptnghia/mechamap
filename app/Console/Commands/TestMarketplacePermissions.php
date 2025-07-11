@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\MarketplaceSeller;
 use App\Models\MarketplaceProduct;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 
 class TestMarketplacePermissions extends Command
 {
@@ -62,8 +62,10 @@ class TestMarketplacePermissions extends Command
 
         $table = [];
         foreach ($roles as $role) {
-            $buyTypes = MarketplacePermissionService::getAllowedBuyTypes($role);
-            $sellTypes = MarketplacePermissionService::getAllowedSellTypes($role);
+            // Create mock user for testing
+            $mockUser = new User(['role' => $role]);
+            $buyTypes = UnifiedMarketplacePermissionService::getAllowedBuyTypes($mockUser);
+            $sellTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($mockUser);
 
             $expected = $expectedMatrix[$role];
             $buyMatch = $buyTypes === $expected['buy'] ? '✅' : '❌';
@@ -105,8 +107,8 @@ class TestMarketplacePermissions extends Command
             }
 
             $seller = MarketplaceSeller::where('user_id', $user->id)->first();
-            $buyTypes = MarketplacePermissionService::getAllowedBuyTypes($user->role);
-            $sellTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+            $buyTypes = UnifiedMarketplacePermissionService::getAllowedBuyTypes($user);
+            $sellTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
 
             $hasMarketplaceAccess = !empty($buyTypes) || !empty($sellTypes);
             $hasSellerAccount = $seller ? '✅' : '❌';
@@ -152,7 +154,7 @@ class TestMarketplacePermissions extends Command
             $user = new User(['role' => $testCase['role']]);
             $productData = ['product_type' => $testCase['product_type']];
 
-            $errors = MarketplacePermissionService::validateProductCreation($user, $productData);
+            $errors = UnifiedMarketplacePermissionService::validateProductCreation($user, $productData);
             $hasErrors = !empty($errors);
 
             $actualResult = !$hasErrors;

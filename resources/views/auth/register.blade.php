@@ -106,9 +106,7 @@
                     <option value="member" {{ old('account_type') == 'member' ? 'selected' : '' }}>
                         Thành viên - Tham gia thảo luận và chia sẻ kiến thức
                     </option>
-                    <option value="student" {{ old('account_type') == 'student' ? 'selected' : '' }}>
-                        Sinh viên - Học tập và nghiên cứu về cơ khí
-                    </option>
+
                 </optgroup>
 
                 <optgroup label="🏢 Đối tác kinh doanh">

@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DynamicDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\NotificationAnalyticsController;
+use App\Http\Controllers\Admin\BusinessVerificationController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -908,6 +909,26 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/test/calculation', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'testCalculation'])->name('test-calculation');
     });
 
+    // 💰 Commission Rate Management Routes (Phase 3)
+    Route::prefix('commission-rates')->name('commission-rates.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\CommissionRateController::class, 'index'])->name('index');
+        Route::post('/update', [App\Http\Controllers\Admin\CommissionRateController::class, 'update'])->name('update');
+        Route::post('/user-rate', [App\Http\Controllers\Admin\CommissionRateController::class, 'getUserRate'])->name('user-rate');
+        Route::post('/bulk-update', [App\Http\Controllers\Admin\CommissionRateController::class, 'bulkUpdate'])->name('bulk-update');
+        Route::get('/analytics', [App\Http\Controllers\Admin\CommissionRateController::class, 'analytics'])->name('analytics');
+        Route::post('/reset-defaults', [App\Http\Controllers\Admin\CommissionRateController::class, 'resetToDefaults'])->name('reset-defaults');
+    });
+
+    // 🔒 Compliance & Security Routes (Phase 4)
+    Route::prefix('compliance')->name('compliance.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\ComplianceController::class, 'index'])->name('index');
+        Route::post('/audit-report', [App\Http\Controllers\Admin\ComplianceController::class, 'auditReport'])->name('audit-report');
+        Route::post('/security-report', [App\Http\Controllers\Admin\ComplianceController::class, 'securityReport'])->name('security-report');
+        Route::post('/privacy-report', [App\Http\Controllers\Admin\ComplianceController::class, 'privacyReport'])->name('privacy-report');
+        Route::post('/export-compliance-data', [App\Http\Controllers\Admin\ComplianceController::class, 'exportComplianceData'])->name('export-compliance-data');
+        Route::post('/validate-compliance', [App\Http\Controllers\Admin\ComplianceController::class, 'validateCompliance'])->name('validate-compliance');
+    });
+
     // 📊 Financial Reports Routes
     Route::prefix('financial-reports')->name('financial-reports.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\FinancialReportsController::class, 'index'])->name('index');
@@ -941,6 +962,30 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::post('/{refund}/process', [App\Http\Controllers\Admin\RefundManagementController::class, 'process'])->name('process');
         Route::post('/bulk-approve', [App\Http\Controllers\Admin\RefundManagementController::class, 'bulkApprove'])->name('bulk-approve');
         Route::get('/export/refunds', [App\Http\Controllers\Admin\RefundManagementController::class, 'export'])->name('export');
+    });
+
+    // 🏢 Business Verification Routes - Phase 2
+    Route::prefix('verification')->name('verification.')->group(function () {
+        // Main verification dashboard
+        Route::get('/', [BusinessVerificationController::class, 'index'])->name('index');
+
+        // Application management
+        Route::get('/applications/{application}', [BusinessVerificationController::class, 'show'])->name('applications.show');
+        Route::post('/applications/{application}/assign-reviewer', [BusinessVerificationController::class, 'assignReviewer'])->name('applications.assign-reviewer');
+        Route::post('/applications/{application}/approve', [BusinessVerificationController::class, 'approve'])->name('applications.approve');
+        Route::post('/applications/{application}/reject', [BusinessVerificationController::class, 'reject'])->name('applications.reject');
+        Route::post('/applications/{application}/request-info', [BusinessVerificationController::class, 'requestInfo'])->name('applications.request-info');
+
+        // Document management
+        Route::post('/documents/{document}/verify', [BusinessVerificationController::class, 'verifyDocument'])->name('documents.verify');
+        Route::get('/documents/{document}/download', [BusinessVerificationController::class, 'downloadDocument'])->name('documents.download');
+        Route::get('/documents/{document}/preview', [BusinessVerificationController::class, 'previewDocument'])->name('documents.preview');
+
+        // Bulk actions
+        Route::post('/bulk-action', [BusinessVerificationController::class, 'bulkAction'])->name('bulk-action');
+
+        // Analytics
+        Route::get('/analytics', [BusinessVerificationController::class, 'analytics'])->name('analytics');
     });
 
     // Duplicate moderation routes removed - using the one with middleware above (lines 125-151)

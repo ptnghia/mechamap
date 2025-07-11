@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\MarketplaceProduct;
+use App\Services\UnifiedMarketplacePermissionService;
 
 class MarketplacePermissionMiddleware
 {
@@ -27,19 +28,38 @@ class MarketplacePermissionMiddleware
             ], 401);
         }
 
-        // For authenticated users, check permissions
-        if ($user && $action !== 'view') {
-            // Admin roles have full marketplace permissions
-            if ($this->isAdminRole($user->role)) {
-                return $next($request);
-            }
+        // For view action, allow everyone (including guests)
+        if ($action === 'view') {
+            return $next($request);
+        }
 
+        // For authenticated users, check permissions using unified service
+        if ($user) {
             $productType = $this->getProductTypeFromRequest($request);
 
-            if (!$this->hasPermission($user->role, $action, $productType)) {
+            // Check permission using unified service
+            $hasPermission = false;
+            switch ($action) {
+                case 'buy':
+                    $hasPermission = UnifiedMarketplacePermissionService::canBuy($user, $productType);
+                    break;
+                case 'sell':
+                    $hasPermission = UnifiedMarketplacePermissionService::canSell($user, $productType);
+                    break;
+                case 'checkout':
+                    $hasPermission = UnifiedMarketplacePermissionService::canCheckout($user);
+                    break;
+                case 'cart':
+                    $hasPermission = UnifiedMarketplacePermissionService::canViewCart($user);
+                    break;
+                default:
+                    $hasPermission = UnifiedMarketplacePermissionService::canAccessMarketplace($user);
+            }
+
+            if (!$hasPermission) {
                 return response()->json([
                     'error' => 'Permission denied',
-                    'message' => $this->getPermissionMessage($user->role, $action, $productType)
+                    'message' => $this->getPermissionMessage($user, $action, $productType)
                 ], 403);
             }
         }
@@ -136,74 +156,61 @@ class MarketplacePermissionMiddleware
 
     /**
      * Get permission matrix based on requirements
+     * @deprecated Use UnifiedMarketplacePermissionService instead
      */
     private function getPermissionMatrix(): array
     {
-        return [
-            // Cá nhân (Guest only - Members không có quyền marketplace)
-            'guest' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
-            ],
-            'member' => [
-                'buy' => [],
-                'sell' => [],
-            ],
-            'senior_member' => [
-                'buy' => [],
-                'sell' => [],
-            ],
-
-            // Nhà cung cấp (Supplier)
-            'supplier' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
-            ],
-
-            // Nhà sản xuất (Manufacturer)
-            'manufacturer' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
-            ],
-
-            // Thương hiệu (Brand) - chỉ xem
-            'brand' => [
-                'buy' => [],
-                'sell' => [],
-                'view' => true,
-                'contact' => true,
-            ],
-        ];
+        // This method is deprecated and should not be used
+        // All permission logic is now handled by UnifiedMarketplacePermissionService
+        return [];
     }
 
     /**
-     * Get permission error message
+     * Get permission error message using unified service
      */
-    private function getPermissionMessage(string $role, string $action, ?string $productType): string
+    private function getPermissionMessage($user, string $action, ?string $productType): string
     {
-        $messages = [
-            'guest' => [
-                'buy' => 'Khách vãng lai chỉ có thể mua sản phẩm kỹ thuật số',
-                'sell' => 'Khách vãng lai chỉ có thể bán sản phẩm kỹ thuật số',
-            ],
-            'member' => [
-                'buy' => 'Thành viên chỉ có thể mua sản phẩm kỹ thuật số',
-                'sell' => 'Thành viên chỉ có thể bán sản phẩm kỹ thuật số',
-            ],
-            'supplier' => [
-                'buy' => 'Nhà cung cấp chỉ có thể mua sản phẩm kỹ thuật số',
-                'sell' => 'Nhà cung cấp có thể bán sản phẩm kỹ thuật số và sản phẩm mới',
-            ],
-            'manufacturer' => [
-                'buy' => 'Nhà sản xuất có thể mua sản phẩm kỹ thuật số và sản phẩm mới',
-                'sell' => 'Nhà sản xuất chỉ có thể bán sản phẩm kỹ thuật số',
-            ],
-            'brand' => [
-                'buy' => 'Thương hiệu không được phép mua sản phẩm',
-                'sell' => 'Thương hiệu không được phép bán sản phẩm',
-            ],
-        ];
+        if (!$user) {
+            return 'Bạn cần đăng nhập để thực hiện hành động này';
+        }
 
-        return $messages[$role][$action] ?? 'Bạn không có quyền thực hiện hành động này';
+        $role = $user->role ?? 'guest';
+
+        // Check if business verification is required
+        $isBusinessRole = in_array($role, ['manufacturer', 'supplier', 'brand', 'verified_partner']);
+        $isVerified = $isBusinessRole ? UnifiedMarketplacePermissionService::isBusinessVerified($user) : true;
+
+        // Get allowed types for better error messages
+        $allowedBuyTypes = UnifiedMarketplacePermissionService::getAllowedBuyTypes($user);
+        $allowedSellTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
+
+        switch ($action) {
+            case 'buy':
+                if (empty($allowedBuyTypes)) {
+                    if ($isBusinessRole && !$isVerified) {
+                        return 'Bạn cần xác thực doanh nghiệp để có thể mua sản phẩm. Vui lòng hoàn tất quy trình xác thực.';
+                    }
+                    return 'Vai trò của bạn không có quyền mua sản phẩm';
+                }
+                return "Bạn chỉ có thể mua: " . implode(', ', $allowedBuyTypes);
+
+            case 'sell':
+                if (empty($allowedSellTypes)) {
+                    if ($isBusinessRole && !$isVerified) {
+                        return 'Bạn cần xác thực doanh nghiệp để có thể bán sản phẩm. Vui lòng hoàn tất quy trình xác thực.';
+                    }
+                    return 'Vai trò của bạn không có quyền bán sản phẩm';
+                }
+                return "Bạn chỉ có thể bán: " . implode(', ', $allowedSellTypes);
+
+            case 'checkout':
+                return 'Bạn không có quyền thanh toán. Vui lòng kiểm tra quyền mua hàng của bạn.';
+
+            case 'cart':
+                return 'Bạn không có quyền truy cập giỏ hàng. Vui lòng kiểm tra quyền mua hàng của bạn.';
+
+            default:
+                return 'Bạn không có quyền thực hiện hành động này';
+        }
     }
 }

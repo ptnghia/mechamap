@@ -177,7 +177,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'business_address',
         'is_verified_business',
         'business_verified_at',
+        'verified_at',
         'verified_by',
+        'verification_notes',
+        'verification_documents',
         'subscription_level',
         'business_rating',
         'total_reviews',
@@ -555,6 +558,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    /**
+     * Get the user's verification documents.
+     */
+    public function verificationDocuments(): HasMany
+    {
+        return $this->hasMany(UserVerificationDocument::class);
+    }
+
+    /**
+     * Get the user's primary verification documents.
+     */
+    public function primaryVerificationDocuments(): HasMany
+    {
+        return $this->hasMany(UserVerificationDocument::class)->where('is_primary', true);
+    }
+
+    /**
+     * Get documents verified by this user (for admins).
+     */
+    public function verifiedDocuments(): HasMany
+    {
+        return $this->hasMany(UserVerificationDocument::class, 'verified_by');
     }
 
     /**
@@ -971,7 +998,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'senior_member' => 'info',
             'member' => 'primary',
             'guest' => 'secondary',
-            'student' => 'light',
+
 
             // Business Partners
             'manufacturer' => 'dark',
@@ -1005,7 +1032,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'senior_member' => 'Thành viên cấp cao',
             'member' => 'Thành viên',
             'guest' => 'Khách',
-            'student' => 'Sinh viên',
+
 
             // Business Partners
             'manufacturer' => 'Nhà sản xuất',

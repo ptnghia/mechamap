@@ -18,7 +18,7 @@ class MarketplaceDashboardController extends Controller
     {
         // Get product statistics
         $stats = $this->getProductStatistics();
-        
+
         // Get recent products
         $recentProducts = MarketplaceProduct::with(['seller.user', 'category'])
             ->orderBy('created_at', 'desc')
@@ -34,27 +34,27 @@ class MarketplaceDashboardController extends Controller
     private function getProductStatistics(): array
     {
         $totalProducts = MarketplaceProduct::count();
-        
+
         // Count by product type
         $digitalProducts = MarketplaceProduct::where('product_type', 'digital')->count();
         $newProducts = MarketplaceProduct::where('product_type', 'new_product')->count();
         $usedProducts = MarketplaceProduct::where('product_type', 'used_product')->count();
-        
+
         // Count by seller type
         $supplierProducts = MarketplaceProduct::where('seller_type', 'supplier')->count();
         $manufacturerProducts = MarketplaceProduct::where('seller_type', 'manufacturer')->count();
         $brandProducts = MarketplaceProduct::where('seller_type', 'brand')->count();
-        
+
         // Count by status
         $pendingProducts = MarketplaceProduct::where('status', 'pending')->count();
         $approvedProducts = MarketplaceProduct::where('status', 'approved')->count();
         $rejectedProducts = MarketplaceProduct::where('status', 'rejected')->count();
-        
+
         // Order statistics
         $totalOrders = MarketplaceOrder::count();
         $paidOrders = MarketplaceOrder::where('payment_status', 'paid')->count();
         $pendingOrders = MarketplaceOrder::where('payment_status', 'pending')->count();
-        
+
         // Revenue statistics
         $totalRevenue = MarketplaceOrder::where('payment_status', 'paid')->sum('total_amount');
         $monthlyRevenue = MarketplaceOrder::where('payment_status', 'paid')
@@ -68,26 +68,26 @@ class MarketplaceDashboardController extends Controller
             'digital_products' => $digitalProducts,
             'new_products' => $newProducts,
             'used_products' => $usedProducts,
-            
+
             // Seller type counts
             'supplier_products' => $supplierProducts,
             'manufacturer_products' => $manufacturerProducts,
             'brand_products' => $brandProducts,
-            
+
             // Status counts
             'pending_products' => $pendingProducts,
             'approved_products' => $approvedProducts,
             'rejected_products' => $rejectedProducts,
-            
+
             // Order statistics
             'total_orders' => $totalOrders,
             'paid_orders' => $paidOrders,
             'pending_orders' => $pendingOrders,
-            
+
             // Revenue
             'total_revenue' => $totalRevenue,
             'monthly_revenue' => $monthlyRevenue,
-            
+
             // Percentages
             'digital_percentage' => $totalProducts > 0 ? round(($digitalProducts / $totalProducts) * 100, 1) : 0,
             'new_percentage' => $totalProducts > 0 ? round(($newProducts / $totalProducts) * 100, 1) : 0,
@@ -104,17 +104,17 @@ class MarketplaceDashboardController extends Controller
             'guest' => [
                 'buy' => ['digital'],
                 'sell' => ['digital'],
-                'description' => 'Chỉ được mua/bán sản phẩm kỹ thuật số'
+                'description' => '🏪 Đối tác cá nhân - Mua/bán digital (bán cần admin duyệt)'
             ],
             'member' => [
-                'buy' => ['digital'],
-                'sell' => ['digital'],
-                'description' => 'Chỉ được mua/bán sản phẩm kỹ thuật số'
+                'buy' => [],
+                'sell' => [],
+                'description' => '👥 Thành viên diễn đàn - Chỉ xem sản phẩm (không mua/bán)'
             ],
             'senior_member' => [
-                'buy' => ['digital'],
-                'sell' => ['digital'],
-                'description' => 'Chỉ được mua/bán sản phẩm kỹ thuật số'
+                'buy' => [],
+                'sell' => [],
+                'description' => '👥 Thành viên cao cấp - Chỉ xem sản phẩm (không mua/bán)'
             ],
             'supplier' => [
                 'buy' => ['digital'],

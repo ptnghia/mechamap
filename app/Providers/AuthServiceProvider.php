@@ -184,7 +184,20 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         \Illuminate\Support\Facades\Gate::define('view-content', function ($user) {
-            return !in_array($user->role, ['guest']) || auth()->check();
+            return auth()->check(); // All authenticated users can view content
+        });
+
+        // Guest-specific permissions
+        \Illuminate\Support\Facades\Gate::define('follow-users', function ($user) {
+            return auth()->check(); // All authenticated users can follow
+        });
+
+        \Illuminate\Support\Facades\Gate::define('follow-threads', function ($user) {
+            return auth()->check(); // All authenticated users can follow threads
+        });
+
+        \Illuminate\Support\Facades\Gate::define('create-content', function ($user) {
+            return !in_array($user->role, ['guest']); // Guest cannot create content
         });
 
         // Legacy Gates for existing moderation system

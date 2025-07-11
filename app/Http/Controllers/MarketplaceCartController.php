@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceShoppingCart;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
@@ -47,7 +47,7 @@ class MarketplaceCartController extends Controller
             }
 
             // Check if user has permission to buy this product type
-            if ($user && !MarketplacePermissionService::canBuy($user, $product->product_type)) {
+            if ($user && !UnifiedMarketplacePermissionService::canBuy($user, $product->product_type)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Bạn không có quyền mua loại sản phẩm này'

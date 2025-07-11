@@ -72,7 +72,10 @@ class PermissionService
      */
     public static function canBuy(User $user): bool
     {
-        return !in_array($user->role, ['guest']) && $user->hasPermissionTo('view-content');
+        // Guest không thể mua hàng - cần đăng ký
+        return !in_array($user->role, ['guest']) &&
+               auth()->check() &&
+               $user->hasPermissionTo('view-content');
     }
 
     /**

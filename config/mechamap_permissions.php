@@ -29,7 +29,7 @@ return [
         'community_members' => [
             'name' => 'Thành viên cộng đồng',
             'description' => 'Các thành viên tham gia cộng đồng',
-            'roles' => ['senior_member', 'member', 'guest', 'student'],
+            'roles' => ['senior_member', 'member', 'guest'],
             'color' => 'primary',
             'icon' => 'fas fa-users',
         ],
@@ -47,23 +47,22 @@ return [
         'super_admin' => 1,
         'system_admin' => 2,
         'content_admin' => 3,
-        
+
         // Community Management (Level 4-6)
         'content_moderator' => 4,
         'marketplace_moderator' => 5,
         'community_moderator' => 6,
-        
-        // Community Members (Level 7-10)
+
+        // Community Members (Level 7-9)
         'senior_member' => 7,
         'member' => 8,
-        'student' => 9,
-        'guest' => 10,
-        
-        // Business Partners (Level 11-14)
-        'verified_partner' => 11,
-        'manufacturer' => 12,
-        'supplier' => 13,
-        'brand' => 14,
+        'guest' => 9,
+
+        // Business Partners (Level 10-13)
+        'verified_partner' => 10,
+        'manufacturer' => 11,
+        'supplier' => 12,
+        'brand' => 13,
     ],
 
     'permission_groups' => [
@@ -159,6 +158,18 @@ return [
                 'create-polls',
                 'rate-products',
                 'write-reviews',
+            ],
+        ],
+        'guest' => [
+            'name' => 'Quyền khách',
+            'permissions' => [
+                'view-content',           // ✅ Xem nội dung công khai
+                'follow-users',           // ✅ Theo dõi Member
+                'follow-threads',         // ✅ Theo dõi bài đăng
+                'follow-showcases',       // ✅ Theo dõi showcases
+                'receive-notifications',  // ✅ Nhận thông báo
+                'browse-forums',          // ✅ Duyệt forums
+                'browse-showcases',       // ✅ Xem showcases
             ],
         ],
         'business' => [

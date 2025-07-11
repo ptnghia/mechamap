@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 use Illuminate\Support\Facades\View;
 
 class InjectMarketplacePermissions
@@ -20,7 +20,7 @@ class InjectMarketplacePermissions
     {
         // Get current user
         $user = auth()->user();
-        
+
         // Default permissions for guests
         $marketplacePermissions = [
             'can_access_marketplace' => false,
@@ -41,14 +41,17 @@ class InjectMarketplacePermissions
 
         if ($user) {
             $role = $user->role ?? 'guest';
-            
-            // Get permission arrays
-            $allowedBuyTypes = MarketplacePermissionService::getAllowedBuyTypes($role);
-            $allowedSellTypes = MarketplacePermissionService::getAllowedSellTypes($role);
-            
+
+            // Get permission arrays using unified service
+            $allowedBuyTypes = UnifiedMarketplacePermissionService::getAllowedBuyTypes($user);
+            $allowedSellTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
+
             // Check if user has any marketplace access
-            $hasMarketplaceAccess = !empty($allowedBuyTypes) || !empty($allowedSellTypes);
-            
+            $hasMarketplaceAccess = UnifiedMarketplacePermissionService::canAccessMarketplace($user);
+
+            // Get comprehensive marketplace features from unified service
+            $marketplaceFeatures = UnifiedMarketplacePermissionService::getMarketplaceFeatures($user);
+
             $marketplacePermissions = [
                 'can_access_marketplace' => $hasMarketplaceAccess,
                 'can_buy' => $allowedBuyTypes,
@@ -57,13 +60,9 @@ class InjectMarketplacePermissions
                 'allowed_sell_types' => $allowedSellTypes,
                 'role' => $role,
                 'role_display' => $this->getRoleDisplayName($role),
-                'marketplace_features' => [
-                    'can_create_products' => !empty($allowedSellTypes),
-                    'can_view_cart' => !empty($allowedBuyTypes),
-                    'can_checkout' => !empty($allowedBuyTypes),
-                    'can_view_orders' => $hasMarketplaceAccess,
-                    'can_manage_seller_account' => !empty($allowedSellTypes),
-                ]
+                'marketplace_features' => $marketplaceFeatures,
+                'commission_rate' => UnifiedMarketplacePermissionService::getCommissionRate($user),
+                'is_business_verified' => UnifiedMarketplacePermissionService::isBusinessVerified($user),
             ];
 
             // Add specific product type permissions

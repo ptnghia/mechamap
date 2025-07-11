@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Services\PermissionService;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 
 class MarketplaceCheckoutController extends Controller
 {
@@ -409,8 +409,8 @@ class MarketplaceCheckoutController extends Controller
             }
 
             // Check if user has permission to buy this product type
-            if (!MarketplacePermissionService::canBuy($user, $item->product->product_type)) {
-                $allowedTypes = MarketplacePermissionService::getAllowedBuyTypes($user->role ?? 'guest');
+            if (!UnifiedMarketplacePermissionService::canBuy($user, $item->product->product_type)) {
+                $allowedTypes = UnifiedMarketplacePermissionService::getAllowedBuyTypes($user);
                 throw new \Exception("Bạn không có quyền mua sản phẩm '{$item->product_name}'. Bạn chỉ có thể mua: " . implode(', ', $allowedTypes));
             }
         }
@@ -505,8 +505,9 @@ class MarketplaceCheckoutController extends Controller
             $itemTax = 0; // Calculate if needed
             $itemTotal = $itemSubtotal + $itemTax;
 
-            // Calculate commission (15% platform fee)
-            $commissionRate = 15.00;
+            // Calculate commission using unified service
+            $seller = $cartItem->product->seller;
+            $commissionRate = UnifiedMarketplacePermissionService::getCommissionRate($seller);
             $commissionAmount = $itemSubtotal * ($commissionRate / 100);
             $sellerEarnings = $itemSubtotal - $commissionAmount;
 

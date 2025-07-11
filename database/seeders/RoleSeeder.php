@@ -127,13 +127,7 @@ class RoleSeeder extends Seeder
                 'icon' => 'fas fa-user',
                 'max_users' => null,
             ],
-            'student' => [
-                'display_name' => 'Sinh viên',
-                'description' => 'Sinh viên đang học tập, có quyền hạn cơ bản',
-                'color' => 'light',
-                'icon' => 'fas fa-graduation-cap',
-                'max_users' => null,
-            ],
+
             'guest' => [
                 'display_name' => 'Khách',
                 'description' => 'Khách tham quan, quyền hạn hạn chế',

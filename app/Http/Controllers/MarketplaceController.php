@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MarketplaceProduct;
 use App\Models\ProductCategory;
 use App\Models\MarketplaceSeller;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 

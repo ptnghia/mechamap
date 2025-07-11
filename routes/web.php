@@ -22,12 +22,10 @@ use App\Http\Controllers\UserThreadController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Frontend\BusinessRegistrationController;
 use Illuminate\Support\Facades\Route;
 
-// Test route để debug
-Route::get('/test', function () {
-    return 'Test route hoạt động bình thường!';
-});
+// Test route để debug - REMOVED (should only be in development)
 
 
 
@@ -51,14 +49,7 @@ Route::get('/welcome', [\App\Http\Controllers\HomeController::class, 'index'])->
 // Load More threads route cho trang chủ
 Route::get('/threads/load-more', [\App\Http\Controllers\HomeController::class, 'getMoreThreads'])->name('threads.load-more');
 
-// Test route đơn giản
-Route::get('/threads/test', function() {
-    return response()->json([
-        'success' => true,
-        'message' => 'Test route working',
-        'threads_count' => \App\Models\Thread::count()
-    ]);
-});
+// Test route đơn giản - REMOVED (should only be in development)
 
 // Language switching routes
 Route::prefix('language')->name('language.')->group(function () {
@@ -68,10 +59,7 @@ Route::prefix('language')->name('language.')->group(function () {
     Route::post('/auto-detect', [LanguageController::class, 'autoDetect'])->name('auto-detect');
 });
 
-// What's New route
-Route::get('/whats-new', function () {
-    return view('coming-soon', ['title' => 'What\'s New', 'message' => 'What\'s new section coming soon']);
-})->name('whats-new');
+// What's New route - REMOVED (duplicate, using WhatsNewController in web-whats-new.php)
 
 // Marketplace routes
 Route::prefix('marketplace')->name('marketplace.')->group(function () {
@@ -395,15 +383,7 @@ Route::middleware(['auth'])->prefix('messages')->name('chat.')->group(function (
     Route::get('/api/unread-count', [App\Http\Controllers\ChatController::class, 'getUnreadCount'])->name('api.unread-count');
 });
 
-// Demo Admin Chat (temporary for testing)
-Route::middleware(['auth'])->prefix('demo-admin-chat')->name('demo.admin.chat.')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\ChatController::class, 'index'])->name('index');
-    Route::get('/create', [App\Http\Controllers\Admin\ChatController::class, 'create'])->name('create');
-    Route::post('/', [App\Http\Controllers\Admin\ChatController::class, 'store'])->name('store');
-    Route::get('/{id}', [App\Http\Controllers\Admin\ChatController::class, 'show'])->name('show');
-    Route::post('/{id}/send', [App\Http\Controllers\Admin\ChatController::class, 'sendMessage'])->name('send');
-    Route::get('/api/search-users', [App\Http\Controllers\Admin\ChatController::class, 'searchUsers'])->name('api.search-users');
-});
+// Demo Admin Chat - REMOVED (temporary testing route)
 
 // Profile routes
 Route::get('/users', [ProfileController::class, 'index'])->name('users.index');
@@ -559,8 +539,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/threads/{thread}/rate', [\App\Http\Controllers\ThreadRatingController::class, 'destroy'])->name('threads.rate.remove');
 });
 
-// More menu routes
-Route::get('/whats-new', [NewContentController::class, 'whatsNew'])->name('whats-new');
+// More menu routes - REMOVED whats-new duplicate (using WhatsNewController in web-whats-new.php)
 // Redirect old forum-listing to unified forums page for backward compatibility
 Route::get('/forum-listing', function () {
     return redirect()->route('forums.index', [], 301);
@@ -674,20 +653,7 @@ Route::get('/pages/{slug}', [App\Http\Controllers\PageController::class, 'show']
 // Legacy routes and redirects
 Route::get('/legacy/{path}', [App\Http\Controllers\PageController::class, 'handleLegacyRoute'])->name('pages.legacy');
 
-// Static pages overview (for admin/development)
-Route::get('/static-pages', function () {
-    return view('pages.static-pages-overview');
-})->name('static-pages.overview');
-
-// Test dynamic pages system
-Route::get('/test-dynamic', function () {
-    return view('pages.test-dynamic');
-})->name('test-dynamic');
-
-// System improvements overview
-Route::get('/system-improvements', function () {
-    return view('pages.system-improvements');
-})->name('system-improvements');
+// Development/admin routes - REMOVED (should only be in development)
 
 // SEO Routes
 Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap.index');
@@ -774,38 +740,9 @@ Route::middleware(['auth', 'role:brand'])->prefix('brand')->name('brand.')->grou
     Route::get('/promotion-opportunities', [App\Http\Controllers\Brand\PromotionController::class, 'index'])->name('promotion.index');
 });
 
-// Test routes (remove in production)
-Route::get('/test-header', function () {
-    return view('test-header');
-})->name('test.header');
+// Test routes - REMOVED (should only be in development)
 
-Route::get('/test-language', function () {
-    return view('test-language');
-})->name('test.language');
-
-Route::get('/debug-language', function () {
-    return response()->json([
-        'app_locale' => app()->getLocale(),
-        'session_locale' => session('locale'),
-        'config_locale' => config('app.locale'),
-        'session_id' => session()->getId(),
-        'session_data' => session()->all(),
-        'supported_locales' => \App\Services\LanguageService::getSupportedLocales(),
-        'current_language_info' => \App\Services\LanguageService::getCurrentLanguageInfo(),
-    ]);
-})->name('debug.language');
-
-Route::get('/simple-language-test', function () {
-    return view('simple-language-test');
-})->name('simple.language.test');
-
-// AJAX Search route - Disabled, using SearchController::ajaxSearch instead
-/*
-Route::get('/ajax-search', function () {
-    // This route is disabled - using SearchController::ajaxSearch instead
-    // See line 449: Route::get('/ajax-search', [SearchController::class, 'ajaxSearch'])->name('search.ajax');
-})->name('ajax.search.disabled');
-*/
+// AJAX Search route - REMOVED (commented out duplicate)
 
 // Include What's New routes
 require __DIR__ . '/web-whats-new.php';
@@ -875,6 +812,28 @@ Route::middleware(['auth'])->prefix('ajax/notification-preferences')->group(func
 // Notification preferences pages
 Route::middleware(['auth'])->group(function () {
     Route::get('/notification-preferences', [\App\Http\Controllers\NotificationPreferencesController::class, 'index'])->name('notification-preferences.index');
+});
+
+// 🏢 Business Registration & Verification Routes - Phase 2
+Route::prefix('business')->name('business.')->group(function () {
+    // Public registration wizard
+    Route::get('/register', [BusinessRegistrationController::class, 'showRegistrationWizard'])->name('registration.wizard');
+
+    // Registration steps (AJAX)
+    Route::post('/register/step-1', [BusinessRegistrationController::class, 'processStep1'])->name('registration.step1');
+    Route::post('/register/step-2', [BusinessRegistrationController::class, 'processStep2'])->name('registration.step2');
+    Route::post('/register/step-4', [BusinessRegistrationController::class, 'processStep4'])->name('registration.step4');
+
+    // Document management
+    Route::post('/documents/upload', [BusinessRegistrationController::class, 'uploadDocument'])->name('documents.upload');
+    Route::delete('/documents/remove', [BusinessRegistrationController::class, 'removeDocument'])->name('documents.remove');
+    Route::get('/documents/required', [BusinessRegistrationController::class, 'getRequiredDocuments'])->name('documents.required');
+
+    // Verification status (authenticated users only)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/verification/status', [BusinessRegistrationController::class, 'showVerificationStatus'])->name('verification.status');
+        Route::get('/verification/status/ajax', [BusinessRegistrationController::class, 'getApplicationStatus'])->name('verification.status.ajax');
+    });
 });
 
 // Test route for thread actions (only in development)

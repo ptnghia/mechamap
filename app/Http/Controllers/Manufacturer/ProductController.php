@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceSeller;
 use App\Models\ProductCategory;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 use App\Services\ProductImageValidationService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -102,13 +102,13 @@ class ProductController extends Controller
         }
 
         // Validate permissions first
-        $permissionErrors = MarketplacePermissionService::validateProductCreation($user, $request->all());
+        $permissionErrors = UnifiedMarketplacePermissionService::validateProductCreation($user, $request->all());
         if (!empty($permissionErrors)) {
             return back()->withErrors(['permission' => $permissionErrors])->withInput();
         }
 
         // Get allowed types for validation
-        $allowedTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+        $allowedTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',

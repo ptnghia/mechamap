@@ -59,6 +59,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleBasedAccessMiddleware::class,
             'db.cache' => \App\Http\Middleware\DatabaseCacheMiddleware::class,
             'marketplace.permission' => \App\Http\Middleware\MarketplacePermissionMiddleware::class,
+            // Registration wizard rate limiting
+            'throttle:registration' => 'throttle:10,1',
+            'throttle:field-validation' => 'throttle:30,1',
+            'throttle:username-check' => 'throttle:20,1',
+            'throttle:auto-save' => 'throttle:60,1',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

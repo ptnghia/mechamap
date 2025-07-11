@@ -89,18 +89,19 @@ class MarketplacePermissionService
                 'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
             ],
 
-            // Cá nhân - Chỉ Guest được mua/bán digital, Member không có quyền marketplace
+            // Guest - Đối tác cá nhân marketplace (digital products với admin approval)
             'guest' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'buy' => [MarketplaceProduct::TYPE_DIGITAL],   // ✅ Guest có thể mua digital
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL],  // ✅ Guest có thể bán digital (cần duyệt)
             ],
+            // Community Members - Chỉ xem sản phẩm (không mua/bán)
             'member' => [
-                'buy' => [],
-                'sell' => [],
+                'buy' => [],   // ❌ Member không thể mua
+                'sell' => [],  // ❌ Member không thể bán
             ],
             'senior_member' => [
-                'buy' => [],
-                'sell' => [],
+                'buy' => [],   // ❌ Senior Member không thể mua
+                'sell' => [],  // ❌ Senior Member không thể bán
             ],
 
             // Nhà cung cấp (Supplier) - mua digital, bán digital + new_product

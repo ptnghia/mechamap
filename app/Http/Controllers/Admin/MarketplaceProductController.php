@@ -7,7 +7,7 @@ use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceSeller;
 use App\Models\ProductCategory;
 use App\Notifications\ProductApprovalNotification;
-use App\Services\MarketplacePermissionService;
+use App\Services\UnifiedMarketplacePermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;

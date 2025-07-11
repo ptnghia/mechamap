@@ -25,7 +25,8 @@ MechaMap Marketplace là hệ thống thương mại điện tử chuyên biệt
 
 | Loại Người Dùng | Quyền Mua | Quyền Bán | Mô Tả |
 |------------------|-----------|-----------|-------|
-| **Cá nhân** (Guest/Member) | ✅ Digital | ✅ Digital | Chỉ được mua/bán sản phẩm kỹ thuật số |
+| **Guest** (Đối tác cá nhân) | ✅ Digital | ✅ Digital* | *Bán cần admin duyệt |
+| **Member** (Thành viên diễn đàn) | ❌ Chỉ xem | ❌ Chỉ xem | Thành viên diễn đàn, không tham gia marketplace |
 | **Nhà cung cấp** (Supplier) | ✅ Digital | ✅ Digital + New | Có thể bán thiết bị, linh kiện mới |
 | **Nhà sản xuất** (Manufacturer) | ✅ Digital + New | ✅ Digital | Mua nguyên liệu, bán file kỹ thuật |
 | **Thương hiệu** (Brand) | ❌ Không | ❌ Không | Chỉ xem và liên hệ |
@@ -144,7 +145,8 @@ Route::post('/marketplace/cart/add', [CartController::class, 'add'])
 - **Suppliers**: Bán digital + new_product, mua digital
 - **Manufacturers**: Bán digital, mua digital + new_product
 - **Brands**: Chỉ xem và liên hệ (không mua/bán)
-- **Members/Guests**: Mua/bán digital only
+- **Guests**: Đối tác cá nhân - Mua/bán digital (bán cần duyệt)
+- **Members**: Thành viên diễn đàn - Chỉ xem marketplace
 
 ### **Admin Panel Features:**
 - ✅ **Dashboard mới** với thống kê real-time
