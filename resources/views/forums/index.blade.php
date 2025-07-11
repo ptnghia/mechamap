@@ -3,7 +3,7 @@
 @section('title', 'Forums')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/forums/index.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/forums/index.css') }}">
 @endpush
 
 @section('content')

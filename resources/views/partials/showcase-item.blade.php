@@ -74,7 +74,7 @@ $category = $showcase->category ?? null;
                 </span>
             </div>
             @if($category)
-            <span class="badge bg-info">{{ $category }}</span>
+            <span class="badge bg-info"><i class="fa-solid fa-tag"></i> {{ $category }}</span>
             @endif
         </div>
     </div>

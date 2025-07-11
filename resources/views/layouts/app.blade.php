@@ -91,12 +91,16 @@
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
     <script src="{{ asset_versioned('js/theme-preload.js') }}"></script>
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/notifications.css') }}">
 
     <!-- Frontend CSS - Optimized Structure with Cache Busting -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
 
-    <!-- Component CSS -->
-    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/notifications.css') }}">
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/dark-mode.css') }}">
+
+
 
     <!-- Page-specific CSS now loaded in individual views via @push('styles') -->
 
@@ -155,6 +159,9 @@
             'business.services',
             'companies.index',
             'companies.show',
+            'jobs.index',
+            'events.index',
+            'events.show',
             ];
 
             // Kiểm tra route hiện tại

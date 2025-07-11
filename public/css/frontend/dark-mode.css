@@ -1,0 +1,272 @@
+/**
+ * Dark Mode Theme Support
+ * Hỗ trợ chuyển đổi giữa theme sáng và tối
+ */
+
+/* ========================================
+   DARK MODE VARIABLES
+   ======================================== */
+
+[data-theme="dark"],
+.dark-mode {
+    --bs-body-bg: #0f172a;
+    --bs-body-color: #f8fafc;
+    --bs-border-color: #334155;
+    --bs-secondary-bg: #1e293b;
+    --bs-tertiary-bg: #334155;
+}
+
+/* ========================================
+   DARK MODE OVERRIDES
+   ======================================== */
+
+[data-theme="dark"] body,
+.dark-mode body {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .bg-white,
+.dark-mode .bg-white {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-top,
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .border-start,
+[data-theme="dark"] .border-end {
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--bs-body-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .navbar-light .navbar-nav .nav-link {
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .modal-content {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .table {
+    --bs-table-bg: var(--bs-secondary-bg);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > td,
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > th {
+    background-color: var(--bs-tertiary-bg) !important;
+}
+[data-theme="dark"] .search-container{background-color: #fff;}
+[data-theme="dark"] .search-container input{background-color: #fff !important;}
+/* ========================================
+   SMOOTH TRANSITIONS
+   ======================================== */
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn, .form-control, .form-select, .card, .dropdown-menu {
+    transition: all 0.3s ease;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON
+   ======================================== */
+
+#theme-toggle {
+    position: relative;
+    overflow: hidden;
+}
+
+#theme-toggle .dark-icon,
+#theme-toggle .light-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR FOR DARK MODE
+   ======================================== */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bs-secondary-bg);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--bs-tertiary-bg);
+    border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON STYLES
+   ======================================== */
+
+/* Theme Toggle Button Base Styles */
+.theme-toggle-btn {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Theme Toggle Button Hover Effect */
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button Focus State */
+.theme-toggle-btn:focus {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+/* Theme Toggle Button Click Animation */
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Theme Toggle Indicator Animation */
+.theme-toggle-indicator {
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn.clicked .theme-toggle-indicator {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+    animation: ripple 0.7s ease-out;
+}
+.dark-mode .btn-primary{background-color:#3366CC;border-color:#3366CC}
+.dark-mode .btn-primary:hover,.dark-mode .btn-primary:focus{background-color:#2a58b5;border-color:#2a58b5}
+.dark-mode .btn-outline-primary{color:#3366CC;border-color:#3366CC}
+.dark-mode .btn-outline-primary:hover,.dark-mode .btn-outline-primary:focus{color:#fff;background-color:#3366CC;border-color:#3366CC}
+.dark-mode .btn-light{background-color:#2d3748;border-color:#2d3748;color:#e0e0e0}
+.dark-mode .btn-light:hover,.dark-mode .btn-light:focus{background-color:#3a4a5e;border-color:#3a4a5e;color:#e0e0e0}
+.dark-mode .btn-outline-light{color:#e0e0e0;border-color:#4a5568}
+.dark-mode .btn-outline-light:hover,.dark-mode .btn-outline-light:focus{color:#e0e0e0;background-color:#4a5568;border-color:#4a5568}
+.dark-mode .btn-link{color:#3366CC}
+.dark-mode .btn-link:hover,.dark-mode .btn-link:focus{color:#1DCABC}
+.dark-mode .form-control{color:#e0e0e0;background-color:#2d3748;border-color:#4a5568}
+.dark-mode .form-control:focus{color:#e0e0e0;background-color:#2d3748;border-color:#3366CC}
+.dark-mode .form-control::placeholder{color:#a0a0a0}
+.dark-mode .form-control:disabled,.dark-mode .form-control[readonly]{background-color:#1a202c}
+.dark-mode .form-label{color:#e0e0e0}
+.dark-mode .form-text{color:#a0a0a0}
+.dark-mode .form-check-input{background-color:#2d3748;border-color:#4a5568}
+.dark-mode .form-check-label{color:#e0e0e0}
+.dark-mode select.form-control{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e0e0e0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e")}
+.dark-mode .custom-file-label{color:#e0e0e0;background-color:#2d3748;border-color:#4a5568}
+.dark-mode .custom-file-label::after{color:#e0e0e0;background-color:#1a202c}
+.dark-mode .input-group-text{color:#e0e0e0;background-color:#1a202c;border-color:#4a5568}
+.dark-mode .custom-file-upload .file-upload-btn{background-color:#2d3748;border-color:#4a5568;color:#e0e0e0}
+.dark-mode .custom-file-upload:hover .file-upload-btn{background-color:#3a4a5e;border-color:#4a5568}
+.dark-mode .custom-file-upload .file-upload-text{color:#a0a0a0}
+.dark-mode .image-preview .remove-image{background-color:rgba(45,55,72,0.8);color:#f56565}
+.alert-icon .rounded-circle{width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+[data-bs-theme="dark"] .avatar{border-color:#343a40;background-color:#212529}
+[data-bs-theme="dark"] .avatar-badge{border-color:#343a40}
+[data-bs-theme="dark"] .avatar-upload .avatar-edit{background:#343a40}
+[data-bs-theme="dark"] .avatar-upload .avatar-edit:hover{background:#495057}
+[data-bs-theme="dark"] .avatar-upload .avatar-edit label i{color:#e9ecef}
+[data-bs-theme="dark"] .avatar-upload .avatar-preview{border-color:#343a40}
+@media (prefers-color-scheme: dark) {
+.sidebar-professional{--light-bg:#2d3748;--border-color:#4a5568;--text-muted:#a0aec0}
+.sidebar-card{background:#1a202c;color:#e2e8f0}
+.sidebar-card .card-header{background:#2d3748}
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.3;
+        transform: scale(0.1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}

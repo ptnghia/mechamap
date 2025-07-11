@@ -2,10 +2,10 @@
 
 @section('title', 'Sự Kiện & Webinar - Đang Phát Triển')
 
-@section('content')
-<div class="container-fluid">
+@section('full-width-content')
+<div class="container mt-4 mb-4">
     <!-- Header Section -->
-    <div class="row mb-4">
+    <!--div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -17,11 +17,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 
     <!-- Under Development Notice -->
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
+        <div class="col-lg-6 col-md-10">
             <div class="card border-0 shadow-sm">
                 <div class="card-body text-center py-5">
                     <!-- Icon -->

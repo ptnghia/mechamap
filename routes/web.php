@@ -29,6 +29,10 @@ Route::get('/test', function () {
     return 'Test route hoạt động bình thường!';
 });
 
+
+
+
+
 // Trang chủ chính tại route /
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

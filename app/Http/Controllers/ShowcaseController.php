@@ -39,10 +39,12 @@ class ShowcaseController extends Controller
      */
     public function publicShowcase(): View
     {
-        // Get featured content
-        $featuredThreads = Thread::where('is_featured', true)
-            ->with(['user', 'forum'])
-            ->whereHas('forum') // Ensure forum exists
+        // Get featured showcases instead of threads
+        $featuredShowcases = Showcase::whereIn('status', ['featured', 'approved'])
+            ->where('is_public', true)
+            ->with(['user', 'showcaseable', 'media'])
+            ->orderByRaw("CASE WHEN status = 'featured' THEN 1 ELSE 2 END")
+            ->orderBy('view_count', 'desc')
             ->latest()
             ->take(5)
             ->get();
@@ -57,6 +59,8 @@ class ShowcaseController extends Controller
 
         // Get user showcases WITH media for unified image processing
         $userShowcases = Showcase::with(['user', 'showcaseable', 'media'])
+            ->whereIn('status', ['featured', 'approved'])
+            ->where('is_public', true)
             ->whereHas('showcaseable') // Ensure showcaseable exists
             ->latest()
             ->paginate(20);
@@ -64,7 +68,7 @@ class ShowcaseController extends Controller
         // Process featured images using unified service
         ShowcaseImageService::processFeaturedImages($userShowcases->getCollection());
 
-        return view('showcase.public', compact('featuredThreads', 'popularThreads', 'userShowcases'));
+        return view('showcase.public', compact('featuredShowcases', 'popularThreads', 'userShowcases'));
     }
 
     /**

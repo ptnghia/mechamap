@@ -174,52 +174,58 @@
                             </ul>
                         </li>
 
-                        <!-- 4. Marketplace - PRIORITY #3 -->
+                        <!-- 4. Marketplace - PRIORITY #3 - Only show if user has marketplace access -->
+                        @if(!auth()->check() || auth()->user()->canBuyAnyProduct() || auth()->user()->canSellAnyProduct())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-store me-1"></i>
                                 {{ __('messages.nav.marketplace') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('messages.nav.shop') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('Cửa hàng') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.products.index') }}">
-                                    <i class="fa-solid fa-box me-2"></i>{{ __('messages.nav.all_products') }}
+                                    <i class="fa-solid fa-box me-2"></i>{{ __('Tất cả sản phẩm') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.categories.index') }}">
-                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('messages.nav.categories') }}
+                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('Danh mục') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                    <i class="fa-solid fa-building me-2"></i>{{ __('messages.nav.suppliers') }}
+                                    <i class="fa-solid fa-building me-2"></i>{{ __('Nhà cung cấp') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.index') }}#featured">
-                                    <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_products') }}
+                                    <i class="fa-solid fa-star me-2"></i>{{ __('Sản phẩm nổi bật') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.business_tools') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('Công cụ kinh doanh') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('messages.nav.request_quote') }}
+                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('Yêu cầu báo giá') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
-                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('messages.nav.bulk_orders') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.seller.setup') }}">
-                                    <i class="fa-solid fa-store me-2"></i>{{ __('messages.nav.become_seller') }}
+                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('Đơn hàng số lượng lớn') }}
                                 </a></li>
                                 @auth
+                                    @if(auth()->user()->canSellAnyProduct())
+                                    <li><a class="dropdown-item" href="{{ route('marketplace.seller.setup') }}">
+                                        <i class="fa-solid fa-store me-2"></i>{{ __('Trở thành người bán') }}
+                                    </a></li>
+                                    @endif
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('messages.nav.my_account') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('Tài khoản của tôi') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
-                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('messages.nav.my_orders') }}
+                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('Đơn hàng của tôi') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.cart.index') }}">
-                                    <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('messages.nav.shopping_cart') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.downloads.index') }}">
-                                    <i class="fa-solid fa-download me-2"></i>{{ __('messages.nav.downloads') }}
-                                </a></li>
+                                    @if(auth()->user()->canBuyAnyProduct())
+                                    <li><a class="dropdown-item" href="{{ route('marketplace.cart.index') }}">
+                                        <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('Giỏ hàng') }}
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ route('marketplace.downloads.index') }}">
+                                        <i class="fa-solid fa-download me-2"></i>{{ __('Tải xuống') }}
+                                    </a></li>
+                                    @endif
                                 @endauth
                             </ul>
                         </li>
+                        @endif
 
                         <!-- 5. Technical Resources - UPDATED (removed showcase) -->
                         <!--li class="nav-item dropdown">
