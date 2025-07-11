@@ -95,35 +95,6 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <h5 class="showcase-title">
             <a href="{{ $showcaseUrl }}">{{ $showcaseTitle }}</a>
         </h5>
-        @if($showcaseDescription)
-        <p class="showcase-description">{{ $showcaseDescription }}</p>
-        @endif
-
-        {{-- Enhanced: Category & Project Type --}}
-        <div class="showcase-categories mb-2">
-            @if($category)
-            <span class="badge bg-primary me-1">
-                {{ ucfirst($category) }}
-            </span>
-            @endif
-
-            @if($projectType)
-            <span class="badge bg-secondary">
-                {{ ucfirst($projectType) }}
-            </span>
-            @endif
-        </div>
-
-        {{-- Enhanced: Technical Info --}}
-        @if($softwareUsed)
-        <div class="showcase-tech-info mb-2">
-            <div class="tech-item">
-                <i class="fas fa-tools text-muted me-1"></i>
-                <span class="small text-muted">{{ Str::limit($softwareUsed, 40) }}</span>
-            </div>
-        </div>
-        @endif
-
         {{-- Enhanced: Rating Display --}}
         @if($hasRating)
         <div class="showcase-rating mb-2">
@@ -145,9 +116,26 @@ $allowDownloads = $showcase->allow_downloads ?? false;
             </div>
         </div>
         @endif
+        @if($showcaseDescription)
+        <p class="showcase-description">{{ $showcaseDescription }}</p>
+        @endif
+
+
+
+        {{-- Enhanced: Technical Info --}}
+        @if($softwareUsed)
+        <div class="showcase-tech-info mb-2">
+            <div class="tech-item">
+                <i class="fas fa-tools text-muted me-1"></i>
+                <span class="small text-muted">{{ Str::limit($softwareUsed, 40) }}</span>
+            </div>
+        </div>
+        @endif
+
+
 
         <div class="showcase-stats">
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex">
                 <span class="stat-item">
                     <i class="fas fa-eye"></i> {{ number_format($viewCount) }}
                 </span>
@@ -157,6 +145,20 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                 @if($showcase->download_count > 0)
                 <span class="stat-item">
                     <i class="fas fa-download"></i> {{ number_format($showcase->download_count) }}
+                </span>
+                @endif
+            </div>
+            {{-- Enhanced: Category & Project Type --}}
+            <div class="showcase-categories mb-2">
+                @if($category)
+                <span class="badge bg-primary me-1">
+                    {{ ucfirst($category) }}
+                </span>
+                @endif
+
+                @if($projectType)
+                <span class="badge bg-secondary">
+                    {{ ucfirst($projectType) }}
                 </span>
                 @endif
             </div>

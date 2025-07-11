@@ -514,7 +514,7 @@ to{opacity:1;transform:translateY(0)}
 .showcase-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:1px solid rgba(0,0,0,0.05);transition:all .3s ease;position:relative}
 .showcase-card:hover{transform:translateY(-5px)};box-shadow:0 8px 30px rgba(0,0,0,0.12)}
 .showcase-image{position:relative;height:200px;overflow:hidden}
-.showcase-image img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.showcase-image img{width:100%;height: 210px;object-fit:cover;transition:transform .3s ease}
 .showcase-card:hover .showcase-image img{transform:scale(1.05)}
 .showcase-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease}
 .showcase-card:hover .showcase-overlay{opacity:1}
@@ -791,7 +791,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
 .title_page{text-transform:uppercase;font-size:21px!important;font-weight: 700;}
 .timeframe-filter .btn-group{width:100%}
 .timeframe-filter .btn-group a{padding-top:7px;padding-bottom:7px;font-size:13px;text-transform:capitalize}
-.showcase-image{border:none!important}
+.showcase-image{border:none!important;position: relative;}
 .showcase-card .card-title{text-transform:uppercase;line-height:23px;font-size: 15px;}
 .showcase-card .card-title a{color:var(--user-primary)}
 .showcase-card .card-body{padding-bottom:0}

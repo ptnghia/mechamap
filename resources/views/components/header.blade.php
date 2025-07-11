@@ -110,67 +110,25 @@
                             </ul>
                         </li>
 
-                        <!-- 3. Showcase - PRIORITY #2 - NEW DEDICATED MENU -->
+                        <!-- 3. Dự án - Simplified Menu -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="#" id="showcaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-trophy me-1"></i>
                                 {{ __('messages.nav.showcase') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="showcaseDropdown">
-                                <!-- Browse Showcases -->
-                                <li><h6 class="dropdown-header">
-                                    <i class="fa-solid fa-eye me-2"></i>{{ __('messages.nav.browse_showcases') }}
-                                </h6></li>
                                 <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
                                     <i class="fa-solid fa-globe me-2"></i>{{ __('messages.nav.public_gallery') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.featured') }}">
-                                    <i class="fa-solid fa-star me-2"></i>{{ __('messages.nav.featured_projects') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.categories') }}">
-                                    <i class="fa-solid fa-folder-tree me-2"></i>{{ __('messages.nav.by_category') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.trending') }}">
-                                    <i class="fa-solid fa-trending-up me-2"></i>{{ __('messages.nav.trending_projects') }}
-                                </a></li>
-
-                                <li><hr class="dropdown-divider"></li>
-
-                                <!-- Create & Manage -->
-                                <li><h6 class="dropdown-header">
-                                    <i class="fa-solid fa-plus me-2"></i>{{ __('messages.nav.create_manage') }}
-                                </h6></li>
                                 @auth
                                 <li><a class="dropdown-item" href="{{ route('showcase.create') }}">
                                     <i class="fa-solid fa-plus-circle me-2"></i>{{ __('messages.nav.create_showcase') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.index') }}">
-                                    <i class="fa-solid fa-folder-user me-2"></i>{{ __('messages.nav.my_showcases') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.drafts') }}">
-                                    <i class="fa-solid fa-file-pen me-2"></i>{{ __('messages.nav.drafts') }}
                                 </a></li>
                                 @else
                                 <li><a class="dropdown-item" href="{{ route('login') }}">
                                     <i class="fa-solid fa-sign-in-alt me-2"></i>{{ __('messages.nav.login_to_create') }}
                                 </a></li>
                                 @endauth
-
-                                <li><hr class="dropdown-divider"></li>
-
-                                <!-- Community Features -->
-                                <li><h6 class="dropdown-header">
-                                    <i class="fa-solid fa-users me-2"></i>{{ __('messages.nav.community') }}
-                                </h6></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.leaderboard') }}">
-                                    <i class="fa-solid fa-medal me-2"></i>{{ __('messages.nav.top_creators') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.competitions') }}">
-                                    <i class="fa-solid fa-trophy me-2"></i>{{ __('messages.nav.competitions') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('showcase.guidelines') }}">
-                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.submission_guidelines') }}
-                                </a></li>
                             </ul>
                         </li>
 

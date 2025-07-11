@@ -215,7 +215,7 @@
         </div>
 
         @if($allShowcases->count() > 0)
-        <div class="row g-4 mb-4">
+        <div class="row g-3 mb-4">
             @foreach($allShowcases as $showcase)
             <div class="col-md-6 col-lg-4">
                 @include('partials.showcase-item', ['showcase' => $showcase])

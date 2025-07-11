@@ -456,14 +456,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
     Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
 
-    // Showcase routes (authenticated)
-    Route::get('/showcase', [ShowcaseController::class, 'index'])->name('showcase.index');
+    // Showcase routes (authenticated) - Core functionality only
     Route::get('/showcase/create', [ShowcaseController::class, 'create'])->name('showcase.create');
     Route::post('/showcase', [ShowcaseController::class, 'store'])->name('showcase.store');
-    Route::get('/showcase/{showcase}/edit', [ShowcaseController::class, 'edit'])->name('showcase.edit');
-    Route::put('/showcase/{showcase}', [ShowcaseController::class, 'update'])->name('showcase.update');
-    Route::delete('/showcase/{showcase}', [ShowcaseController::class, 'destroy'])->name('showcase.destroy');
-    Route::post('/showcase/upload-temp', [ShowcaseController::class, 'uploadTemp'])->name('showcase.upload.temp');
     Route::post('/showcase/{showcase}/comment', [ShowcaseController::class, 'addComment'])->name('showcase.comment');
     Route::delete('/showcase/comment/{comment}', [ShowcaseController::class, 'deleteComment'])->name('showcase.comment.delete');
     Route::post('/showcase/{showcase}/like', [ShowcaseController::class, 'toggleLike'])->name('showcase.toggle-like');
@@ -568,15 +563,8 @@ Route::get('/whats-new', [NewContentController::class, 'whatsNew'])->name('whats
 Route::get('/forum-listing', function () {
     return redirect()->route('forums.index', [], 301);
 });
-// Public Showcase Routes - NEW DEDICATED MENU
+// Public Showcase Routes - Core functionality only
 Route::get('/public-showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.public');
-Route::get('/showcase/featured', [ShowcaseController::class, 'featured'])->name('showcase.featured');
-Route::get('/showcase/categories', [ShowcaseController::class, 'categories'])->name('showcase.categories');
-Route::get('/showcase/trending', [ShowcaseController::class, 'trending'])->name('showcase.trending');
-Route::get('/showcase/leaderboard', [ShowcaseController::class, 'leaderboard'])->name('showcase.leaderboard');
-Route::get('/showcase/competitions', [ShowcaseController::class, 'competitions'])->name('showcase.competitions');
-Route::get('/showcase/guidelines', [ShowcaseController::class, 'guidelines'])->name('showcase.guidelines');
-Route::get('/showcase/drafts', [ShowcaseController::class, 'drafts'])->name('showcase.drafts')->middleware('auth');
 
 // Public Showcase Detail Route (no auth required)
 Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');
