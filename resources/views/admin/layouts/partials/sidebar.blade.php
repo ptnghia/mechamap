@@ -178,6 +178,27 @@
                         <li><a href="{{ route('admin.payments.index') }}" data-key="t-payments" class="{{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
                             <i class="fas fa-credit-card"></i> Thanh Toán
                         </a></li>
+                        <li><a href="{{ route('admin.payment-management.index') }}" data-key="t-payment-management" class="{{ request()->routeIs('admin.payment-management.*') ? 'active' : '' }}">
+                            <i class="fas fa-university"></i> Quản Lý Thanh Toán Tập Trung
+                            @php
+                                $pendingReviews = \App\Models\MarketplaceOrder::where('requires_admin_review', true)->whereNull('reviewed_at')->count();
+                            @endphp
+                            @if($pendingReviews > 0)
+                                <span class="badge rounded-pill bg-warning float-end">{{ $pendingReviews }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.payout-management.index') }}" data-key="t-payout-management" class="{{ request()->routeIs('admin.payout-management.*') ? 'active' : '' }}">
+                            <i class="fas fa-money-check-alt"></i> Quản Lý Payout Sellers
+                            @php
+                                $pendingPayouts = \App\Models\SellerPayoutRequest::where('status', 'pending')->count();
+                            @endphp
+                            @if($pendingPayouts > 0)
+                                <span class="badge rounded-pill bg-danger float-end">{{ $pendingPayouts }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.commission-settings.index') }}" data-key="t-commission-settings" class="{{ request()->routeIs('admin.commission-settings.*') ? 'active' : '' }}">
+                            <i class="fas fa-percentage"></i> Cấu Hình Hoa Hồng
+                        </a></li>
                         @endadminCan
                         @adminCan('manage_sellers')
                         <li><a href="{{ route('admin.marketplace.sellers.index') }}" data-key="t-sellers" class="{{ request()->routeIs('admin.marketplace.sellers*') ? 'active' : '' }}">

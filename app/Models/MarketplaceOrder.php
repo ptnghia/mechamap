@@ -67,6 +67,10 @@ class MarketplaceOrder extends Model
         'shipped_at' => 'datetime',
         'delivered_at' => 'datetime',
         'cancelled_at' => 'datetime',
+        'reviewed_at' => 'datetime',
+        'seller_paid_at' => 'datetime',
+        'requires_admin_review' => 'boolean',
+        'seller_paid' => 'boolean',
     ];
 
     protected static function boot()
@@ -243,5 +247,30 @@ class MarketplaceOrder extends Model
         $checkStatusOrder = $statusOrder[$status] ?? 0;
 
         return $currentStatusOrder > $checkStatusOrder;
+    }
+
+    /**
+     * Relationship: Centralized payment for this order
+     */
+    public function centralizedPayment()
+    {
+        return $this->belongsTo(CentralizedPayment::class, 'centralized_payment_id');
+    }
+
+    /**
+     * Relationship: Admin who reviewed this order
+     */
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    /**
+     * Relationship: Payment audit logs
+     */
+    public function paymentAuditLogs()
+    {
+        return $this->hasMany(PaymentAuditLog::class, 'entity_id')
+                    ->where('entity_type', 'marketplace_order');
     }
 }

@@ -9,6 +9,7 @@ use App\Services\OrderService;
 use App\Services\StripeService;
 use App\Services\VNPayService;
 use App\Services\SePayService;
+use App\Services\CentralizedPaymentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,17 +22,20 @@ class PaymentController extends Controller
     protected StripeService $stripeService;
     protected VNPayService $vnpayService;
     protected SePayService $sepayService;
+    protected CentralizedPaymentService $centralizedPaymentService;
 
     public function __construct(
         OrderService $orderService,
         StripeService $stripeService,
         VNPayService $vnpayService,
-        SePayService $sepayService
+        SePayService $sepayService,
+        CentralizedPaymentService $centralizedPaymentService
     ) {
         $this->orderService = $orderService;
         $this->stripeService = $stripeService;
         $this->vnpayService = $vnpayService;
         $this->sepayService = $sepayService;
+        $this->centralizedPaymentService = $centralizedPaymentService;
         $this->middleware('auth:sanctum')->except(['webhook', 'vnpayCallback', 'vnpayIpn', 'paymentMethods']);
     }
 
@@ -893,6 +897,188 @@ class PaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Lỗi hệ thống khi tạo thanh toán Stripe'
+            ], 500);
+        }
+    }
+
+    /**
+     * 🏦 Create Centralized Stripe Payment Intent
+     * All payments go to Admin account first
+     */
+    public function createCentralizedStripeIntent(Request $request): JsonResponse
+    {
+        $request->validate([
+            'order_id' => 'required|exists:marketplace_orders,id',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $order = \App\Models\MarketplaceOrder::where('id', $request->order_id)
+                ->where('customer_id', $user->id)
+                ->where('status', 'pending')
+                ->firstOrFail();
+
+            if (!$this->centralizedPaymentService->isStripeConfigured()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Centralized Stripe payment không được cấu hình'
+                ], 503);
+            }
+
+            // Create centralized payment record
+            $centralizedPayment = $this->centralizedPaymentService->createPayment($order, 'stripe');
+
+            // Create Stripe Payment Intent
+            $result = $this->centralizedPaymentService->createStripePaymentIntent($centralizedPayment);
+
+            if ($result['success']) {
+                // Update order status
+                $order->update([
+                    'status' => 'processing',
+                    'payment_method' => 'stripe',
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Centralized Stripe Payment Intent created successfully',
+                    'data' => [
+                        'client_secret' => $result['client_secret'],
+                        'payment_intent_id' => $result['payment_intent_id'],
+                        'centralized_payment_id' => $centralizedPayment->id,
+                        'order_id' => $order->id,
+                        'amount' => $centralizedPayment->gross_amount,
+                        'currency' => 'VND',
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => $result['error']
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Centralized Stripe payment creation failed', [
+                'error' => $e->getMessage(),
+                'order_id' => $request->order_id,
+                'user_id' => Auth::id(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create centralized payment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 🏦 Create Centralized SePay Payment
+     * All payments go to Admin account first
+     */
+    public function createCentralizedSePayPayment(Request $request): JsonResponse
+    {
+        $request->validate([
+            'order_id' => 'required|exists:marketplace_orders,id',
+        ]);
+
+        try {
+            $user = Auth::user();
+            $order = \App\Models\MarketplaceOrder::where('id', $request->order_id)
+                ->where('customer_id', $user->id)
+                ->where('status', 'pending')
+                ->firstOrFail();
+
+            if (!$this->centralizedPaymentService->isSePayConfigured()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Centralized SePay payment không được cấu hình'
+                ], 503);
+            }
+
+            // Create centralized payment record
+            $centralizedPayment = $this->centralizedPaymentService->createPayment($order, 'sepay');
+
+            // Create SePay payment
+            $result = $this->centralizedPaymentService->createSePayPayment($centralizedPayment);
+
+            if ($result['success']) {
+                // Update order status
+                $order->update([
+                    'status' => 'processing',
+                    'payment_method' => 'sepay',
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Centralized SePay payment created successfully',
+                    'data' => [
+                        'payment_instructions' => $result['payment_instructions'],
+                        'transaction_ref' => $result['transaction_ref'],
+                        'centralized_payment_id' => $centralizedPayment->id,
+                        'order_id' => $order->id,
+                        'amount' => $centralizedPayment->gross_amount,
+                        'currency' => 'VND',
+                    ]
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => $result['error']
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Centralized SePay payment creation failed', [
+                'error' => $e->getMessage(),
+                'order_id' => $request->order_id,
+                'user_id' => Auth::id(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create centralized SePay payment: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 🏦 Centralized Payment Webhook Handler
+     * Handle webhooks for centralized payments
+     */
+    public function centralizedWebhook(Request $request): JsonResponse
+    {
+        try {
+            $payload = $request->getContent();
+            $sig_header = $request->header('Stripe-Signature');
+
+            if (!$sig_header) {
+                Log::warning('Centralized payment webhook missing signature header');
+                return response()->json([
+                    'error' => 'Missing Stripe-Signature header',
+                    'message' => 'Webhook signature is required for verification'
+                ], 400);
+            }
+
+            $result = $this->centralizedPaymentService->handleStripeWebhook($payload, $sig_header);
+
+            if ($result['success']) {
+                return response()->json(['received' => true]);
+            } else {
+                Log::error('Centralized payment webhook verification failed', [
+                    'error' => $result['message']
+                ]);
+                return response()->json(['error' => 'Webhook verification failed'], 400);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Centralized payment webhook exception', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'error' => 'Webhook processing failed',
+                'message' => $e->getMessage()
             ], 500);
         }
     }

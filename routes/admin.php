@@ -865,5 +865,37 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/api/unread-count', [ChatController::class, 'getUnreadCount'])->name('api.unread-count');
     });
 
+    // 🏦 Payment Management Routes
+    Route::prefix('payment-management')->name('payment-management.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\PaymentManagementController::class, 'index'])->name('index');
+        Route::post('/export', [App\Http\Controllers\Admin\PaymentManagementController::class, 'exportPayments'])->name('export');
+    });
+
+    // 💸 Payout Management Routes
+    Route::prefix('payout-management')->name('payout-management.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\PayoutManagementController::class, 'index'])->name('index');
+        Route::get('/analytics', [App\Http\Controllers\Admin\PayoutManagementController::class, 'analytics'])->name('analytics');
+        Route::get('/{payoutRequest}', [App\Http\Controllers\Admin\PayoutManagementController::class, 'show'])->name('show');
+        Route::post('/{payoutRequest}/approve', [App\Http\Controllers\Admin\PayoutManagementController::class, 'approve'])->name('approve');
+        Route::post('/{payoutRequest}/reject', [App\Http\Controllers\Admin\PayoutManagementController::class, 'reject'])->name('reject');
+        Route::post('/{payoutRequest}/mark-completed', [App\Http\Controllers\Admin\PayoutManagementController::class, 'markCompleted'])->name('mark-completed');
+        Route::post('/bulk-approve', [App\Http\Controllers\Admin\PayoutManagementController::class, 'bulkApprove'])->name('bulk-approve');
+        Route::post('/export', [App\Http\Controllers\Admin\PayoutManagementController::class, 'export'])->name('export');
+    });
+
+    // ⚙️ Commission Settings Routes
+    Route::prefix('commission-settings')->name('commission-settings.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'store'])->name('store');
+        Route::get('/{commissionSetting}', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'show'])->name('show');
+        Route::get('/{commissionSetting}/edit', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'edit'])->name('edit');
+        Route::put('/{commissionSetting}', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'update'])->name('update');
+        Route::post('/{commissionSetting}/toggle-status', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'toggleStatus'])->name('toggle-status');
+        Route::delete('/{commissionSetting}', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-update', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'bulkUpdate'])->name('bulk-update');
+        Route::get('/test/calculation', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'testCalculation'])->name('test-calculation');
+    });
+
     // Duplicate moderation routes removed - using the one with middleware above (lines 125-151)
 });

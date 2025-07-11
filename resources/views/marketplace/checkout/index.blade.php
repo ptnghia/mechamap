@@ -994,7 +994,8 @@ function processPaymentFlow(orderId, paymentMethod) {
 function processSepayPayment(orderId) {
     showLoading(true);
 
-    fetch('/api/v1/payment/sepay/create-payment', {
+    // 🏦 Use Centralized Payment System
+    fetch('/api/v1/payment/centralized/sepay/create-payment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -1026,7 +1027,8 @@ function processSepayPayment(orderId) {
 function processStripePayment(orderId) {
     showLoading(true);
 
-    fetch('/api/v1/payment/stripe/create-intent', {
+    // 🏦 Use Centralized Payment System
+    fetch('/api/v1/payment/centralized/stripe/create-intent', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

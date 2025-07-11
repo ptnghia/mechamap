@@ -378,6 +378,12 @@ Route::prefix('v1')->group(function () {
         // SePay webhook
         Route::post('/sepay/webhook', [App\Http\Controllers\Api\SePayWebhookController::class, 'handleWebhook']);
         Route::post('/sepay/check-status', [App\Http\Controllers\Api\SePayWebhookController::class, 'checkPaymentStatus']);
+
+        // 🏦 Centralized Payment Webhooks
+        Route::post('/centralized/webhook', [App\Http\Controllers\Api\PaymentController::class, 'centralizedWebhook'])
+            ->middleware('stripe.webhook');
+        Route::post('/centralized/sepay/webhook', [App\Http\Controllers\Api\CentralizedSePayWebhookController::class, 'handleWebhook']);
+        Route::post('/centralized/sepay/check-status', [App\Http\Controllers\Api\CentralizedSePayWebhookController::class, 'checkPaymentStatus']);
     });
 
     // Payment Testing Routes (Development only)
@@ -389,6 +395,18 @@ Route::prefix('v1')->group(function () {
         Route::post('/simulate-webhook', [App\Http\Controllers\Api\PaymentTestController::class, 'simulateWebhook']);
         Route::delete('/cleanup', [App\Http\Controllers\Api\PaymentTestController::class, 'cleanupTestData']);
         Route::get('/status', [App\Http\Controllers\Api\PaymentTestController::class, 'getSystemStatus']);
+
+        // 🏦 Centralized Payment Testing Routes
+        Route::prefix('centralized')->group(function () {
+            Route::get('/configuration', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'testConfiguration']);
+            Route::post('/create-order', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'createTestOrder']);
+            Route::post('/stripe', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'testStripePayment']);
+            Route::post('/sepay', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'testSePayPayment']);
+            Route::post('/simulate-stripe-webhook', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'simulateStripeWebhook']);
+            Route::post('/simulate-sepay-webhook', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'simulateSePayWebhook']);
+            Route::get('/status', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'getSystemStatus']);
+            Route::delete('/cleanup', [App\Http\Controllers\Api\CentralizedPaymentTestController::class, 'cleanupTestData']);
+        });
     });
 
     // Secure download endpoint (public with token validation)
@@ -441,6 +459,12 @@ Route::prefix('v1')->group(function () {
             Route::post('/confirm/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);
             Route::post('/stripe/confirm', [App\Http\Controllers\Api\PaymentController::class, 'confirmStripe']);
             Route::get('/status/{orderId}', [App\Http\Controllers\Api\PaymentController::class, 'status']);
+
+            // 🏦 Centralized Payment System Routes
+            Route::prefix('centralized')->group(function () {
+                Route::post('/stripe/create-intent', [App\Http\Controllers\Api\PaymentController::class, 'createCentralizedStripeIntent']);
+                Route::post('/sepay/create-payment', [App\Http\Controllers\Api\PaymentController::class, 'createCentralizedSePayPayment']);
+            });
             Route::post('/cancel', [App\Http\Controllers\Api\PaymentController::class, 'cancel']);
             Route::post('/refund', [App\Http\Controllers\Api\PaymentController::class, 'refund']);
         });
