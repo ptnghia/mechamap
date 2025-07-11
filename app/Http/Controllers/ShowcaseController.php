@@ -35,40 +35,200 @@ class ShowcaseController extends Controller
     }
 
     /**
-     * Display the public showcase page.
+     * Display the public showcase page with new 4-section layout.
      */
-    public function publicShowcase(): View
+    public function publicShowcase(Request $request): View
     {
-        // Get featured showcases instead of threads
-        $featuredShowcases = Showcase::whereIn('status', ['featured', 'approved'])
-            ->where('is_public', true)
-            ->with(['user', 'showcaseable', 'media'])
+        // 1. FEATURED SHOWCASES SECTION (15 items)
+        // Priority: is_featured = true → view_count → rating_average → rating_count
+        $featuredShowcases = Showcase::where('is_public', true)
+            ->whereIn('status', ['featured', 'approved'])
+            ->with(['user', 'showcaseable', 'media', 'ratings'])
             ->orderByRaw("CASE WHEN status = 'featured' THEN 1 ELSE 2 END")
             ->orderBy('view_count', 'desc')
-            ->latest()
-            ->take(5)
+            ->orderBy('rating_average', 'desc')
+            ->orderBy('rating_count', 'desc')
+            ->take(15)
             ->get();
 
-        // Get most popular threads
-        $popularThreads = Thread::withCount('posts')
-            ->orderBy('posts_count', 'desc')
-            ->with(['user', 'forum'])
-            ->whereHas('forum') // Ensure forum exists
-            ->take(10)
-            ->get();
+        // 2. CATEGORIES GRID SECTION
+        $categories = $this->getShowcaseCategories();
 
-        // Get user showcases WITH media for unified image processing
-        $userShowcases = Showcase::with(['user', 'showcaseable', 'media'])
-            ->whereIn('status', ['featured', 'approved'])
-            ->where('is_public', true)
-            ->whereHas('showcaseable') // Ensure showcaseable exists
-            ->latest()
-            ->paginate(20);
+        // 3. SEARCH FILTERS DATA
+        $searchFilters = $this->getSearchFiltersData();
+
+        // 4. ALL SHOWCASES LISTING (Paginated)
+        $allShowcases = $this->getAllShowcasesWithFilters($request);
 
         // Process featured images using unified service
-        ShowcaseImageService::processFeaturedImages($userShowcases->getCollection());
+        ShowcaseImageService::processFeaturedImages($featuredShowcases);
+        ShowcaseImageService::processFeaturedImages($allShowcases->getCollection());
 
-        return view('showcase.public', compact('featuredShowcases', 'popularThreads', 'userShowcases'));
+        return view('showcase.public', compact(
+            'featuredShowcases',
+            'categories',
+            'searchFilters',
+            'allShowcases'
+        ));
+    }
+
+    /**
+     * Get showcase categories with statistics.
+     */
+    private function getShowcaseCategories(): array
+    {
+        $categories = Showcase::select('category')
+            ->whereNotNull('category')
+            ->where('is_public', true)
+            ->whereIn('status', ['featured', 'approved'])
+            ->groupBy('category')
+            ->get();
+
+        $categoryStats = [];
+        foreach ($categories as $cat) {
+            $showcases = Showcase::where('category', $cat->category)
+                ->where('is_public', true)
+                ->whereIn('status', ['featured', 'approved'])
+                ->get();
+
+            // Get representative showcase for category image
+            $representativeShowcase = $showcases->sortByDesc('view_count')->first();
+
+            $categoryStats[] = [
+                'name' => $cat->category,
+                'display_name' => ucfirst($cat->category),
+                'showcase_count' => $showcases->count(),
+                'total_ratings' => $showcases->sum('rating_count'),
+                'avg_rating' => $showcases->where('rating_count', '>', 0)->avg('rating_average') ?? 0,
+                'total_views' => $showcases->sum('view_count'),
+                'featured_count' => $showcases->where('status', 'featured')->count(),
+                'cover_image' => $representativeShowcase ? $representativeShowcase->featured_image : null,
+                'url' => route('showcase.public', ['category' => $cat->category])
+            ];
+        }
+
+        return $categoryStats;
+    }
+
+    /**
+     * Get data for search filters.
+     */
+    private function getSearchFiltersData(): array
+    {
+        return [
+            'categories' => Showcase::select('category')
+                ->whereNotNull('category')
+                ->where('is_public', true)
+                ->whereIn('status', ['featured', 'approved'])
+                ->groupBy('category')
+                ->pluck('category')
+                ->map(fn($cat) => ['value' => $cat, 'label' => ucfirst($cat)])
+                ->toArray(),
+
+            'complexity_levels' => [
+                ['value' => 'beginner', 'label' => 'Beginner'],
+                ['value' => 'intermediate', 'label' => 'Intermediate'],
+                ['value' => 'advanced', 'label' => 'Advanced'],
+                ['value' => 'expert', 'label' => 'Expert']
+            ],
+
+            'software_options' => Showcase::whereNotNull('software_used')
+                ->where('is_public', true)
+                ->whereIn('status', ['featured', 'approved'])
+                ->pluck('software_used')
+                ->flatMap(function($software) {
+                    if (is_string($software)) {
+                        return explode(',', $software);
+                    }
+                    return is_array($software) ? $software : [];
+                })
+                ->map(fn($s) => trim($s))
+                ->filter()
+                ->unique()
+                ->values()
+                ->toArray(),
+
+            'project_types' => Showcase::select('project_type')
+                ->whereNotNull('project_type')
+                ->where('is_public', true)
+                ->whereIn('status', ['featured', 'approved'])
+                ->groupBy('project_type')
+                ->pluck('project_type')
+                ->map(fn($type) => ['value' => $type, 'label' => ucfirst($type)])
+                ->toArray()
+        ];
+    }
+
+    /**
+     * Get all showcases with applied filters and pagination.
+     */
+    private function getAllShowcasesWithFilters(Request $request)
+    {
+        $query = Showcase::with(['user', 'showcaseable', 'media', 'ratings'])
+            ->where('is_public', true)
+            ->whereIn('status', ['featured', 'approved']);
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $searchTerm = $request->get('search');
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->get('category'));
+        }
+
+        if ($request->filled('complexity')) {
+            $query->where('complexity_level', $request->get('complexity'));
+        }
+
+        if ($request->filled('project_type')) {
+            $query->where('project_type', $request->get('project_type'));
+        }
+
+        if ($request->filled('has_cad_files')) {
+            $query->where('has_cad_files', true);
+        }
+
+        if ($request->filled('allow_downloads')) {
+            $query->where('allow_downloads', true);
+        }
+
+        if ($request->filled('rating_min')) {
+            $query->where('rating_average', '>=', $request->get('rating_min'));
+        }
+
+        if ($request->filled('software')) {
+            $software = $request->get('software');
+            $query->where(function($q) use ($software) {
+                $q->where('software_used', 'like', "%{$software}%");
+            });
+        }
+
+        // Apply sorting
+        $sort = $request->get('sort', 'newest');
+        switch ($sort) {
+            case 'most_viewed':
+                $query->orderBy('view_count', 'desc');
+                break;
+            case 'highest_rated':
+                $query->orderBy('rating_average', 'desc')->orderBy('rating_count', 'desc');
+                break;
+            case 'most_downloads':
+                $query->orderBy('download_count', 'desc');
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            default: // newest
+                $query->latest();
+                break;
+        }
+
+        return $query->paginate(18)->withQueryString();
     }
 
     /**
