@@ -784,6 +784,17 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Marketplace management with Dason UI (với permission checking)
     Route::prefix('marketplace')->name('marketplace.')->group(function () {
+        // Product Approval System
+        Route::prefix('product-approval')->name('product-approval.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\ProductApprovalController::class, 'index'])->name('index');
+            Route::get('/statistics', [App\Http\Controllers\Admin\ProductApprovalController::class, 'statistics'])->name('statistics');
+            Route::get('/{product}', [App\Http\Controllers\Admin\ProductApprovalController::class, 'show'])->name('show');
+            Route::post('/{product}/approve', [App\Http\Controllers\Admin\ProductApprovalController::class, 'approve'])->name('approve');
+            Route::post('/{product}/reject', [App\Http\Controllers\Admin\ProductApprovalController::class, 'reject'])->name('reject');
+            Route::post('/bulk-approve', [App\Http\Controllers\Admin\ProductApprovalController::class, 'bulkApprove'])->name('bulk-approve');
+            Route::post('/bulk-reject', [App\Http\Controllers\Admin\ProductApprovalController::class, 'bulkReject'])->name('bulk-reject');
+        });
+
         // Products (cần quyền view_products)
         Route::middleware(['admin.permission:view_products'])->group(function () {
             Route::get('/products', function() {

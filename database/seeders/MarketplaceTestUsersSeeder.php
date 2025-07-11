@@ -31,14 +31,14 @@ class MarketplaceTestUsersSeeder extends Seeder
                 'username' => 'test_member_2025',
                 'email' => 'member@mechamap.test',
                 'role' => 'member',
-                'description' => 'Member user - chỉ được mua/bán digital products'
+                'description' => 'Member user - KHÔNG có quyền marketplace (chỉ community features)'
             ],
             [
                 'name' => 'Test Senior Member',
                 'username' => 'test_senior_2025',
                 'email' => 'senior@mechamap.test',
                 'role' => 'senior_member',
-                'description' => 'Senior Member - chỉ được mua/bán digital products'
+                'description' => 'Senior Member - KHÔNG có quyền marketplace (chỉ community features)'
             ],
             [
                 'name' => 'Test Supplier',

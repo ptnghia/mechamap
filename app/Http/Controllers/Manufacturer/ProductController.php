@@ -6,17 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceSeller;
 use App\Models\ProductCategory;
+use App\Services\MarketplacePermissionService;
+use App\Services\ProductImageValidationService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    public function __construct()
+    private ProductImageValidationService $imageService;
+
+    public function __construct(ProductImageValidationService $imageService)
     {
         $this->middleware(['auth', 'role:manufacturer']);
+        $this->imageService = $imageService;
     }
 
     /**
@@ -70,9 +76,16 @@ class ProductController extends Controller
                 ->with('error', 'Vui lòng hoàn thành thiết lập tài khoản nhà sản xuất trước.');
         }
 
+        // Get allowed product types for manufacturer
+        $allowedTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+        if (empty($allowedTypes)) {
+            return redirect()->route('manufacturer.products.index')
+                ->with('error', 'Bạn không có quyền bán sản phẩm nào.');
+        }
+
         $categories = ProductCategory::all();
 
-        return view('manufacturer.products.create', compact('categories', 'seller'));
+        return view('manufacturer.products.create', compact('categories', 'seller', 'allowedTypes'));
     }
 
     /**
@@ -88,46 +101,74 @@ class ProductController extends Controller
                 ->with('error', 'Vui lòng hoàn thành thiết lập tài khoản nhà sản xuất trước.');
         }
 
+        // Validate permissions first
+        $permissionErrors = MarketplacePermissionService::validateProductCreation($user, $request->all());
+        if (!empty($permissionErrors)) {
+            return back()->withErrors(['permission' => $permissionErrors])->withInput();
+        }
+
+        // Get allowed types for validation
+        $allowedTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'short_description' => 'nullable|string|max:500',
-            'product_category_id' => 'nullable|exists:product_categories,id',
-            'product_type' => 'required|in:digital,service',
+            'product_category_id' => 'required|exists:product_categories,id',
+            'product_type' => 'required|in:' . implode(',', $allowedTypes),
             'price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0',
-            'file_formats' => 'nullable|string',
-            'software_compatibility' => 'nullable|string',
+            'sale_price' => 'nullable|numeric|min:0|lt:price',
+            'stock_quantity' => 'required_if:product_type,new_product|integer|min:0',
+            'manage_stock' => 'boolean',
             'technical_specs' => 'nullable|array',
-            'manufacturing_process' => 'nullable|string',
             'material' => 'nullable|string',
+            'manufacturing_process' => 'nullable|string',
             'standards_compliance' => 'nullable|array',
+            'file_formats' => 'nullable|array',
+            'software_compatibility' => 'nullable|array',
             'digital_files' => 'nullable|array',
             'digital_files.*' => 'file|mimes:dwg,dxf,step,stp,iges,igs,stl,pdf,doc,docx,zip,rar|max:51200',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'tags' => 'nullable|string',
         ]);
 
-        // Handle file uploads
-        $images = [];
+        // Process images
+        $imagesData = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('marketplace/products/images', 'public');
-                $images[] = '/storage/' . $path;
+                try {
+                    $imagePath = $this->imageService->processUploadedImage($image, 'products');
+                    $imagesData[] = $imagePath;
+                } catch (\Exception $e) {
+                    Log::error('Error processing image: ' . $e->getMessage());
+                }
             }
         }
 
-        // Handle digital files
-        $digitalFiles = [];
-        if ($request->hasFile('digital_files')) {
+        // Process featured image
+        $featuredImagePath = null;
+        if ($request->hasFile('featured_image')) {
+            try {
+                $featuredImagePath = $this->imageService->processUploadedImage($request->file('featured_image'), 'products');
+            } catch (\Exception $e) {
+                Log::error('Error processing featured image: ' . $e->getMessage());
+            }
+        }
+
+        // Process digital files for digital products
+        $digitalFilesData = [];
+        if ($validated['product_type'] === 'digital' && $request->hasFile('digital_files')) {
             foreach ($request->file('digital_files') as $file) {
-                $path = $file->store('marketplace/products/digital', 'public');
-                $digitalFiles[] = [
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('digital_files', $filename, 'public');
+
+                $digitalFilesData[] = [
                     'name' => $file->getClientOriginalName(),
-                    'path' => '/storage/' . $path,
+                    'path' => $path,
                     'size' => $file->getSize(),
-                    'type' => $file->getClientMimeType(),
+                    'mime_type' => $file->getMimeType(),
                 ];
             }
         }
@@ -144,28 +185,34 @@ class ProductController extends Controller
             'seller_type' => 'manufacturer',
             'price' => $validated['price'],
             'sale_price' => $validated['sale_price'],
-            'stock_quantity' => $validated['product_type'] === 'digital' ? 999999 : 0,
-            'manage_stock' => false,
-            'in_stock' => true,
-            'file_formats' => $validated['file_formats'],
-            'software_compatibility' => $validated['software_compatibility'],
+            'is_on_sale' => !empty($validated['sale_price']),
+            'stock_quantity' => $validated['product_type'] === 'digital' ? 0 : ($validated['stock_quantity'] ?? 0),
+            'manage_stock' => $validated['product_type'] === 'digital' ? false : ($validated['manage_stock'] ?? true),
+            'in_stock' => $validated['product_type'] === 'digital' ? true : (($validated['stock_quantity'] ?? 0) > 0),
             'technical_specs' => $validated['technical_specs'] ?? [],
-            'manufacturing_process' => $validated['manufacturing_process'],
             'material' => $validated['material'],
+            'manufacturing_process' => $validated['manufacturing_process'],
             'standards_compliance' => $validated['standards_compliance'] ?? [],
-            'digital_files' => $digitalFiles,
-            'images' => $images,
-            'featured_image' => $images[0] ?? null,
+            'file_formats' => $validated['file_formats'] ?? [],
+            'software_compatibility' => $validated['software_compatibility'] ?? [],
+            'digital_files' => $digitalFilesData,
+            'file_size_mb' => !empty($digitalFilesData) ? round(array_sum(array_column($digitalFilesData, 'size')) / (1024 * 1024), 2) : 0,
+            'images' => $imagesData,
+            'featured_image' => $featuredImagePath ?: ($imagesData[0] ?? null),
             'tags' => $validated['tags'] ? explode(',', $validated['tags']) : [],
-            'status' => 'pending',
+            'status' => 'pending', // Manufacturer products require approval
             'is_active' => false,
         ]);
 
-        // Update seller product count
-        $seller->increment('total_products');
+        Log::info('Manufacturer product created', [
+            'product_id' => $product->id,
+            'manufacturer_id' => $user->id,
+            'product_type' => $product->product_type,
+            'status' => $product->status
+        ]);
 
         return redirect()->route('manufacturer.products.index')
-            ->with('success', 'Sản phẩm đã được tạo và đang chờ phê duyệt.');
+            ->with('success', 'Sản phẩm đã được tạo thành công! Sản phẩm sẽ được xem xét và phê duyệt bởi admin.');
     }
 
     /**
