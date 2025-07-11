@@ -757,6 +757,7 @@ Route::middleware(['auth', 'role:manufacturer'])->prefix('manufacturer')->name('
     Route::get('/settings', [App\Http\Controllers\Manufacturer\SettingsController::class, 'index'])->name('settings.index');
 });
 
+
 // Brand Dashboard routes - View only access
 Route::middleware(['auth', 'role:brand'])->prefix('brand')->name('brand.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Brand\DashboardController::class, 'index'])->name('dashboard');

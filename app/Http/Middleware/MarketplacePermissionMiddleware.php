@@ -140,18 +140,18 @@ class MarketplacePermissionMiddleware
     private function getPermissionMatrix(): array
     {
         return [
-            // Cá nhân (Guest/Member)
+            // Cá nhân (Guest only - Members không có quyền marketplace)
             'guest' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL],
                 'sell' => [MarketplaceProduct::TYPE_DIGITAL],
             ],
             'member' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'buy' => [],
+                'sell' => [],
             ],
             'senior_member' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'buy' => [],
+                'sell' => [],
             ],
 
             // Nhà cung cấp (Supplier)

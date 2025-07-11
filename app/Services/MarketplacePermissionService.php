@@ -89,18 +89,18 @@ class MarketplacePermissionService
                 'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT, MarketplaceProduct::TYPE_USED_PRODUCT],
             ],
 
-            // Cá nhân (Guest/Member) - chỉ được mua/bán sản phẩm kỹ thuật số
+            // Cá nhân - Chỉ Guest được mua/bán digital, Member không có quyền marketplace
             'guest' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL],
                 'sell' => [MarketplaceProduct::TYPE_DIGITAL],
             ],
             'member' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'buy' => [],
+                'sell' => [],
             ],
             'senior_member' => [
-                'buy' => [MarketplaceProduct::TYPE_DIGITAL],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'buy' => [],
+                'sell' => [],
             ],
 
             // Nhà cung cấp (Supplier) - mua digital, bán digital + new_product
@@ -109,10 +109,10 @@ class MarketplacePermissionService
                 'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
             ],
 
-            // Nhà sản xuất (Manufacturer) - mua digital + new_product, bán digital
+            // Nhà sản xuất (Manufacturer) - mua digital + new_product, bán digital + new_product
             'manufacturer' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
             ],
 
             // Thương hiệu (Brand) - chỉ xem, không mua/bán
