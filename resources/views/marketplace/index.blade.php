@@ -8,7 +8,7 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/marketplace/index.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/marketplace/index.css') }}">
 @endpush
 
 @section('content')

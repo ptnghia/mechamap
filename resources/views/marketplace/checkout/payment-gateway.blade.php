@@ -3,7 +3,7 @@
 @section('title', 'Thanh toán đơn hàng - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('assets/css/cart-ux-enhancements.css') }}">
 <style>
 .payment-status-loading {
     animation: pulse 2s infinite;

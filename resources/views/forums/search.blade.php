@@ -3,8 +3,8 @@
 @section('title', "Search Results for '{$query}' - MechaMap Forums")
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/forums/search.css') }}">
-<link rel="stylesheet" href="{{ asset('css/frontend/components/thread-item.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/forums/search.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/thread-item.css') }}">
 @endpush
 
 @section('content')

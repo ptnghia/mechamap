@@ -28,12 +28,17 @@ class MiniCartEnhancements {
             }
         });
 
-        // Cart toggle with animation
+        // Cart toggle with animation - Use Bootstrap dropdown events instead of click to avoid conflicts
         const cartToggle = document.getElementById('cartToggle');
         if (cartToggle) {
-            cartToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.toggleMiniCart();
+            cartToggle.addEventListener('show.bs.dropdown', () => {
+                // Load cart data when dropdown is about to show
+                this.loadMiniCart();
+                // Add animation class
+                const miniCart = document.getElementById('miniCart');
+                if (miniCart) {
+                    miniCart.classList.add('mini-cart-animated');
+                }
             });
         }
 
@@ -99,7 +104,8 @@ class MiniCartEnhancements {
     }
 
     /**
-     * Toggle mini cart with animation
+     * Toggle mini cart with animation - Deprecated: Now handled by Bootstrap dropdown events
+     * Keeping for backward compatibility
      */
     toggleMiniCart() {
         const miniCart = document.getElementById('miniCart');
@@ -109,9 +115,6 @@ class MiniCartEnhancements {
             // Use Bootstrap dropdown
             const dropdown = new bootstrap.Dropdown(cartToggle);
             dropdown.toggle();
-
-            // Add animation class
-            miniCart.classList.add('mini-cart-animated');
         }
     }
 

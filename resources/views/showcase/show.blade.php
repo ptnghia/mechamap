@@ -3,9 +3,9 @@
 @section('title', $showcase->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/thread-detail.css') }}">
-<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase/show.css') }}">
-<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase-comments.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/thread-detail.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase/show.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase-comments.css') }}">
 @endpush
 
 @section('content')

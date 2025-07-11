@@ -86,14 +86,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const notificationDropdown = {
         // Elements
-        bellBtn: document.getElementById('notificationDropdownBtn'),
-        badge: document.querySelector('.notification-badge'),
-        unreadCount: document.querySelector('.unread-count'),
-        dropdownMenu: document.querySelector('.notification-dropdown-menu'),
-        notificationList: document.querySelector('.notification-list'),
+        bellBtn: document.getElementById('notificationBell'),
+        badge: document.querySelector('.notification-counter'),
+        unreadCount: document.querySelector('.notification-counter'),
+        dropdownMenu: document.getElementById('notificationDropdown'),
+        notificationList: document.getElementById('notificationItems'),
         loadingState: document.querySelector('.notification-loading'),
-        emptyState: document.querySelector('.notification-empty'),
-        markAllReadBtn: document.querySelector('.mark-all-read-btn'),
+        emptyState: document.getElementById('notificationEmpty'),
+        markAllReadBtn: document.getElementById('markAllRead'),
 
         // State
         isLoaded: false,
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Bind events
         bindEvents() {
-            // Load notifications when dropdown is shown
-            this.bellBtn.addEventListener('click', () => {
+            // Use Bootstrap dropdown events instead of click to avoid conflicts
+            this.bellBtn.addEventListener('show.bs.dropdown', () => {
                 if (!this.isLoaded) {
                     this.loadNotifications();
                 }
@@ -364,13 +364,13 @@ document.addEventListener('DOMContentLoaded', function() {
         updateUnreadCount(count) {
             if (count > 0) {
                 this.unreadCount.textContent = count > 99 ? '99+' : count;
-                this.badge.classList.remove('d-none');
-                this.bellBtn.classList.add('text-primary');
-                this.bellBtn.classList.remove('text-muted');
+                this.badge.style.display = 'inline-block';
+                this.bellBtn.querySelector('i').classList.add('text-primary');
+                this.bellBtn.querySelector('i').classList.remove('text-muted');
             } else {
-                this.badge.classList.add('d-none');
-                this.bellBtn.classList.remove('text-primary');
-                this.bellBtn.classList.add('text-muted');
+                this.badge.style.display = 'none';
+                this.bellBtn.querySelector('i').classList.remove('text-primary');
+                this.bellBtn.querySelector('i').classList.add('text-muted');
             }
         },
 

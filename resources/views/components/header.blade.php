@@ -1113,17 +1113,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // Cart toggle (if marketplace)
-    @if($isMarketplace)
+    // Cart toggle - Use Bootstrap dropdown events instead of click to avoid conflicts
+    // Always initialize if cart element exists (regardless of isMarketplace flag)
     const cartToggle = document.getElementById('cartToggle');
     if (cartToggle) {
-        cartToggle.addEventListener('click', function(e) {
-            e.preventDefault();
+        // Use Bootstrap dropdown events instead of click to avoid preventDefault conflicts
+        cartToggle.addEventListener('show.bs.dropdown', function() {
+            // Load cart data when dropdown is about to show
+            setTimeout(() => loadMiniCart(), 50);
             // Dispatch custom event for cart toggle
             window.dispatchEvent(new CustomEvent('toggle-cart'));
         });
     }
-    @endif
+
+    // Notification toggle - Already handled by notification-dropdown component
+    // The notification dropdown component has its own event handling with show.bs.dropdown
+    // No additional event listeners needed here to avoid conflicts
 
     // Dark mode toggle
     const darkModeSwitch = document.getElementById('darkModeSwitch');
@@ -1269,13 +1274,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load mini cart on page load
     loadMiniCart();
 
-    // Refresh mini cart when dropdown is opened
-    const cartToggle = document.getElementById('cartToggle');
-    if (cartToggle) {
-        cartToggle.addEventListener('click', function() {
-            setTimeout(() => loadMiniCart(), 100);
-        });
-    }
+    // Refresh mini cart when dropdown is opened - handled above with show.bs.dropdown event
+    // Removed duplicate event listener to avoid conflicts with Bootstrap dropdown
 
     // Notification functionality
     window.loadNotifications = function() {
@@ -1361,13 +1361,8 @@ document.addEventListener('DOMContentLoaded', function() {
         @endauth
     };
 
-    // Load notifications when dropdown is opened
-    const notificationToggle = document.getElementById('notificationToggle');
-    if (notificationToggle) {
-        notificationToggle.addEventListener('click', function() {
-            setTimeout(() => loadNotifications(), 100);
-        });
-    }
+    // Load notifications when dropdown is opened - handled by notification-dropdown component
+    // Removed duplicate event listener to avoid conflicts with Bootstrap dropdown
 
     // Auto-refresh notifications every 30 seconds
     @auth

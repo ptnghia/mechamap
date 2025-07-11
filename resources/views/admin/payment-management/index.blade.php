@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('admin.layouts.dason')
 
 @section('title', 'Quản Lý Thanh Toán')
 
@@ -214,7 +214,7 @@
                             <div class="progress-bar bg-success" style="width: {{ $systemHealth['payment_success_rate'] }}%"></div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <div class="d-flex justify-content-between">
                             <span>Thời Gian Xử Lý TB</span>

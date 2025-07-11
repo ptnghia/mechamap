@@ -3,7 +3,7 @@
 @section('title', 'Cart UX Demo - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('assets/css/cart-ux-enhancements.css') }}">
 @endpush
 
 @section('content')
@@ -83,7 +83,7 @@
                                         <button class="btn btn-outline-secondary quantity-btn-minus" type="button">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <input type="number" class="form-control text-center quantity-input" 
+                                        <input type="number" class="form-control text-center quantity-input"
                                                value="2" data-item-id="demo-1" data-unit-price="99.99">
                                         <button class="btn btn-outline-secondary quantity-btn-plus" type="button">
                                             <i class="fas fa-plus"></i>
@@ -93,7 +93,7 @@
                                 <div class="col-md-2 col-12 mt-2 mt-md-0">
                                     <div class="text-center">
                                         <div class="fw-bold mb-2 item-total-price">$199.98</div>
-                                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" 
+                                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn"
                                                 data-item-id="demo-1">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -125,7 +125,7 @@
                                         <button class="btn btn-outline-secondary quantity-btn-minus" type="button">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <input type="number" class="form-control text-center quantity-input" 
+                                        <input type="number" class="form-control text-center quantity-input"
                                                value="1" data-item-id="demo-2" data-unit-price="149.99">
                                         <button class="btn btn-outline-secondary quantity-btn-plus" type="button">
                                             <i class="fas fa-plus"></i>
@@ -135,7 +135,7 @@
                                 <div class="col-md-2 col-12 mt-2 mt-md-0">
                                     <div class="text-center">
                                         <div class="fw-bold mb-2 item-total-price">$149.99</div>
-                                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn" 
+                                        <button type="button" class="btn btn-outline-danger btn-sm remove-item-btn"
                                                 data-item-id="demo-2">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -203,7 +203,7 @@ function demoToast(type) {
             warning: { title: 'Warning!', message: 'Please check your input' },
             info: { title: 'Info', message: 'Here is some information' }
         };
-        
+
         const msg = messages[type];
         window.cartUX.showToast(type, msg.title, msg.message);
     }
@@ -229,7 +229,7 @@ function demoConfirmation(type) {
                 onConfirm: () => window.cartUX.showToast('info', 'Cleared', 'Cart cleared successfully')
             }
         };
-        
+
         window.cartUX.showConfirmation(configs[type]);
     }
 }
@@ -237,7 +237,7 @@ function demoConfirmation(type) {
 function demoLoading(button) {
     if (window.cartUX) {
         const stopLoading = window.cartUX.showEnhancedLoading(button, 'Processing...');
-        
+
         setTimeout(() => {
             stopLoading();
             window.cartUX.showToast('success', 'Complete', 'Loading demo completed');
@@ -248,7 +248,7 @@ function demoLoading(button) {
 function demoOptimisticUpdate() {
     if (window.cartUX) {
         const rollback = window.cartUX.optimisticQuantityUpdate('demo-1', 5, 99.99);
-        
+
         setTimeout(() => {
             rollback();
             window.cartUX.showToast('info', 'Rollback', 'Optimistic update rolled back');
@@ -278,12 +278,12 @@ function demoFadeIn() {
         target.style.opacity = '0';
         target.style.transform = 'translateY(20px)';
         target.style.transition = 'all 0.5s ease';
-        
+
         setTimeout(() => {
             target.style.opacity = '1';
             target.style.transform = 'translateY(0)';
         }, 100);
-        
+
         setTimeout(() => {
             target.style.display = 'none';
         }, 3000);
@@ -293,7 +293,7 @@ function demoFadeIn() {
 // Initialize demo
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎨 Cart UX Demo initialized');
-    
+
     // Demo quantity input handlers
     document.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('input', function() {

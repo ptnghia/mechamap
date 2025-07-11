@@ -90,13 +90,13 @@
 
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
-    <script src="{{ asset('js/theme-preload.js') }}"></script>
+    <script src="{{ asset_versioned('js/theme-preload.js') }}"></script>
 
-    <!-- Frontend CSS - Optimized Structure -->
-    <link rel="stylesheet" href="{{ asset('css/frontend/main-user.css') }}">
+    <!-- Frontend CSS - Optimized Structure with Cache Busting -->
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
 
     <!-- Component CSS -->
-    <link rel="stylesheet" href="{{ asset('css/frontend/components/notifications.css') }}">
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/notifications.css') }}">
 
     <!-- Page-specific CSS now loaded in individual views via @push('styles') -->
 
@@ -218,29 +218,29 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
     <!-- Main App JS -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset_versioned('js/app.js') }}"></script>
 
     <!-- Real-time Notification System -->
     @auth
-    <script src="{{ asset('js/frontend/services/notification-service.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/frontend/components/notification-manager.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('js/frontend/components/typing-indicator.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset_versioned('js/frontend/services/notification-service.js') }}"></script>
+    <script src="{{ asset_versioned('js/frontend/components/notification-manager.js') }}"></script>
+    <script src="{{ asset_versioned('js/frontend/components/typing-indicator.js') }}"></script>
     @endauth
 
     <!-- Dark Mode JS -->
-    <script src="{{ asset('js/dark-mode.js') }}"></script>
+    <script src="{{ asset_versioned('js/dark-mode.js') }}"></script>
 
     <!-- Theme Diagnostics Tool (activated by adding ?theme-diagnostics=1 to URL) -->
-    <script src="{{ asset('js/theme-diagnostics.js') }}"></script>
+    <script src="{{ asset_versioned('js/theme-diagnostics.js') }}"></script>
 
     <!-- Theme Recovery System - Restores theme toggle functionality if it breaks -->
-    <script src="{{ asset('js/theme-recovery.js') }}"></script>
+    <script src="{{ asset_versioned('js/theme-recovery.js') }}"></script>
 
     <!-- Fancybox Initialization -->
     <script>
@@ -318,22 +318,22 @@
     </script>
 
     <!-- Auth Modal Script -->
-    <script src="{{ asset('js/auth-modal.js') }}"></script>
+    <script src="{{ asset_versioned('js/auth-modal.js') }}"></script>
 
     <!-- Search Script - Disabled, using unified header search -->
     {{-- <script src="{{ asset('js/search.js') }}"></script> --}}
 
     <!-- Header System - Consolidated search, menu, and navigation -->
-    <script src="{{ asset('js/header.js') }}"></script>
+    <script src="{{ asset_versioned('js/header.js') }}"></script>
 
     <!-- Components Script -->
-    <script src="{{ asset('js/components.js') }}"></script>
+    <script src="{{ asset_versioned('js/components.js') }}"></script>
 
     <!-- Thread Actions Script -->
-    <script src="{{ asset('js/threads.js') }}"></script>
+    <script src="{{ asset_versioned('js/threads.js') }}"></script>
 
-    <!-- Dropdown Script -->
-    <script src="{{ asset('js/dropdown.js') }}"></script>
+    <!-- Bootstrap 5 Dropdown Enhancements -->
+    {{-- <script src="{{ asset_versioned('js/bootstrap-dropdown-enhancements.js') }}"></script> --}}
 
     <!-- CKEditor Script - Only load on pages that need it -->
     @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit', 'showcase.show']))

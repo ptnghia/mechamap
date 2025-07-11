@@ -3,7 +3,7 @@
 @section('title', 'Public Showcase - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/showcase-item.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase-item.css') }}">
 @endpush
 
 @section('content')

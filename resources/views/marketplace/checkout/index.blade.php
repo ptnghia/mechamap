@@ -3,7 +3,7 @@
 @section('title', __('marketplace.checkout.title') . ' - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/cart-ux-enhancements.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('assets/css/cart-ux-enhancements.css') }}">
 @endpush
 
 @push('scripts')

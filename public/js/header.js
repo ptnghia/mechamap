@@ -497,6 +497,7 @@ function initMobileMenuEnhancements() {
 
     if (!navbarToggler || !navbarCollapse) return;
 
+    // Close navbar when non-dropdown links are clicked
     const mobileMenuLinks = navbarCollapse.querySelectorAll('.nav-link:not(.dropdown-toggle)');
     mobileMenuLinks.forEach(link => {
         link.addEventListener('click', function() {
@@ -507,45 +508,33 @@ function initMobileMenuEnhancements() {
         });
     });
 
+    // Enhanced mobile dropdown handling with Bootstrap 5
     const dropdownToggles = navbarCollapse.querySelectorAll('.dropdown-toggle');
     dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
+        // Use Bootstrap 5 events for mobile
+        toggle.addEventListener('show.bs.dropdown', function(e) {
             if (window.innerWidth < 992) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const dropdownMenu = this.nextElementSibling;
-                if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
-                    if (dropdownMenu.style.display === 'block') {
-                        dropdownMenu.style.display = 'none';
-                        this.setAttribute('aria-expanded', 'false');
-                    } else {
-                        navbarCollapse.querySelectorAll('.dropdown-menu').forEach(menu => {
-                            menu.style.display = 'none';
-                        });
-                        navbarCollapse.querySelectorAll('.dropdown-toggle').forEach(t => {
-                            t.setAttribute('aria-expanded', 'false');
-                        });
-
-                        dropdownMenu.style.display = 'block';
-                        this.setAttribute('aria-expanded', 'true');
+                // Close other dropdowns in mobile
+                dropdownToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        const otherInstance = bootstrap.Dropdown.getInstance(otherToggle);
+                        if (otherInstance) {
+                            otherInstance.hide();
+                        }
                     }
-                }
+                });
             }
         });
     });
 
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth < 992) {
-            if (!e.target.closest('.dropdown')) {
-                navbarCollapse.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.style.display = 'none';
-                });
-                navbarCollapse.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-                    toggle.setAttribute('aria-expanded', 'false');
-                });
+    // Close dropdowns when navbar collapses
+    navbarCollapse.addEventListener('hidden.bs.collapse', function() {
+        dropdownToggles.forEach(toggle => {
+            const dropdownInstance = bootstrap.Dropdown.getInstance(toggle);
+            if (dropdownInstance) {
+                dropdownInstance.hide();
             }
-        }
+        });
     });
 }
 

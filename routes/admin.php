@@ -897,5 +897,40 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::get('/test/calculation', [App\Http\Controllers\Admin\CommissionSettingsController::class, 'testCalculation'])->name('test-calculation');
     });
 
+    // 📊 Financial Reports Routes
+    Route::prefix('financial-reports')->name('financial-reports.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\FinancialReportsController::class, 'index'])->name('index');
+        Route::get('/revenue', [App\Http\Controllers\Admin\FinancialReportsController::class, 'revenueReport'])->name('revenue');
+        Route::get('/commission', [App\Http\Controllers\Admin\FinancialReportsController::class, 'commissionReport'])->name('commission');
+        Route::get('/payout', [App\Http\Controllers\Admin\FinancialReportsController::class, 'payoutReport'])->name('payout');
+        Route::get('/seller-performance', [App\Http\Controllers\Admin\FinancialReportsController::class, 'sellerPerformanceReport'])->name('seller-performance');
+        Route::get('/export', [App\Http\Controllers\Admin\FinancialReportsController::class, 'exportReport'])->name('export');
+    });
+
+    // 🚨 Dispute Management Routes
+    Route::prefix('dispute-management')->name('dispute-management.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\DisputeManagementController::class, 'index'])->name('index');
+        Route::get('/{dispute}', [App\Http\Controllers\Admin\DisputeManagementController::class, 'show'])->name('show');
+        Route::post('/{dispute}/assign', [App\Http\Controllers\Admin\DisputeManagementController::class, 'assign'])->name('assign');
+        Route::post('/{dispute}/update-status', [App\Http\Controllers\Admin\DisputeManagementController::class, 'updateStatus'])->name('update-status');
+        Route::post('/{dispute}/add-evidence', [App\Http\Controllers\Admin\DisputeManagementController::class, 'addEvidence'])->name('add-evidence');
+        Route::post('/{dispute}/create-refund', [App\Http\Controllers\Admin\DisputeManagementController::class, 'createRefund'])->name('create-refund');
+        Route::post('/bulk-update', [App\Http\Controllers\Admin\DisputeManagementController::class, 'bulkUpdate'])->name('bulk-update');
+        Route::get('/export/disputes', [App\Http\Controllers\Admin\DisputeManagementController::class, 'export'])->name('export');
+    });
+
+    // 💰 Refund Management Routes
+    Route::prefix('refund-management')->name('refund-management.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Admin\RefundManagementController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\Admin\RefundManagementController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\Admin\RefundManagementController::class, 'store'])->name('store');
+        Route::get('/{refund}', [App\Http\Controllers\Admin\RefundManagementController::class, 'show'])->name('show');
+        Route::post('/{refund}/approve', [App\Http\Controllers\Admin\RefundManagementController::class, 'approve'])->name('approve');
+        Route::post('/{refund}/reject', [App\Http\Controllers\Admin\RefundManagementController::class, 'reject'])->name('reject');
+        Route::post('/{refund}/process', [App\Http\Controllers\Admin\RefundManagementController::class, 'process'])->name('process');
+        Route::post('/bulk-approve', [App\Http\Controllers\Admin\RefundManagementController::class, 'bulkApprove'])->name('bulk-approve');
+        Route::get('/export/refunds', [App\Http\Controllers\Admin\RefundManagementController::class, 'export'])->name('export');
+    });
+
     // Duplicate moderation routes removed - using the one with middleware above (lines 125-151)
 });

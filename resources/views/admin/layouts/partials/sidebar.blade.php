@@ -199,6 +199,27 @@
                         <li><a href="{{ route('admin.commission-settings.index') }}" data-key="t-commission-settings" class="{{ request()->routeIs('admin.commission-settings.*') ? 'active' : '' }}">
                             <i class="fas fa-percentage"></i> Cấu Hình Hoa Hồng
                         </a></li>
+                        <li><a href="{{ route('admin.financial-reports.index') }}" data-key="t-financial-reports" class="{{ request()->routeIs('admin.financial-reports.*') ? 'active' : '' }}">
+                            <i class="fas fa-chart-line"></i> Báo Cáo Tài Chính
+                        </a></li>
+                        <li><a href="{{ route('admin.dispute-management.index') }}" data-key="t-dispute-management" class="{{ request()->routeIs('admin.dispute-management.*') ? 'active' : '' }}">
+                            <i class="fas fa-exclamation-triangle"></i> Quản Lý Dispute
+                            @php
+                                $pendingDisputes = \App\Models\PaymentDispute::where('status', 'pending')->count();
+                            @endphp
+                            @if($pendingDisputes > 0)
+                                <span class="badge rounded-pill bg-warning float-end">{{ $pendingDisputes }}</span>
+                            @endif
+                        </a></li>
+                        <li><a href="{{ route('admin.refund-management.index') }}" data-key="t-refund-management" class="{{ request()->routeIs('admin.refund-management.*') ? 'active' : '' }}">
+                            <i class="fas fa-undo"></i> Quản Lý Refund
+                            @php
+                                $pendingRefunds = \App\Models\PaymentRefund::where('status', 'pending')->count();
+                            @endphp
+                            @if($pendingRefunds > 0)
+                                <span class="badge rounded-pill bg-info float-end">{{ $pendingRefunds }}</span>
+                            @endif
+                        </a></li>
                         @endadminCan
                         @adminCan('manage_sellers')
                         <li><a href="{{ route('admin.marketplace.sellers.index') }}" data-key="t-sellers" class="{{ request()->routeIs('admin.marketplace.sellers*') ? 'active' : '' }}">

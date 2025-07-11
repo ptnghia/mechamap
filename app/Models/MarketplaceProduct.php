@@ -320,9 +320,76 @@ class MarketplaceProduct extends Model
     public function isDigitalProduct(): bool
     {
         return $this->product_type === 'digital' ||
-               $this->seller_type === 'manufacturer' ||
                !empty($this->digital_files) ||
                $this->digitalFiles()->exists();
+    }
+
+    /**
+     * Get effective price (sale price if on sale, otherwise regular price)
+     */
+    public function getEffectivePrice(): float
+    {
+        if ($this->is_on_sale && $this->sale_price && $this->sale_price < $this->price) {
+            return (float) $this->sale_price;
+        }
+        return (float) $this->price;
+    }
+
+    /**
+     * Get discount percentage
+     */
+    public function getDiscountPercentage(): float
+    {
+        if ($this->is_on_sale && $this->sale_price && $this->sale_price < $this->price) {
+            return round((($this->price - $this->sale_price) / $this->price) * 100, 2);
+        }
+        return 0;
+    }
+
+    /**
+     * Check if product is available for purchase
+     */
+    public function isAvailable(): bool
+    {
+        if (!$this->is_active || $this->status !== 'approved') {
+            return false;
+        }
+
+        // Digital products are always available
+        if ($this->isDigitalProduct()) {
+            return true;
+        }
+
+        // Physical products depend on stock
+        if ($this->manage_stock) {
+            return $this->in_stock && $this->stock_quantity > 0;
+        }
+
+        return $this->in_stock;
+    }
+
+    /**
+     * Normalize product data
+     */
+    public function normalize(): bool
+    {
+        $service = app(\App\Services\MarketplaceDataNormalizationService::class);
+        $changes = $service->normalizeProduct($this);
+
+        if (!empty($changes)) {
+            return $this->update($changes);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate data integrity
+     */
+    public function validateIntegrity(): array
+    {
+        $service = app(\App\Services\MarketplaceDataNormalizationService::class);
+        return $service->validateProductIntegrity($this);
     }
 
     /**
