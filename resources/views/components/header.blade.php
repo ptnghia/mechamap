@@ -110,26 +110,12 @@
                             </ul>
                         </li>
 
-                        <!-- 3. Dự án - Simplified Menu -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="#" id="showcaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- 3. Dự án - Direct Link -->
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="{{ route('showcase.public') }}">
                                 <i class="fa-solid fa-trophy me-1"></i>
                                 {{ __('messages.nav.showcase') }}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="showcaseDropdown">
-                                <li><a class="dropdown-item" href="{{ route('showcase.public') }}">
-                                    <i class="fa-solid fa-globe me-2"></i>{{ __('messages.nav.public_gallery') }}
-                                </a></li>
-                                @auth
-                                <li><a class="dropdown-item" href="{{ route('showcase.create') }}">
-                                    <i class="fa-solid fa-plus-circle me-2"></i>{{ __('messages.nav.create_showcase') }}
-                                </a></li>
-                                @else
-                                <li><a class="dropdown-item" href="{{ route('login') }}">
-                                    <i class="fa-solid fa-sign-in-alt me-2"></i>{{ __('messages.nav.login_to_create') }}
-                                </a></li>
-                                @endauth
-                            </ul>
                         </li>
 
                         <!-- 4. Marketplace - PRIORITY #3 - Only show if user has marketplace access -->

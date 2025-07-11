@@ -135,7 +135,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
 
 
         <div class="showcase-stats">
-            <div class="d-flex">
+            <div class="d-flex align-items-center g-3">
                 <span class="stat-item">
                     <i class="fas fa-eye"></i> {{ number_format($viewCount) }}
                 </span>
