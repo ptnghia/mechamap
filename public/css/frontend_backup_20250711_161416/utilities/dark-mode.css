@@ -1,0 +1,234 @@
+/**
+ * Dark Mode Theme Support
+ * Hỗ trợ chuyển đổi giữa theme sáng và tối
+ */
+
+/* ========================================
+   DARK MODE VARIABLES
+   ======================================== */
+
+[data-theme="dark"],
+.dark-mode {
+    --bs-body-bg: #0f172a;
+    --bs-body-color: #f8fafc;
+    --bs-border-color: #334155;
+    --bs-secondary-bg: #1e293b;
+    --bs-tertiary-bg: #334155;
+}
+
+/* ========================================
+   DARK MODE OVERRIDES
+   ======================================== */
+
+[data-theme="dark"] body,
+.dark-mode body {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .bg-white,
+.dark-mode .bg-white {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-top,
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .border-start,
+[data-theme="dark"] .border-end {
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--bs-body-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: var(--bs-tertiary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .navbar-light .navbar-nav .nav-link {
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-theme="dark"] .modal-content {
+    background-color: var(--bs-secondary-bg) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-theme="dark"] .table {
+    --bs-table-bg: var(--bs-secondary-bg);
+    --bs-table-color: var(--bs-body-color);
+    --bs-table-border-color: var(--bs-border-color);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > td,
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > th {
+    background-color: var(--bs-tertiary-bg) !important;
+}
+[data-theme="dark"] .search-container{background-color: #fff;}
+[data-theme="dark"] .search-container input{background-color: #fff !important;}
+/* ========================================
+   SMOOTH TRANSITIONS
+   ======================================== */
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn, .form-control, .form-select, .card, .dropdown-menu {
+    transition: all 0.3s ease;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON
+   ======================================== */
+
+#theme-toggle {
+    position: relative;
+    overflow: hidden;
+}
+
+#theme-toggle .dark-icon,
+#theme-toggle .light-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR FOR DARK MODE
+   ======================================== */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bs-secondary-bg);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--bs-tertiary-bg);
+    border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* ========================================
+   THEME TOGGLE BUTTON STYLES
+   ======================================== */
+
+/* Theme Toggle Button Base Styles */
+.theme-toggle-btn {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Theme Toggle Button Hover Effect */
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button Focus State */
+.theme-toggle-btn:focus {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+/* Theme Toggle Button Click Animation */
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Theme Toggle Indicator Animation */
+.theme-toggle-indicator {
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn.clicked .theme-toggle-indicator {
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+    animation: ripple 0.7s ease-out;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.3;
+        transform: scale(0.1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}

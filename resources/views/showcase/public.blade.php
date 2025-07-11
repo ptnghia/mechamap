@@ -4,7 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
 @endpush
 
 @section('content')
