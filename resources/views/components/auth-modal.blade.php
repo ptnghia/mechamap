@@ -23,20 +23,15 @@ $sizeClass = [
 
             <!-- Modal Body -->
             <div class="modal-body px-4 pt-0 pb-4">
-                <!-- Tab Navigation -->
-                <div class="d-flex gap-2 mb-4" id="{{ $id }}Tabs" role="tablist">
-                    <button class="btn btn-auth-tab active flex-fill py-3" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-panel" type="button" role="tab" aria-controls="login-panel" aria-selected="true" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                        {{ __('messages.login') }}
-                    </button>
-                    <button class="btn btn-auth-tab flex-fill py-3" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-panel" type="button" role="tab" aria-controls="register-panel" aria-selected="false" style="background-color: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; border-radius: 8px; font-weight: 600;">
-                        {{ __('messages.register') }}
-                    </button>
+                <!-- Modal Title -->
+                <div class="text-center mb-4">
+                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('messages.login') }}</h4>
+                    <p class="text-muted mb-0">{{ __('messages.welcome_back') }}</p>
                 </div>
 
-                <!-- Tab Content -->
-                <div class="tab-content" id="{{ $id }}TabContent">
-                    <!-- Login Panel -->
-                    <div class="tab-pane fade show active" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+                <!-- Login Content -->
+                <div id="login-panel">
+                    <!-- Login Form -->
                         <form id="loginForm" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
@@ -67,6 +62,17 @@ $sizeClass = [
                                 </div>
                                 <a href="#" class="text-decoration-none" style="color: #8B7355; font-size: 14px;" onclick="switchToForgot()">{{ __('messages.forgot_password') }}?</a>
                             </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                                    <label class="form-check-label text-muted" for="rememberMe" style="font-size: 14px;">
+                                        {{ __('messages.remember_me') }}
+                                    </label>
+                                </div>
+                                <button type="button" class="btn btn-link p-0 text-muted" onclick="switchToForgotPassword()" style="text-decoration: none; font-size: 14px;">
+                                    {{ __('messages.forgot_password') }}
+                                </button>
+                            </div>
                             <div class="d-grid mb-4">
                                 <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
                                     {{ __('messages.login') }}
@@ -80,7 +86,7 @@ $sizeClass = [
                         </div>
 
                         <!-- Social Login -->
-                        <div class="row g-2">
+                        <div class="row g-2 mb-4">
                             <div class="col-6">
                                 <button type="button" class="btn btn-outline-secondary w-100 py-2" style="border-radius: 8px;">
                                     <i class="fab fa-google me-2"></i>{{ __('messages.login_with_google') }}
@@ -92,100 +98,22 @@ $sizeClass = [
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Register Panel -->
-                    <div class="tab-pane fade" id="register-panel" role="tabpanel" aria-labelledby="register-tab">
-                        <form id="registerForm" method="POST" action="{{ route('register') }}">
-                            @csrf
-                            <div class="mb-3">
-                                <div class="input-group" style="border-radius: 8px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" style="color: #6c757d;">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-0 bg-light" id="registerName" name="name" placeholder="{{ __('messages.full_name') }}" required style="padding: 12px;">
-                                </div>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group" style="border-radius: 8px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" style="color: #6c757d;">
-                                        <i class="fas fa-at"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-0 bg-light" id="registerUsername" name="username" placeholder="{{ __('messages.username') }}" required style="padding: 12px;">
-                                </div>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group" style="border-radius: 8px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" style="color: #6c757d;">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                    <input type="email" class="form-control border-0 bg-light" id="registerEmail" name="email" placeholder="{{ __('messages.email') }}" required style="padding: 12px;">
-                                </div>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group" style="border-radius: 8px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" style="color: #6c757d;">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input type="password" class="form-control border-0 bg-light" id="registerPassword" name="password" placeholder="{{ __('messages.password') }}" required style="padding: 12px;">
-                                    <button class="btn bg-light border-0" type="button" onclick="togglePassword('registerPassword')" style="color: #6c757d;">
-                                        <i class="fas fa-eye" id="registerPasswordIcon"></i>
-                                    </button>
-                                </div>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group" style="border-radius: 8px; overflow: hidden;">
-                                    <span class="input-group-text bg-light border-0" style="color: #6c757d;">
-                                        <i class="fas fa-lock"></i>
-                                    </span>
-                                    <input type="password" class="form-control border-0 bg-light" id="registerPasswordConfirm" name="password_confirmation" placeholder="{{ __('messages.confirm_password') }}" required style="padding: 12px;">
-                                </div>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
-                                <label class="form-check-label text-muted" for="agreeTerms" style="font-size: 14px;">
-                                    {{ __('messages.agree_terms') }} <a href="/terms" target="_blank" style="color: #8B7355;">{{ __('messages.terms_of_service') }}</a> {{ __('messages.and') }} <a href="/privacy" target="_blank" style="color: #8B7355;">{{ __('messages.privacy_policy') }}</a>
-                                </label>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="d-grid mb-4">
-                                <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                                    {{ __('messages.register') }}
-                                </button>
-                            </div>
-                        </form>
-
-                        <!-- Divider -->
-                        <div class="text-center mb-4">
-                            <small class="text-muted">{{ __('messages.or_register_with') }}</small>
-                        </div>
-
-                        <!-- Social Login -->
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <button type="button" class="btn btn-outline-secondary w-100 py-2" style="border-radius: 8px;">
-                                    <i class="fab fa-google me-2"></i>{{ __('messages.register_with_google') }}
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-outline-secondary w-100 py-2" style="border-radius: 8px;">
-                                    <i class="fab fa-facebook-f me-2"></i>{{ __('messages.register_with_facebook') }}
-                                </button>
-                            </div>
+                        <!-- Registration Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-2">{{ __('messages.dont_have_account') }}</p>
+                            <a href="/register" class="btn btn-outline-primary w-100 py-2" style="border-radius: 8px; border-color: #8B7355; color: #8B7355;">
+                                <i class="fas fa-user-plus me-2"></i>{{ __('messages.create_business_account') }}
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Forgot Password Panel -->
-                    <div class="tab-pane fade" id="forgot-panel" role="tabpanel" aria-labelledby="forgot-tab">
+                    <!-- Forgot Password Panel (Hidden by default) -->
+                    <div id="forgot-panel" style="display: none;">
                         <form id="forgotForm" method="POST" action="{{ route('password.email') }}">
                             @csrf
                             <div class="text-center mb-4">
-                                <h5 class="mb-3">{{ __('messages.forgot_password') }}</h5>
+                                <h5 class="mb-3" style="color: #8B7355;">{{ __('messages.forgot_password') }}</h5>
                                 <p class="text-muted">{{ __('messages.forgot_password_description') }}</p>
                             </div>
                             <div class="mb-3">
@@ -218,25 +146,28 @@ $sizeClass = [
 <!-- JavaScript for Auth Modal -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Tab switching functionality
-    const authTabs = document.querySelectorAll('.btn-auth-tab');
-    authTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // Remove active class from all tabs
-            authTabs.forEach(t => {
-                t.classList.remove('active');
-                t.style.backgroundColor = '#f8f9fa';
-                t.style.color = '#6c757d';
-                t.style.border = '1px solid #dee2e6';
-            });
+    // Panel switching functionality
+    window.switchToForgotPassword = function() {
+        document.getElementById('login-panel').style.display = 'none';
+        document.getElementById('forgot-panel').style.display = 'block';
 
-            // Add active class to clicked tab
-            this.classList.add('active');
-            this.style.backgroundColor = '#8B7355';
-            this.style.color = 'white';
-            this.style.border = 'none';
-        });
-    });
+        // Update modal title
+        const modalTitle = document.querySelector('#authModal .modal-body h4');
+        if (modalTitle) {
+            modalTitle.textContent = '{{ __("messages.forgot_password") }}';
+        }
+    };
+
+    window.switchToLogin = function() {
+        document.getElementById('login-panel').style.display = 'block';
+        document.getElementById('forgot-panel').style.display = 'none';
+
+        // Update modal title
+        const modalTitle = document.querySelector('#authModal .modal-body h4');
+        if (modalTitle) {
+            modalTitle.textContent = '{{ __("messages.login") }}';
+        }
+    };
 
     // Password toggle functionality
     window.togglePassword = function(inputId) {
@@ -254,42 +185,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Switch to login tab
-    window.switchToLogin = function() {
-        const loginTab = document.getElementById('login-tab');
-        const registerTab = document.getElementById('register-tab');
+    // Reset modal to login state when opened
+    window.resetAuthModal = function() {
+        document.getElementById('login-panel').style.display = 'block';
+        document.getElementById('forgot-panel').style.display = 'none';
 
-        if (loginTab && registerTab) {
-            // Show login panel
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
-            document.getElementById('login-panel').classList.add('show', 'active');
+        // Reset forms
+        document.getElementById('loginForm').reset();
+        document.getElementById('forgotForm').reset();
 
-            // Update tab styling
-            registerTab.classList.remove('active');
-            registerTab.style.backgroundColor = '#f8f9fa';
-            registerTab.style.color = '#6c757d';
-            registerTab.style.border = '1px solid #dee2e6';
+        // Clear any error messages
+        document.querySelectorAll('.invalid-feedback').forEach(el => el.textContent = '');
+        document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
 
-            loginTab.classList.add('active');
-            loginTab.style.backgroundColor = '#8B7355';
-            loginTab.style.color = 'white';
-            loginTab.style.border = 'none';
-        }
-    };
-
-    // Switch to forgot password
-    window.switchToForgot = function() {
-        const forgotPanel = document.getElementById('forgot-panel');
-        if (forgotPanel) {
-            // Hide all panels
-            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
-            // Show forgot panel
-            forgotPanel.classList.add('show', 'active');
+        // Update modal title
+        const modalTitle = document.querySelector('#authModal .modal-body h4');
+        if (modalTitle) {
+            modalTitle.textContent = '{{ __("messages.login") }}';
         }
     };
 
     // Form submissions with AJAX
-    const forms = ['loginForm', 'registerForm', 'forgotForm'];
+    const forms = ['loginForm', 'forgotForm'];
 
     forms.forEach(formId => {
         const form = document.getElementById(formId);
@@ -383,25 +300,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Global functions to open specific tabs
+// Global functions to open modal
 window.openLoginModal = function() {
+    resetAuthModal();
     const modal = new bootstrap.Modal(document.getElementById('{{ $id }}'));
-    const loginTab = new bootstrap.Tab(document.getElementById('login-tab'));
-    loginTab.show();
-    modal.show();
-};
-
-window.openRegisterModal = function() {
-    const modal = new bootstrap.Modal(document.getElementById('{{ $id }}'));
-    const registerTab = new bootstrap.Tab(document.getElementById('register-tab'));
-    registerTab.show();
     modal.show();
 };
 
 window.openForgotPasswordModal = function() {
+    resetAuthModal();
+    switchToForgotPassword();
     const modal = new bootstrap.Modal(document.getElementById('{{ $id }}'));
-    const forgotTab = new bootstrap.Tab(document.getElementById('forgot-tab'));
-    forgotTab.show();
     modal.show();
 };
+
+// Add event listener to reset modal when opened
+document.getElementById('{{ $id }}').addEventListener('shown.bs.modal', function () {
+    resetAuthModal();
+});
 </script>

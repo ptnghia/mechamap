@@ -399,6 +399,10 @@ return [
     'forgot_password_description' => 'Nhập email của bạn để nhận liên kết đặt lại mật khẩu',
     'send_reset_link' => 'Gửi liên kết đặt lại',
     'back_to_login' => 'Quay lại đăng nhập',
+    'welcome_back' => 'Chào mừng bạn trở lại',
+    'remember_me' => 'Ghi nhớ đăng nhập',
+    'dont_have_account' => 'Chưa có tài khoản?',
+    'create_business_account' => 'Tạo tài khoản doanh nghiệp',
 
     // Marketplace
     'marketplace' => [
