@@ -140,7 +140,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                     @endfor
                 </div>
                 <span class="rating-text small text-muted ms-2">
-                    {{ number_format($ratingAverage, 1) }} ({{ $ratingCount }} đánh giá)
+                    {{ number_format($ratingAverage, 1) }} ({{ $ratingCount }} {{ __('showcase.ratings') }})
                 </span>
             </div>
         </div>

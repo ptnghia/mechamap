@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dự án công khai - MechaMap')
+@section('title', __('showcase.public_showcases') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -8,17 +8,17 @@
 @endpush
 
 @section('content')
-<!-- Page Header -->
-<div class="showcase-page-header">
+<!-- Page Header with Bootstrap 5 -->
+<div class="bg-light py-4 mb-4">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h1>Dự án công khai</h1>
-                <p>Khám phá các dự án cơ khí, sản phẩm kỹ thuật, và giải pháp công nghệ từ cộng đồng.</p>
+                <h1 class="display-6 fw-bold text-primary mb-2">{{ __('showcase.public_showcases') }}</h1>
+                <p class="lead text-muted mb-0">{{ __('showcase.page_description') }}</p>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <a href="{{ route('showcase.create') }}" class="create-showcase-btn">
-                    <i class="fas fa-plus me-2"></i>Tạo Showcase Mới
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <a href="{{ route('showcase.create') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>{{ __('showcase.create_new') }}
                 </a>
             </div>
         </div>
@@ -26,12 +26,12 @@
 </div>
 
 <div class="container">
-    <!-- SECTION 1: FEATURED SHOWCASES (15 items) -->
-    <div class="featured-showcases-section">
-        <h2 class="section-title">
-            <i class="fas fa-star"></i>
-            Dự án nổi bật
-        </h2>
+    <!-- SECTION 1: FEATURED SHOWCASES with Bootstrap 5 -->
+    <section class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-star text-warning me-3 fs-4"></i>
+            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.featured_projects') }}</h2>
+        </div>
 
         @if($featuredShowcases->count() > 0)
         <div class="swiper featured-swiper">
@@ -45,174 +45,201 @@
             <div class="swiper-pagination"></div>
         </div>
         @else
-        <div class="text-center py-4">
-            <p class="mb-0">Chưa có dự án nổi bật nào.</p>
+        <div class="text-center py-5">
+            <div class="text-muted">
+                <i class="fas fa-star fs-1 mb-3 opacity-50"></i>
+                <p class="mb-0">{{ __('showcase.no_featured_projects') }}</p>
+            </div>
         </div>
         @endif
-    </div>
+    </section>
 
-    <!-- SECTION 2: CATEGORIES GRID -->
-    <div class="categories-section">
-        <h2 class="section-title">
-            <i class="fas fa-th-large"></i>
-            Danh mục dự án
-        </h2>
+    <!-- SECTION 2: CATEGORIES GRID with Bootstrap 5 -->
+    <section class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-th-large text-info me-3 fs-4"></i>
+            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.project_categories') }}</h2>
+        </div>
 
-        <div class="categories-grid">
+        <div class="row g-4">
             @foreach($categories as $category)
-            <a href="{{ $category['url'] }}" class="category-card">
-                <div class="category-image {{ $category['cover_image'] ? '' : 'no-image' }}">
-                    @if($category['cover_image'])
-                        <img src="{{ $category['cover_image'] }}" alt="{{ $category['display_name'] }}" loading="lazy">
-                    @else
-                        <i class="fas fa-{{ $category['name'] === 'design' ? 'drafting-compass' : ($category['name'] === 'manufacturing' ? 'industry' : 'chart-line') }}"></i>
-                    @endif
-                </div>
-
-                <div class="category-content">
-                    <h3 class="category-name">{{ $category['display_name'] }}</h3>
-
-                    <div class="category-stats">
-                        <div class="category-stat">
-                            <div class="category-stat-number">{{ $category['showcase_count'] }}</div>
-                            <div class="category-stat-label">Dự án</div>
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ $category['url'] }}" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm border-0 category-card-hover">
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            @if($category['cover_image'])
+                                <img src="{{ $category['cover_image'] }}" alt="{{ $category['display_name'] }}"
+                                     class="img-fluid rounded" style="max-height: 180px; object-fit: cover;">
+                            @else
+                                <i class="fas fa-{{ $category['name'] === 'design' ? 'drafting-compass' : ($category['name'] === 'manufacturing' ? 'industry' : 'chart-line') }}
+                                   text-primary" style="font-size: 4rem;"></i>
+                            @endif
                         </div>
-                        <div class="category-stat">
-                            <div class="category-stat-number">{{ number_format($category['avg_rating'], 1) }}</div>
-                            <div class="category-stat-label">Đánh giá TB</div>
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold text-dark mb-3">{{ $category['display_name'] }}</h5>
+
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="fw-bold text-primary fs-4">{{ $category['showcase_count'] }}</div>
+                                    <small class="text-muted">{{ __('showcase.projects') }}</small>
+                                </div>
+                                <div class="col-6">
+                                    <div class="fw-bold text-warning fs-4">{{ number_format($category['avg_rating'], 1) }}</div>
+                                    <small class="text-muted">{{ __('showcase.avg_rating') }}</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
             @endforeach
         </div>
-    </div>
+    </section>
 
-    <!-- SECTION 3: ADVANCED SEARCH FORM -->
-    <div class="search-section">
-        <h2 class="section-title">
-            <i class="fas fa-search"></i>
-            Tìm kiếm nâng cao
-        </h2>
+    <!-- SECTION 3: ADVANCED SEARCH FORM with Bootstrap 5 -->
+    <section class="mb-5">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-search text-success me-3 fs-4"></i>
+            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.advanced_search') }}</h2>
+        </div>
 
-        <form method="GET" action="{{ route('showcase.public') }}" class="search-form" id="showcaseSearchForm">
-            <div class="search-group">
-                <label for="search">Tên dự án</label>
-                <input type="text" id="search" name="search" value="{{ request('search') }}"
-                       placeholder="Nhập tên hoặc mô tả dự án...">
-            </div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <form method="GET" action="{{ route('showcase.public') }}" id="showcaseSearchForm">
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-4">
+                            <label for="search" class="form-label fw-semibold">{{ __('showcase.project_name') }}</label>
+                            <input type="text" id="search" name="search" value="{{ request('search') }}"
+                                   class="form-control" placeholder="{{ __('showcase.search_placeholder') }}">
+                        </div>
 
-            <div class="search-group">
-                <label for="category">Danh mục</label>
-                <select id="category" name="category">
-                    <option value="">Tất cả danh mục</option>
-                    @foreach($searchFilters['categories'] as $cat)
-                    <option value="{{ $cat['value'] }}" {{ request('category') === $cat['value'] ? 'selected' : '' }}>
-                        {{ $cat['label'] }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                        <div class="col-md-6 col-lg-4">
+                            <label for="category" class="form-label fw-semibold">{{ __('showcase.category') }}</label>
+                            <select id="category" name="category" class="form-select">
+                                <option value="">{{ __('showcase.all_categories') }}</option>
+                                @foreach($searchFilters['categories'] as $cat)
+                                <option value="{{ $cat['value'] }}" {{ request('category') === $cat['value'] ? 'selected' : '' }}>
+                                    {{ $cat['label'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-            <div class="search-group">
-                <label for="complexity">Độ phức tạp</label>
-                <select id="complexity" name="complexity">
-                    <option value="">Tất cả mức độ</option>
-                    @foreach($searchFilters['complexity_levels'] as $level)
-                    <option value="{{ $level['value'] }}" {{ request('complexity') === $level['value'] ? 'selected' : '' }}>
-                        {{ $level['label'] }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                        <div class="col-md-6 col-lg-4">
+                            <label for="complexity" class="form-label fw-semibold">{{ __('showcase.complexity') }}</label>
+                            <select id="complexity" name="complexity" class="form-select">
+                                <option value="">{{ __('showcase.all_levels') }}</option>
+                                @foreach($searchFilters['complexity_levels'] as $level)
+                                <option value="{{ $level['value'] }}" {{ request('complexity') === $level['value'] ? 'selected' : '' }}>
+                                    {{ $level['label'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-            <div class="search-group">
-                <label for="project_type">Loại dự án</label>
-                <select id="project_type" name="project_type">
-                    <option value="">Tất cả loại</option>
-                    @foreach($searchFilters['project_types'] as $type)
-                    <option value="{{ $type['value'] }}" {{ request('project_type') === $type['value'] ? 'selected' : '' }}>
-                        {{ $type['label'] }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                        <div class="col-md-6 col-lg-4">
+                            <label for="project_type" class="form-label fw-semibold">{{ __('showcase.project_type') }}</label>
+                            <select id="project_type" name="project_type" class="form-select">
+                                <option value="">{{ __('showcase.all_types') }}</option>
+                                @foreach($searchFilters['project_types'] as $type)
+                                <option value="{{ $type['value'] }}" {{ request('project_type') === $type['value'] ? 'selected' : '' }}>
+                                    {{ $type['label'] }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-            <div class="search-group">
-                <label for="software">Phần mềm</label>
-                <select id="software" name="software">
-                    <option value="">Tất cả phần mềm</option>
-                    @foreach($searchFilters['software_options'] as $software)
-                    <option value="{{ $software }}" {{ request('software') === $software ? 'selected' : '' }}>
-                        {{ $software }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                        <div class="col-md-6 col-lg-4">
+                            <label for="software" class="form-label fw-semibold">{{ __('showcase.software') }}</label>
+                            <select id="software" name="software" class="form-select">
+                                <option value="">{{ __('showcase.all_software') }}</option>
+                                @foreach($searchFilters['software_options'] as $software)
+                                <option value="{{ $software }}" {{ request('software') === $software ? 'selected' : '' }}>
+                                    {{ $software }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-            <div class="search-group">
-                <label for="rating_min">Đánh giá tối thiểu</label>
-                <select id="rating_min" name="rating_min">
-                    <option value="">Tất cả đánh giá</option>
-                    <option value="4" {{ request('rating_min') === '4' ? 'selected' : '' }}>4+ sao</option>
-                    <option value="3" {{ request('rating_min') === '3' ? 'selected' : '' }}>3+ sao</option>
-                    <option value="2" {{ request('rating_min') === '2' ? 'selected' : '' }}>2+ sao</option>
-                </select>
-            </div>
-        </form>
+                        <div class="col-md-6 col-lg-4">
+                            <label for="rating_min" class="form-label fw-semibold">{{ __('showcase.min_rating') }}</label>
+                            <select id="rating_min" name="rating_min" class="form-select">
+                                <option value="">{{ __('showcase.all_ratings') }}</option>
+                                <option value="4" {{ request('rating_min') === '4' ? 'selected' : '' }}>{{ __('showcase.4_plus_stars') }}</option>
+                                <option value="3" {{ request('rating_min') === '3' ? 'selected' : '' }}>{{ __('showcase.3_plus_stars') }}</option>
+                                <option value="2" {{ request('rating_min') === '2' ? 'selected' : '' }}>{{ __('showcase.2_plus_stars') }}</option>
+                            </select>
+                        </div>
+                    </div>
 
-        <div class="search-actions">
-            <button type="submit" form="showcaseSearchForm" class="search-btn">
-                <i class="fas fa-search me-2"></i>Tìm kiếm
-            </button>
-            <button type="button" class="clear-btn" onclick="clearFilters()">
-                <i class="fas fa-times me-2"></i>Xóa bộ lọc
-            </button>
-
-            <div class="sort-options">
-                <label for="sort">Sắp xếp:</label>
-                <select id="sort" name="sort" form="showcaseSearchForm" onchange="document.getElementById('showcaseSearchForm').submit()">
-                    <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Mới nhất</option>
-                    <option value="most_viewed" {{ request('sort') === 'most_viewed' ? 'selected' : '' }}>Xem nhiều nhất</option>
-                    <option value="highest_rated" {{ request('sort') === 'highest_rated' ? 'selected' : '' }}>Đánh giá cao nhất</option>
-                    <option value="most_downloads" {{ request('sort') === 'most_downloads' ? 'selected' : '' }}>Tải nhiều nhất</option>
-                    <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Cũ nhất</option>
-                </select>
+                    <div class="row mt-4 align-items-end">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>{{ __('showcase.search') }}
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">
+                                    <i class="fas fa-times me-2"></i>{{ __('showcase.clear_filters') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center justify-content-md-end">
+                                <label for="sort" class="form-label me-2 mb-0 fw-semibold">{{ __('showcase.sort_by') }}:</label>
+                                <select id="sort" name="sort" class="form-select w-auto" onchange="document.getElementById('showcaseSearchForm').submit()">
+                                    <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>{{ __('showcase.newest') }}</option>
+                                    <option value="most_viewed" {{ request('sort') === 'most_viewed' ? 'selected' : '' }}>{{ __('showcase.most_viewed') }}</option>
+                                    <option value="highest_rated" {{ request('sort') === 'highest_rated' ? 'selected' : '' }}>{{ __('showcase.highest_rated') }}</option>
+                                    <option value="most_downloads" {{ request('sort') === 'most_downloads' ? 'selected' : '' }}>{{ __('showcase.most_downloads') }}</option>
+                                    <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>{{ __('showcase.oldest') }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SECTION 4: ALL SHOWCASES LISTING (Paginated) -->
-    <div class="all-showcases-section">
-        <h2 class="section-title">
-            <i class="fas fa-list"></i>
-            Tất cả dự án
-            @if(request()->hasAny(['search', 'category', 'complexity', 'project_type', 'software', 'rating_min']))
-            <small class="text-muted">({{ $allShowcases->total() }} kết quả)</small>
-            @endif
-        </h2>
+    <!-- SECTION 4: ALL SHOWCASES LISTING with Bootstrap 5 -->
+    <section class="mb-5">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-list text-secondary me-3 fs-4"></i>
+                <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.all_projects') }}</h2>
+                @if(request()->hasAny(['search', 'category', 'complexity', 'project_type', 'software', 'rating_min']))
+                <span class="badge bg-primary ms-3">{{ $allShowcases->total() }} {{ __('showcase.results') }}</span>
+                @endif
+            </div>
+        </div>
 
         @if($allShowcases->count() > 0)
-        <div class="showcases-grid">
+        <div class="row g-4 mb-4">
             @foreach($allShowcases as $showcase)
+            <div class="col-md-6 col-lg-4">
                 @include('partials.showcase-item', ['showcase' => $showcase])
+            </div>
             @endforeach
         </div>
 
-        <div class="pagination-wrapper">
+        <!-- Bootstrap 5 Pagination -->
+        <div class="d-flex justify-content-center">
             {{ $allShowcases->links() }}
         </div>
         @else
         <div class="text-center py-5">
-            <i class="fas fa-search fa-3x text-muted mb-3"></i>
-            <h4>Không tìm thấy dự án nào</h4>
-            <p class="text-muted">Thử thay đổi bộ lọc tìm kiếm hoặc tạo dự án mới.</p>
-            <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Tạo dự án mới
+            <div class="mb-4">
+                <i class="fas fa-search text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-3">{{ __('showcase.no_projects_found') }}</h4>
+            <p class="text-muted mb-4">{{ __('showcase.try_different_filters') }}</p>
+            <a href="{{ route('showcase.create') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>{{ __('showcase.create_new_project') }}
             </a>
         </div>
         @endif
-    </div>
+    </section>
 </div>
 @endsection
 @push('scripts')
@@ -246,8 +273,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 spaceBetween: 20,
             },
             1200: {
-                slidesPerView: 4,
-                spaceBetween: 20,
+                slidesPerView: 3,
+                spaceBetween: 15,
             }
         }
     });
