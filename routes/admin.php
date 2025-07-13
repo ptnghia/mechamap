@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\DynamicDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\NotificationAnalyticsController;
 use App\Http\Controllers\Admin\BusinessVerificationController;
+use App\Http\Controllers\Admin\UserStandardizationController;
 use Illuminate\Support\Facades\Route;
 
 // Admin auth routes (không cần phân quyền)
@@ -629,6 +630,14 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::resource('regions', RegionController::class);
         Route::get('regions/country/{country}', [RegionController::class, 'byCountry'])->name('regions.by-country');
         Route::get('regions/featured', [RegionController::class, 'featured'])->name('regions.featured');
+    });
+
+    // User Data Standardization routes (chỉ super admin có quyền)
+    Route::middleware(['admin.auth'])->prefix('users')->name('users.')->group(function () {
+        Route::get('standardization', [UserStandardizationController::class, 'index'])->name('standardization');
+        Route::post('standardization/backup', [UserStandardizationController::class, 'backup'])->name('standardization.backup');
+        Route::post('standardization/check-integrity', [UserStandardizationController::class, 'checkIntegrity'])->name('standardization.check-integrity');
+        Route::post('standardization/standardize', [UserStandardizationController::class, 'standardize'])->name('standardization.standardize');
     });
 
     // SEO management routes được định nghĩa ở cuối file
