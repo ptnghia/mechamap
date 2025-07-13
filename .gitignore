@@ -129,6 +129,7 @@ test.txt
 /restore_*.bat
 /verify_*.bat
 /setup_*.bat
+/optimize-production.sh
 
 # Backup Files (must be in docs/archived/)
 /*.backup

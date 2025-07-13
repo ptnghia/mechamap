@@ -44,7 +44,7 @@ Route::get('/homepage', function () {
     return redirect('/');
 });
 
-// Giữ lại route welcome để test
+// Welcome route for backward compatibility
 Route::get('/welcome', [\App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
 // Load More threads route cho trang chủ
@@ -89,9 +89,7 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     Route::get('/orders', [App\Http\Controllers\MarketplaceOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [App\Http\Controllers\MarketplaceOrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/{order}/items/{item}/download', [App\Http\Controllers\MarketplaceOrderController::class, 'downloadFile'])->name('orders.download-file')->where(['order' => '[0-9]+', 'item' => '[0-9]+']);
-    Route::get('/orders/{order}/items/{item}/download-test', function($order, $item) {
-        return response()->json(['order' => $order, 'item' => $item, 'message' => 'Route works']);
-    });
+
     Route::get('/orders/{order}/items/{item}/download-simple', function($orderId, $itemId) {
         $order = App\Models\MarketplaceOrder::findOrFail($orderId);
         $item = App\Models\MarketplaceOrderItem::findOrFail($itemId);
@@ -382,10 +380,7 @@ Route::get('/dashboard', function () {
     };
 })->middleware(['auth', 'verified.social'])->name('dashboard');
 
-// Test chat widget
-Route::get('/test-chat', function () {
-    return view('test-chat');
-})->middleware(['auth'])->name('test-chat');
+
 
 // Chat/Messages routes
 Route::middleware(['auth'])->prefix('messages')->name('chat.')->group(function () {
