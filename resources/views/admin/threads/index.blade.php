@@ -49,7 +49,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
+                    <label for="forum_id" class="form-label">{{ __(__('forum.forums.title')) }}</label>
                     <select class="form-select" id="forum_id" name="forum_id">
                         <option value="">{{ __('Tất cả') }}</option>
                         @foreach($forums as $forum)
@@ -67,7 +67,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="search" class="form-label">{{ __('Tìm kiếm') }}</label>
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tiêu đề, nội dung...') }}">
                 </div>
                 <div class="col-12">
@@ -95,7 +95,7 @@
                             <th scope="col" width="60">{{ __('ID') }}</th>
                             <th scope="col">{{ __('Tiêu đề') }}</th>
                             <th scope="col" width="150">{{ __('Tác giả') }}</th>
-                            <th scope="col" width="150">{{ __('Diễn đàn') }}</th>
+                            <th scope="col" width="150">{{ __(__('forum.forums.title')) }}</th>
                             <th scope="col" width="150">{{ __('Chuyên mục') }}</th>
                             <th scope="col" width="120">{{ __('Trạng thái') }}</th>
                             <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
@@ -112,12 +112,12 @@
                                     </a>
                                     <div class="small text-muted">
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __('Ghim') }}</span>
+                                            <span class="badge bg-info me-1">{{ __(__('forum.threads.pinned')) }}</span>
                                         @endif
                                         @if($thread->is_featured)
                                             <span class="badge bg-warning me-1">{{ __('Nổi bật') }}</span>
                                         @endif
-                                        {{ __('Lượt xem') }}: {{ $thread->view_count }}
+                                        {{ __(__('ui.common.views')) }}: {{ $thread->view_count }}
                                     </div>
                                 </td>
                                 <td>

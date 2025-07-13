@@ -83,4 +83,8 @@ return [
     'provided_helpful_answer' => 'provided a helpful answer',
     'joined_community' => 'joined the community',
     'newsletter_success' => 'Thank you for subscribing to our newsletter!',
+
+    // Featured Showcases
+    'featured_showcases' => 'Featured Projects',
+    'featured_showcases_desc' => 'Discover impressive mechanical engineering projects from our community',
 ];

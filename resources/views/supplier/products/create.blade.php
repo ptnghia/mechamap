@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Thêm Sản phẩm Mới - Supplier Dashboard')
+@section('title', __('marketplace.product_management.create_product') . ' - Supplier Dashboard')
 
 @section('content')
 <div class="container-fluid py-4">
@@ -11,14 +11,14 @@
                 <div>
                     <h1 class="h2 mb-1">
                         <i class="bx bx-plus-circle text-primary me-2"></i>
-                        Thêm Sản phẩm Mới
+                        {{ __('marketplace.product_management.create_product') }}
                     </h1>
-                    <p class="text-muted mb-0">Tạo sản phẩm vật lý mới cho MechaMap Marketplace</p>
+                    <p class="text-muted mb-0">{{ __('marketplace.product_management.create_physical_product') }}</p>
                 </div>
                 <div>
                     <a href="{{ route('supplier.products.index') }}" class="btn btn-outline-secondary">
                         <i class="bx bx-arrow-back me-1"></i>
-                        Quay lại
+                        {{ __('marketplace.product_management.back') }}
                     </a>
                 </div>
             </div>
@@ -35,13 +35,13 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-info-circle me-2"></i>
-                            Thông tin cơ bản
+                            {{ __('marketplace.product_management.basic_information') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="name" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ __('marketplace.product_management.product_name') }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                        id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
@@ -50,10 +50,10 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="product_category_id" class="form-label">Danh mục</label>
+                                <label for="product_category_id" class="form-label">{{ __('marketplace.product_management.category') }}</label>
                                 <select class="form-select @error('product_category_id') is-invalid @enderror"
                                         id="product_category_id" name="product_category_id">
-                                    <option value="">Chọn danh mục</option>
+                                    <option value="">{{ __('marketplace.product_management.select_category') }}</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('product_category_id') == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
@@ -66,30 +66,30 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="material" class="form-label">Vật liệu</label>
+                                <label for="material" class="form-label">{{ __('marketplace.product_management.material') }}</label>
                                 <input type="text" class="form-control @error('material') is-invalid @enderror"
                                        id="material" name="material" value="{{ old('material') }}"
-                                       placeholder="VD: Thép không gỉ 304, Nhôm 6061...">
+                                       placeholder="{{ __('marketplace.product_management.material_placeholder') }}">
                                 @error('material')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="short_description" class="form-label">Mô tả ngắn</label>
+                                <label for="short_description" class="form-label">{{ __('marketplace.product_management.short_description') }}</label>
                                 <textarea class="form-control @error('short_description') is-invalid @enderror"
                                           id="short_description" name="short_description" rows="2"
-                                          placeholder="Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)">{{ old('short_description') }}</textarea>
+                                          placeholder="{{ __('marketplace.product_management.short_description_placeholder') }}">{{ old('short_description') }}</textarea>
                                 @error('short_description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="description" class="form-label">Mô tả chi tiết <span class="text-danger">*</span></label>
+                                <label for="description" class="form-label">{{ __('marketplace.product_management.detailed_description') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control @error('description') is-invalid @enderror"
                                           id="description" name="description" rows="6" required
-                                          placeholder="Mô tả chi tiết về sản phẩm, tính năng, ứng dụng...">{{ old('description') }}</textarea>
+                                          placeholder="{{ __('marketplace.product_management.detailed_description_placeholder') }}">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -103,17 +103,17 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-dollar me-2"></i>
-                            Giá cả & Tồn kho
+                            {{ __('marketplace.product_management.pricing_inventory') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="price" class="form-label">Giá bán <span class="text-danger">*</span></label>
+                                <label for="price" class="form-label">{{ __('marketplace.product_management.selling_price') }} <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control @error('price') is-invalid @enderror"
                                            id="price" name="price" value="{{ old('price') }}" min="0" step="1000" required>
-                                    <span class="input-group-text">VNĐ</span>
+                                    <span class="input-group-text">{{ __('marketplace.product_management.currency_vnd') }}</span>
                                 </div>
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -121,11 +121,11 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="sale_price" class="form-label">Giá khuyến mãi</label>
+                                <label for="sale_price" class="form-label">{{ __('marketplace.product_management.sale_price') }}</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control @error('sale_price') is-invalid @enderror"
                                            id="sale_price" name="sale_price" value="{{ old('sale_price') }}" min="0" step="1000">
-                                    <span class="input-group-text">VNĐ</span>
+                                    <span class="input-group-text">{{ __('marketplace.product_management.currency_vnd') }}</span>
                                 </div>
                                 @error('sale_price')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -133,7 +133,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="stock_quantity" class="form-label">Số lượng tồn kho <span class="text-danger">*</span></label>
+                                <label for="stock_quantity" class="form-label">{{ __('marketplace.product_management.stock_quantity') }} <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control @error('stock_quantity') is-invalid @enderror"
                                        id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" min="0" required>
                                 @error('stock_quantity')
@@ -142,15 +142,15 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Quản lý tồn kho</label>
+                                <label class="form-label">{{ __('marketplace.product_management.inventory_management') }}</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="manage_stock" name="manage_stock"
                                            value="1" {{ old('manage_stock', true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="manage_stock">
-                                        Tự động quản lý tồn kho
+                                        {{ __('marketplace.product_management.auto_manage_stock') }}
                                     </label>
                                 </div>
-                                <small class="text-muted">Hệ thống sẽ tự động giảm tồn kho khi có đơn hàng</small>
+                                <small class="text-muted">{{ __('marketplace.product_management.auto_manage_stock_help') }}</small>
                             </div>
                         </div>
                     </div>
@@ -161,46 +161,46 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-cog me-2"></i>
-                            Thông số kỹ thuật
+                            {{ __('marketplace.product_management.technical_specifications') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="manufacturing_process" class="form-label">Quy trình sản xuất</label>
+                                <label for="manufacturing_process" class="form-label">{{ __('marketplace.product_management.manufacturing_process') }}</label>
                                 <input type="text" class="form-control @error('manufacturing_process') is-invalid @enderror"
                                        id="manufacturing_process" name="manufacturing_process" value="{{ old('manufacturing_process') }}"
-                                       placeholder="VD: CNC Machining, 3D Printing...">
+                                       placeholder="{{ __('marketplace.product_management.manufacturing_process_placeholder') }}">
                                 @error('manufacturing_process')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="tags" class="form-label">Tags</label>
+                                <label for="tags" class="form-label">{{ __('marketplace.product_management.tags') }}</label>
                                 <input type="text" class="form-control @error('tags') is-invalid @enderror"
                                        id="tags" name="tags" value="{{ old('tags') }}"
-                                       placeholder="VD: cơ khí, gia công, chính xác (phân cách bằng dấu phẩy)">
+                                       placeholder="{{ __('marketplace.product_management.tags_placeholder') }}">
                                 @error('tags')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label class="form-label">Thông số kỹ thuật chi tiết</label>
+                                <label class="form-label">{{ __('marketplace.product_management.detailed_technical_specs') }}</label>
                                 <div id="technical-specs">
                                     <div class="row mb-2">
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" name="technical_specs[0][name]"
-                                                   placeholder="Tên thông số" value="{{ old('technical_specs.0.name') }}">
+                                                   placeholder="{{ __('marketplace.product_management.spec_name_placeholder') }}" value="{{ old('technical_specs.0.name') }}">
                                         </div>
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" name="technical_specs[0][value]"
-                                                   placeholder="Giá trị" value="{{ old('technical_specs.0.value') }}">
+                                                   placeholder="{{ __('marketplace.product_management.spec_value_placeholder') }}" value="{{ old('technical_specs.0.value') }}">
                                         </div>
                                         <div class="col-md-3">
                                             <input type="text" class="form-control" name="technical_specs[0][unit]"
-                                                   placeholder="Đơn vị" value="{{ old('technical_specs.0.unit') }}">
+                                                   placeholder="{{ __('marketplace.product_management.spec_unit_placeholder') }}" value="{{ old('technical_specs.0.unit') }}">
                                         </div>
                                         <div class="col-md-1">
                                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeSpec(this)">
@@ -211,7 +211,7 @@
                                 </div>
                                 <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSpec()">
                                     <i class="bx bx-plus me-1"></i>
-                                    Thêm thông số
+                                    {{ __('marketplace.product_management.add_specification') }}
                                 </button>
                             </div>
                         </div>
@@ -223,16 +223,16 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-image me-2"></i>
-                            Hình ảnh sản phẩm
+                            {{ __('marketplace.product_management.product_images') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="images" class="form-label">Upload hình ảnh</label>
+                            <label for="images" class="form-label">{{ __('marketplace.product_management.upload_images') }}</label>
                             <input type="file" class="form-control @error('images') is-invalid @enderror"
                                    id="images" name="images[]" multiple accept="image/*">
                             <small class="text-muted">
-                                Chọn nhiều hình ảnh (JPG, PNG, GIF - tối đa 2MB mỗi file). Hình đầu tiên sẽ là ảnh đại diện.
+                                {{ __('marketplace.product_management.image_upload_help') }}
                             </small>
                             @error('images')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -250,22 +250,22 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-save me-2"></i>
-                            Hành động
+                            {{ __('marketplace.product_management.actions') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bx bx-save me-1"></i>
-                                Tạo Sản phẩm
+                                {{ __('marketplace.product_management.create_product_btn') }}
                             </button>
                             <button type="button" class="btn btn-outline-secondary" onclick="saveDraft()">
                                 <i class="bx bx-file me-1"></i>
-                                Lưu bản nháp
+                                {{ __('marketplace.product_management.save_draft') }}
                             </button>
                             <a href="{{ route('supplier.products.index') }}" class="btn btn-outline-danger">
                                 <i class="bx bx-x me-1"></i>
-                                Hủy
+                                {{ __('marketplace.product_management.cancel') }}
                             </a>
                         </div>
                     </div>
@@ -276,26 +276,26 @@
                     <div class="card-header bg-transparent">
                         <h5 class="mb-0">
                             <i class="bx bx-help-circle me-2"></i>
-                            Hướng dẫn
+                            {{ __('marketplace.product_management.help_guide') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled mb-0">
                             <li class="mb-2">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Điền đầy đủ thông tin sản phẩm
+                                {{ __('marketplace.product_management.help_complete_info') }}
                             </li>
                             <li class="mb-2">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Upload hình ảnh chất lượng cao
+                                {{ __('marketplace.product_management.help_quality_images') }}
                             </li>
                             <li class="mb-2">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Mô tả chi tiết tính năng và ứng dụng
+                                {{ __('marketplace.product_management.help_detailed_description') }}
                             </li>
                             <li class="mb-0">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Sản phẩm sẽ được duyệt trong 24-48h
+                                {{ __('marketplace.product_management.help_approval_time') }}
                             </li>
                         </ul>
                     </div>
@@ -449,7 +449,7 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
 
     if (salePrice && salePrice >= price) {
         e.preventDefault();
-        alert('Giá khuyến mãi phải nhỏ hơn giá bán thường!');
+        alert('{{ __('marketplace.product_management.price_validation_error') }}');
         return false;
     }
 });

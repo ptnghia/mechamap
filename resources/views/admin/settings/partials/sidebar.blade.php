@@ -30,7 +30,7 @@
             </a>
             <a href="{{ route('admin.settings.forum') }}"
                 class="list-group-item list-group-item-action {{ request()->routeIs('admin.settings.forum') ? 'active' : '' }}">
-                <i class="fas fa-comment me-2"></i> {{ __('Diễn đàn') }}
+                <i class="fas fa-comment me-2"></i> {{ __(__('forum.forums.title')) }}
             </a>
             <a href="{{ route('admin.settings.user') }}"
                 class="list-group-item list-group-item-action {{ request()->routeIs('admin.settings.user') ? 'active' : '' }}">

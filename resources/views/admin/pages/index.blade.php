@@ -56,7 +56,7 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label for="search" class="form-label">{{ __('Tìm kiếm') }}</label>
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tiêu đề, nội dung...') }}">
                 </div>
                 <div class="col-12">
@@ -85,7 +85,7 @@
                             <th scope="col">{{ __('Tiêu đề') }}</th>
                             <th scope="col" width="150">{{ __('Danh mục') }}</th>
                             <th scope="col" width="120">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="120">{{ __('Lượt xem') }}</th>
+                            <th scope="col" width="120">{{ __(__('ui.common.views')) }}</th>
                             <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
                             <th scope="col" width="120">{{ __('Thao tác') }}</th>
                         </tr>

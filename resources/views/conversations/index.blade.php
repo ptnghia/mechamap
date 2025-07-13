@@ -29,7 +29,7 @@
                             </li>
                             <li><a class="dropdown-item"
                                     href="{{ route('conversations.index', ['filter' => 'started']) }}">{{
-                                    __('messages.started_by_me') }}</a></li>
+                                    __('forum.threads.started_by_me') }}</a></li>
                         </ul>
                     </div>
                 </div>

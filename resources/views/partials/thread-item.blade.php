@@ -56,12 +56,12 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
             <span class="btn btn-sm bg-primary thread_status"><i class="pin-angle"></i>
-                {{ __('messages.threads.pinned') }}
+                {{ __('forum.status.pinned') }}
             </span>
             @endif
             @if($thread->is_locked ?? false)
             <span class="btn btn-sm bg-danger thread_status"><i class="fas fa-lock-fill"></i>
-                {{ __('messages.threads.locked') }}
+                {{ __('forum.status.locked') }}
             </span>
             @endif
 
@@ -73,18 +73,18 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <form method="POST" action="{{ route('threads.bookmark.remove', $thread) }}" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
+                    <button type="submit" class="btn btn-sm btn-primary" title="{{ __('forum.actions.bookmark_remove') }}">
                         <i class="far fa-bookmark-fill"></i>
-                        <span class="d-none d-md-inline ms-1">Đã lưu</span>
+                        <span class="d-none d-md-inline ms-1">{{ __('forum.actions.bookmarked') }}</span>
                     </button>
                 </form>
                 @else
                 <!-- Add bookmark form -->
                 <form method="POST" action="{{ route('threads.bookmark.add', $thread) }}" style="display: inline;">
                     @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
+                    <button type="submit" class="btn btn-sm btn-outline-primary" title="{{ __('forum.actions.bookmark_add') }}">
                         <i class="far fa-bookmark"></i>
-                        <span class="d-none d-md-inline ms-1">Lưu</span>
+                        <span class="d-none d-md-inline ms-1">{{ __('thread.bookmark') }}</span>
                     </button>
                 </form>
                 @endif
@@ -94,18 +94,18 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                 <form method="POST" action="{{ route('threads.follow.remove', $thread) }}" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
+                    <button type="submit" class="btn btn-sm btn-success" title="{{ __('forum.actions.unfollow_thread') }}">
                         <i class="fas fa-bell-fill"></i>
-                        <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
+                        <span class="d-none d-md-inline ms-1">{{ __('forum.actions.following') }}</span>
                     </button>
                 </form>
                 @else
                 <!-- Follow form -->
                 <form method="POST" action="{{ route('threads.follow.add', $thread) }}" style="display: inline;">
                     @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
+                    <button type="submit" class="btn btn-sm btn-outline-success" title="{{ __('forum.actions.follow_thread') }}">
                         <i class="fas fa-bell"></i>
-                        <span class="d-none d-md-inline ms-1">Theo dõi</span>
+                        <span class="d-none d-md-inline ms-1">{{ __('thread.follow') }}</span>
                     </button>
                 </form>
                 @endif
@@ -156,8 +156,8 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
     <div class="thread-item-footer">
         <div class="thread-meta-left">
             <div class="thread-meta">
-                <span class="meta-item"><i class="fas fa-eye"></i> {{ $viewCount }} {{ __('messages.threads.views') }}</span>
-                <span class="meta-item"><i class="fas fa-comment"></i> {{ $commentsCount }} {{ __('messages.threads.replies') }}</span>
+                <span class="meta-item"><i class="fas fa-eye"></i> {{ $viewCount }} {{ __('forum.views') }}</span>
+                <span class="meta-item"><i class="fas fa-comment"></i> {{ $commentsCount }} {{ __('forum.replies') }}</span>
             </div>
 
             <div class="thread-category-badges">

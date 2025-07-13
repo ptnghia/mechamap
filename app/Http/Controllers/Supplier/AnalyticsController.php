@@ -21,7 +21,7 @@ class AnalyticsController extends Controller
     /**
      * Display supplier analytics dashboard
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
         $user = auth()->user();
         $seller = MarketplaceSeller::where('user_id', $user->id)->first();

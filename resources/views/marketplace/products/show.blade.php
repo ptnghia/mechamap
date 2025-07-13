@@ -13,14 +13,14 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}" class="text-decoration-none">
                             <i class="house me-2"></i>
-                            {{ __('messages.marketplace.home') }}
+                            {{ __('marketplace.marketplace.home') }}
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">{{ __('messages.marketplace.marketplace') }}</a>
+                        <a href="{{ route('marketplace.index') }}" class="text-decoration-none">{{ __('marketplace.marketplace.marketplace') }}</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('marketplace.products.index') }}" class="text-decoration-none">{{ __('messages.marketplace.products') }}</a>
+                        <a href="{{ route('marketplace.products.index') }}" class="text-decoration-none">{{ __('marketplace.products.title') }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($product->name, 30) }}</li>
                 </ol>
@@ -67,18 +67,18 @@
                         <!-- Seller Info -->
                         @if($product->seller)
                         <div class="d-flex align-items-center mb-3">
-                            <span class="text-muted small">{{ __('messages.marketplace.sold_by') }}</span>
+                            <span class="text-muted small">{{ __('marketplace.marketplace.sold_by') }}</span>
                             <a href="{{ route('marketplace.sellers.show', $product->seller->store_slug) }}" class="ms-2 text-primary text-decoration-none fw-medium">
                                 {{ $product->seller->business_name ?? $product->seller->user->name }}
                             </a>
                             <span class="ms-2 badge bg-{{ $product->seller->verification_status === 'verified' ? 'success' : 'secondary' }}">
-                                {{ $product->seller->verification_status === 'verified' ? __('messages.marketplace.verified') : ucfirst($product->seller->verification_status) }}
+                                {{ $product->seller->verification_status === 'verified' ? __('marketplace.products.verified') : ucfirst($product->seller->verification_status) }}
                             </span>
                         </div>
                         @else
                         <div class="d-flex align-items-center mb-3">
-                            <span class="text-muted small">{{ __('messages.marketplace.sold_by') }}</span>
-                            <span class="ms-2 text-muted">Người bán không có sẵn</span>
+                            <span class="text-muted small">{{ __('marketplace.marketplace.sold_by') }}</span>
+                            <span class="ms-2 text-muted">{{ __('marketplace.marketplace.seller_not_available') }}</span>
                         </div>
                         @endif
 
@@ -94,7 +94,7 @@
                                         @endif
                                     @endfor
                                 </div>
-                                <span class="text-muted small">({{ $product->rating_count }} {{ __('messages.marketplace.reviews') }})</span>
+                                <span class="text-muted small">({{ $product->rating_count }} {{ __('marketplace.marketplace.reviews') }})</span>
                             </div>
                         @endif
 
@@ -118,7 +118,7 @@
                             @if($product->in_stock)
                                 <span class="badge bg-success">
                                     <i class="fas fa-check-circle me-1"></i>
-                                    {{ __('messages.marketplace.in_stock') }}
+                                    {{ __('marketplace.marketplace.in_stock') }}
                                 </span>
                                 @if($product->stock_quantity <= 5)
                                     <span class="ms-2 text-warning small">Only {{ $product->stock_quantity }} left!</span>
@@ -126,7 +126,7 @@
                             @else
                                 <span class="badge bg-danger">
                                     <i class="fas fa-times-circle me-1"></i>
-                                    {{ __('messages.marketplace.out_of_stock') }}
+                                    {{ __('marketplace.marketplace.out_of_stock') }}
                                 </span>
                             @endif
                         </div>
@@ -135,7 +135,7 @@
                         <div class="mb-4">
                             <div class="d-flex flex-wrap gap-2">
                                 <span class="badge bg-primary">
-                                    {{ $product->product_type === 'service' ? __('messages.marketplace.service') : ucfirst($product->product_type) }}
+                                    {{ $product->product_type === 'service' ? __('marketplace.products.service') : ucfirst($product->product_type) }}
                                 </span>
                                 @if($product->category)
                                     <span class="badge bg-secondary">
@@ -143,7 +143,7 @@
                                     </span>
                                 @endif
                                 <span class="badge bg-info">
-                                    {{ $product->seller_type === 'manufacturer' ? __('messages.marketplace.manufacturer') : ucfirst($product->seller_type) }}
+                                    {{ $product->seller_type === 'manufacturer' ? __('marketplace.products.manufacturer') : ucfirst($product->seller_type) }}
                                 </span>
                             </div>
                         </div>
@@ -153,17 +153,17 @@
                             @if($product->in_stock)
                                 <button class="btn btn-primary btn-lg" onclick="addToCart({{ $product->id }})">
                                     <i class="fas fa-shopping-cart-plus me-2"></i>
-                                    {{ __('messages.marketplace.add_to_cart') }}
+                                    {{ __('marketplace.marketplace.add_to_cart') }}
                                 </button>
                             @else
                                 <button class="btn btn-secondary btn-lg" disabled>
-                                    {{ __('messages.marketplace.out_of_stock') }}
+                                    {{ __('marketplace.marketplace.out_of_stock') }}
                                 </button>
                             @endif
 
                             <button class="btn btn-outline-secondary" onclick="addToWishlist({{ $product->id }})">
                                 <i class="heart me-2"></i>
-                                {{ __('messages.marketplace.add_to_wishlist') }}
+                                {{ __('marketplace.marketplace.add_to_wishlist') }}
                             </button>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="h4 fw-bold mb-3">{{ __('messages.marketplace.product_description') }}</h2>
+                        <h2 class="h4 fw-bold mb-3">{{ __('marketplace.marketplace.product_description') }}</h2>
                         <div class="mb-4">
                             {!! nl2br(e($product->description)) !!}
                         </div>
@@ -188,7 +188,7 @@
                             @endphp
                             @if($specs && is_array($specs))
                                 <div class="mt-4">
-                                    <h3 class="h5 fw-semibold mb-3">{{ __('messages.marketplace.technical_specifications') }}</h3>
+                                    <h3 class="h5 fw-semibold mb-3">{{ __('marketplace.marketplace.technical_specifications') }}</h3>
                                     <div class="row">
                                         @foreach($specs as $key => $value)
                                             <div class="col-md-6 mb-2">
@@ -196,22 +196,22 @@
                                                     <span class="fw-medium text-dark">
                                                         @switch($key)
                                                             @case('lead_time')
-                                                                {{ __('messages.marketplace.lead_time') }}:
+                                                                {{ __('marketplace.marketplace.lead_time') }}:
                                                                 @break
                                                             @case('minimum_order')
-                                                                {{ __('messages.marketplace.minimum_order') }}:
+                                                                {{ __('marketplace.marketplace.minimum_order') }}:
                                                                 @break
                                                             @case('precision')
-                                                                {{ __('messages.marketplace.precision') }}:
+                                                                {{ __('marketplace.marketplace.precision') }}:
                                                                 @break
                                                             @case('quality_standard')
-                                                                {{ __('messages.marketplace.quality_standard') }}:
+                                                                {{ __('marketplace.marketplace.quality_standard') }}:
                                                                 @break
                                                             @case('material_options')
-                                                                {{ __('messages.marketplace.material_options') }}:
+                                                                {{ __('marketplace.marketplace.material_options') }}:
                                                                 @break
                                                             @case('delivery')
-                                                                {{ __('messages.marketplace.delivery') }}:
+                                                                {{ __('marketplace.marketplace.delivery') }}:
                                                                 @break
                                                             @default
                                                                 {{ ucfirst(str_replace('_', ' ', $key)) }}:
@@ -234,7 +234,7 @@
         @if($relatedProducts->count() > 0)
             <div class="row mt-4">
                 <div class="col-12">
-                    <h2 class="h4 fw-bold mb-4">{{ __('messages.marketplace.related_products') }}</h2>
+                    <h2 class="h4 fw-bold mb-4">{{ __('marketplace.marketplace.related_products') }}</h2>
                     <div class="row">
                         @foreach($relatedProducts as $relatedProduct)
                             <x-product-card :product="$relatedProduct" card-class="col-lg-4 col-md-6 mb-4" />

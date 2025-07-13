@@ -63,4 +63,8 @@ return [
 
     // Bio
     'No bio available.' => 'Chưa có thông tin cá nhân.',
+
+    // Missing keys
+    'Direction' => 'Hướng',
+    'Online' => 'Trực tuyến',
 ];

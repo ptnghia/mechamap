@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('auth.login'))
+@section('title', __('auth.login.title'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/auth/login.css') }}">
@@ -35,36 +35,36 @@
                                     <div class="mb-4">
                                         <img src="{{ get_logo_url() }}" alt="MechaMap" class="mb-3 auth-logo">
                                         <h3 class="fw-bold mb-2">MechaMap</h3>
-                                        <p class="fs-5 mb-0 opacity-90">{{ __('content.knowledge_hub') }}</p>
+                                        <p class="fs-5 mb-0 opacity-90">{{ __('auth.knowledge_hub') }}</p>
                                     </div>
 
                                     <!-- Value Propositions -->
                                     <div class="mb-4">
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-users-cog me-3 fs-5"></i>
-                                            <span>{{ __('content.connect_engineers') }}</span>
+                                            <span>{{ __('auth.connect_engineers') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-comments me-3 fs-5"></i>
-                                            <span>{{ __('content.join_discussions') }}</span>
+                                            <span>{{ __('auth.join_discussions') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center mb-3">
                                             <i class="fas fa-tools me-3 fs-5"></i>
-                                            <span>{{ __('content.share_experience') }}</span>
+                                            <span>{{ __('auth.share_experience') }}</span>
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-store me-3 fs-5"></i>
-                                            <span>Marketplace sản phẩm kỹ thuật số</span>
+                                            <span>{{ __('auth.marketplace_products') }}</span>
                                         </div>
                                     </div>
 
                                     <!-- Trust Indicators -->
                                     <div class="border-top border-white border-opacity-25 pt-4">
-                                        <p class="small mb-2 opacity-75">Được tin tưởng bởi:</p>
+                                        <p class="small mb-2 opacity-75">{{ __('auth.trusted_by') }}</p>
                                         <div class="d-flex align-items-center">
-                                            <span class="badge bg-white text-primary me-2">Thành viên</span>
-                                            <span class="badge bg-white text-primary me-2">Đối tác cá nhân</span>
-                                            <span class="badge bg-white text-primary">Doanh nghiệp</span>
+                                            <span class="badge bg-white text-primary me-2">{{ __('auth.members_badge') }}</span>
+                                            <span class="badge bg-white text-primary me-2">{{ __('auth.individual_partners_badge') }}</span>
+                                            <span class="badge bg-white text-primary">{{ __('auth.business_badge') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -76,9 +76,9 @@
                             <div class="p-5">
                                 <!-- Header -->
                                 <div class="text-center mb-4">
-                                    <h2 class="fw-bold text-dark mb-2">Chào mừng trở lại!</h2>
+                                    <h2 class="fw-bold text-dark mb-2">{{ __('auth.welcome_back') }}</h2>
                                     <p class="text-muted mb-0">
-                                        Đăng nhập để tiếp tục hành trình kỹ thuật của bạn
+                                        {{ __('auth.login_journey_description') }}
                                     </p>
                                 </div>
 
@@ -104,7 +104,7 @@
                                     <!-- Email/Username Field -->
                                     <div class="mb-3">
                                         <label for="login" class="form-label fw-medium text-dark">
-                                            <i class="fas fa-user me-2 text-muted"></i>Email hoặc tên đăng nhập
+                                            <i class="fas fa-user me-2 text-muted"></i>{{ __('auth.email_or_username_label') }}
                                         </label>
                                         <input type="text"
                                                class="form-control form-control-lg @error('login') is-invalid @enderror"
@@ -122,7 +122,7 @@
                                     <!-- Password Field -->
                                     <div class="mb-3">
                                         <label for="password" class="form-label fw-medium text-dark">
-                                            <i class="fas fa-lock me-2 text-muted"></i>Mật khẩu
+                                            <i class="fas fa-lock me-2 text-muted"></i>{{ __('auth.password_label') }}
                                         </label>
                                         <div class="position-relative">
                                             <input type="password"
@@ -146,11 +146,11 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                             <label class="form-check-label text-muted" for="remember">
-                                                Ghi nhớ đăng nhập
+                                                {{ __('auth.remember_login') }}
                                             </label>
                                         </div>
                                         @if (Route::has('password.request'))
-                                            <a href="{{ route('password.request') }}" class="text-primary text-decoration-none">Quên mật khẩu?</a>
+                                            <a href="{{ route('password.request') }}" class="text-primary text-decoration-none">{{ __('auth.forgot_password_link') }}</a>
                                         @endif
                                     </div>
 
@@ -158,7 +158,7 @@
                                     <button type="submit" class="btn btn-primary btn-lg w-100 mb-4 position-relative" id="loginBtn">
                                         <span class="btn-text">
                                             <i class="fas fa-sign-in-alt me-2"></i>
-                                            Đăng nhập
+                                            {{ __('auth.login_button') }}
                                         </span>
                                         <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                                     </button>
@@ -168,7 +168,7 @@
                                 <div class="position-relative text-center mb-4">
                                     <hr class="text-muted">
                                     <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">
-                                        Hoặc đăng nhập với
+                                        {{ __('auth.or_login_with') }}
                                     </span>
                                 </div>
 
@@ -177,13 +177,13 @@
                                     <div class="col-6">
                                         <a href="#" class="btn btn-outline-danger w-100">
                                             <i class="fab fa-google me-2"></i>
-                                            Google
+                                            {{ __('auth.login_with_google') }}
                                         </a>
                                     </div>
                                     <div class="col-6">
                                         <a href="#" class="btn btn-outline-primary w-100">
                                             <i class="fab fa-facebook-f me-2"></i>
-                                            Facebook
+                                            {{ __('auth.login_with_facebook') }}
                                         </a>
                                     </div>
                                 </div>
@@ -191,8 +191,8 @@
                                 <!-- Register Link -->
                                 <div class="text-center">
                                     <p class="text-muted mb-0">
-                                        Chưa có tài khoản?
-                                        <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-medium">Đăng ký ngay</a>
+                                        {{ __('auth.no_account') }}
+                                        <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-medium">{{ __('auth.register_now') }}</a>
                                     </p>
                                 </div>
 
@@ -200,7 +200,7 @@
                                 <div class="text-center mt-4">
                                     <small class="text-muted d-flex align-items-center justify-content-center">
                                         <i class="fas fa-shield-alt me-2 text-success"></i>
-                                        Bảo mật SSL 256-bit
+                                        {{ __('auth.ssl_security') }}
                                     </small>
                                 </div>
                             </div>
@@ -212,8 +212,8 @@
                 <div class="row mt-5">
                     <div class="col-12">
                         <div class="text-center mb-4">
-                            <h4 class="fw-bold text-dark">Tham gia cộng đồng kỹ thuật hàng đầu Việt Nam</h4>
-                            <p class="text-muted">Khám phá những thảo luận nổi bật và kết nối với các chuyên gia</p>
+                            <h4 class="fw-bold text-dark">{{ __('auth.join_community_title') }}</h4>
+                            <p class="text-muted">{{ __('auth.join_community_description') }}</p>
                         </div>
 
                         <div class="row g-4">
@@ -222,8 +222,8 @@
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-body text-center">
                                         <i class="fas fa-fire text-danger fs-1 mb-3"></i>
-                                        <h5 class="fw-bold">Xu hướng nổi bật</h5>
-                                        <p class="text-muted small">Mastercam, Siemens PLC, Robot công nghiệp</p>
+                                        <h5 class="fw-bold">{{ __('auth.trending_topics') }}</h5>
+                                        <p class="text-muted small">{{ __('auth.trending_topics_desc') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -233,8 +233,8 @@
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-body text-center">
                                         <i class="fas fa-user-tie text-primary fs-1 mb-3"></i>
-                                        <h5 class="fw-bold">Mạng lưới chuyên gia</h5>
-                                        <p class="text-muted small">64+ kỹ sư từ các công ty hàng đầu</p>
+                                        <h5 class="fw-bold">{{ __('auth.expert_network') }}</h5>
+                                        <p class="text-muted small">{{ __('auth.expert_network_desc') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -244,8 +244,8 @@
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-body text-center">
                                         <i class="fas fa-book-open text-success fs-1 mb-3"></i>
-                                        <h5 class="fw-bold">Kho tri thức</h5>
-                                        <p class="text-muted small">118+ thảo luận chất lượng cao</p>
+                                        <h5 class="fw-bold">{{ __('auth.knowledge_base') }}</h5>
+                                        <p class="text-muted small">{{ __('auth.knowledge_base_desc') }}</p>
                                     </div>
                                 </div>
                             </div>

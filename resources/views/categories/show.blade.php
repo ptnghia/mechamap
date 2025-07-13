@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - ' . __('messages.site.community_title'))
+@section('title', $category->name . ' - ' . __('ui.common.site.tagline'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/forums/index.css') }}">
@@ -11,8 +11,8 @@
     {{-- Breadcrumb --}}
     <!--nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('messages.navigation.home') }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">{{ __('messages.navigation.forums') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('nav.main.home') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">{{ __('nav.main.forums') }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
         </ol>
     </nav-->
@@ -29,7 +29,7 @@
             @auth
             <a href="{{ route('threads.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus-circle me-1"></i>
-                {{ __('messages.threads.create_new_post') }}
+                {{ __('forum.threads.create') }}
             </a>
             @endauth
         </div>
@@ -41,7 +41,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-primary">{{ number_format($categoryStats['forums_count']) }}</div>
-                    <div class="text-muted">{{ __('messages.forums.forums') }}</div>
+                    <div class="text-muted">{{ __('forum.forums.title') }}</div>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-success">{{ number_format($categoryStats['threads_count']) }}</div>
-                    <div class="text-muted">{{ __('messages.threads.posts') }}</div>
+                    <div class="text-muted">{{ __('forum.threads.title') }}</div>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-info">{{ number_format($categoryStats['views_count']) }}</div>
-                    <div class="text-muted">{{ __('messages.common.views') }}</div>
+                    <div class="text-muted">{{ __('ui.common.views') }}</div>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-warning">{{ number_format($categoryStats['posts_count']) }}</div>
-                    <div class="text-muted">{{ __('messages.common.comments') }}</div>
+                    <div class="text-muted">{{ __('ui.common.comments') }}</div>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
     {{-- Forums in Category - Grid Layout --}}
     <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0 title_page_sub">{{ __('messages.forums.forums_in_category', ['category' => $category->name]) }}</h5>
+            <h5 class="mb-0 title_page_sub">{{ __('forum.forums.forums_in_category', ['category' => $category->name]) }}</h5>
         </div>
 
         @if($category->forums->count() > 0)
@@ -101,7 +101,7 @@
                                     <h6 class="forum-title fw-bold mb-1 text-dark">{{ $forum->name }}</h6>
                                     <div class="forum-meta small text-muted">
                                         <i class="fas fa-clock me-1"></i>
-                                        {{ __('messages.common.updated') }} {{ $forum->updated_at->diffForHumans() }}
+                                        {{ __('ui.common.updated') }} {{ $forum->updated_at->diffForHumans() }}
                                     </div>
                                 </div>
                             </div>
@@ -120,13 +120,13 @@
                                 <div class="col-6">
                                     <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
                                         <div class="stat-number fw-bold text-primary">{{ number_format($forum->threads_count ?? 0) }}</div>
-                                        <div class="stat-label small text-muted">{{ __('messages.threads.threads') }}</div>
+                                        <div class="stat-label small text-muted">{{ __('forum.threads.threads') }}</div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
                                         <div class="stat-number fw-bold text-success">{{ number_format($forum->posts_count ?? 0) }}</div>
-                                        <div class="stat-label small text-muted">{{ __('messages.threads.posts') }}</div>
+                                        <div class="stat-label small text-muted">{{ __('forum.threads.title') }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                 $totalActivity = ($forum->threads_count ?? 0) + ($forum->posts_count ?? 0);
                                 $activityLevel = $totalActivity > 50 ? 'high' : ($totalActivity > 20 ? 'medium' : 'low');
                                 $activityColor = $activityLevel === 'high' ? 'success' : ($activityLevel === 'medium' ? 'warning' : 'secondary');
-                                $activityText = $activityLevel === 'high' ? __('messages.forums.high_activity') : ($activityLevel === 'medium' ? __('messages.forums.medium_activity') : __('messages.forums.low_activity'));
+                                $activityText = $activityLevel === 'high' ? __('forum.forums.high_activity') : ($activityLevel === 'medium' ? __('forum.forums.medium_activity') : __('forum.forums.low_activity'));
                             @endphp
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="badge bg-{{ $activityColor }} bg-opacity-10 text-{{ $activityColor }} small">
@@ -159,8 +159,8 @@
                 <div class="empty-icon mb-3">
                     <i class="fas fa-comments fs-1 text-muted opacity-25"></i>
                 </div>
-                <h6 class="text-muted mb-2">{{ __('messages.forums.no_forums_in_category') }}</h6>
-                <p class="text-muted small mb-0">{{ __('messages.forums.no_forums_description') }}</p>
+                <h6 class="text-muted mb-2">{{ __('forum.forums.no_forums_in_category') }}</h6>
+                <p class="text-muted small mb-0">{{ __('forum.forums.no_forums_description') }}</p>
             </div>
         </div>
         @endif
@@ -169,7 +169,7 @@
     {{-- Recent Threads - Full Width using thread-item component --}}
     <div class="list-group">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0 title_page_sub">{{ __('messages.new_threads', ['category' => $category->name]) }}</h5>
+            <h5 class="mb-0 title_page_sub">{{ __('ui.common.new_threads', ['category' => $category->name]) }}</h5>
         </div>
         @if($recentThreads->count() > 0)
         <div class="threads-list">
@@ -184,11 +184,11 @@
         @else
         <div class="text-center py-5">
             <i class="fas fa-comment-square-text fs-1 text-muted opacity-50"></i>
-            <p class="text-muted mt-3 mb-0">{{ __('messages.threads.no_posts_in_category') }}</p>
+            <p class="text-muted mt-3 mb-0">{{ __('forum.threads.no_posts_in_category') }}</p>
             @auth
             <a href="{{ route('threads.create') }}" class="btn btn-primary mt-3">
                 <i class="fas fa-plus-circle me-1"></i>
-                {{ __('messages.threads.create_first_post') }}
+                {{ __('forum.threads.create_first_post') }}
             </a>
             @endauth
         </div>

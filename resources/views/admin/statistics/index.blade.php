@@ -68,7 +68,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-warning mb-2">{{ $overviewStats['forums'] }}</div>
-                    <h5 class="card-title">{{ __('Diễn đàn') }}</h5>
+                    <h5 class="card-title">{{ __(__('forum.forums.title')) }}</h5>
                     <p class="card-text text-muted">{{ __('Tổng số diễn đàn đã tạo') }}</p>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                                     <td>{{ now()->subHours(3)->format('d/m/Y H:i') }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="badge bg-success">{{ __('Đăng ký') }}</span></td>
+                                    <td><span class="badge bg-success">{{ __(__('nav.auth.register')) }}</span></td>
                                     <td>{{ __('Người dùng mới đã đăng ký') }}</td>
                                     <td>{{ __('Người dùng C') }}</td>
                                     <td>{{ now()->subHours(5)->format('d/m/Y H:i') }}</td>
@@ -243,7 +243,7 @@
         const contentDistributionChart = new Chart(contentDistributionChartCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Bài đăng', 'Bình luận', 'Người dùng', 'Diễn đàn'],
+                labels: ['Bài đăng', 'Bình luận', 'Người dùng', __('forum.forums.title')],
                 datasets: [{
                     data: [{{ $overviewStats['threads'] }}, {{ $overviewStats['comments'] }}, {{ $overviewStats['users'] }}, {{ $overviewStats['forums'] }}],
                     backgroundColor: [

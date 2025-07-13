@@ -2,9 +2,9 @@
 
 return [
     'nav' => [
-        // Main Navigation
-        'home' => 'Trang chủ',
-        'marketplace' => 'Sản phẩm',
+        // Main Navigation - MOVED TO nav.php
+        // 'home' => 'Trang chủ', // MOVED TO nav.main.home
+        // 'marketplace' => 'Sản phẩm', // MOVED TO nav.main.marketplace (fixed value to 'Thị trường')
         'community' => 'Diễn đàn',
         'technical_resources' => 'Tài nguyên kỹ thuật',
         'knowledge' => 'Kiến thức',
@@ -113,9 +113,67 @@ return [
         'supplier_dashboard' => 'Bảng điều khiển Nhà cung cấp',
         'manufacturer_dashboard' => 'Bảng điều khiển Nhà sản xuất',
         'brand_dashboard' => 'Bảng điều khiển Thương hiệu',
+        'verified_partner_dashboard' => 'Bảng điều khiển Đối tác xác minh',
         'product_management' => 'Quản lý sản phẩm',
         'design_management' => 'Quản lý thiết kế',
         'market_analysis' => 'Phân tích thị trường',
+        'business_dashboard' => 'Bảng điều khiển kinh doanh',
+
+        // Dashboard specific terms
+        'welcome_back' => 'Chào mừng trở lại',
+        'level' => 'Cấp độ',
+        'your_permissions' => 'Quyền hạn của bạn',
+        'view_content' => 'Xem nội dung',
+        'follow_users' => 'Theo dõi người dùng',
+        'marketplace_digital' => 'Thị trường sản phẩm số',
+        'create_threads' => 'Tạo chủ đề',
+        'post_comments' => 'Đăng bình luận',
+        'marketplace_views' => 'Lượt xem thị trường',
+        'view_details' => 'Xem chi tiết',
+        'no_products_available' => 'Không có sản phẩm nào',
+        'community_activity' => 'Hoạt động cộng đồng',
+        'latest_threads' => 'Chủ đề mới nhất',
+        'trending_topics' => 'Chủ đề thịnh hành',
+        'by' => 'bởi',
+        'no_threads_available' => 'Không có chủ đề nào',
+        'discussions' => 'thảo luận',
+        'upgrade_account' => 'Nâng cấp tài khoản',
+        'upgrade_to_member_desc' => 'Nâng cấp lên thành viên để tham gia đầy đủ vào cộng đồng',
+        'member_benefits' => 'Quyền lợi thành viên',
+        'rate_content' => 'Đánh giá nội dung',
+        'upload_files' => 'Tải lên tệp tin',
+        'upgrade_now' => 'Nâng cấp ngay',
+        'my_threads' => 'Chủ đề của tôi',
+        'bookmarks' => 'Đánh dấu',
+        'followers' => 'Người theo dõi',
+        'activity' => 'Hoạt động',
+        'following' => 'Đang theo dõi',
+        'browse_marketplace' => 'Duyệt thị trường',
+        'create_thread' => 'Tạo chủ đề',
+        'recent_threads' => 'Chủ đề gần đây',
+        'marketplace_highlights' => 'Nổi bật thị trường',
+        'activity_level' => 'Mức độ hoạt động',
+        'reputation_score' => 'Điểm danh tiếng',
+        'threads_created' => 'Chủ đề đã tạo',
+        'comments_count' => 'Số bình luận',
+        'avg_rating' => 'Đánh giá TB',
+        'view_all' => 'Xem tất cả',
+        'published' => 'Đã xuất bản',
+        'pending' => 'Chờ duyệt',
+        'no_threads_yet' => 'Bạn chưa tạo chủ đề nào',
+        'create_first_thread' => 'Tạo chủ đề đầu tiên',
+        'achievements' => 'Thành tích',
+        'forum_participation' => 'Tham gia diễn đàn',
+        'threads' => 'Chủ đề',
+        'comments' => 'Bình luận',
+        'total_contributions' => 'Tổng đóng góp',
+        'upgrade_to_senior' => 'Nâng cấp lên Thành viên cao cấp',
+        'senior_member_benefits_desc' => 'Trở thành thành viên cao cấp để có thêm quyền hạn và ưu đãi',
+        'requirements' => 'Yêu cầu',
+        'create_10_threads' => 'Tạo 10 chủ đề',
+        'post_50_comments' => 'Đăng 50 bình luận',
+        'maintain_4_star_rating' => 'Duy trì đánh giá 4 sao',
+        'keep_contributing' => 'Tiếp tục đóng góp',
 
         // More Dropdown
         'search_discovery' => 'Tìm kiếm & Khám phá',
@@ -140,6 +198,16 @@ return [
         'my_business' => 'Doanh nghiệp của tôi',
         'verification_status' => 'Trạng thái xác minh',
         'my_subscription' => 'Gói đăng ký của tôi',
+
+        // Missing nav keys
+        'home' => 'Trang chủ',
+        'marketplace' => 'Thị trường',
+    ],
+
+    'auth' => [
+        'login' => 'Đăng nhập',
+        'register' => 'Đăng ký',
+        'logout' => 'Đăng xuất',
     ],
 
     'cart' => [
@@ -196,7 +264,7 @@ return [
 
         // Search
         'search_placeholder' => 'Tìm kiếm thành viên...',
-        'search' => 'Tìm kiếm',
+        'search_members' => 'Tìm kiếm',
 
         // Counts and filters
         'total' => 'Tổng',
@@ -246,7 +314,7 @@ return [
         'most_commented' => 'Bình luận nhiều nhất',
 
         // Search
-        'search' => 'Tìm kiếm',
+        'search_threads_forum' => 'Tìm kiếm',
         'search_placeholder' => 'Tìm kiếm chủ đề...',
         'apply_filters' => 'Áp dụng bộ lọc',
         'clear_filters' => 'Xóa bộ lọc',
@@ -272,15 +340,16 @@ return [
         'months_ago' => 'tháng trước',
     ],
 
-    'auth' => [
-        'login' => 'Đăng nhập',
-        'register' => 'Đăng ký',
-        'logout' => 'Đăng xuất',
-    ],
+    // Auth section - MOVED TO auth.php and nav.php
+    // 'auth' => [
+    //     'login' => 'Đăng nhập', // MOVED TO nav.auth.login
+    //     'register' => 'Đăng ký', // MOVED TO nav.auth.register
+    //     'logout' => 'Đăng xuất', // MOVED TO nav.auth.logout
+    // ],
 
     'common' => [
         'search_placeholder' => 'Tìm kiếm...',
-        'search' => 'Tìm kiếm',
+        'search_common' => 'Tìm kiếm',
         'views' => 'Lượt xem',
         'comments' => 'Bình luận',
         'load_more' => 'Tải thêm',
@@ -313,7 +382,7 @@ return [
 
 
 
-    'search' => [
+    'search_section' => [
         'recent_searches' => 'Tìm kiếm gần đây',
         'no_recent_searches' => 'Chưa có tìm kiếm nào',
         'popular_searches' => 'Tìm kiếm phổ biến',
@@ -375,9 +444,9 @@ return [
     'view_full_showcase' => 'Xem showcase đầy đủ',
     'by' => 'bởi',
 
-    // Auth Modal
-    'login' => 'Đăng nhập',
-    'register' => 'Đăng ký',
+    // Auth Modal - MOVED TO auth.php and nav.php
+    // 'login' => 'Đăng nhập', // MOVED TO nav.auth.login
+    // 'register' => 'Đăng ký', // MOVED TO nav.auth.register
     'email_or_username' => 'Email hoặc Username',
     'password' => 'Mật khẩu',
     'remember_login' => 'Ghi nhớ đăng nhập',
@@ -569,10 +638,10 @@ return [
         'clear_all' => 'Xóa tất cả',
         'filters_applied' => 'bộ lọc đã áp dụng',
 
-        // Product detail
-        'home' => 'Trang chủ',
-        'marketplace' => 'Thị trường',
-        'products' => 'Sản phẩm',
+        // Product detail - MOVED TO nav.php and marketplace.php
+        // 'home' => 'Trang chủ', // MOVED TO nav.main.home
+        // 'marketplace' => 'Thị trường', // MOVED TO nav.main.marketplace
+        // 'products' => 'Sản phẩm', // MOVED TO marketplace.products.title
         'sold_by' => 'Bán bởi',
         'verified' => 'Đã xác minh',
         'in_stock' => 'Còn hàng',
@@ -620,4 +689,115 @@ return [
     'home' => 'Trang chủ',
     'loading' => 'Đang tải',
     'welcome' => 'Chào mừng',
+
+    // Manufacturer Setup
+    'setup_required' => 'Cần thiết lập',
+    'manufacturer_setup_required' => 'Thiết lập tài khoản Nhà sản xuất',
+    'manufacturer_setup_description' => 'Để truy cập đầy đủ tính năng Nhà sản xuất, bạn cần hoàn thành quá trình thiết lập tài khoản.',
+    'business_profile' => 'Hồ sơ doanh nghiệp',
+    'complete_business_info' => 'Hoàn thành thông tin doanh nghiệp',
+    'verification_documents' => 'Tài liệu xác minh',
+    'upload_business_documents' => 'Tải lên tài liệu doanh nghiệp',
+    'marketplace_setup' => 'Thiết lập marketplace',
+    'configure_seller_profile' => 'Cấu hình hồ sơ người bán',
+    'start_setup' => 'Bắt đầu thiết lập',
+    'back_to_home' => 'Về trang chủ',
+    'need_help' => 'Cần hỗ trợ?',
+    'manufacturer_benefits' => 'Quyền lợi Nhà sản xuất',
+    'sell_technical_products' => 'Bán sản phẩm kỹ thuật',
+    'access_b2b_marketplace' => 'Truy cập thị trường B2B',
+    'connect_with_suppliers' => 'Kết nối với nhà cung cấp',
+    'verified_business_badge' => 'Huy hiệu doanh nghiệp đã xác minh',
+    'setup_requirements' => 'Yêu cầu thiết lập',
+    'business_registration' => 'Giấy đăng ký kinh doanh',
+    'tax_identification' => 'Mã số thuế',
+    'company_address' => 'Địa chỉ công ty',
+    'contact_information' => 'Thông tin liên hệ',
+
+    // Dashboard Messages
+    'dashboard_welcome_desc' => 'Chào mừng bạn đến với bảng điều khiển cá nhân',
+    'my_threads_desc' => 'Quản lý tất cả bài viết bạn đã tạo',
+    'bookmarks_desc' => 'Quản lý nội dung bạn đã lưu',
+    'activity_desc' => 'Theo dõi hoạt động của bạn trên diễn đàn',
+    'ratings_desc' => 'Xem và quản lý đánh giá của bạn',
+    'settings_desc' => 'Cài đặt tài khoản và tùy chọn cá nhân',
+
+    // Stats and Metrics
+    'quick_stats' => 'Thống kê nhanh',
+    'total_threads' => 'Tổng bài viết',
+    'total_views' => 'Tổng lượt xem',
+    'total_bookmarks' => 'Tổng đã lưu',
+    'total_folders' => 'Tổng thư mục',
+    'total_activities' => 'Tổng hoạt động',
+    'total_ratings_given' => 'Đánh giá đã cho',
+    'total_ratings_received' => 'Đánh giá nhận được',
+    'average_rating' => 'Đánh giá trung bình',
+    'average_rating_given' => 'Đánh giá TB đã cho',
+    'average_rating_received' => 'Đánh giá TB nhận được',
+    'pending_approval' => 'Chờ duyệt',
+    'recent_bookmarks' => 'Lưu gần đây',
+    'today_activities' => 'Hoạt động hôm nay',
+    'week_activities' => 'Hoạt động tuần này',
+    'activity_streak' => 'Chuỗi hoạt động',
+    'points' => 'Điểm',
+    'threads' => 'Bài viết',
+    'posts' => 'Bình luận',
+
+    // Common Actions
+    'create_folder' => 'Tạo thư mục',
+    'delete_selected' => 'Xóa đã chọn',
+    'select_all' => 'Chọn tất cả',
+    'view' => 'Xem',
+    'edit' => 'Sửa',
+    'delete' => 'Xóa',
+    'save_changes' => 'Lưu thay đổi',
+    'cancel' => 'Hủy',
+    'create' => 'Tạo',
+    'update' => 'Cập nhật',
+    'browse_content' => 'Duyệt nội dung',
+    'browse_threads' => 'Duyệt bài viết',
+    'start_participating' => 'Bắt đầu tham gia',
+
+    // Filters and Sorting
+    'all_statuses' => 'Tất cả trạng thái',
+    'all_forums' => 'Tất cả diễn đàn',
+    'all_folders' => 'Tất cả thư mục',
+    'all_types' => 'Tất cả loại',
+    'all_ratings' => 'Tất cả đánh giá',
+    'all_activities' => 'Tất cả hoạt động',
+    'all_time' => 'Mọi thời gian',
+    'newest_first' => 'Mới nhất trước',
+    'recently_updated' => 'Cập nhật gần đây',
+    'most_viewed' => 'Xem nhiều nhất',
+    'highest_rated' => 'Đánh giá cao nhất',
+    'sort_by' => 'Sắp xếp theo',
+    'time_period' => 'Khoảng thời gian',
+    'activity_type' => 'Loại hoạt động',
+    'content_type' => 'Loại nội dung',
+    'rating_value' => 'Giá trị đánh giá',
+    'search' => 'Tìm kiếm',
+    'search_threads' => 'Tìm kiếm bài viết',
+    'search_bookmarks' => 'Tìm kiếm đã lưu',
+    'search_activities' => 'Tìm kiếm hoạt động',
+
+    // Empty States
+    'no_threads_yet' => 'Chưa có bài viết nào',
+    'no_threads_desc' => 'Bạn chưa tạo bài viết nào. Hãy bắt đầu chia sẻ kiến thức của bạn!',
+    'no_bookmarks_yet' => 'Chưa có nội dung đã lưu',
+    'no_bookmarks_desc' => 'Bạn chưa lưu nội dung nào. Hãy duyệt và lưu những nội dung hữu ích!',
+    'no_activities_yet' => 'Chưa có hoạt động nào',
+    'no_activities_desc' => 'Bạn chưa có hoạt động nào. Hãy tham gia thảo luận để bắt đầu!',
+    'no_ratings_given_yet' => 'Chưa đánh giá nào',
+    'no_ratings_given_desc' => 'Bạn chưa đánh giá bài viết nào. Hãy đọc và đánh giá những bài viết hay!',
+    'no_ratings_received_yet' => 'Chưa nhận đánh giá nào',
+    'no_ratings_received_desc' => 'Bài viết của bạn chưa nhận được đánh giá nào. Hãy tạo nội dung chất lượng!',
+    'no_rating' => 'Chưa có đánh giá',
+    'no_folder' => 'Không có thư mục',
+
+    // Confirmations
+    'confirm_delete_thread' => 'Bạn có chắc chắn muốn xóa bài viết này?',
+    'confirm_delete_bookmark' => 'Bạn có chắc chắn muốn xóa bookmark này?',
+    'confirm_delete_selected_bookmarks' => 'Bạn có chắc chắn muốn xóa các bookmark đã chọn?',
+    'select_bookmarks_first' => 'Vui lòng chọn ít nhất một bookmark để xóa',
+    'error_occurred' => 'Đã xảy ra lỗi, vui lòng thử lại',
 ];

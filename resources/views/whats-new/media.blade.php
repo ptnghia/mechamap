@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('messages.new_media') . ' - MechaMap')
+@section('title', __('media.new') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
@@ -11,10 +11,10 @@
 @section('content')
 <div class="container_2 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ __('messages.whats_new') }}</h1>
+        <h1 class="mb-0 title_page">{{ __('nav.main.whats_new') }}</h1>
 
         <a href="{{ route('threads.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> {{ __('messages.create_new_thread') }}
+            <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}
         </a>
     </div>
 
@@ -22,25 +22,25 @@
     <div class="whats-new-tabs mb-4">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new') }}">{{ __('messages.new_posts') }}</a>
+                <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('messages.popular') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('messages.new_threads') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('messages.new_showcases')
+                <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new')
                     }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('whats-new.media') }}">{{ __('messages.new_media')
+                <a class="nav-link active" href="{{ route('whats-new.media') }}">{{ __('media.new')
                     }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
-                    __('messages.looking_for_replies') }}</a>
+                    __('forum.threads.looking_for_replies') }}</a>
             </li>
         </ul>
     </div>
@@ -49,14 +49,14 @@
     <div class="pagination-container mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <div class="pagination-info">
-                <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
+                <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
             </div>
 
             <nav aria-label="Page navigation">
                 <ul class="pagination pagination-sm mb-0">
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
                             <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                         </a>
                     </li>
@@ -109,7 +109,7 @@
 
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
                                             <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                         </a>
                                     </li>
@@ -149,11 +149,11 @@
                 <div class="media-item-actions">
                     @if($media->thread)
                     <a href="{{ route('threads.show', $media->thread->slug) }}" class="media-action-btn primary">
-                        <i class="fa-solid fa-eye me-1"></i> {{ __('messages.view_thread') }}
+                        <i class="fa-solid fa-eye me-1"></i> {{ __('ui.actions.view_thread') }}
                     </a>
                     @endif
                     <a href="{{ $media->url }}" download class="media-action-btn">
-                        <i class="fa-solid fa-download me-1"></i> {{ __('messages.download') }}
+                        <i class="fa-solid fa-download me-1"></i> {{ __('ui.actions.download') }}
                     </a>
                 </div>
             </div>
@@ -165,8 +165,8 @@
         <div class="media-empty-icon">
             <i class="fa-solid fa-images"></i>
         </div>
-        <h3 class="media-empty-title">{{ __('messages.no_media_found') }}</h3>
-        <p class="media-empty-text">{{ __('messages.no_media_description') }}</p>
+        <h3 class="media-empty-title">{{ __('ui.common.no_media_found') }}</h3>
+        <p class="media-empty-text">{{ __('ui.common.no_media_description') }}</p>
     </div>
     @endif
 
@@ -174,14 +174,14 @@
     <div class="pagination-container mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <div class="pagination-info">
-                <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $totalPages }}</span>
+                <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
             </div>
 
             <nav aria-label="Page navigation">
                 <ul class="pagination pagination-sm mb-0">
                     <!-- Previous Page -->
                     <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('messages.previous') }}">
+                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
                             <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                         </a>
                     </li>
@@ -234,7 +234,7 @@
 
                                     <!-- Next Page -->
                                     <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('messages.next') }}">
+                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
                                             <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
                                         </a>
                                     </li>
@@ -244,8 +244,8 @@
             <div class="pagination-goto">
                 <div class="input-group input-group-sm">
                     <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
-                        value="{{ $page }}" placeholder="{{ __('messages.page') }}">
-                    <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('messages.go') }}</button>
+                        value="{{ $page }}" placeholder="{{ __('ui.pagination.page') }}">
+                    <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('ui.pagination.go_to_page') }}</button>
                 </div>
             </div>
         </div>

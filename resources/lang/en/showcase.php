@@ -61,12 +61,33 @@ return [
     'try_different_filters' => 'Try changing search filters or create a new project.',
 
     // Complexity levels
+    'complexity' => [
+        'beginner' => 'Beginner',
+        'intermediate' => 'Intermediate',
+        'advanced' => 'Advanced',
+        'expert' => 'Expert',
+    ],
+
+    // Features
+    'features' => [
+        'cad' => 'CAD',
+        'download' => 'Download',
+        'simulation' => 'Simulation',
+        'analysis' => 'Analysis',
+    ],
+
+    // Categories
+    'categories' => [
+        'design' => 'Design',
+        'manufacturing' => 'Manufacturing',
+        'analysis' => 'Analysis',
+    ],
+
+    // Legacy keys for backward compatibility
     'beginner' => 'Beginner',
     'intermediate' => 'Intermediate',
     'advanced' => 'Advanced',
     'expert' => 'Expert',
-
-    // Categories
     'design' => 'Design',
     'manufacturing' => 'Manufacturing',
     'analysis' => 'Analysis',
@@ -74,4 +95,9 @@ return [
     // Project types
     'design_type' => 'Design',
     'manufacturing_type' => 'Manufacturing',
+
+    // Additional keys for migration
+    'new' => 'New Showcases',
+    'related' => 'Related Showcases',
+    'for_thread' => 'Showcase for Thread',
 ];

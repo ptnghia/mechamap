@@ -37,7 +37,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
+                    <label for="forum_id" class="form-label">{{ __(__('forum.forums.title')) }}</label>
                     <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
                         <option value="">{{ __('Chọn diễn đàn') }}</option>
                         @foreach($forums as $forum)

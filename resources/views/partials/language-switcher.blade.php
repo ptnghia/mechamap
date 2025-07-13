@@ -10,7 +10,7 @@
             id="languageDropdown"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            title="{{ __('messages.language.switch_language') }}">
+            title="{{ __('ui.common.language.switch') }}">
         <i class="flag-icon flag-icon-{{ $currentLanguage['flag'] }} me-1"></i>
         <!--span class="d-none d-md-inline">{{ $currentLanguage['name'] }}</span-->
     </button>
@@ -18,7 +18,7 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
         <li class="dropdown-header">
             <i class="fas fa-globe me-2"></i>
-            {{ __('messages.language.select_language') }}
+            {{ __('ui.common.language.select') }}
         </li>
         <li><hr class="dropdown-divider"></li>
 
@@ -43,7 +43,7 @@
                href="#"
                onclick="autoDetectLanguage(); return false;">
                 <i class="fas fa-magic me-2"></i>
-                {{ __('messages.language.auto_detect') }}
+                {{ __('ui.common.language.auto_detect') }}
             </a>
         </li>
     </ul>

@@ -50,7 +50,7 @@
                         @endif
 
                         @if($thread->is_sticky)
-                            <span class="badge bg-info">{{ __('Ghim') }}</span>
+                            <span class="badge bg-info">{{ __(__('forum.threads.pinned')) }}</span>
                         @endif
 
                         @if($thread->is_featured)
@@ -87,7 +87,7 @@
                                     <span class="text-muted">{{ $thread->slug }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Diễn đàn') }}:</span>
+                                    <span>{{ __(__('forum.forums.title')) }}:</span>
                                     <span class="text-muted">{{ $thread->forum->name }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
@@ -98,10 +98,10 @@
                                     <span>{{ __('Trạng thái') }}:</span>
                                     <div>
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __('Ghim') }}</span>
+                                            <span class="badge bg-info me-1">{{ __(__('forum.threads.pinned')) }}</span>
                                         @endif
                                         @if($thread->is_locked)
-                                            <span class="badge bg-warning me-1">{{ __('Khóa') }}</span>
+                                            <span class="badge bg-warning me-1">{{ __(__('forum.threads.locked')) }}</span>
                                         @endif
                                         @if($thread->is_featured)
                                             <span class="badge bg-success me-1">{{ __('Nổi bật') }}</span>
@@ -116,7 +116,7 @@
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Lượt xem') }}:</span>
+                                    <span>{{ __(__('ui.common.views')) }}:</span>
                                     <span class="text-muted">{{ $thread->view_count }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
@@ -255,7 +255,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-outline-info w-100">
                                         <i class="fas fa-thumbtack me-1"></i>
-                                        {{ $thread->is_sticky ? __('Bỏ ghim') : __('Ghim') }}
+                                        {{ $thread->is_sticky ? __('Bỏ ghim') : __(__('forum.threads.pinned')) }}
                                     </button>
                                 </form>
                             </div>
@@ -265,7 +265,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-outline-warning w-100">
                                         <i class="fas fa-{{ $thread->is_locked ? 'unlock' : 'lock' }} me-1"></i>
-                                        {{ $thread->is_locked ? __('Mở khóa') : __('Khóa') }}
+                                        {{ $thread->is_locked ? __('Mở khóa') : __(__('forum.threads.locked')) }}
                                     </button>
                                 </form>
                             </div>

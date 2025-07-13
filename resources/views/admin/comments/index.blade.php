@@ -53,7 +53,7 @@
                     <input type="number" class="form-control" id="user_id" name="user_id" value="{{ request('user_id') }}" placeholder="{{ __('Nhập ID người dùng') }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="search" class="form-label">{{ __('Tìm kiếm') }}</label>
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Nội dung bình luận...') }}">
                 </div>
                 <div class="col-12">

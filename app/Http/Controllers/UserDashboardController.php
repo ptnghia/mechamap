@@ -20,14 +20,28 @@ class UserDashboardController extends Controller
     }
 
     /**
-     * Dashboard tổng quan của user.
+     * Dashboard tổng quan của user - Community Members (member, senior_member, guest)
      */
     public function index()
     {
         $user = Auth::user();
+        $role = $user->role;
 
-        // User statistics
-        $stats = [
+        // Role-specific dashboard data
+        $dashboardData = $this->getDashboardDataByRole($user, $role);
+
+        // Choose view template based on role
+        $viewTemplate = $this->getViewTemplate($role);
+
+        return view($viewTemplate, $dashboardData);
+    }
+
+    /**
+     * Get dashboard data based on user role
+     */
+    private function getDashboardDataByRole($user, $role): array
+    {
+        $baseStats = [
             'threads_created' => Thread::where('user_id', $user->id)->count(),
             'threads_bookmarked' => ThreadBookmark::where('user_id', $user->id)->count(),
             'ratings_given' => ThreadRating::where('user_id', $user->id)->count(),
@@ -36,36 +50,238 @@ class UserDashboardController extends Controller
                 ->avg('average_rating'),
         ];
 
-        // Recent activity
-        $recentBookmarks = ThreadBookmark::with(['thread' => function ($q) {
-            $q->with(['user', 'forum']);
-        }])
-            ->where('user_id', $user->id)
-            ->latest()
+        // Role-specific additions
+        if ($role === 'guest') {
+            $baseStats['following_count'] = $user->following()->count();
+            $baseStats['followers_count'] = $user->followers()->count();
+            $baseStats['marketplace_views'] = 0; // Placeholder for marketplace activity
+        }
+
+        if (in_array($role, ['member', 'senior_member'])) {
+            $baseStats['comments_count'] = $user->posts()->count();
+            $baseStats['reputation_score'] = $user->reaction_score ?? 0;
+            $baseStats['forum_activity_level'] = $this->calculateActivityLevel($user);
+        }
+
+        // Add pending counts for dashboard navigation
+        // Note: Threads don't have status column, so we'll use 0 for now
+        $pendingThreadsCount = 0;
+
+        // Note: Posts don't have status column, so we'll use 0 for now
+        $pendingCommentsCount = 0;
+
+        // Note: No rejected content tracking yet, so we'll use 0 for now
+        $rejectedCount = 0;
+
+        // Get recent threads for dashboard display
+        $recentThreads = Thread::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
-        $recentRatings = ThreadRating::with(['thread' => function ($q) {
-            $q->with(['user', 'forum']);
-        }])
+        // Get recent comments for dashboard display
+        $recentComments = Comment::with(['thread'])
             ->where('user_id', $user->id)
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
-        $myThreads = Thread::with(['forum'])
-            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
-            ->where('user_id', $user->id)
-            ->latest()
-            ->limit(5)
-            ->get();
+        // Get recent activities for dashboard display (placeholder for now)
+        $recentActivities = collect(); // Empty collection for now
 
-        return view('dashboard.index', compact(
-            'stats',
-            'recentBookmarks',
-            'recentRatings',
-            'myThreads'
-        ));
+        // Get statistics for dashboard widgets
+        $statistics = [
+            'total_views' => Thread::where('user_id', $user->id)->sum('view_count'),
+            'total_replies' => Thread::where('user_id', $user->id)->sum('replies'),
+            'total_ratings' => Thread::where('user_id', $user->id)->sum('ratings_count'),
+        ];
+
+        return [
+            'user' => $user,
+            'role' => $role,
+            'stats' => $baseStats,
+            'navigation' => $this->getNavigationMenu($role),
+            'widgets' => $this->getDashboardWidgets($role, $user),
+            'quick_actions' => $this->getQuickActions($role),
+            'pendingThreadsCount' => $pendingThreadsCount,
+            'pendingCommentsCount' => $pendingCommentsCount,
+            'rejectedCount' => $rejectedCount,
+            'recentThreads' => $recentThreads,
+            'recentComments' => $recentComments,
+            'recentActivities' => $recentActivities,
+            'statistics' => $statistics,
+        ];
+    }
+
+    /**
+     * Get view template based on role
+     */
+    private function getViewTemplate($role): string
+    {
+        return match($role) {
+            'guest' => 'user.dashboard-guest',
+            'member' => 'user.dashboard-member',
+            'senior_member' => 'user.dashboard-senior',
+            default => 'user.dashboard',
+        };
+    }
+
+    /**
+     * Get navigation menu based on role
+     */
+    private function getNavigationMenu($role): array
+    {
+        $baseMenu = [
+            'dashboard' => [
+                'title' => __('nav.user.dashboard'),
+                'icon' => 'fas fa-tachometer-alt',
+                'route' => 'user.dashboard',
+                'active' => true,
+            ],
+            'profile' => [
+                'title' => __('nav.user.profile'),
+                'icon' => 'fas fa-user',
+                'route' => 'profile.edit',
+            ],
+        ];
+
+        // Guest specific menu
+        if ($role === 'guest') {
+            $baseMenu['marketplace'] = [
+                'title' => __('nav.marketplace'),
+                'icon' => 'fas fa-store',
+                'route' => 'marketplace.index',
+            ];
+            $baseMenu['following'] = [
+                'title' => __('messages.following'),
+                'icon' => 'fas fa-heart',
+                'route' => 'user.following',
+            ];
+        }
+
+        // Member and Senior Member menu
+        if (in_array($role, ['member', 'senior_member'])) {
+            $baseMenu['my_threads'] = [
+                'title' => __('messages.my_threads'),
+                'icon' => 'fas fa-comments',
+                'route' => 'user.my-threads',
+            ];
+            $baseMenu['bookmarks'] = [
+                'title' => __('messages.bookmarks'),
+                'icon' => 'fas fa-bookmark',
+                'route' => 'user.bookmarks',
+            ];
+            $baseMenu['activity'] = [
+                'title' => __('messages.activity'),
+                'icon' => 'fas fa-chart-line',
+                'route' => 'user.activity',
+            ];
+        }
+
+        return $baseMenu;
+    }
+
+    /**
+     * Get dashboard widgets based on role
+     */
+    private function getDashboardWidgets($role, $user): array
+    {
+        $widgets = [];
+
+        // Common widgets for all community members
+        if (in_array($role, ['member', 'senior_member'])) {
+            $widgets['recent_threads'] = [
+                'title' => __('messages.recent_threads'),
+                'data' => Thread::where('user_id', $user->id)
+                    ->with(['forum'])
+                    ->latest()
+                    ->limit(5)
+                    ->get(),
+            ];
+        }
+
+        // Guest specific widgets
+        if ($role === 'guest') {
+            $widgets['marketplace_highlights'] = [
+                'title' => __('messages.marketplace_highlights'),
+                'data' => \App\Models\MarketplaceProduct::where('product_type', 'digital')
+                    ->where('status', 'approved')
+                    ->where('is_active', true)
+                    ->latest()
+                    ->limit(6)
+                    ->get(),
+            ];
+        }
+
+        return $widgets;
+    }
+
+    /**
+     * Get quick actions based on role
+     */
+    private function getQuickActions($role): array
+    {
+        $actions = [];
+
+        if (in_array($role, ['member', 'senior_member'])) {
+            $actions['create_thread'] = [
+                'title' => __('messages.create_thread'),
+                'icon' => 'fas fa-plus',
+                'route' => 'threads.create',
+                'class' => 'btn-primary',
+            ];
+        }
+
+        if ($role === 'guest') {
+            $actions['browse_marketplace'] = [
+                'title' => __('messages.browse_marketplace'),
+                'icon' => 'fas fa-shopping-cart',
+                'route' => 'marketplace.index',
+                'class' => 'btn-success',
+            ];
+        }
+
+        return $actions;
+    }
+
+    /**
+     * Calculate user activity level
+     */
+    private function calculateActivityLevel($user): string
+    {
+        $threadsCount = Thread::where('user_id', $user->id)->count();
+        $commentsCount = 0; // TODO: Implement posts count when model is available
+        $totalActivity = $threadsCount + $commentsCount;
+
+        if ($totalActivity >= 100) return 'very_active';
+        if ($totalActivity >= 50) return 'active';
+        if ($totalActivity >= 10) return 'moderate';
+        return 'new';
+    }
+
+    /**
+     * Calculate user activity streak in days
+     */
+    private function calculateActivityStreak($user): int
+    {
+        // Simple implementation - count consecutive days with activity
+        $streak = 0;
+        $currentDate = now()->startOfDay();
+
+        for ($i = 0; $i < 30; $i++) { // Check last 30 days
+            $hasActivity = Thread::where('user_id', $user->id)
+                ->whereDate('created_at', $currentDate)
+                ->exists();
+
+            if ($hasActivity) {
+                $streak++;
+                $currentDate->subDay();
+            } else {
+                break;
+            }
+        }
+
+        return $streak;
     }
 
     /**
@@ -107,12 +323,40 @@ class UserDashboardController extends Controller
 
         // Stats
         $stats = [
-            'total' => ThreadBookmark::where('user_id', $user->id)->count(),
-            'with_folders' => ThreadBookmark::where('user_id', $user->id)->whereNotNull('folder')->count(),
-            'with_notes' => ThreadBookmark::where('user_id', $user->id)->whereNotNull('notes')->count(),
+            'total_bookmarks' => ThreadBookmark::where('user_id', $user->id)->count(),
+            'total_folders' => ThreadBookmark::where('user_id', $user->id)->whereNotNull('folder')->distinct('folder')->count(),
+            'recent_bookmarks' => ThreadBookmark::where('user_id', $user->id)->where('created_at', '>=', now()->subWeek())->count(),
         ];
 
-        return view('user.bookmarks', compact('bookmarks', 'folders', 'stats'));
+        return view('user.bookmarks-new', compact('bookmarks', 'folders', 'stats'));
+    }
+
+    /**
+     * Quản lý comments của user.
+     */
+    public function comments(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Comment::with(['thread' => function ($q) {
+            $q->with(['user', 'forum']);
+        }])
+            ->where('user_id', $user->id);
+
+        // Filter theo thread
+        if ($request->thread_id) {
+            $query->where('thread_id', $request->thread_id);
+        }
+
+        // Filter theo status
+        if ($request->status) {
+            $query->where('moderation_status', $request->status);
+        }
+
+        $comments = $query->latest()->paginate(20);
+        $threads = Thread::where('user_id', $user->id)->orderBy('title')->get();
+
+        return view('user.comments', compact('comments', 'threads'));
     }
 
     /**
@@ -160,14 +404,27 @@ class UserDashboardController extends Controller
             ->pluck('count', 'rating')
             ->toArray();
 
-        // Rating stats
-        $ratingStats = [
-            'total' => ThreadRating::where('user_id', $user->id)->count(),
-            'average' => ThreadRating::where('user_id', $user->id)->avg('rating'),
-            'with_review' => ThreadRating::where('user_id', $user->id)->whereNotNull('review')->count(),
+        // Rating stats for the view
+        $stats = [
+            'total_ratings_given' => ThreadRating::where('user_id', $user->id)->count(),
+            'avg_rating_given' => ThreadRating::where('user_id', $user->id)->avg('rating') ?? 0,
+            'total_ratings_received' => 0, // TODO: Implement when we have ratings on user's threads
+            'avg_rating_received' => 0, // TODO: Implement when we have ratings on user's threads
         ];
 
-        return view('dashboard.ratings', compact('ratings', 'ratingDistribution', 'ratingStats'));
+        // Prepare data for charts
+        $ratingsGivenDistribution = [
+            $ratingDistribution[5] ?? 0,
+            $ratingDistribution[4] ?? 0,
+            $ratingDistribution[3] ?? 0,
+            $ratingDistribution[2] ?? 0,
+            $ratingDistribution[1] ?? 0,
+        ];
+
+        // For now, ratings received is empty (TODO: implement when we have ratings on user's threads)
+        $ratingsReceivedDistribution = [0, 0, 0, 0, 0];
+
+        return view('user.ratings', compact('ratings', 'ratingDistribution', 'stats', 'ratingsGivenDistribution', 'ratingsReceivedDistribution'));
     }
 
     /**
@@ -205,7 +462,7 @@ class UserDashboardController extends Controller
             'total' => Thread::where('user_id', $user->id)->count(),
             'approved' => Thread::where('user_id', $user->id)->where('moderation_status', 'approved')->count(),
             'pending' => Thread::where('user_id', $user->id)->where('moderation_status', 'under_review')->count(),
-            'flagged' => Thread::where('user_id', $user->id)->where('is_flagged', true)->count(),
+            'flagged' => 0, // Column is_flagged doesn't exist yet
             'solved' => Thread::where('user_id', $user->id)->where('is_solved', true)->count(),
             'average_rating' => Thread::where('user_id', $user->id)
                 ->where('ratings_count', '>', 0)
@@ -214,7 +471,18 @@ class UserDashboardController extends Controller
             'total_bookmarks' => Thread::where('user_id', $user->id)->sum('bookmark_count'),
         ];
 
-        return view('dashboard.my-threads', compact('threads', 'threadStats'));
+        // Get forums for filter
+        $forums = \App\Models\Forum::orderBy('name')->get();
+
+        // Prepare stats for view
+        $stats = [
+            'total_threads' => $threadStats['total'] ?? 0,
+            'total_views' => $threadStats['total_views'] ?? 0,
+            'avg_rating' => $threadStats['average_rating'] ?? 0,
+            'pending_threads' => $threadStats['pending'] ?? 0,
+        ];
+
+        return view('user.my-threads', compact('threads', 'forums', 'stats'));
     }
 
     /**
@@ -276,7 +544,19 @@ class UserDashboardController extends Controller
             ->sortByDesc('created_at')
             ->take(20);
 
-        return view('dashboard.activity', compact('activities'));
+        // Activity stats
+        $stats = [
+            'total_activities' => $activities->count(),
+            'today_activities' => $activities->filter(function($activity) {
+                return $activity->created_at->isToday();
+            })->count(),
+            'week_activities' => $activities->filter(function($activity) {
+                return $activity->created_at->isCurrentWeek();
+            })->count(),
+            'streak_days' => $this->calculateActivityStreak($user),
+        ];
+
+        return view('user.activity', compact('activities', 'stats'));
     }
 
     /**

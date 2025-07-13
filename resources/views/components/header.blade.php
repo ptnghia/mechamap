@@ -49,7 +49,7 @@
                     <div class="search-container position-relative" style="min-width: 300px;">
                         <div class="input-group">
                             <input type="text" class="form-control search-input" id="unified-search" name="query" autocomplete="off"
-                                placeholder="{{ $isMarketplace ? __('messages.common.search_placeholder') : __('messages.common.search_placeholder') }}" aria-label="{{ __('messages.common.search') }}">
+                                placeholder="{{ $isMarketplace ? __('forum.search.placeholder') : __('forum.search.placeholder') }}" aria-label="{{ __('ui.actions.search') }}">
                             <button class="btn btn-outline-secondary" type="button" id="unified-search-btn">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -58,9 +58,9 @@
                         <!-- Search Results Dropdown - Exact structure from old header -->
                         <div class="search-results-dropdown" id="search-results-dropdown">
                             <div class="search-scope-options">
-                                <div class="search-scope-option active" data-scope="site">{{ __('content.all_content') }}</div>
-                                <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('content.search_in_thread') }}</div>
-                                <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('content.search_in_forum') }}</div>
+                                <div class="search-scope-option active" data-scope="site">{{ __('search.all_content') }}</div>
+                                <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('search.search_in_thread') }}</div>
+                                <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('search.search_in_forum') }}</div>
                                 @if($isMarketplace)
                                 <div class="search-scope-option" data-scope="marketplace">{{ __('nav.marketplace') }}</div>
                                 @endif
@@ -70,7 +70,7 @@
                             </div>
                             <div class="search-results-footer">
                                 <a href="/advanced-search" class="advanced-search-link">
-                                    🔍 {{ __('content.advanced_search') }}
+                                    🔍 {{ __('search.advanced') }}
                                 </a>
                             </div>
                         </div>
@@ -80,27 +80,27 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-users me-1"></i>
-                                {{ __('messages.nav.community') }}
+                                {{ __('ui.common.community') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="communityDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('messages.nav.discussion') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('ui.common.discussion') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('forums.index') }}">
-                                    <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads') }}
+                                    <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads.title') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                    <i class="fa-solid fa-clock me-2"></i>{{ __('messages.nav.recent_discussions') }}
+                                    <i class="fa-solid fa-clock me-2"></i>{{ __('ui.common.recent_discussions') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
-                                    <i class="fa-solid fa-fire me-2"></i>{{ __('messages.nav.popular_topics') }}
+                                    <i class="fa-solid fa-fire me-2"></i>{{ __('ui.common.popular_topics') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new.trending') }}">
-                                    <i class="fa-solid fa-chart-line me-2"></i>Trending
+                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('ui.common.trending') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new.most-viewed') }}">
-                                    <i class="fa-solid fa-eye me-2"></i>Most Viewed
+                                    <i class="fa-solid fa-eye me-2"></i>{{ __('ui.common.most_viewed') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new.hot-topics') }}">
-                                    <i class="fa-solid fa-flame me-2"></i>Hot Topics
+                                    <i class="fa-solid fa-flame me-2"></i>{{ __('ui.common.hot_topics') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Tìm kiếm</h6></li>
@@ -114,18 +114,18 @@
                                     <i class="fa-solid fa-magnifying-glass me-2"></i>Tìm kiếm diễn đàn
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('messages.nav.networking') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('ui.common.networking') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('members.index') }}">
-                                    <i class="fa-solid fa-users-gear me-2"></i>{{ __('messages.nav.member_directory') }}
+                                    <i class="fa-solid fa-users-gear me-2"></i>{{ __('ui.common.member_directory') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('messages.nav.company_profiles') }}
+                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('ui.common.company_profiles') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('events.index') }}">
-                                    <i class="fa-solid fa-calendar-days me-2"></i>{{ __('messages.nav.events_webinars') }}
+                                    <i class="fa-solid fa-calendar-days me-2"></i>{{ __('ui.common.events_webinars') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                    <i class="fa-solid fa-briefcase me-2"></i>{{ __('messages.nav.job_board') }}
+                                    <i class="fa-solid fa-briefcase me-2"></i>{{ __('ui.common.job_board') }}
                                 </a></li>
                             </ul>
                         </li>
@@ -134,7 +134,7 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="{{ route('showcase.public') }}">
                                 <i class="fa-solid fa-trophy me-1"></i>
-                                {{ __('messages.nav.showcase') }}
+                                {{ __('ui.common.showcase') }}
                             </a>
                         </li>
 
@@ -143,47 +143,47 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-store me-1"></i>
-                                {{ __('messages.nav.marketplace') }}
+                                {{ __('ui.common.marketplace') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('Cửa hàng') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('marketplace.shop') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.products.index') }}">
-                                    <i class="fa-solid fa-box me-2"></i>{{ __('Tất cả sản phẩm') }}
+                                    <i class="fa-solid fa-box me-2"></i>{{ __('marketplace.products.all') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.categories.index') }}">
-                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('Danh mục') }}
+                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('marketplace.categories.title') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                    <i class="fa-solid fa-building me-2"></i>{{ __('Nhà cung cấp') }}
+                                    <i class="fa-solid fa-building me-2"></i>{{ __('marketplace.suppliers.title') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.index') }}#featured">
-                                    <i class="fa-solid fa-star me-2"></i>{{ __('Sản phẩm nổi bật') }}
+                                    <i class="fa-solid fa-star me-2"></i>{{ __('marketplace.products.featured') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('Công cụ kinh doanh') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('marketplace.business_tools') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('Yêu cầu báo giá') }}
+                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('marketplace.rfq.title') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
-                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('Đơn hàng số lượng lớn') }}
+                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('marketplace.bulk_orders') }}
                                 </a></li>
                                 @auth
                                     @if(auth()->user()->canSellAnyProduct())
                                     <li><a class="dropdown-item" href="{{ route('marketplace.seller.setup') }}">
-                                        <i class="fa-solid fa-store me-2"></i>{{ __('Trở thành người bán') }}
+                                        <i class="fa-solid fa-store me-2"></i>{{ __('marketplace.become_seller') }}
                                     </a></li>
                                     @endif
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('Tài khoản của tôi') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('marketplace.my_account') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
-                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('Đơn hàng của tôi') }}
+                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('marketplace.my_orders') }}
                                 </a></li>
                                     @if(auth()->user()->canBuyAnyProduct())
                                     <li><a class="dropdown-item" href="{{ route('marketplace.cart.index') }}">
-                                        <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('Giỏ hàng') }}
+                                        <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('marketplace.cart.title') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('marketplace.downloads.index') }}">
-                                        <i class="fa-solid fa-download me-2"></i>{{ __('Tải xuống') }}
+                                        <i class="fa-solid fa-download me-2"></i>{{ __('marketplace.downloads') }}
                                     </a></li>
                                     @endif
                                 @endauth
@@ -195,42 +195,42 @@
                         <!--li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-screwdriver-wrench me-1"></i>
-                                {{ __('messages.nav.technical_resources') }}
+                                {{ __('ui.common.technical_resources') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('messages.nav.technical_database') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('ui.common.technical_database') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('materials.index') }}">
-                                    <i class="fa-solid fa-cube me-2"></i>{{ __('messages.nav.materials_database') }}
+                                    <i class="fa-solid fa-cube me-2"></i>{{ __('ui.common.materials_database') }}
                                     <span class="badge bg-primary ms-2">10</span>
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('standards.index') }}">
-                                    <i class="fa-solid fa-certificate me-2"></i>{{ __('messages.nav.engineering_standards') }}
+                                    <i class="fa-solid fa-certificate me-2"></i>{{ __('ui.common.engineering_standards') }}
                                     <span class="badge bg-success ms-2">8</span>
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('manufacturing.processes.index') }}">
-                                    <i class="fa-solid fa-gears me-2"></i>{{ __('messages.nav.manufacturing_processes') }}
+                                    <i class="fa-solid fa-gears me-2"></i>{{ __('ui.common.manufacturing_processes') }}
                                     <span class="badge bg-info ms-2">10</span>
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('messages.nav.design_resources') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('ui.common.design_resources') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('cad.library.index') }}">
-                                    <i class="fa-solid fa-file-code me-2"></i>{{ __('messages.nav.cad_library') }}
+                                    <i class="fa-solid fa-file-code me-2"></i>{{ __('ui.common.cad_library') }}
                                     <span class="badge bg-warning ms-2">20+</span>
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('technical.drawings.index') }}">
-                                    <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('messages.nav.technical_drawings') }}
+                                    <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('ui.common.technical_drawings') }}
                                     <span class="badge bg-secondary ms-2">15+</span>
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.tools_calculators') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('ui.common.tools_calculators') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
-                                    <i class="fa-solid fa-calculator me-2"></i>{{ __('messages.nav.material_cost_calculator') }}
+                                    <i class="fa-solid fa-calculator me-2"></i>{{ __('ui.common.material_cost_calculator') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('tools.process-selector') }}">
-                                    <i class="fa-solid fa-route me-2"></i>{{ __('messages.nav.process_selector') }}
+                                    <i class="fa-solid fa-route me-2"></i>{{ __('ui.common.process_selector') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('tools.standards-checker') }}">
-                                    <i class="fa-solid fa-check-circle me-2"></i>{{ __('messages.nav.standards_compliance') }}
+                                    <i class="fa-solid fa-check-circle me-2"></i>{{ __('ui.common.standards_compliance') }}
                                 </a></li>
                             </ul>
                         </li-->
@@ -239,29 +239,29 @@
                         <!--li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-graduation-cap me-1"></i>
-                                {{ __('messages.nav.knowledge') }}
+                                {{ __('ui.common.knowledge') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('messages.nav.learning_resources') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('ui.common.learning_resources') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
-                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('messages.nav.knowledge_base') }}
+                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('ui.common.knowledge_base') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
-                                    <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('messages.nav.tutorials_guides') }}
+                                    <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('ui.common.tutorials_guides') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('documentation.index') }}">
-                                    <i class="fa-solid fa-file-lines me-2"></i>{{ __('messages.nav.technical_documentation') }}
+                                    <i class="fa-solid fa-file-lines me-2"></i>{{ __('ui.common.technical_documentation') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_updates') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('ui.common.industry_updates') }}</h6></li>
                                 <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
-                                    <i class="fa-solid fa-newspaper me-2"></i>{{ __('messages.nav.industry_news') }}
+                                    <i class="fa-solid fa-newspaper me-2"></i>{{ __('ui.common.industry_news') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                    <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('messages.nav.whats_new') }}
+                                    <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('ui.common.whats_new') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('reports.industry.index') }}">
-                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('messages.nav.industry_reports') }}
+                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('ui.common.industry_reports') }}
                                 </a></li>
                             </ul>
                         </li-->
@@ -276,16 +276,16 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.admin_dashboard') }}
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('ui.common.admin_dashboard') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                        <i class="bx bx-user me-2"></i>{{ __('messages.nav.user_management') }}
+                                        <i class="bx bx-user me-2"></i>{{ __('ui.common.user_management') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.threads.index') }}">
-                                        <i class="bx bx-chat me-2"></i>{{ __('messages.nav.forum_management') }}
+                                        <i class="bx bx-chat me-2"></i>{{ __('ui.common.forum_management') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                                        <i class="bx bx-package me-2"></i>{{ __('messages.nav.marketplace_management') }}
+                                        <i class="bx bx-package me-2"></i>{{ __('ui.common.marketplace_management') }}
                                     </a></li>
                                 </ul>
                             </li>
@@ -299,16 +299,16 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="supplierDropdown">
                                     <li><a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
-                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('ui.common.dashboard') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('supplier.products.index') }}">
-                                        <i class="bx bx-package me-2"></i>{{ __('messages.nav.my_products') }}
+                                        <i class="bx bx-package me-2"></i>{{ __('ui.common.my_products') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
-                                        <i class="bx bx-list-ul me-2"></i>{{ __('messages.nav.orders') }}
+                                        <i class="bx bx-list-ul me-2"></i>{{ __('ui.common.orders') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('supplier.analytics.index') }}">
-                                        <i class="bx bx-bar-chart me-2"></i>{{ __('messages.nav.reports') }}
+                                        <i class="bx bx-bar-chart me-2"></i>{{ __('ui.common.reports') }}
                                     </a></li>
                                 </ul>
                             </li>
@@ -324,16 +324,16 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="brandDropdown">
                                     <li><a class="dropdown-item" href="{{ route('brand.dashboard') }}">
-                                        <i class="bx bx-tachometer me-2"></i>{{ __('messages.nav.dashboard') }}
+                                        <i class="bx bx-tachometer me-2"></i>{{ __('ui.common.dashboard') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('brand.insights.index') }}">
-                                        <i class="bx bx-bulb me-2"></i>{{ __('messages.nav.market_insights') }}
+                                        <i class="bx bx-bulb me-2"></i>{{ __('ui.common.market_insights') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('brand.marketplace.analytics') }}">
-                                        <i class="bx bx-store me-2"></i>{{ __('messages.nav.marketplace_analytics') }}
+                                        <i class="bx bx-store me-2"></i>{{ __('ui.common.marketplace_analytics') }}
                                     </a></li>
                                     <li><a class="dropdown-item" href="{{ route('brand.promotion.index') }}">
-                                        <i class="bx bx-megaphone me-2"></i>{{ __('messages.nav.promotion_opportunities') }}
+                                        <i class="bx bx-megaphone me-2"></i>{{ __('ui.common.promotion_opportunities') }}
                                     </a></li>
                                 </ul>
                             </li>
@@ -344,66 +344,66 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis me-1"></i>
-                                {{ __('messages.nav.more') }}
+                                {{ __('ui.common.more') }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('messages.nav.search_discovery') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('ui.common.search_discovery') }}</h6></li>
                                 <li>
                                     <a class="dropdown-item" href="/search/advanced">
                                         <i class="fa-brands fa-searchengin me-2"></i>
-                                        {{ __('messages.nav.advanced_search') }}
+                                        {{ __('ui.common.advanced_search') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('gallery.index') }}">
                                         <i class="fa-regular fa-images me-2"></i>
-                                        {{ __('messages.nav.photo_gallery') }}
+                                        {{ __('ui.common.photo_gallery') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('tags.index') }}">
                                         <i class="fa-solid fa-tags me-2"></i>
-                                        {{ __('messages.nav.browse_by_tags') }}
+                                        {{ __('ui.common.browse_by_tags') }}
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ __('messages.nav.help_support') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ __('ui.common.help_support') }}</h6></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('faq.index') }}">
                                         <i class="fa-solid fa-question me-2"></i>
-                                        {{ __('messages.nav.faq') }}
+                                        {{ __('ui.common.faq') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('help.index') }}">
                                         <i class="fa-solid fa-life-ring me-2"></i>
-                                        {{ __('messages.nav.help_center') }}
+                                        {{ __('ui.common.help_center') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('contact') }}">
                                         <i class="fa-solid fa-envelope me-2"></i>
-                                        {{ __('messages.nav.contact_support') }}
+                                        {{ __('ui.common.contact_support') }}
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ __('messages.nav.about_mechamap') }}</h6></li>
+                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ __('ui.common.about_mechamap') }}</h6></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('about.index') }}">
                                         <i class="fa-solid fa-building me-2"></i>
-                                        {{ __('messages.nav.about_us') }}
+                                        {{ __('ui.common.about_us') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('terms.index') }}">
                                         <i class="fa-solid fa-file-contract me-2"></i>
-                                        {{ __('messages.nav.terms_of_service') }}
+                                        {{ __('ui.common.terms_of_service') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('privacy.index') }}">
                                         <i class="fa-solid fa-shield-halved me-2"></i>
-                                        {{ __('messages.nav.privacy_policy') }}
+                                        {{ __('ui.common.privacy_policy') }}
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -438,15 +438,15 @@
                                     <!-- Mini Cart Dropdown -->
                                     <div class="dropdown-menu dropdown-menu-end p-0" style="width: 380px;" id="miniCart">
                                         <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">{{ __('messages.cart.shopping_cart') }}</h6>
+                                            <h6 class="mb-0">{{ __('marketplace.cart.shopping_cart') }}</h6>
                                             <span class="badge bg-primary" id="miniCartItemCount">0</span>
                                         </div>
                                 <div id="miniCartItems" style="max-height: 350px; overflow-y: auto;">
                                     <!-- Empty state -->
                                     <div class="text-center text-muted py-4" id="miniCartEmpty">
                                         <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
-                                        <p class="mb-0 mt-2">{{ __('messages.cart.cart_empty') }}</p>
-                                        <small>{{ __('messages.cart.add_products') }}</small>
+                                        <p class="mb-0 mt-2">{{ __('marketplace.cart.cart_empty') }}</p>
+                                        <small>{{ __('marketplace.cart.add_products') }}</small>
                                     </div>
                                     <!-- Cart items will be loaded here -->
                                 </div>
@@ -509,7 +509,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
                                         <i class="bx bx-tachometer me-2"></i>
-                                        {{ __('messages.nav.admin_dashboard') }}
+                                        {{ __('ui.common.admin_dashboard') }}
                                     </a>
                                 </li>
                                 @endif
@@ -518,19 +518,19 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
                                         <i class="bx bx-store me-2"></i>
-                                        {{ __('messages.nav.supplier_dashboard') }}
+                                        {{ __('ui.common.supplier_dashboard') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('supplier.products.index') }}">
                                         <i class="bx bx-package me-2"></i>
-                                        {{ __('messages.nav.product_management') }}
+                                        {{ __('ui.common.product_management') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('supplier.orders.index') }}">
                                         <i class="bx bx-list-ul me-2"></i>
-                                        {{ __('messages.nav.my_orders') }}
+                                        {{ __('ui.common.my_orders') }}
                                     </a>
                                 </li>
                                 @endif
@@ -539,19 +539,19 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('manufacturer.dashboard') }}">
                                         <i class="bx bx-cube me-2"></i>
-                                        {{ __('messages.nav.manufacturer_dashboard') }}
+                                        {{ __('ui.common.manufacturer_dashboard') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('manufacturer.designs.index') }}">
                                         <i class="bx bx-cube-alt me-2"></i>
-                                        {{ __('messages.nav.design_management') }}
+                                        {{ __('ui.common.design_management') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('manufacturer.orders.index') }}">
                                         <i class="bx bx-download me-2"></i>
-                                        {{ __('messages.nav.download_orders') }}
+                                        {{ __('ui.common.download_orders') }}
                                     </a>
                                 </li>
                                 @endif
@@ -560,13 +560,13 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('brand.dashboard') }}">
                                         <i class="bx bx-bullhorn me-2"></i>
-                                        {{ __('messages.nav.brand_dashboard') }}
+                                        {{ __('ui.common.brand_dashboard') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('brand.insights.index') }}">
                                         <i class="bx bx-bar-chart me-2"></i>
-                                        {{ __('messages.nav.market_analysis') }}
+                                        {{ __('ui.common.market_analysis') }}
                                     </a>
                                 </li>
                                 @endif
@@ -575,23 +575,20 @@
                                 <li><hr class="dropdown-divider"></li>
                                 @endif
 
+
+
                                 <!-- Common User Menu Items -->
                                 <li>
                                     <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->username) }}">
                                         <i class="fa-regular fa-address-card me-2"></i>
-                                        {{ __('user.profile') }}
+                                        {{ __('nav.user.profile') }}
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('following.index') }}">
-                                        <i class="fa-solid fa-circle-plus me-2"></i>
-                                        {{ __('messages.nav.following') }}
-                                    </a>
-                                </li>
+
                                 <li>
                                     <a class="dropdown-item" href="{{ route('chat.index') }}">
                                         <i class="fa-solid fa-comments me-2"></i>
-                                        {{ __('messages.nav.messages') }}
+                                        {{ __('ui.common.messages') }}
                                         @php
                                         $unreadMessagesCount = \App\Models\Message::whereHas('conversation.participants', function ($query) {
                                             $query->where('user_id', Auth::id())
@@ -611,7 +608,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('alerts.index') }}">
                                         <i class="fa-solid fa-bell me-2"></i>
-                                        {{ __('messages.nav.notifications') }}
+                                        {{ __('ui.common.notifications') }}
                                         @php
                                         $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
                                         @endphp
@@ -620,28 +617,23 @@
                                         @endif
                                     </a>
                                 </li>
+
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('conversations.index') }}">
-                                        <i class="fa-regular fa-envelope me-2"></i>
-                                        {{ __('messages.nav.messages') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('bookmarks.index') }}">
+                                    <a class="dropdown-item" href="{{ route('user.bookmarks') }}">
                                         <i class="fa-regular fa-bookmark me-2"></i>
-                                        {{ __('messages.nav.saved') }}
+                                        {{ __('ui.common.saved') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('showcase.index') }}">
                                         <i class="fas fa-image me-2"></i>
-                                        {{ __('messages.nav.my_showcase') }}
+                                        {{ __('ui.common.my_showcase') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                         <i class="fas fa-cog me-2"></i>
-                                        {{ __('user.settings') }}
+                                        {{ __('nav.user.settings') }}
                                     </a>
                                 </li>
 
@@ -651,14 +643,14 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('business.index') }}">
                                         <i class="fas fa-briefcase me-2"></i>
-                                        {{ __('messages.nav.my_business') }}
+                                        {{ __('ui.common.my_business') }}
                                     </a>
                                 </li>
                                 @if(Auth::user()->hasAnyRole(['supplier', 'manufacturer']))
                                 <li>
                                     <a class="dropdown-item" href="{{ route('marketplace.seller.verification-status') }}">
                                         <i class="bx bx-shield-check me-2"></i>
-                                        {{ __('messages.nav.verification_status') }}
+                                        {{ __('ui.common.verification_status') }}
                                     </a>
                                 </li>
                                 @endif
@@ -667,7 +659,7 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('subscription.index') }}">
                                         <i class="fas fa-star me-2"></i>
-                                        {{ __('messages.nav.my_subscription') }}
+                                        {{ __('ui.common.my_subscription') }}
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -691,7 +683,7 @@
                         </li>
                         <!--li class="nav-item">
                             <button type="button" class="btn btn-primary btn-sm ms-2" onclick="openRegisterModal()">
-                                {{ __('messages.auth.register') }}
+                                {{ __('auth.register.title') }}
                             </button>
                         </li-->
                         @endauth
@@ -744,21 +736,21 @@
 
                     <!-- Recent Searches -->
                     <div class="mb-3">
-                        <h6 class="text-muted mb-2">{{ __('messages.search.recent_searches') }}</h6>
+                        <h6 class="text-muted mb-2">{{ __('forum.search.recent_searches') }}</h6>
                         <div id="mobileRecentSearches">
-                            <small class="text-muted">{{ __('messages.search.no_recent_searches') }}</small>
+                            <small class="text-muted">{{ __('forum.search.no_recent_searches') }}</small>
                         </div>
                     </div>
 
                     <!-- Popular Searches -->
                     <div>
-                        <h6 class="text-muted mb-2">{{ __('messages.search.popular_searches') }}</h6>
+                        <h6 class="text-muted mb-2">{{ __('forum.search.popular_searches') }}</h6>
                         <div class="d-flex flex-wrap gap-1">
                             <span class="badge bg-light text-dark">bearings</span>
                             <span class="badge bg-light text-dark">steel materials</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.cad_files') }}</span>
+                            <span class="badge bg-light text-dark">{{ __('forum.search.cad_files') }}</span>
                             <span class="badge bg-light text-dark">manufacturing</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.iso_standards') }}</span>
+                            <span class="badge bg-light text-dark">{{ __('forum.search.iso_standards') }}</span>
                         </div>
                     </div>
                 </div>
@@ -1011,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasForum) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">{{ __('messages.search.forum') }}</div>
+                    <div class="search-result-section-title">{{ __('forum.search.forum') }}</div>
                     <div class="search-result-item">
                         <div class="search-result-item-title">
                             <a href="${results.forum.url}">${results.forum.name}</a>
@@ -1025,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasThreads) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">{{ __('messages.search.threads') }}</div>
+                    <div class="search-result-section-title">{{ __('forum.search.threads') }}</div>
             `;
 
             results.threads.forEach(thread => {

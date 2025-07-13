@@ -224,7 +224,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Xem chi tiết') }}">
+                                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __(__('buttons.view_details')) }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="{{ __('Chỉnh sửa') }}">

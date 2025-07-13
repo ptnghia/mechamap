@@ -136,7 +136,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="replyActions{{ $reply->id }}">
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('admin.comments.show', $reply) }}">
-                                                            <i class="fas fa-eye me-2"></i> {{ __('Xem chi tiết') }}
+                                                            <i class="fas fa-eye me-2"></i> {{ __(__('buttons.view_details')) }}
                                                         </a>
                                                     </li>
                                                     <li>

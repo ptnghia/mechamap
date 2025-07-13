@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FollowingController;
@@ -138,8 +139,8 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
         Route::get('/checkout', [App\Http\Controllers\MarketplaceCartController::class, 'checkout'])->name('checkout');
     });
 
-    // Checkout Routes - Require authentication and purchase permission
-    Route::prefix('checkout')->name('checkout.')->middleware(['auth', 'verified', 'marketplace.permission:buy'])->group(function () {
+    // Checkout Routes - Require authentication and checkout permission
+    Route::prefix('checkout')->name('checkout.')->middleware(['auth', 'verified', 'marketplace.permission:checkout'])->group(function () {
         Route::get('/', [App\Http\Controllers\MarketplaceCheckoutController::class, 'index'])->name('index');
         Route::post('/shipping', [App\Http\Controllers\MarketplaceCheckoutController::class, 'shipping'])->name('shipping');
         Route::post('/payment', [App\Http\Controllers\MarketplaceCheckoutController::class, 'payment'])->name('payment');
@@ -218,7 +219,7 @@ Route::prefix('jobs')->name('jobs.')->group(function () {
 // Technical Resources routes - NEW SECTION
 Route::prefix('materials')->name('materials.')->group(function () {
     Route::get('/', [App\Http\Controllers\MaterialController::class, 'index'])->name('index');
-    Route::get('/search', [App\Http\Controllers\MaterialController::class, 'search'])->name('search');
+    // Route::get('/search', [App\Http\Controllers\MaterialController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with material filter
     Route::get('/compare', [App\Http\Controllers\MaterialController::class, 'compare'])->name('compare');
     Route::get('/calculator', [App\Http\Controllers\MaterialController::class, 'calculator'])->name('calculator');
     Route::get('/export', [App\Http\Controllers\MaterialController::class, 'export'])->name('export');
@@ -227,7 +228,7 @@ Route::prefix('materials')->name('materials.')->group(function () {
 
 Route::prefix('standards')->name('standards.')->group(function () {
     Route::get('/', [App\Http\Controllers\StandardController::class, 'index'])->name('index');
-    Route::get('/search', [App\Http\Controllers\StandardController::class, 'search'])->name('search');
+    // Route::get('/search', [App\Http\Controllers\StandardController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with standard filter
     Route::get('/compare', [App\Http\Controllers\StandardController::class, 'compare'])->name('compare');
     Route::get('/compliance-checker', [App\Http\Controllers\StandardController::class, 'complianceChecker'])->name('compliance-checker');
     Route::get('/export', [App\Http\Controllers\StandardController::class, 'export'])->name('export');
@@ -236,7 +237,7 @@ Route::prefix('standards')->name('standards.')->group(function () {
 
 Route::prefix('manufacturing')->name('manufacturing.')->group(function () {
     Route::get('/processes', [App\Http\Controllers\ManufacturingProcessController::class, 'index'])->name('processes.index');
-    Route::get('/processes/search', [App\Http\Controllers\ManufacturingProcessController::class, 'search'])->name('processes.search');
+    // Route::get('/processes/search', [App\Http\Controllers\ManufacturingProcessController::class, 'search'])->name('processes.search'); // CONSOLIDATED: Use main search with process filter
     Route::get('/processes/selector', [App\Http\Controllers\ManufacturingProcessController::class, 'selector'])->name('processes.selector');
     Route::get('/processes/calculator', [App\Http\Controllers\ManufacturingProcessController::class, 'calculator'])->name('processes.calculator');
     Route::get('/processes/compare', [App\Http\Controllers\ManufacturingProcessController::class, 'compare'])->name('processes.compare');
@@ -247,7 +248,7 @@ Route::prefix('manufacturing')->name('manufacturing.')->group(function () {
 Route::prefix('cad')->name('cad.')->group(function () {
     Route::prefix('library')->name('library.')->group(function () {
         Route::get('/', [App\Http\Controllers\CADLibraryController::class, 'index'])->name('index');
-        Route::get('/search', [App\Http\Controllers\CADLibraryController::class, 'search'])->name('search');
+        // Route::get('/search', [App\Http\Controllers\CADLibraryController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with CAD filter
         Route::get('/stats', [App\Http\Controllers\CADLibraryController::class, 'getStats'])->name('stats');
         Route::get('/my-files', [App\Http\Controllers\CADLibraryController::class, 'myFiles'])->name('my-files')->middleware('auth');
         Route::get('/create', [App\Http\Controllers\CADLibraryController::class, 'create'])->name('create')->middleware('auth');
@@ -361,8 +362,24 @@ Route::get('/accessibility', function () {
     return view('coming-soon', ['title' => 'Accessibility', 'message' => 'Accessibility information coming soon']);
 })->name('accessibility');
 
+// Main Dashboard Route - Redirects to role-specific dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = auth()->user();
+
+    if (!$user) {
+        return redirect()->route('login');
+    }
+
+    // Redirect based on role using existing dashboard routes
+    return match($user->role) {
+        'super_admin', 'admin', 'moderator' => redirect()->route('admin.dashboard'),
+        'supplier' => redirect()->route('supplier.dashboard'),
+        'manufacturer' => redirect()->route('manufacturer.dashboard'),
+        'brand' => redirect()->route('brand.dashboard'),
+        'verified_partner' => redirect()->route('partner.dashboard'),
+        'member', 'senior_member', 'guest' => redirect()->route('user.dashboard'),
+        default => redirect()->route('user.dashboard'),
+    };
 })->middleware(['auth', 'verified.social'])->name('dashboard');
 
 // Test chat widget
@@ -379,7 +396,7 @@ Route::middleware(['auth'])->prefix('messages')->name('chat.')->group(function (
     Route::post('/{id}/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send');
 
     // API routes for chat
-    Route::get('/api/search-users', [App\Http\Controllers\ChatController::class, 'searchUsers'])->name('api.search-users');
+    // Route::get('/api/search-users', [App\Http\Controllers\ChatController::class, 'searchUsers'])->name('api.search-users'); // CONSOLIDATED: Use main search with user filter
     Route::get('/api/unread-count', [App\Http\Controllers\ChatController::class, 'getUnreadCount'])->name('api.unread-count');
 });
 
@@ -422,8 +439,10 @@ Route::middleware('auth')->group(function () {
     // Alerts routes
     Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
     Route::patch('/alerts/{alert}/read', [AlertController::class, 'markAsRead'])->name('alerts.read');
+    Route::patch('/alerts/{alert}/unread', [AlertController::class, 'markAsUnread'])->name('alerts.unread');
     Route::delete('/alerts/{alert}', [AlertController::class, 'destroy'])->name('alerts.destroy');
-    Route::post('/alerts/read-all', [AlertController::class, 'markAllAsRead'])->name('alerts.read-all');
+    Route::patch('/alerts/mark-all-read', [AlertController::class, 'markAllAsRead'])->name('alerts.mark-all-read');
+    Route::delete('/alerts/clear-all', [AlertController::class, 'clearAll'])->name('alerts.clear-all');
 
     // Conversations routes
     Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
@@ -464,15 +483,18 @@ Route::get('/new', [NewContentController::class, 'index'])->name('new');
 // Forum routes with caching middleware
 Route::middleware('forum.cache')->group(function () {
     Route::get('/forums', [\App\Http\Controllers\CategoryController::class, 'index'])->name('forums.index');
+
+    // Forum search routes - RESTORED (using existing controllers & views)
     Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
     Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch'])->name('forums.search.advanced');
     Route::get('/forums/search/categories', [ForumController::class, 'searchByCategory'])->name('forums.search.categories');
+
     Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
 });
 
 // Category routes
 Route::get('/categories/{category:slug}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
-Route::get('/categories/{category:slug}/search', [\App\Http\Controllers\CategoryController::class, 'search'])->name('categories.search');
+// Route::get('/categories/{category:slug}/search', [\App\Http\Controllers\CategoryController::class, 'search'])->name('categories.search'); // CONSOLIDATED: Use main search with category filter
 Route::get('/categories/trending', [\App\Http\Controllers\CategoryController::class, 'trending'])->name('categories.trending');
 
 // Thread routes (MUST be before wildcard routes)
@@ -491,16 +513,20 @@ Route::prefix('browse')->name('browse.threads.')->group(function () {
     Route::get('/threads/trending', [UserThreadController::class, 'trending'])->name('trending');
     Route::get('/threads/by-tag/{tag}', [UserThreadController::class, 'byTag'])->name('by-tag');
     Route::get('/threads/by-forum/{forum}', [UserThreadController::class, 'byForum'])->name('by-forum');
-    Route::get('/threads/search', [UserThreadController::class, 'search'])->name('search');
+    // Route::get('/threads/search', [UserThreadController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with thread filter
 });
 
-// User Dashboard Routes (Authenticated only)
+// User Dashboard Routes (Authenticated only) - For Community Members
 Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/my-threads', [UserDashboardController::class, 'myThreads'])->name('my-threads');
+    Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
+    Route::get('/activity', [UserDashboardController::class, 'activity'])->name('activity');
+    Route::get('/following', [UserDashboardController::class, 'following'])->name('following');
 
     // Bookmark management
     Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
-    Route::post('/bookmarks/search', [UserDashboardController::class, 'searchBookmarks'])->name('bookmarks.search');
+    // Route::post('/bookmarks/search', [UserDashboardController::class, 'searchBookmarks'])->name('bookmarks.search'); // CONSOLIDATED: Use main search with bookmark filter
     Route::post('/bookmarks/folders', [UserDashboardController::class, 'createBookmarkFolder'])->name('bookmarks.create-folder');
     Route::put('/bookmarks/folders/{folder}', [UserDashboardController::class, 'updateFolder'])->name('bookmarks.folders.update');
     Route::delete('/bookmarks/folders/{folder}', [UserDashboardController::class, 'deleteFolder'])->name('bookmarks.folders.delete');
@@ -513,6 +539,9 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
 
     // My threads
     Route::get('/my-threads', [UserDashboardController::class, 'myThreads'])->name('my-threads');
+
+    // My comments
+    Route::get('/comments', [UserDashboardController::class, 'comments'])->name('comments');
 
     // Activity feed
     Route::get('/activity', [UserDashboardController::class, 'activity'])->name('activity');
@@ -559,16 +588,32 @@ Route::delete('/ratings/{rating}', [App\Http\Controllers\ShowcaseRatingControlle
 // Image upload for comments/ratings
 Route::post('/upload-images', [App\Http\Controllers\ImageUploadController::class, 'upload'])->name('images.upload');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/search', [SearchController::class, 'index'])->name('search.index');
-Route::get('/search/advanced', [AdvancedSearchController::class, 'index'])->name('search.advanced');
-Route::get('/search/api', [AdvancedSearchController::class, 'search'])->name('search.api');
-Route::get('/search/autocomplete', [AdvancedSearchController::class, 'autocomplete'])->name('search.autocomplete');
-Route::get('/search/suggestions', [AdvancedSearchController::class, 'suggestions'])->name('search.suggestions');
-Route::get('/search/facets', [AdvancedSearchController::class, 'facets'])->name('search.facets');
-Route::post('/search/save', [AdvancedSearchController::class, 'saveSearch'])->name('search.save');
-Route::get('/search/saved', [AdvancedSearchController::class, 'savedSearches'])->name('search.saved');
-Route::get('/search/analytics', [AdvancedSearchController::class, 'analytics'])->name('search.analytics');
-Route::get('/ajax-search', [SearchController::class, 'ajaxSearch'])->name('search.ajax');
+// Unified Search Routes
+Route::prefix('search')->name('search.')->group(function () {
+    // Main search interfaces
+    Route::get('/', [AdvancedSearchController::class, 'basic'])->name('index');
+    Route::get('/basic', [AdvancedSearchController::class, 'basic'])->name('basic');
+    Route::get('/advanced', [AdvancedSearchController::class, 'index'])->name('advanced');
+
+    // Search API endpoints
+    Route::get('/api', [AdvancedSearchController::class, 'search'])->name('api');
+    Route::get('/ajax', [AdvancedSearchController::class, 'ajaxSearch'])->name('ajax');
+    Route::get('/autocomplete', [AdvancedSearchController::class, 'autocomplete'])->name('autocomplete');
+    Route::get('/suggestions', [AdvancedSearchController::class, 'suggestions'])->name('suggestions');
+    Route::get('/facets', [AdvancedSearchController::class, 'facets'])->name('facets');
+
+    // Search management (authenticated)
+    Route::middleware('auth')->group(function () {
+        Route::post('/save', [AdvancedSearchController::class, 'saveSearch'])->name('save');
+        Route::get('/saved', [AdvancedSearchController::class, 'savedSearches'])->name('saved');
+        Route::get('/analytics', [AdvancedSearchController::class, 'analytics'])->name('analytics');
+    });
+});
+
+// Legacy search redirects for backward compatibility
+Route::get('/ajax-search', function (Request $request) {
+    return app(AdvancedSearchController::class)->ajaxSearch($request);
+})->name('search.ajax.legacy');
 
 // Real-time routes
 Route::prefix('realtime')->name('realtime.')->group(function () {
@@ -645,7 +690,7 @@ Route::get('/contact', [App\Http\Controllers\PageController::class, 'showByRoute
 // Page management routes
 Route::get('/pages/categories', [App\Http\Controllers\PageController::class, 'categories'])->name('pages.categories');
 Route::get('/pages/category/{slug}', [App\Http\Controllers\PageController::class, 'category'])->name('pages.category');
-Route::get('/pages/search', [App\Http\Controllers\PageController::class, 'search'])->name('pages.search');
+// Route::get('/pages/search', [App\Http\Controllers\PageController::class, 'search'])->name('pages.search'); // CONSOLIDATED: Use main search with page filter
 Route::get('/pages/popular', [App\Http\Controllers\PageController::class, 'popular'])->name('pages.popular');
 Route::get('/pages/recent', [App\Http\Controllers\PageController::class, 'recent'])->name('pages.recent');
 Route::get('/pages/{slug}', [App\Http\Controllers\PageController::class, 'show'])->name('pages.show');
@@ -667,7 +712,7 @@ Route::get('/robots.txt', [App\Http\Controllers\SitemapController::class, 'robot
 // Documentation Routes (Public)
 Route::prefix('docs')->name('docs.')->group(function () {
     Route::get('/', [App\Http\Controllers\DocumentationController::class, 'index'])->name('index');
-    Route::get('/search', [App\Http\Controllers\DocumentationController::class, 'search'])->name('search');
+    // Route::get('/search', [App\Http\Controllers\DocumentationController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with documentation filter
     Route::get('/category/{category:slug}', [App\Http\Controllers\DocumentationController::class, 'category'])->name('category');
     Route::get('/download/{documentation}/{file}', [App\Http\Controllers\DocumentationController::class, 'download'])->name('download');
     Route::get('/{documentation:slug}', [App\Http\Controllers\DocumentationController::class, 'show'])->name('show');
@@ -698,8 +743,16 @@ Route::middleware(['auth', 'role:supplier'])->prefix('supplier')->name('supplier
     Route::put('/products/{product}', [App\Http\Controllers\Supplier\ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [App\Http\Controllers\Supplier\ProductController::class, 'destroy'])->name('products.destroy');
 
+    // Order management routes
     Route::get('/orders', [App\Http\Controllers\Supplier\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{orderItem}', [App\Http\Controllers\Supplier\OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{orderItem}/status', [App\Http\Controllers\Supplier\OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::get('/orders/export', [App\Http\Controllers\Supplier\OrderController::class, 'export'])->name('orders.export');
+
+    // Analytics routes
     Route::get('/analytics', [App\Http\Controllers\Supplier\AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics/export', [App\Http\Controllers\Supplier\AnalyticsController::class, 'export'])->name('analytics.export');
+
     Route::get('/settings', [App\Http\Controllers\Supplier\SettingsController::class, 'index'])->name('settings.index');
 });
 
@@ -740,9 +793,26 @@ Route::middleware(['auth', 'role:brand'])->prefix('brand')->name('brand.')->grou
     Route::get('/promotion-opportunities', [App\Http\Controllers\Brand\PromotionController::class, 'index'])->name('promotion.index');
 });
 
+// Verified Partner Dashboard routes - Premium access
+Route::middleware(['auth', 'role:verified_partner'])->prefix('partner')->name('partner.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\VerifiedPartner\DashboardController::class, 'index'])->name('dashboard');
+
+    // Product management routes (all product types)
+    Route::get('/products', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('/orders', [App\Http\Controllers\VerifiedPartner\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/analytics', [App\Http\Controllers\VerifiedPartner\AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/settings', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'index'])->name('settings.index');
+});
+
 // Test routes - REMOVED (should only be in development)
 
-// AJAX Search route - REMOVED (commented out duplicate)
+// AJAX Search route - CONSOLIDATED into unified search system
 
 // Include What's New routes
 require __DIR__ . '/web-whats-new.php';

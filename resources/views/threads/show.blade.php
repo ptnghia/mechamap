@@ -21,7 +21,7 @@
                 <div class="thread-actions d-flex gap-2 align-items-center">
                     <x-thread-follow-button :thread="$thread" size="normal" />
                     <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-arrow-down"></i> Đến cuối
+                        <i class="fas fa-arrow-down"></i> {{ __('thread.go_to_end') }}
                     </a>
                 </div>
             </div>
@@ -241,9 +241,9 @@
             <div class="card-header bg-light">
                 <h5 class="card-title mb-0">
                     <i class="fas fa-star text-warning me-2"></i>
-                    {{ __('messages.related_showcase') }}
+                    {{ __('showcase.related') }}
                 </h5>
-                <small class="text-muted">{{ __('messages.showcase_for_thread') }}</small>
+                <small class="text-muted">{{ __('showcase.for_thread') }}</small>
             </div>
     @else
     <!-- Create Showcase Section -->
@@ -312,7 +312,7 @@
                                      class="rounded-circle me-2"
                                      width="24" height="24">
                                 <small class="text-muted">
-                                    {{ __('messages.by') }}
+                                    {{ __('ui.common.by') }}
                                     <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
                                        class="text-decoration-none">
                                         {{ $thread->showcase->user->name }}
@@ -330,7 +330,7 @@
                             <a href="{{ route('showcase.show', $thread->showcase) }}"
                                class="btn btn-primary btn-sm">
                                 <i class="fas fa-external-link-alt me-1"></i>
-                                {{ __('messages.view_full_showcase') }}
+                                {{ __('ui.actions.view_full_showcase') }}
                             </a>
 
                             @if($thread->showcase->showcase_url)
@@ -338,7 +338,7 @@
                                target="_blank"
                                class="btn btn-outline-secondary btn-sm ms-2">
                                 <i class="fas fa-link me-1"></i>
-                                {{ __('messages.view_details') }}
+                                {{ __('ui.actions.view_details') }}
                             </a>
                             @endif
                         </div>

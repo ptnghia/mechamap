@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', __('messages.marketplace.title') . ' - ' . config('app.name'))
+@section('title', __('marketplace.products.title') . ' - ' . config('app.name'))
 
 @section('meta')
-    <meta name="description" content="{{ __('messages.marketplace.subtitle') }}">
+    <meta name="description" content="{{ __('marketplace.marketplace.subtitle') }}">
     <meta name="keywords" content="mechanical engineering, CAD files, technical products, marketplace, suppliers, manufacturers">
 @endsection
 
@@ -17,14 +17,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-4 fw-bold mb-4">{{ __('messages.marketplace.title') }}</h1>
-                    <p class="lead mb-4">{{ __('messages.marketplace.subtitle') }}</p>
+                    <h1 class="display-4 fw-bold mb-4">{{ __('marketplace.marketplace.title') }}</h1>
+                    <p class="lead mb-4">{{ __('marketplace.marketplace.subtitle') }}</p>
 
                     <!-- Search Bar -->
                     <div class="search-container mb-4">
                         <div class="input-group input-group-lg">
                             <input type="text" class="form-control" id="marketplaceHeroSearch"
-                                   placeholder="{{ __('messages.marketplace.search_placeholder') }}">
+                                   placeholder="{{ __('marketplace.marketplace.search_placeholder') }}">
                             <button class="btn btn-light" type="button" onclick="marketplace.performSearch()">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -36,19 +36,19 @@
                         <div class="col-md-4">
                             <div class="stats-card">
                                 <div class="stats-number">{{ $stats['total_products'] ?? 71 }}</div>
-                                <div class="stats-label">{{ __('messages.marketplace.products_available') }}</div>
+                                <div class="stats-label">{{ __('marketplace.marketplace.products_available') }}</div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stats-card">
                                 <div class="stats-number">{{ $stats['total_sellers'] ?? 27 }}</div>
-                                <div class="stats-label">{{ __('messages.marketplace.verified_sellers') }}</div>
+                                <div class="stats-label">{{ __('marketplace.marketplace.verified_sellers') }}</div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stats-card">
                                 <div class="stats-number">{{ $stats['total_categories'] ?? 19 }}</div>
-                                <div class="stats-label">{{ __('messages.marketplace.categories') }}</div>
+                                <div class="stats-label">{{ __('marketplace.categories.title') }}</div>
                             </div>
                         </div>
                     </div>
@@ -60,8 +60,8 @@
     <!-- Browse Categories -->
     <section class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">{{ __('messages.marketplace.browse_categories') }}</h3>
-            <a href="{{ url('/marketplace/categories') }}" class="btn btn-outline-primary">{{ __('messages.marketplace.view_all') }}</a>
+            <h3 class="fw-bold">{{ __('marketplace.marketplace.browse_categories') }}</h3>
+            <a href="{{ url('/marketplace/categories') }}" class="btn btn-outline-primary">{{ __('marketplace.marketplace.view_all') }}</a>
         </div>
 
         <div class="row g-4" id="categoriesContainer">
@@ -70,14 +70,14 @@
                     <a href="{{ url('/marketplace/categories/' . $category->slug) }}" class="category-card text-decoration-none">
                         <i class="{{ $category->icon ?? 'fas fa-cog' }} fa-2x mb-3"></i>
                         <h6 class="fw-bold">{{ $category->name }}</h6>
-                        <small>{{ $category->product_count ?? 0 }} {{ __('messages.marketplace.items') }}</small>
+                        <small>{{ $category->product_count ?? 0 }} {{ __('marketplace.marketplace.items') }}</small>
                     </a>
                 </div>
             @empty
                 <div class="col-12">
                     <div class="alert alert-info text-center">
                         <i class="fas fa-info-circle me-2"></i>
-                        {{ __('messages.marketplace.no_categories_available') }}
+                        {{ __('marketplace.marketplace.no_categories_available') }}
                     </div>
                 </div>
             @endforelse
@@ -87,8 +87,8 @@
     <!-- Featured Products -->
     <section class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold">{{ __('messages.marketplace.featured_products') }}</h3>
-            <a href="{{ url('/marketplace/products') }}" class="btn btn-outline-primary">{{ __('messages.marketplace.view_all') }}</a>
+            <h3 class="fw-bold">{{ __('marketplace.marketplace.featured_products') }}</h3>
+            <a href="{{ url('/marketplace/products') }}" class="btn btn-outline-primary">{{ __('marketplace.marketplace.view_all') }}</a>
         </div>
 
         <div class="row g-4" id="productsContainer">
@@ -98,8 +98,8 @@
                 <div class="col-12">
                     <div class="text-center py-5">
                         <i class="box text-muted empty-state-icon"></i>
-                        <h4 class="mt-3">{{ __('messages.marketplace.no_featured_products_available') }}</h4>
-                        <p class="text-muted">{{ __('messages.marketplace.check_back_later') }}</p>
+                        <h4 class="mt-3">{{ __('marketplace.marketplace.no_featured_products_available') }}</h4>
+                        <p class="text-muted">{{ __('marketplace.marketplace.check_back_later') }}</p>
                     </div>
                 </div>
             @endforelse

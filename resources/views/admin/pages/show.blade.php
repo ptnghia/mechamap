@@ -133,7 +133,7 @@
                             <span class="text-muted">{{ $page->order }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Lượt xem') }}:</span>
+                            <span>{{ __(__('ui.common.views')) }}:</span>
                             <span class="text-muted">{{ $page->view_count }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">

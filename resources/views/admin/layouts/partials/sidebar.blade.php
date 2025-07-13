@@ -331,7 +331,7 @@
                         <i class="fas fa-shield-alt"></i>
                         <span data-key="t-security-compliance">Bảo Mật & Tuân Thủ</span>
                         @php
-                            $securityIncidents = \App\Models\BusinessVerificationAuditTrail::where('action', 'security_incident')
+                            $securityIncidents = \App\Models\BusinessVerificationAuditTrail::where('action_type', 'system_action')
                                 ->where('created_at', '>=', now()->subDays(7))
                                 ->count();
                         @endphp

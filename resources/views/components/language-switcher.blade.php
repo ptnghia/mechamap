@@ -74,7 +74,7 @@
                 <h5 class="modal-title" id="languageModalLabel">
                     <i class="fa-solid fa-language me-2"></i>{{ __('language.select_language') }}
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('common.close') }}"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('ui.common.close') }}"></button>
             </div>
             <div class="modal-body">
                 <div class="list-group list-group-flush">

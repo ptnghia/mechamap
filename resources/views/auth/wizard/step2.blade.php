@@ -1,39 +1,40 @@
 @extends('layouts.app')
 
-@section('title', 'Đăng ký tài khoản - Bước 2')
+@section('title', __('auth.register.step2_title'))
 
 @section('content')
-<x-registration-wizard 
+<x-registration-wizard
     :current-step="$step"
     :total-steps="$totalSteps"
     :progress="$progress"
-    title="Đăng ký tài khoản MechaMap"
-    subtitle="Bước 2: Thông tin doanh nghiệp"
-    next-button-text="Hoàn tất đăng ký"
+    title="{{ __('auth.register.wizard_title') }}"
+    subtitle="{{ __('auth.register.step2_subtitle') }}"
+    next-button-text="{{ __('auth.register.complete_button') }}"
+    back-button-text="{{ __('auth.register.back_button') }}"
     :show-back-button="true"
     form-id="step2Form"
     :session-data="$sessionData">
 
     <form id="step2Form" method="POST" action="{{ route('register.wizard.step2') }}" enctype="multipart/form-data" novalidate>
         @csrf
-        
+
         {{-- Account Type Display --}}
         <div class="account-type-display mb-4">
             <div class="alert alert-primary">
                 <i class="fas fa-building me-2"></i>
-                <strong>Loại tài khoản:</strong> 
+                <strong>{{ __('auth.register.account_type_label') }}:</strong>
                 @switch($accountType)
                     @case('manufacturer')
-                        Nhà sản xuất
+                        {{ __('auth.register.manufacturer_role') }}
                         @break
                     @case('supplier')
-                        Nhà cung cấp
+                        {{ __('auth.register.supplier_role') }}
                         @break
                     @case('brand')
-                        Nhãn hàng
+                        {{ __('auth.register.brand_role') }}
                         @break
                     @default
-                        Đối tác kinh doanh
+                        {{ __('auth.register.business_partner_title') }}
                 @endswitch
             </div>
         </div>
@@ -42,30 +43,30 @@
         <div class="form-section mb-4">
             <h3 class="section-title">
                 <i class="fas fa-building text-primary me-2"></i>
-                Thông tin công ty
+                {{ __('auth.register.company_info_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
-                Vui lòng cung cấp thông tin chính xác về công ty của bạn để hoàn tất quá trình đăng ký.
+                {{ __('auth.register.company_info_description') }}
             </p>
 
             {{-- Company Name --}}
             <div class="mb-3">
                 <label for="company_name" class="form-label required">
                     <i class="fas fa-building me-1"></i>
-                    Tên công ty
+                    {{ __('auth.register.company_name_label') }}
                 </label>
-                <input type="text" 
-                       class="form-control @error('company_name') is-invalid @enderror" 
-                       id="company_name" 
-                       name="company_name" 
+                <input type="text"
+                       class="form-control @error('company_name') is-invalid @enderror"
+                       id="company_name"
+                       name="company_name"
                        value="{{ old('company_name', $sessionData['company_name'] ?? '') }}"
-                       placeholder="Nhập tên đầy đủ của công ty"
+                       placeholder="{{ __('auth.register.company_name_placeholder') }}"
                        required>
                 <div class="invalid-feedback">
                     @error('company_name'){{ $message }}@enderror
                 </div>
                 <small class="form-text text-muted">
-                    Tên công ty phải trùng khớp với giấy phép kinh doanh
+                    {{ __('auth.register.company_name_help') }}
                 </small>
             </div>
 
@@ -74,14 +75,14 @@
                 <div class="col-md-6 mb-3">
                     <label for="business_license" class="form-label required">
                         <i class="fas fa-certificate me-1"></i>
-                        Số giấy phép kinh doanh
+                        {{ __('auth.register.business_license_label') }}
                     </label>
-                    <input type="text" 
-                           class="form-control @error('business_license') is-invalid @enderror" 
-                           id="business_license" 
-                           name="business_license" 
+                    <input type="text"
+                           class="form-control @error('business_license') is-invalid @enderror"
+                           id="business_license"
+                           name="business_license"
                            value="{{ old('business_license', $sessionData['business_license'] ?? '') }}"
-                           placeholder="Ví dụ: 0123456789-001"
+                           placeholder="{{ __('auth.register.business_license_placeholder') }}"
                            required>
                     <div class="invalid-feedback">
                         @error('business_license'){{ $message }}@enderror
@@ -92,21 +93,21 @@
                 <div class="col-md-6 mb-3">
                     <label for="tax_code" class="form-label required">
                         <i class="fas fa-hashtag me-1"></i>
-                        Mã số thuế
+                        {{ __('auth.register.tax_code_label') }}
                     </label>
-                    <input type="text" 
-                           class="form-control @error('tax_code') is-invalid @enderror" 
-                           id="tax_code" 
-                           name="tax_code" 
+                    <input type="text"
+                           class="form-control @error('tax_code') is-invalid @enderror"
+                           id="tax_code"
+                           name="tax_code"
                            value="{{ old('tax_code', $sessionData['tax_code'] ?? '') }}"
-                           placeholder="Ví dụ: 1234567890"
+                           placeholder="{{ __('auth.register.tax_code_placeholder') }}"
                            pattern="[0-9]{10,13}"
                            required>
                     <div class="invalid-feedback">
                         @error('tax_code'){{ $message }}@enderror
                     </div>
                     <small class="form-text text-muted">
-                        Mã số thuế gồm 10-13 chữ số
+                        {{ __('auth.register.tax_code_help') }}
                     </small>
                 </div>
             </div>
@@ -115,11 +116,11 @@
             <div class="mb-3">
                 <label for="business_description" class="form-label required">
                     <i class="fas fa-align-left me-1"></i>
-                    Mô tả hoạt động kinh doanh
+                    {{ __('auth.register.company_description_label') }}
                 </label>
-                <textarea class="form-control @error('business_description') is-invalid @enderror" 
-                          id="business_description" 
-                          name="business_description" 
+                <textarea class="form-control @error('business_description') is-invalid @enderror"
+                          id="business_description"
+                          name="business_description"
                           rows="4"
                           placeholder="Mô tả chi tiết về hoạt động kinh doanh, sản phẩm/dịch vụ chính của công ty..."
                           required>{{ old('business_description', $sessionData['business_description'] ?? '') }}</textarea>
@@ -127,7 +128,7 @@
                     @error('business_description'){{ $message }}@enderror
                 </div>
                 <small class="form-text text-muted">
-                    Tối thiểu 50 ký tự, tối đa 1000 ký tự
+                    {{ __('auth.register.company_description_help') }}
                 </small>
             </div>
 
@@ -135,38 +136,22 @@
             <div class="mb-3">
                 <label class="form-label required">
                     <i class="fas fa-tags me-1"></i>
-                    Lĩnh vực kinh doanh
+                    {{ __('auth.register.business_field_label') }}
                 </label>
                 <div class="business-categories">
                     @php
-                        $categories = [
-                            'automotive' => 'Ô tô & Xe máy',
-                            'aerospace' => 'Hàng không & Vũ trụ',
-                            'manufacturing' => 'Sản xuất chế tạo',
-                            'materials' => 'Vật liệu & Kim loại',
-                            'components' => 'Linh kiện & Phụ tụng',
-                            'industrial' => 'Thiết bị công nghiệp',
-                            'electronics' => 'Điện tử & Điện lạnh',
-                            'energy' => 'Năng lượng & Dầu khí',
-                            'construction' => 'Xây dựng & Kiến trúc',
-                            'textiles' => 'Dệt may & Thời trang',
-                            'food' => 'Thực phẩm & Đồ uống',
-                            'pharmaceutical' => 'Dược phẩm & Y tế',
-                            'chemical' => 'Hóa chất & Nhựa',
-                            'machinery' => 'Máy móc & Thiết bị',
-                            'tools' => 'Dụng cụ & Công cụ'
-                        ];
+                        $categories = __('auth.register.business_categories');
                         $selectedCategories = old('business_categories', $sessionData['business_categories'] ?? []);
                     @endphp
-                    
+
                     <div class="row">
                         @foreach($categories as $value => $label)
                             <div class="col-md-4 col-sm-6 mb-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" 
-                                           type="checkbox" 
-                                           name="business_categories[]" 
-                                           id="category_{{ $value }}" 
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="business_categories[]"
+                                           id="category_{{ $value }}"
                                            value="{{ $value }}"
                                            {{ in_array($value, $selectedCategories) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="category_{{ $value }}">
@@ -183,7 +168,7 @@
                     </div>
                 @enderror
                 <small class="form-text text-muted">
-                    Chọn ít nhất 1 lĩnh vực, tối đa 5 lĩnh vực
+                    {{ __('auth.register.business_field_help') }}
                 </small>
             </div>
         </div>
@@ -192,10 +177,10 @@
         <div class="form-section mb-4">
             <h3 class="section-title">
                 <i class="fas fa-address-book text-primary me-2"></i>
-                Thông tin liên hệ
+                {{ __('auth.register.contact_info_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
-                Thông tin liên hệ của công ty (không bắt buộc nhưng được khuyến khích).
+                {{ __('auth.register.contact_info_description') }}
             </p>
 
             <div class="row">
@@ -203,12 +188,12 @@
                 <div class="col-md-6 mb-3">
                     <label for="business_phone" class="form-label">
                         <i class="fas fa-phone me-1"></i>
-                        Số điện thoại công ty
+                        {{ __('auth.register.company_phone') }}
                     </label>
-                    <input type="tel" 
-                           class="form-control @error('business_phone') is-invalid @enderror" 
-                           id="business_phone" 
-                           name="business_phone" 
+                    <input type="tel"
+                           class="form-control @error('business_phone') is-invalid @enderror"
+                           id="business_phone"
+                           name="business_phone"
                            value="{{ old('business_phone', $sessionData['business_phone'] ?? '') }}"
                            placeholder="Ví dụ: +84 123 456 789">
                     <div class="invalid-feedback">
@@ -220,19 +205,19 @@
                 <div class="col-md-6 mb-3">
                     <label for="business_email" class="form-label">
                         <i class="fas fa-envelope me-1"></i>
-                        Email công ty
+                        {{ __('auth.register.company_email_label') }}
                     </label>
-                    <input type="email" 
-                           class="form-control @error('business_email') is-invalid @enderror" 
-                           id="business_email" 
-                           name="business_email" 
+                    <input type="email"
+                           class="form-control @error('business_email') is-invalid @enderror"
+                           id="business_email"
+                           name="business_email"
                            value="{{ old('business_email', $sessionData['business_email'] ?? '') }}"
                            placeholder="Ví dụ: info@company.com">
                     <div class="invalid-feedback">
                         @error('business_email'){{ $message }}@enderror
                     </div>
                     <small class="form-text text-muted">
-                        Email công ty phải khác với email cá nhân
+                        {{ __('auth.register.company_email_help') }}
                     </small>
                 </div>
             </div>
@@ -241,11 +226,11 @@
             <div class="mb-3">
                 <label for="business_address" class="form-label">
                     <i class="fas fa-map-marker-alt me-1"></i>
-                    Địa chỉ công ty
+                    {{ __('auth.register.company_address') }}
                 </label>
-                <textarea class="form-control @error('business_address') is-invalid @enderror" 
-                          id="business_address" 
-                          name="business_address" 
+                <textarea class="form-control @error('business_address') is-invalid @enderror"
+                          id="business_address"
+                          name="business_address"
                           rows="3"
                           placeholder="Nhập địa chỉ đầy đủ của công ty...">{{ old('business_address', $sessionData['business_address'] ?? '') }}</textarea>
                 <div class="invalid-feedback">
@@ -258,47 +243,47 @@
         <div class="form-section mb-4">
             <h3 class="section-title">
                 <i class="fas fa-file-upload text-primary me-2"></i>
-                Tài liệu xác minh (Tùy chọn)
+                {{ __('auth.register.verification_docs_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
-                Tải lên các tài liệu để tăng tốc quá trình xác minh tài khoản.
+                {{ __('auth.register.verification_docs_description') }}
             </p>
 
             <div class="document-upload">
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-content">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <h5>Kéo thả file vào đây hoặc click để chọn</h5>
+                        <h5>{{ __('auth.register.file_upload_title') }}</h5>
                         <p class="text-muted">
-                            Hỗ trợ: PDF, JPG, JPEG, PNG, DOC, DOCX<br>
-                            Kích thước tối đa: 5MB mỗi file
+                            {{ __('auth.register.file_upload_support') }}<br>
+                            {{ __('auth.register.file_upload_size') }}
                         </p>
-                        <input type="file" 
-                               id="verification_documents" 
-                               name="verification_documents[]" 
-                               multiple 
+                        <input type="file"
+                               id="verification_documents"
+                               name="verification_documents[]"
+                               multiple
                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                                class="d-none">
                         <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('verification_documents').click()">
                             <i class="fas fa-plus me-2"></i>
-                            Chọn tài liệu
+                            {{ __('auth.register.choose_documents') }}
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="uploaded-files mt-3" id="uploadedFiles" style="display: none;">
                     <h6>Tài liệu đã chọn:</h6>
                     <div class="file-list" id="fileList"></div>
                 </div>
-                
+
                 @error('verification_documents')
                     <div class="invalid-feedback d-block">
                         {{ $message }}
                     </div>
                 @enderror
-                
+
                 <small class="form-text text-muted">
-                    Các tài liệu gợi ý: Giấy phép kinh doanh, Chứng nhận đăng ký thuế, Chứng chỉ chất lượng
+                    {{ __('auth.register.document_suggestions') }}
                 </small>
             </div>
         </div>
@@ -307,12 +292,12 @@
         <div class="verification-notice">
             <div class="alert alert-warning">
                 <i class="fas fa-info-circle me-2"></i>
-                <strong>Lưu ý quan trọng:</strong>
+                <strong>{{ __('auth.register.important_notes_title') }}:</strong>
                 <ul class="mb-0 mt-2">
-                    <li>Tài khoản doanh nghiệp cần được xác minh bởi admin trước khi có thể sử dụng đầy đủ tính năng.</li>
-                    <li>Quá trình xác minh thường mất 1-3 ngày làm việc.</li>
-                    <li>Bạn sẽ nhận được email thông báo khi tài khoản được phê duyệt.</li>
-                    <li>Trong thời gian chờ xác minh, bạn có thể đăng nhập và cập nhật thông tin profile.</li>
+                    <li>{{ __('auth.register.note_verification_required') }}</li>
+                    <li>{{ __('auth.register.note_verification_time') }}</li>
+                    <li>{{ __('auth.register.note_email_notification') }}</li>
+                    <li>{{ __('auth.register.note_pending_access') }}</li>
                 </ul>
             </div>
         </div>
@@ -426,15 +411,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Chỉ được tải lên tối đa 5 tài liệu');
                 break;
             }
-            
+
             if (file.size > 5 * 1024 * 1024) {
                 alert(`File ${file.name} quá lớn. Kích thước tối đa là 5MB.`);
                 continue;
             }
-            
+
             selectedFiles.push(file);
         }
-        
+
         updateFileList();
     }
 

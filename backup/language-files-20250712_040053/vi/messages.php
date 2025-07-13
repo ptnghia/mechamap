@@ -1,0 +1,623 @@
+<?php
+
+return [
+    'nav' => [
+        // Main Navigation
+        'home' => 'Trang chủ',
+        'marketplace' => 'Sản phẩm',
+        'community' => 'Diễn đàn',
+        'technical_resources' => 'Tài nguyên kỹ thuật',
+        'knowledge' => 'Kiến thức',
+        'more' => 'Thêm',
+
+        // Marketplace Submenu - UPDATED
+        'shop' => 'Mua sắm',
+        'all_products' => 'Tất cả sản phẩm',
+        'categories' => 'Danh mục',
+        'suppliers' => 'Nhà cung cấp',
+        'featured_products' => 'Sản phẩm nổi bật',
+        'business_tools' => 'Công cụ kinh doanh',
+        'request_quote' => 'Yêu cầu báo giá',
+        'bulk_orders' => 'Đơn hàng số lượng lớn',
+        'become_seller' => 'Trở thành người bán',
+        'my_account' => 'Tài khoản của tôi',
+        'my_orders' => 'Đơn hàng của tôi',
+        'shopping_cart' => 'Giỏ hàng',
+        'downloads' => 'Tải xuống',
+
+        // Legacy labels (for backward compatibility)
+        'browse_products' => 'Duyệt sản phẩm',
+        'all_categories' => 'Tất cả danh mục',
+        'supplier_directory' => 'Thư mục nhà cung cấp',
+        'new_arrivals' => 'Hàng mới về',
+        'best_sellers' => 'Bán chạy nhất',
+        'request_for_quote' => 'Yêu cầu báo giá',
+        'saved_items' => 'Mục đã lưu',
+
+        // Community Submenu
+        'discussion' => 'Thảo luận',
+        'recent_discussions' => 'Thảo luận gần đây',
+        'popular_topics' => 'Chủ đề phổ biến',
+        'advanced_search' => 'Tìm kiếm nâng cao',
+        'search_by_category' => 'Tìm theo danh mục',
+        'forum_search' => 'Tìm kiếm diễn đàn',
+        'networking' => 'Kết nối',
+        'member_directory' => 'Thư mục thành viên',
+        'company_profiles' => 'Hồ sơ công ty',
+        'events_webinars' => 'Sự kiện & Webinar',
+        'job_board' => 'Bảng việc làm',
+
+        // Showcase Menu - NEW DEDICATED SECTION
+        'showcase' => 'Dự án',
+        'browse_showcases' => 'Duyệt triển lãm',
+        'public_gallery' => 'Thư viện công khai',
+        'featured_projects' => 'Dự án nổi bật',
+        'by_category' => 'Theo danh mục',
+        'trending_projects' => 'Dự án thịnh hành',
+        'create_manage' => 'Tạo & Quản lý',
+        'create_showcase' => 'Tạo triển lãm',
+        'my_showcases' => 'Triển lãm của tôi',
+        'drafts' => 'Bản nháp',
+        'login_to_create' => 'Đăng nhập để tạo',
+        'top_creators' => 'Người tạo hàng đầu',
+        'competitions' => 'Cuộc thi',
+        'submission_guidelines' => 'Hướng dẫn đăng bài',
+        'showcase_categories' => 'Danh mục triển lãm',
+        'latest_showcases' => 'Triển lãm mới nhất',
+        'most_liked' => 'Được yêu thích nhất',
+        'showcase_leaderboard' => 'Bảng xếp hạng',
+        'showcase_competitions' => 'Cuộc thi triển lãm',
+
+        // Technical Resources Submenu - UPDATED (removed showcase)
+        'technical_database' => 'Cơ sở dữ liệu kỹ thuật',
+        'materials_database' => 'Cơ sở dữ liệu vật liệu',
+        'engineering_standards' => 'Tiêu chuẩn kỹ thuật',
+        'manufacturing_processes' => 'Quy trình sản xuất',
+        'design_resources' => 'Tài nguyên thiết kế',
+        'cad_library' => 'Thư viện CAD',
+        'technical_drawings' => 'Bản vẽ kỹ thuật',
+        'tools_calculators' => 'Công cụ & Máy tính',
+        'material_cost_calculator' => 'Máy tính chi phí vật liệu',
+        'process_selector' => 'Bộ chọn quy trình',
+        'standards_compliance' => 'Tuân thủ tiêu chuẩn',
+
+        // Knowledge Submenu
+        'learning_resources' => 'Tài nguyên học tập',
+        'knowledge_base' => 'Cơ sở kiến thức',
+        'tutorials_guides' => 'Hướng dẫn & Bài học',
+        'technical_documentation' => 'Tài liệu kỹ thuật',
+        'industry_updates' => 'Cập nhật ngành',
+        'industry_news' => 'Tin tức ngành',
+        'whats_new' => 'Có gì mới',
+        'industry_reports' => 'Báo cáo ngành',
+
+        // Admin Navigation
+        'admin_dashboard' => 'Bảng điều khiển Admin',
+        'user_management' => 'Quản lý người dùng',
+        'forum_management' => 'Quản lý diễn đàn',
+        'marketplace_management' => 'Quản lý thị trường',
+
+        // Role-based Navigation
+        'dashboard' => 'Bảng điều khiển',
+        'my_products' => 'Sản phẩm của tôi',
+        'orders' => 'Đơn hàng',
+        'reports' => 'Báo cáo',
+        'my_designs' => 'Thiết kế của tôi',
+        'download_orders' => 'Đơn hàng tải xuống',
+        'analytics' => 'Phân tích',
+        'market_insights' => 'Thông tin thị trường',
+        'marketplace_analytics' => 'Phân tích thị trường',
+        'promotion_opportunities' => 'Cơ hội quảng cáo',
+
+        // Specific Role Dashboards
+        'supplier_dashboard' => 'Bảng điều khiển Nhà cung cấp',
+        'manufacturer_dashboard' => 'Bảng điều khiển Nhà sản xuất',
+        'brand_dashboard' => 'Bảng điều khiển Thương hiệu',
+        'product_management' => 'Quản lý sản phẩm',
+        'design_management' => 'Quản lý thiết kế',
+        'market_analysis' => 'Phân tích thị trường',
+
+        // More Dropdown
+        'search_discovery' => 'Tìm kiếm & Khám phá',
+        'advanced_search' => 'Tìm kiếm nâng cao',
+        'photo_gallery' => 'Thư viện ảnh',
+        'browse_by_tags' => 'Duyệt theo thẻ',
+        'help_support' => 'Trợ giúp & Hỗ trợ',
+        'faq' => 'Câu hỏi thường gặp',
+        'help_center' => 'Trung tâm trợ giúp',
+        'contact_support' => 'Liên hệ hỗ trợ',
+        'about_mechamap' => 'Về MechaMap',
+        'about_us' => 'Về chúng tôi',
+        'terms_of_service' => 'Điều khoản dịch vụ',
+        'privacy_policy' => 'Chính sách bảo mật',
+
+        // User Menu
+        'following' => 'Đang theo dõi',
+        'messages' => 'Tin nhắn',
+        'notifications' => 'Thông báo',
+        'saved' => 'Đã lưu',
+        'my_showcase' => 'Triển lãm của tôi',
+        'my_business' => 'Doanh nghiệp của tôi',
+        'verification_status' => 'Trạng thái xác minh',
+        'my_subscription' => 'Gói đăng ký của tôi',
+    ],
+
+    'cart' => [
+        'shopping_cart' => 'Giỏ hàng',
+        'cart_empty' => 'Giỏ hàng trống',
+        'add_products' => 'Thêm sản phẩm để bắt đầu mua sắm',
+    ],
+
+    // Members Section
+    'members' => [
+        // Page titles
+        'list_title' => 'Danh sách thành viên',
+        'staff_title' => 'Danh sách thành viên quản trị',
+        'online_title' => 'Danh sách thành viên trực tuyến',
+        'leaderboard_title' => 'Bảng xếp hạng thành viên',
+
+        // Page descriptions
+        'list_description' => 'Xem và tìm kiếm thông tin của các thành viên trên MechaMap',
+        'staff_description' => 'Xem và tìm kiếm thông tin của các thành viên quản trị trên MechaMap',
+        'online_description' => 'Xem và tìm kiếm thông tin của các thành viên trên MechaMap đang trực tuyến',
+        'leaderboard_description' => 'Những thành viên đóng góp tích cực nhất cho cộng đồng kỹ thuật cơ khí',
+
+        // Navigation tabs
+        'all_members' => 'Tất cả thành viên',
+        'online_now' => 'Đang trực tuyến',
+        'staff' => 'Nhân viên',
+        'leaderboard' => 'Bảng xếp hạng',
+
+        // User roles
+        'administrator' => 'Quản trị viên',
+        'moderator' => 'Điều hành viên',
+        'admin' => 'Quản trị',
+        'administrators' => 'Quản trị viên',
+        'moderators' => 'Điều hành viên',
+
+        // Statistics
+        'posts' => 'Bài viết',
+        'threads' => 'Chủ đề',
+        'followers' => 'Người theo dõi',
+        'joined' => 'Tham gia',
+        'last_seen' => 'Lần cuối truy cập',
+
+        // Sorting
+        'sort_by' => 'Sắp xếp theo',
+        'name' => 'Tên',
+        'join_date' => 'Ngày tham gia',
+        'ascending' => 'Tăng dần',
+        'descending' => 'Giảm dần',
+        'direction' => 'Hướng',
+
+        // View modes
+        'list_view' => 'Danh sách',
+        'grid_view' => 'Lưới',
+
+        // Search
+        'search_placeholder' => 'Tìm kiếm thành viên...',
+        'search' => 'Tìm kiếm',
+
+        // Counts and filters
+        'total' => 'Tổng',
+        'members_count' => 'thành viên',
+        'filtered_by' => 'Lọc theo',
+        'online' => 'Trực tuyến',
+
+        // Messages
+        'no_members_found' => 'Không tìm thấy thành viên nào.',
+        'no_administrators_found' => 'Không tìm thấy quản trị viên nào.',
+        'no_moderators_found' => 'Không tìm thấy điều hành viên nào.',
+        'no_members_online' => 'Hiện tại không có thành viên nào trực tuyến.',
+        'try_different_search' => 'Thử từ khóa tìm kiếm khác.',
+
+        // Bio
+        'no_bio_available' => 'Chưa có thông tin cá nhân.',
+
+        // Online members info
+        'online_members_info' => 'Các thành viên đã hoạt động trong 15 phút qua được hiển thị ở đây.',
+
+        // Leaderboard
+        'top_contributors_posts' => 'Người đóng góp hàng đầu (Bài viết)',
+        'top_thread_creators' => 'Người tạo chủ đề hàng đầu',
+        'most_active_members' => 'Thành viên tích cực nhất',
+        'newest_members' => 'Thành viên mới nhất',
+        'no_data_available' => 'Không có dữ liệu khả dụng.',
+        'view_profile' => 'Xem hồ sơ',
+        'member_since' => 'Thành viên từ',
+    ],
+
+    // Threads & Community Section
+    'threads' => [
+        // Page titles
+        'forums_title' => 'Diễn đàn',
+        'threads_title' => 'Chủ đề',
+        'new_thread' => 'Tạo chủ đề mới',
+
+        // Filters and sorting
+        'category' => 'Danh mục',
+        'forum' => 'Diễn đàn',
+        'all_categories' => 'Tất cả danh mục',
+        'all_forums' => 'Tất cả diễn đàn',
+        'sort_by' => 'Sắp xếp theo',
+        'latest' => 'Mới nhất',
+        'oldest' => 'Cũ nhất',
+        'most_viewed' => 'Xem nhiều nhất',
+        'most_commented' => 'Bình luận nhiều nhất',
+
+        // Search
+        'search' => 'Tìm kiếm',
+        'search_placeholder' => 'Tìm kiếm chủ đề...',
+        'apply_filters' => 'Áp dụng bộ lọc',
+        'clear_filters' => 'Xóa bộ lọc',
+
+        // Thread info
+        'threads_count' => 'chủ đề',
+        'views' => 'lượt xem',
+        'replies' => 'phản hồi',
+        'pinned' => 'Ghim',
+        'locked' => 'Khóa',
+
+        // Messages
+        'no_threads_found' => 'Không tìm thấy chủ đề nào phù hợp với tiêu chí của bạn.',
+        'try_different_criteria' => 'Thử tiêu chí tìm kiếm khác.',
+
+        // Time
+        'ago' => 'trước',
+        'week_ago' => 'tuần trước',
+        'weeks_ago' => 'tuần trước',
+        'day_ago' => 'ngày trước',
+        'days_ago' => 'ngày trước',
+        'month_ago' => 'tháng trước',
+        'months_ago' => 'tháng trước',
+    ],
+
+    'auth' => [
+        'login' => 'Đăng nhập',
+        'register' => 'Đăng ký',
+        'logout' => 'Đăng xuất',
+    ],
+
+    'common' => [
+        'search_placeholder' => 'Tìm kiếm...',
+        'search' => 'Tìm kiếm',
+        'views' => 'Lượt xem',
+        'comments' => 'Bình luận',
+        'load_more' => 'Tải thêm',
+        'updated' => 'Cập nhật',
+    ],
+
+    // Site-wide messages
+    'site' => [
+        'community_title' => 'MechaMap Community',
+    ],
+
+    // Navigation messages
+    'navigation' => [
+        'home' => 'Trang chủ',
+        'forums' => 'Diễn đàn',
+        'categories' => 'Danh mục',
+    ],
+
+    // Forums messages
+    'forums' => [
+        'forums' => 'Diễn đàn',
+        'forums_in_category' => 'Diễn đàn trong :category',
+
+        'no_forums_in_category' => 'Chưa có diễn đàn nào trong danh mục này',
+        'no_forums_description' => 'Hãy quay lại sau để xem các diễn đàn mới',
+        'high_activity' => 'Hoạt động cao',
+        'medium_activity' => 'Hoạt động trung bình',
+        'low_activity' => 'Hoạt động thấp',
+    ],
+
+
+
+    'search' => [
+        'recent_searches' => 'Tìm kiếm gần đây',
+        'no_recent_searches' => 'Chưa có tìm kiếm nào',
+        'popular_searches' => 'Tìm kiếm phổ biến',
+        'cad_files' => 'File CAD',
+        'iso_standards' => 'Tiêu chuẩn ISO',
+        'forum' => 'Diễn đàn',
+        'threads' => 'Chủ đề',
+    ],
+
+    // What's New navigation
+    'whats_new' => 'Cập nhật mới',
+    'new_posts' => 'Bài viết mới',
+    'popular' => 'Phổ biến',
+    'new_threads' => 'Thảo luận mới',
+    'new_showcases' => 'Dự án mới',
+    'new_media' => 'Media mới',
+    'looking_for_replies' => 'Cần phản hồi',
+    'create_new_thread' => 'Tạo chủ đề mới',
+
+    // Pagination
+    'page' => 'Trang',
+    'of' => 'của',
+    'previous' => 'Trước',
+    'next' => 'Tiếp',
+    'go' => 'Đi',
+
+    // Time filters
+    'today' => 'Hôm nay',
+    'this_week' => 'Tuần này',
+    'this_month' => 'Tháng này',
+    'this_year' => 'Năm nay',
+    'all_time' => 'Tất cả',
+
+    // Showcase
+    'create_showcase' => 'Tạo Showcase',
+
+    // Media Gallery
+    'view_thread' => 'Xem chủ đề',
+    'download' => 'Tải về',
+    'no_media_found' => 'Không có media nào',
+    'no_media_description' => 'Chưa có hình ảnh hoặc media nào được chia sẻ.',
+    'image' => 'Hình',
+    'please_enter_valid_page' => 'Vui lòng nhập số trang hợp lệ',
+    'image_not_found' => 'Không tìm thấy hình ảnh',
+    'close' => 'Đóng',
+    'loading' => 'Đang tải',
+
+    // Showcases
+    'showcase_reason' => 'Lý do Showcase:',
+    'view_details' => 'Xem chi tiết',
+    'showcase' => 'Showcase',
+    'forum' => 'Diễn đàn',
+    'no_showcases_found' => 'Không tìm thấy showcase nào.',
+    'create_first_showcase' => 'Tạo Showcase đầu tiên',
+    'thread' => 'Chủ đề',
+    'post' => 'Bài viết',
+    'related_showcase' => 'Showcase liên quan',
+    'showcase_for_thread' => 'Showcase cho chủ đề này',
+    'view_full_showcase' => 'Xem showcase đầy đủ',
+    'by' => 'bởi',
+
+    // Auth Modal
+    'login' => 'Đăng nhập',
+    'register' => 'Đăng ký',
+    'email_or_username' => 'Email hoặc Username',
+    'password' => 'Mật khẩu',
+    'remember_login' => 'Ghi nhớ đăng nhập',
+    'forgot_password' => 'Quên mật khẩu',
+    'or_login_with' => 'hoặc đăng nhập với',
+    'login_with_google' => 'Đăng nhập với Google',
+    'login_with_facebook' => 'Đăng nhập với Facebook',
+    'full_name' => 'Họ và tên',
+    'username' => 'Tên đăng nhập',
+    'email' => 'Email',
+    'confirm_password' => 'Xác nhận mật khẩu',
+    'agree_terms' => 'Tôi đồng ý với',
+    'terms_of_service' => 'Điều khoản dịch vụ',
+    'and' => 'và',
+    'privacy_policy' => 'Chính sách bảo mật',
+    'or_register_with' => 'hoặc đăng ký với',
+    'register_with_google' => 'Đăng ký với Google',
+    'register_with_facebook' => 'Đăng ký với Facebook',
+    'forgot_password_description' => 'Nhập email của bạn để nhận liên kết đặt lại mật khẩu',
+    'send_reset_link' => 'Gửi liên kết đặt lại',
+    'back_to_login' => 'Quay lại đăng nhập',
+    'welcome_back' => 'Chào mừng bạn trở lại',
+    'remember_me' => 'Ghi nhớ đăng nhập',
+    'dont_have_account' => 'Chưa có tài khoản?',
+    'create_business_account' => 'Tạo tài khoản doanh nghiệp',
+
+    // Marketplace
+    'marketplace' => [
+        'products' => 'Sản phẩm',
+        'advanced_search' => 'Tìm kiếm nâng cao',
+        'search_products' => 'Tìm kiếm sản phẩm',
+        'enter_keywords' => 'Nhập từ khóa...',
+        'category' => 'Danh mục',
+        'all_categories' => 'Tất cả danh mục',
+        'product_type' => 'Loại sản phẩm',
+        'all_types' => 'Tất cả loại',
+        'physical_products' => 'Sản phẩm vật lý',
+        'digital_products' => 'Sản phẩm số',
+        'services' => 'Dịch vụ',
+        'seller_type' => 'Loại người bán',
+        'all_sellers' => 'Tất cả người bán',
+        'individual' => 'Cá nhân',
+        'business' => 'Doanh nghiệp',
+        'verified_only' => 'Chỉ đã xác minh',
+        'price_range' => 'Khoảng giá',
+        'min' => 'Tối thiểu',
+        'max' => 'Tối đa',
+        'material' => 'Vật liệu',
+        'all_materials' => 'Tất cả vật liệu',
+        'steel' => 'Thép',
+        'aluminum' => 'Nhôm',
+        'plastic' => 'Nhựa',
+        'composite' => 'Composite',
+        'file_format' => 'Định dạng file',
+        'all_formats' => 'Tất cả định dạng',
+        'minimum_rating' => 'Đánh giá tối thiểu',
+        'any_rating' => 'Bất kỳ đánh giá',
+        '4_plus_stars' => '4+ Sao',
+        '3_plus_stars' => '3+ Sao',
+        '2_plus_stars' => '2+ Sao',
+        'sort_by' => 'Sắp xếp theo',
+        'relevance' => 'Liên quan',
+        'latest' => 'Mới nhất',
+        'price_low_to_high' => 'Giá: Thấp đến Cao',
+        'price_high_to_low' => 'Giá: Cao đến Thấp',
+        'highest_rated' => 'Đánh giá cao nhất',
+        'most_popular' => 'Phổ biến nhất',
+        'name_a_z' => 'Tên A-Z',
+        'sort' => 'Sắp xếp',
+        'view' => 'Xem',
+        'showing_results' => 'Hiển thị :first - :last của :total sản phẩm',
+        'no_products_found' => 'Không tìm thấy sản phẩm',
+        'try_adjusting_filters' => 'Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm',
+        'view_all_products' => 'Xem tất cả sản phẩm',
+        'discover_products' => 'Khám phá các sản phẩm và giải pháp cơ khí',
+        'keywords' => 'Từ khóa',
+        'search_descriptions' => 'Tìm kiếm sản phẩm, mô tả, thông số kỹ thuật...',
+        'use_quotes_help' => 'Sử dụng dấu ngoặc kép cho cụm từ chính xác, + cho từ bắt buộc, - để loại trừ từ',
+        'close' => 'Đóng',
+
+        // Homepage
+        'title' => 'Thị trường MechaMap',
+        'subtitle' => 'Khám phá các linh kiện cơ khí cao cấp, file CAD và giải pháp kỹ thuật',
+        'search_placeholder' => 'Tìm kiếm sản phẩm, linh kiện, vật liệu...',
+        'products_available' => 'Sản phẩm có sẵn',
+        'verified_sellers' => 'Người bán đã xác minh',
+        'categories' => 'Danh mục',
+        'browse_categories' => 'Duyệt danh mục',
+        'featured_products' => 'Sản phẩm nổi bật',
+        'view_all' => 'Xem tất cả',
+        'no_categories_available' => 'Không có danh mục nào vào lúc này',
+        'no_featured_products_available' => 'Không có sản phẩm nổi bật nào',
+        'check_back_later' => 'Hãy quay lại sau để xem sản phẩm mới',
+        'items' => 'mục',
+
+        // Categories
+        'product_categories' => 'Danh mục sản phẩm',
+        'browse_products_by_category' => 'Duyệt sản phẩm theo danh mục để tìm chính xác những gì bạn cần',
+        'advanced_search' => 'Tìm kiếm nâng cao',
+        'view_options' => 'Tùy chọn hiển thị',
+        'grid_view' => 'Hiển thị lưới',
+        'list_view' => 'Hiển thị danh sách',
+        'sort_by_name' => 'Sắp xếp theo tên',
+        'sort_by_product_count' => 'Sắp xếp theo số sản phẩm',
+        'total_categories' => 'Tổng số danh mục',
+        'total_products' => 'Tổng số sản phẩm',
+        'active_sellers' => 'Người bán hoạt động',
+        'new_this_week' => 'Mới trong tuần',
+        'featured_categories' => 'Danh mục nổi bật',
+        'all_categories' => 'Tất cả danh mục',
+        'featured' => 'Nổi bật',
+        'browse' => 'Duyệt',
+        'products' => 'sản phẩm',
+        'subcategories' => 'Danh mục con',
+        'commission' => 'Hoa hồng',
+        'popular_products' => 'Sản phẩm phổ biến',
+        'browse_products' => 'Duyệt sản phẩm',
+        'watch_for_new_products' => 'Theo dõi sản phẩm mới',
+        'updated' => 'Cập nhật',
+        'trending' => 'Xu hướng',
+        'more' => 'thêm',
+        'stop_watching' => 'Ngừng theo dõi',
+
+        // Product actions
+        'add_to_cart' => 'Thêm vào giỏ',
+        'add_to_wishlist' => 'Thêm vào yêu thích',
+        'compare' => 'So sánh',
+        'quick_view' => 'Xem nhanh',
+        'by' => 'bởi',
+        'seller' => 'Người bán',
+        'reviews' => 'đánh giá',
+        'stars' => 'sao',
+        'discount' => 'Giảm giá',
+        'sale' => 'Khuyến mãi',
+        'new' => 'Mới',
+        'bestseller' => 'Bán chạy',
+        'free_shipping' => 'Miễn phí vận chuyển',
+        'fast_delivery' => 'Giao hàng nhanh',
+        'warranty' => 'Bảo hành',
+        'return_policy' => 'Chính sách đổi trả',
+        'in_stock' => 'Còn hàng',
+        'out_of_stock' => 'Hết hàng',
+        'availability' => 'Tình trạng',
+        'brand' => 'Thương hiệu',
+        'rating' => 'Đánh giá',
+
+        // Product types
+        'product_type' => 'Loại sản phẩm',
+        'all_types' => 'Tất cả loại',
+        'physical_products' => 'Sản phẩm vật lý',
+        'digital_products' => 'Sản phẩm số',
+        'services' => 'Dịch vụ',
+        'seller_type' => 'Loại người bán',
+        'all_sellers' => 'Tất cả người bán',
+        'verified_sellers' => 'Người bán đã xác minh',
+        'premium_sellers' => 'Người bán cao cấp',
+        'suppliers' => 'Nhà cung cấp',
+        'manufacturers' => 'Nhà sản xuất',
+        'brands' => 'Thương hiệu',
+        'price_range_usd' => 'Khoảng giá (USD)',
+        'min_price' => 'Giá tối thiểu',
+        'max_price' => 'Giá tối đa',
+        'material' => 'Vật liệu',
+        'any_material' => 'Bất kỳ vật liệu',
+        'steel' => 'Thép',
+        'aluminum' => 'Nhôm',
+        'stainless_steel' => 'Thép không gỉ',
+        'titanium' => 'Titan',
+        'file_format' => 'Định dạng file',
+        'any_format' => 'Bất kỳ định dạng',
+        'minimum_rating' => 'Đánh giá tối thiểu',
+        'any_rating' => 'Bất kỳ đánh giá',
+        '4_plus_stars' => '4+ sao',
+        '3_plus_stars' => '3+ sao',
+        '2_plus_stars' => '2+ sao',
+        'availability' => 'Tình trạng',
+        'in_stock_only' => 'Chỉ còn hàng',
+        'featured_only' => 'Chỉ nổi bật',
+        'on_sale' => 'Đang khuyến mãi',
+        'sort_results_by' => 'Sắp xếp kết quả theo',
+        'relevance' => 'Độ liên quan',
+        'latest' => 'Mới nhất',
+        'price_low_to_high' => 'Giá: Thấp đến cao',
+        'price_high_to_low' => 'Giá: Cao đến thấp',
+        'highest_rated' => 'Đánh giá cao nhất',
+        'most_popular' => 'Phổ biến nhất',
+        'name_a_z' => 'Tên A-Z',
+        'search_products' => 'Tìm kiếm sản phẩm',
+        'clear_all' => 'Xóa tất cả',
+        'filters_applied' => 'bộ lọc đã áp dụng',
+
+        // Product detail
+        'home' => 'Trang chủ',
+        'marketplace' => 'Thị trường',
+        'products' => 'Sản phẩm',
+        'sold_by' => 'Bán bởi',
+        'verified' => 'Đã xác minh',
+        'in_stock' => 'Còn hàng',
+        'out_of_stock' => 'Hết hàng',
+        'service' => 'Dịch vụ',
+        'manufacturer' => 'Nhà sản xuất',
+        'add_to_cart' => 'Thêm vào giỏ',
+        'add_to_wishlist' => 'Thêm vào yêu thích',
+        'product_description' => 'Mô tả sản phẩm',
+        'technical_specifications' => 'Thông số kỹ thuật',
+        'related_products' => 'Sản phẩm liên quan',
+        'lead_time' => 'Thời gian giao hàng',
+        'minimum_order' => 'Đơn hàng tối thiểu',
+        'precision' => 'Độ chính xác',
+        'quality_standard' => 'Tiêu chuẩn chất lượng',
+        'material_options' => 'Tùy chọn vật liệu',
+        'delivery' => 'Giao hàng',
+        'reviews' => 'đánh giá',
+
+        // JavaScript messages
+        'added_to_wishlist' => 'Đã thêm vào danh sách yêu thích!',
+        'added_to_cart' => 'Đã thêm vào giỏ hàng!',
+        'removed_from_wishlist' => 'Đã xóa khỏi danh sách yêu thích!',
+        'error_occurred' => 'Đã xảy ra lỗi!',
+
+        // Technical specifications
+        'lead_time' => 'Thời gian thực hiện',
+        'minimum_order' => 'Đơn hàng tối thiểu',
+        'precision' => 'Độ chính xác',
+        'quality_standard' => 'Tiêu chuẩn chất lượng',
+        'material_options' => 'Tùy chọn vật liệu',
+        'delivery' => 'Giao hàng',
+    ],
+
+    // Language
+    'language' => [
+        'switch_language' => 'Chuyển đổi ngôn ngữ',
+        'select_language' => 'Chọn ngôn ngữ',
+        'switched_successfully' => 'Đã chuyển đổi ngôn ngữ thành công',
+        'switch_failed' => 'Không thể chuyển đổi ngôn ngữ',
+        'auto_detect' => 'Tự động phát hiện',
+    ],
+
+    // Common
+    'home' => 'Trang chủ',
+    'loading' => 'Đang tải',
+    'welcome' => 'Chào mừng',
+];

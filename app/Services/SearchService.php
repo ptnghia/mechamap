@@ -25,6 +25,7 @@ class SearchService
     public function __construct()
     {
         $this->indexPrefix = config('elasticsearch.index_prefix', 'mechamap');
+        $this->isElasticsearchAvailable = false;
         $this->initializeElasticsearch();
     }
 
@@ -34,27 +35,195 @@ class SearchService
     private function initializeElasticsearch(): void
     {
         try {
-            // Temporarily disable Elasticsearch for testing
-            $this->client = null;
-            return;
+            // Check if Elasticsearch is enabled
+            if (!config('elasticsearch.enabled', false)) {
+                $this->client = null;
+                $this->isElasticsearchAvailable = false;
+                Log::info('Elasticsearch is disabled in configuration');
+                return;
+            }
 
             $hosts = config('elasticsearch.hosts', ['localhost:9200']);
+            $retries = config('elasticsearch.retries', 2);
 
             $this->client = ClientBuilder::create()
                 ->setHosts($hosts)
-                ->setRetries(2)
+                ->setRetries($retries)
                 ->build();
 
             // Test connection
             $this->client->ping();
             $this->isElasticsearchAvailable = true;
 
-            Log::info('Elasticsearch connection established');
+            Log::info('Elasticsearch connection established successfully');
 
         } catch (\Exception $e) {
+            $this->client = null;
             $this->isElasticsearchAvailable = false;
             Log::warning('Elasticsearch not available: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Check if Elasticsearch is available
+     */
+    public function isAvailable(): bool
+    {
+        return $this->isElasticsearchAvailable;
+    }
+
+    /**
+     * Index a thread
+     */
+    public function indexThread(Thread $thread): void
+    {
+        if (!$this->isElasticsearchAvailable) {
+            return;
+        }
+
+        $indexName = config('elasticsearch.indices.threads.name');
+
+        $body = [
+            'id' => $thread->id,
+            'title' => $thread->title,
+            'content' => strip_tags($thread->content),
+            'user_id' => $thread->user_id,
+            'user_name' => $thread->user->name ?? '',
+            'category_id' => $thread->category_id,
+            'category_name' => $thread->category->name ?? '',
+            'forum_id' => $thread->forum_id,
+            'forum_name' => $thread->forum->name ?? '',
+            'tags' => $thread->tags ?? '',
+            'is_pinned' => $thread->is_pinned ?? false,
+            'is_locked' => $thread->is_locked ?? false,
+            'is_featured' => $thread->is_featured ?? false,
+            'views_count' => $thread->views_count ?? 0,
+            'replies_count' => $thread->replies_count ?? 0,
+            'likes_count' => $thread->likes_count ?? 0,
+            'created_at' => $thread->created_at->toISOString(),
+            'updated_at' => $thread->updated_at->toISOString(),
+        ];
+
+        $this->client->index([
+            'index' => $indexName,
+            'id' => $thread->id,
+            'body' => $body
+        ]);
+    }
+
+    /**
+     * Index a showcase
+     */
+    public function indexShowcase($showcase): void
+    {
+        if (!$this->isElasticsearchAvailable) {
+            return;
+        }
+
+        $indexName = config('elasticsearch.indices.showcases.name');
+
+        $body = [
+            'id' => $showcase->id,
+            'title' => $showcase->title,
+            'description' => $showcase->description ?? '',
+            'content' => strip_tags($showcase->content ?? ''),
+            'user_id' => $showcase->user_id,
+            'user_name' => $showcase->user->name ?? '',
+            'category' => $showcase->category ?? '',
+            'complexity_level' => $showcase->complexity_level ?? '',
+            'software_used' => is_array($showcase->software_used) ? implode(', ', $showcase->software_used) : ($showcase->software_used ?? ''),
+            'tags' => $showcase->tags ?? '',
+            'is_featured' => $showcase->is_featured ?? false,
+            'is_public' => $showcase->is_public ?? true,
+            'views_count' => $showcase->views_count ?? 0,
+            'likes_count' => $showcase->likes_count ?? 0,
+            'rating_average' => $showcase->rating_average ?? 0,
+            'rating_count' => $showcase->rating_count ?? 0,
+            'created_at' => $showcase->created_at->toISOString(),
+            'updated_at' => $showcase->updated_at->toISOString(),
+        ];
+
+        $this->client->index([
+            'index' => $indexName,
+            'id' => $showcase->id,
+            'body' => $body
+        ]);
+    }
+
+    /**
+     * Index a user
+     */
+    public function indexUser(User $user): void
+    {
+        if (!$this->isElasticsearchAvailable) {
+            return;
+        }
+
+        $indexName = config('elasticsearch.indices.users.name');
+
+        $body = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'username' => $user->username ?? '',
+            'bio' => $user->bio ?? '',
+            'company' => $user->company ?? '',
+            'location' => $user->location ?? '',
+            'skills' => $user->skills ?? '',
+            'role' => $user->role ?? '',
+            'is_verified' => $user->is_verified ?? false,
+            'is_active' => $user->is_active ?? true,
+            'threads_count' => $user->threads_count ?? 0,
+            'showcases_count' => $user->showcases_count ?? 0,
+            'reputation_score' => $user->reputation_score ?? 0,
+            'created_at' => $user->created_at->toISOString(),
+            'last_active_at' => $user->last_active_at ? $user->last_active_at->toISOString() : null,
+        ];
+
+        $this->client->index([
+            'index' => $indexName,
+            'id' => $user->id,
+            'body' => $body
+        ]);
+    }
+
+    /**
+     * Index a product
+     */
+    public function indexProduct($product): void
+    {
+        if (!$this->isElasticsearchAvailable) {
+            return;
+        }
+
+        $indexName = config('elasticsearch.indices.products.name');
+
+        $body = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => strip_tags($product->description ?? ''),
+            'category' => $product->category ?? '',
+            'type' => $product->type ?? '',
+            'price' => $product->price ?? 0,
+            'currency' => $product->currency ?? 'VND',
+            'seller_id' => $product->seller_id,
+            'seller_name' => $product->seller->name ?? '',
+            'tags' => $product->tags ?? '',
+            'is_active' => $product->is_active ?? true,
+            'is_featured' => $product->is_featured ?? false,
+            'views_count' => $product->views_count ?? 0,
+            'sales_count' => $product->sales_count ?? 0,
+            'rating_average' => $product->rating_average ?? 0,
+            'rating_count' => $product->rating_count ?? 0,
+            'created_at' => $product->created_at->toISOString(),
+            'updated_at' => $product->updated_at->toISOString(),
+        ];
+
+        $this->client->index([
+            'index' => $indexName,
+            'id' => $product->id,
+            'body' => $body
+        ]);
     }
 
     /**
@@ -589,11 +758,4 @@ class SearchService
         }
     }
 
-    /**
-     * Check if Elasticsearch is available
-     */
-    public function isAvailable(): bool
-    {
-        return $this->isElasticsearchAvailable;
-    }
 }

@@ -307,9 +307,10 @@ Full marketplace access → Limited community
 - `supplier` - Supply business
 - `brand` - Brand marketing
 
-**❌ Restricted (8 roles):**
+**❌ Restricted (9 roles):**
 - System roles (3) - Internal only
 - Management roles (3) - Staff only
 - Upgrade roles (2) - Activity/admin based
+- Student role (1) - Admin assigned
 
 **🎊 MECHAMAP PERMISSION SYSTEM:** ✅ **PRODUCTION READY** - Revolutionary role design with perfect separation of concerns and optimal user experience!

@@ -37,7 +37,7 @@ class AlertController extends Controller
     /**
      * Mark an alert as read.
      */
-    public function markAsRead(Alert $alert): RedirectResponse
+    public function markAsRead(Alert $alert)
     {
         // Check if the alert belongs to the authenticated user
         if ($alert->user_id !== Auth::id()) {
@@ -46,24 +46,66 @@ class AlertController extends Controller
 
         $alert->update(['read_at' => now()]);
 
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Alert marked as read.']);
+        }
+
         return back()->with('success', 'Alert marked as read.');
+    }
+
+    /**
+     * Mark an alert as unread.
+     */
+    public function markAsUnread(Alert $alert)
+    {
+        // Check if the alert belongs to the authenticated user
+        if ($alert->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $alert->update(['read_at' => null]);
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Alert marked as unread.']);
+        }
+
+        return back()->with('success', 'Alert marked as unread.');
     }
 
     /**
      * Mark all alerts as read.
      */
-    public function markAllAsRead(): RedirectResponse
+    public function markAllAsRead()
     {
         $user = Auth::user();
         $user->alerts()->whereNull('read_at')->update(['read_at' => now()]);
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'All alerts marked as read.']);
+        }
 
         return back()->with('success', 'All alerts marked as read.');
     }
 
     /**
+     * Clear all alerts for the authenticated user.
+     */
+    public function clearAll()
+    {
+        $user = Auth::user();
+        $user->alerts()->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'All alerts cleared.']);
+        }
+
+        return back()->with('success', 'All alerts cleared.');
+    }
+
+    /**
      * Remove the specified alert from storage.
      */
-    public function destroy(Alert $alert): RedirectResponse
+    public function destroy(Alert $alert)
     {
         // Check if the alert belongs to the authenticated user
         if ($alert->user_id !== Auth::id()) {
@@ -71,6 +113,10 @@ class AlertController extends Controller
         }
 
         $alert->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Alert deleted successfully.']);
+        }
 
         return back()->with('success', 'Alert deleted successfully.');
     }

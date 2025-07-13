@@ -21,7 +21,7 @@ class OrderController extends Controller
     /**
      * Display supplier's orders
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
         $user = auth()->user();
         $seller = MarketplaceSeller::where('user_id', $user->id)->first();
@@ -64,7 +64,7 @@ class OrderController extends Controller
     /**
      * Show order details
      */
-    public function show(MarketplaceOrderItem $orderItem): View
+    public function show(MarketplaceOrderItem $orderItem)
     {
         $user = auth()->user();
         $seller = MarketplaceSeller::where('user_id', $user->id)->first();
@@ -81,7 +81,7 @@ class OrderController extends Controller
     /**
      * Update order fulfillment status
      */
-    public function updateStatus(Request $request, MarketplaceOrderItem $orderItem): RedirectResponse
+    public function updateStatus(Request $request, MarketplaceOrderItem $orderItem)
     {
         $user = auth()->user();
         $seller = MarketplaceSeller::where('user_id', $user->id)->first();
@@ -116,6 +116,10 @@ class OrderController extends Controller
         // Update main order status if needed
         $this->updateMainOrderStatus($orderItem->order);
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Trạng thái đơn hàng đã được cập nhật.']);
+        }
+
         return redirect()->route('supplier.orders.show', $orderItem)
             ->with('success', 'Trạng thái đơn hàng đã được cập nhật.');
     }
@@ -123,7 +127,7 @@ class OrderController extends Controller
     /**
      * Bulk update order statuses
      */
-    public function bulkUpdate(Request $request): RedirectResponse
+    public function bulkUpdate(Request $request)
     {
         $user = auth()->user();
         $seller = MarketplaceSeller::where('user_id', $user->id)->first();

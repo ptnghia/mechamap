@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -121,5 +121,65 @@ class ThreadBookmark extends Model
     public function getFolderDisplayAttribute(): string
     {
         return $this->folder ?? 'Uncategorized';
+    }
+
+    /**
+     * Get content URL based on bookmark type.
+     */
+    public function getContentUrl(): string
+    {
+        if ($this->thread) {
+            return route('threads.show', $this->thread->slug);
+        }
+
+        return '#';
+    }
+
+    /**
+     * Get content title.
+     */
+    public function getContentTitle(): string
+    {
+        if ($this->thread) {
+            return $this->thread->title;
+        }
+
+        return 'Unknown Content';
+    }
+
+    /**
+     * Get content excerpt.
+     */
+    public function getContentExcerpt(): string
+    {
+        if ($this->thread) {
+            return strip_tags($this->thread->content);
+        }
+
+        return '';
+    }
+
+    /**
+     * Get type badge class for Bootstrap.
+     */
+    public function getTypeBadgeClass(): string
+    {
+        if ($this->thread) {
+            return 'primary';
+        }
+
+        return 'secondary';
+    }
+
+    /**
+     * Get type display name.
+     */
+    public function getTypeDisplayName(): string
+    {
+        if ($this->thread) {
+            return 'Chủ đề';
+        }
+
+        return 'Không xác định';
     }
 }

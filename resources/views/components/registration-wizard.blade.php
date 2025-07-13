@@ -21,8 +21,8 @@ Reusable wizard component với progress indicator, step navigation, và respons
 @php
     $calculatedProgress = $progress ?? (($currentStep - 1) / $totalSteps) * 100;
     $stepLabels = [
-        1 => 'Thông tin cơ bản',
-        2 => 'Thông tin doanh nghiệp'
+        1 => __('auth.register.step1_label'),
+        2 => __('auth.register.step2_label')
     ];
 @endphp
 
@@ -43,25 +43,25 @@ Reusable wizard component với progress indicator, step navigation, và respons
                     </div>
                     <div class="col-md-4 text-end">
                         <div class="step-indicator">
-                            <span class="step-text">Bước {{ $currentStep }} / {{ $totalSteps }}</span>
+                            <span class="step-text">{{ __('auth.register.step_indicator', ['current' => $currentStep, 'total' => $totalSteps]) }}</span>
                             <div class="step-label">{{ $stepLabels[$currentStep] ?? '' }}</div>
                         </div>
                     </div>
                 </div>
-                
+
                 {{-- Progress Bar --}}
                 <div class="progress-container mt-3">
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                             role="progressbar" 
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar"
                              style="width: {{ $calculatedProgress }}%"
-                             aria-valuenow="{{ $calculatedProgress }}" 
-                             aria-valuemin="0" 
+                             aria-valuenow="{{ $calculatedProgress }}"
+                             aria-valuemin="0"
                              aria-valuemax="100">
                         </div>
                     </div>
                     <div class="progress-text mt-2">
-                        <small class="text-muted">{{ round($calculatedProgress) }}% hoàn thành</small>
+                        <small class="text-muted">{{ __('auth.register.progress_complete', ['percent' => round($calculatedProgress)]) }}</small>
                     </div>
                 </div>
             </div>
@@ -141,9 +141,9 @@ Reusable wizard component với progress indicator, step navigation, và respons
                     </div>
                     <div class="col-md-6 text-end">
                         @if($showNextButton)
-                            <button type="submit" 
-                                    form="{{ $formId }}" 
-                                    class="btn btn-primary btn-wizard-next" 
+                            <button type="submit"
+                                    form="{{ $formId }}"
+                                    class="btn btn-primary btn-wizard-next"
                                     id="wizardNextBtn"
                                     {{ $nextButtonDisabled ? 'disabled' : '' }}>
                                 {{ $nextButtonText }}
@@ -152,13 +152,13 @@ Reusable wizard component với progress indicator, step navigation, và respons
                         @endif
                     </div>
                 </div>
-                
+
                 {{-- Additional Info --}}
                 <div class="row mt-3">
                     <div class="col-12 text-center">
                         <small class="text-muted">
                             <i class="fas fa-shield-alt me-1"></i>
-                            Thông tin của bạn được bảo mật và mã hóa
+                            {{ __('auth.register.security_note') }}
                         </small>
                     </div>
                 </div>
@@ -169,9 +169,9 @@ Reusable wizard component với progress indicator, step navigation, và respons
         <div class="wizard-login-link">
             <div class="container-fluid text-center">
                 <p class="mb-0">
-                    <span class="text-muted">Đã có tài khoản? </span>
+                    <span class="text-muted">{{ __('auth.register.already_have_account') }} </span>
                     <a href="{{ route('login') }}" class="text-decoration-none fw-medium">
-                        Đăng nhập ngay
+                        {{ __('auth.register.login_now') }}
                     </a>
                 </p>
             </div>
@@ -183,7 +183,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
 <div class="auto-save-indicator" id="autoSaveIndicator" style="display: none;">
     <div class="auto-save-content">
         <i class="fas fa-save me-2"></i>
-        <span id="autoSaveText">Đang lưu tự động...</span>
+        <span id="autoSaveText">{{ __('auth.register.auto_saving') }}</span>
     </div>
 </div>
 
@@ -339,37 +339,37 @@ Reusable wizard component với progress indicator, step navigation, và respons
         margin: 1rem auto;
         padding: 0 0.5rem;
     }
-    
+
     .wizard-header {
         padding: 1.5rem;
     }
-    
+
     .wizard-title {
         font-size: 1.5rem;
     }
-    
+
     .wizard-body {
         padding: 1.5rem;
     }
-    
+
     .wizard-footer {
         padding: 1rem 1.5rem;
     }
-    
+
     .wizard-footer .row {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .wizard-footer .col-md-6 {
         text-align: center !important;
     }
-    
+
     .btn-wizard-back,
     .btn-wizard-next {
         width: 100%;
     }
-    
+
     .step-indicator {
         text-align: left;
         margin-top: 1rem;
@@ -383,12 +383,12 @@ Reusable wizard component với progress indicator, step navigation, và respons
         border-color: #4a5568;
         color: #e2e8f0;
     }
-    
+
     .wizard-footer {
         background-color: #1a202c;
         border-color: #4a5568;
     }
-    
+
     .wizard-login-link {
         background-color: #2d3748;
         border-color: #4a5568;
@@ -404,16 +404,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let autoSaveTimeout;
     const autoSaveIndicator = document.getElementById('autoSaveIndicator');
     const autoSaveText = document.getElementById('autoSaveText');
-    
+
     function showAutoSaveIndicator(message = 'Đang lưu tự động...') {
         autoSaveText.textContent = message;
         autoSaveIndicator.style.display = 'block';
-        
+
         setTimeout(() => {
             autoSaveIndicator.style.display = 'none';
         }, 2000);
     }
-    
+
     // Back button functionality
     const backBtn = document.getElementById('wizardBackBtn');
     if (backBtn) {
@@ -421,22 +421,22 @@ document.addEventListener('DOMContentLoaded', function() {
             window.history.back();
         });
     }
-    
+
     // Form validation state management
     const nextBtn = document.getElementById('wizardNextBtn');
     const form = document.getElementById('{{ $formId }}');
-    
+
     if (form && nextBtn) {
         // Enable/disable next button based on form validity
         function updateNextButtonState() {
             const isValid = form.checkValidity();
             nextBtn.disabled = !isValid;
         }
-        
+
         // Check form validity on input changes
         form.addEventListener('input', updateNextButtonState);
         form.addEventListener('change', updateNextButtonState);
-        
+
         // Initial check
         updateNextButtonState();
     }

@@ -4,7 +4,7 @@
     $user = auth()->user();
     $isFollowing = $user ? $user->followedThreads()->where('thread_id', $thread->id)->exists() : false;
     $followerCount = $thread->followers()->count();
-    
+
     $buttonClass = match($size) {
         'small' => 'btn-sm',
         'large' => 'btn-lg',
@@ -14,22 +14,22 @@
 
 <div class="thread-follow-wrapper" data-thread-id="{{ $thread->id }}">
     @auth
-        <button type="button" 
+        <button type="button"
                 class="btn {{ $isFollowing ? 'btn-success' : 'btn-outline-primary' }} thread-follow-btn {{ $buttonClass }}"
                 data-thread-id="{{ $thread->id }}"
                 data-following="{{ $isFollowing ? 'true' : 'false' }}"
-                title="{{ $isFollowing ? 'Bỏ theo dõi thread này' : 'Theo dõi thread để nhận thông báo khi có reply mới' }}">
+                title="{{ $isFollowing ? __('forum.actions.unfollow_thread') : __('forum.actions.follow_thread') }}">
             <i class="fas {{ $isFollowing ? 'fa-bell' : 'fa-bell-slash' }} me-1"></i>
-            <span class="follow-text">{{ $isFollowing ? 'Đang theo dõi' : 'Theo dõi' }}</span>
+            <span class="follow-text">{{ $isFollowing ? __('thread.following') : __('thread.follow') }}</span>
             <span class="follower-count badge bg-light text-dark ms-1">{{ $followerCount }}</span>
         </button>
     @else
-        <button type="button" 
+        <button type="button"
                 class="btn btn-outline-primary {{ $buttonClass }}"
                 onclick="showLoginModal()"
-                title="Đăng nhập để theo dõi thread này">
+                title="{{ __('forum.actions.login_to_follow') }}">
             <i class="fas fa-bell-slash me-1"></i>
-            <span>Theo dõi</span>
+            <span>{{ __('thread.follow') }}</span>
             <span class="follower-count badge bg-light text-dark ms-1">{{ $followerCount }}</span>
         </button>
     @endauth
@@ -44,15 +44,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const threadId = this.dataset.threadId;
             const isFollowing = this.dataset.following === 'true';
             const action = isFollowing ? 'unfollow' : 'follow';
-            
+
             // Disable button during request
             this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Đang xử lý...';
-            
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Processing...';
+
             // Make AJAX request
             const url = `/ajax/threads/${threadId}/follow`;
             const method = isFollowing ? 'DELETE' : 'POST';
-            
+
             fetch(url, {
                 method: method,
                 headers: {
@@ -67,48 +67,48 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update button state
                     const newFollowing = data.is_following;
                     this.dataset.following = newFollowing ? 'true' : 'false';
-                    
+
                     // Update button appearance
                     if (newFollowing) {
                         this.className = this.className.replace('btn-outline-primary', 'btn-success');
-                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">Đang theo dõi</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
-                        this.title = 'Bỏ theo dõi thread này';
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = '{{ __('forum.actions.unfollow_thread') }}';
                     } else {
                         this.className = this.className.replace('btn-success', 'btn-outline-primary');
-                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">Theo dõi</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
-                        this.title = 'Theo dõi thread để nhận thông báo khi có reply mới';
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = '{{ __('forum.actions.follow_thread') }}';
                     }
-                    
+
                     // Show success message
                     showToast(data.message, 'success');
-                    
+
                     // Update all follower counts on page
                     document.querySelectorAll(`[data-thread-id="${threadId}"] .follower-count`).forEach(el => {
                         el.textContent = data.follower_count;
                     });
-                    
+
                 } else {
-                    showToast(data.message || 'Có lỗi xảy ra', 'error');
-                    
+                    showToast(data.message || '{{ __('forum.actions.error_occurred') }}', 'error');
+
                     // Reset button state
                     const originalFollowing = this.dataset.following === 'true';
                     if (originalFollowing) {
-                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">Đang theo dõi</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
                     } else {
-                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">Theo dõi</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
                     }
                 }
             })
             .catch(error => {
                 console.error('Thread follow error:', error);
-                showToast('Có lỗi xảy ra khi xử lý yêu cầu', 'error');
-                
+                showToast('{{ __('forum.actions.request_error') }}', 'error');
+
                 // Reset button state
                 const originalFollowing = this.dataset.following === 'true';
                 if (originalFollowing) {
-                    this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">Đang theo dõi</span>';
+                    this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span>';
                 } else {
-                    this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">Theo dõi</span>';
+                    this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span>';
                 }
             })
             .finally(() => {
@@ -128,10 +128,10 @@ function showToast(message, type = 'info') {
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     // Add to page
     document.body.appendChild(toast);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         if (toast.parentNode) {
@@ -189,11 +189,11 @@ function showLoginModal() {
         font-size: 0.875rem;
         padding: 0.375rem 0.75rem;
     }
-    
+
     .thread-follow-wrapper .thread-follow-btn .follow-text {
         display: none;
     }
-    
+
     .thread-follow-wrapper .thread-follow-btn .fas {
         margin-right: 0 !important;
     }

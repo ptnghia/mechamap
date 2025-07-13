@@ -66,11 +66,11 @@
                             <!-- Empty Cart State -->
                             <div class="text-center py-5">
                                 <i class="fas fa-shopping-cart-x text-muted" style="font-size: 4rem;"></i>
-                                <h4 class="mt-3">Your cart is empty</h4>
-                                <p class="text-muted">Add some products to get started</p>
+                                <h4 class="mt-3">{{ __('marketplace.cart.empty_cart') }}</h4>
+                                <p class="text-muted">{{ __('marketplace.cart.empty_cart_message') }}</p>
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
                                     <i class="fas fa-arrow-left me-2"></i>
-                                    Continue Shopping
+                                    {{ __('marketplace.cart.continue_shopping') }}
                                 </a>
                             </div>
                         @else
@@ -310,14 +310,14 @@
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-clock-history me-2"></i>
-                            Recently Viewed Products
+                            {{ __('marketplace.cart.recently_viewed_products') }}
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row" id="recentlyViewedProducts">
                             <div class="col-12 text-center text-muted py-3">
                                 <i class="fas fa-eye" style="font-size: 2rem;"></i>
-                                <p class="mb-0 mt-2">No recently viewed products</p>
+                                <p class="mb-0 mt-2">{{ __('marketplace.cart.no_recently_viewed') }}</p>
                             </div>
                         </div>
                     </div>

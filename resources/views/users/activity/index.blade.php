@@ -217,7 +217,7 @@
                     <div class="text-center mt-4">
                         <button class="btn btn-outline-primary" onclick="loadMoreActivities()">
                             <i class="bx bx-loader-alt me-1"></i>
-                            {{ __('messages.common.load_more') }}
+                            {{ __('ui.pagination.load_more') }}
                         </button>
                     </div>
                     @endif

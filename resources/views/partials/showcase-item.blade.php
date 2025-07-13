@@ -57,19 +57,19 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-badges">
             @if($complexityLevel)
             <span class="badge badge-complexity badge-{{ $complexityLevel }}">
-                {{ ucfirst($complexityLevel) }}
+                {{ __('showcase.complexity.' . $complexityLevel) }}
             </span>
             @endif
 
             @if($hasCadFiles)
             <span class="badge badge-feature bg-success">
-                <i class="fas fa-cube me-1"></i>CAD
+                <i class="fas fa-cube me-1"></i>{{ __('showcase.features.cad') }}
             </span>
             @endif
 
             @if($allowDownloads)
             <span class="badge badge-feature bg-info">
-                <i class="fas fa-download me-1"></i>Download
+                <i class="fas fa-download me-1"></i>{{ __('showcase.features.download') }}
             </span>
             @endif
         </div>

@@ -1,0 +1,30 @@
+<?php
+
+return [
+    // Search interface
+    'search' => 'Tìm kiếm',
+    'basic_search' => 'Tìm kiếm cơ bản',
+    'search_placeholder' => 'Tìm kiếm threads, posts, users...',
+    'advanced_search' => 'Tìm kiếm nâng cao',
+    'search_results' => 'Kết quả tìm kiếm',
+    'no_results' => 'Không tìm thấy kết quả nào',
+    'search_in_progress' => 'Đang tìm kiếm...',
+    'enter_search_terms' => 'Nhập từ khóa tìm kiếm',
+    'search_description' => 'Tìm kiếm threads, bài viết, người dùng và nhiều nội dung khác',
+    'found_results' => 'Tìm thấy :count kết quả cho ":query"',
+    'all_content' => 'Tất cả nội dung',
+    'threads_only' => 'Chỉ threads',
+    'posts_only' => 'Chỉ bài viết',
+    'users_only' => 'Chỉ người dùng',
+    'threads' => 'Threads',
+    'posts' => 'Bài viết',
+    'users' => 'Người dùng',
+    'no_threads_found' => 'Không tìm thấy thread nào',
+    'no_posts_found' => 'Không tìm thấy bài viết nào',
+    'no_users_found' => 'Không tìm thấy người dùng nào',
+    'try_different_keywords' => 'Thử sử dụng từ khóa khác',
+    'view_post' => 'Xem bài viết',
+    'search_in_thread' => 'Tìm trong chủ đề',
+    'search_in_forum' => 'Tìm trong diễn đàn',
+    'advanced' => 'Tìm kiếm nâng cao',
+];

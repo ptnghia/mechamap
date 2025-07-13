@@ -147,8 +147,8 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{{ route('threads.show', $thread) }}"
-                                class="btn btn-outline-secondary me-md-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Update Thread</button>
+                                class="btn btn-outline-secondary me-md-2">{{ __('forum.edit.cancel') }}</a>
+                            <button type="submit" class="btn btn-primary">{{ __('forum.edit.update') }}</button>
                         </div>
                     </form>
                 </div>

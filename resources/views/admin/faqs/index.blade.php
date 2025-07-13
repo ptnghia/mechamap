@@ -63,7 +63,7 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label for="search" class="form-label">{{ __('Tìm kiếm') }}</label>
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Câu hỏi, câu trả lời...') }}">
                 </div>
                 <div class="col-12">

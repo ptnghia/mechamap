@@ -8,48 +8,11 @@
     <div class="row">
         {{-- Sidebar Navigation --}}
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="fas fa-user-circle me-2"></i>
-                        Dashboard
-                    </h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{{ route('user.dashboard') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-tachometer-alt me-2"></i>
-                        Tổng quan
-                    </a>
-                    <a href="{{ route('user.threads') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('user.threads') ? 'active' : '' }}">
-                        <i class="fas fa-comments me-2"></i>
-                        Threads của tôi
-                        @if($pendingThreadsCount > 0)
-                        <span class="badge bg-warning float-end">{{ $pendingThreadsCount }}</span>
-                        @endif
-                    </a>
-                    <a href="{{ route('user.comments') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('user.comments') ? 'active' : '' }}">
-                        <i class="fas fa-comment me-2"></i>
-                        Comments của tôi
-                        @if($pendingCommentsCount > 0)
-                        <span class="badge bg-warning float-end">{{ $pendingCommentsCount }}</span>
-                        @endif
-                    </a>
-                    <a href="{{ route('user.bookmarks') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('user.bookmarks') ? 'active' : '' }}">
-                        <i class="fas fa-bookmark me-2"></i>
-                        Bookmarks
-                    </a>
-                    <a href="{{ route('user.settings') }}"
-                        class="list-group-item list-group-item-action {{ request()->routeIs('user.settings') ? 'active' : '' }}">
-                        <i class="fas fa-cog me-2"></i>
-                        Cài đặt
-                    </a>
-                </div>
-            </div>
+            @include('components.user-dashboard-sidebar')
+        </div>
 
+        {{-- Main Content --}}
+        <div class="col-md-9">
             {{-- Quick Stats Card --}}
             <div class="card mt-4">
                 <div class="card-header">
@@ -196,7 +159,7 @@
                             <i class="fas fa-comments me-2"></i>
                             Threads gần đây
                         </h5>
-                        <a href="{{ route('user.threads') }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('user.my-threads') }}" class="btn btn-sm btn-outline-primary">
                             Xem tất cả
                         </a>
                     </div>
@@ -375,6 +338,8 @@
                     @endif
                 </div>
             </div>
+        </div>
+        {{-- End Main Content --}}
         </div>
     </div>
 </div>

@@ -98,8 +98,8 @@ return [
     'messages_section' => 'Tin nhắn',
     'login_required' => 'Cần đăng nhập:',
     'login_required_description' => 'Bạn cần đăng nhập để gửi tin nhắn đến công ty này.',
-    'login' => 'Đăng nhập',
-    'register' => 'Đăng ký',
+    // 'login' => 'Đăng nhập', // MOVED TO nav.auth.login
+    // 'register' => 'Đăng ký', // MOVED TO nav.auth.register
     'inquiry_type' => 'Loại yêu cầu',
     'select_inquiry_type' => 'Chọn loại yêu cầu',
     'general_info' => 'Thông tin chung',
@@ -158,4 +158,6 @@ return [
     'lead_time' => 'Thời gian Giao hàng',
     'view_all_products' => 'Xem Tất cả Sản phẩm',
     'total_products_available' => 'Tổng Sản phẩm Có sẵn',
+    'login' => 'Đăng nhập',
+    'register' => 'Đăng ký',
 ];

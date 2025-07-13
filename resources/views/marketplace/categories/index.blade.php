@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', __('messages.marketplace.product_categories') . ' - ' . config('app.name'))
+@section('title', __('marketplace.categories.title') . ' - ' . config('app.name'))
 
 @section('content')
 <div class="container py-4">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('marketplace.index') }}">{{ __('messages.marketplace.title') }}</a></li>
-            <li class="breadcrumb-item active">{{ __('messages.marketplace.categories') }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('ui.common.home') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('marketplace.index') }}">{{ __('marketplace.marketplace.title') }}</a></li>
+            <li class="breadcrumb-item active">{{ __('marketplace.categories.title') }}</li>
         </ol>
     </nav>
 
@@ -20,33 +20,33 @@
                 <div>
                     <h1 class="h2 mb-1">
                         <i class="bx bx-category text-primary me-2"></i>
-                        {{ __('messages.marketplace.product_categories') }}
+                        {{ __('marketplace.marketplace.product_categories') }}
                     </h1>
-                    <p class="text-muted mb-0">{{ __('messages.marketplace.browse_products_by_category') }}</p>
+                    <p class="text-muted mb-0">{{ __('marketplace.marketplace.browse_products_by_category') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ route('marketplace.index') }}?search=advanced" class="btn btn-outline-primary">
                         <i class="bx bx-search me-1"></i>
-                        {{ __('messages.marketplace.advanced_search') }}
+                        {{ __('marketplace.marketplace.advanced_search') }}
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="bx bx-filter me-1"></i>
-                            {{ __('messages.marketplace.view_options') }}
+                            {{ __('marketplace.marketplace.view_options') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#" onclick="changeView('grid')">
-                                <i class="bx bx-grid-alt me-2"></i>{{ __('messages.marketplace.grid_view') }}
+                                <i class="bx bx-grid-alt me-2"></i>{{ __('marketplace.marketplace.grid_view') }}
                             </a></li>
                             <li><a class="dropdown-item" href="#" onclick="changeView('list')">
-                                <i class="bx bx-list-ul me-2"></i>{{ __('messages.marketplace.list_view') }}
+                                <i class="bx bx-list-ul me-2"></i>{{ __('marketplace.marketplace.list_view') }}
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="sortCategories('name')">
-                                <i class="bx bx-sort-a-z me-2"></i>{{ __('messages.marketplace.sort_by_name') }}
+                                <i class="bx bx-sort-a-z me-2"></i>{{ __('marketplace.marketplace.sort_by_name') }}
                             </a></li>
                             <li><a class="dropdown-item" href="#" onclick="sortCategories('products')">
-                                <i class="bx bx-package me-2"></i>{{ __('messages.marketplace.sort_by_product_count') }}
+                                <i class="bx bx-package me-2"></i>{{ __('marketplace.marketplace.sort_by_product_count') }}
                             </a></li>
                         </ul>
                     </div>
@@ -63,7 +63,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $totalCategories }}</h3>
-                            <p class="mb-0">{{ __('messages.marketplace.total_categories') }}</p>
+                            <p class="mb-0">{{ __('marketplace.marketplace.total_categories') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-category display-6"></i>
@@ -78,7 +78,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $totalProducts }}</h3>
-                            <p class="mb-0">{{ __('messages.marketplace.total_products') }}</p>
+                            <p class="mb-0">{{ __('marketplace.marketplace.total_products') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-package display-6"></i>
@@ -93,7 +93,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $activeSellers }}</h3>
-                            <p class="mb-0">{{ __('messages.marketplace.active_sellers') }}</p>
+                            <p class="mb-0">{{ __('marketplace.marketplace.active_sellers') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-store display-6"></i>
@@ -108,7 +108,7 @@
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">{{ $newThisWeek }}</h3>
-                            <p class="mb-0">{{ __('messages.marketplace.new_this_week') }}</p>
+                            <p class="mb-0">{{ __('marketplace.marketplace.new_this_week') }}</p>
                         </div>
                         <div class="ms-3">
                             <i class="bx bx-trending-up display-6"></i>
@@ -125,7 +125,7 @@
         <div class="col-12">
             <h3 class="h4 mb-3">
                 <i class="bx bx-star text-warning me-2"></i>
-                {{ __('messages.marketplace.featured_categories') }}
+                {{ __('marketplace.marketplace.featured_categories') }}
             </h3>
             <div class="row">
                 @foreach($featuredCategories as $category)
@@ -135,7 +135,7 @@
                              style="background-image: url('{{ $category->banner_image ?? '/images/default-category.jpg' }}');">
                             <div class="category-overlay">
                                 <div class="category-badge">
-                                    <span class="badge bg-warning">{{ __('messages.marketplace.featured') }}</span>
+                                    <span class="badge bg-warning">{{ __('marketplace.marketplace.featured') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -148,10 +148,10 @@
                             <p class="card-text text-muted">{{ Str::limit($category->description, 100) }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    {{ $category->products_count }} {{ __('messages.marketplace.products') }}
+                                    {{ $category->products_count }} {{ __('marketplace.products.title') }}
                                 </small>
                                 <a href="{{ route('marketplace.categories.show', $category) }}" class="btn btn-sm btn-primary">
-                                    {{ __('messages.marketplace.browse') }}
+                                    {{ __('marketplace.marketplace.browse') }}
                                 </a>
                             </div>
                         </div>
@@ -168,7 +168,7 @@
         <div class="col-12">
             <h3 class="h4 mb-3">
                 <i class="bx bx-grid-alt text-primary me-2"></i>
-                {{ __('messages.marketplace.all_categories') }}
+                {{ __('marketplace.marketplace.all_categories') }}
             </h3>
 
             <div id="categoriesContainer" class="categories-grid">
@@ -203,19 +203,19 @@
                                         <div class="col-4">
                                             <div class="stat-item">
                                                 <div class="stat-number">{{ $category->marketplace_products_count ?? 0 }}</div>
-                                                <div class="stat-label">{{ __('messages.marketplace.products') }}</div>
+                                                <div class="stat-label">{{ __('marketplace.products.title') }}</div>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="stat-item">
                                                 <div class="stat-number">{{ $category->children->count() ?? 0 }}</div>
-                                                <div class="stat-label">{{ __('messages.marketplace.subcategories') }}</div>
+                                                <div class="stat-label">{{ __('marketplace.marketplace.subcategories') }}</div>
                                             </div>
                                         </div>
                                         <div class="col-4">
                                             <div class="stat-item">
                                                 <div class="stat-number">{{ number_format($category->commission_rate ?? 0, 1) }}%</div>
-                                                <div class="stat-label">{{ __('messages.marketplace.commission') }}</div>
+                                                <div class="stat-label">{{ __('marketplace.marketplace.commission') }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@
                                     <!-- Popular Products Preview -->
                                     @if($category->marketplaceProducts && $category->marketplaceProducts->count() > 0)
                                     <div class="popular-products mb-3">
-                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('messages.marketplace.popular_products')) }}</h6>
+                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('marketplace.products.popular')) }}</h6>
                                         <div class="d-flex flex-wrap gap-1">
                                             @foreach($category->marketplaceProducts->take(3) as $product)
                                             <a href="{{ route('marketplace.products.show', $product) }}"
@@ -239,7 +239,7 @@
                                     <!-- Subcategories -->
                                     @if($category->children && $category->children->count() > 0)
                                     <div class="subcategories mb-3">
-                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('messages.marketplace.subcategories')) }}</h6>
+                                        <h6 class="small text-muted mb-2">{{ strtoupper(__('marketplace.categories.subcategories')) }}</h6>
                                         <div class="d-flex flex-wrap gap-1">
                                             @foreach($category->children->take(4) as $subcategory)
                                             <a href="{{ route('marketplace.categories.show', $subcategory) }}"
@@ -249,7 +249,7 @@
                                             @endforeach
                                             @if($category->children->count() > 4)
                                             <span class="badge bg-light text-muted">
-                                                +{{ $category->children->count() - 4 }} {{ __('messages.marketplace.more') }}
+                                                +{{ $category->children->count() - 4 }} {{ __('marketplace.marketplace.more') }}
                                             </span>
                                             @endif
                                         </div>
@@ -261,11 +261,11 @@
                                         <a href="{{ route('marketplace.categories.show', $category) }}"
                                            class="btn btn-primary btn-sm flex-grow-1">
                                             <i class="bx bx-show me-1"></i>
-                                            {{ __('messages.marketplace.browse_products') }}
+                                            {{ __('marketplace.marketplace.browse_products') }}
                                         </a>
                                         <button class="btn btn-outline-secondary btn-sm"
                                                 onclick="toggleWatchCategory({{ $category->id }})"
-                                                title="{{ __('messages.marketplace.watch_for_new_products') }}">
+                                                title="{{ __('marketplace.marketplace.watch_for_new_products') }}">
                                             <i class="bx bx-bell"></i>
                                         </button>
                                     </div>
@@ -277,11 +277,11 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    {{ __('messages.marketplace.updated') }} {{ $category->updated_at->diffForHumans() }}
+                                    {{ __('marketplace.marketplace.updated') }} {{ $category->updated_at->diffForHumans() }}
                                 </small>
                                 @if($category->is_trending)
                                 <span class="badge bg-success">
-                                    <i class="bx bx-trending-up me-1"></i>{{ __('messages.marketplace.trending') }}
+                                    <i class="bx bx-trending-up me-1"></i>{{ __('marketplace.marketplace.trending') }}
                                 </span>
                                 @endif
                             </div>

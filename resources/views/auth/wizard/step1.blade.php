@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Đăng ký tài khoản - Bước 1')
+@section('title', __('auth.register.step1_title'))
 
 @section('full-width-content')
 <x-registration-wizard
     :current-step="$step"
     :total-steps="$totalSteps"
     :progress="$progress"
-    title="Đăng ký tài khoản MechaMap"
-    subtitle="Bước 1: Thông tin cơ bản"
-    next-button-text="Tiếp tục"
+    title="{{ __('auth.register.wizard_title') }}"
+    subtitle="{{ __('auth.register.step1_subtitle') }}"
+    next-button-text="{{ __('auth.register.continue_button') }}"
     :show-back-button="false"
     form-id="step1Form"
     :session-data="$sessionData">
@@ -21,10 +21,10 @@
         <div class="form-section mb-4">
             <h3 class="section-title">
                 <i class="fas fa-user text-primary me-2"></i>
-                Thông tin cá nhân
+                {{ __('auth.register.personal_info_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
-                Vui lòng nhập thông tin cá nhân chính xác để tạo tài khoản của bạn.
+                {{ __('auth.register.personal_info_description') }}
             </p>
 
             <div class="row">
@@ -32,21 +32,21 @@
                 <div class="col-md-6 mb-3">
                     <label for="name" class="form-label required">
                         <i class="fas fa-user me-1"></i>
-                        Họ và tên
+                        {{ __('auth.full_name_label') }}
                     </label>
                     <input type="text"
                            class="form-control @error('name') is-invalid @enderror"
                            id="name"
                            name="name"
                            value="{{ old('name', $sessionData['name'] ?? '') }}"
-                           placeholder="Nhập họ và tên đầy đủ"
+                           placeholder="{{ __('auth.full_name_placeholder') }}"
                            required
                            autocomplete="name">
                     <div class="invalid-feedback" id="name-error">
                         @error('name'){{ $message }}@enderror
                     </div>
                     <div class="valid-feedback" id="name-success" style="display: none;">
-                        <i class="fas fa-check"></i> Tên hợp lệ
+                        <i class="fas fa-check"></i> {{ __('auth.register.name_valid') }}
                     </div>
                 </div>
 
@@ -54,24 +54,24 @@
                 <div class="col-md-6 mb-3">
                     <label for="username" class="form-label required">
                         <i class="fas fa-at me-1"></i>
-                        Tên đăng nhập
+                        {{ __('auth.username_label') }}
                     </label>
                     <input type="text"
                            class="form-control @error('username') is-invalid @enderror"
                            id="username"
                            name="username"
                            value="{{ old('username', $sessionData['username'] ?? '') }}"
-                           placeholder="Chọn tên đăng nhập duy nhất"
+                           placeholder="{{ __('auth.username_placeholder') }}"
                            required
                            autocomplete="username">
                     <div class="invalid-feedback" id="username-error">
                         @error('username'){{ $message }}@enderror
                     </div>
                     <div class="valid-feedback" id="username-success" style="display: none;">
-                        <i class="fas fa-check"></i> Tên đăng nhập khả dụng
+                        <i class="fas fa-check"></i> {{ __('auth.register.username_available') }}
                     </div>
                     <small class="form-text text-muted">
-                        Tên đăng nhập sẽ được sử dụng trong URL profile của bạn
+                        {{ __('auth.username_help') }}
                     </small>
                 </div>
             </div>
@@ -80,24 +80,24 @@
             <div class="mb-3">
                 <label for="email" class="form-label required">
                     <i class="fas fa-envelope me-1"></i>
-                    Địa chỉ email
+                    {{ __('auth.email_label') }}
                 </label>
                 <input type="email"
                        class="form-control @error('email') is-invalid @enderror"
                        id="email"
                        name="email"
                        value="{{ old('email', $sessionData['email'] ?? '') }}"
-                       placeholder="Nhập địa chỉ email của bạn"
+                       placeholder="{{ __('auth.email_placeholder') }}"
                        required
                        autocomplete="email">
                 <div class="invalid-feedback" id="email-error">
                     @error('email'){{ $message }}@enderror
                 </div>
                 <div class="valid-feedback" id="email-success" style="display: none;">
-                    <i class="fas fa-check"></i> Email hợp lệ
+                    <i class="fas fa-check"></i> {{ __('auth.register.email_valid') }}
                 </div>
                 <small class="form-text text-muted">
-                    Email này sẽ được sử dụng để xác minh tài khoản và nhận thông báo
+                    {{ __('auth.register.email_help') }}
                 </small>
             </div>
 
@@ -106,14 +106,14 @@
                 <div class="col-md-6 mb-3">
                     <label for="password" class="form-label required">
                         <i class="fas fa-lock me-1"></i>
-                        Mật khẩu
+                        {{ __('auth.password_label') }}
                     </label>
                     <div class="input-group">
                         <input type="password"
                                class="form-control @error('password') is-invalid @enderror"
                                id="password"
                                name="password"
-                               placeholder="Tạo mật khẩu mạnh"
+                               placeholder="{{ __('auth.password_placeholder') }}"
                                required
                                autocomplete="new-password">
                         <button class="btn btn-outline-secondary" type="button" id="togglePassword">
@@ -133,7 +133,7 @@
                     </div>
 
                     <small class="form-text text-muted">
-                        Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt
+                        {{ __('auth.password_help') }}
                     </small>
                 </div>
 
@@ -141,13 +141,13 @@
                 <div class="col-md-6 mb-3">
                     <label for="password_confirmation" class="form-label required">
                         <i class="fas fa-lock me-1"></i>
-                        Xác nhận mật khẩu
+                        {{ __('auth.confirm_password_label') }}
                     </label>
                     <input type="password"
                            class="form-control @error('password_confirmation') is-invalid @enderror"
                            id="password_confirmation"
                            name="password_confirmation"
-                           placeholder="Nhập lại mật khẩu"
+                           placeholder="{{ __('auth.confirm_password_placeholder') }}"
                            required
                            autocomplete="new-password">
                     <div class="invalid-feedback" id="password-confirmation-error">
@@ -164,10 +164,10 @@
         <div class="form-section mb-4">
             <h3 class="section-title">
                 <i class="fas fa-user-tag text-primary me-2"></i>
-                Loại tài khoản
+                {{ __('auth.register.account_type_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
-                Chọn loại tài khoản phù hợp với mục đích sử dụng của bạn.
+                {{ __('auth.register.account_type_description') }}
             </p>
 
             {{-- Community Members --}}
@@ -175,10 +175,10 @@
                 <div class="account-type-header">
                     <h4 class="account-group-title">
                         <i class="fas fa-users text-warning me-2"></i>
-                        Thành viên cộng đồng
+                        {{ __('auth.register.community_member_title') }}
                     </h4>
                     <p class="account-group-description">
-                        Dành cho những người muốn tham gia thảo luận và chia sẻ kiến thức
+                        {{ __('auth.register.community_member_description') }}
                     </p>
                 </div>
 
@@ -193,10 +193,10 @@
                                    {{ old('account_type', $sessionData['account_type'] ?? '') == 'member' ? 'checked' : '' }}
                                    required>
                             <label class="form-check-label" for="member">
-                                <strong>Thành viên</strong>
-                                <span class="badge bg-primary ms-2">Khuyến nghị</span>
+                                <strong>{{ __('auth.register.member_role') }}</strong>
+                                <span class="badge bg-primary ms-2">{{ __('auth.register.recommended') }}</span>
                                 <span class="account-description">
-                                    Tham gia thảo luận, chia sẻ kiến thức và kết nối với cộng đồng cơ khí
+                                    {{ __('auth.register.member_role_desc') }}
                                 </span>
                             </label>
                         </div>
@@ -212,9 +212,9 @@
                                    {{ old('account_type', $sessionData['account_type'] ?? '') == 'guest' ? 'checked' : '' }}
                                    required>
                             <label class="form-check-label" for="guest">
-                                <strong>Đối tác cá nhân</strong>
+                                <strong>{{ __('auth.register.guest_role') }}</strong>
                                 <span class="account-description">
-                                    Mua bán sản phẩm kỹ thuật số, xem nội dung cộng đồng
+                                    {{ __('auth.register.guest_role_desc') }}
                                 </span>
                             </label>
                         </div>
@@ -224,7 +224,7 @@
                 <div class="upgrade-notice mt-3">
                     <div class="alert alert-info border-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>Lưu ý:</strong> Bạn có thể được nâng cấp lên <strong>Thành viên cao cấp</strong> sau khi tích cực tham gia cộng đồng và đóng góp chất lượng.
+                        <strong>{{ __('ui.common.note') }}:</strong> {!! __('auth.register.note_community') !!}
                     </div>
                 </div>
             </div>
@@ -234,10 +234,10 @@
                 <div class="account-type-header">
                     <h4 class="account-group-title">
                         <i class="fas fa-building text-primary me-2"></i>
-                        Đối tác kinh doanh
+                        {{ __('auth.register.business_partner_title') }}
                     </h4>
                     <p class="account-group-description">
-                        Dành cho doanh nghiệp và tổ chức hoạt động trong lĩnh vực cơ khí
+                        {{ __('auth.register.business_partner_description') }}
                     </p>
                 </div>
 
@@ -252,9 +252,9 @@
                                    {{ old('account_type', $sessionData['account_type'] ?? '') == 'manufacturer' ? 'checked' : '' }}
                                    required>
                             <label class="form-check-label" for="manufacturer">
-                                <strong>Nhà sản xuất</strong>
+                                <strong>{{ __('auth.register.manufacturer_role') }}</strong>
                                 <span class="account-description">
-                                    Sản xuất và cung cấp sản phẩm, thiết bị cơ khí
+                                    {{ __('auth.register.manufacturer_role_desc') }}
                                 </span>
                             </label>
                         </div>
@@ -270,9 +270,9 @@
                                    {{ old('account_type', $sessionData['account_type'] ?? '') == 'supplier' ? 'checked' : '' }}
                                    required>
                             <label class="form-check-label" for="supplier">
-                                <strong>Nhà cung cấp</strong>
+                                <strong>{{ __('auth.register.supplier_role') }}</strong>
                                 <span class="account-description">
-                                    Phân phối thiết bị, vật tư và linh kiện cơ khí
+                                    {{ __('auth.register.supplier_role_desc') }}
                                 </span>
                             </label>
                         </div>
@@ -288,9 +288,9 @@
                                    {{ old('account_type', $sessionData['account_type'] ?? '') == 'brand' ? 'checked' : '' }}
                                    required>
                             <label class="form-check-label" for="brand">
-                                <strong>Nhãn hàng</strong>
+                                <strong>{{ __('auth.register.brand_role') }}</strong>
                                 <span class="account-description">
-                                    Quảng bá thương hiệu và sản phẩm trong ngành cơ khí
+                                    {{ __('auth.register.brand_role_desc') }}
                                 </span>
                             </label>
                         </div>
@@ -300,7 +300,7 @@
                 <div class="business-notice mt-3">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>Lưu ý:</strong> Tài khoản doanh nghiệp cần cung cấp thông tin công ty và chờ xác minh từ admin. Sau khi xác minh thành công, bạn có thể được nâng cấp lên <strong>Đối tác đã xác thực</strong>.
+                        <strong>{{ __('ui.common.note') }}:</strong> {!! __('auth.register.note_business') !!}
                     </div>
                 </div>
             </div>
@@ -324,13 +324,7 @@
                        {{ old('terms') ? 'checked' : '' }}
                        required>
                 <label class="form-check-label" for="terms">
-                    Tôi đồng ý với
-                    <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#termsModal">
-                        Điều khoản sử dụng
-                    </a> và
-                    <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#privacyModal">
-                        Chính sách bảo mật
-                    </a> của MechaMap
+                    {!! __('auth.register.terms_agreement') !!}
                 </label>
                 @error('terms')
                     <div class="invalid-feedback">

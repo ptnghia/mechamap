@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // Basic forum terms
     'threads' => 'Chủ đề',
     'posts' => 'Bài viết',
     'replies' => 'Trả lời',
@@ -28,6 +29,62 @@ return [
     'created_by' => 'Được tạo bởi',
     'started_by' => 'Bắt đầu bởi',
 
+    // Simple action keys
+    'follow' => 'Theo dõi',
+    'following' => 'Đang theo dõi',
+    'go_to_end' => 'Đến cuối',
+
+    // Thread actions and status
+    'actions' => [
+        'bookmark' => 'Lưu',
+        'bookmarked' => 'Đã lưu',
+        'bookmark_add' => 'Thêm bookmark',
+        'bookmark_remove' => 'Bỏ bookmark',
+        'follow' => 'Theo dõi',
+        'following' => 'Đang theo dõi',
+        'unfollow' => 'Bỏ theo dõi',
+        'follow_thread' => 'Theo dõi thread để nhận thông báo khi có reply mới',
+        'unfollow_thread' => 'Bỏ theo dõi thread này',
+        'login_to_follow' => 'Đăng nhập để theo dõi thread này',
+        'processing' => 'Đang xử lý...',
+        'error_occurred' => 'Có lỗi xảy ra',
+        'request_error' => 'Có lỗi xảy ra khi xử lý yêu cầu',
+        'go_to_end' => 'Đến cuối',
+    ],
+
+    // Thread status
+    'status' => [
+        'pinned' => 'Đã ghim',
+        'locked' => 'Đã khóa',
+        'sticky' => 'Đã ghim',
+    ],
+
+    // Thread creation
+    'create' => [
+        'title' => 'Tạo Chủ Đề Mới',
+        'subtitle' => 'Chia sẻ ý tưởng, thảo luận và kết nối với cộng đồng',
+        'back' => 'Quay Lại',
+        'progress_label' => 'Tiến độ tạo chủ đề',
+        'step_basic' => 'Thông Tin Cơ Bản',
+        'step_content' => 'Nội Dung',
+        'step_poll' => 'Khảo Sát (Tùy Chọn)',
+        'step_review' => 'Xem Lại',
+        'step_basic_aria' => 'Bước 1: Thông tin cơ bản',
+        'step_content_aria' => 'Bước 2: Nội dung',
+        'step_poll_aria' => 'Bước 3: Khảo sát tùy chọn',
+        'step_review_aria' => 'Bước 4: Xem lại và hoàn tất',
+        'previous' => 'Trước',
+        'create_button' => 'Tạo Chủ Đề',
+        'content_placeholder' => 'Viết nội dung chi tiết cho chủ đề của bạn...',
+    ],
+
+    // Thread editing
+    'edit' => [
+        'title' => 'Chỉnh sửa chủ đề',
+        'cancel' => 'Cancel',
+        'update' => 'Update Thread',
+    ],
+
     // Search translations
     'search' => [
         'title' => 'Tìm kiếm',
@@ -47,6 +104,37 @@ return [
         'advanced_search' => 'Tìm kiếm nâng cao',
         'browse_all_threads' => 'Duyệt tất cả chủ đề',
         'back_to_forums' => 'Quay lại diễn đàn',
+
+        // Advanced search
+        'advanced_title' => 'Tìm kiếm nâng cao',
+        'advanced_description' => 'Sử dụng các bộ lọc chi tiết để tìm kiếm chính xác những gì bạn cần',
+        'search_filters' => 'Bộ lọc tìm kiếm',
+        'keywords' => 'Từ khóa',
+        'keywords_placeholder' => 'Nhập từ khóa tìm kiếm...',
+        'author' => 'Tác giả',
+        'author_placeholder' => 'Tên người dùng',
+        'category' => 'Danh mục',
+        'all_categories' => 'Tất cả danh mục',
+        'forum' => 'Diễn đàn',
+        'all_forums' => 'Tất cả diễn đàn',
+        'date_from' => 'Từ ngày',
+        'date_to' => 'Đến ngày',
+        'sort_by' => 'Sắp xếp theo',
+        'sort_direction' => 'Thứ tự',
+        'date' => 'Ngày',
+        'replies' => 'Trả lời',
+        'views' => 'Lượt xem',
+        'relevance' => 'Liên quan',
+        'descending' => 'Giảm dần',
+        'ascending' => 'Tăng dần',
+        'clear_filters' => 'Xóa bộ lọc',
+        'no_results_found_advanced' => 'Không tìm thấy kết quả với bộ lọc hiện tại',
+        'no_results_message_advanced' => 'Hãy thử điều chỉnh bộ lọc tìm kiếm để có kết quả tốt hơn',
+        'quick_filters' => 'Bộ lọc nhanh',
+        'latest_threads' => 'Chủ đề mới nhất',
+        'most_replies' => 'Nhiều trả lời nhất',
+        'most_viewed' => 'Xem nhiều nhất',
+        'this_week' => 'Tuần này',
 
         // Results
         'thread_results' => 'Kết quả chủ đề',
@@ -72,55 +160,144 @@ return [
 
         // Popular categories
         'popular_categories' => 'Danh mục phổ biến',
+    ],
 
-        // Category info
-        'category_info' => 'Thông tin danh mục',
-        'other_categories' => 'Danh mục khác',
-        'forums_count' => 'Diễn đàn',
-        'total_threads' => 'Tổng số chủ đề',
+    // Poll system
+    'poll' => [
+        'closed' => 'Đã đóng',
+        'closes' => 'Đóng',
+        'closes_at' => 'Đóng :time',
+        'vote' => 'Bình chọn',
+        'view_results' => 'Xem kết quả',
+        'total_votes' => 'Tổng số phiếu bầu',
+        'change_vote' => 'Thay đổi phiếu bầu',
+        'update_vote' => 'Cập nhật phiếu bầu',
+        'cancel' => 'Hủy',
+        'loading' => 'Đang tải...',
+        'loading_results' => 'Đang tải kết quả...',
+        'voters' => 'Người bình chọn',
+        'vote_limit_message' => 'Bạn chỉ có thể chọn tối đa :max tùy chọn.',
+        'max_options_exceeded' => 'Bạn chỉ có thể chọn tối đa :max tùy chọn.',
+        'votes' => '{0} phiếu bầu|{1} phiếu bầu|[2,*] phiếu bầu',
+        'vote_singular' => 'phiếu bầu',
+    ],
 
-        // Quick actions
-        'quick_actions' => 'Thao tác nhanh',
-        'all_categories' => 'Tất cả danh mục',
+    // Thread metadata
+    'metadata' => [
+        'views_count' => 'Lượt xem',
+        'replies_count' => 'Phản hồi',
+        'participants_count' => 'Người tham gia',
+        'last_post_by' => 'Bài viết cuối bởi',
+        'posts_count' => 'Bài viết',
+        'comments_count' => 'Bình luận',
+        'joined' => 'Tham gia',
+    ],
 
-        // Available categories
-        'available_categories' => 'Danh mục có sẵn',
-        'forums_in_category' => 'Diễn đàn trong :category',
-
-        // Browse options
-        'browse_all_threads_in_category' => 'Duyệt tất cả chủ đề',
-        'select_category_to_search' => 'Chọn một danh mục để tìm kiếm trong đó',
-
-        // Advanced search
-        'advanced_title' => 'Tìm kiếm nâng cao',
-        'advanced_description' => 'Sử dụng các bộ lọc nâng cao để tìm kiếm chính xác nội dung bạn cần',
-        'search_filters' => 'Bộ lọc tìm kiếm',
-        'keywords' => 'Từ khóa',
-        'keywords_placeholder' => 'Nhập từ khóa tìm kiếm...',
-        'author' => 'Tác giả',
-        'author_placeholder' => 'Tên người dùng...',
-        'category' => 'Danh mục',
-        'all_categories' => 'Tất cả danh mục',
-        'forum' => 'Diễn đàn',
-        'all_forums' => 'Tất cả diễn đàn',
-        'date_from' => 'Từ ngày',
-        'date_to' => 'Đến ngày',
-        'sort_by' => 'Sắp xếp theo',
-        'sort_direction' => 'Thứ tự',
-        'relevance' => 'Độ liên quan',
-        'date' => 'Ngày',
-        'replies' => 'Trả lời',
-        'views' => 'Lượt xem',
-        'ascending' => 'Tăng dần',
-        'descending' => 'Giảm dần',
-        'search_now' => 'Tìm kiếm ngay',
-        'clear_filters' => 'Xóa bộ lọc',
-        'no_results_found_advanced' => 'Không tìm thấy kết quả',
-        'no_results_message_advanced' => 'Không có chủ đề nào phù hợp với tiêu chí tìm kiếm của bạn. Hãy thử điều chỉnh bộ lọc.',
-        'quick_filters' => 'Bộ lọc nhanh',
-        'latest_threads' => 'Chủ đề mới nhất',
+    // Thread sorting and filtering
+    'sort' => [
+        'latest_activity' => 'Hoạt động mới nhất',
+        'oldest_first' => 'Cũ nhất trước',
         'most_replies' => 'Nhiều trả lời nhất',
-        'most_viewed' => 'Xem nhiều nhất',
-        'this_week' => 'Tuần này',
+        'most_views' => 'Xem nhiều nhất',
+    ],
+
+    'filter' => [
+        'all' => 'Tất cả',
+        'recent' => 'Gần đây',
+        'unanswered' => 'Chưa trả lời',
+    ],
+
+    // Thread actions in forums
+    'threads' => [
+        'title' => 'chủ đề',
+        'no_threads_found' => 'Không tìm thấy chủ đề nào',
+        'no_threads_found_desc' => 'Hãy thử điều chỉnh bộ lọc tìm kiếm hoặc từ khóa của bạn',
+        'no_threads_yet' => 'Chưa có chủ đề nào',
+        'be_first_to_post' => 'Hãy là người đầu tiên tạo chủ đề trong diễn đàn này!',
+    ],
+
+    // Forum stats
+    'stats' => [
+        'forums' => 'diễn đàn',
+        'threads' => 'chủ đề',
+        'posts' => 'bài viết',
+        'members' => 'thành viên',
+        'views' => 'lượt xem',
+        'comments' => 'bình luận',
+    ],
+
+    // Forum actions
+    'actions' => [
+        'new_thread' => 'Chủ đề mới',
+        'create_thread' => 'Tạo chủ đề',
+        'create_first_thread' => 'Tạo chủ đề đầu tiên',
+        'view_more' => 'Xem thêm',
+        'clear_filters' => 'Xóa bộ lọc',
+    ],
+
+    // Forum categories
+    'category' => [
+        'forums_in_category' => 'Diễn đàn trong danh mục',
+        'recent_threads' => ':count chủ đề gần đây',
+        'no_threads' => 'Chưa có chủ đề nào trong danh mục này',
+    ],
+
+    // Forum descriptions
+    'description' => 'Khám phá và thảo luận về các chủ đề kỹ thuật cơ khí',
+    'newest_member' => 'Thành viên mới nhất',
+
+    // Forums namespace (for forums.* keys)
+    'forums' => [
+        'description' => 'Khám phá và thảo luận về các chủ đề kỹ thuật cơ khí',
+        'newest_member' => 'Thành viên mới nhất',
+
+        'search' => [
+            'placeholder_main' => 'Tìm kiếm trong diễn đàn...',
+            'description' => 'Tìm kiếm chủ đề, bài viết và thảo luận trong cộng đồng',
+        ],
+
+        'stats' => [
+            'forums' => 'diễn đàn',
+            'threads' => 'chủ đề',
+            'posts' => 'bài viết',
+            'members' => 'thành viên',
+            'views' => 'lượt xem',
+            'comments' => 'bình luận',
+        ],
+
+        'actions' => [
+            'create_thread' => 'Tạo chủ đề',
+            'new_thread' => 'Chủ đề mới',
+            'view_more' => 'Xem thêm',
+            'clear_filters' => 'Xóa bộ lọc',
+            'create_first_thread' => 'Tạo chủ đề đầu tiên',
+        ],
+
+        'category' => [
+            'forums_in_category' => 'Diễn đàn trong danh mục',
+            'recent_threads' => ':count chủ đề gần đây',
+            'no_threads' => 'Chưa có chủ đề nào trong danh mục này',
+        ],
+
+        'threads' => [
+            'title' => 'chủ đề',
+            'no_threads_found' => 'Không tìm thấy chủ đề nào',
+            'no_threads_found_desc' => 'Hãy thử điều chỉnh bộ lọc tìm kiếm hoặc từ khóa của bạn',
+            'no_threads_yet' => 'Chưa có chủ đề nào',
+            'be_first_to_post' => 'Hãy là người đầu tiên tạo chủ đề trong diễn đàn này!',
+        ],
+
+        'sort' => [
+            'latest_activity' => 'Hoạt động mới nhất',
+            'oldest_first' => 'Cũ nhất trước',
+            'most_replies' => 'Nhiều trả lời nhất',
+            'most_views' => 'Xem nhiều nhất',
+        ],
+
+        'filter' => [
+            'all' => 'Tất cả',
+            'recent' => 'Gần đây',
+            'unanswered' => 'Chưa trả lời',
+        ],
     ],
 ];

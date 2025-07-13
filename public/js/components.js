@@ -139,17 +139,17 @@ class ThreadItemBuilder {
             <form method="POST" action="/threads/${thread.id}/bookmark" style="display: inline;" class="bookmark-form">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
-                <button type="submit" class="btn btn-sm btn-primary" title="Bỏ bookmark">
+                <button type="submit" class="btn btn-sm btn-primary" title="Remove bookmark">
                     <i class="bi bi-bookmark-fill"></i>
-                    <span class="d-none d-md-inline ms-1">Đã lưu</span>
+                    <span class="d-none d-md-inline ms-1">Bookmarked</span>
                 </button>
             </form>` : `
             <!-- Add bookmark form -->
             <form method="POST" action="/threads/${thread.id}/bookmark" style="display: inline;" class="bookmark-form">
                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
-                <button type="submit" class="btn btn-sm btn-outline-primary" title="Thêm bookmark">
+                <button type="submit" class="btn btn-sm btn-outline-primary" title="Add bookmark">
                     <i class="bi bi-bookmark"></i>
-                    <span class="d-none d-md-inline ms-1">Lưu</span>
+                    <span class="d-none d-md-inline ms-1">Bookmark</span>
                 </button>
             </form>`}
 
@@ -158,17 +158,17 @@ class ThreadItemBuilder {
             <form method="POST" action="/threads/${thread.id}/follow" style="display: inline;" class="follow-form">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
-                <button type="submit" class="btn btn-sm btn-success" title="Bỏ theo dõi">
+                <button type="submit" class="btn btn-sm btn-success" title="Unfollow">
                     <i class="bi bi-bell-fill"></i>
-                    <span class="d-none d-md-inline ms-1">Đang theo dõi</span>
+                    <span class="d-none d-md-inline ms-1">Following</span>
                 </button>
             </form>` : `
             <!-- Follow form -->
             <form method="POST" action="/threads/${thread.id}/follow" style="display: inline;" class="follow-form">
                 <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]')?.content || ''}">
-                <button type="submit" class="btn btn-sm btn-outline-success" title="Theo dõi">
+                <button type="submit" class="btn btn-sm btn-outline-success" title="Follow">
                     <i class="bi bi-bell"></i>
-                    <span class="d-none d-md-inline ms-1">Theo dõi</span>
+                    <span class="d-none d-md-inline ms-1">Follow</span>
                 </button>
             </form>`}
         </div>`;

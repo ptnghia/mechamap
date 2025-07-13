@@ -61,12 +61,33 @@ return [
     'try_different_filters' => 'Thử thay đổi bộ lọc tìm kiếm hoặc tạo dự án mới.',
 
     // Complexity levels
+    'complexity_levels' => [
+        'beginner' => 'Người mới',
+        'intermediate' => 'Trung bình',
+        'advanced' => 'Nâng cao',
+        'expert' => 'Chuyên gia',
+    ],
+
+    // Features
+    'features' => [
+        'cad' => 'CAD',
+        'download' => 'Tải xuống',
+        'simulation' => 'Mô phỏng',
+        'analysis' => 'Phân tích',
+    ],
+
+    // Categories
+    'categories' => [
+        'design' => 'Thiết kế',
+        'manufacturing' => 'Sản xuất',
+        'analysis' => 'Phân tích',
+    ],
+
+    // Legacy keys for backward compatibility
     'beginner' => 'Người mới',
     'intermediate' => 'Trung bình',
     'advanced' => 'Nâng cao',
     'expert' => 'Chuyên gia',
-
-    // Categories
     'design' => 'Thiết kế',
     'manufacturing' => 'Sản xuất',
     'analysis' => 'Phân tích',
@@ -74,4 +95,9 @@ return [
     // Project types
     'design_type' => 'Thiết kế',
     'manufacturing_type' => 'Sản xuất',
+
+    // Additional keys for migration
+    'new' => 'Showcase mới',
+    'related' => 'Showcase liên quan',
+    'for_thread' => 'Showcase cho chủ đề',
 ];

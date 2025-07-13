@@ -28,7 +28,7 @@ return [
     'clear' => 'Clear',
     'refresh' => 'Refresh',
     'reload' => 'Reload',
-    
+
     // Navigation
     'home' => 'Home',
     'dashboard' => 'Dashboard',
@@ -40,7 +40,7 @@ return [
     'sign_in' => 'Sign In',
     'sign_up' => 'Sign Up',
     'sign_out' => 'Sign Out',
-    
+
     // Content Actions
     'view' => 'View',
     'view_all' => 'View All',
@@ -56,7 +56,7 @@ return [
     'deselect_all' => 'Deselect All',
     'check_all' => 'Check All',
     'uncheck_all' => 'Uncheck All',
-    
+
     // File Operations
     'upload' => 'Upload',
     'download' => 'Download',
@@ -66,7 +66,7 @@ return [
     'choose_file' => 'Choose File',
     'attach' => 'Attach',
     'detach' => 'Detach',
-    
+
     // Search & Filter
     'search' => 'Search',
     'filter' => 'Filter',
@@ -75,7 +75,7 @@ return [
     'sort_desc' => 'Sort Descending',
     'clear_filters' => 'Clear Filters',
     'advanced_search' => 'Advanced Search',
-    
+
     // Communication
     'reply' => 'Reply',
     'comment' => 'Comment',
@@ -91,7 +91,7 @@ return [
     'report' => 'Report',
     'block' => 'Block',
     'unblock' => 'Unblock',
-    
+
     // Status Actions
     'publish' => 'Publish',
     'unpublish' => 'Unpublish',
@@ -105,7 +105,7 @@ return [
     'approve' => 'Approve',
     'reject' => 'Reject',
     'pending' => 'Pending',
-    
+
     // Marketplace
     'buy_now' => 'Buy Now',
     'add_to_cart' => 'Add to Cart',
@@ -116,7 +116,7 @@ return [
     'contact_seller' => 'Contact Seller',
     'compare' => 'Compare',
     'wishlist' => 'Wishlist',
-    
+
     // Help & Support
     'help' => 'Help',
     'support' => 'Support',
@@ -126,4 +126,5 @@ return [
     'tutorial' => 'Tutorial',
     'documentation' => 'Documentation',
     'faq' => 'FAQ',
+    'view_details' => 'View Details',
 ];

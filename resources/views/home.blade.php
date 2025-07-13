@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('messages.nav.home'))
+@section('title', __('nav.main.home'))
 
 @push('styles')
 <!-- Swiper CSS -->
@@ -52,7 +52,7 @@
         @endforeach
     </div>
     <div class="text-center">
-        <button id="load-more-threads" class="btn btn-outline-primary">{{ __('messages.common.load_more') }}</button>
+        <button id="load-more-threads" class="btn btn-outline-primary">{{ __('ui.pagination.load_more') }}</button>
     </div>
 </div>
 @endsection

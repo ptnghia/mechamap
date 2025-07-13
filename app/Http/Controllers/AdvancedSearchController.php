@@ -9,6 +9,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use App\Models\Thread;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\SearchLog;
 
 /**
  * Advanced Search Controller
@@ -524,6 +530,347 @@ class AdvancedSearchController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Search tracking error: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Basic search interface (merged from SearchController)
+     */
+    public function basic(Request $request): View
+    {
+        $startTime = microtime(true);
+        $query = $request->input('query');
+        $type = $request->input('type', 'all');
+
+        $threads = collect();
+        $posts = collect();
+        $users = collect();
+        $totalResults = 0;
+
+        if ($query) {
+            // Try Elasticsearch first, fallback to database
+            try {
+                if ($this->searchService->isAvailable()) {
+                    $searchResults = $this->searchService->search($query, ['type' => $type], [
+                        'per_page' => 30,
+                        'include_highlights' => true
+                    ]);
+
+                    // Convert Elasticsearch results to basic format
+                    $threads = collect($searchResults['results']['threads'] ?? []);
+                    $posts = collect($searchResults['results']['posts'] ?? []);
+                    $users = collect($searchResults['results']['users'] ?? []);
+                    $totalResults = $searchResults['meta']['total'] ?? 0;
+                } else {
+                    throw new \Exception('Elasticsearch not available');
+                }
+            } catch (\Exception $e) {
+                // Fallback to database search
+                $results = $this->fallbackBasicSearch($query, $type);
+                $threads = $results['threads'];
+                $posts = $results['posts'];
+                $users = $results['users'];
+                $totalResults = $results['total'];
+            }
+
+            // Log search activity
+            $this->logSearch($query, $request, $totalResults, $startTime, [
+                'search_type' => $type,
+                'content_type' => 'basic',
+                'method' => 'basic_search'
+            ]);
+        }
+
+        return view('search.basic', compact('query', 'type', 'threads', 'posts', 'users', 'totalResults'));
+    }
+
+    /**
+     * AJAX search (merged from SearchController)
+     */
+    public function ajaxSearch(Request $request): JsonResponse
+    {
+        $startTime = microtime(true);
+        $query = $request->input('query');
+        $scope = $request->input('scope', 'global');
+        $threadId = $request->input('thread_id');
+        $forumId = $request->input('forum_id');
+
+        $results = [];
+        $totalResults = 0;
+
+        if ($query && strlen($query) >= 2) {
+            try {
+                if ($this->searchService->isAvailable()) {
+                    // Use Elasticsearch for AJAX search
+                    $filters = [];
+                    if ($scope === 'thread' && $threadId) {
+                        $filters['thread_id'] = $threadId;
+                    } elseif ($scope === 'forum' && $forumId) {
+                        $filters['forum_id'] = $forumId;
+                    }
+
+                    $searchResults = $this->searchService->search($query, $filters, [
+                        'per_page' => 10,
+                        'include_highlights' => true
+                    ]);
+
+                    $results = $this->formatAjaxResults($searchResults['results']);
+                    $totalResults = $searchResults['meta']['total'] ?? 0;
+                } else {
+                    throw new \Exception('Elasticsearch not available');
+                }
+            } catch (\Exception $e) {
+                // Fallback to database AJAX search
+                $results = $this->fallbackAjaxSearch($query, $scope, $threadId, $forumId);
+                $totalResults = collect($results)->flatten(1)->count();
+            }
+
+            // Log AJAX search
+            $this->logSearch($query, $request, $totalResults, $startTime, [
+                'search_type' => 'ajax',
+                'content_type' => 'ajax',
+                'scope' => $scope,
+                'thread_id' => $threadId,
+                'forum_id' => $forumId
+            ]);
+        }
+
+        return response()->json([
+            'results' => $results,
+            'total' => $totalResults,
+            'advanced_search_url' => route('search.advanced')
+        ]);
+    }
+
+    /**
+     * Fallback basic search using database
+     */
+    private function fallbackBasicSearch(string $query, string $type): array
+    {
+        $threads = collect();
+        $posts = collect();
+        $users = collect();
+
+        // Search threads
+        if ($type == 'all' || $type == 'threads') {
+            $threads = Thread::where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%")
+                ->with(['user', 'forum'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search posts
+        if ($type == 'all' || $type == 'posts') {
+            $posts = Post::where('content', 'like', "%{$query}%")
+                ->with(['user', 'thread'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search users
+        if ($type == 'all' || $type == 'users') {
+            $users = User::where('name', 'like', "%{$query}%")
+                ->orWhere('username', 'like', "%{$query}%")
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        return [
+            'threads' => $threads,
+            'posts' => $posts,
+            'users' => $users,
+            'total' => $threads->count() + $posts->count() + $users->count()
+        ];
+    }
+
+    /**
+     * Fallback AJAX search using database
+     */
+    private function fallbackAjaxSearch(string $query, string $scope, $threadId = null, $forumId = null): array
+    {
+        $results = [];
+
+        if ($scope === 'thread' && $threadId) {
+            // Search within specific thread
+            $posts = Post::where('thread_id', $threadId)
+                ->where('content', 'like', "%{$query}%")
+                ->with(['user'])
+                ->take(5)
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        'id' => $post->id,
+                        'content' => Str::limit(strip_tags($post->content), 100),
+                        'user' => [
+                            'name' => $post->user->name,
+                            'username' => $post->user->username
+                        ],
+                        'url' => route('threads.show', $post->thread_id) . '#post-' . $post->id
+                    ];
+                });
+            $results['posts'] = $posts;
+
+        } elseif ($scope === 'forum' && $forumId) {
+            // Search within specific forum
+            $threads = Thread::where('forum_id', $forumId)
+                ->where(function ($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                        ->orWhere('content', 'like', "%{$query}%");
+                })
+                ->with(['user'])
+                ->take(5)
+                ->get()
+                ->map(function ($thread) {
+                    return [
+                        'id' => $thread->id,
+                        'title' => $thread->title,
+                        'content' => Str::limit(strip_tags($thread->content), 100),
+                        'user' => [
+                            'name' => $thread->user->name,
+                            'username' => $thread->user->username
+                        ],
+                        'url' => route('threads.show', $thread)
+                    ];
+                });
+            $results['threads'] = $threads;
+
+        } else {
+            // Global search
+            $threads = Thread::where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%")
+                ->with(['user', 'forum'])
+                ->take(5)
+                ->get()
+                ->map(function ($thread) {
+                    return [
+                        'id' => $thread->id,
+                        'title' => $thread->title,
+                        'content' => Str::limit(strip_tags($thread->content), 100),
+                        'user' => [
+                            'name' => $thread->user->name,
+                            'username' => $thread->user->username
+                        ],
+                        'forum' => [
+                            'name' => $thread->forum->name,
+                            'url' => route('forums.show', $thread->forum)
+                        ],
+                        'url' => route('threads.show', $thread)
+                    ];
+                });
+
+            $posts = Post::where('content', 'like', "%{$query}%")
+                ->with(['user', 'thread'])
+                ->take(5)
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        'id' => $post->id,
+                        'content' => Str::limit(strip_tags($post->content), 100),
+                        'user' => [
+                            'name' => $post->user->name,
+                            'username' => $post->user->username
+                        ],
+                        'thread' => [
+                            'title' => $post->thread->title,
+                            'url' => route('threads.show', $post->thread)
+                        ],
+                        'url' => route('threads.show', $post->thread_id) . '#post-' . $post->id
+                    ];
+                });
+
+            $results['threads'] = $threads;
+            $results['posts'] = $posts;
+        }
+
+        return $results;
+    }
+
+    /**
+     * Format Elasticsearch results for AJAX response
+     */
+    private function formatAjaxResults(array $results): array
+    {
+        $formatted = [];
+
+        if (isset($results['threads'])) {
+            $formatted['threads'] = collect($results['threads'])->map(function ($thread) {
+                return [
+                    'id' => $thread['id'],
+                    'title' => $thread['title'],
+                    'content' => Str::limit(strip_tags($thread['content'] ?? ''), 100),
+                    'user' => [
+                        'name' => $thread['user_name'],
+                        'username' => $thread['user_name'] // Assuming username same as name for now
+                    ],
+                    'forum' => [
+                        'name' => $thread['forum_name'],
+                        'url' => '#' // Will be populated by frontend
+                    ],
+                    'url' => route('threads.show', $thread['id'])
+                ];
+            });
+        }
+
+        if (isset($results['posts'])) {
+            $formatted['posts'] = collect($results['posts'])->map(function ($post) {
+                return [
+                    'id' => $post['id'],
+                    'content' => Str::limit(strip_tags($post['content'] ?? ''), 100),
+                    'user' => [
+                        'name' => $post['user_name'],
+                        'username' => $post['user_name']
+                    ],
+                    'thread' => [
+                        'title' => $post['thread_title'] ?? '',
+                        'url' => route('threads.show', $post['thread_id'] ?? 0)
+                    ],
+                    'url' => route('threads.show', $post['thread_id'] ?? 0) . '#post-' . $post['id']
+                ];
+            });
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * Enhanced search logging (merged from SearchController)
+     */
+    private function logSearch(
+        string $query,
+        Request $request,
+        int $resultsCount,
+        float $startTime,
+        array $filters = []
+    ): void {
+        try {
+            $responseTime = round((microtime(true) - $startTime) * 1000);
+
+            SearchLog::create([
+                'query' => $query,
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'results_count' => $resultsCount,
+                'response_time_ms' => $responseTime,
+                'filters' => $filters,
+                'content_type' => $filters['content_type'] ?? 'advanced',
+                'search_method' => $filters['method'] ?? 'elasticsearch',
+                'created_at' => now()
+            ]);
+
+            // Track search for analytics
+            $this->trackSearch($query, $request);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to log search activity: ' . $e->getMessage(), [
+                'query' => $query,
+                'user_id' => Auth::check() ? Auth::id() : null,
+                'results_count' => $resultsCount
+            ]);
         }
     }
 }

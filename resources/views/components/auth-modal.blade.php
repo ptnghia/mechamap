@@ -25,8 +25,8 @@ $sizeClass = [
             <div class="modal-body px-4 pt-0 pb-4">
                 <!-- Modal Title -->
                 <div class="text-center mb-4">
-                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('messages.login') }}</h4>
-                    <p class="text-muted mb-0">{{ __('messages.welcome_back') }}</p>
+                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('nav.auth.login') }}</h4>
+                    <p class="text-muted mb-0">{{ __('auth.login.welcome_back') }}</p>
                 </div>
 
                 <!-- Login Content -->
@@ -39,7 +39,7 @@ $sizeClass = [
                                     <span class="input-group-text bg-light border-0" style="color: #6c757d;">
                                         <i class="fas fa-user"></i>
                                     </span>
-                                    <input type="text" class="form-control border-0 bg-light" id="loginEmail" name="login" placeholder="{{ __('messages.email_or_username') }}" required style="padding: 12px;">
+                                    <input type="text" class="form-control border-0 bg-light" id="loginEmail" name="login" placeholder="{{ __('auth.login.email_or_username') }}" required style="padding: 12px;">
                                 </div>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -48,7 +48,7 @@ $sizeClass = [
                                     <span class="input-group-text bg-light border-0" style="color: #6c757d;">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control border-0 bg-light" id="loginPassword" name="password" placeholder="{{ __('messages.password') }}" required style="padding: 12px;">
+                                    <input type="password" class="form-control border-0 bg-light" id="loginPassword" name="password" placeholder="{{ __('ui.common.password') }}" required style="padding: 12px;">
                                     <button class="btn bg-light border-0" type="button" onclick="togglePassword('loginPassword')" style="color: #6c757d;">
                                         <i class="fas fa-eye" id="loginPasswordIcon"></i>
                                     </button>
@@ -58,52 +58,52 @@ $sizeClass = [
                             <div class="mb-3 d-flex justify-content-between align-items-center">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
-                                    <label class="form-check-label text-muted" for="rememberMe">{{ __('messages.remember_login') }}</label>
+                                    <label class="form-check-label text-muted" for="rememberMe">{{ __('auth.login.remember') }}</label>
                                 </div>
-                                <a href="#" class="text-decoration-none" style="color: #8B7355; font-size: 14px;" onclick="switchToForgot()">{{ __('messages.forgot_password') }}?</a>
+                                <a href="#" class="text-decoration-none" style="color: #8B7355; font-size: 14px;" onclick="switchToForgot()">{{ __('ui.common.forgot_password') }}?</a>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
                                     <label class="form-check-label text-muted" for="rememberMe" style="font-size: 14px;">
-                                        {{ __('messages.remember_me') }}
+                                        {{ __('auth.login.remember') }}
                                     </label>
                                 </div>
                                 <button type="button" class="btn btn-link p-0 text-muted" onclick="switchToForgotPassword()" style="text-decoration: none; font-size: 14px;">
-                                    {{ __('messages.forgot_password') }}
+                                    {{ __('ui.common.forgot_password') }}
                                 </button>
                             </div>
                             <div class="d-grid mb-4">
                                 <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                                    {{ __('messages.login') }}
+                                    {{ __('nav.auth.login') }}
                                 </button>
                             </div>
                         </form>
 
                         <!-- Divider -->
                         <div class="text-center mb-4">
-                            <small class="text-muted">{{ __('messages.or_login_with') }}</small>
+                            <small class="text-muted">{{ __('auth.login.or_login_with') }}</small>
                         </div>
 
                         <!-- Social Login -->
                         <div class="row g-2 mb-4">
                             <div class="col-6">
                                 <button type="button" class="btn btn-outline-secondary w-100 py-2" style="border-radius: 8px;">
-                                    <i class="fab fa-google me-2"></i>{{ __('messages.login_with_google') }}
+                                    <i class="fab fa-google me-2"></i>{{ __('auth.login.login_with_google') }}
                                 </button>
                             </div>
                             <div class="col-6">
                                 <button type="button" class="btn btn-outline-secondary w-100 py-2" style="border-radius: 8px;">
-                                    <i class="fab fa-facebook-f me-2"></i>{{ __('messages.login_with_facebook') }}
+                                    <i class="fab fa-facebook-f me-2"></i>{{ __('auth.login.login_with_facebook') }}
                                 </button>
                             </div>
                         </div>
 
                         <!-- Registration Link -->
                         <div class="text-center">
-                            <p class="text-muted mb-2">{{ __('messages.dont_have_account') }}</p>
+                            <p class="text-muted mb-2">{{ __('auth.login.dont_have_account') }}</p>
                             <a href="/register" class="btn btn-outline-primary w-100 py-2" style="border-radius: 8px; border-color: #8B7355; color: #8B7355;">
-                                <i class="fas fa-user-plus me-2"></i>{{ __('messages.create_business_account') }}
+                                <i class="fas fa-user-plus me-2"></i>{{ __('auth.register.create_business_account') }}
                             </a>
                         </div>
                     </div>
@@ -113,26 +113,26 @@ $sizeClass = [
                         <form id="forgotForm" method="POST" action="{{ route('password.email') }}">
                             @csrf
                             <div class="text-center mb-4">
-                                <h5 class="mb-3" style="color: #8B7355;">{{ __('messages.forgot_password') }}</h5>
-                                <p class="text-muted">{{ __('messages.forgot_password_description') }}</p>
+                                <h5 class="mb-3" style="color: #8B7355;">{{ __('ui.common.forgot_password') }}</h5>
+                                <p class="text-muted">{{ __('auth.password.forgot_description') }}</p>
                             </div>
                             <div class="mb-3">
                                 <div class="input-group" style="border-radius: 8px; overflow: hidden;">
                                     <span class="input-group-text bg-light border-0" style="color: #6c757d;">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control border-0 bg-light" id="forgotEmail" name="email" placeholder="{{ __('messages.email') }}" required style="padding: 12px;">
+                                    <input type="email" class="form-control border-0 bg-light" id="forgotEmail" name="email" placeholder="{{ __('ui.common.email') }}" required style="padding: 12px;">
                                 </div>
                                 <div class="invalid-feedback"></div>
                             </div>
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                                    {{ __('messages.send_reset_link') }}
+                                    {{ __('auth.password.send_reset_link') }}
                                 </button>
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-link text-muted" onclick="switchToLogin()" style="text-decoration: none; font-size: 14px;">
-                                    <i class="fas fa-arrow-left me-1"></i>{{ __('messages.back_to_login') }}
+                                    <i class="fas fa-arrow-left me-1"></i>{{ __('auth.login.back_to_login') }}
                                 </button>
                             </div>
                         </form>
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("messages.login") }}';
+            modalTitle.textContent = '{{ __("nav.auth.login") }}';
         }
     };
 
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("messages.login") }}';
+            modalTitle.textContent = '{{ __("nav.auth.login") }}';
         }
     };
 

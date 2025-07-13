@@ -46,7 +46,7 @@
                     </select>
                 </div>
                 <div class="col-md-8">
-                    <label for="search" class="form-label">{{ __('Tìm kiếm') }}</label>
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tên file, tiêu đề, mô tả...') }}">
                 </div>
                 <div class="col-12">

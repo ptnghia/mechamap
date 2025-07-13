@@ -123,7 +123,7 @@ class RegisterWizardController extends Controller
         $sessionData = $this->wizardService->getSessionData($sessionId);
 
         // Verify step 1 is completed
-        if (!$sessionData['step_1_completed'] ?? false) {
+        if (!($sessionData['step_1_completed'] ?? false)) {
             return redirect()->route('register.wizard.step1')
                 ->with('error', 'Vui lòng hoàn thành bước 1 trước.');
         }

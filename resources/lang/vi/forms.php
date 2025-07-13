@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Form Labels
     'labels' => [
         'name' => 'Họ tên',
         'email' => 'Email',
@@ -32,8 +31,6 @@ return [
         'filter' => 'Lọc',
         'sort' => 'Sắp xếp',
     ],
-    
-    // Form Placeholders
     'placeholders' => [
         'enter_name' => 'Nhập họ tên',
         'enter_email' => 'Nhập địa chỉ email',
@@ -50,8 +47,6 @@ return [
         'enter_comment' => 'Nhập bình luận của bạn...',
         'enter_message' => 'Nhập tin nhắn của bạn...',
     ],
-    
-    // Form Validation Messages
     'validation' => [
         'required' => 'Trường này là bắt buộc',
         'email' => 'Email không hợp lệ',
@@ -67,8 +62,6 @@ return [
         'date' => 'Ngày không hợp lệ',
         'password_strength' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số',
     ],
-    
-    // Form Help Text
     'help' => [
         'password_requirements' => 'Mật khẩu phải có ít nhất 8 ký tự',
         'username_requirements' => 'Tên đăng nhập chỉ chứa chữ cái, số và dấu gạch dưới',
@@ -79,8 +72,6 @@ return [
         'image_upload' => 'Chọn hình ảnh (JPG, PNG, GIF)',
         'max_file_size' => 'Kích thước tối đa: :size MB',
     ],
-    
-    // Form States
     'states' => [
         'loading' => 'Đang tải...',
         'saving' => 'Đang lưu...',
@@ -92,8 +83,6 @@ return [
         'processing' => 'Đang xử lý...',
         'completed' => 'Hoàn thành',
     ],
-    
-    // Form Actions
     'actions' => [
         'submit' => 'Gửi',
         'save' => 'Lưu',

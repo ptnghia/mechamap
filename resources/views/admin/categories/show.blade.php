@@ -122,7 +122,7 @@
                                 <tr>
                                     <th>{{ __('Tiêu đề') }}</th>
                                     <th>{{ __('Tác giả') }}</th>
-                                    <th>{{ __('Diễn đàn') }}</th>
+                                    <th>{{ __(__('forum.forums.title')) }}</th>
                                     <th>{{ __('Trạng thái') }}</th>
                                     <th>{{ __('Ngày tạo') }}</th>
                                     <th>{{ __('Thao tác') }}</th>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tạo Chủ Đề Mới')
+@section('title', __('forum.create.title'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
@@ -14,40 +14,40 @@
         <div>
             <h1 class="page-title mb-2">
                 <i class="fas fa-plus-circle"></i>
-                Tạo Chủ Đề Mới
+                {{ __('forum.create.title') }}
             </h1>
-            <p class="page-subtitle text-muted mb-0">Chia sẻ ý tưởng, thảo luận và kết nối với cộng đồng</p>
+            <p class="page-subtitle text-muted mb-0">{{ __('forum.create.subtitle') }}</p>
         </div>
         <div>
             <a href="{{ url()->previous() }}" class="btn btn-secondary btn-modern">
                 <i class="fas fa-arrow-left"></i>
-                <span>Quay Lại</span>
+                <span>{{ __('forum.create.back') }}</span>
             </a>
         </div>
     </div>
 </div>
 
 <!-- Progress Indicator với accessibility cải thiện -->
-<div class="progress-container" role="progressbar" aria-label="Tiến độ tạo chủ đề" aria-valuemin="0" aria-valuemax="4"
+<div class="progress-container" role="progressbar" aria-label="{{ __('forum.create.progress_label') }}" aria-valuemin="0" aria-valuemax="4"
     aria-valuenow="1">
     <div class="progress-steps">
         <div class="progress-line" id="progress-line"></div>
         <button type="button" class="step-item active" data-step="basic" aria-current="step"
-            aria-label="Bước 1: Thông tin cơ bản">
+            aria-label="{{ __('forum.create.step_basic_aria') }}">
             <div class="step-number">1</div>
-            <div class="step-text">Thông Tin Cơ Bản</div>
+            <div class="step-text">{{ __('forum.create.step_basic') }}</div>
         </button>
-        <button type="button" class="step-item" data-step="content" aria-label="Bước 2: Nội dung" disabled>
+        <button type="button" class="step-item" data-step="content" aria-label="{{ __('forum.create.step_content_aria') }}" disabled>
             <div class="step-number">2</div>
-            <div class="step-text">Nội Dung</div>
+            <div class="step-text">{{ __('forum.create.step_content') }}</div>
         </button>
-        <button type="button" class="step-item" data-step="poll" aria-label="Bước 3: Khảo sát tùy chọn" disabled>
+        <button type="button" class="step-item" data-step="poll" aria-label="{{ __('forum.create.step_poll_aria') }}" disabled>
             <div class="step-number">3</div>
-            <div class="step-text">Khảo Sát (Tùy Chọn)</div>
+            <div class="step-text">{{ __('forum.create.step_poll') }}</div>
         </button>
-        <button type="button" class="step-item" data-step="review" aria-label="Bước 4: Xem lại và hoàn tất" disabled>
+        <button type="button" class="step-item" data-step="review" aria-label="{{ __('forum.create.step_review_aria') }}" disabled>
             <div class="step-number">4</div>
-            <div class="step-text">Xem Lại</div>
+            <div class="step-text">{{ __('forum.create.step_review') }}</div>
         </button>
     </div>
 </div>
@@ -502,11 +502,11 @@
         <div class="final-submit">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
                 <i class="chevron-left"></i>
-                <span>Trước</span>
+                <span>{{ __('forum.create.previous') }}</span>
             </button>
             <button type="submit" class="btn btn-success btn-modern btn-submit">
                 <i class="fas fa-check-circle"></i>
-                <span>Tạo Chủ Đề</span>
+                <span>{{ __('forum.create.create_button') }}</span>
             </button>
         </div>
     </div>
@@ -603,7 +603,7 @@ function initializeEditor() {
                     ]
                 },
                 language: 'vi',
-                placeholder: 'Viết nội dung chi tiết cho chủ đề của bạn...',
+                placeholder: '{{ __('forum.create.content_placeholder') }}',
                 image: {
                     toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
                 },

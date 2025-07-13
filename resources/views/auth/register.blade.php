@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('auth.register'))
+@section('title', __('auth.register.title'))
 
 @section('content')
 <x-auth-layout
@@ -29,67 +29,67 @@
         <!-- Name -->
         <div class="mb-3">
             <label for="name" class="form-label">
-                <i class="fas fa-user me-2"></i>Họ và tên
+                <i class="fas fa-user me-2"></i>{{ __('auth.full_name_label') }}
             </label>
             <input id="name" type="text" name="name" value="{{ old('name') }}"
                    class="form-control @error('name') is-invalid @enderror"
                    required autofocus autocomplete="name"
-                   placeholder="Nhập họ và tên đầy đủ của bạn">
+                   placeholder="{{ __('auth.full_name_placeholder') }}">
             @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 
         <!-- Username -->
         <div class="mb-3">
             <label for="username" class="form-label">
-                <i class="fas fa-at me-2"></i>Tên đăng nhập
+                <i class="fas fa-at me-2"></i>{{ __('auth.username_label') }}
             </label>
             <input id="username" type="text" name="username" value="{{ old('username') }}"
                    class="form-control @error('username') is-invalid @enderror"
                    required autocomplete="username"
-                   placeholder="Chọn tên đăng nhập duy nhất">
+                   placeholder="{{ __('auth.username_placeholder') }}">
             @error('username')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            <small class="form-text text-muted">Tên đăng nhập sẽ được sử dụng trong URL profile của bạn</small>
+            <small class="form-text text-muted">{{ __('auth.username_help') }}</small>
         </div>
 
         <!-- Email Address -->
         <div class="mb-3">
             <label for="email" class="form-label">
-                <i class="fas fa-envelope me-2"></i>Email
+                <i class="fas fa-envelope me-2"></i>{{ __('auth.email_label') }}
             </label>
             <input id="email" type="email" name="email" value="{{ old('email') }}"
                    class="form-control @error('email') is-invalid @enderror"
                    required autocomplete="email"
-                   placeholder="Nhập địa chỉ email của bạn">
+                   placeholder="{{ __('auth.email_placeholder') }}">
             @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 
         <!-- Password -->
         <div class="mb-3">
             <label for="password" class="form-label">
-                <i class="fas fa-lock me-2"></i>Mật khẩu
+                <i class="fas fa-lock me-2"></i>{{ __('auth.password_label') }}
             </label>
             <div class="input-group">
                 <input id="password" type="password" name="password"
                        class="form-control @error('password') is-invalid @enderror"
                        required autocomplete="new-password"
-                       placeholder="Tạo mật khẩu mạnh">
+                       placeholder="{{ __('auth.password_placeholder') }}">
                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                     <i class="fas fa-eye"></i>
                 </button>
                 @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            <small class="form-text text-muted">Sử dụng ít nhất 8 ký tự với chữ cái, số và ký hiệu</small>
+            <small class="form-text text-muted">{{ __('auth.password_help') }}</small>
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-3">
             <label for="password_confirmation" class="form-label">
-                <i class="fas fa-lock me-2"></i>Xác nhận mật khẩu
+                <i class="fas fa-lock me-2"></i>{{ __('auth.confirm_password_label') }}
             </label>
             <input id="password_confirmation" type="password" name="password_confirmation"
                    class="form-control @error('password_confirmation') is-invalid @enderror"
                    required autocomplete="new-password"
-                   placeholder="Nhập lại mật khẩu">
+                   placeholder="{{ __('auth.confirm_password_placeholder') }}">
             @error('password_confirmation')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
 

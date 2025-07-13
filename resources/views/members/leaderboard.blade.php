@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('messages.members.leaderboard_title'))
+@section('title', __('ui.common.members.leaderboard_title'))
 
 @section('content')
 <div class="container-fluid py-4">
@@ -10,9 +10,9 @@
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
                         <i class="fas fa-trophy me-2"></i>
-                        {{ __('messages.members.leaderboard_title') }}
+                        {{ __('ui.common.members.leaderboard_title') }}
                     </h4>
-                    <p class="mb-0 mt-2 opacity-75">{{ __('messages.members.leaderboard_description') }}</p>
+                    <p class="mb-0 mt-2 opacity-75">{{ __('ui.common.members.leaderboard_description') }}</p>
                 </div>
                 <div class="card-body">
                     <div class="row">
