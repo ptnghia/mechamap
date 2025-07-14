@@ -479,7 +479,7 @@ Route::get('/new', [NewContentController::class, 'index'])->name('new');
 Route::middleware('forum.cache')->group(function () {
     Route::get('/forums', [\App\Http\Controllers\CategoryController::class, 'index'])->name('forums.index');
 
-    // Forum search routes - RESTORED (using existing controllers & views)
+    // Forum search routes - Keep forum advanced search as primary (most complete UI)
     Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
     Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch'])->name('forums.search.advanced');
     Route::get('/forums/search/categories', [ForumController::class, 'searchByCategory'])->name('forums.search.categories');
@@ -588,7 +588,17 @@ Route::prefix('search')->name('search.')->group(function () {
     // Main search interfaces
     Route::get('/', [AdvancedSearchController::class, 'basic'])->name('index');
     Route::get('/basic', [AdvancedSearchController::class, 'basic'])->name('basic');
-    Route::get('/advanced', [AdvancedSearchController::class, 'index'])->name('advanced');
+
+    // CONSOLIDATED: Redirect global advanced search to forum advanced search for better UX
+    Route::get('/advanced', function (Request $request) {
+        // If no specific type filter, default to forum search which has better UI
+        $type = $request->get('filters.type', $request->get('type'));
+        if (!$type || $type === 'forum' || $type === 'all') {
+            return redirect()->route('forums.search.advanced', $request->query());
+        }
+        // For other specific types, use global search
+        return app(AdvancedSearchController::class)->index($request);
+    })->name('advanced');
 
     // Search API endpoints
     Route::get('/api', [AdvancedSearchController::class, 'search'])->name('api');
