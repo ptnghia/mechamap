@@ -92,8 +92,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Set secure asset URL if CDN is configured
+        // Note: forceAssetUrl method doesn't exist in current Laravel version
+        // Use asset_url config or custom asset helper instead
         if ($cdnUrl = config('production.domain.cdn')) {
-            URL::forceAssetUrl($cdnUrl);
+            // Alternative approach: Set asset URL via config
+            config(['app.asset_url' => $cdnUrl]);
         }
 
         // Configure trusted proxies for production
