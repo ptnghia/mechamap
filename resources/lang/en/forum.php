@@ -91,7 +91,7 @@ return [
         'results' => 'Search Results',
         'results_for' => 'Results for',
         'search_button' => 'Search',
-        'search_placeholder' => 'Search threads, posts and discussions...',
+        'placeholder' => 'Search threads, posts and discussions...',
         'search_in_category' => 'Search in category',
         'search_by_category' => 'Search by category',
         'select_category' => 'Select category to search',

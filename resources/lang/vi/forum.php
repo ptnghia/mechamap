@@ -91,7 +91,7 @@ return [
         'results' => 'Kết quả tìm kiếm',
         'results_for' => 'Kết quả cho',
         'search_button' => 'Tìm kiếm',
-        'search_placeholder' => 'Tìm kiếm chủ đề, bài viết và thảo luận...',
+        'placeholder' => 'Tìm kiếm chủ đề, bài viết và thảo luận...',
         'search_in_category' => 'Tìm kiếm trong danh mục',
         'search_by_category' => 'Tìm theo danh mục',
         'select_category' => 'Chọn danh mục để tìm kiếm',
