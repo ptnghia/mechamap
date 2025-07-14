@@ -849,7 +849,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
     position: absolute;
     float: none;
     width: 100%;
-    min-width: 800px;
+    min-width: 750px;
     max-width: 100%;
     border: 1px solid #dee2e6;
     border-radius: 0.5rem;
@@ -862,7 +862,7 @@ body.user-frontend{font-family:"Roboto Condensed",sans-serif;background:var(--us
 
 /* Mega Menu Container */
 .mega-menu-container {
-    padding: 1.5rem;
+    padding: 15px;
     background: #fff;
 }
 

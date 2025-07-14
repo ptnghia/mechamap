@@ -51,6 +51,8 @@ return [
         'trending' => 'Trending',
         'hot_topics' => 'Hot Topics',
         'popular' => 'Popular',
+        'coming_soon' => 'Coming Soon',
+        'view_all' => 'View All',
         'latest' => 'Latest',
         'oldest' => 'Oldest',
         'category' => 'Category',
@@ -225,5 +227,33 @@ return [
         'previous' => 'Previous',
         'next' => 'Next',
         'go_to_page' => 'Go to Page',
+    ],
+
+    // Community Mega Menu
+    'community' => [
+        'quick_access' => 'Quick Access',
+        'discover' => 'Discover',
+        'tools_connect' => 'Tools & Connect',
+        'forum_home_desc' => 'Forum homepage',
+        'popular_discussions_desc' => 'Featured discussions',
+        'browse_categories' => 'Browse by categories',
+        'explore_topics_desc' => 'Explore topics',
+        'recent_discussions_desc' => 'Recent discussions',
+        'trending_desc' => 'Hot trends',
+        'most_viewed_desc' => 'Most viewed',
+        'hot_topics_desc' => 'Hot topics',
+        'member_directory_desc' => 'Member directory',
+        'events_webinars_desc' => 'Events & Webinars',
+        'job_board_desc' => 'Job board',
+        'all_forums_desc' => 'All forums',
+        'online' => 'Online',
+        'today' => 'Today',
+    ],
+
+    // Search
+    'search' => [
+        'advanced_search' => 'Advanced Search',
+        'advanced_search_desc' => 'Detailed search',
+        'quick_search_placeholder' => 'Quick search...',
     ],
 ];

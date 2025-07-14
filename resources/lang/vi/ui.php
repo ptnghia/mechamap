@@ -159,6 +159,7 @@ return [
         'popular' => 'Phổ biến',
         'trending' => 'Xu hướng',
         'hot_topics' => 'Chủ đề nóng',
+        'coming_soon' => 'Sắp ra mắt',
         'new' => 'Mới',
         'old' => 'Cũ',
         'recent' => 'Gần đây',
@@ -423,6 +424,34 @@ return [
         'highest_rated' => 'Đánh giá cao nhất',
         'most_popular' => 'Phổ biến nhất',
         'name_a_z' => 'Tên: A-Z',
+    ],
+
+    // Community Mega Menu
+    'community' => [
+        'quick_access' => 'Truy cập nhanh',
+        'discover' => 'Khám phá',
+        'tools_connect' => 'Công cụ & Kết nối',
+        'forum_home_desc' => 'Trang chủ diễn đàn',
+        'popular_discussions_desc' => 'Thảo luận nổi bật',
+        'browse_categories' => 'Duyệt theo danh mục',
+        'explore_topics_desc' => 'Khám phá các chủ đề',
+        'recent_discussions_desc' => 'Thảo luận gần đây',
+        'trending_desc' => 'Xu hướng hot',
+        'most_viewed_desc' => 'Xem nhiều nhất',
+        'hot_topics_desc' => 'Chủ đề nóng',
+        'member_directory_desc' => 'Danh bạ thành viên',
+        'events_webinars_desc' => 'Sự kiện & Webinar',
+        'job_board_desc' => 'Bảng việc làm',
+        'all_forums_desc' => 'Toàn bộ diễn đàn',
+        'online' => 'Online',
+        'today' => 'Hôm nay',
+    ],
+
+    // Search
+    'search' => [
+        'advanced_search' => 'Tìm kiếm nâng cao',
+        'advanced_search_desc' => 'Tìm kiếm chi tiết',
+        'quick_search_placeholder' => 'Tìm kiếm nhanh...',
     ],
 
 ];
