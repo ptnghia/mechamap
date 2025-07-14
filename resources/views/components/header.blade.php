@@ -309,7 +309,7 @@
                             <ul class="dropdown-menu" aria-labelledby="moreDropdown">
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ __('ui.common.search_discovery') }}</h6></li>
                                 <li>
-                                    <a class="dropdown-item" href="/search/advanced">
+                                    <a class="dropdown-item" href="{{ route('forums.search.advanced') }}">
                                         <i class="fa-brands fa-searchengin me-2"></i>
                                         {{ __('ui.common.advanced_search') }}
                                     </a>
@@ -933,7 +933,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>No results found for "${searchInput.value}".
                     <p class="mt-2">
-                        <a href="${data.advanced_search_url || '/advanced-search'}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                        <a href="${data.advanced_search_url || '{{ route('forums.search.advanced') }}'}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
                             <i class="fas fa-sliders-h me-1"></i>THỬ TÌM KIẾM NÂNG CAO
                         </a>
                     </p>

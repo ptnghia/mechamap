@@ -38,7 +38,7 @@
                     @endif
                 </div>
                 <div>
-                    <a href="{{ route('search.advanced') }}" class="btn btn-outline-secondary btn-sm">
+                    <a href="{{ route('forums.search.advanced') }}" class="btn btn-outline-secondary btn-sm">
                         <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
                     </a>
                 </div>

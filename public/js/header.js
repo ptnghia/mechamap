@@ -301,7 +301,7 @@ function initSearch() {
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>No results found for "${searchInput.value}".
                     <p class="mt-2 mb-0">
-                        <a href="${data.advanced_search_url || '/search/advanced'}" class="btn btn-sm btn-primary">
+                        <a href="${data.advanced_search_url || '/forums/search/advanced'}" class="btn btn-sm btn-primary">
                             <i class="fas fa-sliders-h me-1"></i>Try Advanced Search
                         </a>
                     </p>

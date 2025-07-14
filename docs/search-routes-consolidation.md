@@ -97,12 +97,47 @@ Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch']
 2. Evaluate việc integrate Elasticsearch vào forum search
 3. Optimize database queries cho better performance
 
+## Updated References
+
+### Files Updated to Use Forum Advanced Search:
+1. **`resources/views/components/header.blade.php`**
+   - Navigation menu link: `/search/advanced` → `route('forums.search.advanced')`
+   - JavaScript fallback URL updated
+
+2. **`resources/views/search/basic.blade.php`**
+   - Advanced search button redirected to forum search
+
+3. **`resources/views/search/index.blade.php`**
+   - Advanced search link updated
+
+4. **`resources/views/search/advanced-results.blade.php`**
+   - "Modify Search" button redirected
+
+5. **`resources/views/search/advanced.blade.php`**
+   - Form action and popular search links updated
+
+6. **`app/Http/Controllers/AdvancedSearchController.php`**
+   - AJAX response `advanced_search_url` updated
+
+7. **`public/js/header.js`**
+   - Fallback advanced search URL updated
+
+### Total Files Updated: 7 files
+
 ## Kết luận
 
-Việc consolidation search routes đã giải quyết được vấn đề trùng lập và cải thiện user experience bằng cách ưu tiên interface hoàn chỉnh nhất. Thay đổi này maintain backward compatibility trong khi simplify navigation cho users.
+Việc consolidation search routes đã giải quyết được vấn đề trùng lập và cải thiện user experience bằng cách ưu tiên interface hoàn chỉnh nhất. Tất cả references đến global advanced search đã được cập nhật để redirect đến forum advanced search, đảm bảo consistency và better UX.
+
+### Post-Implementation Checklist:
+- ✅ Route redirection implemented
+- ✅ All view references updated
+- ✅ JavaScript fallbacks updated
+- ✅ Controller responses updated
+- ✅ Backward compatibility maintained
+- ✅ Documentation updated
 
 ---
-**Date**: 2025-01-14  
-**Author**: MechaMap Development Team  
-**Status**: Implemented  
-**Impact**: Medium - Improved UX, Reduced Complexity
+**Date**: 2025-01-14
+**Author**: MechaMap Development Team
+**Status**: Fully Implemented
+**Impact**: Medium - Improved UX, Reduced Complexity, Consistent Navigation

@@ -638,7 +638,7 @@ class AdvancedSearchController extends Controller
         return response()->json([
             'results' => $results,
             'total' => $totalResults,
-            'advanced_search_url' => route('search.advanced')
+            'advanced_search_url' => route('forums.search.advanced')
         ]);
     }
 

@@ -17,7 +17,7 @@
                 <div class="search-box">
                     <h2 class="text-center mb-4">Advanced Search</h2>
 
-                    <form id="search-form" action="{{ route('search.advanced') }}" method="GET">
+                    <form id="search-form" action="{{ route('forums.search.advanced') }}" method="GET">
                         <div class="search-input-group">
                             <input type="text"
                                    class="search-input"
@@ -63,11 +63,11 @@
                     @if(empty($query ?? ''))
                     <div class="popular-searches">
                         <div class="filter-label">Tìm kiếm phổ biến:</div>
-                        <a href="{{ route('search.advanced', ['q' => 'máy tiện CNC']) }}" class="popular-search-item">máy tiện CNC</a>
-                        <a href="{{ route('search.advanced', ['q' => 'động cơ servo']) }}" class="popular-search-item">động cơ servo</a>
-                        <a href="{{ route('search.advanced', ['q' => 'bearing SKF']) }}" class="popular-search-item">bearing SKF</a>
-                        <a href="{{ route('search.advanced', ['q' => 'thép không gỉ']) }}" class="popular-search-item">thép không gỉ</a>
-                        <a href="{{ route('search.advanced', ['q' => 'máy phay']) }}" class="popular-search-item">máy phay</a>
+                        <a href="{{ route('forums.search.advanced', ['q' => 'máy tiện CNC']) }}" class="popular-search-item">máy tiện CNC</a>
+                        <a href="{{ route('forums.search.advanced', ['q' => 'động cơ servo']) }}" class="popular-search-item">động cơ servo</a>
+                        <a href="{{ route('forums.search.advanced', ['q' => 'bearing SKF']) }}" class="popular-search-item">bearing SKF</a>
+                        <a href="{{ route('forums.search.advanced', ['q' => 'thép không gỉ']) }}" class="popular-search-item">thép không gỉ</a>
+                        <a href="{{ route('forums.search.advanced', ['q' => 'máy phay']) }}" class="popular-search-item">máy phay</a>
                     </div>
                     @endif
                 </div>

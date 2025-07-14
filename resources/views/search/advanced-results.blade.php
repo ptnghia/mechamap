@@ -17,38 +17,38 @@
                                 <strong>{{ __('Keywords') }}:</strong> {{ $keywords }}
                             </div>
                         @endif
-                        
+
                         @if($author)
                             <div class="col-md-3 mb-2">
                                 <strong>{{ __('Author') }}:</strong> {{ $author }}
                             </div>
                         @endif
-                        
+
                         @if($forumId)
                             <div class="col-md-3 mb-2">
-                                <strong>{{ __('Forum') }}:</strong> 
+                                <strong>{{ __('Forum') }}:</strong>
                                 @php
                                     $forum = $forums->firstWhere('id', $forumId);
                                 @endphp
                                 {{ $forum ? $forum->name : __('Unknown') }}
                             </div>
                         @endif
-                        
+
                         @if($dateFrom || $dateTo)
                             <div class="col-md-3 mb-2">
-                                <strong>{{ __('Date Range') }}:</strong> 
+                                <strong>{{ __('Date Range') }}:</strong>
                                 {{ $dateFrom ? \Carbon\Carbon::parse($dateFrom)->format('M d, Y') : __('Any') }}
                                 {{ __('to') }}
                                 {{ $dateTo ? \Carbon\Carbon::parse($dateTo)->format('M d, Y') : __('Present') }}
                             </div>
                         @endif
                     </div>
-                    
+
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="{{ route('search.advanced') }}" class="btn btn-outline-secondary btn-sm">
+                        <a href="{{ route('forums.search.advanced') }}" class="btn btn-outline-secondary btn-sm">
                             <i class="fas fa-edit me-1"></i> {{ __('Modify Search') }}
                         </a>
-                        
+
                         <div>
                             <span class="me-2">{{ __('Sort by') }}: {{ ucfirst($sortBy) }} ({{ $sortDir == 'desc' ? __('Descending') : __('Ascending') }})</span>
                             <div class="btn-group btn-group-sm">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="card shadow-sm rounded-3 mb-4">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -98,11 +98,11 @@
                                             <p class="mb-1">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <small>
-                                                    {{ __('By') }} 
+                                                    {{ __('By') }}
                                                     <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
                                                         {{ $thread->user->name }}
-                                                    </a> 
-                                                    {{ __('in') }} 
+                                                    </a>
+                                                    {{ __('in') }}
                                                     <a href="{{ route('forums.show', $thread->forum) }}" class="text-decoration-none fw-bold">
                                                         {{ $thread->forum->name }}
                                                     </a>
@@ -115,7 +115,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                
+
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $threads->appends(request()->except('page'))->links() }}
                                 </div>
@@ -125,7 +125,7 @@
                                 </div>
                             @endif
                         </div>
-                        
+
                         <div class="tab-pane fade" id="posts">
                             @if($posts->count() > 0)
                                 <div class="list-group list-group-flush">
@@ -139,11 +139,11 @@
                                             </div>
                                             <p class="mb-1">{{ Str::limit(strip_tags($post->content), 150) }}</p>
                                             <small>
-                                                {{ __('By') }} 
+                                                {{ __('By') }}
                                                 <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none">
                                                     {{ $post->user->name }}
                                                 </a>
-                                                {{ __('in') }} 
+                                                {{ __('in') }}
                                                 <a href="{{ route('forums.show', $post->thread->forum) }}" class="text-decoration-none fw-bold">
                                                     {{ $post->thread->forum->name }}
                                                 </a>
@@ -151,7 +151,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                
+
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $posts->appends(request()->except('page'))->links() }}
                                 </div>
