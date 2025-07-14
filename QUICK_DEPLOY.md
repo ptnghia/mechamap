@@ -32,12 +32,35 @@ cd mechamap_backend-master
 
 ## ⚙️ Bước 2: Cài đặt Dependencies
 
+### 2.1 Cài đặt thông thường
 ```bash
 # Cài đặt PHP dependencies
 composer install --optimize-autoloader --no-dev
 
 # Tạo symbolic link cho storage (nếu cần)
 php artisan storage:link
+```
+
+### 2.2 Ubuntu 22.04 - Khắc phục lỗi Composer
+```bash
+# Chạy script tự động (Khuyến nghị)
+chmod +x ubuntu-22-04-deploy.sh
+./ubuntu-22-04-deploy.sh
+
+# Hoặc khắc phục thủ công:
+rm -rf vendor/ composer.lock
+composer clear-cache
+composer install --no-scripts --no-autoloader --no-dev
+composer dump-autoload --optimize --no-dev
+```
+
+### 2.3 Các hệ điều hành khác
+```bash
+# Linux/Mac:
+bash scripts/fix_composer_install.sh
+
+# Windows PowerShell:
+.\scripts\fix_composer_install.ps1
 ```
 
 ## 🗄️ Bước 3: Cấu hình Database
@@ -253,6 +276,38 @@ sudo supervisorctl restart mechamap-worker:*
 
 # Check queue status
 php artisan queue:work --once
+```
+
+#### 5. Composer Install Errors
+
+**Lỗi: Method forceAssetUrl does not exist**
+```bash
+# Khắc phục:
+rm -rf vendor/
+composer clear-cache
+composer install --no-scripts --no-autoloader --no-dev
+composer dump-autoload --optimize --no-dev
+php artisan key:generate --force
+php artisan storage:link
+```
+
+**Lỗi: Do not run Composer as root**
+```bash
+# Tạo user riêng cho deployment
+sudo adduser deployer
+sudo usermod -aG www-data deployer
+su - deployer
+cd /path/to/project
+composer install --no-dev
+```
+
+**Lỗi: Memory limit exceeded**
+```bash
+# Tăng memory limit
+php -d memory_limit=512M /usr/local/bin/composer install --no-dev
+# Hoặc
+export COMPOSER_MEMORY_LIMIT=-1
+composer install --no-dev
 ```
 
 ## 📞 Hỗ trợ
