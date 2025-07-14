@@ -170,7 +170,7 @@ test.txt
 # Configuration Backups
 /.env.*
 !/.env.example
-!/.env.production
+!.env.production
 
 # ============================================================
 # ALLOW ESSENTIAL ROOT FILES ONLY
