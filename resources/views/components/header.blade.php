@@ -37,8 +37,8 @@
                         @endif
                     @endauth
 
-                    <!-- Mobile Menu Button -->
-                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <!-- Mobile Menu Button - HC-MobileNav -->
+                    <button class="hc-mobile-nav-toggle border-0 bg-transparent" type="button" aria-label="Toggle mobile navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
@@ -1296,5 +1296,9 @@ document.addEventListener('DOMContentLoaded', function() {
     @endauth
 });
 </script>
+
+<!-- Mobile Navigation Component -->
+@include('components.mobile-nav')
+
 <!-- Mini Cart Enhancements -->
 <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>

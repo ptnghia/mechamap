@@ -80,6 +80,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- HC-MobileNav CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.css">
+
     <!-- Iconsax -->
     <link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet">
 
@@ -354,6 +357,12 @@
 
     <!-- Search Script - Disabled, using unified header search -->
     {{-- <script src="{{ asset('js/search.js') }}"></script> --}}
+
+    <!-- HC-MobileNav JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.js"></script>
+
+    <!-- Mobile Navigation Script -->
+    <script src="{{ asset_versioned('js/mobile-nav.js') }}"></script>
 
     <!-- Header System - Consolidated search, menu, and navigation -->
     <script src="{{ asset_versioned('js/header.js') }}"></script>
