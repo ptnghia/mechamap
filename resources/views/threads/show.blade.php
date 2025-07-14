@@ -3,21 +3,17 @@
 @section('title', $thread->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads/show.css') }}">
 @endpush
 
 @section('content')
-<div class="container2">
-
-
+<div class="body_page">
 
     <!-- Main Thread -->
-    <div class="card mb-4">
-        <!-- Thread Info -->
+    <div class="detail_thread">
         <div class="thread-header p-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1 class="thread-title">{{ $thread->title }}</h1>
-
                 <div class="thread-actions d-flex gap-2 align-items-center">
                     <x-thread-follow-button :thread="$thread" size="normal" />
                     <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-secondary btn-sm">
@@ -26,7 +22,6 @@
                 </div>
             </div>
             <div class="thread-meta">
-
                 <div class="d-flex justify-content-start g-3">
                     <div class="thread-meta-item">
                         <i class="fas fa-eye"></i> {{ number_format($thread->view_count) }} Lượt xem
@@ -48,189 +43,191 @@
                 </div>
             </div>
         </div>
-        <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom: none;">
-            <div class="d-flex align-items-center">
-                <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
-                    class="rounded-circle me-2" width="40" height="40"
-                    onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
-                <div>
-                    <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
-                        class="fw-bold text-decoration-none">{{
-                        $thread->user->name }}</a>
-                    <div class="text-muted small">
-                        <span>{{ $thread->user->threads_count ?? 0 }} Bài viết</span> ·
-                        <span>Tham gia {{ $thread->user->created_at->format('M Y') }}</span>
-                    </div>
+    </div>
+
+
+    <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom: none;">
+        <div class="d-flex align-items-center">
+            <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
+                class="rounded-circle me-2" width="40" height="40"
+                onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+            <div>
+                <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
+                    class="fw-bold text-decoration-none">{{
+                    $thread->user->name }}</a>
+                <div class="text-muted small">
+                    <span>{{ $thread->user->threads_count ?? 0 }} Bài viết</span> ·
+                    <span>Tham gia {{ $thread->user->created_at->format('M Y') }}</span>
                 </div>
             </div>
-            <div class="text-muted small">
-                #1 · {{ $thread->created_at->diffForHumans() }}
-            </div>
         </div>
-        <div class="card-body">
-            <!-- Project Details -->
+        <div class="text-muted small">
+            #1 · {{ $thread->created_at->diffForHumans() }}
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Project Details -->
+        @if($thread->status)
+        <!--div class="project-details mb-3 p-3 bg-light rounded">
             @if($thread->status)
-            <!--div class="project-details mb-3 p-3 bg-light rounded">
-                @if($thread->status)
-                <div><strong>Trạng thái:</strong> {{ $thread->status }}</div>
-                @endif
-            </div-->
+            <div><strong>Trạng thái:</strong> {{ $thread->status }}</div>
             @endif
+        </div-->
+        @endif
 
-            <!-- Poll Section -->
-            @include('threads.partials.poll')
+        <!-- Poll Section -->
+        @include('threads.partials.poll')
 
-            <!-- Thread Featured Image -->
-            @if($thread->featured_image)
-            <div class="thread-featured-image mb-3">
-                <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded shadow"
-                    style="max-height: 400px; width: 100%; object-fit: cover;"
-                    onerror="this.src='{{ asset('images/placeholder.svg') }}'">
-            </div>
-            @endif
+        <!-- Thread Featured Image -->
+        @if($thread->featured_image)
+        <div class="thread-featured-image mb-3">
+            <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded shadow"
+                style="max-height: 400px; width: 100%; object-fit: cover;"
+                onerror="this.src='{{ asset('images/placeholder.svg') }}'">
+        </div>
+        @endif
 
-            <!-- Thread Content -->
-            <div class="thread-content">
-                {!! $thread->content !!}
-            </div>
+        <!-- Thread Content -->
+        <div class="thread-content">
+            {!! $thread->content !!}
+        </div>
 
-            <!-- Thread Images -->
-            @if($thread->media && count($thread->media) > 0)
-            <div class="thread-images mt-3">
-                <div class="row">
-                    @foreach($thread->media as $media)
-                    @if(str_starts_with($media->file_type ?? '', 'image/'))
-                    <div class="col-md-4 mb-3">
-                        <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                            data-fancybox="thread-images"
-                            data-caption="Thread image">
-                            <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
-                                class="img-fluid rounded"
-                                onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
-                        </a>
-                    </div>
-                    @endif
-                    @endforeach
+        <!-- Thread Images -->
+        @if($thread->media && count($thread->media) > 0)
+        <div class="thread-images mt-3">
+            <div class="row">
+                @foreach($thread->media as $media)
+                @if(str_starts_with($media->file_type ?? '', 'image/'))
+                <div class="col-md-4 mb-3">
+                    <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
+                        data-fancybox="thread-images"
+                        data-caption="Thread image">
+                        <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
+                            class="img-fluid rounded"
+                            onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                    </a>
                 </div>
+                @endif
+                @endforeach
             </div>
+        </div>
+        @endif
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <div>
+            <!-- Like Button -->
+            <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit"
+                    class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
+                    <i class="fas fa-thumbs-up"></i>
+                    Thích
+                    <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
+                </button>
+            </form>
+
+            <!-- Save Button -->
+            <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
+                @csrf
+                <button type="submit"
+                    class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }} btn-save">
+                    <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
+                    {{ Auth::check() && $isSaved ? 'Đã lưu' : 'Lưu' }}
+                </button>
+            </form>
+
+            <!-- Follow Button -->
+            @php
+            $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
+            @endphp
+            @if($isFollowed)
+            <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-info btn-theodoi">
+                    <i class="fas fa-bell-fill"></i>
+                    Đang theo dõi
+                </button>
+            </form>
+            @else
+            <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-outline-info btn-theodoi">
+                    <i class="fas fa-bell"></i>
+                    Theo dõi
+                </button>
+            </form>
             @endif
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <div>
-                <!-- Like Button -->
-                <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit"
-                        class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
-                        <i class="fas fa-thumbs-up"></i>
-                        Thích
-                        <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
-                    </button>
-                </form>
 
-                <!-- Save Button -->
-                <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
-                    @csrf
-                    <button type="submit"
-                        class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }} btn-save">
-                        <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
-                        {{ Auth::check() && $isSaved ? 'Đã lưu' : 'Lưu' }}
-                    </button>
-                </form>
-
-                <!-- Follow Button -->
-                @php
-                $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
-                @endphp
-                @if($isFollowed)
-                <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-info btn-theodoi">
-                        <i class="fas fa-bell-fill"></i>
-                        Đang theo dõi
-                    </button>
-                </form>
-                @else
-                <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-info btn-theodoi">
-                        <i class="fas fa-bell"></i>
-                        Theo dõi
-                    </button>
-                </form>
-                @endif
+        <div>
+            <!-- Share Button -->
+            <div class="dropdown d-inline">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle btn-share" type="button"
+                    id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-share-alt"></i> Chia sẻ
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="shareDropdown">
+                    <li><a class="dropdown-item"
+                            href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
+                            target="_blank"><i class="fab fa-facebook-f me-2"></i>Facebook</a></li>
+                    <li><a class="dropdown-item"
+                            href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($thread->title) }}"
+                            target="_blank"><i class="fab fa-twitter me-2"></i>Twitter</a></li>
+                    <li><a class="dropdown-item"
+                            href="https://wa.me/?text={{ urlencode($thread->title . ' ' . request()->url()) }}"
+                            target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#"
+                            onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('Đã sao chép liên kết!'); return false;"><i
+                                class="fas fa-clipboard me-2"></i>Sao chép liên kết</a></li>
+                </ul>
             </div>
 
-            <div>
-                <!-- Share Button -->
-                <div class="dropdown d-inline">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle btn-share" type="button"
-                        id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-share-alt"></i> Chia sẻ
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="shareDropdown">
-                        <li><a class="dropdown-item"
-                                href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
-                                target="_blank"><i class="fab fa-facebook-f me-2"></i>Facebook</a></li>
-                        <li><a class="dropdown-item"
-                                href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($thread->title) }}"
-                                target="_blank"><i class="fab fa-twitter me-2"></i>Twitter</a></li>
-                        <li><a class="dropdown-item"
-                                href="https://wa.me/?text={{ urlencode($thread->title . ' ' . request()->url()) }}"
-                                target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#"
-                                onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('Đã sao chép liên kết!'); return false;"><i
-                                    class="fas fa-clipboard me-2"></i>Sao chép liên kết</a></li>
-                    </ul>
-                </div>
+            <!-- Reply Button -->
+            <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
+                <i class="fas fa-reply"></i> Trả lời
+            </a>
 
-                <!-- Reply Button -->
-                <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
-                    <i class="fas fa-reply"></i> Trả lời
+            <!-- Edit/Delete Buttons (if owner) -->
+            @can('update', $thread)
+            <div class="btn-group ms-2">
+                <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-edit"></i> Chỉnh sửa
                 </a>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                    data-bs-target="#deleteThreadModal">
+                    <i class="fas fa-trash"></i> Xóa
+                </button>
+            </div>
 
-                <!-- Edit/Delete Buttons (if owner) -->
-                @can('update', $thread)
-                <div class="btn-group ms-2">
-                    <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="fas fa-edit"></i> Chỉnh sửa
-                    </a>
-                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                        data-bs-target="#deleteThreadModal">
-                        <i class="fas fa-trash"></i> Xóa
-                    </button>
-                </div>
-
-                <!-- Delete Modal -->
-                <div class="modal fade" id="deleteThreadModal" tabindex="-1" aria-labelledby="deleteThreadModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteThreadModalLabel">Xác nhận xóa</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Bạn có chắc chắn muốn xóa chủ đề này? Hành động này không thể hoàn tác.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                <form action="{{ route('threads.destroy', $thread) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Xóa chủ đề</button>
-                                </form>
-                            </div>
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteThreadModal" tabindex="-1" aria-labelledby="deleteThreadModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteThreadModalLabel">Xác nhận xóa</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa chủ đề này? Hành động này không thể hoàn tác.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <form action="{{ route('threads.destroy', $thread) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Xóa chủ đề</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                @endcan
             </div>
+            @endcan
         </div>
     </div>
 

@@ -76,58 +76,15 @@
                         </div>
                     </div>
                     <ul class="navbar-nav">
-                        <!-- 2. Community/Forum - PRIORITY #1 -->
-                        <li class="nav-item dropdown">
+                        <!-- 2. Community/Forum - PRIORITY #1 - Mega Menu -->
+                        <li class="nav-item dropdown mega-menu-dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs(['forums.*', 'members.*', 'events.*', 'jobs.*']) ? 'active' : '' }}" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-users me-1"></i>
                                 {{ __('ui.common.community') }}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="communityDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-comments me-2"></i>{{ __('ui.common.discussion') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('forums.index') }}">
-                                    <i class="fa-regular fa-rectangle-list me-2"></i>{{ __('forum.threads.title') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                    <i class="fa-solid fa-clock me-2"></i>{{ __('ui.common.recent_discussions') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new.popular') }}">
-                                    <i class="fa-solid fa-fire me-2"></i>{{ __('ui.common.popular_topics') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new.trending') }}">
-                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('ui.common.trending') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new.most-viewed') }}">
-                                    <i class="fa-solid fa-eye me-2"></i>{{ __('ui.common.most_viewed') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new.hot-topics') }}">
-                                    <i class="fa-solid fa-flame me-2"></i>{{ __('ui.common.hot_topics') }}
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>Tìm kiếm</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('forums.search.advanced') }}">
-                                    <i class="fa-solid fa-search-plus me-2"></i>Tìm kiếm nâng cao
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('forums.search.categories') }}">
-                                    <i class="fa-solid fa-folder-tree me-2"></i>Tìm theo danh mục
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('forums.search') }}">
-                                    <i class="fa-solid fa-magnifying-glass me-2"></i>Tìm kiếm diễn đàn
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-network-wired me-2"></i>{{ __('ui.common.networking') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('members.index') }}">
-                                    <i class="fa-solid fa-users-gear me-2"></i>{{ __('ui.common.member_directory') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('ui.common.company_profiles') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('events.index') }}">
-                                    <i class="fa-solid fa-calendar-days me-2"></i>{{ __('ui.common.events_webinars') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('jobs.index') }}">
-                                    <i class="fa-solid fa-briefcase me-2"></i>{{ __('ui.common.job_board') }}
-                                </a></li>
-                            </ul>
+                            <div class="dropdown-menu mega-menu" aria-labelledby="communityDropdown">
+                                @include('components.menu.community-mega-menu')
+                            </div>
                         </li>
 
                         <!-- 3. Dự án - Direct Link -->
@@ -155,6 +112,9 @@
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
                                     <i class="fa-solid fa-building me-2"></i>{{ __('marketplace.suppliers.title') }}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('companies.index') }}">
+                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('ui.common.company_profiles') }}
                                 </a></li>
                                 <li><a class="dropdown-item" href="{{ route('marketplace.index') }}#featured">
                                     <i class="fa-solid fa-star me-2"></i>{{ __('marketplace.products.featured') }}

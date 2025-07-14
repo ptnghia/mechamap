@@ -25,6 +25,16 @@ Route::get('/threads-test', function() {
     ]);
 });
 
+// Community Stats API Routes (Public)
+Route::prefix('community')->name('api.community.')->group(function () {
+    Route::get('/quick-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getQuickStats']);
+    Route::get('/online-count', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOnlineUsersCount']);
+    Route::get('/recent-activity', [App\Http\Controllers\Api\CommunityStatsController::class, 'getRecentActivity']);
+    Route::get('/popular-forums', [App\Http\Controllers\Api\CommunityStatsController::class, 'getPopularForums']);
+    Route::get('/trending-topics', [App\Http\Controllers\Api\CommunityStatsController::class, 'getTrendingTopics']);
+    Route::get('/overview-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOverviewStats']);
+});
+
 // Sidebar stats endpoint (public - for sidebar statistics)
 Route::get('/sidebar/stats', function() {
     try {

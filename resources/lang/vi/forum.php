@@ -50,6 +50,16 @@ return [
         'error_occurred' => 'Có lỗi xảy ra',
         'request_error' => 'Có lỗi xảy ra khi xử lý yêu cầu',
         'go_to_end' => 'Đến cuối',
+        'new_thread' => 'Chủ đề mới',
+        'create_thread' => 'Tạo chủ đề',
+        'create_first_thread' => 'Tạo chủ đề đầu tiên',
+        'view_more' => 'Xem thêm',
+        'clear_filters' => 'Xóa bộ lọc',
+        'create_thread' => 'Tạo chủ đề',
+        'new_thread' => 'Chủ đề mới',
+        'view_more' => 'Xem thêm',
+        'clear_filters' => 'Xóa bộ lọc',
+        'create_first_thread' => 'Tạo chủ đề đầu tiên',
     ],
 
     // Thread status
@@ -226,15 +236,6 @@ return [
         'comments' => 'bình luận',
     ],
 
-    // Forum actions
-    'actions' => [
-        'new_thread' => 'Chủ đề mới',
-        'create_thread' => 'Tạo chủ đề',
-        'create_first_thread' => 'Tạo chủ đề đầu tiên',
-        'view_more' => 'Xem thêm',
-        'clear_filters' => 'Xóa bộ lọc',
-    ],
-
     // Forum categories
     'category' => [
         'forums_in_category' => 'Diễn đàn trong danh mục',
@@ -263,14 +264,6 @@ return [
             'members' => 'thành viên',
             'views' => 'lượt xem',
             'comments' => 'bình luận',
-        ],
-
-        'actions' => [
-            'create_thread' => 'Tạo chủ đề',
-            'new_thread' => 'Chủ đề mới',
-            'view_more' => 'Xem thêm',
-            'clear_filters' => 'Xóa bộ lọc',
-            'create_first_thread' => 'Tạo chủ đề đầu tiên',
         ],
 
         'category' => [
