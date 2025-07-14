@@ -800,9 +800,24 @@ Route::middleware(['auth', 'role:verified_partner'])->prefix('partner')->name('p
     Route::put('/products/{product}', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [App\Http\Controllers\VerifiedPartner\ProductController::class, 'destroy'])->name('products.destroy');
 
+    // Order management routes
     Route::get('/orders', [App\Http\Controllers\VerifiedPartner\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{orderItem}', [App\Http\Controllers\VerifiedPartner\OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{orderItem}/status', [App\Http\Controllers\VerifiedPartner\OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::get('/orders/export', [App\Http\Controllers\VerifiedPartner\OrderController::class, 'export'])->name('orders.export');
+
+    // Analytics routes
     Route::get('/analytics', [App\Http\Controllers\VerifiedPartner\AnalyticsController::class, 'index'])->name('analytics.index');
+
+    // Settings routes
     Route::get('/settings', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updateProfile'])->name('settings.updateProfile');
+    Route::put('/settings/business', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updateBusiness'])->name('settings.updateBusiness');
+    Route::put('/settings/password', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updatePassword'])->name('settings.updatePassword');
+    Route::put('/settings/notifications', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updateNotifications'])->name('settings.updateNotifications');
+    Route::put('/settings/payment', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updatePayment'])->name('settings.updatePayment');
+    Route::put('/settings/shipping', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'updateShipping'])->name('settings.updateShipping');
+    Route::delete('/settings/deactivate', [App\Http\Controllers\VerifiedPartner\SettingsController::class, 'deactivateAccount'])->name('settings.deactivate');
 });
 
 // Test routes - REMOVED (should only be in development)

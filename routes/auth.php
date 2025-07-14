@@ -25,13 +25,13 @@ Route::middleware('guest')->group(function () {
         Route::get('step1', [RegisterWizardController::class, 'showStep1'])
             ->name('step1');
         Route::post('step1', [RegisterWizardController::class, 'processStep1'])
-            ->middleware('throttle:registration');
+            ->middleware('throttle:10,1');
 
         // Step 2: Business Information
         Route::get('step2', [RegisterWizardController::class, 'showStep2'])
             ->name('step2');
         Route::post('step2', [RegisterWizardController::class, 'processStep2'])
-            ->middleware('throttle:registration');
+            ->middleware('throttle:10,1');
 
         // Completion and utilities
         Route::get('complete', [RegisterWizardController::class, 'complete'])
@@ -42,13 +42,13 @@ Route::middleware('guest')->group(function () {
         // AJAX endpoints
         Route::post('validate-field', [RegisterWizardController::class, 'validateField'])
             ->name('validate-field')
-            ->middleware('throttle:field-validation');
+            ->middleware('throttle:30,1');
         Route::post('check-username', [RegisterWizardController::class, 'checkUsername'])
             ->name('check-username')
-            ->middleware('throttle:username-check');
+            ->middleware('throttle:20,1');
         Route::post('save-progress', [RegisterWizardController::class, 'saveProgress'])
             ->name('save-progress')
-            ->middleware('throttle:auto-save');
+            ->middleware('throttle:60,1');
     });
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
