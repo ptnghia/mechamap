@@ -69,7 +69,7 @@
                                 <!-- Results will be loaded here via AJAX -->
                             </div>
                             <div class="search-results-footer">
-                                <a href="/advanced-search" class="advanced-search-link">
+                                <a href="{{ route('forums.search.advanced') }}" class="advanced-search-link">
                                     🔍 {{ __('search.advanced') }}
                                 </a>
                             </div>

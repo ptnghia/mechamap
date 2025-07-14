@@ -103,6 +103,7 @@ Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch']
 1. **`resources/views/components/header.blade.php`**
    - Navigation menu link: `/search/advanced` → `route('forums.search.advanced')`
    - JavaScript fallback URL updated
+   - Search results footer link: `/advanced-search` → `route('forums.search.advanced')`
 
 2. **`resources/views/search/basic.blade.php`**
    - Advanced search button redirected to forum search
@@ -122,7 +123,11 @@ Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch']
 7. **`public/js/header.js`**
    - Fallback advanced search URL updated
 
-### Total Files Updated: 7 files
+### Additional Updates:
+- **View cache cleared** to regenerate compiled templates
+- **All `/advanced-search` references** updated to use forum advanced search
+
+### Total Files Updated: 7 files + cache clearing
 
 ## Kết luận
 
