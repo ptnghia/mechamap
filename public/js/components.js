@@ -27,7 +27,7 @@ class ThreadItemBuilder {
         // User info với avatar fallback
         const userName = thread.user?.name || 'Người dùng';
         const userAvatar = thread.user?.profile_photo_url || thread.user?.avatar ||
-            `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&color=7F9CF5&background=EBF4FF`;
+            `/avatar/${encodeURIComponent(userName.charAt(0).toUpperCase())}?size=100`;
 
         // Thread URL
         const threadUrl = thread.slug ? `/threads/${thread.slug}` : `/threads/${thread.id}`;

@@ -120,4 +120,57 @@ return [
     'new' => 'Showcase mới',
     'related' => 'Showcase liên quan',
     'for_thread' => 'Showcase cho chủ đề',
+
+    // Showcase creation
+    'create_from_thread' => 'Tạo Showcase từ Thread này',
+    'create_from_thread_description' => 'Chuyển đổi thread thành showcase để highlight dự án của bạn',
+    'create_showcase_info' => 'Showcase sẽ giúp dự án của bạn được nhiều người biết đến hơn và có thể nhận được đánh giá từ cộng đồng.',
+    'create_showcase_button' => 'Tạo Showcase',
+
+    // Showcase creation wizard
+    'create_from_thread_title' => 'Tạo Showcase từ Thread',
+    'basic_info' => 'Thông tin cơ bản',
+    'content' => 'Nội dung',
+    'complete' => 'Hoàn tất',
+    'step_1_title' => 'Bước 1: Thông tin cơ bản',
+    'step_2_title' => 'Bước 2: Nội dung Showcase',
+    'step_3_title' => 'Bước 3: Xác nhận tạo Showcase',
+
+    // Form fields
+    'showcase_title' => 'Tiêu đề Showcase',
+    'showcase_title_help' => 'Tiêu đề sẽ được sử dụng làm tên showcase',
+    'select_category' => 'Chọn danh mục',
+    'select_project_type' => 'Chọn loại dự án',
+    'project_description' => 'Mô tả dự án',
+    'project_description_help' => 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được',
+    'cover_image' => 'Ảnh đại diện',
+    'cover_image_help' => 'Chọn ảnh đại diện cho showcase (JPG, PNG, GIF, WebP - tối đa 5MB)',
+    'current_thread_image' => 'Ảnh hiện tại từ thread:',
+    'complexity_level' => 'Mức độ phức tạp',
+    'industry_application' => 'Ứng dụng ngành',
+    'industry_placeholder' => 'VD: Automotive, Aerospace, Manufacturing',
+
+    // Confirmation
+    'confirm_info' => 'Xác nhận thông tin:',
+    'confirm_points' => [
+        'Showcase sẽ được tạo từ nội dung thread hiện tại',
+        'Thread gốc vẫn được giữ nguyên',
+        'Showcase có thể được chỉnh sửa sau khi tạo',
+        'Cộng đồng có thể đánh giá và bình luận về showcase'
+    ],
+    'agree_terms' => 'Tôi đồng ý cho phép cộng đồng xem và đánh giá showcase này',
+
+    // Buttons
+    'previous' => 'Trước',
+    'next' => 'Tiếp theo',
+    'create_showcase' => 'Tạo Showcase',
+    'creating' => 'Đang tạo...',
+
+    // Validation
+    'title_required' => 'Vui lòng nhập tiêu đề showcase',
+    'category_required' => 'Vui lòng chọn danh mục',
+    'description_required' => 'Vui lòng nhập mô tả dự án',
+    'cover_image_required' => 'Vui lòng chọn ảnh đại diện',
+    'file_size_error' => 'Kích thước file không được vượt quá 5MB',
+    'terms_required' => 'Vui lòng đồng ý với điều khoản',
 ];

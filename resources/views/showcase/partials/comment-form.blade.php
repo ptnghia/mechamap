@@ -7,7 +7,7 @@
         @endif
 
         <div class="d-flex gap-3">
-            <img src="{{ auth()->user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) . '&background=6366f1&color=fff&size=40' }}"
+            <img src="{{ auth()->user()->avatar_url ?? route('avatar.generate', ['initial' => strtoupper(substr(auth()->user()->name, 0, 1)), 'size' => 40]) }}"
                 class="rounded-circle" width="40" height="40" alt="Avatar của bạn">
 
             <div class="flex-grow-1">

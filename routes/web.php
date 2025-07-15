@@ -24,6 +24,7 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\BusinessRegistrationController;
+use App\Http\Controllers\AvatarController;
 use Illuminate\Support\Facades\Route;
 
 // Test route để debug - REMOVED (should only be in development)
@@ -49,6 +50,12 @@ Route::get('/welcome', [\App\Http\Controllers\HomeController::class, 'index'])->
 
 // Load More threads route cho trang chủ
 Route::get('/threads/load-more', [\App\Http\Controllers\HomeController::class, 'getMoreThreads'])->name('threads.load-more');
+
+// Avatar generation routes
+Route::prefix('avatar')->name('avatar.')->group(function () {
+    Route::get('/{initial}', [AvatarController::class, 'generate'])->name('generate');
+    Route::delete('/cache/{initial?}', [AvatarController::class, 'clearCache'])->name('clear-cache');
+});
 
 // Test route đơn giản - REMOVED (should only be in development)
 

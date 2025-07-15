@@ -32,7 +32,7 @@ return [
         'filter' => 'Filter',
         'sort' => 'Sort',
     ],
-    
+
     // Form Placeholders
     'placeholders' => [
         'enter_name' => 'Enter name',
@@ -50,7 +50,7 @@ return [
         'enter_comment' => 'Enter your comment...',
         'enter_message' => 'Enter your message...',
     ],
-    
+
     // Form Validation Messages
     'validation' => [
         'required' => 'This field is required',
@@ -67,7 +67,7 @@ return [
         'date' => 'Invalid date',
         'password_strength' => 'Password must be at least 8 characters with uppercase, lowercase and numbers',
     ],
-    
+
     // Form Help Text
     'help' => [
         'password_requirements' => 'Password must be at least 8 characters',
@@ -79,7 +79,7 @@ return [
         'image_upload' => 'Select image (JPG, PNG, GIF)',
         'max_file_size' => 'Maximum size: :size MB',
     ],
-    
+
     // Form States
     'states' => [
         'loading' => 'Loading...',
@@ -92,7 +92,7 @@ return [
         'processing' => 'Processing...',
         'completed' => 'Completed',
     ],
-    
+
     // Form Actions
     'actions' => [
         'submit' => 'Submit',
@@ -111,5 +111,21 @@ return [
         'deselect' => 'Deselect',
         'select_all' => 'Select All',
         'deselect_all' => 'Deselect All',
+    ],
+
+    // File Upload
+    'upload' => [
+        'drag_drop_here' => 'Drag and drop images here',
+        'or' => 'or',
+        'select_from_computer' => 'select from computer',
+        'attach_images_optional' => 'Attach images (optional)',
+        'supported_formats' => 'Supported: JPG, PNG, GIF (max :size MB per file)',
+        'add_quote' => 'Add Quote',
+        'quote' => 'Quote',
+    ],
+
+    // Related content
+    'related' => [
+        'related_topics' => 'Related Topics',
     ],
 ];

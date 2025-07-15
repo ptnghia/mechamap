@@ -243,8 +243,7 @@ if (!function_exists('avatar_placeholder')) {
 
         // Sử dụng service tạo avatar từ initials
         $alternatives = [
-            "https://ui-avatars.com/api/?name=" . urlencode($initials) . "&size={$size}&background=random",
-            "https://api.dicebear.com/7.x/initials/svg?seed=" . urlencode($name) . "&size={$size}",
+            route('avatar.generate', ['initial' => $initials, 'size' => $size]),
             placeholder_image($size, $size, $initials),
         ];
 

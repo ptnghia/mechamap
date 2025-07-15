@@ -261,6 +261,17 @@ class ThreadController extends Controller
         $thread->lastCommenter = $lastComment ? $lastComment->user : $thread->user;
         $thread->lastCommentAt = $lastComment ? $lastComment->created_at : null;
 
+        // Validate showcase ownership if exists
+        if ($thread->showcase && !$thread->hasValidShowcaseOwnership()) {
+            // Log potential security issue
+            \Log::warning('Invalid showcase ownership detected', [
+                'thread_id' => $thread->id,
+                'thread_user_id' => $thread->user_id,
+                'showcase_id' => $thread->showcase->id,
+                'showcase_user_id' => $thread->showcase->user_id
+            ]);
+        }
+
         return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'isFollowed', 'relatedThreads', 'sort'));
     }
 

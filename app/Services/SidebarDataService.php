@@ -644,9 +644,9 @@ class SidebarDataService
             }
         }
 
-        // Fallback to UI Avatars
-        return 'https://ui-avatars.com/api/?name=' . urlencode($user->name) .
-            '&background=random&color=fff&size=40';
+        // Fallback to internal avatar generator
+        $firstLetter = strtoupper(substr($user->name, 0, 1));
+        return route('avatar.generate', ['initial' => $firstLetter, 'size' => 40]);
     }
 
     /**
@@ -695,8 +695,8 @@ class SidebarDataService
             }
         }
 
-        // Fallback
-        return 'https://ui-avatars.com/api/?name=' . urlencode(substr($forum->name, 0, 2)) .
-            '&background=0d6efd&color=fff&size=40';
+        // Fallback to internal avatar generator
+        $forumInitials = strtoupper(substr($forum->name, 0, 2));
+        return route('avatar.generate', ['initial' => $forumInitials, 'size' => 40]);
     }
 }

@@ -4,7 +4,7 @@
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="d-flex align-items-center mb-3">
-                <img src="{{ $comment->user->avatar ?? 'https://ui-avatars.cc/api/?name=' . urlencode($comment->user->name) }}"
+                <img src="{{ $comment->user->avatar ?? route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 50]) }}"
                     alt="Avatar" class="rounded-circle me-3" style="width: 50px; height: 50px;">
                 <div>
                     <h5 class="mb-1">{{ $comment->user->name }}</h5>

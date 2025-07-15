@@ -40,7 +40,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             <div class="flex-shrink-0 me-3 d-none d-sm-block">
                 <img src="{{ $userAvatar }}" alt="{{ $userName }}" class="rounded-circle" width="50" height="50"
                     style="object-fit: cover;"
-                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($userName, 0, 1))) }}&background=6366f1&color=fff&size=200'">
+                    onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1)), 'size' => 200]) }}'">
             </div>
             <div>
                 <strong class="thread-user-name">{{ $userName }}</strong><br>

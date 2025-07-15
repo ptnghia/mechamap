@@ -666,8 +666,13 @@ class Thread extends Model
             return false;
         }
 
-        // Thread must be published
-        if ($this->status !== 'published') {
+        // Thread must be approved for moderation (not pending, rejected, or flagged)
+        if ($this->moderation_status !== 'approved') {
+            return false;
+        }
+
+        // Thread must not be spam, hidden, or archived
+        if ($this->is_spam || $this->hidden_at || $this->archived_at) {
             return false;
         }
 
@@ -688,6 +693,33 @@ class Thread extends Model
 
         // User must be thread owner or have admin/moderator role
         return $user->id === $this->user_id || $user->hasRole(['admin', 'moderator']);
+    }
+
+    /**
+     * Check if the showcase belongs to the thread owner
+     * This ensures showcase ownership validation
+     *
+     * @return bool
+     */
+    public function hasValidShowcaseOwnership(): bool
+    {
+        if (!$this->showcase) {
+            return false;
+        }
+
+        // Showcase must belong to thread owner
+        return $this->showcase->user_id === $this->user_id;
+    }
+
+    /**
+     * Check if showcase should be displayed
+     * Combines existence and ownership validation
+     *
+     * @return bool
+     */
+    public function shouldDisplayShowcase(): bool
+    {
+        return $this->showcase && $this->hasValidShowcaseOwnership();
     }
 
     // =================

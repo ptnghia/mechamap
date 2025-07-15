@@ -188,7 +188,7 @@ return [
         'voters' => 'Người bình chọn',
         'vote_limit_message' => 'Bạn chỉ có thể chọn tối đa :max tùy chọn.',
         'max_options_exceeded' => 'Bạn chỉ có thể chọn tối đa :max tùy chọn.',
-        'votes' => '{0} phiếu bầu|{1} phiếu bầu|[2,*] phiếu bầu',
+        'votes' => '{0} phiếu|{1} phiếu|[2,*] phiếu',
         'vote_singular' => 'phiếu bầu',
     ],
 

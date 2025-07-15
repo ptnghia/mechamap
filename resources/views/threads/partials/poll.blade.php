@@ -7,16 +7,16 @@
         $isClosed = $poll->isClosed();
     @endphp
 
-    <div class="card mb-4 poll-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">{{ $poll->question }}</h5>
+    <div class="mb-4 poll-card">
+        <div class="poll-card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 title_page_sub"><i class="fa-solid fa-square-poll-vertical me-1"></i> {{ $poll->question }}</h5>
             @if($isClosed)
                 <span class="badge bg-secondary">{{ __('forum.poll.closed') }}</span>
             @elseif($poll->close_at)
                 <span class="badge bg-info">{{ __('forum.poll.closes_at', ['time' => $poll->close_at->diffForHumans()]) }}</span>
             @endif
         </div>
-        <div class="card-body">
+        <div class="poll-card-body">
             @if(!$hasVoted && !$isClosed && Auth::check())
                 <form action="{{ route('polls.vote', $poll) }}" method="POST">
                     @csrf
@@ -52,11 +52,11 @@
                             $percentage = $totalVotes > 0 ? round(($voteCount / $totalVotes) * 100) : 0;
                         @endphp
                         <div class="mb-3">
-                            <div class="d-flex justify-content-between mb-1">
+                            <div class="d-flex justify-content-between mb-1 poll-results_item">
                                 <span>{{ $option->text }}</span>
-                                <span>{{ $voteCount }} {{ __('forum.poll.votes', ['count' => $voteCount]) }} ({{ $percentage }}%)</span>
+                                <span>{{ $voteCount }} {{ trans_choice('forum.poll.votes', $voteCount) }} ({{ $percentage }}%)</span>
                             </div>
-                            <div class="progress" style="height: 24px;">
+                            <div class="progress" style="height: 20px;">
                                 <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%;"
                                     aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
                                     {{ $percentage }}%
@@ -106,7 +106,7 @@
                 @endif
             @endif
         </div>
-        <div class="card-footer text-muted">
+        <div class="poll-card-footer text-muted">
             @if($poll->show_votes_publicly && $poll->votes()->count() > 0)
                 <div class="voters-list">
                     <small>
@@ -200,26 +200,3 @@
 </script>
 @endpush
 
-<style>
-.poll-card .progress-bar {
-    background-color: #3366CC;
-    transition: width 1s ease-in-out;
-}
-
-.poll-card .card-header {
-    background-color: rgba(51, 102, 204, 0.1);
-}
-
-.poll-card .form-check-input:checked {
-    background-color: #3366CC;
-    border-color: #3366CC;
-}
-
-.dark .poll-card .progress-bar {
-    background-color: #4377d6;
-}
-
-.dark .poll-card .card-header {
-    background-color: rgba(67, 119, 214, 0.2);
-}
-</style>

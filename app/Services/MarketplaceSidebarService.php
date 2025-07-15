@@ -263,7 +263,7 @@ class MarketplaceSidebarService
                 return [
                     'name' => $seller->name,
                     'username' => $seller->username,
-                    'avatar' => $seller->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(strtoupper(substr($seller->name, 0, 1))) . '&background=6366f1&color=fff&size=40',
+                    'avatar' => $seller->avatar ?? route('avatar.generate', ['initial' => strtoupper(substr($seller->name, 0, 1)), 'size' => 40]),
                     'product_count' => $seller->product_count,
                     'total_sales' => $seller->total_sales,
                     'avg_rating' => round($seller->avg_rating, 1),

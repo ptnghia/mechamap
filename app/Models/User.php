@@ -516,9 +516,9 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        // Fallback: Tạo avatar từ chữ cái đầu username
+        // Fallback: Sử dụng avatar generator nội bộ
         $firstLetter = strtoupper(substr($this->username ?: $this->name, 0, 1));
-        return "https://ui-avatars.com/api/?name={$firstLetter}&background=6366f1&color=fff&size=200";
+        return route('avatar.generate', ['initial' => $firstLetter, 'size' => 200]);
     }
 
     /**

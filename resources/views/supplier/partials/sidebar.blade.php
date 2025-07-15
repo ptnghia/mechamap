@@ -3,9 +3,9 @@
     <div class="card-body">
         {{-- User Info --}}
         <div class="text-center mb-4">
-            <img src="{{ auth()->user()->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&color=7F9CF5&background=EBF4FF' }}" 
-                 alt="{{ auth()->user()->name }}" 
-                 class="rounded-circle mb-3" 
+            <img src="{{ auth()->user()->profile_photo_url ?? route('avatar.generate', ['initial' => strtoupper(substr(auth()->user()->name, 0, 1)), 'size' => 80]) }}"
+                 alt="{{ auth()->user()->name }}"
+                 class="rounded-circle mb-3"
                  width="80" height="80"
                  style="object-fit: cover;">
             <h6 class="fw-bold mb-1">{{ auth()->user()->name }}</h6>
@@ -14,31 +14,31 @@
 
         {{-- Navigation Menu --}}
         <nav class="nav flex-column">
-            <a class="nav-link {{ request()->routeIs('supplier.dashboard') ? 'active' : '' }}" 
+            <a class="nav-link {{ request()->routeIs('supplier.dashboard') ? 'active' : '' }}"
                href="{{ route('supplier.dashboard') }}">
                 <i class="fas fa-tachometer-alt me-2"></i>
                 {{ __('navigation.dashboard') }}
             </a>
-            
-            <a class="nav-link {{ request()->routeIs('supplier.products.*') ? 'active' : '' }}" 
+
+            <a class="nav-link {{ request()->routeIs('supplier.products.*') ? 'active' : '' }}"
                href="{{ route('supplier.products.index') }}">
                 <i class="fas fa-box me-2"></i>
                 {{ __('navigation.products') }}
             </a>
-            
-            <a class="nav-link {{ request()->routeIs('supplier.orders.*') ? 'active' : '' }}" 
+
+            <a class="nav-link {{ request()->routeIs('supplier.orders.*') ? 'active' : '' }}"
                href="{{ route('supplier.orders.index') }}">
                 <i class="fas fa-shopping-cart me-2"></i>
                 {{ __('navigation.orders') }}
             </a>
-            
-            <a class="nav-link {{ request()->routeIs('supplier.analytics.*') ? 'active' : '' }}" 
+
+            <a class="nav-link {{ request()->routeIs('supplier.analytics.*') ? 'active' : '' }}"
                href="{{ route('supplier.analytics.index') }}">
                 <i class="fas fa-chart-line me-2"></i>
                 {{ __('navigation.analytics') }}
             </a>
-            
-            <a class="nav-link {{ request()->routeIs('supplier.settings.*') ? 'active' : '' }}" 
+
+            <a class="nav-link {{ request()->routeIs('supplier.settings.*') ? 'active' : '' }}"
                href="{{ route('supplier.settings.index') }}">
                 <i class="fas fa-cog me-2"></i>
                 {{ __('navigation.settings') }}
@@ -56,7 +56,7 @@
                     'revenue' => $seller ? \App\Models\MarketplaceOrderItem::where('seller_id', $seller->id)->sum('total_amount') : 0,
                 ];
             @endphp
-            
+
             <div class="row g-2 text-center">
                 <div class="col-6">
                     <div class="p-2 bg-light rounded">

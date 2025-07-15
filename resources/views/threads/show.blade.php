@@ -3,7 +3,7 @@
 @section('title', $thread->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads/show.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads.css') }}">
 @endpush
 
 @section('content')
@@ -11,9 +11,22 @@
 
     <!-- Main Thread -->
     <div class="detail_thread">
-        <div class="thread-header p-3">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1 class="thread-title">{{ $thread->title }}</h1>
+        <div class="detail_thread_body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center thread_user">
+                    <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
+                        class="rounded-circle me-2" width="40" height="40"
+                        onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+                    <div>
+                        <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
+                            class="fw-bold text-decoration-none">{{
+                            $thread->user->name }}</a>
+                        <div class="text-muted small">
+                            <span>{{ $thread->user->threads_count ?? 0 }} {{ __('thread.posts') }}</span> ·
+                            <span>{{ __('thread.joined') }} {{ $thread->user->created_at->format('M Y') }}</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="thread-actions d-flex gap-2 align-items-center">
                     <x-thread-follow-button :thread="$thread" size="normal" />
                     <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-secondary btn-sm">
@@ -21,50 +34,77 @@
                     </a>
                 </div>
             </div>
-            <div class="thread-meta">
-                <div class="d-flex justify-content-start g-3">
-                    <div class="thread-meta-item">
-                        <i class="fas fa-eye"></i> {{ number_format($thread->view_count) }} Lượt xem
-                    </div>
-                    <div class="thread-meta-item">
-                        <i class="fas fa-comment"></i> {{ number_format($thread->comments_count ?? 0) }} Phản hồi
-                    </div>
-                    <div class="thread-meta-item">
-                        <i class="fas fa-users"></i> {{ number_format($thread->participant_count) }} Người tham gia
-                    </div>
+            <div class="thread-header">
+                <div class="mb-2">
+                    <h1 class="thread-title">{{ $thread->title }}</h1>
                 </div>
-                <div class="thread-meta-item">
-                    <i class="fas fa-clock"></i> Bài viết cuối bởi
-                    <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
-                        {{ $thread->lastCommenter->name ?? $thread->user->name }}
-                    </a>
-                    <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
-                        $thread->created_at->diffForHumans() }}</span>
+                <div class="thread-meta">
+                    <div class="d-flex justify-content-start g-3">
+                        <div class="thread-meta-item">
+                            <i class="fas fa-eye"></i> {{ number_format($thread->view_count) }} {{ __('thread.views') }}
+                        </div>
+                        <div class="thread-meta-item">
+                            <i class="fas fa-comment"></i> {{ number_format($thread->comments_count ?? 0) }} {{ __('thread.replies') }}
+                        </div>
+
+                    </div>
+                    <div class="d-flex align-items-md-center justify-content-end">
+                        <div class="thread-meta-item">
+                            <i class="fas fa-users"></i> {{ number_format($thread->participant_count) }} {{ __('thread.participants') }}
+                        </div>
+                        <div class="thread-meta-item">
+                        <i class="fa-solid fa-calendar-days me-1"></i> {{ $thread->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+
                 </div>
             </div>
+            <!-- Thread Featured Image -->
+            @if($thread->featured_image)
+            <div class="thread-featured-image mb-3">
+                <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded shadow"
+                    style="max-height: 400px; width: 100%; object-fit: cover;"
+                    onerror="this.src='{{ asset('images/placeholder.svg') }}'">
+            </div>
+            @endif
+
+            <!-- Thread Content -->
+            <div class="thread-content">
+                {!! $thread->content !!}
+            </div>
+
+            <!-- Thread Images Gallery -->
+            @if($thread->media && count($thread->media) > 0)
+            <div class="thread-images mt-3">
+                <h6 class="mb-3 title_page_sub">
+                    <i class="fas fa-images me-1"> </i>{{ __('thread.image_gallery_count', ['count' => count($thread->media)]) }}
+                </h6>
+                <div class="row g-3">
+                    @foreach($thread->media as $media)
+                    @if($media->file_category === 'image' || str_starts_with($media->mime_type ?? '', 'image/'))
+                    <div class="col-md-4 col-sm-6 mb-3">
+                        <a href="{{ asset($media->file_path) }}"
+                            data-fancybox="thread-images"
+                            data-caption="{{ $media->file_name }}">
+                            <img src="{{ asset($media->file_path) }}"
+                                alt="{{ $media->file_name }}"
+                                class="img-fluid rounded shadow-sm"
+                                style="width: 100%; height: 200px; object-fit: cover; cursor: pointer;"
+                                onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                        </a>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
+         @include('threads.partials.poll')
     </div>
 
 
-    <div class="card-header d-flex justify-content-between align-items-center" style="border-bottom: none;">
-        <div class="d-flex align-items-center">
-            <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
-                class="rounded-circle me-2" width="40" height="40"
-                onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
-            <div>
-                <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
-                    class="fw-bold text-decoration-none">{{
-                    $thread->user->name }}</a>
-                <div class="text-muted small">
-                    <span>{{ $thread->user->threads_count ?? 0 }} Bài viết</span> ·
-                    <span>Tham gia {{ $thread->user->created_at->format('M Y') }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="text-muted small">
-            #1 · {{ $thread->created_at->diffForHumans() }}
-        </div>
-    </div>
+
+
     <div class="card-body">
         <!-- Project Details -->
         @if($thread->status)
@@ -72,46 +112,11 @@
             @if($thread->status)
             <div><strong>Trạng thái:</strong> {{ $thread->status }}</div>
             @endif
-        </div-->
+        </!--div>
         @endif
 
         <!-- Poll Section -->
-        @include('threads.partials.poll')
 
-        <!-- Thread Featured Image -->
-        @if($thread->featured_image)
-        <div class="thread-featured-image mb-3">
-            <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded shadow"
-                style="max-height: 400px; width: 100%; object-fit: cover;"
-                onerror="this.src='{{ asset('images/placeholder.svg') }}'">
-        </div>
-        @endif
-
-        <!-- Thread Content -->
-        <div class="thread-content">
-            {!! $thread->content !!}
-        </div>
-
-        <!-- Thread Images -->
-        @if($thread->media && count($thread->media) > 0)
-        <div class="thread-images mt-3">
-            <div class="row">
-                @foreach($thread->media as $media)
-                @if(str_starts_with($media->file_type ?? '', 'image/'))
-                <div class="col-md-4 mb-3">
-                    <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                        data-fancybox="thread-images"
-                        data-caption="Thread image">
-                        <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}" alt="Thread image"
-                            class="img-fluid rounded"
-                            onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
-                    </a>
-                </div>
-                @endif
-                @endforeach
-            </div>
-        </div>
-        @endif
     </div>
     <div class="card-footer d-flex justify-content-between">
         <div>
@@ -121,7 +126,7 @@
                 <button type="submit"
                     class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
                     <i class="fas fa-thumbs-up"></i>
-                    Thích
+                    {{ __('thread.like') }}
                     <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
                 </button>
             </form>
@@ -132,7 +137,7 @@
                 <button type="submit"
                     class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }} btn-save">
                     <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
-                    {{ Auth::check() && $isSaved ? 'Đã lưu' : 'Lưu' }}
+                    {{ Auth::check() && $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}
                 </button>
             </form>
 
@@ -146,7 +151,7 @@
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-info btn-theodoi">
                     <i class="fas fa-bell-fill"></i>
-                    Đang theo dõi
+                    {{ __('thread.following') }}
                 </button>
             </form>
             @else
@@ -154,7 +159,7 @@
                 @csrf
                 <button type="submit" class="btn btn-sm btn-outline-info btn-theodoi">
                     <i class="fas fa-bell"></i>
-                    Theo dõi
+                    {{ __('thread.follow') }}
                 </button>
             </form>
             @endif
@@ -165,7 +170,7 @@
             <div class="dropdown d-inline">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle btn-share" type="button"
                     id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-share-alt"></i> Chia sẻ
+                    <i class="fas fa-share-alt"></i> {{ __('thread.share') }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="shareDropdown">
                     <li><a class="dropdown-item"
@@ -181,25 +186,25 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li><a class="dropdown-item" href="#"
-                            onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('Đã sao chép liên kết!'); return false;"><i
-                                class="fas fa-clipboard me-2"></i>Sao chép liên kết</a></li>
+                            onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('{{ __('thread.link_copied') }}'); return false;"><i
+                                class="fas fa-clipboard me-2"></i>{{ __('thread.copy_link') }}</a></li>
                 </ul>
             </div>
 
             <!-- Reply Button -->
             <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
-                <i class="fas fa-reply"></i> Trả lời
+                <i class="fas fa-reply"></i> {{ __('thread.reply') }}
             </a>
 
             <!-- Edit/Delete Buttons (if owner) -->
             @can('update', $thread)
             <div class="btn-group ms-2">
                 <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="fas fa-edit"></i> Chỉnh sửa
+                    <i class="fas fa-edit"></i> {{ __('thread.edit') }}
                 </a>
                 <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                     data-bs-target="#deleteThreadModal">
-                    <i class="fas fa-trash"></i> Xóa
+                    <i class="fas fa-trash"></i> {{ __('thread.delete') }}
                 </button>
             </div>
 
@@ -209,19 +214,19 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="deleteThreadModalLabel">Xác nhận xóa</h5>
+                            <h5 class="modal-title" id="deleteThreadModalLabel">{{ __('thread.delete_confirmation') }}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Bạn có chắc chắn muốn xóa chủ đề này? Hành động này không thể hoàn tác.
+                            {{ __('thread.delete_thread_message') }}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('thread.cancel') }}</button>
                             <form action="{{ route('threads.destroy', $thread) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Xóa chủ đề</button>
+                                <button type="submit" class="btn btn-danger">{{ __('thread.delete_thread_button') }}</button>
                             </form>
                         </div>
                     </div>
@@ -231,137 +236,37 @@
         </div>
     </div>
 
-    <!-- Related Showcase Section -->
-    @if($thread->showcase)
-    <div class="showcase-section mb-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-light">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-star text-warning me-2"></i>
-                    {{ __('showcase.related') }}
-                </h5>
-                <small class="text-muted">{{ __('showcase.for_thread') }}</small>
-            </div>
-    @else
-    <!-- Create Showcase Section -->
-    @auth
-        @if($thread->userCanCreateShowcase(Auth::user()) && $thread->canCreateShowcase())
-        <div class="create-showcase-section mb-4">
-            <div class="card shadow-sm border-success">
-                <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-plus-circle text-success me-2"></i>
-                        Tạo Showcase từ Thread này
-                    </h5>
-                    <small class="text-muted">Chuyển đổi thread thành showcase để highlight dự án của bạn</small>
-                </div>
-                <div class="card-body">
-                    <p class="mb-3">
-                        <i class="fas fa-info-circle text-info me-2"></i>
-                        Showcase sẽ giúp dự án của bạn được nhiều người biết đến hơn và có thể nhận được đánh giá từ cộng đồng.
-                    </p>
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createShowcaseModal">
-                        <i class="fas fa-star me-2"></i>
-                        Tạo Showcase
-                    </button>
-                </div>
-            </div>
-        </div>
-        @endif
-    @endauth
-    @endif
-
-    @if($thread->showcase)
-            <div class="card-body">
-                <div class="row">
-                    <!-- Showcase Image -->
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        @if($thread->showcase->media && $thread->showcase->media->count() > 0)
-                            @php
-                                $firstMedia = $thread->showcase->media->first();
-                            @endphp
-                            <img src="{{ $firstMedia->url ?? asset('storage/' . $firstMedia->file_path) }}"
-                                 alt="{{ $thread->showcase->title }}"
-                                 class="img-fluid rounded shadow-sm"
-                                 style="width: 100%; height: 200px; object-fit: cover;"
-                                 onerror="this.src='{{ asset('images/placeholder.jpg') }}'">
-                        @else
-                            <div class="bg-light rounded d-flex align-items-center justify-content-center"
-                                 style="width: 100%; height: 200px;">
-                                <i class="fas fa-image text-muted fs-1"></i>
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Showcase Content -->
-                    <div class="col-md-8">
-                        <h6 class="fw-bold mb-2">{{ $thread->showcase->title }}</h6>
-
-                        @if($thread->showcase->description)
-                        <p class="text-muted mb-3">{{ Str::limit($thread->showcase->description, 200) }}</p>
-                        @endif
-
-                        <!-- Showcase Meta -->
-                        <div class="showcase-meta mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <img src="{{ get_avatar_url($thread->showcase->user) }}"
-                                     alt="{{ $thread->showcase->user->name }}"
-                                     class="rounded-circle me-2"
-                                     width="24" height="24">
-                                <small class="text-muted">
-                                    {{ __('ui.common.by') }}
-                                    <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
-                                       class="text-decoration-none">
-                                        {{ $thread->showcase->user->name }}
-                                    </a>
-                                </small>
-                            </div>
-                            <small class="text-muted">
-                                <i class="fas fa-clock me-1"></i>
-                                {{ $thread->showcase->created_at->diffForHumans() }}
-                            </small>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="showcase-actions">
-                            <a href="{{ route('showcase.show', $thread->showcase) }}"
-                               class="btn btn-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>
-                                {{ __('ui.actions.view_full_showcase') }}
-                            </a>
-
-                            @if($thread->showcase->showcase_url)
-                            <a href="{{ $thread->showcase->showcase_url }}"
-                               target="_blank"
-                               class="btn btn-outline-secondary btn-sm ms-2">
-                                <i class="fas fa-link me-1"></i>
-                                {{ __('ui.actions.view_details') }}
-                            </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
+    <!-- Showcase Section -->
+    @include('threads.partials.showcase')
 
     <!-- Comments Section -->
     <div class="comments-section mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>{{ $comments->total() }} Phản hồi</h3>
-
+            <div>
+                <h3>{{ $comments->total() }} {{ __('thread.replies') }}</h3>
+                <div class="thread-meta-item me-0">
+                    <i class="fas fa-clock"></i> {{ __('thread.last_post_by') }}
+                    <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
+                        {{ $thread->lastCommenter->name ?? $thread->user->name }}
+                    </a>
+                    <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
+                        $thread->created_at->diffForHumans() }}</span>
+                </div>
+            </div>
             <!-- Sort Options -->
             <div class="btn-group">
                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'oldest']) }}"
-                    class="btn btn-sm {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}">Cũ
-                    nhất</a>
+                    class="btn btn-sm {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ __('thread.sort_oldest') }}
+                </a>
                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}"
-                    class="btn btn-sm {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}">Mới
-                    nhất</a>
+                    class="btn btn-sm {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ __('thread.sort_newest') }}
+                </a>
                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'reactions']) }}"
-                    class="btn btn-sm {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}">Nhiều
-                    tương tác</a>
+                    class="btn btn-sm {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    {{ __('thread.sort_reactions') }}
+                </a>
             </div>
         </div>
 
@@ -372,13 +277,13 @@
                 <div class="d-flex align-items-center">
                     <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}"
                         class="rounded-circle me-2" width="40" height="40"
-                        onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($comment->user->name) }}&color=7F9CF5&background=EBF4FF'">
+                        onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 40]) }}'">
                     <div>
                         <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">{{
                             $comment->user->name }}</a>
                         <div class="text-muted small">
-                            <span>{{ $comment->user->comments_count ?? 0 }} bình luận</span> ·
-                            <span>Tham gia {{ $comment->user->created_at->format('M Y') }}</span>
+                            <span>{{ $comment->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
+                            <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
                         </div>
                     </div>
                 </div>
@@ -466,7 +371,7 @@
                                 <!-- Reply Button -->
                                 <button class="btn btn-sm btn-outline-secondary reply-button"
                                     data-parent-id="{{ $comment->id }}">
-                                    <i class="fas fa-reply"></i> Trả lời
+                                    <i class="fas fa-reply"></i> {{ __('thread.reply') }}
                                 </button>
 
                                 <!-- Edit/Delete Buttons (if owner) -->
@@ -478,7 +383,7 @@
                                     </button>
                                     <form action="{{ route('comments.destroy', $reply) }}" method="POST"
                                         class="d-inline"
-                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa phản hồi này?');">
+                                        onsubmit="return confirm('{{ __('thread.delete_reply_message') }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -511,13 +416,13 @@
                     <!-- Quote Button -->
                     <button class="btn btn-sm btn-outline-secondary quote-button" data-comment-id="{{ $comment->id }}"
                         data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
-                        <i class="fas fa-comment-quote"></i> Trích dẫn
+                        <i class="fas fa-comment-quote"></i> {{ __('thread.quote') }}
                     </button>
 
                     <!-- Reply Button -->
                     <button class="btn btn-sm btn-outline-secondary reply-button ms-2"
                         data-parent-id="{{ $comment->id }}">
-                        <i class="fas fa-reply"></i> Trả lời
+                        <i class="fas fa-reply"></i> {{ __('thread.reply') }}
                     </button>
 
                     <!-- Edit/Delete Buttons (if owner) -->
@@ -528,7 +433,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                         <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline"
-                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                            onsubmit="return confirm('{{ __('thread.delete_comment_message') }}');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -542,7 +447,7 @@
         </div>
         @empty
         <div class="alert alert-info">
-            Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+            {{ __('thread.no_comments') }}
         </div>
         @endforelse
 
@@ -556,7 +461,7 @@
     @auth
     <div class="card" id="reply-form">
         <div class="card-header">
-            <h4>Đăng phản hồi</h4>
+            <h4>{{ __('thread.post_reply') }}</h4>
         </div>
         <div class="card-body">
             <form action="{{ route('threads.comments.store', $thread) }}" method="POST" enctype="multipart/form-data"
@@ -566,21 +471,21 @@
 
                 <div class="mb-3">
                     <label for="content" class="form-label">
-                        <i class="fas fa-comment-text me-2"></i>Nội dung phản hồi <span class="text-danger">*</span>
+                        <i class="fas fa-comment-text me-2"></i>{{ __('thread.reply_content') }} <span class="text-danger">*</span>
                     </label>
                     <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content"
-                        placeholder="Nhập nội dung phản hồi của bạn...">{{ old('content') }}</textarea>
+                        placeholder="{{ __('thread.reply_content_placeholder') }}">{{ old('content') }}</textarea>
                     @error('content')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <div id="content-error" class="invalid-feedback" style="display: none;">
-                        Vui lòng nhập nội dung phản hồi
+                        {{ __('thread.reply_content_required') }}
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="images" class="form-label">
-                        <i class="fas fa-image me-2"></i>Đính kèm hình ảnh (tùy chọn)
+                        <i class="fas fa-image me-2"></i>{{ __('forms.upload.attach_images_optional') }}
                     </label>
 
                     <!-- Custom File Upload Area -->
@@ -591,10 +496,9 @@
                                     <i class="fas fa-cloud-upload-alt"></i>
                                 </div>
                                 <div class="upload-text">
-                                    <h6 class="mb-1">Kéo thả hình ảnh vào đây</h6>
-                                    <p class="text-muted mb-2">hoặc <span class="text-primary fw-semibold">chọn từ máy
-                                            tính</span></p>
-                                    <small class="text-muted">Hỗ trợ: JPG, PNG, GIF (tối đa 5MB mỗi file)</small>
+                                    <h6 class="mb-1">{{ __('forms.upload.drag_drop_here') }}</h6>
+                                    <p class="text-muted mb-2">{{ __('forms.upload.or') }} <span class="text-primary fw-semibold">{{ __('forms.upload.select_from_computer') }}</span></p>
+                                    <small class="text-muted">{{ __('forms.upload.supported_formats', ['size' => '5']) }}</small>
                                 </div>
                             </div>
                             <input type="file" class="file-input" id="images" name="images[]" multiple accept="image/*">
@@ -627,7 +531,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="submit-reply-btn">
-                        <i class="fas fa-paper-plane"></i> Gửi phản hồi
+                        <i class="fas fa-paper-plane"></i> {{ __('thread.send_reply') }}
                     </button>
                 </div>
             </form>
@@ -635,15 +539,17 @@
     </div>
     @else
     <div class="alert alert-info">
-        Vui lòng <a href="{{ route('login') }}">đăng nhập</a> hoặc <a href="{{ route('register') }}">đăng ký</a> để đăng
-        phản hồi.
+        {!! __('thread.login_required', [
+            'login' => '<a href="' . route('login') . '">' . __('thread.login') . '</a>',
+            'register' => '<a href="' . route('register') . '">' . __('thread.register') . '</a>'
+        ]) !!}
     </div>
     @endauth
 
     <!-- Related Threads -->
     @if(count($relatedThreads) > 0)
     <div class="related-threads mt-4">
-        <h3>Chủ đề liên quan</h3>
+        <h3>{{ __('forms.related.related_topics') }}</h3>
         <div class="list-group">
             @foreach($relatedThreads as $relatedThread)
             <a href="{{ route('threads.show', $relatedThread) }}" class="list-group-item list-group-item-action">
@@ -729,9 +635,9 @@ function initializeTinyMCE() {
         setup: function(editor) {
             // Custom Quote Button
             editor.ui.registry.addButton('quote', {
-                text: 'Trích dẫn',
+                text: '{{ __('forms.upload.quote') }}',
                 icon: 'quote',
-                tooltip: 'Thêm trích dẫn',
+                tooltip: '{{ __('forms.upload.add_quote') }}',
                 onAction: function() {
                     editor.insertContent('<blockquote><p>Nội dung trích dẫn...</p></blockquote><p><br></p>');
                 }
@@ -1098,7 +1004,7 @@ function initializeFormSubmission() {
 
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Đang gửi...';
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>{{ __('thread.sending') }}';
 
         // Submit form
         try {
@@ -1108,9 +1014,9 @@ function initializeFormSubmission() {
 
             // Reset button state
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Gửi phản hồi';
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> {{ __('thread.send_reply') }}';
 
-            alert('Có lỗi xảy ra khi gửi phản hồi. Vui lòng thử lại.');
+            alert('{{ __('thread.form_submission_error') }}');
         }
     });
 
@@ -1285,209 +1191,8 @@ function initializeEventHandlers() {
 </script>
 @endpush
 
-<!-- Create Showcase Modal -->
-@auth
-@if($thread->userCanCreateShowcase(Auth::user()) && $thread->canCreateShowcase())
-<div class="modal fade" id="createShowcaseModal" tabindex="-1" aria-labelledby="createShowcaseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="createShowcaseForm" action="{{ route('threads.create-showcase', $thread) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createShowcaseModalLabel">
-                        <i class="fas fa-star text-warning me-2"></i>
-                        Tạo Showcase từ Thread
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Progress Steps -->
-                    <div class="progress mb-4" style="height: 6px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 33%" id="progressBar"></div>
-                    </div>
 
-                    <div class="steps-indicator mb-4">
-                        <div class="d-flex justify-content-between">
-                            <div class="step active" data-step="1">
-                                <div class="step-number">1</div>
-                                <div class="step-label">Thông tin cơ bản</div>
-                            </div>
-                            <div class="step" data-step="2">
-                                <div class="step-number">2</div>
-                                <div class="step-label">Nội dung</div>
-                            </div>
-                            <div class="step" data-step="3">
-                                <div class="step-number">3</div>
-                                <div class="step-label">Hoàn tất</div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Step 1: Basic Information -->
-                    <div class="step-content" id="step1">
-                        <h6 class="mb-3">Bước 1: Thông tin cơ bản</h6>
-
-                        <div class="mb-3">
-                            <label for="showcase_title" class="form-label">Tiêu đề Showcase <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="showcase_title" name="title"
-                                   value="{{ $thread->title }}" required>
-                            <div class="form-text">Tiêu đề sẽ được sử dụng làm tên showcase</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="showcase_category" class="form-label">Danh mục <span class="text-danger">*</span></label>
-                            <select class="form-select" id="showcase_category" name="category" required>
-                                <option value="">Chọn danh mục</option>
-                                <option value="Thiết kế Cơ khí" {{ $thread->category && $thread->category->name == 'Thiết kế Cơ khí' ? 'selected' : '' }}>Thiết kế Cơ khí</option>
-                                <option value="Công nghệ Chế tạo" {{ $thread->category && $thread->category->name == 'Công nghệ Chế tạo' ? 'selected' : '' }}>Công nghệ Chế tạo</option>
-                                <option value="Vật liệu Kỹ thuật" {{ $thread->category && $thread->category->name == 'Vật liệu Kỹ thuật' ? 'selected' : '' }}>Vật liệu Kỹ thuật</option>
-                                <option value="Tự động hóa & Robotics" {{ $thread->category && $thread->category->name == 'Tự động hóa & Robotics' ? 'selected' : '' }}>Tự động hóa & Robotics</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="project_type" class="form-label">Loại dự án</label>
-                            <select class="form-select" id="project_type" name="project_type">
-                                <option value="">Chọn loại dự án</option>
-                                <option value="Design Project">Design Project</option>
-                                <option value="Manufacturing">Manufacturing</option>
-                                <option value="Analysis & Simulation">Analysis & Simulation</option>
-                                <option value="Research & Development">Research & Development</option>
-                                <option value="Case Study">Case Study</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Content -->
-                    <div class="step-content d-none" id="step2">
-                        <h6 class="mb-3">Bước 2: Nội dung Showcase</h6>
-
-                        <div class="mb-3">
-                            <label for="showcase_description" class="form-label">Mô tả dự án <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="showcase_description" name="description" rows="6" required>{{ strip_tags($thread->content) }}</textarea>
-                            <div class="form-text">Mô tả chi tiết về dự án, phương pháp và kết quả đạt được</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="cover_image" class="form-label">Ảnh đại diện <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" id="cover_image" name="cover_image"
-                                   accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" required>
-                            <div class="form-text">Chọn ảnh đại diện cho showcase (JPG, PNG, GIF, WebP - tối đa 5MB)</div>
-                            @if($thread->featured_image)
-                            <div class="mt-2">
-                                <small class="text-muted">Ảnh hiện tại từ thread:</small><br>
-                                <img src="{{ asset('storage/' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
-                            </div>
-                            @endif
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="complexity_level" class="form-label">Mức độ phức tạp</label>
-                                    <select class="form-select" id="complexity_level" name="complexity_level">
-                                        <option value="Beginner">Beginner</option>
-                                        <option value="Intermediate" selected>Intermediate</option>
-                                        <option value="Advanced">Advanced</option>
-                                        <option value="Expert">Expert</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="industry_application" class="form-label">Ứng dụng ngành</label>
-                                    <input type="text" class="form-control" id="industry_application" name="industry_application"
-                                           placeholder="VD: Automotive, Aerospace, Manufacturing">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Confirmation -->
-                    <div class="step-content d-none" id="step3">
-                        <h6 class="mb-3">Bước 3: Xác nhận tạo Showcase</h6>
-
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <strong>Xác nhận thông tin:</strong>
-                            <ul class="mb-0 mt-2">
-                                <li>Showcase sẽ được tạo từ nội dung thread hiện tại</li>
-                                <li>Thread gốc vẫn được giữ nguyên</li>
-                                <li>Showcase có thể được chỉnh sửa sau khi tạo</li>
-                                <li>Cộng đồng có thể đánh giá và bình luận về showcase</li>
-                            </ul>
-                        </div>
-
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="agree_terms" name="agree_terms" required>
-                            <label class="form-check-label" for="agree_terms">
-                                Tôi đồng ý cho phép cộng đồng xem và đánh giá showcase này
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
-                        <i class="fas fa-arrow-left me-2"></i>Trước
-                    </button>
-                    <button type="button" class="btn btn-primary" id="nextBtn">
-                        Tiếp theo<i class="fas fa-arrow-right ms-2"></i>
-                    </button>
-                    <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-                        <i class="fas fa-star me-2"></i>Tạo Showcase
-                    </button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endif
-@endauth
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/threads/show.css') }}">
-<style>
-.steps-indicator .step {
-    text-align: center;
-    flex: 1;
-}
-
-.steps-indicator .step-number {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #e9ecef;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 8px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.steps-indicator .step.active .step-number {
-    background-color: #198754;
-    color: white;
-}
-
-.steps-indicator .step.completed .step-number {
-    background-color: #20c997;
-    color: white;
-}
-
-.steps-indicator .step-label {
-    font-size: 12px;
-    color: #6c757d;
-}
-
-.steps-indicator .step.active .step-label {
-    color: #198754;
-    font-weight: 600;
-}
-</style>
-@endpush
 
 @push('scripts')
 <script>
@@ -1495,197 +1200,6 @@ function initializeEventHandlers() {
     document.addEventListener('DOMContentLoaded', function() {
         // Thread-specific Fancybox configuration
         console.log('Thread images ready for Fancybox');
-
-        // Showcase creation wizard
-        initShowcaseWizard();
     });
-
-    function initShowcaseWizard() {
-        let currentStep = 1;
-        const totalSteps = 3;
-
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        const progressBar = document.getElementById('progressBar');
-
-        if (!nextBtn) return; // Exit if modal doesn't exist
-
-        // Next button click
-        nextBtn.addEventListener('click', function() {
-            if (validateStep(currentStep)) {
-                if (currentStep < totalSteps) {
-                    currentStep++;
-                    showStep(currentStep);
-                    updateProgress();
-                    updateButtons();
-                }
-            }
-        });
-
-        // Previous button click
-        prevBtn.addEventListener('click', function() {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep(currentStep);
-                updateProgress();
-                updateButtons();
-            }
-        });
-
-        function showStep(step) {
-            // Hide all steps
-            document.querySelectorAll('.step-content').forEach(content => {
-                content.classList.add('d-none');
-            });
-
-            // Show current step
-            document.getElementById('step' + step).classList.remove('d-none');
-
-            // Update step indicators
-            document.querySelectorAll('.step').forEach((stepEl, index) => {
-                stepEl.classList.remove('active', 'completed');
-                if (index + 1 === step) {
-                    stepEl.classList.add('active');
-                } else if (index + 1 < step) {
-                    stepEl.classList.add('completed');
-                }
-            });
-        }
-
-        function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            progressBar.style.width = progress + '%';
-        }
-
-        function updateButtons() {
-            // Previous button
-            prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
-
-            // Next/Submit buttons
-            if (currentStep === totalSteps) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'inline-block';
-            } else {
-                nextBtn.style.display = 'inline-block';
-                submitBtn.style.display = 'none';
-            }
-        }
-
-        function validateStep(step) {
-            let isValid = true;
-
-            if (step === 1) {
-                // Validate step 1
-                const title = document.getElementById('showcase_title').value.trim();
-                const category = document.getElementById('showcase_category').value;
-
-                if (!title) {
-                    showError('showcase_title', 'Vui lòng nhập tiêu đề showcase');
-                    isValid = false;
-                }
-
-                if (!category) {
-                    showError('showcase_category', 'Vui lòng chọn danh mục');
-                    isValid = false;
-                }
-            } else if (step === 2) {
-                // Validate step 2
-                const description = document.getElementById('showcase_description').value.trim();
-                const coverImage = document.getElementById('cover_image').files[0];
-
-                if (!description) {
-                    showError('showcase_description', 'Vui lòng nhập mô tả dự án');
-                    isValid = false;
-                }
-
-                if (!coverImage) {
-                    showError('cover_image', 'Vui lòng chọn ảnh đại diện');
-                    isValid = false;
-                } else {
-                    // Validate file size (5MB)
-                    if (coverImage.size > 5 * 1024 * 1024) {
-                        showError('cover_image', 'Kích thước file không được vượt quá 5MB');
-                        isValid = false;
-                    }
-                }
-            } else if (step === 3) {
-                // Validate step 3
-                const agreeTerms = document.getElementById('agree_terms').checked;
-
-                if (!agreeTerms) {
-                    showError('agree_terms', 'Vui lòng đồng ý với điều khoản');
-                    isValid = false;
-                }
-            }
-
-            return isValid;
-        }
-
-        function showError(fieldId, message) {
-            const field = document.getElementById(fieldId);
-
-            // Remove existing error
-            const existingError = field.parentNode.querySelector('.text-danger');
-            if (existingError) {
-                existingError.remove();
-            }
-
-            // Add error class
-            field.classList.add('is-invalid');
-
-            // Add error message
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'text-danger mt-1';
-            errorDiv.textContent = message;
-            field.parentNode.appendChild(errorDiv);
-
-            // Remove error on input
-            field.addEventListener('input', function() {
-                field.classList.remove('is-invalid');
-                const errorMsg = field.parentNode.querySelector('.text-danger');
-                if (errorMsg) {
-                    errorMsg.remove();
-                }
-            }, { once: true });
-        }
-
-        // Form submission
-        document.getElementById('createShowcaseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            if (validateStep(currentStep)) {
-                // Show loading
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...';
-                submitBtn.disabled = true;
-
-                // Submit form
-                this.submit();
-            }
-        });
-
-        // Reset form when modal is hidden
-        document.getElementById('createShowcaseModal').addEventListener('hidden.bs.modal', function() {
-            currentStep = 1;
-            showStep(1);
-            updateProgress();
-            updateButtons();
-
-            // Reset form
-            document.getElementById('createShowcaseForm').reset();
-
-            // Remove validation errors
-            document.querySelectorAll('.is-invalid').forEach(field => {
-                field.classList.remove('is-invalid');
-            });
-            document.querySelectorAll('.text-danger').forEach(error => {
-                error.remove();
-            });
-
-            // Reset submit button
-            submitBtn.innerHTML = '<i class="fas fa-star me-2"></i>Tạo Showcase';
-            submitBtn.disabled = false;
-        });
-    }
 </script>
 @endpush

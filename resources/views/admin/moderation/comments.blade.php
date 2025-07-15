@@ -291,7 +291,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ $comment->user->avatar ?? 'https://ui-avatars.cc/api/?name=' . urlencode($comment->user->name) }}"
+                                            <img src="{{ $comment->user->avatar ?? route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 32]) }}"
                                                 alt="Avatar" class="rounded-circle me-2"
                                                 style="width: 32px; height: 32px;">
                                             <div>

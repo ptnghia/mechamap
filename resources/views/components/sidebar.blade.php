@@ -95,7 +95,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                         <div class="flex-shrink-0 me-2">
                             <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
                                 class="rounded-circle" width="32" height="32"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($thread->user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'"
+                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1)), 'size' => 32]) }}'"
                         </div>
                         <div>
                             <h6 class="mb-1 text-truncate" style="max-width: 100%;">{{ $thread->title }}</h6>
@@ -177,7 +177,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                         <div class="flex-shrink-0 me-2">
                             <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle"
                                 width="32" height="32"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'"
+                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1)), 'size' => 32]) }}'"
                         </div>
                         <div>
                             <h6 class="mb-1">{{ $user->name }}</h6>
@@ -231,9 +231,9 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                             $imageUrl = asset('storage/' . $cleanPath);
                         }
                     } else {
-                        // Fallback về UI Avatars nếu không có ảnh
-                        $imageUrl = 'https://ui-avatars.com/api/?name=' . urlencode(substr($forum->name, 0, 2)) .
-                        '&background=random&color=fff&size=40';
+                        // Fallback về avatar generator nội bộ nếu không có ảnh
+                        $forumInitials = strtoupper(substr($forum->name, 0, 2));
+                        $imageUrl = route('avatar.generate', ['initial' => $forumInitials, 'size' => 40]);
                     }
                     @endphp
                     <img src="{{ $imageUrl }}" alt="{{ $forum->name }}" class="rounded shadow-sm" width="40" height="40"
