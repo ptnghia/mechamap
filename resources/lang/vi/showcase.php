@@ -73,6 +73,21 @@ return [
     'project_type' => 'Loại dự án',
     'view_category_showcases' => 'Xem tất cả dự án :category',
 
+    // Sidebar
+    'project_showcase' => 'Dự Án Showcase',
+    'discover_engineering_projects' => 'Khám phá các dự án kỹ thuật cơ khí',
+    'total_projects' => 'Tổng dự án',
+    'downloads' => 'Lượt tải',
+    'avg_rating' => 'Đánh giá TB',
+    'total_views' => 'Lượt xem',
+    'create_project' => 'Tạo dự án',
+    'popular_categories' => 'Danh mục phổ biến',
+    'projects' => 'dự án',
+    'featured_projects' => 'Dự án nổi bật',
+    'popular_software' => 'Phần mềm phổ biến',
+    'top_contributors' => 'Người đóng góp hàng đầu',
+    'views' => 'lượt xem',
+
     // Features
     'features' => [
         'cad' => 'CAD',

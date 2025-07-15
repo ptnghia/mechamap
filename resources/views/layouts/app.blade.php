@@ -178,7 +178,6 @@
 
             // Public pages
             'showcase.index',
-            'showcase.public',
             'subscription.index',
             'business.index',
             'business.services',

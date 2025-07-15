@@ -283,6 +283,29 @@ return [
         'rejected' => 'Bị từ chối',
     ],
 
+    // Sidebar specific
+    'engineering_marketplace' => 'Thị Trường Kỹ Thuật',
+    'buy_sell_engineering_products' => 'Mua bán sản phẩm kỹ thuật cơ khí',
+    'total_products' => 'Tổng sản phẩm',
+    'total_sales' => 'Tổng giao dịch',
+    'avg_price_vnd' => 'Giá TB (VND)',
+    'active_sellers' => 'Người bán',
+    'list_product' => 'Đăng bán sản phẩm',
+    'join_marketplace' => 'Tham gia thị trường',
+    'product_categories' => 'Danh mục sản phẩm',
+    'hot_products' => 'Sản phẩm hot',
+    'product_types' => [
+        'digital' => 'Sản phẩm số',
+        'new_product' => 'Sản phẩm mới',
+        'used_product' => 'Sản phẩm cũ',
+    ],
+    'sales' => 'lượt bán',
+    'top_sellers' => 'Người bán hàng đầu',
+    'payment_methods' => 'Phương thức thanh toán',
+    'international_cards' => 'Thẻ quốc tế',
+    'vietnam_banking' => 'Ngân hàng Việt Nam',
+    'secure_payment_guarantee' => 'Đảm bảo thanh toán an toàn',
+
     // Common
     'required' => 'bắt buộc',
     'optional' => 'tùy chọn',

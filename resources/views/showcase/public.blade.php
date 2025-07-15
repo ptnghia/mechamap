@@ -5,27 +5,24 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
+<link rel="stylesheet" href="{{ asset('css/frontend/components/sidebar-showcase.css') }}">
 @endpush
 
-@section('full-width-content')
-<!-- Page Header with Bootstrap 5 -->
-<div class="bg-light py-4 mb-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="display-6 fw-bold text-primary mb-2">{{ __('showcase.public_showcases') }}</h1>
-                <p class="lead text-muted mb-0">{{ __('showcase.page_description') }}</p>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <a href="{{ route('showcase.create') }}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-plus me-2"></i>{{ __('showcase.create_new') }}
-                </a>
-            </div>
+@section('content')
+<!-- Page Header -->
+<div class="bg-light py-3 mb-4 mx-n3">
+    <div class="row align-items-center">
+        <div class="col-8">
+            <h1 class="h3 fw-bold text-primary mb-1">{{ __('showcase.public_showcases') }}</h1>
+            <p class="text-muted mb-0 small">{{ __('showcase.page_description') }}</p>
+        </div>
+        <div class="col-4 text-end">
+            <a href="{{ route('showcase.create') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>{{ __('showcase.create_new') }}
+            </a>
         </div>
     </div>
 </div>
-
-<div class="container">
     <!-- SECTION 2: CATEGORIES GRID with Bootstrap 5 -->
     <section class="mb-5">
         <div class="d-flex align-items-center mb-4">

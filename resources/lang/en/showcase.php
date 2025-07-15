@@ -88,6 +88,19 @@ return [
         'analysis' => 'Analysis',
     ],
 
+    // Sidebar specific
+    'project_showcase' => 'Project Showcase',
+    'discover_engineering_projects' => 'Discover engineering projects',
+    'total_projects' => 'Total Projects',
+    'downloads' => 'Downloads',
+    'total_views' => 'Total Views',
+    'create_project' => 'Create Project',
+    'popular_categories' => 'Popular Categories',
+    'projects' => 'projects',
+    'popular_software' => 'Popular Software',
+    'top_contributors' => 'Top Contributors',
+    'views' => 'views',
+
     // Legacy keys for backward compatibility
     'beginner' => 'Beginner',
     'intermediate' => 'Intermediate',

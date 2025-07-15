@@ -8,14 +8,32 @@
 @php
 $currentRoute = Route::currentRouteName();
 $isProfessionalMode = request()->get('professional', true); // Enable by default
+
+// Determine sidebar type based on current route
+$sidebarType = 'default';
+if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), 'showcase')) {
+    $sidebarType = 'showcase';
+} elseif (str_contains($currentRoute, 'marketplace') || str_contains(request()->path(), 'marketplace')) {
+    $sidebarType = 'marketplace';
+} elseif ($currentRoute === 'threads.create') {
+    $sidebarType = 'thread-creation';
+} elseif ($isProfessionalMode) {
+    $sidebarType = 'professional';
+}
 @endphp
 
-@if($isProfessionalMode)
-<!-- Professional Engineering Sidebar -->
-@include('components.sidebar-professional', ['user' => auth()->user()])
-@elseif($currentRoute === 'threads.create')
+@if($sidebarType === 'showcase')
+<!-- Showcase Sidebar -->
+@include('components.sidebar-showcase', ['user' => auth()->user()])
+@elseif($sidebarType === 'marketplace')
+<!-- Marketplace Sidebar -->
+@include('components.sidebar-marketplace', ['user' => auth()->user()])
+@elseif($sidebarType === 'thread-creation')
 <!-- Sidebar chuyên dụng cho trang tạo threads -->
 @include('components.thread-creation-sidebar')
+@elseif($sidebarType === 'professional')
+<!-- Professional Engineering Sidebar -->
+@include('components.sidebar-professional', ['user' => auth()->user()])
 @else
 <!-- Sidebar thông thường -->
 <div class="sidebar-container">
