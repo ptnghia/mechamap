@@ -287,6 +287,10 @@ Route::prefix('v1')->group(function () {
 
     // Search routes (public)
     Route::prefix('search')->group(function () {
+        // Unified search for header AJAX
+        Route::get('/unified', [App\Http\Controllers\Api\UnifiedSearchController::class, 'search'])->name('api.search.unified');
+
+        // Legacy specific searches
         Route::get('/threads', [App\Http\Controllers\Api\SearchController::class, 'searchThreads']);
         Route::get('/users', [App\Http\Controllers\Api\SearchController::class, 'searchUsers']);
         Route::get('/tags', [App\Http\Controllers\Api\SearchController::class, 'searchTags']);

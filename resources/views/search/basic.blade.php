@@ -50,6 +50,21 @@
                                     <option value="users" {{ $type === 'users' ? 'selected' : '' }}>
                                         {{ __('search.users_only') }}
                                     </option>
+                                    <option value="products" {{ $type === 'products' ? 'selected' : '' }}>
+                                        {{ __('search.products_only') }}
+                                    </option>
+                                    <option value="showcases" {{ $type === 'showcases' ? 'selected' : '' }}>
+                                        {{ __('search.showcases_only') }}
+                                    </option>
+                                    <option value="documentation" {{ $type === 'documentation' ? 'selected' : '' }}>
+                                        {{ __('search.documentation_only') }}
+                                    </option>
+                                    <option value="materials" {{ $type === 'materials' ? 'selected' : '' }}>
+                                        {{ __('search.materials_only') }}
+                                    </option>
+                                    <option value="cad_files" {{ $type === 'cad_files' ? 'selected' : '' }}>
+                                        {{ __('search.cad_files_only') }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -95,6 +110,61 @@
                                         role="tab">
                                     <i class="fas fa-users me-1"></i>
                                     {{ __('search.users') }} ({{ $users->count() }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $type === 'products' ? 'active' : '' }}"
+                                        id="products-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#products"
+                                        type="button"
+                                        role="tab">
+                                    <i class="fas fa-shopping-cart me-1"></i>
+                                    {{ __('search.products') }} ({{ $products->count() }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $type === 'showcases' ? 'active' : '' }}"
+                                        id="showcases-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#showcases"
+                                        type="button"
+                                        role="tab">
+                                    <i class="fas fa-trophy me-1"></i>
+                                    {{ __('search.showcases') }} ({{ $showcases->count() }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $type === 'documentation' ? 'active' : '' }}"
+                                        id="documentation-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#documentation"
+                                        type="button"
+                                        role="tab">
+                                    <i class="fas fa-book me-1"></i>
+                                    {{ __('search.documentation') }} ({{ $documentation->count() }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $type === 'materials' ? 'active' : '' }}"
+                                        id="materials-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#materials"
+                                        type="button"
+                                        role="tab">
+                                    <i class="fas fa-atom me-1"></i>
+                                    {{ __('search.materials') }} ({{ $materials->count() }})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $type === 'cad_files' ? 'active' : '' }}"
+                                        id="cad-files-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#cad-files"
+                                        type="button"
+                                        role="tab">
+                                    <i class="fas fa-file-alt me-1"></i>
+                                    {{ __('search.cad_files') }} ({{ $cadFiles->count() }})
                                 </button>
                             </li>
                         </ul>
@@ -258,6 +328,267 @@
                                     <div class="text-center py-4">
                                         <i class="fas fa-search fa-3x text-muted mb-3"></i>
                                         <h5 class="text-muted">{{ __('search.no_users_found') }}</h5>
+                                        <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Products Tab -->
+                            <div class="tab-pane fade {{ $type === 'products' ? 'show active' : '' }}"
+                                 id="products"
+                                 role="tabpanel">
+                                @if($products->count() > 0)
+                                    <div class="row">
+                                        @foreach($products as $product)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <div class="flex-shrink-0">
+                                                                <img src="{{ $product->getFirstImageUrl() }}"
+                                                                     alt="{{ $product->name }}"
+                                                                     class="rounded"
+                                                                     width="80"
+                                                                     height="80">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6 class="mb-2">
+                                                                    <a href="{{ route('marketplace.products.show', $product) }}"
+                                                                       class="text-decoration-none">
+                                                                        {{ $product->name }}
+                                                                    </a>
+                                                                </h6>
+                                                                <p class="text-muted small mb-2">
+                                                                    {{ Str::limit(strip_tags($product->description), 100) }}
+                                                                </p>
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="text-muted small">
+                                                                        <i class="fas fa-tag me-1"></i>
+                                                                        {{ number_format($product->price) }} VNĐ
+                                                                        <span class="mx-2">•</span>
+                                                                        <i class="fas fa-store me-1"></i>
+                                                                        {{ $product->seller->name ?? 'N/A' }}
+                                                                    </div>
+                                                                    <span class="badge bg-primary">{{ $product->type }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">{{ __('search.no_products_found') }}</h5>
+                                        <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Showcases Tab -->
+                            <div class="tab-pane fade {{ $type === 'showcases' ? 'show active' : '' }}"
+                                 id="showcases"
+                                 role="tabpanel">
+                                @if($showcases->count() > 0)
+                                    <div class="row">
+                                        @foreach($showcases as $showcase)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <div class="flex-shrink-0">
+                                                                <img src="{{ $showcase->getCoverImageUrl() }}"
+                                                                     alt="{{ $showcase->title }}"
+                                                                     class="rounded"
+                                                                     width="80"
+                                                                     height="80">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6 class="mb-2">
+                                                                    <a href="{{ route('showcase.show', $showcase) }}"
+                                                                       class="text-decoration-none">
+                                                                        {{ $showcase->title }}
+                                                                    </a>
+                                                                </h6>
+                                                                <p class="text-muted small mb-2">
+                                                                    {{ Str::limit(strip_tags($showcase->description), 100) }}
+                                                                </p>
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="text-muted small">
+                                                                        <i class="fas fa-user me-1"></i>
+                                                                        {{ $showcase->user->name }}
+                                                                        <span class="mx-2">•</span>
+                                                                        <i class="fas fa-eye me-1"></i>
+                                                                        {{ $showcase->view_count }}
+                                                                        <span class="mx-2">•</span>
+                                                                        <i class="fas fa-heart me-1"></i>
+                                                                        {{ $showcase->like_count }}
+                                                                    </div>
+                                                                    <span class="badge bg-success">{{ $showcase->category }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">{{ __('search.no_showcases_found') }}</h5>
+                                        <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Documentation Tab -->
+                            <div class="tab-pane fade {{ $type === 'documentation' ? 'show active' : '' }}"
+                                 id="documentation"
+                                 role="tabpanel">
+                                @if($documentation->count() > 0)
+                                    @foreach($documentation as $doc)
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0">
+                                                        <i class="fas fa-file-alt fa-3x text-primary"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-2">
+                                                            <a href="{{ route('documentation.show', $doc) }}"
+                                                               class="text-decoration-none">
+                                                                {{ $doc->title }}
+                                                            </a>
+                                                        </h6>
+                                                        <p class="text-muted mb-2">
+                                                            {{ Str::limit(strip_tags($doc->excerpt ?? $doc->content), 200) }}
+                                                        </p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="text-muted small">
+                                                                <i class="fas fa-user me-1"></i>
+                                                                {{ $doc->author->name ?? 'N/A' }}
+                                                                <span class="mx-2">•</span>
+                                                                <i class="fas fa-folder me-1"></i>
+                                                                {{ $doc->category->name ?? 'N/A' }}
+                                                                <span class="mx-2">•</span>
+                                                                <i class="fas fa-eye me-1"></i>
+                                                                {{ $doc->view_count }}
+                                                            </div>
+                                                            <span class="badge bg-info">{{ $doc->content_type }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">{{ __('search.no_documentation_found') }}</h5>
+                                        <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Materials Tab -->
+                            <div class="tab-pane fade {{ $type === 'materials' ? 'show active' : '' }}"
+                                 id="materials"
+                                 role="tabpanel">
+                                @if($materials->count() > 0)
+                                    <div class="row">
+                                        @foreach($materials as $material)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h6 class="mb-2">
+                                                            <a href="{{ route('materials.show', $material) }}"
+                                                               class="text-decoration-none">
+                                                                {{ $material->name }}
+                                                            </a>
+                                                        </h6>
+                                                        <p class="text-muted small mb-2">
+                                                            <strong>{{ $material->code }}</strong> - {{ $material->category }}
+                                                        </p>
+                                                        <p class="text-muted small mb-2">
+                                                            {{ Str::limit(strip_tags($material->description), 100) }}
+                                                        </p>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="text-muted small">
+                                                                <i class="fas fa-weight-hanging me-1"></i>
+                                                                {{ $material->density }} kg/m³
+                                                                @if($material->yield_strength)
+                                                                    <span class="mx-2">•</span>
+                                                                    <i class="fas fa-bolt me-1"></i>
+                                                                    {{ $material->yield_strength }} MPa
+                                                                @endif
+                                                            </div>
+                                                            <span class="badge bg-warning">{{ $material->material_type }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">{{ __('search.no_materials_found') }}</h5>
+                                        <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- CAD Files Tab -->
+                            <div class="tab-pane fade {{ $type === 'cad_files' ? 'show active' : '' }}"
+                                 id="cad-files"
+                                 role="tabpanel">
+                                @if($cadFiles->count() > 0)
+                                    <div class="row">
+                                        @foreach($cadFiles as $cadFile)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <div class="flex-shrink-0">
+                                                                <i class="fas fa-cube fa-3x text-success"></i>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6 class="mb-2">
+                                                                    <a href="{{ route('cad-files.show', $cadFile) }}"
+                                                                       class="text-decoration-none">
+                                                                        {{ $cadFile->name }}
+                                                                    </a>
+                                                                </h6>
+                                                                <p class="text-muted small mb-2">
+                                                                    {{ Str::limit(strip_tags($cadFile->description), 100) }}
+                                                                </p>
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="text-muted small">
+                                                                        <i class="fas fa-user me-1"></i>
+                                                                        {{ $cadFile->user->name }}
+                                                                        <span class="mx-2">•</span>
+                                                                        <i class="fas fa-download me-1"></i>
+                                                                        {{ $cadFile->download_count }}
+                                                                        <span class="mx-2">•</span>
+                                                                        <i class="fas fa-file me-1"></i>
+                                                                        {{ $cadFile->file_size_human }}
+                                                                    </div>
+                                                                    <span class="badge bg-secondary">{{ $cadFile->cad_software }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">{{ __('search.no_cad_files_found') }}</h5>
                                         <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
                                     </div>
                                 @endif

@@ -291,12 +291,14 @@ function initSearch() {
         searchResultsContent.innerHTML = '';
         const results = data.results;
 
+        // Check if we have any results
         const hasThreads = results.threads && results.threads.length > 0;
-        const hasPosts = results.posts && results.posts.length > 0;
-        const hasForum = results.forum;
-        const hasThread = results.thread;
+        const hasShowcases = results.showcases && results.showcases.length > 0;
+        const hasProducts = results.products && results.products.length > 0;
+        const hasUsers = results.users && results.users.length > 0;
+        const totalResults = results.meta ? results.meta.total : 0;
 
-        if (!hasThreads && !hasPosts && !hasForum && !hasThread) {
+        if (totalResults === 0) {
             searchResultsContent.innerHTML = `
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>No results found for "${searchInput.value}".
@@ -312,44 +314,46 @@ function initSearch() {
 
         let resultsHTML = '';
 
-        if (hasThread) {
-            resultsHTML += `
-                <div class="search-result-section">
-                    <div class="search-result-section-title">Thread</div>
-                    <div class="search-result-item">
-                        <div class="search-result-item-title">
-                            <a href="${results.thread.url}">${results.thread.title}</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+        // Display results count
+        resultsHTML += `
+            <div class="search-results-header p-2 border-bottom">
+                <small class="text-muted">Tìm thấy ${totalResults} kết quả</small>
+            </div>
+        `;
 
-        if (hasForum) {
-            resultsHTML += `
-                <div class="search-result-section">
-                    <div class="search-result-section-title">Forum</div>
-                    <div class="search-result-item">
-                        <div class="search-result-item-title">
-                            <a href="${results.forum.url}">${results.forum.name}</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
+        // Display Threads (Thảo luận)
         if (hasThreads) {
-            resultsHTML += `<div class="search-result-section"><div class="search-result-section-title">Threads</div>`;
+            resultsHTML += `
+                <div class="search-result-section">
+                    <div class="search-result-section-title">
+                        <i class="fas fa-comments me-2"></i>Thảo luận
+                    </div>
+            `;
             results.threads.forEach(thread => {
                 resultsHTML += `
                     <div class="search-result-item">
-                        <div class="search-result-item-title">
-                            <a href="${thread.url}">${thread.title}</a>
-                        </div>
-                        <div class="search-result-item-content">${thread.content}</div>
-                        <div class="search-result-item-meta">
-                            by <a href="/users/${thread.user.username}">${thread.user.name}</a>
-                            ${thread.forum ? `in <a href="${thread.forum.url}">${thread.forum.name}</a>` : ''}
+                        <div class="d-flex">
+                            <img src="${thread.author.avatar}" alt="${thread.author.name}" class="search-result-avatar me-2">
+                            <div class="flex-grow-1">
+                                <div class="search-result-item-title">
+                                    <a href="${thread.url}">${thread.title}</a>
+                                </div>
+                                <div class="search-result-item-content">${thread.excerpt}</div>
+                                <div class="search-result-item-meta">
+                                    <span class="me-2">
+                                        <i class="fas fa-user me-1"></i>${thread.author.name}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-folder me-1"></i>${thread.forum.name}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-comments me-1"></i>${thread.stats.comments}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-eye me-1"></i>${thread.stats.views}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -357,15 +361,38 @@ function initSearch() {
             resultsHTML += `</div>`;
         }
 
-        if (hasPosts) {
-            resultsHTML += `<div class="search-result-section"><div class="search-result-section-title">Posts</div>`;
-            results.posts.forEach(post => {
+        // Display Showcases (Dự án)
+        if (hasShowcases) {
+            resultsHTML += `
+                <div class="search-result-section">
+                    <div class="search-result-section-title">
+                        <i class="fas fa-project-diagram me-2"></i>Dự án
+                    </div>
+            `;
+            results.showcases.forEach(showcase => {
                 resultsHTML += `
                     <div class="search-result-item">
-                        <div class="search-result-item-content">${post.content}</div>
-                        <div class="search-result-item-meta">
-                            by <a href="/users/${post.user.username}">${post.user.name}</a>
-                            ${post.thread ? `in <a href="${post.thread.url}">${post.thread.title}</a>` : ''}
+                        <div class="d-flex">
+                            ${showcase.image ? `<img src="${showcase.image}" alt="${showcase.title}" class="search-result-image me-2">` : ''}
+                            <div class="flex-grow-1">
+                                <div class="search-result-item-title">
+                                    <a href="${showcase.url}">${showcase.title}</a>
+                                    <span class="badge bg-secondary ms-2">${showcase.project_type}</span>
+                                </div>
+                                <div class="search-result-item-content">${showcase.excerpt}</div>
+                                <div class="search-result-item-meta">
+                                    <span class="me-2">
+                                        <i class="fas fa-user me-1"></i>${showcase.author.name}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-eye me-1"></i>${showcase.stats.views}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-heart me-1"></i>${showcase.stats.likes}
+                                    </span>
+                                    ${showcase.stats.rating > 0 ? `<span class="me-2"><i class="fas fa-star me-1"></i>${showcase.stats.rating}</span>` : ''}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -373,10 +400,85 @@ function initSearch() {
             resultsHTML += `</div>`;
         }
 
+        // Display Products (Sản phẩm)
+        if (hasProducts) {
+            resultsHTML += `
+                <div class="search-result-section">
+                    <div class="search-result-section-title">
+                        <i class="fas fa-shopping-cart me-2"></i>Sản phẩm
+                    </div>
+            `;
+            results.products.forEach(product => {
+                resultsHTML += `
+                    <div class="search-result-item">
+                        <div class="d-flex">
+                            ${product.image ? `<img src="${product.image}" alt="${product.title}" class="search-result-image me-2">` : ''}
+                            <div class="flex-grow-1">
+                                <div class="search-result-item-title">
+                                    <a href="${product.url}">${product.title}</a>
+                                    <span class="badge bg-success ms-2">${product.price.formatted}</span>
+                                </div>
+                                <div class="search-result-item-content">${product.excerpt}</div>
+                                <div class="search-result-item-meta">
+                                    <span class="me-2">
+                                        <i class="fas fa-store me-1"></i>${product.seller.name}
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-eye me-1"></i>${product.stats.views}
+                                    </span>
+                                    ${product.type === 'marketplace_product' ?
+                                        `<span class="me-2"><i class="fas fa-shopping-bag me-1"></i>${product.stats.purchases}</span>` :
+                                        `<span class="me-2"><i class="fas fa-download me-1"></i>${product.stats.downloads}</span>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsHTML += `</div>`;
+        }
+
+        // Display Users (Thành viên)
+        if (hasUsers) {
+            resultsHTML += `
+                <div class="search-result-section">
+                    <div class="search-result-section-title">
+                        <i class="fas fa-users me-2"></i>Thành viên
+                    </div>
+            `;
+            results.users.forEach(user => {
+                resultsHTML += `
+                    <div class="search-result-item">
+                        <div class="d-flex">
+                            <img src="${user.avatar}" alt="${user.name}" class="search-result-avatar me-2">
+                            <div class="flex-grow-1">
+                                <div class="search-result-item-title">
+                                    <a href="${user.url}">${user.name}</a>
+                                    <span class="text-muted">@${user.username}</span>
+                                    <span class="badge bg-info ms-2">${user.role}</span>
+                                </div>
+                                <div class="search-result-item-meta">
+                                    <span class="me-2">
+                                        <i class="fas fa-comments me-1"></i>${user.stats.threads} threads
+                                    </span>
+                                    <span class="me-2">
+                                        <i class="fas fa-reply me-1"></i>${user.stats.posts} posts
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsHTML += `</div>`;
+        }
+
+        // Advanced search link
         resultsHTML += `
             <div class="text-center p-3 border-top">
-                <a href="/search?query=${encodeURIComponent(searchInput.value)}&type=all" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-external-link-alt me-1"></i>View All Results
+                <a href="${data.advanced_search_url}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-search-plus me-1"></i>🔍 Tìm kiếm nâng cao
                 </a>
             </div>
         `;

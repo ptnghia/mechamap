@@ -545,6 +545,11 @@ class AdvancedSearchController extends Controller
         $threads = collect();
         $posts = collect();
         $users = collect();
+        $products = collect();
+        $showcases = collect();
+        $documentation = collect();
+        $materials = collect();
+        $cadFiles = collect();
         $totalResults = 0;
 
         if ($query) {
@@ -560,6 +565,11 @@ class AdvancedSearchController extends Controller
                     $threads = collect($searchResults['results']['threads'] ?? []);
                     $posts = collect($searchResults['results']['posts'] ?? []);
                     $users = collect($searchResults['results']['users'] ?? []);
+                    $products = collect($searchResults['results']['products'] ?? []);
+                    $showcases = collect($searchResults['results']['showcases'] ?? []);
+                    $documentation = collect($searchResults['results']['documentation'] ?? []);
+                    $materials = collect($searchResults['results']['materials'] ?? []);
+                    $cadFiles = collect($searchResults['results']['cad_files'] ?? []);
                     $totalResults = $searchResults['meta']['total'] ?? 0;
                 } else {
                     throw new \Exception('Elasticsearch not available');
@@ -570,6 +580,11 @@ class AdvancedSearchController extends Controller
                 $threads = $results['threads'];
                 $posts = $results['posts'];
                 $users = $results['users'];
+                $products = $results['products'];
+                $showcases = $results['showcases'];
+                $documentation = $results['documentation'];
+                $materials = $results['materials'];
+                $cadFiles = $results['cad_files'];
                 $totalResults = $results['total'];
             }
 
@@ -581,7 +596,10 @@ class AdvancedSearchController extends Controller
             ]);
         }
 
-        return view('search.basic', compact('query', 'type', 'threads', 'posts', 'users', 'totalResults'));
+        return view('search.basic', compact(
+            'query', 'type', 'threads', 'posts', 'users', 'products',
+            'showcases', 'documentation', 'materials', 'cadFiles', 'totalResults'
+        ));
     }
 
     /**
@@ -650,6 +668,11 @@ class AdvancedSearchController extends Controller
         $threads = collect();
         $posts = collect();
         $users = collect();
+        $products = collect();
+        $showcases = collect();
+        $documentation = collect();
+        $materials = collect();
+        $cadFiles = collect();
 
         // Search threads
         if ($type == 'all' || $type == 'threads') {
@@ -679,11 +702,84 @@ class AdvancedSearchController extends Controller
                 ->get();
         }
 
+        // Search marketplace products
+        if ($type == 'all' || $type == 'products') {
+            $products = \App\Models\MarketplaceProduct::where('name', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->orWhere('tags', 'like', "%{$query}%")
+                ->where('status', 'active')
+                ->with(['seller', 'category'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search showcases
+        if ($type == 'all' || $type == 'showcases') {
+            $showcases = \App\Models\Showcase::where('title', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->orWhere('software_used', 'like', "%{$query}%")
+                ->orWhere('materials', 'like', "%{$query}%")
+                ->where('is_public', true)
+                ->where('status', 'published')
+                ->with(['user'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search documentation
+        if ($type == 'all' || $type == 'documentation') {
+            $documentation = \App\Models\Documentation::where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%")
+                ->orWhere('excerpt', 'like', "%{$query}%")
+                ->orWhere('tags', 'like', "%{$query}%")
+                ->where('is_public', true)
+                ->where('status', 'published')
+                ->with(['category', 'author'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search materials
+        if ($type == 'all' || $type == 'materials') {
+            $materials = \App\Models\Material::where('name', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->orWhere('code', 'like', "%{$query}%")
+                ->orWhere('category', 'like', "%{$query}%")
+                ->orWhere('typical_applications', 'like', "%{$query}%")
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
+        // Search CAD files
+        if ($type == 'all' || $type == 'cad_files') {
+            $cadFiles = \App\Models\CADFile::where('name', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->orWhere('tags', 'like', "%{$query}%")
+                ->orWhere('cad_software', 'like', "%{$query}%")
+                ->where('is_active', true)
+                ->where('status', 'approved')
+                ->with(['user'])
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
         return [
             'threads' => $threads,
             'posts' => $posts,
             'users' => $users,
-            'total' => $threads->count() + $posts->count() + $users->count()
+            'products' => $products,
+            'showcases' => $showcases,
+            'documentation' => $documentation,
+            'materials' => $materials,
+            'cad_files' => $cadFiles,
+            'total' => $threads->count() + $posts->count() + $users->count() +
+                      $products->count() + $showcases->count() + $documentation->count() +
+                      $materials->count() + $cadFiles->count()
         ];
     }
 

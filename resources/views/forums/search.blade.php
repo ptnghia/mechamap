@@ -28,10 +28,10 @@
                         <div class="col-md-4 text-md-end">
                             <div class="stats">
                                 <span class="badge bg-light text-dark me-2">
-                                    {{ $threads->total() }} {{ __('forum.threads') }}
+                                    {{ $threads->total() }} {{ __('forum.stats.threads') }}
                                 </span>
                                 <span class="badge bg-light text-dark">
-                                    {{ $posts->total() }} {{ __('forum.posts') }}
+                                    {{ $posts->total() }} {{ __('forum.stats.posts') }}
                                 </span>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                         </a>
                                     </h6>
                                     <p class="text-muted small mb-2">
-                                        {!! Str::limit(highlightSearchQuery(strip_tags($post->body), $query), 200) !!}
+                                        {!! Str::limit(highlightSearchQuery(strip_tags($post->content), $query), 200) !!}
                                     </p>
                                     <div class="d-flex align-items-center text-sm text-muted">
                                         <span class="me-3">

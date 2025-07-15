@@ -4,6 +4,9 @@
 --}}
 @props(['showBanner' => true, 'isMarketplace' => false])
 
+<!-- Unified Search CSS -->
+<link rel="stylesheet" href="{{ asset('css/frontend/components/unified-search.css') }}">
+
 <header class="site-header">
     <!-- Banner (optional) -->
     @if($showBanner && get_setting('show_banner', true))
@@ -904,11 +907,11 @@ document.addEventListener('DOMContentLoaded', function() {
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
             .join('&');
 
-        // Make AJAX request
-        fetch(`/ajax-search?${queryString}`)
+        // Make AJAX request to unified search API
+        fetch(`/api/v1/search/unified?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
-                displaySearchResults(data);
+                displayUnifiedSearchResults(data);
             })
             .catch(error => {
                 console.error('Search error:', error);
@@ -916,6 +919,165 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function displayUnifiedSearchResults(data) {
+        // Clear previous results
+        searchResultsContent.innerHTML = '';
+
+        if (!data.success || !data.results) {
+            searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
+            return;
+        }
+
+        const results = data.results;
+        const totalResults = results.meta.total;
+
+        if (totalResults === 0) {
+            searchResultsContent.innerHTML = `
+                <div class="search-no-results p-3 text-center">
+                    <i class="fas fa-search me-2"></i>No results found for "${results.meta.query}".
+                    <p class="mt-2 mb-0">
+                        <a href="${data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                            <i class="fas fa-sliders-h me-1"></i>THỬ TÌM KIẾM NÂNG CAO
+                        </a>
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+
+        // Display Threads
+        if (results.threads && results.threads.length > 0) {
+            html += '<div class="search-category mb-3">';
+            html += '<h6 class="search-category-title text-primary mb-2"><i class="fas fa-comments me-1"></i>Thảo luận</h6>';
+            results.threads.forEach(thread => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            <img src="${thread.author.avatar}" class="rounded-circle me-2" width="32" height="32" alt="${thread.author.name}">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1"><a href="${thread.url}" class="text-decoration-none">${thread.title}</a></h6>
+                                <p class="mb-1 text-muted small">${thread.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>${thread.author.name} •
+                                        <i class="fas fa-folder me-1"></i>${thread.forum.name}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-comments me-1"></i>${thread.stats.comments} • ${thread.created_at}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Showcases
+        if (results.showcases && results.showcases.length > 0) {
+            html += '<div class="search-category mb-3">';
+            html += '<h6 class="search-category-title text-success mb-2"><i class="fas fa-star me-1"></i>Showcase</h6>';
+            results.showcases.forEach(showcase => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            ${showcase.image ? `<img src="${showcase.image}" class="rounded me-2" width="40" height="40" alt="${showcase.title}" style="object-fit: cover;">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-image text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1"><a href="${showcase.url}" class="text-decoration-none">${showcase.title}</a></h6>
+                                <p class="mb-1 text-muted small">${showcase.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>${showcase.author.name} •
+                                        <span class="badge badge-sm bg-secondary">${showcase.project_type}</span>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye me-1"></i>${showcase.stats.views} • ⭐${showcase.stats.rating}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Products
+        if (results.products && results.products.length > 0) {
+            html += '<div class="search-category mb-3">';
+            html += '<h6 class="search-category-title text-warning mb-2"><i class="fas fa-shopping-cart me-1"></i>Sản phẩm</h6>';
+            results.products.forEach(product => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            ${product.image ? `<img src="${product.image}" class="rounded me-2" width="40" height="40" alt="${product.title}" style="object-fit: cover;">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-box text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">
+                                    <a href="${product.url}" class="text-decoration-none">${product.title}</a>
+                                    <span class="badge bg-success ms-1">${product.price.formatted}</span>
+                                </h6>
+                                <p class="mb-1 text-muted small">${product.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-store me-1"></i>${product.seller.name}
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye me-1"></i>${product.stats.views} • ${product.created_at}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Users
+        if (results.users && results.users.length > 0) {
+            html += '<div class="search-category mb-3">';
+            html += '<h6 class="search-category-title text-info mb-2"><i class="fas fa-users me-1"></i>Thành viên</h6>';
+            results.users.forEach(user => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <img src="${user.avatar}" class="rounded-circle me-2" width="32" height="32" alt="${user.name}">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">
+                                    <a href="${user.url}" class="text-decoration-none">${user.name}</a>
+                                    <small class="text-muted">@${user.username}</small>
+                                </h6>
+                                <small class="text-muted">
+                                    <span class="badge bg-secondary">${user.role}</span>
+                                    ${user.business_name ? `• ${user.business_name}` : ''}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Add footer with advanced search link
+        html += `
+            <div class="search-results-footer p-2 border-top">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Tìm thấy ${totalResults} kết quả</small>
+                    <a href="${data.advanced_search_url}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-search-plus me-1"></i>Tìm kiếm nâng cao
+                    </a>
+                </div>
+            </div>
+        `;
+
+        searchResultsContent.innerHTML = html;
+    }
+
+    // Legacy function for backward compatibility
     function displaySearchResults(data) {
         // Clear previous results
         searchResultsContent.innerHTML = '';

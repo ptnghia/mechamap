@@ -615,10 +615,10 @@ Route::prefix('search')->name('search.')->group(function () {
     });
 });
 
-// Legacy search redirects for backward compatibility
+// Unified AJAX search for header
 Route::get('/ajax-search', function (Request $request) {
-    return app(AdvancedSearchController::class)->ajaxSearch($request);
-})->name('search.ajax.legacy');
+    return app(App\Http\Controllers\UnifiedSearchController::class)->ajaxSearch($request);
+})->name('search.ajax.unified');
 
 // Real-time routes
 Route::prefix('realtime')->name('realtime.')->group(function () {
