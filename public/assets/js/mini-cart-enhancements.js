@@ -143,21 +143,22 @@ class MiniCartEnhancements {
         const miniCartSubtotal = document.getElementById('miniCartSubtotal');
         const miniCartFooter = document.getElementById('miniCartFooter');
 
+        // Check if required elements exist
+        if (!miniCartItems) {
+            console.warn('Mini cart elements not found');
+            return;
+        }
+
         // Update cart counts with animation
         this.animateCountUpdate(cartCount, cart.total_items);
         this.animateCountUpdate(mobileCartCount, cart.total_items);
         this.animateCountUpdate(miniCartItemCount, cart.total_items);
 
-        // Check if mini cart elements exist before updating
-        if (!miniCartItems) {
-            console.warn('Mini cart elements not found in DOM');
-            return;
-        }
-
         if (cart.total_items === 0) {
             // Show enhanced empty state
             if (miniCartFooter) miniCartFooter.style.display = 'none';
-            miniCartItems.innerHTML = `
+            if (miniCartItems) {
+                miniCartItems.innerHTML = `
                 <div class="text-center text-muted py-4 mini-cart-empty">
                     <div class="mb-3">
                         <i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3;"></i>
@@ -170,6 +171,7 @@ class MiniCartEnhancements {
                     </a>
                 </div>
             `;
+            }
         } else {
             // Show cart items with enhanced UI
             if (miniCartFooter) miniCartFooter.style.display = 'block';

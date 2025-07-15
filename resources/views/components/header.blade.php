@@ -1242,8 +1242,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Mini Cart functionality
+    // Mini Cart functionality - Only if cart elements exist
     window.loadMiniCart = function() {
+        const miniCartItems = document.getElementById('miniCartItems');
+        if (!miniCartItems) {
+            console.log('Mini cart not available for this user');
+            return;
+        }
+
         fetch('/marketplace/cart/data')
             .then(response => response.json())
             .then(data => {
@@ -1260,6 +1266,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const miniCartItems = document.getElementById('miniCartItems');
         const miniCartSubtotal = document.getElementById('miniCartSubtotal');
         const miniCartFooter = document.getElementById('miniCartFooter');
+
+        // Check if mini cart elements exist
+        if (!miniCartItems) {
+            console.log('Mini cart elements not found - user may not have cart permissions');
+            return;
+        }
 
         // Update cart count
         if (cartCount) {
@@ -1462,5 +1474,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Mobile Navigation Component -->
 @include('components.mobile-nav')
 
-<!-- Mini Cart Enhancements -->
-<script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>
+<!-- Mini Cart Enhancements - Only load if user can buy products -->
+@auth
+    @if(auth()->user()->canBuyAnyProduct())
+        <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>
+    @endif
+@endauth

@@ -83,9 +83,6 @@
     <!-- HC-MobileNav CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.css">
 
-    <!-- Iconsax -->
-    <link href="https://iconsax.gitlab.io/i/icons.css" rel="stylesheet">
-
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 

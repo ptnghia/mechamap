@@ -5,202 +5,141 @@
 --}}
 
 <div class="mega-menu-container">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Column 1: Quick Access -->
-            <div class="col-md-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-rocket me-2 text-primary"></i>
-                        <span>{{ __('ui.community.quick_access') }}</span>
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('forums.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-home me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('forum.threads.title') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.forum_home_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-star me-2 text-warning"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.popular_topics') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.popular_discussions_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('forums.index') }}#categories" class="mega-menu-item">
-                                <i class="fa-solid fa-folder-tree me-2 text-info"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.community.browse_categories') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.explore_topics_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Column 2: Discover -->
-            <div class="col-md-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-compass me-2 text-success"></i>
-                        <span>{{ __('ui.community.discover') }}</span>
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('whats-new') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-clock me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.recent_discussions') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.recent_discussions_desc') }}</small>
-                                </div>
-                                <span class="activity-indicator" id="recentActivityCount">--</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new.trending') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-chart-line me-2 text-success"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.trending') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.trending_desc') }}</small>
-                                </div>
-                                <span class="activity-indicator trending" id="trendingActivityCount">--</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new.most-viewed') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-eye me-2 text-primary"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.most_viewed') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.most_viewed_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new.hot-topics') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-flame me-2 text-danger"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.hot_topics') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.hot_topics_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Column 3: Tools & Connect -->
-            <div class="col-md-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-tools me-2 text-warning"></i>
-                        <span>{{ __('ui.community.tools_connect') }}</span>
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-search-plus me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.search.advanced_search') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.search.advanced_search_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <div class="mega-menu-search-box">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" id="megaMenuSearch" placeholder="{{ __('ui.search.quick_search_placeholder') }}" autocomplete="off">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="performMegaMenuSearch()">
-                                        <i class="fa-solid fa-search"></i>
-                                    </button>
-                                </div>
-                                <div id="megaMenuSearchSuggestions" class="mega-menu-search-suggestions"></div>
+    <div class="row g-0">
+        <!-- Column 1: Quick Access -->
+        <div class="col-md-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-rocket me-2 text-primary"></i>
+                    <span>{{ __('ui.community.quick_access') }}</span>
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('forums.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-home me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('forum.threads.title') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.forum_home_desc') }}</small>
                             </div>
-                        </li>
-                        <li>
-                            <a href="{{ route('forums.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-list me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.view_all') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.all_forums_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Connect Section -->
-                    <h6 class="mega-menu-header mt-3">
-                        <i class="fa-solid fa-users me-2 text-info"></i>
-                        <span>{{ __('ui.common.networking') }}</span>
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('members.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-users-gear me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.member_directory') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.member_directory_desc') }}</small>
-                                </div>
-                                <span class="activity-indicator online" id="onlineActivityCount">--</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('events.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-calendar-days me-2 text-primary"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.events_webinars') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.events_webinars_desc') }}</small>
-                                    <span class="badge badge-coming-soon">{{ __('ui.common.coming_soon') }}</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('jobs.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-briefcase me-2 text-success"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ __('ui.common.job_board') }}</span>
-                                    <small class="mega-menu-item-desc">{{ __('ui.community.job_board_desc') }}</small>
-                                    <span class="badge badge-coming-soon">{{ __('ui.common.coming_soon') }}</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-star me-2 text-warning"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.popular_topics') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.popular_discussions_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('forums.index') }}#categories" class="mega-menu-item">
+                            <i class="fa-solid fa-folder-tree me-2 text-info"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.community.browse_categories') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.explore_topics_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <!-- Quick Stats Footer -->
-        <div class="row mt-3 pt-3 border-top">
-            <div class="col-12">
-                <div class="mega-menu-stats d-flex justify-content-around text-center">
-                    <div class="stat-item">
-                        <i class="fa-solid fa-users text-primary"></i>
-                        <span class="stat-number" id="onlineUsersCount">--</span>
-                        <small class="stat-label">{{ __('ui.community.online') }}</small>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fa-solid fa-comments text-success"></i>
-                        <span class="stat-number" id="todayPostsCount">--</span>
-                        <small class="stat-label">{{ __('ui.community.today') }}</small>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fa-solid fa-fire text-danger"></i>
-                        <span class="stat-number" id="trendingCount">--</span>
-                        <small class="stat-label">{{ __('ui.common.trending') }}</small>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fa-solid fa-star text-warning"></i>
-                        <span class="stat-number" id="featuredCount">--</span>
-                        <small class="stat-label">{{ __('ui.common.featured') }}</small>
-                    </div>
-                </div>
+        <!-- Column 2: Discover -->
+        <div class="col-md-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-compass me-2 text-success"></i>
+                    <span>{{ __('ui.community.discover') }}</span>
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('whats-new') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-clock me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.recent_discussions') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.recent_discussions_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('whats-new.trending') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-chart-line me-2 text-success"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.trending') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.trending_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('whats-new.most-viewed') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-eye me-2 text-primary"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.most_viewed') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.most_viewed_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('whats-new.hot-topics') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-fire me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.hot_topics') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.hot_topics_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Column 3: Tools & Connect -->
+        <div class="col-md-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-tools me-2 text-warning"></i>
+                    <span>{{ __('ui.community.tools_connect') }}</span>
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-search-plus me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.search.advanced_search') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.search.advanced_search_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('members.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-users-gear me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.member_directory') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.member_directory_desc') }}</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('events.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-calendar-days me-2 text-primary"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.events_webinars') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.events_webinars_desc') }}</small>
+                            </div>
+                            <span class="activity-indicator trending">{{ __('ui.common.coming_soon') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('jobs.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-briefcase me-2 text-success"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ __('ui.common.job_board') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('ui.community.job_board_desc') }}</small>
+                            </div>
+                            <span class="activity-indicator trending">{{ __('ui.common.coming_soon') }}</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
