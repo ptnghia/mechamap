@@ -44,7 +44,8 @@ $hasRating = $ratingAverage > 0 && $ratingCount > 0;
 // Additional showcase info
 $projectType = $showcase->project_type ?? null;
 $complexityLevel = $showcase->complexity_level ?? null;
-$softwareUsed = $showcase->software_used ?? null;
+$softwareUsed = $showcase->getFormattedSoftwareUsed(40); // Use new helper method
+$softwareArray = $showcase->getSoftwareUsedArray(); // Get as array for advanced display
 $hasCadFiles = $showcase->has_cad_files ?? false;
 $allowDownloads = $showcase->allow_downloads ?? false;
 @endphp
@@ -57,7 +58,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-badges">
             @if($complexityLevel)
             <span class="badge badge-complexity badge-{{ $complexityLevel }}">
-                {{ __('showcase.complexity.' . $complexityLevel) }}
+                {{ __('showcase.complexity_levels.' . $complexityLevel) }}
             </span>
             @endif
 
@@ -127,7 +128,22 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-tech-info mb-2">
             <div class="tech-item">
                 <i class="fas fa-tools text-muted me-1"></i>
-                <span class="small text-muted">{{ Str::limit($softwareUsed, 40) }}</span>
+                @if(count($softwareArray) > 1)
+                    {{-- Multiple software: show as badges --}}
+                    <div class="software-badges">
+                        @foreach($softwareArray as $index => $software)
+                            @if($index < 3) {{-- Show max 3 badges --}}
+                                <span class="badge bg-light text-dark me-1 small">{{ $software }}</span>
+                            @elseif($index === 3)
+                                <span class="badge bg-secondary small">+{{ count($softwareArray) - 3 }}</span>
+                                @break
+                            @endif
+                        @endforeach
+                    </div>
+                @else
+                    {{-- Single software: show as text --}}
+                    <span class="small text-muted">{{ $softwareUsed }}</span>
+                @endif
             </div>
         </div>
         @endif
@@ -135,7 +151,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
 
 
         <div class="showcase-stats">
-            <div class="d-flex align-items-center g-3">
+            <div class="d-flex align-items-center">
                 <span class="stat-item">
                     <i class="fas fa-eye"></i> {{ number_format($viewCount) }}
                 </span>
@@ -148,18 +164,37 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                 </span>
                 @endif
             </div>
-            {{-- Enhanced: Category & Project Type --}}
+            {{-- Enhanced: Category & Project Type with Smart Logic --}}
             <div class="showcase-categories mb-2">
-                @if($category)
-                <span class="badge bg-primary me-1">
-                    {{ ucfirst($category) }}
-                </span>
+                @php
+                    // Smart logic to avoid duplication and improve UX
+                    $showCategory = !empty($category);
+                    $showProjectType = !empty($projectType) && $projectType !== $category;
+
+                    // Generate category link if route exists
+                    $categoryLink = null;
+                    if ($showCategory && Route::has('showcase.public')) {
+                        $categoryLink = route('showcase.public', ['category' => $category]);
+                    }
+                @endphp
+
+                @if($showCategory)
+                    @if($categoryLink)
+                        <a href="{{ $categoryLink }}" class="badge bg-primary text-decoration-none me-1"
+                           title="{{ __('showcase.view_category_showcases', ['category' => ucfirst($category)]) }}">
+                            <i class="fa-solid fa-folder-open me-1"></i> {{ ucfirst($category) }}
+                        </a>
+                    @else
+                        <span class="badge bg-primary me-1" title="{{ __('showcase.category') }}: {{ ucfirst($category) }}">
+                            <i class="fa-solid fa-folder-open me-1"></i> {{ ucfirst($category) }}
+                        </span>
+                    @endif
                 @endif
 
-                @if($projectType)
-                <span class="badge bg-secondary">
-                    {{ ucfirst($projectType) }}
-                </span>
+                @if($showProjectType)
+                    <span class="badge bg-info text-dark" title="{{ __('showcase.project_type') }}: {{ ucfirst($projectType) }}">
+                        <i class="fa-solid fa-cogs me-1"></i> {{ ucfirst($projectType) }}
+                    </span>
                 @endif
             </div>
         </div>

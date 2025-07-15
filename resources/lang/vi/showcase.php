@@ -68,6 +68,11 @@ return [
         'expert' => 'Chuyên gia',
     ],
 
+    // Category and Project Type
+    'category' => 'Danh mục',
+    'project_type' => 'Loại dự án',
+    'view_category_showcases' => 'Xem tất cả dự án :category',
+
     // Features
     'features' => [
         'cad' => 'CAD',

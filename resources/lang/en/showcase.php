@@ -61,12 +61,17 @@ return [
     'try_different_filters' => 'Try changing search filters or create a new project.',
 
     // Complexity levels
-    'complexity' => [
+    'complexity_levels' => [
         'beginner' => 'Beginner',
         'intermediate' => 'Intermediate',
         'advanced' => 'Advanced',
         'expert' => 'Expert',
     ],
+
+    // Category and Project Type
+    'category' => 'Category',
+    'project_type' => 'Project Type',
+    'view_category_showcases' => 'View all :category projects',
 
     // Features
     'features' => [

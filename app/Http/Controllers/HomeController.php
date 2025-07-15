@@ -91,15 +91,8 @@ class HomeController extends Controller
                 ->take(5)
                 ->get();
 
-            // Get featured showcases - Top 15 public showcases by view count
-            $featuredShowcases = Showcase::with(['user', 'media'])
-                ->where('is_public', 1) // Chỉ lấy showcases công khai
-                ->whereIn('status', ['published', 'featured']) // Lấy showcases published hoặc featured
-                ->whereNotNull('cover_image')
-                ->orderBy('view_count', 'desc') // Sắp xếp theo lượt xem giảm dần
-                ->orderBy('created_at', 'desc') // Thứ tự phụ: mới nhất
-                ->take(15) // Lấy tối đa 15 showcases
-                ->get();
+            // Get featured showcases using optimized query
+            $featuredShowcases = $this->getFeaturedShowcasesForHome();
 
             return view('home', compact(
                 'latestThreads',
@@ -110,8 +103,16 @@ class HomeController extends Controller
                 'featuredShowcases'
             ));
         } catch (\Exception $e) {
-            // Nếu có lỗi, return view đơn giản
-            return view('test-home');
+            // Nếu có lỗi, return view đơn giản với dữ liệu trống
+            \Log::error('HomeController error: ' . $e->getMessage());
+            return view('home', [
+                'latestThreads' => collect(),
+                'featuredThreads' => collect(),
+                'topForums' => collect(),
+                'categories' => collect(),
+                'topContributors' => collect(),
+                'featuredShowcases' => collect()
+            ]);
         }
     }
 
@@ -219,5 +220,39 @@ class HomeController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Get featured showcases for home page with smart ranking
+     *
+     * @param string $sortBy 'most_viewed' hoặc 'newest'
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getFeaturedShowcasesForHome($sortBy = 'most_viewed')
+    {
+        $query = Showcase::with(['user', 'media', 'ratings'])
+            ->where('is_public', 1) // Chỉ lấy showcases công khai
+            ->whereIn('status', ['published', 'featured', 'approved']) // Mở rộng status
+            ->where(function ($query) {
+                // Ưu tiên showcases có hình ảnh
+                $query->whereNotNull('cover_image')
+                    ->orWhereHas('media', function ($mediaQuery) {
+                        $mediaQuery->where('mime_type', 'like', 'image/%');
+                    });
+            })
+            ->orderByRaw("CASE WHEN status = 'featured' THEN 1 ELSE 2 END"); // Featured trước
+
+        // Áp dụng sắp xếp theo yêu cầu
+        if ($sortBy === 'newest') {
+            $query->orderBy('created_at', 'desc') // Mới nhất trước
+                  ->orderBy('view_count', 'desc') // Thứ tự phụ: lượt xem
+                  ->orderBy('rating_average', 'desc'); // Cuối cùng: rating
+        } else { // most_viewed (default)
+            $query->orderBy('view_count', 'desc') // Lượt xem cao nhất trước
+                  ->orderBy('rating_average', 'desc') // Thứ tự phụ: rating cao
+                  ->orderBy('created_at', 'desc'); // Cuối cùng: mới nhất
+        }
+
+        return $query->take(12)->get(); // Lấy đúng 12 showcases
     }
 }

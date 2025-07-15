@@ -55,12 +55,14 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         </div>
         <div class="thread-badges">
             @if($thread->is_sticky ?? false)
-            <span class="btn btn-sm bg-primary thread_status"><i class="pin-angle"></i>
+            <span class="btn btn-sm bg-primary thread_status">
+                <i class="fa-solid fa-thumbtack"></i>
                 {{ __('forum.status.pinned') }}
             </span>
             @endif
             @if($thread->is_locked ?? false)
-            <span class="btn btn-sm bg-danger thread_status"><i class="fas fa-lock-fill"></i>
+            <span class="btn btn-sm bg-danger thread_status">
+                <i class="fa-solid fa-lock"></i>
                 {{ __('forum.status.locked') }}
             </span>
             @endif
@@ -162,16 +164,16 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
             <div class="thread-category-badges">
                 @if(isset($thread->category) && $thread->category)
-                <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}"
-                    class="badge bg-secondary text-decoration-none">
-                    <i class="tag"></i> {{ $thread->category->name }}
+                <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}" class="badge bg-secondary text-decoration-none">
+                    <i class="fa-solid fa-tag"></i>
+                    {{ $thread->category->name }}
                 </a>
                 @endif
 
                 @if(isset($thread->forum) && $thread->forum)
-                <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}"
-                    class="badge bg-info text-decoration-none">
-                    <i class="folder"></i> {{ $thread->forum->name }}
+                <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}" class="badge bg-info text-decoration-none">
+                    <i class="fa-solid fa-folder-open"></i>
+                     {{ $thread->forum->name }}
                 </a>
                 @endif
             </div>

@@ -167,6 +167,7 @@ class Showcase extends Model
         'learning_objectives' => 'array',
         'image_gallery' => 'array',
         'file_attachments' => 'array',
+        'software_used' => 'array', // Cast software_used to array
         'has_tutorial' => 'boolean',
         'has_calculations' => 'boolean',
         'has_cad_files' => 'boolean',
@@ -406,5 +407,55 @@ class Showcase extends Model
             'usefulness' => round($ratings->avg('usefulness') ?? 0, 1),
             'documentation' => round($ratings->avg('documentation') ?? 0, 1),
         ];
+    }
+
+    /**
+     * Get formatted software used string for display
+     *
+     * @param int $limit Maximum characters to display
+     * @return string
+     */
+    public function getFormattedSoftwareUsed(int $limit = 40): string
+    {
+        if (empty($this->software_used)) {
+            return '';
+        }
+
+        // If it's already an array (after casting)
+        if (is_array($this->software_used)) {
+            $softwareList = $this->software_used;
+        } else {
+            // Fallback for non-array data
+            $decoded = json_decode($this->software_used, true);
+            $softwareList = is_array($decoded) ? $decoded : [$this->software_used];
+        }
+
+        // Join with commas and limit length
+        $formatted = implode(', ', $softwareList);
+
+        return strlen($formatted) > $limit
+            ? substr($formatted, 0, $limit - 3) . '...'
+            : $formatted;
+    }
+
+    /**
+     * Get software used as array
+     *
+     * @return array
+     */
+    public function getSoftwareUsedArray(): array
+    {
+        if (empty($this->software_used)) {
+            return [];
+        }
+
+        // If it's already an array (after casting)
+        if (is_array($this->software_used)) {
+            return $this->software_used;
+        }
+
+        // Fallback for non-array data
+        $decoded = json_decode($this->software_used, true);
+        return is_array($decoded) ? $decoded : [$this->software_used];
     }
 }
