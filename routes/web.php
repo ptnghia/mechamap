@@ -275,9 +275,8 @@ Route::get('/community', function () {
     return view('community.index');
 })->name('community.index');
 
-Route::get('/showcase', function () {
-    return view('coming-soon', ['title' => 'Design Showcase', 'message' => 'Design showcase coming soon']);
-})->name('showcase.index');
+// Showcase main route (moved from public-showcase)
+Route::get('/showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.index');
 
 // Tools & Calculators routes
 Route::prefix('tools')->name('tools.')->group(function () {
@@ -568,8 +567,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/forum-listing', function () {
     return redirect()->route('forums.index', [], 301);
 });
-// Public Showcase Routes - Core functionality only
-Route::get('/public-showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.public');
+// Backward compatibility redirect for old URL
+Route::get('/public-showcase', function () {
+    return redirect()->route('showcase.index', [], 301);
+})->name('showcase.public');
 
 // Public Showcase Detail Route (no auth required)
 Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');

@@ -104,7 +104,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <form method="GET" action="{{ route('showcase.public') }}" id="showcaseSearchForm">
+                <form method="GET" action="{{ route('showcase.index') }}" id="showcaseSearchForm">
                     <div class="row g-3">
                         <div class="col-md-4 col-lg-3 col-sm-6">
                             <label for="search" class="form-label fw-semibold">{{ __('showcase.project_name') }}</label>
@@ -284,7 +284,7 @@ function clearFilters() {
     document.getElementById('showcaseSearchForm').reset();
 
     // Remove all query parameters and redirect
-    window.location.href = '{{ route("showcase.public") }}';
+    window.location.href = '{{ route("showcase.index") }}';
 }
 
 // Auto-submit form when filters change (optional)

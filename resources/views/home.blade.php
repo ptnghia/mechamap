@@ -21,7 +21,7 @@
                         <h2 class="section-title mb-1">{{ __('home.featured_showcases') }}</h2>
                         <p class="text-muted mb-0">{{ __('home.featured_showcases_desc') }}</p>
                     </div>
-                    <a href="{{ route('showcase.public') }}" class="btn btn-outline-primary">
+                    <a href="{{ route('showcase.index') }}" class="btn btn-outline-primary">
                         {{ __('buttons.view_all') }}
                     </a>
                 </div>

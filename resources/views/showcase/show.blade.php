@@ -16,10 +16,10 @@
     <nav aria-label="breadcrumb" class="showcase-breadcrumb mb-3">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('showcase.public') }}">Showcases</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('showcase.index') }}">Showcases</a></li>
             @if($showcase->showcaseable_type === 'App\Models\Thread' && $showcase->showcaseable->category)
             <li class="breadcrumb-item">
-                <a href="{{ route('showcase.public', ['category' => $showcase->showcaseable->category->id]) }}">
+                <a href="{{ route('showcase.index', ['category' => $showcase->showcaseable->category->id]) }}">
                     {{ $showcase->showcaseable->category->name }}
                 </a>
             </li>

@@ -74,7 +74,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-body p-0">
             <div class="categories-list">
                 @foreach($sidebarData['popular_categories'] as $category)
-                <a href="{{ route('showcase.public', ['category' => $category['slug']]) }}" class="category-item">
+                <a href="{{ route('showcase.index', ['category' => $category['slug']]) }}" class="category-item">
                     <div class="category-info">
                         <div class="category-name">{{ $category['name'] }}</div>
                         <div class="category-stats">
@@ -104,7 +104,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                 <i class="fas fa-star me-2 text-warning"></i>
                 {{ __('showcase.featured_projects') }}
             </h6>
-            <a href="{{ route('showcase.public', ['featured' => 1]) }}" class="btn btn-sm btn-link">
+            <a href="{{ route('showcase.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">
                 {{ __('content.view_all') }}
             </a>
         </div>
@@ -166,7 +166,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-body p-0">
             <div class="software-list">
                 @foreach($sidebarData['popular_software'] as $software)
-                <a href="{{ route('showcase.public', ['software' => $software['name']]) }}" class="software-item">
+                <a href="{{ route('showcase.index', ['software' => $software['name']]) }}" class="software-item">
                     <div class="software-icon">
                         <i class="{{ $software['icon'] }}"></i>
                     </div>

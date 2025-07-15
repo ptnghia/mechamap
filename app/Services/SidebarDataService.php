@@ -205,7 +205,7 @@ class SidebarDataService
     }
 
     /**
-     * Trending topics từ database thật
+     * Trending topics từ database thật với fallback logic
      */
     private function getTrendingTopics(): array
     {
@@ -214,42 +214,17 @@ class SidebarDataService
             $hasCategoriesTable = Schema::hasTable('categories');
             $hasDeletedAt = Schema::hasColumn('threads', 'deleted_at');
 
-            if ($hasForumsTable) {
-                $trending = DB::select("
-                    SELECT
-                        forums.name as forum_name,
-                        forums.slug as forum_slug,
-                        COUNT(threads.id) as thread_count,
-                        AVG(COALESCE(threads.view_count, 0)) as avg_views,
-                        MAX(threads.created_at) as latest_activity
-                    FROM forums
-                    LEFT JOIN threads ON forums.id = threads.forum_id
-                    WHERE threads.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-                        " . ($hasDeletedAt ? "AND (threads.deleted_at IS NULL)" : "") . "
-                    GROUP BY forums.id, forums.name, forums.slug
-                    HAVING COUNT(threads.id) >= 1
-                    ORDER BY (COUNT(threads.id) * 2 + AVG(COALESCE(threads.view_count, 0)) * 0.1) DESC
-                    LIMIT 5
-                ");
-            } elseif ($hasCategoriesTable) {
-                $trending = DB::select("
-                    SELECT
-                        categories.name as forum_name,
-                        categories.slug as forum_slug,
-                        COUNT(threads.id) as thread_count,
-                        AVG(COALESCE(threads.view_count, 0)) as avg_views,
-                        MAX(threads.created_at) as latest_activity
-                    FROM categories
-                    LEFT JOIN threads ON categories.id = threads.category_id
-                    WHERE threads.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-                        " . ($hasDeletedAt ? "AND (threads.deleted_at IS NULL)" : "") . "
-                    GROUP BY categories.id, categories.name, categories.slug
-                    HAVING COUNT(threads.id) >= 1
-                    ORDER BY (COUNT(threads.id) * 2 + AVG(COALESCE(threads.view_count, 0)) * 0.1) DESC
-                    LIMIT 5
-                ");
-            } else {
-                $trending = [];
+            // Thử lấy trending topics trong 7 ngày qua
+            $trending = $this->getTrendingTopicsForPeriod(7, $hasForumsTable, $hasCategoriesTable, $hasDeletedAt);
+
+            // Nếu không có, thử 30 ngày
+            if (empty($trending)) {
+                $trending = $this->getTrendingTopicsForPeriod(30, $hasForumsTable, $hasCategoriesTable, $hasDeletedAt);
+            }
+
+            // Nếu vẫn không có, lấy top forums theo tổng số threads
+            if (empty($trending)) {
+                $trending = $this->getTopForumsByTotalThreads($hasForumsTable, $hasCategoriesTable, $hasDeletedAt);
             }
 
             return collect($trending)->map(function ($topic) {
@@ -257,13 +232,99 @@ class SidebarDataService
                     'name' => $topic->forum_name,
                     'slug' => $topic->forum_slug ?? Str::slug($topic->forum_name),
                     'thread_count' => (int) $topic->thread_count,
-                    'trend_score' => max(1, round($topic->thread_count * 2 + $topic->avg_views * 0.1)),
-                    'latest_activity' => $topic->latest_activity
+                    'trend_score' => max(1, round($topic->thread_count * 2 + ($topic->avg_views ?? 0) * 0.1)),
+                    'latest_activity' => isset($topic->latest_activity) && $topic->latest_activity
                         ? \Carbon\Carbon::parse($topic->latest_activity)->diffForHumans()
                         : 'Không có hoạt động',
                 ];
             })->toArray();
         });
+    }
+
+    /**
+     * Lấy trending topics trong khoảng thời gian cụ thể
+     */
+    private function getTrendingTopicsForPeriod(int $days, bool $hasForumsTable, bool $hasCategoriesTable, bool $hasDeletedAt): array
+    {
+        if ($hasForumsTable) {
+            return DB::select("
+                SELECT
+                    forums.name as forum_name,
+                    forums.slug as forum_slug,
+                    COUNT(threads.id) as thread_count,
+                    AVG(COALESCE(threads.view_count, 0)) as avg_views,
+                    MAX(threads.created_at) as latest_activity
+                FROM forums
+                LEFT JOIN threads ON forums.id = threads.forum_id
+                WHERE threads.created_at >= DATE_SUB(NOW(), INTERVAL {$days} DAY)
+                    " . ($hasDeletedAt ? "AND (threads.deleted_at IS NULL)" : "") . "
+                GROUP BY forums.id, forums.name, forums.slug
+                HAVING COUNT(threads.id) >= 1
+                ORDER BY (COUNT(threads.id) * 2 + AVG(COALESCE(threads.view_count, 0)) * 0.1) DESC
+                LIMIT 5
+            ");
+        } elseif ($hasCategoriesTable) {
+            return DB::select("
+                SELECT
+                    categories.name as forum_name,
+                    categories.slug as forum_slug,
+                    COUNT(threads.id) as thread_count,
+                    AVG(COALESCE(threads.view_count, 0)) as avg_views,
+                    MAX(threads.created_at) as latest_activity
+                FROM categories
+                LEFT JOIN threads ON categories.id = threads.category_id
+                WHERE threads.created_at >= DATE_SUB(NOW(), INTERVAL {$days} DAY)
+                    " . ($hasDeletedAt ? "AND (threads.deleted_at IS NULL)" : "") . "
+                GROUP BY categories.id, categories.name, categories.slug
+                HAVING COUNT(threads.id) >= 1
+                ORDER BY (COUNT(threads.id) * 2 + AVG(COALESCE(threads.view_count, 0)) * 0.1) DESC
+                LIMIT 5
+            ");
+        }
+
+        return [];
+    }
+
+    /**
+     * Fallback: Lấy top forums theo tổng số threads (không giới hạn thời gian)
+     */
+    private function getTopForumsByTotalThreads(bool $hasForumsTable, bool $hasCategoriesTable, bool $hasDeletedAt): array
+    {
+        if ($hasForumsTable) {
+            return DB::select("
+                SELECT
+                    forums.name as forum_name,
+                    forums.slug as forum_slug,
+                    COUNT(threads.id) as thread_count,
+                    AVG(COALESCE(threads.view_count, 0)) as avg_views,
+                    MAX(threads.created_at) as latest_activity
+                FROM forums
+                LEFT JOIN threads ON forums.id = threads.forum_id
+                " . ($hasDeletedAt ? "WHERE (threads.deleted_at IS NULL OR threads.deleted_at IS NULL)" : "") . "
+                GROUP BY forums.id, forums.name, forums.slug
+                HAVING COUNT(threads.id) >= 1
+                ORDER BY COUNT(threads.id) DESC, AVG(COALESCE(threads.view_count, 0)) DESC
+                LIMIT 5
+            ");
+        } elseif ($hasCategoriesTable) {
+            return DB::select("
+                SELECT
+                    categories.name as forum_name,
+                    categories.slug as forum_slug,
+                    COUNT(threads.id) as thread_count,
+                    AVG(COALESCE(threads.view_count, 0)) as avg_views,
+                    MAX(threads.created_at) as latest_activity
+                FROM categories
+                LEFT JOIN threads ON categories.id = threads.category_id
+                " . ($hasDeletedAt ? "WHERE (threads.deleted_at IS NULL OR threads.deleted_at IS NULL)" : "") . "
+                GROUP BY categories.id, categories.name, categories.slug
+                HAVING COUNT(threads.id) >= 1
+                ORDER BY COUNT(threads.id) DESC, AVG(COALESCE(threads.view_count, 0)) DESC
+                LIMIT 5
+            ");
+        }
+
+        return [];
     }
 
     /**

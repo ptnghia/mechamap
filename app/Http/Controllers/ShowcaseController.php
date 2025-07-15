@@ -90,7 +90,7 @@ class ShowcaseController extends Controller
                 'total_views' => $showcases->sum('view_count'),
                 'featured_count' => $showcases->where('status', 'featured')->count(),
                 'cover_image' => $representativeShowcase ? $representativeShowcase->featured_image : null,
-                'url' => route('showcase.public', ['category' => $cat->category])
+                'url' => route('showcase.index', ['category' => $cat->category])
             ];
         }
 

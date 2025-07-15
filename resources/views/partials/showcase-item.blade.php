@@ -58,7 +58,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-badges">
             @if($complexityLevel)
             <span class="badge badge-complexity badge-{{ $complexityLevel }}">
-                {{ __('showcase.complexity_levels.' . $complexityLevel) }}
+                <i class="fa-solid fa-layer-group me-1"></i> {{ __('showcase.complexity_levels.' . $complexityLevel) }}
             </span>
             @endif
 
@@ -173,8 +173,8 @@ $allowDownloads = $showcase->allow_downloads ?? false;
 
                     // Generate category link if route exists
                     $categoryLink = null;
-                    if ($showCategory && Route::has('showcase.public')) {
-                        $categoryLink = route('showcase.public', ['category' => $category]);
+                    if ($showCategory && Route::has('showcase.index')) {
+                        $categoryLink = route('showcase.index', ['category' => $category]);
                     }
                 @endphp
 

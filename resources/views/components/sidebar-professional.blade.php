@@ -62,6 +62,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div>
 
     <!-- Trending Topics Card -->
+    @if(isset($sidebarData['trending_topics']) && count($sidebarData['trending_topics']) > 0)
     <div class="sidebar-card trending-topics" data-aos="fade-up" data-aos-delay="100">
         <div class="card-header">
             <h6 class="mb-0"><i class="fas fa-chart-line me-2 text-success"></i>{{ __('content.weekly_trends') }}</h6>
@@ -85,7 +86,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
                 @endforeach
             </div>
         </div>
-    </div> <!-- Featured Discussions Card -->
+    </div>
+    @endif <!-- Featured Discussions Card -->
     <div class="sidebar-card featured-discussions" data-aos="fade-up" data-aos-delay="200">
         <div class="card-header">
             <h6 class="mb-0"><i class="fas fa-bolt me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>

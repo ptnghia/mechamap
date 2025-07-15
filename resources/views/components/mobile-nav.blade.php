@@ -100,7 +100,7 @@
 
         <!-- Showcase/Projects -->
         <li>
-            <a href="{{ route('showcase.public') }}">
+            <a href="{{ route('showcase.index') }}">
                 <i class="fa-solid fa-trophy me-2"></i>
                 {{ __('ui.common.showcase') }}
             </a>

@@ -92,7 +92,7 @@
 
                         <!-- 3. Dự án - Direct Link -->
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="{{ route('showcase.public') }}">
+                            <a class="nav-link {{ request()->routeIs('showcase.*') ? 'active' : '' }}" href="{{ route('showcase.index') }}">
                                 <i class="fa-solid fa-trophy me-1"></i>
                                 {{ __('ui.common.showcase') }}
                             </a>
