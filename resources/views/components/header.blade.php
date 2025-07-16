@@ -98,61 +98,35 @@
                             </a>
                         </li>
 
-                        <!-- 4. Marketplace - PRIORITY #3 - Only show if user has marketplace access -->
-                        @if(!auth()->check() || auth()->user()->canBuyAnyProduct() || auth()->user()->canSellAnyProduct())
-                        <li class="nav-item dropdown">
+                        <!-- 4. Marketplace - PRIORITY #3 - Always visible for everyone -->
+                        <li class="nav-item dropdown mega-menu">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-store me-1"></i>
                                 {{ __('ui.common.marketplace') }}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-shopping-bag me-2"></i>{{ __('marketplace.shop') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.products.index') }}">
-                                    <i class="fa-solid fa-box me-2"></i>{{ __('marketplace.products.all') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.categories.index') }}">
-                                    <i class="fa-solid fa-grid-2 me-2"></i>{{ __('marketplace.categories.title') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.suppliers.index') }}">
-                                    <i class="fa-solid fa-building me-2"></i>{{ __('marketplace.suppliers.title') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('companies.index') }}">
-                                    <i class="fa-solid fa-building-user me-2"></i>{{ __('ui.common.company_profiles') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.index') }}#featured">
-                                    <i class="fa-solid fa-star me-2"></i>{{ __('marketplace.products.featured') }}
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-briefcase me-2"></i>{{ __('marketplace.business_tools') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.rfq.index') }}">
-                                    <i class="fa-solid fa-file-invoice me-2"></i>{{ __('marketplace.rfq.title') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.bulk-orders') }}">
-                                    <i class="fa-solid fa-boxes-stacked me-2"></i>{{ __('marketplace.bulk_orders') }}
-                                </a></li>
-                                @auth
-                                    @if(auth()->user()->canSellAnyProduct())
-                                    <li><a class="dropdown-item" href="{{ route('marketplace.seller.setup') }}">
-                                        <i class="fa-solid fa-store me-2"></i>{{ __('marketplace.become_seller') }}
-                                    </a></li>
-                                    @endif
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-user me-2"></i>{{ __('marketplace.my_account') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('marketplace.orders.index') }}">
-                                    <i class="fa-solid fa-list-check me-2"></i>{{ __('marketplace.my_orders') }}
-                                </a></li>
-                                    @if(auth()->user()->canBuyAnyProduct())
-                                    <li><a class="dropdown-item" href="{{ route('marketplace.cart.index') }}">
-                                        <i class="fa-solid fa-shopping-cart me-2"></i>{{ __('marketplace.cart.title') }}
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ route('marketplace.downloads.index') }}">
-                                        <i class="fa-solid fa-download me-2"></i>{{ __('marketplace.downloads') }}
-                                    </a></li>
-                                    @endif
-                                @endauth
-                            </ul>
+                            <div class="dropdown-menu mega-menu-dropdown" aria-labelledby="marketplaceDropdown">
+                                @include('components.menu.marketplace-mega-menu')
+                            </div>
                         </li>
-                        @endif
+
+                        <!-- 5. Add/Create - PRIORITY #4 - Mega Menu for content creation -->
+                        <li class="nav-item dropdown mega-menu-dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['threads.create', 'showcase.create', 'gallery.upload', 'marketplace.products.create']) ? 'active' : '' }}" href="#" id="addDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-plus me-1"></i>
+                                {{ __('ui.common.add') }}
+                            </a>
+                            <div class="dropdown-menu mega-menu" aria-labelledby="addDropdown">
+                                @include('components.menu.add-mega-menu')
+                            </div>
+                        </li>
+
+                        {{-- CSS to hide duplicate menu items --}}
+                        <style>
+                        /* Hide the 6th nav item (duplicate "Thêm" menu) */
+                        .navbar-nav .nav-item:nth-child(6) {
+                            display: none !important;
+                        }
+                        </style>
 
                         <!-- 5. Technical Resources - UPDATED (removed showcase) -->
                         <!--li class="nav-item dropdown">
@@ -1480,3 +1454,51 @@ document.addEventListener('DOMContentLoaded', function() {
         <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>
     @endif
 @endauth
+
+{{-- JavaScript to fix duplicate menu issue --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for all content to load
+    setTimeout(function() {
+        console.log('🔍 Checking for duplicate "Thêm" menus...');
+
+        // Find all nav items with "Thêm" text
+        const navItems = document.querySelectorAll('.navbar-nav .nav-item');
+        let addMenus = [];
+
+        navItems.forEach(function(item, index) {
+            const link = item.querySelector('.nav-link');
+            if (link && link.textContent.includes('Thêm')) {
+                const hasPlus = link.querySelector('.fa-plus');
+                addMenus.push({
+                    element: item,
+                    link: link,
+                    text: link.textContent.trim(),
+                    hasPlus: !!hasPlus,
+                    index: index
+                });
+                console.log(`Found "Thêm" menu #${addMenus.length}:`, {
+                    text: link.textContent.trim(),
+                    hasPlus: !!hasPlus,
+                    index: index
+                });
+            }
+        });
+
+        // If we have more than 1 "Thêm" menu, hide duplicates
+        if (addMenus.length > 1) {
+            console.log(`⚠️ Found ${addMenus.length} duplicate "Thêm" menus. Hiding duplicates...`);
+
+            // Keep only the one with + icon, hide others
+            addMenus.forEach(function(menu, idx) {
+                if (!menu.hasPlus) {
+                    menu.element.style.display = 'none';
+                    console.log(`✅ Hidden duplicate "Thêm" menu: ${menu.text}`);
+                }
+            });
+        } else {
+            console.log('✅ No duplicate "Thêm" menus found');
+        }
+    }, 100);
+});
+</script>

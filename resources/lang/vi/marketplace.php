@@ -65,6 +65,95 @@ return [
     // Suppliers
     'suppliers' => [
         'title' => 'Nhà cung cấp',
+        'all' => 'Tất cả nhà cung cấp',
+        'all_desc' => 'Danh sách đầy đủ các nhà cung cấp',
+        'verified' => 'Đối tác đã xác minh',
+        'verified_desc' => 'Nhà cung cấp đã được xác thực',
+        'top_sellers' => 'Top sellers',
+        'top_sellers_desc' => 'Nhà cung cấp bán chạy nhất',
+    ],
+
+    // Search
+    'search' => [
+        'advanced' => 'Tìm kiếm nâng cao',
+        'advanced_desc' => 'Tìm kiếm với bộ lọc chi tiết',
+    ],
+
+    // Company & Support
+    'company_profiles' => 'Hồ sơ công ty',
+    'company_profiles_desc' => 'Thông tin chi tiết các doanh nghiệp',
+    'help_support' => 'Hỗ trợ & Trợ giúp',
+    'help_support_desc' => 'Hướng dẫn và hỗ trợ khách hàng',
+
+    // Account related
+    'my_orders' => 'Đơn hàng của tôi',
+    'my_orders_desc' => 'Theo dõi trạng thái đơn hàng',
+    'wishlist' => 'Sản phẩm yêu thích',
+    'wishlist_desc' => 'Danh sách sản phẩm đã lưu',
+    'seller_dashboard' => 'Dashboard bán hàng',
+    'seller_dashboard_desc' => 'Quản lý cửa hàng của bạn',
+    'login_desc' => 'Đăng nhập để mua sắm',
+    'register_desc' => 'Tạo tài khoản miễn phí',
+
+    // Seller Dashboard
+    'seller_menu' => 'Menu Người Bán',
+    'dashboard' => 'Tổng quan',
+    'my_products' => 'Sản phẩm của tôi',
+    'analytics' => 'Phân tích',
+    'seller_info' => 'Thông tin người bán',
+    'status' => 'Trạng thái',
+    'welcome_seller' => 'Chào mừng, :name',
+    'add_product' => 'Thêm sản phẩm',
+    'total_products' => 'Tổng sản phẩm',
+    'total_sales' => 'Tổng doanh thu',
+    'total_orders' => 'Tổng đơn hàng',
+    'this_month_sales' => 'Doanh thu tháng này',
+    'quick_actions' => 'Thao tác nhanh',
+    'add_new_product' => 'Thêm sản phẩm mới',
+    'manage_products' => 'Quản lý sản phẩm',
+    'view_orders' => 'Xem đơn hàng',
+    'product_status' => 'Trạng thái sản phẩm',
+    'active' => 'Hoạt động',
+    'pending' => 'Chờ duyệt',
+    'total' => 'Tổng cộng',
+    'recent_products' => 'Sản phẩm gần đây',
+    'recent_orders' => 'Đơn hàng gần đây',
+    'view_all' => 'Xem tất cả',
+    'no_products_yet' => 'Chưa có sản phẩm nào',
+    'no_orders_yet' => 'Chưa có đơn hàng nào',
+
+    // Sales
+    'sales' => [
+        'title' => 'Doanh số',
+        'total' => 'Tổng doanh số',
+        'monthly' => 'Doanh số tháng',
+        'weekly' => 'Doanh số tuần',
+        'daily' => 'Doanh số ngày',
+    ],
+
+    // Mega Menu Headers
+    'discover_shopping' => 'Khám Phá & Mua Sắm',
+    'by_purpose' => 'Theo Mục Đích Sử Dụng',
+    'suppliers_partners' => 'Nhà Cung Cấp & Đối Tác',
+    'account_support' => 'Tài Khoản & Hỗ Trợ',
+
+    // Product descriptions for mega menu
+    'products' => [
+        'title' => 'Sản phẩm',
+        'all' => 'Tất cả sản phẩm',
+        'all_desc' => 'Khám phá toàn bộ sản phẩm kỹ thuật',
+        'featured' => 'Sản phẩm nổi bật',
+        'featured_desc' => 'Sản phẩm được đề xuất hàng đầu',
+        'newest' => 'Sản phẩm mới nhất',
+        'newest_desc' => 'Sản phẩm vừa được thêm gần đây',
+        'discounts' => 'Khuyến mãi & Giảm giá',
+        'discounts_desc' => 'Sản phẩm đang có ưu đãi đặc biệt',
+        'digital' => 'Sản phẩm kỹ thuật số',
+        'digital_desc' => 'Bản vẽ, tài liệu, phần mềm',
+        'new' => 'Sản phẩm mới',
+        'new_desc' => 'Thiết bị, máy móc hoàn toàn mới',
+        'used' => 'Sản phẩm đã qua sử dụng',
+        'used_desc' => 'Thiết bị cũ chất lượng tốt',
     ],
 
     // Cart
@@ -307,6 +396,8 @@ return [
     'secure_payment_guarantee' => 'Đảm bảo thanh toán an toàn',
 
     // Common
+    'title' => 'Thị trường MechaMap',
+    'description' => 'Khám phá hàng nghìn sản phẩm kỹ thuật chất lượng cao từ các nhà cung cấp uy tín',
     'required' => 'bắt buộc',
     'optional' => 'tùy chọn',
     'loading' => 'Đang tải...',

@@ -369,14 +369,6 @@
     <!-- Thread Actions Script -->
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
 
-    <!-- Bootstrap 5 Dropdown Enhancements -->
-    {{-- <script src="{{ asset_versioned('js/bootstrap-dropdown-enhancements.js') }}"></script> --}}
-
-    <!-- CKEditor Script - Only load on pages that need it -->
-    @if(in_array(Route::currentRouteName(), ['threads.create', 'threads.edit', 'showcase.show']))
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/translations/vi.js"></script>
-    @endif
 
     <!-- Authentication Modal -->
     @guest

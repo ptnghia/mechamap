@@ -28,6 +28,18 @@ Route::get('/threads-test', function() {
 // Community Stats API Routes (Public)
 Route::prefix('community')->name('api.community.')->group(function () {
     Route::get('/quick-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getQuickStats']);
+
+// Marketplace Stats API Routes (Public)
+Route::prefix('marketplace')->name('api.marketplace.')->group(function () {
+    Route::get('/quick-stats', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'quickStats']);
+    Route::get('/overview', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'overview']);
+    Route::get('/trending', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'trending']);
+
+    // Cart routes (require auth)
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/cart/count', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'cartCount']);
+    });
+});
     Route::get('/online-count', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOnlineUsersCount']);
     Route::get('/recent-activity', [App\Http\Controllers\Api\CommunityStatsController::class, 'getRecentActivity']);
     Route::get('/popular-forums', [App\Http\Controllers\Api\CommunityStatsController::class, 'getPopularForums']);

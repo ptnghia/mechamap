@@ -107,7 +107,6 @@
         </li>
 
         <!-- Marketplace -->
-        @if(!auth()->check() || auth()->user()->canBuyAnyProduct() || auth()->user()->canSellAnyProduct())
         <li>
             <a href="{{ route('marketplace.index') }}">
                 <i class="fa-solid fa-store me-2"></i>
@@ -185,7 +184,6 @@
                 @endauth
             </ul>
         </li>
-        @endif
 
         <!-- Search & Discovery -->
         <li>

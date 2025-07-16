@@ -8,7 +8,6 @@
 
 @section('content')
 <div class="body_page">
-
     <!-- Main Thread -->
     <div class="detail_thread">
         <div class="detail_thread_body">
@@ -98,292 +97,239 @@
                 </div>
             </div>
             @endif
+
+            <div class="threads-footer d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <!-- Like Button -->
+                    <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn_meta {{ Auth::check() && $isLiked ? 'active' : '' }} btn-like">
+                            <i class="fas fa-thumbs-up"></i>
+                            {{ __('thread.like') }}
+                            <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
+
+                        </button>
+                    </form>
+
+                    <!-- Save Button -->
+                    <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn_meta {{ Auth::check() && $isSaved ? 'active' : '' }} btn-save">
+                            <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
+                            {{ Auth::check() && $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}
+                        </button>
+                    </form>
+
+                    <!-- Follow Button -->
+                    @php
+                    $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
+                    @endphp
+                    @if($isFollowed)
+                    <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-theodoi btn_meta active">
+                            <i class="fas fa-bell-fill"></i>
+                            {{ __('thread.following') }}
+                        </button>
+                    </form>
+                    @else
+                    <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-theodoi btn_meta">
+                            <i class="fas fa-bell"></i>
+                            {{ __('thread.follow') }}
+                        </button>
+                    </form>
+                    @endif
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <!-- Share Button -->
+                    <div class="dropdown dropdown-button d-inline">
+                        <button class="btn btn-sm btn-main no-border dropdown-toggle btn-share" type="button"
+                            id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-share-alt"></i> {{ __('thread.share') }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="shareDropdown">
+                            <li>
+                                <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank">
+                                    <i class="fab fa-facebook-f me-2"></i>Facebook
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($thread->title) }}"target="_blank">
+                                    <i class="fab fa-twitter me-2"></i>Twitter
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="https://wa.me/?text={{ urlencode($thread->title . ' ' . request()->url()) }}"target="_blank">
+                                    <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('{{ __('thread.link_copied') }}'); return false;">
+                                    <i class="fas fa-clipboard me-2"></i>{{ __('thread.copy_link') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Reply Button -->
+                    <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
+                        <i class="fas fa-reply"></i> {{ __('thread.reply') }}
+                    </a>
+
+                    <!-- Edit/Delete Buttons (if owner) -->
+                    @can('update', $thread)
+                    <div class="btn-group ms-2">
+                        <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-edit"></i> {{ __('thread.edit') }}
+                        </a>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#deleteThreadModal">
+                            <i class="fas fa-trash"></i> {{ __('thread.delete') }}
+                        </button>
+                    </div>
+
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteThreadModal" tabindex="-1" aria-labelledby="deleteThreadModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteThreadModalLabel">{{ __('thread.delete_confirmation') }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ __('thread.delete_thread_message') }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('thread.cancel') }}</button>
+                                    <form action="{{ route('threads.destroy', $thread) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">{{ __('thread.delete_thread_button') }}</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endcan
+                </div>
+            </div>
         </div>
          @include('threads.partials.poll')
-    </div>
 
+        <!-- Showcase Section -->
+        @include('threads.partials.showcase')
 
-
-
-    <div class="card-body">
-        <!-- Project Details -->
-        @if($thread->status)
-        <!--div class="project-details mb-3 p-3 bg-light rounded">
-            @if($thread->status)
-            <div><strong>Trạng thái:</strong> {{ $thread->status }}</div>
-            @endif
-        </!--div>
-        @endif
-
-        <!-- Poll Section -->
-
-    </div>
-    <div class="card-footer d-flex justify-content-between">
-        <div>
-            <!-- Like Button -->
-            <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit"
-                    class="btn btn-sm {{ Auth::check() && $isLiked ? 'btn-primary' : 'btn-outline-primary' }} btn-like">
-                    <i class="fas fa-thumbs-up"></i>
-                    {{ __('thread.like') }}
-                    <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
-                </button>
-            </form>
-
-            <!-- Save Button -->
-            <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
-                @csrf
-                <button type="submit"
-                    class="btn btn-sm {{ Auth::check() && $isSaved ? 'btn-success' : 'btn-outline-success' }} btn-save">
-                    <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
-                    {{ Auth::check() && $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}
-                </button>
-            </form>
-
-            <!-- Follow Button -->
-            @php
-            $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
-            @endphp
-            @if($isFollowed)
-            <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-info btn-theodoi">
-                    <i class="fas fa-bell-fill"></i>
-                    {{ __('thread.following') }}
-                </button>
-            </form>
-            @else
-            <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-outline-info btn-theodoi">
-                    <i class="fas fa-bell"></i>
-                    {{ __('thread.follow') }}
-                </button>
-            </form>
-            @endif
-        </div>
-
-        <div>
-            <!-- Share Button -->
-            <div class="dropdown d-inline">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle btn-share" type="button"
-                    id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-share-alt"></i> {{ __('thread.share') }}
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="shareDropdown">
-                    <li><a class="dropdown-item"
-                            href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}"
-                            target="_blank"><i class="fab fa-facebook-f me-2"></i>Facebook</a></li>
-                    <li><a class="dropdown-item"
-                            href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($thread->title) }}"
-                            target="_blank"><i class="fab fa-twitter me-2"></i>Twitter</a></li>
-                    <li><a class="dropdown-item"
-                            href="https://wa.me/?text={{ urlencode($thread->title . ' ' . request()->url()) }}"
-                            target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#"
-                            onclick="navigator.clipboard.writeText('{{ request()->url() }}'); alert('{{ __('thread.link_copied') }}'); return false;"><i
-                                class="fas fa-clipboard me-2"></i>{{ __('thread.copy_link') }}</a></li>
-                </ul>
-            </div>
-
-            <!-- Reply Button -->
-            <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
-                <i class="fas fa-reply"></i> {{ __('thread.reply') }}
-            </a>
-
-            <!-- Edit/Delete Buttons (if owner) -->
-            @can('update', $thread)
-            <div class="btn-group ms-2">
-                <a href="{{ route('threads.edit', $thread) }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="fas fa-edit"></i> {{ __('thread.edit') }}
-                </a>
-                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                    data-bs-target="#deleteThreadModal">
-                    <i class="fas fa-trash"></i> {{ __('thread.delete') }}
-                </button>
-            </div>
-
-            <!-- Delete Modal -->
-            <div class="modal fade" id="deleteThreadModal" tabindex="-1" aria-labelledby="deleteThreadModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteThreadModalLabel">{{ __('thread.delete_confirmation') }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ __('thread.delete_thread_message') }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('thread.cancel') }}</button>
-                            <form action="{{ route('threads.destroy', $thread) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">{{ __('thread.delete_thread_button') }}</button>
-                            </form>
-                        </div>
+        <div class="comments-section mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h3 class="title_page_sub mb-2"><i class="fa-regular fa-comment-dots me-1"></i>{{ $comments->total() }} {{ __('thread.replies') }}</h3>
+                    <div class="thread-meta-item me-0">
+                        {{ __('thread.last_post_by') }}
+                        <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
+                            {{ $thread->lastCommenter->name ?? $thread->user->name }}
+                        </a>
+                        <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
+                            $thread->created_at->diffForHumans() }}</span>
                     </div>
                 </div>
-            </div>
-            @endcan
-        </div>
-    </div>
-
-    <!-- Showcase Section -->
-    @include('threads.partials.showcase')
-
-    <!-- Comments Section -->
-    <div class="comments-section mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-                <h3>{{ $comments->total() }} {{ __('thread.replies') }}</h3>
-                <div class="thread-meta-item me-0">
-                    <i class="fas fa-clock"></i> {{ __('thread.last_post_by') }}
-                    <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
-                        {{ $thread->lastCommenter->name ?? $thread->user->name }}
+                <!-- Sort Options -->
+                <div class="btn-group">
+                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'oldest']) }}"
+                        class="btn btn-sm {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        {{ __('thread.sort_oldest') }}
                     </a>
-                    <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
-                        $thread->created_at->diffForHumans() }}</span>
+                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}"
+                        class="btn btn-sm {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        {{ __('thread.sort_newest') }}
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'reactions']) }}"
+                        class="btn btn-sm {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        {{ __('thread.sort_reactions') }}
+                    </a>
                 </div>
             </div>
-            <!-- Sort Options -->
-            <div class="btn-group">
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'oldest']) }}"
-                    class="btn btn-sm {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    {{ __('thread.sort_oldest') }}
-                </a>
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}"
-                    class="btn btn-sm {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    {{ __('thread.sort_newest') }}
-                </a>
-                <a href="{{ request()->fullUrlWithQuery(['sort' => 'reactions']) }}"
-                    class="btn btn-sm {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    {{ __('thread.sort_reactions') }}
-                </a>
-            </div>
-        </div>
 
-        <!-- Comments List -->
-        @forelse($comments as $comment)
-        <div class="card mb-3" id="comment-{{ $comment->id }}">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}"
-                        class="rounded-circle me-2" width="40" height="40"
-                        onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 40]) }}'">
-                    <div>
-                        <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">{{
-                            $comment->user->name }}</a>
-                        <div class="text-muted small">
-                            <span>{{ $comment->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
-                            <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
-                        </div>
+            <!-- Comments List -->
+            @forelse($comments as $comment)
+            <div class="comment_item mb-3" id="comment-{{ $comment->id }}">
+                <div class="d-flex">
+                    <div class="comment_item_avatar">
+                        <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}"
+                                class="rounded-circle me-2" width="40" height="40"
+                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 40]) }}'">
                     </div>
-                </div>
-                <div class="text-muted small">
-                    #{{ $loop->iteration + 1 }} · {{ $comment->created_at->diffForHumans() }}
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="comment-content">
-                    {!! $comment->content !!}
-                </div>
-
-                @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
-                <div class="comment-attachments mt-3">
-                    <div class="row g-2">
-                        @foreach($comment->attachments as $attachment)
-                        <div class="col-md-3 col-sm-4 col-6">
-                            <a href="{{ $attachment->url }}" class="d-block"
-                                data-fancybox="comment-{{ $comment->id }}-images"
-                                data-caption="{{ $attachment->file_name }}">
-                                <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
-                                    class="img-fluid rounded">
+                    <div class="comment_item_body">
+                        <div class="comment_item_user">
+                            <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
+                                {{ $comment->user->name }}
                             </a>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                <!-- Nested Replies -->
-                @if(isset($comment->replies) && count($comment->replies) > 0)
-                <div class="nested-replies mt-3">
-                    @foreach($comment->replies as $reply)
-                    <div class="card mb-2" id="comment-{{ $reply->id }}">
-                        <div class="card-header d-flex justify-content-between align-items-center py-2">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}"
-                                    class="rounded-circle me-2" width="30" height="30"
-                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($reply->user->name) }}&color=7F9CF5&background=EBF4FF'">
-                                <div>
-                                    <a href="{{ route('profile.show', $reply->user) }}"
-                                        class="fw-bold text-decoration-none">{{ $reply->user->name }}</a>
-                                </div>
-                            </div>
                             <div class="text-muted small">
-                                {{ $reply->created_at->diffForHumans() }}
+                                <span>{{ $comment->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
+                                <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
                             </div>
                         </div>
-                        <div class="card-body py-2">
-                            <div class="reply-content">
-                                {!! $reply->content !!}
-                            </div>
-
-                            @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
-                            <div class="reply-attachments mt-2">
-                                <div class="row g-2">
-                                    @foreach($reply->attachments as $attachment)
-                                    <div class="col-md-3 col-sm-4 col-6">
-                                        <a href="{{ $attachment->url }}" class="d-block"
-                                            data-fancybox="reply-{{ $reply->id }}-images"
-                                            data-caption="{{ $attachment->file_name }}">
-                                            <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
-                                                class="img-fluid rounded">
-                                        </a>
-                                    </div>
-                                    @endforeach
+                        <div class="comment_item_content">
+                            {!! $comment->content !!}
+                        </div>
+                        @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
+                        <div class="comment-attachments mt-3">
+                            <div class="row g-2">
+                                @foreach($comment->attachments as $attachment)
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <a href="{{ $attachment->url }}" class="d-block"
+                                        data-fancybox="comment-{{ $comment->id }}-images"
+                                        data-caption="{{ $attachment->file_name }}">
+                                        <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
+                                            class="img-fluid rounded">
+                                    </a>
                                 </div>
+                                @endforeach
                             </div>
-                            @endif
                         </div>
-                        <div class="card-footer py-1 d-flex justify-content-between">
-                            <div>
+                        @endif
+                        <div class="comment_item_meta d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
                                 <!-- Like Button -->
-                                <form action="{{ route('comments.like', $reply) }}" method="POST" class="d-inline">
+                                <form action="{{ route('comments.like', $comment) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit"
-                                        class="btn btn-sm {{ Auth::check() && $reply->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
-                                        <i class="fas fa-thumbs-up"></i>
-                                        <span class="badge bg-secondary">{{ $reply->like_count }}</span>
+                                        class="btn btn-sm btn_meta {{ Auth::check() && $comment->isLikedBy(auth()->user()) ? 'active' : '' }}">
+                                        <i class="fas fa-thumbs-up"></i> {{ $comment->like_count }} {{ __('thread.like') }}
                                     </button>
                                 </form>
                             </div>
-
                             <div>
+                                <!-- Quote Button -->
+                                <button class="btn btn-main no-border quote-button" data-comment-id="{{ $comment->id }}"
+                                    data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
+                                    <i class="fa-solid fa-quote-left"></i> {{ __('thread.quote') }}
+                                </button>
+
                                 <!-- Reply Button -->
-                                <button class="btn btn-sm btn-outline-secondary reply-button"
+                                <button class="btn btn-main no-border reply-button ms-2"
                                     data-parent-id="{{ $comment->id }}">
                                     <i class="fas fa-reply"></i> {{ __('thread.reply') }}
                                 </button>
 
                                 <!-- Edit/Delete Buttons (if owner) -->
-                                @can('update', $reply)
+                                @can('update', $comment)
                                 <div class="btn-group ms-2">
-                                    <button class="btn btn-sm btn-outline-secondary edit-comment-button"
-                                        data-comment-id="{{ $reply->id }}" data-comment-content="{{ $reply->content }}">
+                                    <button class="btn btn-main active edit-comment-button"
+                                        data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="{{ route('comments.destroy', $reply) }}" method="POST"
-                                        class="d-inline"
-                                        onsubmit="return confirm('{{ __('thread.delete_reply_message') }}');">
+                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('{{ __('thread.delete_comment_message') }}');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -394,68 +340,112 @@
                                 @endcan
                             </div>
                         </div>
+                        <div class="comment_sub">
+                            @if(isset($comment->replies) && count($comment->replies) > 0)
+                            @foreach($comment->replies as $reply)
+                            <div class="comment_item mb-3">
+                                <div class="d-flex">
+                                    <div class="comment_item_avatar">
+                                        <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}" class="rounded-circle me-2" width="30" height="30" onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($reply->user->name, 0, 1)), 'size' => 40]) }}'">
+                                    </div>
+                                    <div class="comment_item_body sub">
+                                        <div class="comment_item_user">
+                                            <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
+                                                {{ $reply->user->name }}
+                                            </a>
+                                            <div class="text-muted small">
+                                                <span>{{ $reply->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
+                                                <span>{{ __('thread.joined') }} {{ $reply->user->created_at->format('M Y') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="comment_item_content">
+                                            {!! $reply->content !!}
+                                        </div>
+                                        @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
+                                        <div class="reply-attachments mt-2">
+                                            <div class="row g-2">
+                                                @foreach($reply->attachments as $attachment)
+                                                <div class="col-md-3 col-sm-4 col-6">
+                                                    <a href="{{ $attachment->url }}" class="d-block"
+                                                        data-fancybox="reply-{{ $reply->id }}-images"
+                                                        data-caption="{{ $attachment->file_name }}">
+                                                        <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
+                                                            class="img-fluid rounded">
+                                                    </a>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endif
+                                        <div class="comment_item_meta d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $reply->created_at->diffForHumans() }}</span>
+                                                <!-- Like Button -->
+                                                <form action="{{ route('comments.like', $reply) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn_meta {{ Auth::check() && $reply->isLikedBy(auth()->user()) ? 'active' : '' }}">
+                                                        <i class="fas fa-thumbs-up"></i> {{ $reply->like_count }}  {{ __('thread.like') }}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <!-- Reply Button -->
+                                                <button class="btn btn-sm btn-main no-border reply-button"
+                                                    data-parent-id="{{ $comment->id }}">
+                                                    <i class="fas fa-reply"></i> {{ __('thread.reply') }}
+                                                </button>
+
+                                                <!-- Edit/Delete Buttons (if owner) -->
+                                                @can('update', $reply)
+                                                <div class="btn-group ms-2">
+                                                    <button class="btn btn-sm btn-main active edit-comment-button"
+                                                        data-comment-id="{{ $reply->id }}" data-comment-content="{{ $reply->content }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <form action="{{ route('comments.destroy', $reply) }}" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('{{ __('thread.delete_reply_message') }}');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
                     </div>
-                    @endforeach
-                </div>
-                @endif
-            </div>
-            <div class="card-footer d-flex justify-content-between">
-                <div>
-                    <!-- Like Button -->
-                    <form action="{{ route('comments.like', $comment) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit"
-                            class="btn btn-sm {{ Auth::check() && $comment->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span class="badge bg-secondary">{{ $comment->like_count }}</span>
-                        </button>
-                    </form>
-                </div>
-
-                <div>
-                    <!-- Quote Button -->
-                    <button class="btn btn-sm btn-outline-secondary quote-button" data-comment-id="{{ $comment->id }}"
-                        data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
-                        <i class="fas fa-comment-quote"></i> {{ __('thread.quote') }}
-                    </button>
-
-                    <!-- Reply Button -->
-                    <button class="btn btn-sm btn-outline-secondary reply-button ms-2"
-                        data-parent-id="{{ $comment->id }}">
-                        <i class="fas fa-reply"></i> {{ __('thread.reply') }}
-                    </button>
-
-                    <!-- Edit/Delete Buttons (if owner) -->
-                    @can('update', $comment)
-                    <div class="btn-group ms-2">
-                        <button class="btn btn-sm btn-outline-secondary edit-comment-button"
-                            data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline"
-                            onsubmit="return confirm('{{ __('thread.delete_comment_message') }}');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
-                    @endcan
                 </div>
             </div>
-        </div>
-        @empty
-        <div class="alert alert-info">
-            {{ __('thread.no_comments') }}
-        </div>
-        @endforelse
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center">
-            {{ $comments->links() }}
+            @empty
+            <div class="alert alert-info">
+                {{ __('thread.no_comments') }}
+            </div>
+            @endforelse
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center">
+                {{ $comments->links() }}
+            </div>
         </div>
     </div>
+
+    <!--div class="card-body">
+        @if($thread->status)
+        <div class="project-details mb-3 p-3 bg-light rounded">
+            @if($thread->status)
+            <div><strong>Trạng thái:</strong> {{ $thread->status }}</div>
+            @endif
+        </div>
+        @endif
+    </div-->
 
     <!-- Reply Form -->
     @auth

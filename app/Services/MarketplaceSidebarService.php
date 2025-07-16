@@ -32,8 +32,8 @@ class MarketplaceSidebarService
     private function getMarketplaceStats(): array
     {
         return Cache::remember('marketplace_stats', 600, function () {
-            // Kiểm tra xem bảng products có tồn tại không
-            if (!Schema::hasTable('products')) {
+            // Kiểm tra xem bảng marketplace_products có tồn tại không
+            if (!Schema::hasTable('marketplace_products')) {
                 return [
                     'total_products' => 0,
                     'total_sales' => 0,
@@ -42,18 +42,22 @@ class MarketplaceSidebarService
                 ];
             }
 
-            $stats = DB::table('products')
+            $stats = DB::table('marketplace_products')
                 ->selectRaw('
                     COUNT(*) as total_products,
-                    COALESCE(SUM(sales_count), 0) as total_sales,
+                    COALESCE(SUM(purchase_count), 0) as total_sales,
                     COALESCE(AVG(price), 0) as avg_price
                 ')
-                ->where('status', 'active')
+                ->where('status', 'approved')
+                ->where('is_active', true)
+                ->whereNull('deleted_at')
                 ->first();
 
-            $activeSellers = DB::table('products')
+            $activeSellers = DB::table('marketplace_products')
                 ->distinct('seller_id')
-                ->where('status', 'active')
+                ->where('status', 'approved')
+                ->where('is_active', true)
+                ->whereNull('deleted_at')
                 ->count();
 
             return [
@@ -71,22 +75,25 @@ class MarketplaceSidebarService
     private function getProductCategories(): array
     {
         return Cache::remember('marketplace_product_categories', 600, function () {
-            // Kiểm tra xem bảng products có tồn tại không
-            if (!Schema::hasTable('products')) {
+            // Kiểm tra xem bảng marketplace_products có tồn tại không
+            if (!Schema::hasTable('marketplace_products')) {
                 return $this->getDefaultCategories();
             }
 
-            $categories = DB::table('products')
-                ->select('category')
+            $categories = DB::table('marketplace_products')
+                ->join('product_categories', 'marketplace_products.product_category_id', '=', 'product_categories.id')
+                ->select('product_categories.name as category', 'product_categories.slug')
                 ->selectRaw('
                     COUNT(*) as product_count,
-                    MIN(price) as min_price,
-                    MAX(price) as max_price,
-                    COUNT(CASE WHEN created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) THEN 1 END) as recent_count
+                    MIN(marketplace_products.price) as min_price,
+                    MAX(marketplace_products.price) as max_price,
+                    COUNT(CASE WHEN marketplace_products.created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) THEN 1 END) as recent_count
                 ')
-                ->where('status', 'active')
-                ->whereNotNull('category')
-                ->groupBy('category')
+                ->where('marketplace_products.status', 'approved')
+                ->where('marketplace_products.is_active', true)
+                ->whereNull('marketplace_products.deleted_at')
+                ->whereNull('product_categories.deleted_at')
+                ->groupBy('product_categories.id', 'product_categories.name', 'product_categories.slug')
                 ->orderBy('product_count', 'desc')
                 ->limit(6)
                 ->get();
@@ -97,13 +104,13 @@ class MarketplaceSidebarService
 
             return $categories->map(function ($category) {
                 return [
-                    'name' => ucfirst($category->category),
-                    'slug' => $category->category,
+                    'name' => $category->category,
+                    'slug' => $category->slug,
                     'product_count' => $category->product_count,
                     'min_price' => $category->min_price,
                     'max_price' => $category->max_price,
                     'trend' => $category->recent_count > 0 ? 1 : 0,
-                    'icon' => $this->getCategoryIcon($category->category),
+                    'icon' => $this->getCategoryIcon($category->slug),
                 ];
             })->toArray();
         });
@@ -170,35 +177,40 @@ class MarketplaceSidebarService
     private function getFeaturedProducts(): array
     {
         return Cache::remember('marketplace_featured_products', 300, function () {
-            // Kiểm tra xem bảng products có tồn tại không
-            if (!Schema::hasTable('products')) {
+            // Kiểm tra xem bảng marketplace_products có tồn tại không
+            if (!Schema::hasTable('marketplace_products')) {
                 return [];
             }
 
-            $products = DB::table('products')
-                ->join('users', 'products.seller_id', '=', 'users.id')
+            $products = DB::table('marketplace_products')
+                ->join('marketplace_sellers', 'marketplace_products.seller_id', '=', 'marketplace_sellers.id')
+                ->join('users', 'marketplace_sellers.user_id', '=', 'users.id')
                 ->select(
-                    'products.id',
-                    'products.name',
-                    'products.price',
-                    'products.original_price',
-                    'products.type',
-                    'products.views',
-                    'products.sales_count',
-                    'products.rating',
-                    'products.is_featured',
-                    'products.images',
+                    'marketplace_products.id',
+                    'marketplace_products.name',
+                    'marketplace_products.slug',
+                    'marketplace_products.price',
+                    'marketplace_products.sale_price',
+                    'marketplace_products.product_type',
+                    'marketplace_products.view_count',
+                    'marketplace_products.purchase_count',
+                    'marketplace_products.rating_average',
+                    'marketplace_products.is_featured',
+                    'marketplace_products.images',
                     'users.name as seller_name'
                 )
-                ->where('products.status', 'active')
+                ->where('marketplace_products.status', 'approved')
+                ->where('marketplace_products.is_active', true)
+                ->whereNull('marketplace_products.deleted_at')
+                ->whereNull('marketplace_sellers.deleted_at')
                 ->where(function ($query) {
-                    $query->where('products.is_featured', true)
-                          ->orWhere('products.rating', '>=', 4.0)
-                          ->orWhere('products.views', '>=', 50);
+                    $query->where('marketplace_products.is_featured', true)
+                          ->orWhere('marketplace_products.rating_average', '>=', 4.0)
+                          ->orWhere('marketplace_products.view_count', '>=', 50);
                 })
-                ->orderByDesc('products.is_featured')
-                ->orderByDesc('products.rating')
-                ->orderByDesc('products.views')
+                ->orderByDesc('marketplace_products.is_featured')
+                ->orderByDesc('marketplace_products.rating_average')
+                ->orderByDesc('marketplace_products.view_count')
                 ->limit(5)
                 ->get();
 
@@ -207,20 +219,21 @@ class MarketplaceSidebarService
                 $imageUrl = !empty($images) ? $images[0] : asset('images/placeholder-product.jpg');
 
                 $discountPercent = 0;
-                if ($product->original_price && $product->original_price > $product->price) {
-                    $discountPercent = round((($product->original_price - $product->price) / $product->original_price) * 100);
+                if ($product->sale_price && $product->sale_price < $product->price) {
+                    $discountPercent = round((($product->price - $product->sale_price) / $product->price) * 100);
                 }
 
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
-                    'price' => $product->price,
-                    'original_price' => $product->original_price,
+                    'slug' => $product->slug,
+                    'price' => $product->sale_price ?? $product->price,
+                    'original_price' => $product->price,
                     'discount_percent' => $discountPercent,
-                    'type' => $product->type,
-                    'views' => $product->views ?? 0,
-                    'sales' => $product->sales_count ?? 0,
-                    'rating' => $product->rating ?? 0,
+                    'type' => $product->product_type,
+                    'views' => $product->view_count ?? 0,
+                    'sales' => $product->purchase_count ?? 0,
+                    'rating' => $product->rating_average ?? 0,
                     'is_featured' => $product->is_featured,
                     'image_url' => $imageUrl,
                     'seller' => [
@@ -237,20 +250,24 @@ class MarketplaceSidebarService
     private function getTopSellers(): array
     {
         return Cache::remember('marketplace_top_sellers', 600, function () {
-            // Kiểm tra xem bảng products có tồn tại không
-            if (!Schema::hasTable('products')) {
+            // Kiểm tra xem bảng marketplace_products có tồn tại không
+            if (!Schema::hasTable('marketplace_products')) {
                 return [];
             }
 
-            $sellers = DB::table('products')
-                ->join('users', 'products.seller_id', '=', 'users.id')
+            $sellers = DB::table('marketplace_products')
+                ->join('marketplace_sellers', 'marketplace_products.seller_id', '=', 'marketplace_sellers.id')
+                ->join('users', 'marketplace_sellers.user_id', '=', 'users.id')
                 ->select('users.id', 'users.name', 'users.username', 'users.avatar', 'users.role')
                 ->selectRaw('
-                    COUNT(products.id) as product_count,
-                    COALESCE(SUM(products.sales_count), 0) as total_sales,
-                    COALESCE(AVG(products.rating), 0) as avg_rating
+                    COUNT(marketplace_products.id) as product_count,
+                    COALESCE(SUM(marketplace_products.purchase_count), 0) as total_sales,
+                    COALESCE(AVG(marketplace_products.rating_average), 0) as avg_rating
                 ')
-                ->where('products.status', 'active')
+                ->where('marketplace_products.status', 'approved')
+                ->where('marketplace_products.is_active', true)
+                ->whereNull('marketplace_products.deleted_at')
+                ->whereNull('marketplace_sellers.deleted_at')
                 ->groupBy('users.id', 'users.name', 'users.username', 'users.avatar', 'users.role')
                 ->orderBy('total_sales', 'desc')
                 ->orderBy('product_count', 'desc')

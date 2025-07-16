@@ -9,87 +9,85 @@
 <!-- Related Showcase Section -->
 @if($thread->shouldDisplayShowcase())
 <div class="showcase-section mb-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-light">
-            <h5 class="card-title mb-0">
-                <i class="fas fa-star text-warning me-2"></i>
-                {{ __('showcase.related') }}
-            </h5>
-            <small class="text-muted">{{ __('showcase.for_thread') }}</small>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <!-- Showcase Image -->
-                <div class="col-md-4 mb-3 mb-md-0">
-                    @if($thread->showcase->cover_image)
-                        <img src="{{ asset($thread->showcase->cover_image) }}"
-                             alt="{{ $thread->showcase->title }}"
-                             class="img-fluid rounded shadow-sm"
-                             style="width: 100%; height: 200px; object-fit: cover;"
-                             onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
-                    @elseif($thread->showcase->media && $thread->showcase->media->count() > 0)
-                        @php
-                            $firstMedia = $thread->showcase->media->first();
-                        @endphp
-                        <img src="{{ asset($firstMedia->file_path) }}"
-                             alt="{{ $thread->showcase->title }}"
-                             class="img-fluid rounded shadow-sm"
-                             style="width: 100%; height: 200px; object-fit: cover;"
-                             onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
-                    @else
-                        <div class="bg-light rounded d-flex align-items-center justify-content-center"
-                             style="width: 100%; height: 200px;">
-                            <i class="fas fa-image text-muted fs-1"></i>
-                        </div>
-                    @endif
-                </div>
+    <div class="showcase-section-header">
+        <h5 class="title_page_sub">
+            <i class="fas fa-tools text-muted me-1 me-2"></i>
+            {{ __('showcase.related') }}
+        </h5>
+        <!--small class="text-muted">{{ __('showcase.for_thread') }}</!smal-->
+    </div>
+    <div class="showcase-section-body">
+        <div class="row">
+            <!-- Showcase Image -->
+            <div class="col-md-4 mb-3 mb-md-0">
+                @if($thread->showcase->cover_image)
+                    <img src="{{ asset($thread->showcase->cover_image) }}"
+                            alt="{{ $thread->showcase->title }}"
+                            class="img-fluid rounded shadow-sm"
+                            style="width: 100%; height: 200px; object-fit: cover;"
+                            onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                @elseif($thread->showcase->media && $thread->showcase->media->count() > 0)
+                    @php
+                        $firstMedia = $thread->showcase->media->first();
+                    @endphp
+                    <img src="{{ asset($firstMedia->file_path) }}"
+                            alt="{{ $thread->showcase->title }}"
+                            class="img-fluid rounded shadow-sm"
+                            style="width: 100%; height: 200px; object-fit: cover;"
+                            onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                @else
+                    <div class="bg-light rounded d-flex align-items-center justify-content-center"
+                            style="width: 100%; height: 200px;">
+                        <i class="fas fa-image text-muted fs-1"></i>
+                    </div>
+                @endif
+            </div>
 
-                <!-- Showcase Content -->
-                <div class="col-md-8">
-                    <h6 class="fw-bold mb-2">{{ $thread->showcase->title }}</h6>
+            <!-- Showcase Content -->
+            <div class="col-md-8">
+                <h6 class="fw-bold mb-2">{{ $thread->showcase->title }}</h6>
 
-                    @if($thread->showcase->description)
-                    <p class="text-muted mb-3">{{ Str::limit($thread->showcase->description, 200) }}</p>
-                    @endif
+                @if($thread->showcase->description)
+                <p class="text-muted mb-3">{{ Str::limit($thread->showcase->description, 200) }}</p>
+                @endif
 
-                    <!-- Showcase Meta -->
-                    <div class="showcase-meta mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ get_avatar_url($thread->showcase->user) }}"
-                                 alt="{{ $thread->showcase->user->name }}"
-                                 class="rounded-circle me-2"
-                                 width="24" height="24">
-                            <small class="text-muted">
-                                {{ __('ui.common.by') }}
-                                <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
-                                   class="text-decoration-none">
-                                    {{ $thread->showcase->user->name }}
-                                </a>
-                            </small>
-                        </div>
+                <!-- Showcase Meta -->
+                <div class="showcase-meta mb-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="{{ get_avatar_url($thread->showcase->user) }}"
+                                alt="{{ $thread->showcase->user->name }}"
+                                class="rounded-circle me-2"
+                                width="24" height="24">
                         <small class="text-muted">
-                            <i class="fas fa-clock me-1"></i>
-                            {{ $thread->showcase->created_at->diffForHumans() }}
+                            {{ __('ui.common.by') }}
+                            <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
+                                class="text-decoration-none">
+                                {{ $thread->showcase->user->name }}
+                            </a>
                         </small>
                     </div>
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        {{ $thread->showcase->created_at->diffForHumans() }}
+                    </small>
+                </div>
 
-                    <!-- Action Buttons -->
-                    <div class="showcase-actions">
-                        <a href="{{ route('showcase.show', $thread->showcase) }}"
-                           class="btn btn-primary btn-sm">
-                            <i class="fas fa-external-link-alt me-1"></i>
-                            {{ __('ui.actions.view_full_showcase') }}
-                        </a>
+                <!-- Action Buttons -->
+                <div class="showcase-actions">
+                    <a href="{{ route('showcase.show', $thread->showcase) }}"
+                        class="btn btn-main btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        {{ __('ui.actions.view_full_showcase') }}
+                    </a>
 
-                        @if($thread->showcase->showcase_url)
-                        <a href="{{ $thread->showcase->showcase_url }}"
-                           target="_blank"
-                           class="btn btn-outline-secondary btn-sm ms-2">
-                            <i class="fas fa-link me-1"></i>
-                            {{ __('ui.actions.view_details') }}
-                        </a>
-                        @endif
-                    </div>
+                    @if($thread->showcase->showcase_url)
+                    <a href="{{ $thread->showcase->showcase_url }}"
+                        target="_blank"
+                        class="btn btn-main btn-sm ms-2">
+                        <i class="fas fa-link me-1"></i>
+                        {{ __('ui.actions.view_details') }}
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -99,37 +97,31 @@
 <!-- Create Showcase Section -->
 @auth
     @if($thread->userCanCreateShowcase(Auth::user()) && $thread->canCreateShowcase() && !$thread->showcase)
-    <div class="create-showcase-section mb-4">
-        <div class="card shadow-sm border-success">
-            <div class="card-header bg-light">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-plus-circle text-success me-2"></i>
-                    {{ __('showcase.create_from_thread') }}
-                </h5>
-                <small class="text-muted">{{ __('showcase.create_from_thread_description') }}</small>
-            </div>
-            <div class="card-body">
-                <p class="mb-3">
-                    <i class="fas fa-info-circle text-info me-2"></i>
-                    {{ __('showcase.create_showcase_info') }}
-                </p>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createShowcaseModal">
-                    <i class="fas fa-star me-2"></i>
-                    {{ __('showcase.create_showcase_button') }}
-                </button>
-            </div>
+    <div class="create-showcase-section mb-4 d-flex justify-content-between align-items-center">
+        <div class="create-showcase-left">
+            <h5 class="create-showcase-title mb-0">
+                <i class="fas fa-tools text-success me-2"></i>
+                {{ __('showcase.create_from_thread') }}
+            </h5>
+            <small class="text-muted">{{ __('showcase.create_showcase_info') }}</small>
+        </div>
+        <div class="create-showcase-rigth">
+            <button type="button" class="btn btn-main active" data-bs-toggle="modal" data-bs-target="#createShowcaseModal">
+                <i class="fa-solid fa-file-circle-plus me-2"></i>
+                {{ __('showcase.create_showcase_button') }}
+            </button>
         </div>
     </div>
 
     <!-- Create Showcase Modal -->
     <div class="modal fade" id="createShowcaseModal" tabindex="-1" aria-labelledby="createShowcaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content createShowcaseModal">
                 <form id="createShowcaseForm" action="{{ route('threads.create-showcase', $thread) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="createShowcaseModalLabel">
-                            <i class="fas fa-star text-warning me-2"></i>
+                            <i class="fas fa-tools text-success me-2"></i>
                             {{ __('showcase.create_from_thread_title') }}
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -137,7 +129,7 @@
                     <div class="modal-body">
                         <!-- Progress Steps -->
                         <div class="progress mb-4" style="height: 6px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 33%" id="progressBar"></div>
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 33%" id="progressBar"></div>
                         </div>
 
                         <div class="steps-indicator mb-4">
@@ -280,15 +272,176 @@
 @endauth
 @endif
 
+{{-- CSS for TinyMCE in Modal --}}
+@push('styles')
+<style>
+/* TinyMCE trong modal showcase */
+.modal .tox-tinymce {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.modal .tox-editor-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal .tox-toolbar {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal .tox-edit-area {
+    border: none;
+}
+
+.modal .tox-statusbar {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Đảm bảo TinyMCE không bị overflow trong modal */
+.modal-body .tox-tinymce {
+    max-width: 100%;
+}
+
+/* Validation styling cho TinyMCE */
+.modal .tox-tinymce.is-invalid {
+    border-color: #dc3545;
+}
+
+.modal .tox-tinymce.is-invalid .tox-editor-header {
+    border-bottom-color: #dc3545;
+}
+</style>
+@endpush
+
 {{-- JavaScript for Showcase Modal --}}
 @push('scripts')
+<!-- TinyMCE Editor for Showcase -->
+<script src="https://cdn.tiny.cloud/1/m3nymn6hdlv8nqnf4g88r0ccz9n86ks2aw92v0opuy7sx20y/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize showcase wizard if modal exists
         if (document.getElementById('createShowcaseModal')) {
             initShowcaseWizard();
+            initShowcaseTinyMCE();
         }
     });
+
+    function initShowcaseTinyMCE() {
+        // Initialize TinyMCE for showcase description
+        tinymce.init({
+            selector: '#showcase_description',
+            height: 250,
+            readonly: false,
+            menubar: false,
+            branding: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'charmap',
+                'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'table', 'wordcount', 'emoticons'
+            ],
+            toolbar: [
+                'undo redo formatselect bold italic underline alignleft aligncenter alignright bullist numlist quote blockquote emoticons fullscreen'
+            ],
+            language: 'vi',
+            placeholder: 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...',
+            content_style: `
+                body {
+                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #fff;
+                    margin: 8px;
+                }
+                blockquote {
+                    border-left: 4px solid #007bff;
+                    margin: 1.5em 0;
+                    padding: 0.5em 1em;
+                    background-color: #f8f9fa;
+                    font-style: italic;
+                }
+                pre {
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                    border-radius: 4px;
+                    padding: 1em;
+                    overflow-x: auto;
+                }
+                code {
+                    background-color: #f8f9fa;
+                    padding: 0.2em 0.4em;
+                    border-radius: 3px;
+                    font-size: 0.875em;
+                }
+            `,
+            setup: function(editor) {
+                // Custom Quote Button
+                editor.ui.registry.addButton('quote', {
+                    text: 'Trích dẫn',
+                    icon: 'quote',
+                    tooltip: 'Thêm trích dẫn',
+                    onAction: function() {
+                        editor.insertContent('<blockquote><p>Nội dung trích dẫn...</p></blockquote><p><br></p>');
+                    }
+                });
+
+                // Custom Blockquote Button
+                editor.ui.registry.addButton('blockquote', {
+                    text: 'Khối trích dẫn',
+                    icon: 'blockquote',
+                    tooltip: 'Định dạng khối trích dẫn',
+                    onAction: function() {
+                        editor.execCommand('mceBlockQuote');
+                    }
+                });
+
+                // Handle initialization complete
+                editor.on('init', function() {
+                    console.log('TinyMCE for showcase description initialized successfully');
+                });
+
+                // Handle content changes for validation
+                editor.on('change keyup', function() {
+                    const content = editor.getContent();
+                    const textarea = document.getElementById('showcase_description');
+                    if (textarea) {
+                        textarea.value = content;
+                        // Remove validation error if content exists
+                        if (content.trim()) {
+                            textarea.classList.remove('is-invalid');
+                            const errorMsg = textarea.parentNode.querySelector('.text-danger');
+                            if (errorMsg) {
+                                errorMsg.remove();
+                            }
+                        }
+                    }
+                });
+            },
+
+            // Style formats for showcase descriptions
+            style_formats: [
+                {title: 'Tiêu đề 1', format: 'h3'},
+                {title: 'Tiêu đề 2', format: 'h4'},
+                {title: 'Tiêu đề 3', format: 'h5'},
+                {title: 'Đoạn văn', format: 'p'},
+                {title: 'Trích dẫn', format: 'blockquote'},
+                {title: 'Code inline', format: 'code'}
+            ],
+
+            // Prevent form submission on Enter
+            init_instance_callback: function(editor) {
+                editor.on('keydown', function(e) {
+                    // Prevent form submission when pressing Enter without Shift
+                    if (e.keyCode === 13 && !e.shiftKey && !e.ctrlKey) {
+                        e.stopPropagation();
+                    }
+                });
+            }
+        });
+    }
 
     function initShowcaseWizard() {
         let currentStep = 1;
@@ -381,10 +534,18 @@
                 }
             } else if (step === 2) {
                 // Validate step 2
-                const description = document.getElementById('showcase_description').value.trim();
+                let description = '';
+
+                // Get content from TinyMCE if available, otherwise from textarea
+                if (tinymce.get('showcase_description')) {
+                    description = tinymce.get('showcase_description').getContent().trim();
+                } else {
+                    description = document.getElementById('showcase_description').value.trim();
+                }
+
                 const coverImage = document.getElementById('cover_image').files[0];
 
-                if (!description) {
+                if (!description || description === '<p><br></p>' || description === '<p></p>') {
                     showError('showcase_description', 'Vui lòng nhập mô tả dự án');
                     isValid = false;
                 }
@@ -421,8 +582,16 @@
                 existingError.remove();
             }
 
-            // Add error class
-            field.classList.add('is-invalid');
+            // Add error class - special handling for TinyMCE
+            if (fieldId === 'showcase_description' && tinymce.get(fieldId)) {
+                // For TinyMCE, add error class to the TinyMCE container
+                const tinymceContainer = field.parentNode.querySelector('.tox-tinymce');
+                if (tinymceContainer) {
+                    tinymceContainer.classList.add('is-invalid');
+                }
+            } else {
+                field.classList.add('is-invalid');
+            }
 
             // Add error message
             const errorDiv = document.createElement('div');
@@ -430,14 +599,32 @@
             errorDiv.textContent = message;
             field.parentNode.appendChild(errorDiv);
 
-            // Remove error on input
-            field.addEventListener('input', function() {
-                field.classList.remove('is-invalid');
-                const errorMsg = field.parentNode.querySelector('.text-danger');
-                if (errorMsg) {
-                    errorMsg.remove();
-                }
-            }, { once: true });
+            // Remove error on input - special handling for TinyMCE
+            if (fieldId === 'showcase_description' && tinymce.get(fieldId)) {
+                // For TinyMCE, listen to editor changes
+                const editor = tinymce.get(fieldId);
+                const removeError = function() {
+                    const tinymceContainer = field.parentNode.querySelector('.tox-tinymce');
+                    if (tinymceContainer) {
+                        tinymceContainer.classList.remove('is-invalid');
+                    }
+                    field.classList.remove('is-invalid');
+                    const errorMsg = field.parentNode.querySelector('.text-danger');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                    editor.off('change keyup', removeError);
+                };
+                editor.on('change keyup', removeError);
+            } else {
+                field.addEventListener('input', function() {
+                    field.classList.remove('is-invalid');
+                    const errorMsg = field.parentNode.querySelector('.text-danger');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                }, { once: true });
+            }
         }
 
         // Form submission
@@ -445,6 +632,12 @@
             e.preventDefault();
 
             if (validateStep(currentStep)) {
+                // Sync TinyMCE content with textarea before submission
+                if (tinymce.get('showcase_description')) {
+                    const content = tinymce.get('showcase_description').getContent();
+                    document.getElementById('showcase_description').value = content;
+                }
+
                 // Show loading
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...';
                 submitBtn.disabled = true;
@@ -464,9 +657,18 @@
             // Reset form
             document.getElementById('createShowcaseForm').reset();
 
+            // Reset TinyMCE content
+            if (tinymce.get('showcase_description')) {
+                tinymce.get('showcase_description').setContent('');
+            }
+
             // Remove validation errors
             document.querySelectorAll('.is-invalid').forEach(field => {
                 field.classList.remove('is-invalid');
+            });
+            // Also remove is-invalid from TinyMCE containers
+            document.querySelectorAll('.tox-tinymce.is-invalid').forEach(container => {
+                container.classList.remove('is-invalid');
             });
             document.querySelectorAll('.text-danger').forEach(error => {
                 error.remove();
@@ -475,6 +677,16 @@
             // Reset submit button
             submitBtn.innerHTML = '<i class="fas fa-star me-2"></i>Tạo Showcase';
             submitBtn.disabled = false;
+        });
+
+        // Initialize TinyMCE when modal is shown
+        document.getElementById('createShowcaseModal').addEventListener('shown.bs.modal', function() {
+            // Ensure TinyMCE is properly initialized when modal is visible
+            setTimeout(function() {
+                if (!tinymce.get('showcase_description')) {
+                    initShowcaseTinyMCE();
+                }
+            }, 100);
         });
     }
 </script>

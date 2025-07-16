@@ -161,6 +161,10 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
 
     // Seller Setup routes
     Route::prefix('seller')->name('seller.')->middleware('auth')->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\MarketplaceSellerController::class, 'dashboard'])->name('dashboard');
+        Route::get('/products', [App\Http\Controllers\MarketplaceSellerController::class, 'products'])->name('products');
+        Route::get('/orders', [App\Http\Controllers\MarketplaceSellerController::class, 'orders'])->name('orders');
+        Route::get('/analytics', [App\Http\Controllers\MarketplaceSellerController::class, 'analytics'])->name('analytics');
         Route::get('/setup', [App\Http\Controllers\MarketplaceSellerSetupController::class, 'show'])->name('setup');
         Route::post('/setup', [App\Http\Controllers\MarketplaceSellerSetupController::class, 'store'])->name('setup.store');
         Route::get('/check-slug', [App\Http\Controllers\MarketplaceSellerSetupController::class, 'checkSlug'])->name('check-slug');
@@ -956,3 +960,6 @@ if (app()->environment('local')) {
         return view('test.real-time-notifications');
     })->name('test.real-time-notifications')->middleware('auth');
 }
+
+// Coming Soon page
+Route::get('/coming-soon', [App\Http\Controllers\ComingSoonController::class, 'show'])->name('coming-soon');

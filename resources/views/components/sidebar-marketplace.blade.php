@@ -26,35 +26,37 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-box"></i>
-                        <span>{{ number_format($sidebarData['marketplace_stats']['total_products']) }}</span>
+                        <span>{{ number_format((int)($sidebarData['marketplace_stats']['total_products'] ?? 0)) }}</span>
                     </div>
                     <div class="stat-label">{{ __('marketplace.total_products') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-handshake"></i>
-                        <span>{{ number_format($sidebarData['marketplace_stats']['total_sales']) }}</span>
+                        <span>{{ number_format((int)($sidebarData['marketplace_stats']['total_sales'] ?? 0)) }}</span>
                     </div>
                     <div class="stat-label">{{ __('marketplace.total_sales') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-dong-sign"></i>
-                        <span>{{ number_format($sidebarData['marketplace_stats']['avg_price']) }}</span>
+                        <span>{{ number_format((float)($sidebarData['marketplace_stats']['avg_price'] ?? 0)) }}</span>
                     </div>
                     <div class="stat-label">{{ __('marketplace.avg_price_vnd') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-users"></i>
-                        <span>{{ number_format($sidebarData['marketplace_stats']['active_sellers']) }}</span>
+                        <span>{{ number_format((int)($sidebarData['marketplace_stats']['active_sellers'] ?? 0)) }}</span>
                     </div>
                     <div class="stat-label">{{ __('marketplace.active_sellers') }}</div>
                 </div>
             </div>
 
             @auth
-            @if(auth()->user()->canSellProducts())
+            @if(\App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'digital') ||
+                \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'new_product') ||
+                \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'used_product'))
             <div class="cta-section mt-3">
                 <a href="{{ route('marketplace.products.create') }}" class="btn btn-success w-100">
                     <i class="fas fa-plus me-2"></i>{{ __('marketplace.list_product') }}
@@ -89,8 +91,8 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                     <div class="category-info">
                         <div class="category-name">{{ $category['name'] }}</div>
                         <div class="category-stats">
-                            <span class="product-count">{{ $category['product_count'] }} {{ __('marketplace.products') }}</span>
-                            <span class="price-range">{{ number_format($category['min_price']) }} - {{ number_format($category['max_price']) }} VND</span>
+                            <span class="product-count">{{ (int)($category['product_count'] ?? 0) }} {{ __('marketplace.products.title') }}</span>
+                            <span class="price-range">{{ number_format((float)($category['min_price'] ?? 0)) }} - {{ number_format((float)($category['max_price'] ?? 0)) }} VND</span>
                         </div>
                     </div>
                     <div class="category-trend">
@@ -142,11 +144,11 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                             </a>
                         </h6>
                         <div class="product-price">
-                            @if($product['discount_percent'] > 0)
-                            <span class="original-price">{{ number_format($product['original_price']) }} VND</span>
-                            <span class="sale-price">{{ number_format($product['price']) }} VND</span>
+                            @if(($product['discount_percent'] ?? 0) > 0)
+                            <span class="original-price">{{ number_format((float)($product['original_price'] ?? 0)) }} VND</span>
+                            <span class="sale-price">{{ number_format((float)($product['price'] ?? 0)) }} VND</span>
                             @else
-                            <span class="current-price">{{ number_format($product['price']) }} VND</span>
+                            <span class="current-price">{{ number_format((float)($product['price'] ?? 0)) }} VND</span>
                             @endif
                         </div>
                         <div class="product-meta">
@@ -161,14 +163,14 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                         </div>
                         <div class="product-metrics">
                             <span class="metric">
-                                <i class="fas fa-eye"></i> {{ number_format($product['views']) }}
+                                <i class="fas fa-eye"></i> {{ number_format((int)($product['views'] ?? 0)) }}
                             </span>
                             <span class="metric">
-                                <i class="fas fa-shopping-cart"></i> {{ number_format($product['sales']) }}
+                                <i class="fas fa-shopping-cart"></i> {{ number_format((int)($product['sales'] ?? 0)) }}
                             </span>
-                            @if($product['rating'] > 0)
+                            @if(($product['rating'] ?? 0) > 0)
                             <span class="rating">
-                                <i class="fas fa-star text-warning"></i> {{ number_format($product['rating'], 1) }}
+                                <i class="fas fa-star text-warning"></i> {{ number_format((float)($product['rating'] ?? 0), 1) }}
                             </span>
                             @endif
                         </div>
@@ -208,8 +210,8 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                             {{ $seller['role_name'] }}
                         </div>
                         <div class="seller-stats">
-                            <span class="product-count">{{ $seller['product_count'] }} {{ __('marketplace.products') }}</span>
-                            <span class="total-sales">{{ number_format($seller['total_sales']) }} {{ __('marketplace.sales') }}</span>
+                            <span class="product-count">{{ (int)($seller['product_count'] ?? 0) }} {{ __('marketplace.products.title') }}</span>
+                            <span class="total-sales">{{ number_format((int)($seller['total_sales'] ?? 0)) }} {{ __('marketplace.sales.title') }}</span>
                         </div>
                     </div>
                 </a>

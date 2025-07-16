@@ -198,6 +198,7 @@ return [
         'community' => 'Cộng đồng',
         'showcase' => 'Dự án',
         'marketplace' => 'Thị trường',
+        'add' => 'Thêm',
         'more' => 'Thêm',
         'discussion' => 'Thảo luận',
         'recent_discussions' => 'Thảo luận gần đây',
