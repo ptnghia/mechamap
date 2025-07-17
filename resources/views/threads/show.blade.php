@@ -481,46 +481,22 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="images" class="form-label">
-                        <i class="fas fa-image me-2"></i>{{ __('forms.upload.attach_images_optional') }}
-                    </label>
+                <!-- File Upload Component -->
+                <x-file-upload
+                    name="images"
+                    :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+                    max-size="5MB"
+                    :multiple="true"
+                    :max-files="10"
+                    :label="'<i class=\"fas fa-image me-2\"></i>' . __('forms.upload.attach_images_optional')"
+                    id="thread-reply-images"
+                />
 
-                    <!-- Custom File Upload Area -->
-                    <div class="file-upload-area" id="file-upload-area">
-                        <div class="upload-zone" id="upload-zone">
-                            <div class="upload-content">
-                                <div class="upload-icon">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                </div>
-                                <div class="upload-text">
-                                    <h6 class="mb-1">{{ __('forms.upload.drag_drop_here') }}</h6>
-                                    <p class="text-muted mb-2">{{ __('forms.upload.or') }} <span class="text-primary fw-semibold">{{ __('forms.upload.select_from_computer') }}</span></p>
-                                    <small class="text-muted">{{ __('forms.upload.supported_formats', ['size' => '5']) }}</small>
-                                </div>
-                            </div>
-                            <input type="file" class="file-input" id="images" name="images[]" multiple accept="image/*">
-                        </div>
-
-                        <!-- Image Previews Container -->
-                        <div id="image-preview-container" class="image-previews-grid"></div>
-
-                        <!-- Upload Progress -->
-                        <div id="upload-progress" class="upload-progress mt-2" style="display: none;">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                                    style="width: 0%"></div>
-                            </div>
-                            <small class="text-muted mt-1">Đang tải lên...</small>
-                        </div>
-                    </div>
-
-                    @error('images.*')
-                    <div class="text-danger small mt-2">
-                        <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
-                    </div>
-                    @enderror
+                @error('images.*')
+                <div class="text-danger small mt-2">
+                    <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
                 </div>
+                @enderror
 
                 <div class="d-flex justify-content-between align-items-center">
                     <div id="reply-to-info" class="text-muted" style="display: none;">
@@ -575,231 +551,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeRealTimeComments();
 });
 
-function initializeFileUpload() {
-    const uploadArea = document.getElementById('file-upload-area');
-    const uploadZone = document.getElementById('upload-zone');
-    const fileInput = document.getElementById('images');
-    const previewContainer = document.getElementById('image-preview-container');
-
-    if (!uploadArea || !uploadZone || !fileInput || !previewContainer) return;
-
-    let selectedFiles = [];
-
-    // Drag & Drop Events
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        uploadZone.addEventListener(eventName, preventDefaults, false);
-        document.body.addEventListener(eventName, preventDefaults, false);
-    });
-
-    ['dragenter', 'dragover'].forEach(eventName => {
-        uploadZone.addEventListener(eventName, () => {
-            uploadZone.classList.add('drag-over');
-        }, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        uploadZone.addEventListener(eventName, () => {
-            uploadZone.classList.remove('drag-over');
-        }, false);
-    });
-
-    uploadZone.addEventListener('drop', handleDrop, false);
-    uploadZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', handleFileSelect);
-
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
-    }
-
-    function handleFileSelect(e) {
-        const files = e.target.files;
-        handleFiles(files);
-    }
-
-    function handleFiles(files) {
-        selectedFiles = Array.from(files);
-        updateFileInput();
-        displayPreviews();
-    }
-
-    function updateFileInput() {
-        const dt = new DataTransfer();
-        selectedFiles.forEach(file => dt.items.add(file));
-        fileInput.files = dt.files;
-    }
-
-    function displayPreviews() {
-        previewContainer.innerHTML = '';
-
-        if (selectedFiles.length === 0) {
-            uploadZone.style.display = 'flex';
-            return;
-        }
-
-        uploadZone.style.display = 'none';
-
-        selectedFiles.forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                createImagePreview(file, index);
-            } else {
-                createFilePreview(file, index);
-            }
-        });
-
-        // Add upload more button
-        const addMoreBtn = document.createElement('div');
-        addMoreBtn.className = 'image-preview add-more-btn';
-        addMoreBtn.innerHTML = `
-            <div class="add-more-content">
-                <i class="fas fa-plus"></i>
-                <span>Thêm ảnh</span>
-            </div>
-        `;
-        addMoreBtn.addEventListener('click', () => fileInput.click());
-        previewContainer.appendChild(addMoreBtn);
-    }
-
-    function createImagePreview(file, index) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.createElement('div');
-            preview.className = 'image-preview';
-            preview.innerHTML = `
-                <div class="preview-image">
-                    <img src="${e.target.result}" alt="${file.name}">
-                    <div class="image-overlay">
-                        <div class="image-info">
-                            <div class="file-name" title="${file.name}">${truncateFileName(file.name, 15)}</div>
-                            <div class="file-size">${formatFileSize(file.size)}</div>
-                        </div>
-                        <div class="image-actions">
-                            <button type="button" class="btn-action btn-view" title="Xem">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button type="button" class="btn-action btn-remove" title="Xóa">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Handle view image
-            preview.querySelector('.btn-view').addEventListener('click', (e) => {
-                e.stopPropagation();
-                showImageModal(reader.result, file.name);
-            });
-
-            // Handle remove image
-            preview.querySelector('.btn-remove').addEventListener('click', (e) => {
-                e.stopPropagation();
-                removeFile(index);
-            });
-
-            previewContainer.appendChild(preview);
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function createFilePreview(file, index) {
-        const preview = document.createElement('div');
-        preview.className = 'image-preview file-preview';
-        preview.innerHTML = `
-            <div class="file-icon">
-                <i class="fas fa-file"></i>
-            </div>
-            <div class="file-info">
-                <div class="file-name" title="${file.name}">${truncateFileName(file.name, 15)}</div>
-                <div class="file-size">${formatFileSize(file.size)}</div>
-            </div>
-            <button type="button" class="btn-action btn-remove" title="Xóa">
-                <i class="fas fa-trash"></i>
-            </button>
-        `;
-
-        preview.querySelector('.btn-remove').addEventListener('click', (e) => {
-            e.stopPropagation();
-            removeFile(index);
-        });
-
-        previewContainer.appendChild(preview);
-    }
-
-    function removeFile(index) {
-        selectedFiles.splice(index, 1);
-        updateFileInput();
-        displayPreviews();
-
-        if (selectedFiles.length === 0) {
-            uploadZone.style.display = 'flex';
-        }
-    }
-
-    function truncateFileName(name, maxLength) {
-        if (name.length <= maxLength) return name;
-        const ext = name.split('.').pop();
-        const nameWithoutExt = name.substring(0, name.lastIndexOf('.'));
-        const truncated = nameWithoutExt.substring(0, maxLength - ext.length - 3) + '...';
-        return truncated + '.' + ext;
-    }
-
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    function showImageModal(src, title) {
-        // Create modal for image preview
-        const modal = document.createElement('div');
-        modal.className = 'image-modal';
-        modal.innerHTML = `
-            <div class="image-modal-backdrop">
-                <div class="image-modal-content">
-                    <div class="image-modal-header">
-                        <h5>${title}</h5>
-                        <button type="button" class="btn-close-modal">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="image-modal-body">
-                        <img src="${src}" alt="${title}">
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-        modal.style.display = 'flex';
-
-        // Close modal events
-        modal.querySelector('.btn-close-modal').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
-
-        modal.querySelector('.image-modal-backdrop').addEventListener('click', (e) => {
-            if (e.target === modal.querySelector('.image-modal-backdrop')) {
-                document.body.removeChild(modal);
-            }
-        });
-
-        document.addEventListener('keydown', function escapeHandler(e) {
-            if (e.key === 'Escape') {
-                document.body.removeChild(modal);
-                document.removeEventListener('keydown', escapeHandler);
-            }
-        });
-    }
-}
+// File upload functionality is now handled by the FileUploadComponent
 
 function initializeFormSubmission() {
     const form = document.getElementById('reply-form-element');
@@ -904,8 +656,7 @@ function initializeFormSubmission() {
 }
 
 function initializeEventHandlers() {
-    // Initialize File Upload with Drag & Drop
-    initializeFileUpload();
+    // File upload is now handled by FileUploadComponent
 
     // Initialize Form Submission Handler
     initializeFormSubmission();

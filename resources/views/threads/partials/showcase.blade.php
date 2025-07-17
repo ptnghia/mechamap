@@ -194,18 +194,22 @@
                                 <div class="form-text">{{ __('showcase.project_description_help') }}</div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="cover_image" class="form-label">{{ __('showcase.cover_image') }} <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" id="cover_image" name="cover_image"
-                                       accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" required>
-                                <div class="form-text">{{ __('showcase.cover_image_help') }}</div>
-                                @if($thread->featured_image)
-                                <div class="mt-2">
-                                    <small class="text-muted">{{ __('showcase.current_thread_image') }}</small><br>
-                                    <img src="{{ asset('' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
-                                </div>
-                                @endif
+                            <!-- Cover Image Upload Component -->
+                            <x-file-upload
+                                name="cover_image"
+                                :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+                                max-size="5MB"
+                                :required="true"
+                                label="{{ __('showcase.cover_image') }} <span class='text-danger'>*</span>"
+                                help-text="{{ __('showcase.cover_image_help') }}"
+                                id="showcase-cover-image"
+                            />
+                            @if($thread->featured_image)
+                            <div class="mt-2">
+                                <small class="text-muted">{{ __('showcase.current_thread_image') }}</small><br>
+                                <img src="{{ asset('' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
                             </div>
+                            @endif
 
                             <div class="row">
                                 <div class="col-md-6">

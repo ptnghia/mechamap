@@ -164,27 +164,21 @@
                             @enderror
                         </div>
 
-                        <!-- File Attachments -->
-                        <div class="mb-3">
-                            <label for="attachments" class="form-label">
-                                Attachments
-                            </label>
-                            <input type="file"
-                                   class="form-control @error('attachments.*') is-invalid @enderror"
-                                   id="attachments"
-                                   name="attachments[]"
-                                   multiple
-                                   accept="image/*,.pdf,.doc,.docx,.txt">
-                            <div class="form-text">
-                                You can upload images, PDFs, and documents. Maximum 5 files, 10MB each.
+                        <!-- File Attachments Component -->
+                        <x-file-upload
+                            name="attachments"
+                            :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'txt']"
+                            max-size="10MB"
+                            :multiple="true"
+                            :max-files="5"
+                            label="Attachments"
+                            id="thread-attachments-upload"
+                        />
+                        @error('attachments.*')
+                            <div class="text-danger small mt-2">
+                                <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
                             </div>
-                            @error('attachments.*')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-
-                            <!-- File Preview -->
-                            <div id="filePreview" class="mt-2"></div>
-                        </div>
+                        @enderror
 
                         <!-- Tags -->
                         <div class="mb-3">

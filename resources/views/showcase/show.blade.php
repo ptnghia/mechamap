@@ -377,12 +377,14 @@
                                         minHeight="100px"
                                     />
 
-                                    {{-- Enhanced Image Upload --}}
-                                    <x-enhanced-image-upload
+                                    {{-- File Upload Component --}}
+                                    <x-file-upload
                                         name="images"
+                                        :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+                                        max-size="5MB"
+                                        :multiple="true"
+                                        :max-files="5"
                                         id="main-comment-upload"
-                                        :maxFiles="5"
-                                        :maxSize="5"
                                     />
 
                                     <div class="comment-form-actions">

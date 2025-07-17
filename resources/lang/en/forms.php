@@ -115,11 +115,22 @@ return [
 
     // File Upload
     'upload' => [
-        'drag_drop_here' => 'Drag and drop images here',
+        'drag_drop_here' => 'Drag and drop files here',
         'or' => 'or',
         'select_from_computer' => 'select from computer',
+        'select_files' => 'Select Files',
+        'attach_file' => 'Attach File',
+        'attach_files' => 'Attach Files',
         'attach_images_optional' => 'Attach images (optional)',
+        'optional' => 'optional',
         'supported_formats' => 'Supported: JPG, PNG, GIF (max :size MB per file)',
+        'supported_formats_with_size' => 'Supported formats: :formats (max :size per file)',
+        'files_selected' => 'Selected Files',
+        'uploading' => 'Uploading...',
+        'upload_complete' => 'Upload Complete',
+        'file_too_large' => 'File ":filename" is too large',
+        'file_type_not_supported' => 'File ":filename" is not supported',
+        'max_files_exceeded' => 'Maximum number of files exceeded',
         'add_quote' => 'Add Quote',
         'quote' => 'Quote',
     ],
