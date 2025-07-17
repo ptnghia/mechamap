@@ -59,6 +59,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleBasedAccessMiddleware::class,
             'db.cache' => \App\Http\Middleware\DatabaseCacheMiddleware::class,
             'marketplace.permission' => \App\Http\Middleware\MarketplacePermissionMiddleware::class,
+            'websocket.api' => \App\Http\Middleware\WebSocketApiKeyMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

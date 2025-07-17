@@ -33,6 +33,14 @@ return [
         'nodejs' => [
             'driver' => 'nodejs',
             'url' => env('NODEJS_BROADCAST_URL', 'http://localhost:3000'),
+            'websocket_url' => env('WEBSOCKET_SERVER_URL', 'http://localhost:3000'),
+            'host' => env('WEBSOCKET_SERVER_HOST', 'localhost'),
+            'port' => env('WEBSOCKET_SERVER_PORT', 3000),
+            'secure' => env('WEBSOCKET_SERVER_SECURE', false),
+            'options' => [
+                'timeout' => 30,
+                'verify' => env('APP_ENV') === 'production',
+            ],
         ],
 
         'reverb' => [

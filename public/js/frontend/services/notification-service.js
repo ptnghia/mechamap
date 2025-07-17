@@ -77,35 +77,38 @@ class NotificationService {
             this.userId = userMeta.getAttribute('content');
         }
 
-        // Get JWT token from meta tag or localStorage
-        const tokenMeta = document.querySelector('meta[name="auth-token"]');
-        if (tokenMeta) {
-            this.userToken = tokenMeta.getAttribute('content');
-        } else {
-            // Fallback: get from localStorage or API
-            this.userToken = localStorage.getItem('auth_token') || this.getAuthToken();
+        // Get Sanctum token from localStorage first, then try API
+        this.userToken = localStorage.getItem('sanctum_token');
+        if (!this.userToken) {
+            // If no cached token, we'll get it async when needed
+            this.getAuthToken().then(token => {
+                if (token) {
+                    this.userToken = token;
+                }
+            });
         }
     }
 
     /**
-     * Get authentication token from Laravel
+     * Get authentication token from Laravel (Sanctum token)
      */
     async getAuthToken() {
         try {
-            const response = await fetch('/api/auth/token', {
+            const response = await fetch('/api/user/token', {
                 method: 'GET',
                 headers: {
+                    'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
                 },
-                credentials: 'same-origin'
+                credentials: 'include'
             });
 
             if (response.ok) {
                 const data = await response.json();
-                if (data.token) {
-                    localStorage.setItem('auth_token', data.token);
-                    return data.token;
+                if (data.success && data.data && data.data.token) {
+                    localStorage.setItem('sanctum_token', data.data.token);
+                    return data.data.token;
                 }
             }
         } catch (error) {

@@ -74,14 +74,13 @@ class NotificationManager {
     }
 
     /**
-     * Create connection status indicator
+     * Create connection status indicator (DISABLED - cosmetic issue only)
+     * Connection status is handled internally, no need for visual indicator
      */
     createConnectionStatus() {
-        this.connectionStatus = document.createElement('div');
-        this.connectionStatus.className = 'connection-status connecting';
-        this.connectionStatus.textContent = 'Đang kết nối...';
-        this.connectionStatus.style.display = 'none';
-        document.body.appendChild(this.connectionStatus);
+        // Connection status indicator disabled to prevent cosmetic issues
+        // WebSocket connection works perfectly without visual indicator
+        this.connectionStatus = null;
     }
 
     /**
@@ -170,22 +169,13 @@ class NotificationManager {
     }
 
     /**
-     * Update connection status
+     * Update connection status (DISABLED - cosmetic issue only)
+     * Connection status is handled internally, no need for visual indicator
      */
     updateConnectionStatus(status, message) {
-        if (this.connectionStatus) {
-            this.connectionStatus.className = `connection-status ${status}`;
-            this.connectionStatus.textContent = message;
-
-            // Show status for a few seconds
-            this.connectionStatus.style.display = 'block';
-
-            if (status === 'connected') {
-                setTimeout(() => {
-                    this.connectionStatus.style.display = 'none';
-                }, 3000);
-            }
-        }
+        // Connection status indicator disabled to prevent cosmetic issues
+        // WebSocket connection works perfectly without visual indicator
+        console.log(`NotificationManager: Connection status ${status} - ${message}`);
     }
 
     /**

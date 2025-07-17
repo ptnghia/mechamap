@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * Unified Notification API Controller
- * 
+ *
  * Provides API endpoints for the unified notification system
  */
 class UnifiedNotificationController extends Controller
@@ -237,6 +237,255 @@ class UnifiedNotificationController extends Controller
                 'message' => 'Failed to get recent notifications',
                 'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
             ], 500);
+        }
+    }
+
+    // ============================================================================
+    // WEBSOCKET SERVER API METHODS (API Key protected)
+    // ============================================================================
+
+    /**
+     * Verify user for WebSocket server (API Key protected)
+     */
+    public function verifyUser(Request $request)
+    {
+        try {
+            $token = $request->input('token');
+
+            if (!$token) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token required'
+                ], 400);
+            }
+
+            // Verify Sanctum token
+            $user = \Laravel\Sanctum\PersonalAccessToken::findToken($token)?->tokenable;
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid token'
+                ], 401);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                        'avatar' => $user->avatar,
+                        'is_online' => $user->is_online ?? false,
+                        'last_activity' => $user->last_activity,
+                    ]
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('WebSocket user verification failed', [
+                'error' => $e->getMessage(),
+                'token_prefix' => substr($request->input('token', ''), 0, 10) . '...'
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'User verification failed'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get user by ID for WebSocket server (API Key protected)
+     */
+    public function getUserById(Request $request, $id)
+    {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                        'avatar' => $user->avatar,
+                        'is_online' => $user->is_online ?? false,
+                        'last_activity' => $user->last_activity,
+                    ]
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to get user by ID', [
+                'error' => $e->getMessage(),
+                'user_id' => $id
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve user'
+            ], 500);
+        }
+    }
+
+    /**
+     * Handle broadcasting from WebSocket server to Laravel (API Key protected)
+     */
+    public function broadcastFromWebSocket(Request $request)
+    {
+        try {
+            $event = $request->input('event');
+            $data = $request->input('data', []);
+            $channels = $request->input('channels', []);
+
+            if (!$event) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Event type required'
+                ], 400);
+            }
+
+            // Log the broadcast request
+            Log::info('WebSocket server broadcast request', [
+                'event' => $event,
+                'channels' => $channels,
+                'data_keys' => array_keys($data)
+            ]);
+
+            // Process the broadcast based on event type
+            switch ($event) {
+                case 'user.activity':
+                    $this->handleUserActivity($data);
+                    break;
+                case 'notification.delivered':
+                    $this->handleNotificationDelivered($data);
+                    break;
+                default:
+                    Log::warning('Unknown WebSocket broadcast event', ['event' => $event]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Broadcast processed successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('WebSocket broadcast processing failed', [
+                'error' => $e->getMessage(),
+                'event' => $request->input('event')
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Broadcast processing failed'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get user permissions for WebSocket server (API Key protected)
+     */
+    public function getUserPermissions(Request $request, $id)
+    {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            $permissions = [
+                'can_send_messages' => true,
+                'can_receive_notifications' => true,
+                'can_join_channels' => true,
+                'max_connections' => 5,
+                'rate_limit' => [
+                    'messages_per_minute' => 60,
+                    'connections_per_hour' => 10
+                ]
+            ];
+
+            // Role-based permissions
+            switch ($user->role) {
+                case 'admin':
+                case 'moderator':
+                    $permissions['can_broadcast'] = true;
+                    $permissions['can_moderate'] = true;
+                    $permissions['max_connections'] = 20;
+                    break;
+                case 'verified_partner':
+                case 'manufacturer':
+                case 'supplier':
+                case 'brand':
+                    $permissions['can_send_business_messages'] = true;
+                    $permissions['max_connections'] = 10;
+                    break;
+                case 'guest':
+                    $permissions['can_send_messages'] = false;
+                    $permissions['max_connections'] = 2;
+                    $permissions['rate_limit']['messages_per_minute'] = 10;
+                    break;
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'user_id' => $user->id,
+                    'role' => $user->role,
+                    'permissions' => $permissions
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to get user permissions', [
+                'error' => $e->getMessage(),
+                'user_id' => $id
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve user permissions'
+            ], 500);
+        }
+    }
+
+    /**
+     * Handle user activity updates from WebSocket
+     */
+    private function handleUserActivity($data)
+    {
+        if (isset($data['user_id'])) {
+            User::where('id', $data['user_id'])->update([
+                'last_activity' => now(),
+                'is_online' => $data['is_online'] ?? true
+            ]);
+        }
+    }
+
+    /**
+     * Handle notification delivery confirmation from WebSocket
+     */
+    private function handleNotificationDelivered($data)
+    {
+        if (isset($data['notification_id'])) {
+            UserNotification::where('id', $data['notification_id'])->update([
+                'delivered_at' => now()
+            ]);
         }
     }
 }

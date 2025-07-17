@@ -370,6 +370,10 @@
     <!-- Thread Actions Script -->
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
 
+    <!-- WebSocket Configuration and Connection -->
+    @auth
+    <x-websocket-config :auto-init="true" />
+    @endauth
 
     <!-- Authentication Modal -->
     @guest

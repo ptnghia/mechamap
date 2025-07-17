@@ -32,6 +32,58 @@ Route::middleware('web')->group(function () {
             'user' => Auth::user()->only(['id', 'name', 'email', 'avatar'])
         ]);
     });
+
+// Get JWT token for WebSocket authentication (using web middleware)
+Route::middleware(['web'])->get('/user/token', function (Request $request) {
+    if (!Auth::check()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not authenticated'
+        ], 401);
+    }
+
+    $user = Auth::user();
+
+    // Generate JWT token for WebSocket authentication
+    $payload = [
+        'userId' => $user->id,
+        'role' => $user->role,
+        'permissions' => ['websocket:connect'],
+        'iat' => time(),
+        'exp' => time() + (60 * 60), // 1 hour expiration
+    ];
+
+    // Use JWT secret from config or env
+    $jwtSecret = env('JWT_SECRET', config('app.key'));
+
+    // Debug JWT secret and payload
+    \Log::info('JWT Secret used for encoding:', ['secret' => substr($jwtSecret, 0, 10) . '...']);
+    \Log::info('JWT Payload:', $payload);
+
+    try {
+        $token = \Firebase\JWT\JWT::encode($payload, $jwtSecret, 'HS256');
+        \Log::info('JWT Token created:', ['token' => substr($token, 0, 50) . '...']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role
+                ]
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to generate token',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
 });
 
 // Direct test route outside of all middleware
@@ -914,3 +966,32 @@ if (app()->environment('local')) {
         });
     });
 }
+
+// ============================================================================
+// WEBSOCKET SERVER API ROUTES (với API Key authentication)
+// ============================================================================
+
+// WebSocket Server API Routes (với API Key authentication)
+Route::middleware(['websocket.api'])->prefix('websocket-api')->group(function () {
+    // User authentication verification
+    Route::post('/verify-user', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'verifyUser']);
+
+    // User information
+    Route::get('/user/{id}', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'getUserById']);
+
+    // Broadcasting from WebSocket server to Laravel
+    Route::post('/broadcast-to-laravel', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'broadcastFromWebSocket']);
+
+    // Health check for WebSocket server
+    Route::get('/health', function () {
+        return response()->json([
+            'success' => true,
+            'message' => 'Laravel API is healthy',
+            'timestamp' => now()->toISOString(),
+            'environment' => app()->environment()
+        ]);
+    });
+
+    // Get user permissions
+    Route::get('/user/{id}/permissions', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'getUserPermissions']);
+});
