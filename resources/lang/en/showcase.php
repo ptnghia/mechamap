@@ -115,6 +115,89 @@ return [
     'manufacturing_type' => 'Manufacturing',
 
     // Additional keys for migration
+    'new' => 'New Showcase',
+    'related' => 'Related Showcase',
+    'for_thread' => 'Showcase for thread',
+
+    // Showcase creation
+    'create_from_thread' => 'Create Showcase from this Thread',
+    'create_from_thread_description' => 'Convert thread to showcase to highlight your project',
+    'create_showcase_info' => 'Showcase will help your project get more visibility and receive feedback from the community.',
+    'create_showcase_button' => 'Create Showcase',
+
+    // Showcase creation wizard
+    'create_from_thread_title' => 'Create Showcase from Thread',
+    'basic_info' => 'Basic Information',
+    'content' => 'Content',
+    'complete' => 'Complete',
+    'step_1_title' => 'Step 1: Basic Information',
+    'step_2_title' => 'Step 2: Showcase Content',
+    'step_3_title' => 'Step 3: Confirm Creation',
+
+    // Form fields
+    'showcase_title' => 'Showcase Title',
+    'showcase_title_help' => 'Title will be used as showcase name',
+    'select_category' => 'Select category',
+    'select_project_type' => 'Select project type',
+    'project_description' => 'Project Description',
+    'project_description_help' => 'Detailed description of project, methods and results achieved',
+    'cover_image' => 'Cover Image',
+    'cover_image_help' => 'Select cover image for showcase (JPG, PNG, GIF, WebP - max 5MB)',
+    'current_thread_image' => 'Current image from thread:',
+    'complexity_level' => 'Complexity Level',
+    'industry_application' => 'Industry Application',
+    'industry_placeholder' => 'e.g.: Automotive, Aerospace, Manufacturing',
+
+    // File Upload
+    'file_attachments' => 'File Attachments',
+    'file_attachments_optional' => 'Optional',
+    'file_upload_area' => 'Drag and drop files here or',
+    'browse_files' => 'browse files',
+    'file_upload_help' => 'Supported: Images (JPG, PNG, GIF, WebP), Documents (PDF, DOC, DOCX), CAD Files (DWG, DXF, STEP, STL)',
+    'file_upload_limits' => 'Maximum 10 files, each file no more than 50MB',
+    'file_upload_description' => 'Add CAD files, images, technical documents to illustrate your project',
+    'files_selected' => 'Selected files:',
+    'file_too_large' => 'File ":filename" is too large. Maximum size is 50MB.',
+    'file_type_not_supported' => 'File ":filename" is not supported.',
+    'max_files_exceeded' => 'Maximum 10 files allowed',
+    'file_validation_failed' => 'Please check the selected files',
+
+    // File Types
+    'file_types' => [
+        'image' => 'Image',
+        'document' => 'Document',
+        'cad' => 'CAD File',
+        'spreadsheet' => 'Spreadsheet',
+        'presentation' => 'Presentation',
+        'archive' => 'Archive',
+        'other' => 'Other',
+    ],
+
+    // Confirmation
+    'confirm_info' => 'Confirm information:',
+    'confirm_points' => [
+        'Showcase will be created from current thread content',
+        'Original thread will remain unchanged',
+        'Showcase can be edited after creation',
+        'Community can rate and comment on showcase'
+    ],
+    'agree_terms' => 'I agree to allow community to view and rate this showcase',
+
+    // Buttons
+    'previous' => 'Previous',
+    'next' => 'Next',
+    'create_showcase' => 'Create Showcase',
+    'creating' => 'Creating...',
+
+    // Validation
+    'title_required' => 'Please enter showcase title',
+    'category_required' => 'Please select category',
+    'description_required' => 'Please enter project description',
+    'cover_image_required' => 'Please select cover image',
+    'file_size_error' => 'File size cannot exceed 5MB',
+    'terms_required' => 'Please agree to the terms',
+
+    // Additional keys for migration
     'new' => 'New Showcases',
     'related' => 'Related Showcases',
     'for_thread' => 'Showcase for Thread',

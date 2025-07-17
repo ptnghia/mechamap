@@ -4,7 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
-<link href="https://cdn.jsdelivr.net/npm/@1.11.0/font/.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -28,7 +27,7 @@
 </div>
 
 <!-- Progress Indicator với accessibility cải thiện -->
-<div class="progress-container" role="progressbar" aria-label="{{ __('forum.create.progress_label') }}" aria-valuemin="0" aria-valuemax="4"
+<div class="progress-container" role="progressbar" aria-label="{{ __('forum.create.progress_label') }}" aria-valuemin="0" aria-valuemax="5"
     aria-valuenow="1">
     <div class="progress-steps">
         <div class="progress-line" id="progress-line"></div>
@@ -41,12 +40,16 @@
             <div class="step-number">2</div>
             <div class="step-text">{{ __('forum.create.step_content') }}</div>
         </button>
-        <button type="button" class="step-item" data-step="poll" aria-label="{{ __('forum.create.step_poll_aria') }}" disabled>
+        <button type="button" class="step-item" data-step="showcase" aria-label="{{ __('ui.common.thread_showcase.step_aria') }}" disabled>
             <div class="step-number">3</div>
+            <div class="step-text">{{ __('ui.common.thread_showcase.step_title') }}</div>
+        </button>
+        <button type="button" class="step-item" data-step="poll" aria-label="{{ __('forum.create.step_poll_aria') }}" disabled>
+            <div class="step-number">4</div>
             <div class="step-text">{{ __('forum.create.step_poll') }}</div>
         </button>
         <button type="button" class="step-item" data-step="review" aria-label="{{ __('forum.create.step_review_aria') }}" disabled>
-            <div class="step-number">4</div>
+            <div class="step-number">5</div>
             <div class="step-text">{{ __('forum.create.step_review') }}</div>
         </button>
     </div>
@@ -184,9 +187,16 @@
                         <span class="label-required">*</span>
                     </label>
                     <div class="editor-wrapper">
-                        <textarea class="form-control-modern editor @error('content') is-invalid @enderror" id="content"
-                            name="content" rows="15" required
-                            placeholder="Viết nội dung chi tiết cho chủ đề của bạn...">{{ old('content') }}</textarea>
+                        <x-tinymce-editor
+                            name="content"
+                            id="content"
+                            :value="old('content')"
+                            placeholder="Viết nội dung chi tiết cho chủ đề của bạn..."
+                            context="admin"
+                            :height="400"
+                            :required="true"
+                            class="@error('content') is-invalid @enderror"
+                        />
                     </div>
                     <div class="form-help-text">
                         <i class="magic"></i>
@@ -256,7 +266,229 @@
         </div>
     </div>
 
-    <!-- Step 3: Poll (Optional) -->
+    <!-- Step 3: Showcase (Optional) -->
+    <div class="form-step" id="step-showcase">
+        <div class="form-card">
+            <div class="card-header-modern">
+                <div class="card-title">
+                    <i class="fas fa-star"></i>
+                    <span>{{ __('ui.common.thread_showcase.step_title') }}</span>
+                </div>
+                <div class="card-subtitle">{{ __('ui.common.thread_showcase.step_description') }}</div>
+            </div>
+            <div class="card-body-modern">
+                <!-- Showcase Toggle -->
+                <div class="showcase-toggle">
+                    <div class="toggle-wrapper">
+                        <input type="checkbox" class="toggle-input" id="create_showcase" name="create_showcase" value="1" {{ old('create_showcase') ? 'checked' : '' }}>
+                        <label for="create_showcase" class="toggle-label">
+                            <div class="toggle-switch">
+                                <div class="toggle-slider"></div>
+                            </div>
+                            <div class="toggle-text">
+                                <span class="toggle-title">{{ __('ui.common.thread_showcase.enable_showcase') }}</span>
+                                <span class="toggle-subtitle">{{ __('ui.common.thread_showcase.enable_showcase_help') }}</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Showcase Content (Hidden by default) -->
+                <div class="showcase-content" style="{{ old('create_showcase') ? '' : 'display: none;' }}">
+                    <!-- Showcase Type Selection -->
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">
+                            <span class="label-text">Loại Showcase</span>
+                        </label>
+                        <div class="showcase-type-selection">
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="showcase_type_new" name="showcase_type" value="new" {{ old('showcase_type', 'new') == 'new' ? 'checked' : '' }}>
+                                    <label for="showcase_type_new" class="radio-label">
+                                        <div class="radio-content">
+                                            <i class="fas fa-plus-circle"></i>
+                                            <div class="radio-text">
+                                                <span class="radio-title">{{ __('ui.common.thread_showcase.create_new') }}</span>
+                                                <span class="radio-subtitle">Tạo showcase mới từ chủ đề này</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="showcase_type_existing" name="showcase_type" value="existing" {{ old('showcase_type') == 'existing' ? 'checked' : '' }}>
+                                    <label for="showcase_type_existing" class="radio-label">
+                                        <div class="radio-content">
+                                            <i class="fas fa-link"></i>
+                                            <div class="radio-text">
+                                                <span class="radio-title">{{ __('ui.common.thread_showcase.attach_existing') }}</span>
+                                                <span class="radio-subtitle">Đính kèm showcase đã có sẵn</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Existing Showcase Selection -->
+                    <div class="existing-showcase-section" style="{{ old('showcase_type') == 'existing' ? '' : 'display: none;' }}">
+                        <div class="form-group-modern">
+                            <label for="existing_showcase_id" class="form-label-modern">
+                                <span class="label-text">{{ __('ui.common.thread_showcase.select_existing') }}</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <div class="select-wrapper">
+                                <select class="form-select-modern" id="existing_showcase_id" name="existing_showcase_id">
+                                    <option value="">Chọn showcase</option>
+                                    @if(auth()->user()->showcaseItems->count() > 0)
+                                        @foreach(auth()->user()->showcaseItems as $showcase)
+                                            <option value="{{ $showcase->id }}" {{ old('existing_showcase_id') == $showcase->id ? 'selected' : '' }}>
+                                                {{ $showcase->title }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <div class="select-icon">
+                                    <i class="chevron-down"></i>
+                                </div>
+                            </div>
+                            @if(auth()->user()->showcaseItems->count() == 0)
+                                <div class="form-help-text">
+                                    <i class="info-circle"></i>
+                                    <span>{{ __('ui.common.thread_showcase.no_existing_showcases') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- New Showcase Form -->
+                    <div class="new-showcase-section" style="{{ old('showcase_type', 'new') == 'new' ? '' : 'display: none;' }}">
+                        <!-- Showcase Title -->
+                        <div class="form-group-modern">
+                            <label for="showcase_title" class="form-label-modern">
+                                <span class="label-text">{{ __('ui.common.thread_showcase.showcase_title') }}</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control-modern" id="showcase_title" name="showcase_title"
+                                       value="{{ old('showcase_title') }}"
+                                       placeholder="{{ __('ui.common.thread_showcase.showcase_title_placeholder') }}">
+                                <div class="input-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Showcase Description -->
+                        <div class="form-group-modern">
+                            <label for="showcase_description" class="form-label-modern">
+                                <span class="label-text">{{ __('ui.common.thread_showcase.showcase_description') }}</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <x-tinymce-editor
+                                name="showcase_description"
+                                id="showcase_description"
+                                :value="old('showcase_description')"
+                                :placeholder="__('ui.common.thread_showcase.showcase_description_placeholder')"
+                                context="showcase"
+                                :height="200"
+                                :required="false"
+                                class="form-control-modern"
+                            />
+                        </div>
+
+                        <!-- Project Details Row -->
+                        <div class="form-row">
+                            <div class="form-group-modern half-width">
+                                <label for="project_type" class="form-label-modern">
+                                    <span class="label-text">{{ __('ui.common.thread_showcase.project_type') }}</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control-modern" id="project_type" name="project_type"
+                                           value="{{ old('project_type') }}"
+                                           placeholder="{{ __('ui.common.thread_showcase.project_type_placeholder') }}">
+                                    <div class="input-icon">
+                                        <i class="fas fa-cogs"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group-modern half-width">
+                                <label for="complexity_level" class="form-label-modern">
+                                    <span class="label-text">{{ __('ui.common.thread_showcase.complexity_level') }}</span>
+                                </label>
+                                <div class="select-wrapper">
+                                    <select class="form-select-modern" id="complexity_level" name="complexity_level">
+                                        <option value="">Chọn độ phức tạp</option>
+                                        <option value="Beginner" {{ old('complexity_level') == 'Beginner' ? 'selected' : '' }}>Cơ bản</option>
+                                        <option value="Intermediate" {{ old('complexity_level') == 'Intermediate' ? 'selected' : '' }}>Trung bình</option>
+                                        <option value="Advanced" {{ old('complexity_level') == 'Advanced' ? 'selected' : '' }}>Nâng cao</option>
+                                        <option value="Expert" {{ old('complexity_level') == 'Expert' ? 'selected' : '' }}>Chuyên gia</option>
+                                    </select>
+                                    <div class="select-icon">
+                                        <i class="chevron-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Attachments Section -->
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <span class="label-text">
+                                    <i class="fas fa-paperclip me-1"></i>
+                                    {{ __('showcase.file_attachments') }}
+                                </span>
+                                <span class="label-optional">({{ __('showcase.file_attachments_optional') }})</span>
+                            </label>
+                            <div class="file-upload-area-modern" id="showcaseFileUploadArea">
+                                <div class="upload-zone-modern" id="showcaseUploadZone">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <div class="upload-text">
+                                        <p class="upload-primary">{{ __('showcase.file_upload_area') }} <button type="button" class="btn-link-modern" id="showcaseBrowseFiles">{{ __('showcase.browse_files') }}</button></p>
+                                        <p class="upload-secondary">
+                                            {{ __('showcase.file_upload_help') }}<br>
+                                            {{ __('showcase.file_upload_limits') }}
+                                        </p>
+                                    </div>
+                                    <input type="file" id="showcaseFileInput" name="showcase_attachments[]" multiple
+                                           accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.dwg,.dxf,.step,.stp,.stl,.obj,.iges,.igs"
+                                           style="display: none;">
+                                </div>
+
+                                <!-- File Preview Area -->
+                                <div class="file-previews-modern" id="showcaseFilePreviews" style="display: none;">
+                                    <div class="file-previews-header">
+                                        <h6 class="file-previews-title">{{ __('showcase.files_selected') }}</h6>
+                                    </div>
+                                    <div class="file-previews-grid" id="showcaseFilePreviewContainer"></div>
+                                </div>
+                            </div>
+                            <div class="form-help">
+                                {{ __('showcase.file_upload_description') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="step-navigation">
+            <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
+                <i class="chevron-left"></i>
+                <span>Trước</span>
+            </button>
+            <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
+                <span>Tiếp Theo</span>
+                <i class="chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 4: Poll (Optional) -->
     <div class="form-step" id="step-poll">
         <div class="form-card">
             <div class="card-header-modern">
@@ -458,7 +690,7 @@
         </div>
     </div>
 
-    <!-- Step 4: Review -->
+    <!-- Step 5: Review -->
     <div class="form-step" id="step-review">
         <div class="form-card">
             <div class="card-header-modern">
@@ -485,6 +717,10 @@
                     <div class="review-item">
                         <div class="review-label">Nội dung:</div>
                         <div class="review-value content-preview" id="review-content">-</div>
+                    </div>
+                    <div class="review-item" id="review-showcase-section" style="display: none;">
+                        <div class="review-label">Showcase:</div>
+                        <div class="review-value" id="review-showcase">Không có showcase</div>
                     </div>
                     <div class="review-item">
                         <div class="review-label">Hình ảnh:</div>
@@ -518,7 +754,7 @@
 <script>
     // Biến global để quản lý multi-step form
 let currentStepIndex = 0;
-const steps = ['basic', 'content', 'poll', 'review'];
+const steps = ['basic', 'content', 'showcase', 'poll', 'review'];
 
 // Khởi tạo khi trang load
 document.addEventListener('DOMContentLoaded', function() {
@@ -526,6 +762,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEditor();
     initializeUploadArea();
     initializePollFeatures();
+    initializeShowcaseFeatures();
+    initShowcaseFileUpload();
     initializeValidation();
     initializeMultiStepForm();
     enhanceAccessibility();
@@ -587,41 +825,24 @@ function initializeForm() {
     });
 }
 
-// Khởi tạo CKEditor
+// TinyMCE is now initialized via the component
+// Listen for TinyMCE content changes for progress tracking
 function initializeEditor() {
-    if (typeof ClassicEditor !== 'undefined') {
-        ClassicEditor
-            .create(document.querySelector('#content'), {
-                toolbar: {
-                    items: [
-                        'heading', '|',
-                        'bold', 'italic', 'link', '|',
-                        'bulletedList', 'numberedList', '|',
-                        'outdent', 'indent', '|',
-                        'imageUpload', 'blockQuote', 'insertTable', '|',
-                        'undo', 'redo'
-                    ]
-                },
-                language: 'vi',
-                placeholder: '{{ __('forum.create.content_placeholder') }}',
-                image: {
-                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
-                },
-                table: {
-                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-                }
-            })
-            .then(editor => {
-                window.contentEditor = editor;
-                // Listen for content changes
-                editor.model.document.on('change:data', () => {
-                    updateProgress();
-                });
-            })
-            .catch(error => {
-                console.error('CKEditor error:', error);
+    // Wait for TinyMCE to be initialized
+    const checkTinyMCE = setInterval(() => {
+        const editor = tinymce.get('content');
+        if (editor) {
+            clearInterval(checkTinyMCE);
+
+            // Listen for content changes
+            editor.on('input keyup change', () => {
+                updateProgress();
             });
-    }
+
+            window.contentEditor = editor;
+            console.log('TinyMCE content editor ready for progress tracking');
+        }
+    }, 100);
 }
 
 // Khởi tạo khu vực upload
@@ -854,6 +1075,94 @@ function initializeNumberInputs() {
     }
 }
 
+// Khởi tạo các tính năng showcase
+function initializeShowcaseFeatures() {
+    const toggleInput = document.getElementById('create_showcase');
+    const showcaseContent = document.querySelector('.showcase-content');
+    const showcaseTypeRadios = document.querySelectorAll('input[name="showcase_type"]');
+    const existingSection = document.querySelector('.existing-showcase-section');
+    const newSection = document.querySelector('.new-showcase-section');
+
+    // Toggle showcase content visibility
+    if (toggleInput && showcaseContent) {
+        toggleInput.addEventListener('change', function() {
+            showcaseContent.style.display = this.checked ? 'block' : 'none';
+            updateProgress();
+        });
+    }
+
+    // Handle showcase type selection
+    showcaseTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'existing') {
+                existingSection.style.display = 'block';
+                newSection.style.display = 'none';
+            } else {
+                existingSection.style.display = 'none';
+                newSection.style.display = 'block';
+            }
+            updateProgress();
+        });
+    });
+
+    // Auto-fill showcase title from thread title
+    const threadTitle = document.getElementById('title');
+    const showcaseTitle = document.getElementById('showcase_title');
+
+    if (threadTitle && showcaseTitle) {
+        threadTitle.addEventListener('input', function() {
+            if (!showcaseTitle.value) {
+                showcaseTitle.value = this.value;
+            }
+        });
+    }
+}
+
+// Validate showcase step
+function validateShowcase() {
+    const createShowcase = document.getElementById('create_showcase');
+
+    if (!createShowcase || !createShowcase.checked) {
+        return true; // Showcase is optional
+    }
+
+    const showcaseType = document.querySelector('input[name="showcase_type"]:checked');
+
+    if (!showcaseType) {
+        showValidationMessage('Vui lòng chọn loại showcase', 'error');
+        return false;
+    }
+
+    if (showcaseType.value === 'existing') {
+        const existingShowcaseId = document.getElementById('existing_showcase_id');
+        if (!existingShowcaseId.value) {
+            showValidationMessage('Vui lòng chọn showcase có sẵn', 'error');
+            return false;
+        }
+    } else {
+        // Validate new showcase fields
+        const showcaseTitle = document.getElementById('showcase_title');
+        const showcaseDescription = document.getElementById('showcase_description');
+
+        if (!showcaseTitle.value.trim()) {
+            showValidationMessage('{{ __('ui.common.thread_showcase.title_required') }}', 'error');
+            return false;
+        }
+
+        if (!showcaseDescription.value.trim()) {
+            showValidationMessage('{{ __('ui.common.thread_showcase.description_required') }}', 'error');
+            return false;
+        }
+
+        if (showcaseDescription.value.trim().length < 50) {
+            showValidationMessage('{{ __('ui.common.thread_showcase.description_min') }}', 'error');
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // Navigation giữa các bước
 function nextStep() {
     if (currentStepIndex < steps.length - 1) {
@@ -922,6 +1231,9 @@ function validateCurrentStep() {
             break;
         case 'content':
             isValid = validateContent();
+            break;
+        case 'showcase':
+            isValid = validateShowcase();
             break;
         case 'poll':
             isValid = validatePoll();
@@ -1109,6 +1421,35 @@ function updateReviewData() {
     } else {
         pollReview.textContent = 'Không có khảo sát';
     }
+
+    // Showcase
+    const createShowcase = document.getElementById('create_showcase');
+    const showcaseSection = document.getElementById('review-showcase-section');
+    const showcaseReview = document.getElementById('review-showcase');
+
+    if (createShowcase && createShowcase.checked) {
+        showcaseSection.style.display = 'block';
+
+        const showcaseType = document.querySelector('input[name="showcase_type"]:checked');
+        if (showcaseType && showcaseType.value === 'existing') {
+            const existingSelect = document.getElementById('existing_showcase_id');
+            const selectedText = existingSelect.options[existingSelect.selectedIndex]?.text || 'Showcase có sẵn';
+            showcaseReview.textContent = `Đính kèm: ${selectedText}`;
+        } else {
+            const showcaseTitle = document.getElementById('showcase_title').value;
+            const projectType = document.getElementById('project_type').value;
+            const complexity = document.getElementById('complexity_level').value;
+
+            let showcaseInfo = showcaseTitle || 'Showcase mới';
+            if (projectType) showcaseInfo += ` (${projectType})`;
+            if (complexity) showcaseInfo += ` - ${complexity}`;
+
+            showcaseReview.textContent = showcaseInfo;
+        }
+    } else {
+        showcaseSection.style.display = 'none';
+        showcaseReview.textContent = 'Không có showcase';
+    }
 }
 
 // Cập nhật progress tổng thể
@@ -1239,10 +1580,181 @@ function initializeValidation() {
     });
 }
 
+// File Upload Functionality for Showcase
+function initShowcaseFileUpload() {
+    const fileInput = document.getElementById('showcaseFileInput');
+    const browseBtn = document.getElementById('showcaseBrowseFiles');
+    const uploadZone = document.getElementById('showcaseUploadZone');
+    const fileUploadArea = document.getElementById('showcaseFileUploadArea');
+    const filePreviews = document.getElementById('showcaseFilePreviews');
+    const filePreviewContainer = document.getElementById('showcaseFilePreviewContainer');
+
+    if (!fileInput || !browseBtn || !uploadZone) return;
+
+    let selectedFiles = [];
+
+    // Browse files button
+    browseBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        fileInput.click();
+    });
+
+    // File input change
+    fileInput.addEventListener('change', function(e) {
+        handleFileSelection(Array.from(e.target.files));
+    });
+
+    // Drag and drop
+    uploadZone.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    fileUploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+
+    fileUploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+    });
+
+    fileUploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        const files = Array.from(e.dataTransfer.files);
+        handleFileSelection(files);
+    });
+
+    function handleFileSelection(files) {
+        // Validate file count
+        if (selectedFiles.length + files.length > 10) {
+            showValidationMessage('Tối đa 10 file được phép tải lên', 'error');
+            return;
+        }
+
+        // Validate and add files
+        files.forEach(file => {
+            if (validateFile(file)) {
+                selectedFiles.push(file);
+                addFilePreview(file);
+            }
+        });
+
+        updateFileInput();
+        toggleFilePreviewsVisibility();
+    }
+
+    function validateFile(file) {
+        // Check file size (50MB max)
+        if (file.size > 50 * 1024 * 1024) {
+            showValidationMessage(`File "${file.name}" quá lớn. Tối đa 50MB.`, 'error');
+            return false;
+        }
+
+        // Check file type
+        const allowedExtensions = [
+            'jpg', 'jpeg', 'png', 'gif', 'webp',
+            'pdf', 'doc', 'docx',
+            'dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'
+        ];
+
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            showValidationMessage(`File "${file.name}" không được hỗ trợ.`, 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    function addFilePreview(file) {
+        const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const isImage = file.type.startsWith('image/');
+        const fileSize = formatFileSize(file.size);
+        const fileIcon = getFileIcon(file);
+
+        const previewHtml = `
+            <div class="file-preview-item-modern ${isImage ? 'image-preview' : ''}" data-file-id="${fileId}">
+                <button type="button" class="remove-file-modern" onclick="removeShowcaseFile('${fileId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="file-icon-modern">
+                    ${isImage ?
+                        `<img src="${URL.createObjectURL(file)}" alt="${file.name}">` :
+                        `<i class="${fileIcon}"></i>`
+                    }
+                </div>
+                <div class="file-info-modern">
+                    <div class="file-name-modern" title="${file.name}">
+                        ${file.name}
+                    </div>
+                    <div class="file-size-modern">${fileSize}</div>
+                </div>
+            </div>
+        `;
+
+        filePreviewContainer.insertAdjacentHTML('beforeend', previewHtml);
+    }
+
+    function updateFileInput() {
+        // Create new DataTransfer object to update file input
+        const dt = new DataTransfer();
+        selectedFiles.forEach(file => dt.items.add(file));
+        fileInput.files = dt.files;
+    }
+
+    function toggleFilePreviewsVisibility() {
+        if (selectedFiles.length > 0) {
+            filePreviews.style.display = 'block';
+        } else {
+            filePreviews.style.display = 'none';
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function getFileIcon(file) {
+        const extension = file.name.split('.').pop().toLowerCase();
+
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
+            return 'fas fa-image text-success';
+        } else if (extension === 'pdf') {
+            return 'fas fa-file-pdf text-danger';
+        } else if (['doc', 'docx'].includes(extension)) {
+            return 'fas fa-file-word text-primary';
+        } else if (['dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'].includes(extension)) {
+            return 'fas fa-cube text-info';
+        } else {
+            return 'fas fa-file text-secondary';
+        }
+    }
+
+    // Make removeFile function global
+    window.removeShowcaseFile = function(fileId) {
+        // Remove from selectedFiles array
+        const previewElement = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (previewElement) {
+            const fileName = previewElement.querySelector('.file-name-modern').textContent.trim();
+            selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+            previewElement.remove();
+            updateFileInput();
+            toggleFilePreviewsVisibility();
+        }
+    };
+}
+
 // Submit form
 document.getElementById('thread-form').addEventListener('submit', function(e) {
     // Final validation before submit
-    if (!validateBasicInfo() || !validateContent() || !validatePoll()) {
+    if (!validateBasicInfo() || !validateContent() || !validateShowcase() || !validatePoll()) {
         e.preventDefault();
         showValidationMessage('Vui lòng kiểm tra lại các thông tin đã nhập', 'error');
         return false;

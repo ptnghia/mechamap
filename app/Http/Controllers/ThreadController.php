@@ -134,6 +134,15 @@ class ThreadController extends Controller
             'poll_show_votes_publicly' => 'boolean',
             'poll_allow_view_without_vote' => 'boolean',
             'poll_close_after_days' => 'nullable|integer|min:1',
+            // Showcase validation
+            'create_showcase' => 'boolean',
+            'showcase_type' => 'required_if:create_showcase,1|string|in:new,existing',
+            'existing_showcase_id' => 'required_if:showcase_type,existing|exists:showcases,id',
+            'showcase_title' => 'required_if:showcase_type,new|string|max:255',
+            'showcase_description' => 'required_if:showcase_type,new|string|min:50',
+            'project_type' => 'nullable|string|max:100',
+            'complexity_level' => 'nullable|string|in:Beginner,Intermediate,Advanced,Expert',
+            'industry_application' => 'nullable|string|max:255',
         ]);
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
@@ -184,6 +193,52 @@ class ThreadController extends Controller
                             'text' => $optionText,
                         ]);
                     }
+                }
+            }
+
+            // Create or attach showcase if requested
+            if ($request->has('create_showcase') && $request->create_showcase) {
+                if ($request->showcase_type === 'existing') {
+                    // Attach existing showcase to thread
+                    $existingShowcase = Showcase::findOrFail($request->existing_showcase_id);
+
+                    // Verify ownership
+                    if ($existingShowcase->user_id !== Auth::id()) {
+                        throw new \Exception('Bạn không có quyền sử dụng showcase này.');
+                    }
+
+                    // Update showcase to link to this thread
+                    $existingShowcase->update([
+                        'showcaseable_id' => $thread->id,
+                        'showcaseable_type' => Thread::class,
+                    ]);
+                } else {
+                    // Create new showcase
+                    $showcaseData = [
+                        'user_id' => Auth::id(),
+                        'showcaseable_id' => $thread->id,
+                        'showcaseable_type' => Thread::class,
+                        'title' => $request->showcase_title,
+                        'slug' => Str::slug($request->showcase_title) . '-' . Str::random(5),
+                        'description' => $request->showcase_description,
+                        'status' => 'approved', // Auto-approve for thread-based showcases
+                        'is_public' => true,
+                        'allow_comments' => true,
+                        'allow_downloads' => false,
+                    ];
+
+                    // Add optional fields if provided
+                    if ($request->project_type) {
+                        $showcaseData['project_type'] = $request->project_type;
+                    }
+                    if ($request->complexity_level) {
+                        $showcaseData['complexity_level'] = $request->complexity_level;
+                    }
+                    if ($request->industry_application) {
+                        $showcaseData['industry_application'] = $request->industry_application;
+                    }
+
+                    $showcase = Showcase::create($showcaseData);
                 }
             }
 
@@ -402,6 +457,8 @@ class ThreadController extends Controller
             'complexity_level' => 'nullable|string|in:Beginner,Intermediate,Advanced,Expert',
             'industry_application' => 'nullable|string|max:255',
             'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
+            'attachments' => 'nullable|array|max:10',
+            'attachments.*' => 'file|max:51200', // 50MB per file
             'agree_terms' => 'required|accepted'
         ], [
             'title.required' => 'Tiêu đề showcase là bắt buộc.',
@@ -413,6 +470,9 @@ class ThreadController extends Controller
             'cover_image.image' => 'File phải là hình ảnh.',
             'cover_image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif, webp.',
             'cover_image.max' => 'Kích thước ảnh không được vượt quá 5MB.',
+            'attachments.max' => 'Chỉ được upload tối đa 10 file đính kèm.',
+            'attachments.*.file' => 'File đính kèm không hợp lệ.',
+            'attachments.*.max' => 'Mỗi file đính kèm không được vượt quá 50MB.',
             'agree_terms.required' => 'Bạn phải đồng ý với điều khoản.',
             'agree_terms.accepted' => 'Bạn phải đồng ý với điều khoản.'
         ]);
@@ -461,6 +521,41 @@ class ThreadController extends Controller
                 }
             }
 
+            // Handle file attachments if any
+            if ($request->hasFile('attachments')) {
+                $attachmentPaths = [];
+
+                foreach ($request->file('attachments') as $attachment) {
+                    // Generate unique filename
+                    $fileName = time() . '_' . uniqid() . '_' . $attachment->getClientOriginalName();
+
+                    // Store file in public/images/showcases/attachments/
+                    $path = $attachment->storeAs('images/showcases/attachments', $fileName, 'public');
+
+                    // Create media record
+                    $showcase->media()->create([
+                        'user_id' => Auth::id(),
+                        'file_name' => $attachment->getClientOriginalName(),
+                        'file_path' => $path,
+                        'file_extension' => $attachment->getClientOriginalExtension(),
+                        'mime_type' => $attachment->getMimeType(),
+                        'file_size' => $attachment->getSize(),
+                        'file_category' => $this->getFileCategory($attachment),
+                        'disk' => 'public',
+                        'processing_status' => 'completed',
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]);
+
+                    $attachmentPaths[] = $path;
+                }
+
+                // Update showcase with file_attachments JSON
+                $showcase->update([
+                    'file_attachments' => $attachmentPaths
+                ]);
+            }
+
             // Log activity
             $this->activityService->logActivity(
                 Auth::user(),
@@ -486,5 +581,46 @@ class ThreadController extends Controller
                 ->with('error', 'Có lỗi xảy ra khi tạo showcase: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    /**
+     * Determine file category based on file extension and mime type
+     */
+    private function getFileCategory($file): string
+    {
+        $extension = strtolower($file->getClientOriginalExtension());
+        $mimeType = $file->getMimeType();
+
+        // Images
+        if (str_starts_with($mimeType, 'image/')) {
+            return 'image';
+        }
+
+        // Documents
+        if (in_array($extension, ['pdf', 'doc', 'docx', 'txt', 'rtf'])) {
+            return 'document';
+        }
+
+        // CAD Files
+        if (in_array($extension, ['dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'])) {
+            return 'cad';
+        }
+
+        // Spreadsheets
+        if (in_array($extension, ['xls', 'xlsx', 'csv'])) {
+            return 'spreadsheet';
+        }
+
+        // Presentations
+        if (in_array($extension, ['ppt', 'pptx'])) {
+            return 'presentation';
+        }
+
+        // Archives
+        if (in_array($extension, ['zip', 'rar', '7z', 'tar', 'gz'])) {
+            return 'archive';
+        }
+
+        return 'other';
     }
 }

@@ -94,6 +94,9 @@ class CommentController extends Controller
             // Tạo thông báo cho người theo dõi thread và chủ thread (legacy)
             $this->alertService->createCommentAlert(Auth::user(), $thread, $comment);
 
+            // Fire real-time event
+            event(new \App\Events\CommentCreated($comment));
+
             return back()->with('success', 'Bình luận đã được đăng thành công.');
         });
     }
@@ -137,6 +140,9 @@ class CommentController extends Controller
                 }
             }
 
+            // Fire real-time event
+            event(new \App\Events\CommentUpdated($comment));
+
             return back()->with('success', 'Bình luận đã được cập nhật.');
         });
     }
@@ -155,6 +161,12 @@ class CommentController extends Controller
         return DB::transaction(function () use ($comment) {
             $thread = $comment->thread;
 
+            // Store data for event before deletion
+            $commentId = $comment->id;
+            $threadId = $comment->thread_id;
+            $userId = $comment->user_id;
+            $userName = $comment->user->name;
+
             // Xóa các file đính kèm nếu có
             if ($comment->has_media) {
                 foreach ($comment->attachments as $attachment) {
@@ -164,6 +176,9 @@ class CommentController extends Controller
             }
 
             $comment->delete();
+
+            // Fire real-time event
+            event(new \App\Events\CommentDeleted($commentId, $threadId, $userId, $userName));
 
             return back()->with('success', 'Bình luận đã được xóa.');
         });

@@ -216,6 +216,165 @@ return [
             'auto_detect' => 'Tự động phát hiện',
         ],
         'note' => 'Lưu ý',
+
+        // Members Section
+        'members' => [
+            // Page titles and descriptions
+            'list_title' => 'Danh sách thành viên',
+            'list_description' => 'Duyệt qua các thành viên trong cộng đồng của chúng tôi',
+            'online_title' => 'Thành viên đang trực tuyến',
+            'online_description' => 'Xem ai đang trực tuyến ngay bây giờ',
+            'staff_title' => 'Đội ngũ quản lý',
+            'staff_description' => 'Gặp gỡ đội ngũ quản trị viên và điều hành viên của chúng tôi',
+
+            // Navigation
+            'all_members' => 'Tất cả thành viên',
+            'online_now' => 'Đang trực tuyến',
+            'staff' => 'Đội ngũ',
+
+            // View options
+            'list_view' => 'Xem danh sách',
+            'grid_view' => 'Xem lưới',
+
+            // Search and filters
+            'search_placeholder' => 'Tìm kiếm thành viên...',
+            'search' => 'Tìm kiếm',
+            'sort_by' => 'Sắp xếp theo',
+            'join_date' => 'Ngày tham gia',
+            'name' => 'Tên',
+            'direction' => 'Hướng',
+            'descending' => 'giảm dần',
+            'ascending' => 'tăng dần',
+
+            // User information
+            'posts' => 'Bài viết',
+            'threads' => 'Chủ đề',
+            'joined' => 'Tham gia',
+            'online' => 'Trực tuyến',
+            'last_seen' => 'Lần cuối',
+            'followers' => 'Người theo dõi',
+            'admin' => 'Quản trị',
+
+            // User counts and statistics
+            'total' => 'Tổng cộng',
+            'members_count' => 'thành viên',
+            'online_members_info' => 'Thành viên đang trực tuyến',
+            'filtered_by' => 'Lọc theo',
+
+            // Roles and status
+            'administrator' => 'Quản trị viên',
+            'moderator' => 'Điều hành viên',
+            'administrators' => 'Quản trị viên',
+            'moderators' => 'Điều hành viên',
+
+            // Profile information
+            'no_bio_available' => 'Chưa có thông tin giới thiệu',
+            'member_since' => 'Thành viên từ',
+            'profile' => 'Hồ sơ',
+            'view_profile' => 'Xem hồ sơ',
+
+            // Activity indicators
+            'active_member' => 'Thành viên tích cực',
+            'new_member' => 'Thành viên mới',
+            'veteran_member' => 'Thành viên kỳ cựu',
+            'points' => 'điểm',
+            'recently' => 'gần đây',
+
+            // Empty states
+            'no_members_found' => 'Không tìm thấy thành viên nào',
+            'no_online_members' => 'Hiện tại không có thành viên nào trực tuyến',
+            'no_staff_members' => 'Không có thành viên đội ngũ nào',
+            'try_different_search' => 'Thử tìm kiếm với từ khóa khác',
+
+            // Pagination
+            'showing_members' => 'Hiển thị :from đến :to trong tổng số :total thành viên',
+            'members_per_page' => 'thành viên mỗi trang',
+
+            // Additional labels
+            'member_info' => 'Thông tin thành viên',
+            'contact_member' => 'Liên hệ thành viên',
+            'send_message' => 'Gửi tin nhắn',
+            'follow' => 'Theo dõi',
+            'unfollow' => 'Bỏ theo dõi',
+            'block' => 'Chặn',
+            'unblock' => 'Bỏ chặn',
+            'report' => 'Báo cáo',
+        ],
+
+        // Thread Creation Showcase Integration
+        'thread_showcase' => [
+            // Step navigation
+            'step_title' => 'Tạo Showcase (Tùy chọn)',
+            'step_description' => 'Biến chủ đề này thành một dự án showcase để chia sẻ với cộng đồng',
+            'step_aria' => 'Bước tạo showcase tùy chọn',
+
+            // Toggle options
+            'enable_showcase' => 'Tạo showcase từ chủ đề này',
+            'enable_showcase_help' => 'Showcase giúp bạn trưng bày dự án kỹ thuật một cách chuyên nghiệp',
+            'attach_existing' => 'Đính kèm showcase có sẵn',
+            'create_new' => 'Tạo showcase mới',
+
+            // Showcase form fields
+            'showcase_title' => 'Tiêu đề Showcase',
+            'showcase_title_placeholder' => 'Nhập tiêu đề cho showcase (có thể khác với tiêu đề chủ đề)',
+            'showcase_description' => 'Mô tả Dự án',
+            'showcase_description_placeholder' => 'Mô tả chi tiết về dự án, phương pháp thực hiện, kết quả đạt được...',
+            'project_type' => 'Loại Dự án',
+            'project_type_placeholder' => 'VD: Thiết kế, Phân tích, Chế tạo, Nghiên cứu',
+            'software_used' => 'Phần mềm Sử dụng',
+            'software_used_placeholder' => 'VD: SolidWorks, AutoCAD, ANSYS, MATLAB',
+            'materials' => 'Vật liệu',
+            'materials_placeholder' => 'VD: Thép S355, Nhôm 6061, Composite',
+            'manufacturing_process' => 'Quy trình Sản xuất',
+            'manufacturing_process_placeholder' => 'VD: CNC, In 3D, Hàn, Gia công',
+            'complexity_level' => 'Độ phức tạp',
+            'industry_application' => 'Ứng dụng Ngành',
+            'industry_application_placeholder' => 'VD: Ô tô, Hàng không, Xây dựng',
+
+            // Technical specifications
+            'technical_specs' => 'Thông số Kỹ thuật',
+            'technical_specs_help' => 'Nhập các thông số kỹ thuật quan trọng (JSON format)',
+            'learning_objectives' => 'Mục tiêu Học tập',
+            'learning_objectives_help' => 'Những gì người xem có thể học được từ dự án này',
+
+            // File attachments
+            'showcase_images' => 'Hình ảnh Showcase',
+            'showcase_images_help' => 'Tải lên hình ảnh chất lượng cao để trưng bày dự án',
+            'file_attachments' => 'File Đính kèm',
+            'file_attachments_help' => 'CAD files, bản vẽ, báo cáo, tính toán (tối đa 50MB mỗi file)',
+
+            // Options
+            'is_public' => 'Công khai',
+            'is_public_help' => 'Cho phép mọi người xem showcase này',
+            'allow_downloads' => 'Cho phép tải xuống',
+            'allow_downloads_help' => 'Cho phép tải xuống các file đính kèm',
+            'allow_comments' => 'Cho phép bình luận',
+            'allow_comments_help' => 'Cho phép thành viên bình luận trên showcase',
+
+            // Features
+            'has_tutorial' => 'Có hướng dẫn',
+            'has_calculations' => 'Có tính toán',
+            'has_cad_files' => 'Có file CAD',
+
+            // Validation messages
+            'title_required' => 'Tiêu đề showcase là bắt buộc',
+            'description_required' => 'Mô tả dự án là bắt buộc',
+            'description_min' => 'Mô tả dự án phải có ít nhất 50 ký tự',
+            'project_type_required' => 'Loại dự án là bắt buộc',
+            'complexity_invalid' => 'Độ phức tạp không hợp lệ',
+            'file_too_large' => 'File :filename quá lớn (tối đa 50MB)',
+            'invalid_file_type' => 'Loại file không được hỗ trợ',
+
+            // Existing showcases
+            'select_existing' => 'Chọn showcase có sẵn',
+            'no_existing_showcases' => 'Bạn chưa có showcase nào',
+            'create_first_showcase' => 'Tạo showcase đầu tiên của bạn',
+
+            // Preview
+            'preview_showcase' => 'Xem trước Showcase',
+            'preview_help' => 'Xem showcase sẽ hiển thị như thế nào',
+        ],
+
         'marketplace_actions' => [
             'by' => 'bởi',
             'add_to_cart' => 'Thêm vào giỏ',

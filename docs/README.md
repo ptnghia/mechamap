@@ -70,6 +70,14 @@ Dành cho developers và technical team
 - 🧪 [Testing](./developer-guides/testing/)
 - 🚀 [Deployment](./developer-guides/deployment/)
 
+### 🔄 **[WebSocket Migration](./WEBSOCKET_MIGRATION_COMPLETE.md)**
+Migration từ Laravel WebSocket sang Node.js server
+
+- ✅ [Migration Complete](./WEBSOCKET_MIGRATION_COMPLETE.md) - Tổng quan migration
+- 🏗️ [WebSocket Architecture](./nodejs-websocket-architecture.md) - Kiến trúc hệ thống
+- 🚀 [Deployment Guide](./nodejs-deployment-guide.md) - Hướng dẫn deployment
+- 📊 [Monitoring System](../realtime-server/docs/MONITORING.md) - Hệ thống monitoring
+
 ### 🚀 **[/deployment/](./deployment/)** - Deployment & Operations
 - **[Production Guide](./deployment/PRODUCTION_GUIDE.md)** - Complete production deployment
 - **[Server Requirements](./deployment/SERVER_REQUIREMENTS.md)** - Infrastructure specifications
@@ -98,6 +106,12 @@ Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 
 ## 🆕 **CẬP NHẬT MỚI NHẤT**
 
+### **Real-time System Migration (July 2025)**
+- ✅ **Node.js WebSocket Server**: Migrated từ Laravel WebSocket sang Node.js server
+- ✅ **Advanced Monitoring**: Real-time metrics, health checks, Prometheus integration
+- ✅ **Laravel Sanctum Integration**: Seamless authentication với Laravel backend
+- ✅ **Production Ready**: PM2 clustering, SSL/TLS, comprehensive documentation
+
 ### **Marketplace v2.0 (January 2025)**
 - ✅ **3 loại sản phẩm mới**: Digital, New Product, Used Product
 - ✅ **Ma trận phân quyền**: Role-based permissions
@@ -119,6 +133,7 @@ Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 - **Marketplace**: [User Guide](./user-guides/marketplace-guide.md) | [Admin Guide](./admin-guides/marketplace-admin.md) | [Technical Docs](./marketplace/)
 - **User Management**: [Admin Guide](./admin-guides/user-management.md) | [API Docs](./developer-guides/api/endpoints.md#users)
 - **API**: [Overview](./developer-guides/api/README.md) | [Authentication](./developer-guides/api/authentication.md) | [Examples](./developer-guides/api/examples.md)
+- **Real-time System**: [WebSocket Architecture](./nodejs-websocket-architecture.md) | [Deployment Guide](./nodejs-deployment-guide.md) | [Monitoring](./realtime-server/docs/MONITORING.md)
 
 ### **Theo vấn đề:**
 - **Cài đặt**: [Installation](./developer-guides/setup/installation.md) | [Environment](./developer-guides/setup/environment.md)
@@ -135,6 +150,7 @@ Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 - 💬 **Discord**: [MechaMap Community](https://discord.gg/mechamap)
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/mechamap/issues)
 - 📖 **Documentation Issues**: [Docs Issues](https://github.com/mechamap/docs/issues)
+- 🔄 **WebSocket Support**: [Realtime Server Issues](https://github.com/ptnghia/mechamap_realtime/issues)
 
 ### **Đóng góp:**
 - 🤝 [Contributing Guidelines](./developer-guides/contributing/code-standards.md)
@@ -147,11 +163,13 @@ Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| **Documentation Coverage** | 95% | ✅ Excellent |
+| **Documentation Coverage** | 98% | ✅ Excellent |
 | **API Endpoints Documented** | 100% | ✅ Complete |
 | **User Guides** | 6 guides | ✅ Comprehensive |
 | **Developer Guides** | 20+ guides | ✅ Detailed |
-| **Last Updated** | January 2025 | ✅ Current |
+| **WebSocket Migration** | Complete | ✅ Production Ready |
+| **Monitoring System** | Advanced | ✅ Prometheus Ready |
+| **Last Updated** | July 2025 | ✅ Current |
 
 ---
 

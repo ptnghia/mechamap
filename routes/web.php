@@ -15,7 +15,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdvancedSearchController;
-use App\Http\Controllers\RealTimeController;
+// use App\Http\Controllers\RealTimeController; // Removed - using Node.js WebSocket server
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ThemeController;
@@ -594,6 +594,15 @@ Route::delete('/ratings/{rating}', [App\Http\Controllers\ShowcaseRatingControlle
 
 // Image upload for comments/ratings
 Route::post('/upload-images', [App\Http\Controllers\ImageUploadController::class, 'upload'])->name('images.upload');
+
+// TinyMCE unified upload routes
+Route::prefix('api/tinymce')->name('api.tinymce.')->middleware(['auth'])->group(function () {
+    Route::post('/upload', [App\Http\Controllers\Api\TinyMCEController::class, 'upload'])->name('upload');
+    Route::get('/config', [App\Http\Controllers\Api\TinyMCEController::class, 'getConfig'])->name('config');
+    Route::get('/files', [App\Http\Controllers\Api\TinyMCEController::class, 'getFiles'])->name('files');
+    Route::delete('/files', [App\Http\Controllers\Api\TinyMCEController::class, 'deleteFile'])->name('files.delete');
+});
+
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 // Unified Search Routes
 Route::prefix('search')->name('search.')->group(function () {
@@ -632,22 +641,7 @@ Route::get('/ajax-search', function (Request $request) {
     return app(App\Http\Controllers\UnifiedSearchController::class)->ajaxSearch($request);
 })->name('search.ajax.unified');
 
-// Real-time routes
-Route::prefix('realtime')->name('realtime.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('realtime.dashboard');
-    })->name('dashboard')->middleware('auth');
-
-    Route::get('/status', [RealTimeController::class, 'status'])->name('status');
-    Route::post('/connect', [RealTimeController::class, 'connect'])->name('connect')->middleware('auth');
-    Route::post('/disconnect', [RealTimeController::class, 'disconnect'])->name('disconnect')->middleware('auth');
-    Route::post('/notification', [RealTimeController::class, 'sendNotification'])->name('notification')->middleware('auth');
-    Route::post('/chat/message', [RealTimeController::class, 'sendChatMessage'])->name('chat.message')->middleware('auth');
-    Route::post('/chat/typing', [RealTimeController::class, 'sendTypingIndicator'])->name('chat.typing')->middleware('auth');
-    Route::get('/users/online', [RealTimeController::class, 'getOnlineUsers'])->name('users.online');
-    Route::post('/announcement', [RealTimeController::class, 'broadcastAnnouncement'])->name('announcement')->middleware('auth');
-    Route::get('/health', [RealTimeController::class, 'healthCheck'])->name('health');
-});
+// Real-time routes removed - now handled by Node.js WebSocket server
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');
 Route::get('/members/online', [MemberController::class, 'online'])->name('members.online');
 Route::get('/members/staff', [MemberController::class, 'staff'])->name('members.staff');

@@ -38,7 +38,16 @@
 
                 <div class="mb-3">
                     <label for="answer" class="form-label">{{ __('Câu trả lời') }} <span class="text-danger">*</span></label>
-                    <textarea class="form-control @error('answer') is-invalid @enderror" id="answer" name="answer" rows="10" required>{{ old('answer', $faq->answer) }}</textarea>
+                    <x-tinymce-editor
+                        name="answer"
+                        id="answer"
+                        :value="old('answer', $faq->answer)"
+                        placeholder="Nhập câu trả lời chi tiết..."
+                        context="admin"
+                        :height="300"
+                        :required="true"
+                        class="@error('answer') is-invalid @enderror"
+                    />
                     @error('answer')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -120,24 +129,16 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-    tinymce.init({
-        selector: '#answer',
-        height: 300,
-        menubar: false,
-        plugins: 'advlist autolink lists link image charmap print preview anchor',
-        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat'
-    });
-
-    // Preview function
+    // Preview function - TinyMCE is now handled by the component
     function previewFAQ() {
         const question = document.getElementById('question').value;
         const categorySelect = document.getElementById('category_id');
         const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
 
         // Get content from TinyMCE
-        const answer = tinymce.get('answer').getContent();
+        const editor = tinymce.get('answer');
+        const answer = editor ? editor.getContent() : document.getElementById('answer').value;
 
         // Update preview modal
         document.getElementById('preview-question').textContent = question || '{{ __("Chưa nhập câu hỏi") }}';

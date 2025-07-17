@@ -17,8 +17,8 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
 
-            // Lấy thông báo với phân trang
-            $notifications = $user->notifications()
+            // Lấy thông báo với phân trang từ custom system
+            $notifications = $user->userNotifications()
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
 
@@ -44,7 +44,8 @@ class NotificationController extends Controller
         try {
             $user = Auth::user();
 
-            $unreadNotifications = $user->unreadNotifications()
+            $unreadNotifications = $user->userNotifications()
+                ->where('is_read', false)
                 ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get();
@@ -71,11 +72,11 @@ class NotificationController extends Controller
     {
         try {
             $request->validate([
-                'notification_id' => 'required|string|uuid'
+                'notification_id' => 'required|integer'
             ]);
 
             $user = Auth::user();
-            $notification = $user->notifications()
+            $notification = $user->userNotifications()
                 ->where('id', $request->notification_id)
                 ->first();
 
@@ -86,7 +87,9 @@ class NotificationController extends Controller
                 ], 404);
             }
 
-            $notification->markAsRead();
+            $notification->is_read = true;
+            $notification->read_at = now();
+            $notification->save();
 
             return response()->json([
                 'success' => true,
@@ -108,7 +111,12 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            $user->unreadNotifications->markAsRead();
+            $user->userNotifications()
+                ->where('is_read', false)
+                ->update([
+                    'is_read' => true,
+                    'read_at' => now()
+                ]);
 
             return response()->json([
                 'success' => true,
@@ -154,7 +162,7 @@ class NotificationController extends Controller
     {
         try {
             $user = Auth::user();
-            $notification = $user->notifications()
+            $notification = $user->userNotifications()
                 ->where('id', $id)
                 ->first();
 
@@ -189,65 +197,41 @@ class NotificationController extends Controller
             $user = Auth::user();
             $limit = $request->get('limit', 5);
 
-            // Lấy notifications từ bảng notifications (Phase 3)
+            // Sử dụng custom notification system để tránh table structure conflict
             $notifications = $user->userNotifications()
                 ->orderBy('created_at', 'desc')
                 ->limit($limit)
                 ->get()
                 ->map(function ($notification) {
+                    $data = is_array($notification->data) ? $notification->data : json_decode($notification->data ?? '{}', true);
                     return [
                         'id' => $notification->id,
-                        'title' => $notification->title,
-                        'message' => \Str::limit($notification->message, 50),
-                        'icon' => $notification->icon,
-                        'color' => $notification->color,
-                        'time_ago' => $notification->time_ago,
+                        'title' => $notification->title ?? $data['title'] ?? 'Thông báo',
+                        'message' => \Str::limit($notification->message ?? $data['message'] ?? $notification->type, 50),
+                        'icon' => $data['icon'] ?? 'fas fa-bell',
+                        'color' => $data['color'] ?? 'primary',
+                        'time_ago' => $notification->created_at->diffForHumans(),
                         'is_read' => $notification->is_read,
-                        'action_url' => $notification->hasActionUrl() ? $notification->data['action_url'] : null,
+                        'action_url' => $data['action_url'] ?? null,
                         'created_at' => $notification->created_at,
                     ];
                 });
 
-            // Lấy alerts từ bảng alerts (legacy)
-            $alerts = $user->alerts()
-                ->orderBy('created_at', 'desc')
-                ->limit($limit)
-                ->get()
-                ->map(function ($alert) {
-                    return [
-                        'id' => $alert->id,
-                        'title' => $alert->title,
-                        'message' => \Str::limit($alert->content, 50),
-                        'icon' => 'bell',
-                        'color' => $this->getAlertColor($alert->type),
-                        'time_ago' => $alert->created_at->diffForHumans(),
-                        'is_read' => !is_null($alert->read_at),
-                        'action_url' => null,
-                        'created_at' => $alert->created_at,
-                    ];
-                });
-
-            // Merge và sort theo thời gian
-            $allNotifications = $notifications->concat($alerts)
-                ->sortByDesc('created_at')
-                ->take($limit)
-                ->values();
-
-            // Đếm tổng số chưa đọc
-            $unreadNotifications = $user->userNotifications()->where('is_read', false)->count();
-            $unreadAlerts = $user->alerts()->whereNull('read_at')->count();
-            $totalUnread = $unreadNotifications + $unreadAlerts;
+            // Đếm tổng số chưa đọc từ custom notifications
+            $totalUnread = $user->userNotifications()->where('is_read', false)->count();
 
             return response()->json([
                 'success' => true,
-                'notifications' => $allNotifications,
+                'notifications' => $notifications,
                 'total_unread' => $totalUnread,
                 'message' => 'Lấy thông báo gần đây thành công'
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Có lỗi xảy ra khi lấy thông báo',
+                'notifications' => [],
+                'total_unread' => 0,
+                'message' => 'Có lỗi xảy ra khi lấy thông báo gần đây',
                 'error' => config('app.debug') ? $e->getMessage() : 'Internal server error'
             ], 500);
         }

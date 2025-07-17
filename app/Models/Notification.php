@@ -14,6 +14,11 @@ class Notification extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     */
+    protected $table = 'custom_notifications';
+
     protected $fillable = [
         'user_id',
         'type',

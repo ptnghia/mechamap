@@ -27,7 +27,7 @@
             <form action="{{ route('admin.threads.update', $thread) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="mb-3">
                     <label for="title" class="form-label">{{ __('Tiêu đề') }}</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $thread->title) }}" required>
@@ -35,7 +35,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="forum_id" class="form-label">{{ __(__('forum.forums.title')) }}</label>
                     <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
@@ -48,7 +48,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="category_id" class="form-label">{{ __('Chuyên mục') }}</label>
                     <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
@@ -61,15 +61,24 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="content" class="form-label">{{ __('Nội dung') }}</label>
-                    <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10" required>{{ old('content', $thread->content) }}</textarea>
+                    <x-tinymce-editor
+                        name="content"
+                        id="content"
+                        :value="old('content', $thread->content)"
+                        placeholder="Nhập nội dung thread..."
+                        context="admin"
+                        :height="400"
+                        :required="true"
+                        class="@error('content') is-invalid @enderror"
+                    />
                     @error('content')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="status" class="form-label">{{ __('Trạng thái') }}</label>
                     <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
@@ -82,7 +91,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_sticky" name="is_sticky" {{ old('is_sticky', $thread->is_sticky) ? 'checked' : '' }}>
@@ -91,7 +100,7 @@
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {{ old('is_featured', $thread->is_featured) ? 'checked' : '' }}>
@@ -100,7 +109,7 @@
                         </label>
                     </div>
                 </div>
-                
+
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
                     <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
@@ -110,15 +119,4 @@
     </div>
 @endsection
 
-@push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-    tinymce.init({
-        selector: '#content',
-        height: 400,
-        plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-        toolbar_mode: 'floating',
-        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
-    });
-</script>
-@endpush
+{{-- TinyMCE is now handled by the component --}}

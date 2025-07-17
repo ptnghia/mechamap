@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,33 +11,35 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * Security Incident Detected Event
- * 
- * Triggered when a security incident is detected in the system
- * Broadcasts to admin users for real-time notifications
- */
-class SecurityIncidentDetected implements ShouldBroadcast
+class CommentDeleted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $incident;
+    public $commentId;
+    public $threadId;
+    public $userId;
+    public $userName;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(array $incident)
+    public function __construct($commentId, $threadId, $userId, $userName)
     {
-        $this->incident = $incident;
+        $this->commentId = $commentId;
+        $this->threadId = $threadId;
+        $this->userId = $userId;
+        $this->userName = $userName;
     }
 
     /**
      * Get the channels the event should broadcast on.
+     *
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('admin-security-alerts'),
+            new Channel('thread.' . $this->threadId),
         ];
     }
 
@@ -46,9 +49,12 @@ class SecurityIncidentDetected implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'incident' => $this->incident,
+            'type' => 'comment_deleted',
+            'comment_id' => $this->commentId,
+            'thread_id' => $this->threadId,
+            'user_id' => $this->userId,
+            'user_name' => $this->userName,
             'timestamp' => now()->toISOString(),
-            'severity' => $this->incident['threat_level'] ?? 'low',
         ];
     }
 
@@ -57,6 +63,6 @@ class SecurityIncidentDetected implements ShouldBroadcast
      */
     public function broadcastAs(): string
     {
-        return 'security.incident.detected';
+        return 'comment.deleted';
     }
 }

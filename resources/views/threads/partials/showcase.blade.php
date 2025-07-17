@@ -154,16 +154,16 @@
                             <h6 class="mb-3">{{ __('showcase.step_1_title') }}</h6>
 
                             <div class="mb-3">
-                                <label for="showcase_title" class="form-label">Tiêu đề Showcase <span class="text-danger">*</span></label>
+                                <label for="showcase_title" class="form-label">{{ __('showcase.showcase_title') }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="showcase_title" name="title"
                                        value="{{ $thread->title }}" required>
-                                <div class="form-text">Tiêu đề sẽ được sử dụng làm tên showcase</div>
+                                <div class="form-text">{{ __('showcase.showcase_title_help') }}</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="showcase_category" class="form-label">Danh mục <span class="text-danger">*</span></label>
+                                <label for="showcase_category" class="form-label">{{ __('showcase.category') }} <span class="text-danger">*</span></label>
                                 <select class="form-select" id="showcase_category" name="category" required>
-                                    <option value="">Chọn danh mục</option>
+                                    <option value="">{{ __('showcase.select_category') }}</option>
                                     <option value="Thiết kế Cơ khí" {{ $thread->category && $thread->category->name == 'Thiết kế Cơ khí' ? 'selected' : '' }}>Thiết kế Cơ khí</option>
                                     <option value="Công nghệ Chế tạo" {{ $thread->category && $thread->category->name == 'Công nghệ Chế tạo' ? 'selected' : '' }}>Công nghệ Chế tạo</option>
                                     <option value="Vật liệu Kỹ thuật" {{ $thread->category && $thread->category->name == 'Vật liệu Kỹ thuật' ? 'selected' : '' }}>Vật liệu Kỹ thuật</option>
@@ -172,9 +172,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="project_type" class="form-label">Loại dự án</label>
+                                <label for="project_type" class="form-label">{{ __('showcase.project_type') }}</label>
                                 <select class="form-select" id="project_type" name="project_type">
-                                    <option value="">Chọn loại dự án</option>
+                                    <option value="">{{ __('showcase.select_project_type') }}</option>
                                     <option value="Design Project">Design Project</option>
                                     <option value="Manufacturing">Manufacturing</option>
                                     <option value="Analysis & Simulation">Analysis & Simulation</option>
@@ -186,23 +186,23 @@
 
                         <!-- Step 2: Content -->
                         <div class="step-content d-none" id="step2">
-                            <h6 class="mb-3">Bước 2: Nội dung Showcase</h6>
+                            <h6 class="mb-3">{{ __('showcase.step_2_title') }}</h6>
 
                             <div class="mb-3">
-                                <label for="showcase_description" class="form-label">Mô tả dự án <span class="text-danger">*</span></label>
+                                <label for="showcase_description" class="form-label">{{ __('showcase.project_description') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="showcase_description" name="description" rows="6" required>{{ strip_tags($thread->content) }}</textarea>
-                                <div class="form-text">Mô tả chi tiết về dự án, phương pháp và kết quả đạt được</div>
+                                <div class="form-text">{{ __('showcase.project_description_help') }}</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="cover_image" class="form-label">Ảnh đại diện <span class="text-danger">*</span></label>
+                                <label for="cover_image" class="form-label">{{ __('showcase.cover_image') }} <span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="cover_image" name="cover_image"
                                        accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" required>
-                                <div class="form-text">Chọn ảnh đại diện cho showcase (JPG, PNG, GIF, WebP - tối đa 5MB)</div>
+                                <div class="form-text">{{ __('showcase.cover_image_help') }}</div>
                                 @if($thread->featured_image)
                                 <div class="mt-2">
-                                    <small class="text-muted">Ảnh hiện tại từ thread:</small><br>
-                                    <img src="{{ asset('storage/' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
+                                    <small class="text-muted">{{ __('showcase.current_thread_image') }}</small><br>
+                                    <img src="{{ asset('' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
                                 </div>
                                 @endif
                             </div>
@@ -210,59 +210,89 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="complexity_level" class="form-label">Mức độ phức tạp</label>
+                                        <label for="complexity_level" class="form-label">{{ __('showcase.complexity_level') }}</label>
                                         <select class="form-select" id="complexity_level" name="complexity_level">
-                                            <option value="Beginner">Beginner</option>
-                                            <option value="Intermediate" selected>Intermediate</option>
-                                            <option value="Advanced">Advanced</option>
-                                            <option value="Expert">Expert</option>
+                                            <option value="Beginner">{{ __('showcase.complexity_levels.beginner') }}</option>
+                                            <option value="Intermediate" selected>{{ __('showcase.complexity_levels.intermediate') }}</option>
+                                            <option value="Advanced">{{ __('showcase.complexity_levels.advanced') }}</option>
+                                            <option value="Expert">{{ __('showcase.complexity_levels.expert') }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="industry_application" class="form-label">Ứng dụng ngành</label>
+                                        <label for="industry_application" class="form-label">{{ __('showcase.industry_application') }}</label>
                                         <input type="text" class="form-control" id="industry_application" name="industry_application"
-                                               placeholder="VD: Automotive, Aerospace, Manufacturing">
+                                               placeholder="{{ __('showcase.industry_placeholder') }}">
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- File Attachments Section -->
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-paperclip me-1"></i>
+                                    {{ __('showcase.file_attachments') }}
+                                    <small class="text-muted">({{ __('showcase.file_attachments_optional') }})</small>
+                                </label>
+                                <div class="file-upload-area border rounded p-3" id="fileUploadArea">
+                                    <div class="upload-zone text-center py-3" id="uploadZone">
+                                        <i class="fas fa-cloud-upload-alt fs-2 text-muted mb-2"></i>
+                                        <p class="mb-2">{{ __('showcase.file_upload_area') }} <button type="button" class="btn btn-link p-0" id="browseFiles">{{ __('showcase.browse_files') }}</button></p>
+                                        <small class="text-muted">
+                                            {{ __('showcase.file_upload_help') }}<br>
+                                            {{ __('showcase.file_upload_limits') }}
+                                        </small>
+                                        <input type="file" id="fileInput" name="attachments[]" multiple
+                                               accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.dwg,.dxf,.step,.stp,.stl,.obj,.iges,.igs"
+                                               style="display: none;">
+                                    </div>
+
+                                    <!-- File Preview Area -->
+                                    <div class="file-previews mt-3" id="filePreviews" style="display: none;">
+                                        <h6 class="mb-2">{{ __('showcase.files_selected') }}</h6>
+                                        <div class="row" id="filePreviewContainer"></div>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    {{ __('showcase.file_upload_description') }}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Step 3: Confirmation -->
                         <div class="step-content d-none" id="step3">
-                            <h6 class="mb-3">Bước 3: Xác nhận tạo Showcase</h6>
+                            <h6 class="mb-3">{{ __('showcase.step_3_title') }}</h6>
 
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
-                                <strong>Xác nhận thông tin:</strong>
+                                <strong>{{ __('showcase.confirm_info') }}</strong>
                                 <ul class="mb-0 mt-2">
-                                    <li>Showcase sẽ được tạo từ nội dung thread hiện tại</li>
-                                    <li>Thread gốc vẫn được giữ nguyên</li>
-                                    <li>Showcase có thể được chỉnh sửa sau khi tạo</li>
-                                    <li>Cộng đồng có thể đánh giá và bình luận về showcase</li>
+                                    @foreach(__('showcase.confirm_points') as $point)
+                                    <li>{{ $point }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
 
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="agree_terms" name="agree_terms" required>
                                 <label class="form-check-label" for="agree_terms">
-                                    Tôi đồng ý cho phép cộng đồng xem và đánh giá showcase này
+                                    {{ __('showcase.agree_terms') }}
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
-                            <i class="fas fa-arrow-left me-2"></i>Trước
+                            <i class="fas fa-arrow-left me-2"></i>{{ __('showcase.previous') }}
                         </button>
                         <button type="button" class="btn btn-primary" id="nextBtn">
-                            Tiếp theo<i class="fas fa-arrow-right ms-2"></i>
+                            {{ __('showcase.next') }}<i class="fas fa-arrow-right ms-2"></i>
                         </button>
                         <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-                            <i class="fas fa-star me-2"></i>Tạo Showcase
+                            <i class="fas fa-star me-2"></i>{{ __('showcase.create_showcase') }}
                         </button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('ui.actions.cancel') }}</button>
                     </div>
                 </form>
             </div>
@@ -311,6 +341,80 @@
 
 .modal .tox-tinymce.is-invalid .tox-editor-header {
     border-bottom-color: #dc3545;
+}
+
+/* File Upload Styling */
+.file-upload-area {
+    background-color: #f8f9fa;
+    border: 2px dashed #dee2e6 !important;
+    transition: all 0.3s ease;
+}
+
+.file-upload-area.dragover {
+    border-color: #007bff !important;
+    background-color: #e3f2fd;
+}
+
+.upload-zone {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-zone:hover {
+    background-color: #e9ecef;
+}
+
+.file-preview-item {
+    position: relative;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    background-color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.file-preview-item .file-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+.file-preview-item .remove-file {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-preview-item .remove-file:hover {
+    background-color: #c82333;
+}
+
+.file-preview-item.image-preview img {
+    max-width: 60px;
+    max-height: 60px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.file-size {
+    font-size: 0.75rem;
+    color: #6c757d;
 }
 </style>
 @endpush
@@ -446,6 +550,7 @@
     function initShowcaseWizard() {
         let currentStep = 1;
         const totalSteps = 3;
+        let selectedFiles = []; // Store selected files
 
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
@@ -453,6 +558,9 @@
         const progressBar = document.getElementById('progressBar');
 
         if (!nextBtn) return; // Exit if modal doesn't exist
+
+        // Initialize file upload functionality
+        initFileUpload();
 
         // Next button click
         nextBtn.addEventListener('click', function() {
@@ -524,12 +632,12 @@
                 const category = document.getElementById('showcase_category').value;
 
                 if (!title) {
-                    showError('showcase_title', 'Vui lòng nhập tiêu đề showcase');
+                    showError('showcase_title', '{{ __('showcase.title_required') }}');
                     isValid = false;
                 }
 
                 if (!category) {
-                    showError('showcase_category', 'Vui lòng chọn danh mục');
+                    showError('showcase_category', '{{ __('showcase.category_required') }}');
                     isValid = false;
                 }
             } else if (step === 2) {
@@ -546,18 +654,28 @@
                 const coverImage = document.getElementById('cover_image').files[0];
 
                 if (!description || description === '<p><br></p>' || description === '<p></p>') {
-                    showError('showcase_description', 'Vui lòng nhập mô tả dự án');
+                    showError('showcase_description', '{{ __('showcase.description_required') }}');
                     isValid = false;
                 }
 
                 if (!coverImage) {
-                    showError('cover_image', 'Vui lòng chọn ảnh đại diện');
+                    showError('cover_image', '{{ __('showcase.cover_image_required') }}');
                     isValid = false;
                 } else {
                     // Validate file size (5MB)
                     if (coverImage.size > 5 * 1024 * 1024) {
-                        showError('cover_image', 'Kích thước file không được vượt quá 5MB');
+                        showError('cover_image', '{{ __('showcase.file_size_error') }}');
                         isValid = false;
+                    }
+                }
+
+                // Validate attachments if any
+                if (selectedFiles.length > 0) {
+                    for (let file of selectedFiles) {
+                        if (!validateFile(file)) {
+                            isValid = false;
+                            break;
+                        }
                     }
                 }
             } else if (step === 3) {
@@ -565,7 +683,7 @@
                 const agreeTerms = document.getElementById('agree_terms').checked;
 
                 if (!agreeTerms) {
-                    showError('agree_terms', 'Vui lòng đồng ý với điều khoản');
+                    showError('agree_terms', '{{ __('showcase.terms_required') }}');
                     isValid = false;
                 }
             }
@@ -639,7 +757,7 @@
                 }
 
                 // Show loading
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tạo...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __('showcase.creating') }}';
                 submitBtn.disabled = true;
 
                 // Submit form
@@ -662,6 +780,12 @@
                 tinymce.get('showcase_description').setContent('');
             }
 
+            // Reset file uploads
+            selectedFiles = [];
+            document.getElementById('filePreviewContainer').innerHTML = '';
+            document.getElementById('filePreviews').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+
             // Remove validation errors
             document.querySelectorAll('.is-invalid').forEach(field => {
                 field.classList.remove('is-invalid');
@@ -675,7 +799,7 @@
             });
 
             // Reset submit button
-            submitBtn.innerHTML = '<i class="fas fa-star me-2"></i>Tạo Showcase';
+            submitBtn.innerHTML = '<i class="fas fa-star me-2"></i>{{ __('showcase.create_showcase') }}';
             submitBtn.disabled = false;
         });
 
@@ -688,6 +812,189 @@
                 }
             }, 100);
         });
+
+        // File Upload Functions
+        function initFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseFiles');
+            const uploadZone = document.getElementById('uploadZone');
+            const fileUploadArea = document.getElementById('fileUploadArea');
+
+            if (!fileInput || !browseBtn || !uploadZone) return;
+
+            // Browse files button
+            browseBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            // File input change
+            fileInput.addEventListener('change', function(e) {
+                handleFileSelection(Array.from(e.target.files));
+            });
+
+            // Drag and drop
+            uploadZone.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            fileUploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                const files = Array.from(e.dataTransfer.files);
+                handleFileSelection(files);
+            });
+        }
+
+        function handleFileSelection(files) {
+            // Validate file count
+            if (selectedFiles.length + files.length > 10) {
+                alert('{{ __('showcase.max_files_exceeded') }}');
+                return;
+            }
+
+            // Validate and add files
+            files.forEach(file => {
+                if (validateFile(file)) {
+                    selectedFiles.push(file);
+                    addFilePreview(file);
+                }
+            });
+
+            updateFileInput();
+            toggleFilePreviewsVisibility();
+        }
+
+        function validateFile(file) {
+            // Check file size (50MB max)
+            if (file.size > 50 * 1024 * 1024) {
+                alert(`{{ __('showcase.file_too_large', ['filename' => '']) }}`.replace(':filename', file.name));
+                return false;
+            }
+
+            // Check file type
+            const allowedTypes = [
+                'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+                'application/pdf',
+                'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/octet-stream' // For CAD files
+            ];
+
+            const allowedExtensions = [
+                'jpg', 'jpeg', 'png', 'gif', 'webp',
+                'pdf', 'doc', 'docx',
+                'dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'
+            ];
+
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
+                alert(`{{ __('showcase.file_type_not_supported', ['filename' => '']) }}`.replace(':filename', file.name));
+                return false;
+            }
+
+            return true;
+        }
+
+        function addFilePreview(file) {
+            const previewContainer = document.getElementById('filePreviewContainer');
+            const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            const isImage = file.type.startsWith('image/');
+            const fileSize = formatFileSize(file.size);
+            const fileIcon = getFileIcon(file);
+
+            const previewHtml = `
+                <div class="col-md-6 mb-2">
+                    <div class="file-preview-item ${isImage ? 'image-preview' : ''}" data-file-id="${fileId}">
+                        <button type="button" class="remove-file" onclick="removeFile('${fileId}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="d-flex align-items-center">
+                            <div class="file-icon">
+                                ${isImage ?
+                                    `<img src="${URL.createObjectURL(file)}" alt="${file.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 0.25rem;">` :
+                                    `<i class="${fileIcon} fs-4"></i>`
+                                }
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-medium text-truncate" style="max-width: 150px;" title="${file.name}">
+                                    ${file.name}
+                                </div>
+                                <div class="file-size">${fileSize}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            previewContainer.insertAdjacentHTML('beforeend', previewHtml);
+        }
+
+        function removeFile(fileId) {
+            // Remove from selectedFiles array
+            const previewElement = document.querySelector(`[data-file-id="${fileId}"]`);
+            if (previewElement) {
+                const fileName = previewElement.querySelector('.fw-medium').textContent.trim();
+                selectedFiles = selectedFiles.filter(file => file.name !== fileName);
+                previewElement.closest('.col-md-6').remove();
+                updateFileInput();
+                toggleFilePreviewsVisibility();
+            }
+        }
+
+        function updateFileInput() {
+            // Create new DataTransfer object to update file input
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            document.getElementById('fileInput').files = dt.files;
+        }
+
+        function toggleFilePreviewsVisibility() {
+            const filePreviews = document.getElementById('filePreviews');
+            if (selectedFiles.length > 0) {
+                filePreviews.style.display = 'block';
+            } else {
+                filePreviews.style.display = 'none';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(file) {
+            const extension = file.name.split('.').pop().toLowerCase();
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
+                return 'fas fa-image text-success';
+            } else if (extension === 'pdf') {
+                return 'fas fa-file-pdf text-danger';
+            } else if (['doc', 'docx'].includes(extension)) {
+                return 'fas fa-file-word text-primary';
+            } else if (['dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'].includes(extension)) {
+                return 'fas fa-cube text-info';
+            } else {
+                return 'fas fa-file text-secondary';
+            }
+        }
+
+        // Make removeFile function global
+        window.removeFile = removeFile;
     }
 </script>
 @endpush

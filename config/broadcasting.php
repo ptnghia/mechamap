@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_CONNECTION', 'pusher'),
+    'default' => env('BROADCAST_CONNECTION', 'nodejs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +29,11 @@ return [
     */
 
     'connections' => [
+
+        'nodejs' => [
+            'driver' => 'nodejs',
+            'url' => env('NODEJS_BROADCAST_URL', 'http://localhost:3000'),
+        ],
 
         'reverb' => [
             'driver' => 'reverb',

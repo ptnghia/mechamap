@@ -156,19 +156,62 @@
             </div>
             @endif
 
-            {{-- File đính kèm --}}
-            @if($showcase->media && $showcase->media->count() > 0)
+            {{-- File đính kèm (non-image files) --}}
+            @php
+                $nonImageFiles = $showcase->media ? $showcase->media->filter(function($media) {
+                    return !str_starts_with($media->mime_type ?? '', 'image/');
+                }) : collect();
+            @endphp
+
+            @if($nonImageFiles->count() > 0)
             <div class="showcase-attachments mb-4">
                 <h5><i class="fas fa-paperclip"></i> Tài liệu đính kèm</h5>
                 <div class="list-group">
-                    @foreach($showcase->media as $mediaItem)
-                    <a href="{{ $mediaItem->url }}"
-                        class="list-group-item list-group-item-action d-flex align-items-center" target="_blank">
-                        <i class="fas fa-file me-2"></i>
-                        <div>
+                    @foreach($nonImageFiles as $mediaItem)
+                    <a href="{{ asset('storage/' . $mediaItem->file_path) }}"
+                        class="list-group-item list-group-item-action d-flex align-items-center"
+                        target="_blank" download="{{ $mediaItem->file_name }}">
+                        @php
+                            $extension = strtolower($mediaItem->file_extension ?? '');
+                            $iconClass = 'fas fa-file';
+                            $iconColor = 'text-secondary';
+
+                            if (in_array($extension, ['pdf'])) {
+                                $iconClass = 'fas fa-file-pdf';
+                                $iconColor = 'text-danger';
+                            } elseif (in_array($extension, ['doc', 'docx'])) {
+                                $iconClass = 'fas fa-file-word';
+                                $iconColor = 'text-primary';
+                            } elseif (in_array($extension, ['xls', 'xlsx'])) {
+                                $iconClass = 'fas fa-file-excel';
+                                $iconColor = 'text-success';
+                            } elseif (in_array($extension, ['dwg', 'dxf', 'step', 'stp', 'stl', 'obj', 'iges', 'igs'])) {
+                                $iconClass = 'fas fa-cube';
+                                $iconColor = 'text-info';
+                            } elseif (in_array($extension, ['zip', 'rar', '7z'])) {
+                                $iconClass = 'fas fa-file-archive';
+                                $iconColor = 'text-warning';
+                            }
+                        @endphp
+                        <i class="{{ $iconClass }} {{ $iconColor }} me-3 fs-4"></i>
+                        <div class="flex-grow-1">
                             <div class="fw-semibold">{{ $mediaItem->file_name }}</div>
-                            <small class="text-muted">{{ round($mediaItem->file_size / 1024, 2) }} KB</small>
+                            <small class="text-muted">
+                                {{ strtoupper($extension) }} •
+                                @if($mediaItem->file_size)
+                                    @if($mediaItem->file_size < 1024)
+                                        {{ $mediaItem->file_size }} B
+                                    @elseif($mediaItem->file_size < 1024 * 1024)
+                                        {{ round($mediaItem->file_size / 1024, 1) }} KB
+                                    @else
+                                        {{ round($mediaItem->file_size / (1024 * 1024), 1) }} MB
+                                    @endif
+                                @else
+                                    Không xác định
+                                @endif
+                            </small>
                         </div>
+                        <i class="fas fa-download text-muted"></i>
                     </a>
                     @endforeach
                 </div>

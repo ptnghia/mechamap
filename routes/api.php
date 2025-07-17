@@ -4,6 +4,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+// Authentication API routes
+Route::middleware('web')->group(function () {
+    Route::get('/auth/token', function (Request $request) {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('websocket-access')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'user_id' => $user->id,
+            'expires_at' => now()->addDays(30)->toISOString()
+        ]);
+    });
+
+    Route::get('/auth/user', function (Request $request) {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        return response()->json([
+            'success' => true,
+            'user' => Auth::user()->only(['id', 'name', 'email', 'avatar'])
+        ]);
+    });
+});
+
 // Direct test route outside of all middleware
 Route::get('/marketplace-test', function() {
     return response()->json([
@@ -28,6 +58,12 @@ Route::get('/threads-test', function() {
 // Community Stats API Routes (Public)
 Route::prefix('community')->name('api.community.')->group(function () {
     Route::get('/quick-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getQuickStats']);
+    Route::get('/online-count', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOnlineUsersCount']);
+    Route::get('/recent-activity', [App\Http\Controllers\Api\CommunityStatsController::class, 'getRecentActivity']);
+    Route::get('/popular-forums', [App\Http\Controllers\Api\CommunityStatsController::class, 'getPopularForums']);
+    Route::get('/trending-topics', [App\Http\Controllers\Api\CommunityStatsController::class, 'getTrendingTopics']);
+    Route::get('/overview-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOverviewStats']);
+});
 
 // Marketplace Stats API Routes (Public)
 Route::prefix('marketplace')->name('api.marketplace.')->group(function () {
@@ -35,16 +71,8 @@ Route::prefix('marketplace')->name('api.marketplace.')->group(function () {
     Route::get('/overview', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'overview']);
     Route::get('/trending', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'trending']);
 
-    // Cart routes (require auth)
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/cart/count', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'cartCount']);
-    });
-});
-    Route::get('/online-count', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOnlineUsersCount']);
-    Route::get('/recent-activity', [App\Http\Controllers\Api\CommunityStatsController::class, 'getRecentActivity']);
-    Route::get('/popular-forums', [App\Http\Controllers\Api\CommunityStatsController::class, 'getPopularForums']);
-    Route::get('/trending-topics', [App\Http\Controllers\Api\CommunityStatsController::class, 'getTrendingTopics']);
-    Route::get('/overview-stats', [App\Http\Controllers\Api\CommunityStatsController::class, 'getOverviewStats']);
+    // Cart routes (public for header badge)
+    Route::get('/cart/count', [App\Http\Controllers\Api\MarketplaceStatsController::class, 'cartCount']);
 });
 
 // Sidebar stats endpoint (public - for sidebar statistics)
@@ -98,9 +126,9 @@ Route::get('/notifications/count', function() {
         if (Auth::check()) {
             $user = Auth::user();
 
-            // Use Laravel's built-in notifications instead of custom model
-            $unreadCount = $user->unreadNotifications()->count();
-            $totalCount = $user->notifications()->count();
+            // Use custom notification system to avoid table structure conflict
+            $unreadCount = $user->userNotifications()->where('is_read', false)->count();
+            $totalCount = $user->userNotifications()->count();
 
             return response()->json([
                 'success' => true,
@@ -133,6 +161,47 @@ Route::get('/notifications/count', function() {
     }
 });
 
+// Notifications polling endpoint (authenticated - for WebSocket fallback)
+Route::middleware('auth:sanctum')->get('/notifications/poll', function() {
+    try {
+        $user = Auth::user();
+
+        // Get notifications created in the last 30 seconds (for polling)
+        $recentNotifications = $user->userNotifications()
+            ->where('created_at', '>=', now()->subSeconds(30))
+            ->where('is_read', false)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($notification) {
+                $data = is_array($notification->data) ? $notification->data : json_decode($notification->data ?? '{}', true);
+
+                return [
+                    'id' => $notification->id,
+                    'type' => $notification->type,
+                    'title' => $data['title'] ?? 'Thông báo mới',
+                    'message' => $data['message'] ?? $notification->message ?? '',
+                    'url' => $data['url'] ?? null,
+                    'created_at' => $notification->created_at->toISOString(),
+                    'is_read' => $notification->is_read
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'notifications' => $recentNotifications,
+            'count' => $recentNotifications->count(),
+            'timestamp' => now()->toISOString()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'notifications' => [],
+            'count' => 0,
+            'error' => 'Polling failed: ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 // Notifications recent endpoint (public - for header dropdown)
 Route::get('/notifications/recent', function() {
     try {
@@ -140,21 +209,22 @@ Route::get('/notifications/recent', function() {
         if (Auth::check()) {
             $user = Auth::user();
 
-            // Simple recent notifications using Laravel's built-in system
-            $notifications = $user->notifications()
+            // Use custom notification system to avoid table structure conflict
+            $notifications = $user->userNotifications()
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get()
                 ->map(function ($notification) {
+                    $data = is_array($notification->data) ? $notification->data : json_decode($notification->data ?? '{}', true);
                     return [
                         'id' => $notification->id,
-                        'title' => $notification->data['title'] ?? 'Thông báo',
-                        'message' => $notification->data['message'] ?? 'Bạn có thông báo mới',
-                        'icon' => $notification->data['icon'] ?? 'bell',
-                        'color' => $notification->data['color'] ?? 'primary',
+                        'title' => $notification->title ?? $data['title'] ?? 'Thông báo',
+                        'message' => $notification->message ?? $data['message'] ?? 'Bạn có thông báo mới',
+                        'icon' => $data['icon'] ?? 'bell',
+                        'color' => $data['color'] ?? 'primary',
                         'time_ago' => $notification->created_at->diffForHumans(),
-                        'is_read' => !is_null($notification->read_at),
-                        'action_url' => $notification->data['action_url'] ?? null,
+                        'is_read' => $notification->is_read,
+                        'action_url' => $data['action_url'] ?? null,
                         'created_at' => $notification->created_at,
                     ];
                 });
@@ -162,7 +232,7 @@ Route::get('/notifications/recent', function() {
             return response()->json([
                 'success' => true,
                 'notifications' => $notifications,
-                'total_unread' => $user->unreadNotifications()->count(),
+                'total_unread' => $user->userNotifications()->where('is_read', false)->count(),
                 'message' => 'Recent notifications retrieved successfully'
             ]);
         } else {
@@ -313,8 +383,8 @@ Route::prefix('v1')->group(function () {
 
     // Real-time API routes
     Route::prefix('realtime')->group(function () {
-        Route::get('/metrics', [App\Http\Controllers\RealTimeController::class, 'status']);
-        Route::get('/online-users', [App\Http\Controllers\RealTimeController::class, 'getOnlineUsers']);
+        // Route::get('/metrics', [App\Http\Controllers\RealTimeController::class, 'status']); // Removed
+        // Route::get('/online-users', [App\Http\Controllers\RealTimeController::class, 'getOnlineUsers']); // Removed
         Route::get('/activity', function () {
             return response()->json([
                 'success' => true,
@@ -340,7 +410,7 @@ Route::prefix('v1')->group(function () {
                 ]
             ]);
         });
-        Route::get('/health', [App\Http\Controllers\RealTimeController::class, 'healthCheck']);
+        // Route::get('/health', [App\Http\Controllers\RealTimeController::class, 'healthCheck']); // Removed
     });
 
     // Marketplace API routes (Public access for browsing)
@@ -549,7 +619,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/{id}/report', [App\Http\Controllers\Api\CommentController::class, 'report']);
         });
 
-        // Notifications routes (protected)
+        // Notifications routes (protected - legacy system)
         Route::prefix('notifications')->group(function () {
             Route::get('/', [App\Http\Controllers\Api\NotificationController::class, 'index']);
             Route::get('/unread', [App\Http\Controllers\Api\NotificationController::class, 'getUnread']);
@@ -557,6 +627,17 @@ Route::prefix('v1')->group(function () {
             Route::post('/mark-read', [App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
             Route::post('/mark-all-read', [App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
             Route::delete('/{id}', [App\Http\Controllers\Api\NotificationController::class, 'destroy']);
+        });
+
+        // Unified Notifications routes (protected - new unified system)
+        Route::prefix('unified-notifications')->group(function () {
+            Route::get('/', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'index']);
+            Route::get('/count', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'count']);
+            Route::get('/recent', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'recent']);
+            Route::get('/stats', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'stats']);
+            Route::post('/mark-as-read', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'markAsRead']);
+            Route::post('/mark-all-as-read', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'markAllAsRead']);
+            Route::post('/send-test', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'sendTest']);
         });
 
         // Moderation routes (protected - require moderation permissions)
@@ -701,7 +782,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('search')->group(function () {
             Route::get('/users', [App\Http\Controllers\ChatController::class, 'searchUsers']);
         });
-    });
+    }); // End of auth:sanctum middleware group
 
     // Analytics API routes (public)
     Route::post('/analytics', [App\Http\Controllers\Api\AnalyticsController::class, 'store']);
@@ -709,17 +790,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/analytics/dashboard', [App\Http\Controllers\Api\AnalyticsController::class, 'getDashboardData']);
 });
 
-// WebSocket API routes (outside v1 prefix for direct access)
-Route::middleware('auth:sanctum')->prefix('websocket')->group(function () {
-    Route::post('/connect', [App\Http\Controllers\WebSocketController::class, 'connect']);
-    Route::post('/disconnect', [App\Http\Controllers\WebSocketController::class, 'disconnect']);
-    Route::post('/reconnect', [App\Http\Controllers\WebSocketController::class, 'reconnect']);
-    Route::post('/heartbeat', [App\Http\Controllers\WebSocketController::class, 'heartbeat']);
-    Route::get('/status', [App\Http\Controllers\WebSocketController::class, 'getOnlineStatus']);
-    Route::get('/health', [App\Http\Controllers\WebSocketController::class, 'getConnectionHealth']);
-    Route::post('/test-notification', [App\Http\Controllers\WebSocketController::class, 'sendTestNotification']);
-    Route::get('/statistics', [App\Http\Controllers\WebSocketController::class, 'getStatistics']);
-});
+// WebSocket API routes removed - now handled by Node.js WebSocket server
 
 // Notification Engagement API routes (outside v1 prefix for direct access)
 Route::middleware('auth:sanctum')->prefix('notifications/engagement')->group(function () {
@@ -729,6 +800,8 @@ Route::middleware('auth:sanctum')->prefix('notifications/engagement')->group(fun
     Route::post('/track/action', [App\Http\Controllers\Api\NotificationEngagementController::class, 'trackAction']);
     Route::post('/track/bulk', [App\Http\Controllers\Api\NotificationEngagementController::class, 'bulkTrack']);
     Route::get('/metrics/user', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getUserMetrics']);
+
+
     Route::get('/metrics/type', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getTypeMetrics']);
     Route::get('/summary', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getEngagementSummary']);
     Route::get('/top-performing', [App\Http\Controllers\Api\NotificationEngagementController::class, 'getTopPerforming']);
@@ -841,5 +914,3 @@ if (app()->environment('local')) {
         });
     });
 }
-
-

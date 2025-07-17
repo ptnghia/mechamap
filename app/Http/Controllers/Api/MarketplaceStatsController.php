@@ -23,22 +23,22 @@ class MarketplaceStatsController extends Controller
                     'total_products' => MarketplaceProduct::where('status', 'approved')
                         ->where('is_active', true)
                         ->count(),
-                    
+
                     'digital_products' => MarketplaceProduct::where('status', 'approved')
                         ->where('is_active', true)
                         ->where('type', 'digital')
                         ->count(),
-                    
+
                     'new_products' => MarketplaceProduct::where('status', 'approved')
                         ->where('is_active', true)
                         ->where('type', 'new_product')
                         ->count(),
-                    
+
                     'used_products' => MarketplaceProduct::where('status', 'approved')
                         ->where('is_active', true)
                         ->where('type', 'used_product')
                         ->count(),
-                    
+
                     'total_suppliers' => MarketplaceSeller::where('status', 'active')
                         ->count(),
                 ];
@@ -67,23 +67,44 @@ class MarketplaceStatsController extends Controller
             if (!auth()->check()) {
                 return response()->json([
                     'success' => true,
-                    'data' => ['count' => 0]
+                    'count' => 0,
+                    'message' => 'User not authenticated'
                 ]);
             }
 
-            $count = MarketplaceCart::where('user_id', auth()->id())
-                ->sum('quantity');
+            $user = auth()->user();
+
+            // Check if user has marketplace permissions
+            $allowedRoles = ['verified_partner', 'manufacturer', 'supplier', 'brand', 'admin', 'moderator'];
+            if (!in_array($user->role, $allowedRoles)) {
+                return response()->json([
+                    'success' => true,
+                    'count' => 0,
+                    'message' => 'User does not have marketplace permissions'
+                ]);
+            }
+
+            // Get cart count from database or session
+            $count = 0;
+            try {
+                $count = MarketplaceCart::where('user_id', auth()->id())->sum('quantity');
+            } catch (\Exception $e) {
+                // Fallback to session if MarketplaceCart table doesn't exist
+                $count = session('marketplace_cart_count', 0);
+            }
 
             return response()->json([
                 'success' => true,
-                'data' => ['count' => $count]
+                'count' => $count,
+                'message' => 'Cart count retrieved successfully'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error loading cart count',
-                'error' => $e->getMessage()
+                'count' => 0,
+                'error' => 'Failed to retrieve cart count',
+                'message' => $e->getMessage()
             ], 500);
         }
     }

@@ -1,6 +1,7 @@
 /**
- * Real-time Notification Service
- * Handles WebSocket connections and real-time notification updates
+ * MechaMap Real-time Notification Service
+ * Socket.IO-based WebSocket connection to Node.js server
+ * Replaces Laravel Reverb/Pusher.js implementation
  */
 class NotificationService {
     constructor() {
@@ -10,53 +11,128 @@ class NotificationService {
         this.maxReconnectAttempts = 5;
         this.reconnectDelay = 1000;
         this.userId = null;
+        this.userToken = null;
         this.callbacks = {
             onNotification: [],
             onConnect: [],
             onDisconnect: [],
-            onError: []
+            onError: [],
+            onTyping: [],
+            onUserActivity: []
         };
 
-        // Initialize if user is authenticated
+        // Configuration
+        this.config = {
+            serverUrl: this.getServerUrl(),
+            transports: ['websocket', 'polling'],
+            timeout: 10000,
+            forceNew: false,
+            autoConnect: false
+        };
+
+        console.log('NotificationService: Initializing with Node.js WebSocket server');
         this.init();
+    }
+
+    /**
+     * Get WebSocket server URL based on environment
+     */
+    getServerUrl() {
+        const hostname = window.location.hostname;
+        const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
+
+        // Production: realtime.mechamap.com
+        // Local development: localhost:3000
+        if (hostname === 'mechamap.com' || hostname === 'www.mechamap.com') {
+            return 'https://realtime.mechamap.com';
+        } else if (hostname === 'mechamap.test' || hostname.includes('mechamap')) {
+            return 'http://localhost:3000';
+        } else {
+            return 'http://localhost:3000';
+        }
     }
 
     /**
      * Initialize notification service
      */
     init() {
-        // Get user ID from meta tag or global variable
+        // Get user authentication data
+        this.getUserData();
+
+        if (this.userId && this.userToken) {
+            console.log(`NotificationService: Initializing for user ${this.userId}`);
+            this.connect();
+        } else {
+            console.log('NotificationService: No authenticated user found');
+        }
+    }
+
+    /**
+     * Get user data from meta tags and localStorage
+     */
+    getUserData() {
+        // Get user ID from meta tag
         const userMeta = document.querySelector('meta[name="user-id"]');
         if (userMeta) {
             this.userId = userMeta.getAttribute('content');
-            this.connect();
         }
+
+        // Get JWT token from meta tag or localStorage
+        const tokenMeta = document.querySelector('meta[name="auth-token"]');
+        if (tokenMeta) {
+            this.userToken = tokenMeta.getAttribute('content');
+        } else {
+            // Fallback: get from localStorage or API
+            this.userToken = localStorage.getItem('auth_token') || this.getAuthToken();
+        }
+    }
+
+    /**
+     * Get authentication token from Laravel
+     */
+    async getAuthToken() {
+        try {
+            const response = await fetch('/api/auth/token', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+                },
+                credentials: 'same-origin'
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.token) {
+                    localStorage.setItem('auth_token', data.token);
+                    return data.token;
+                }
+            }
+        } catch (error) {
+            console.error('NotificationService: Failed to get auth token', error);
+        }
+        return null;
     }
 
     /**
      * Connect to WebSocket server
      */
     connect() {
-        if (!this.userId) {
-            console.warn('NotificationService: No user ID found');
+        if (this.isConnected || !this.userId || !this.userToken) {
             return;
         }
 
+        console.log(`NotificationService: Connecting to ${this.config.serverUrl}`);
+
         try {
-            // Temporarily disable WebSocket and use HTTP polling only
-            console.log('NotificationService: WebSocket disabled, using HTTP polling only');
-            this.isConnected = true; // Mark as connected for HTTP polling
-            this.triggerCallbacks('onConnect');
-
-            // Start HTTP polling for notifications
-            this.startPolling();
-
-            // Use Laravel Echo or direct WebSocket connection (disabled for now)
-            // if (window.Echo) {
-            //     this.connectWithEcho();
-            // } else {
-            //     this.connectDirectly();
-            // }
+            // Load Socket.IO if not already loaded
+            if (typeof io === 'undefined') {
+                this.loadSocketIO().then(() => {
+                    this.establishConnection();
+                });
+            } else {
+                this.establishConnection();
+            }
         } catch (error) {
             console.error('NotificationService: Connection failed', error);
             this.handleConnectionError(error);
@@ -64,201 +140,171 @@ class NotificationService {
     }
 
     /**
-     * Connect using Laravel Echo
+     * Load Socket.IO library dynamically
      */
-    connectWithEcho() {
-        // Listen to user-specific notification channel
-        window.Echo.private(`notifications.${this.userId}`)
-            .listen('NotificationSent', (data) => {
-                this.handleNotification(data);
-            })
-            .listen('NotificationRead', (data) => {
-                this.handleNotificationRead(data);
-            })
-            .listen('NotificationDeleted', (data) => {
-                this.handleNotificationDeleted(data);
-            });
+    async loadSocketIO() {
+        return new Promise((resolve, reject) => {
+            if (typeof io !== 'undefined') {
+                resolve();
+                return;
+            }
 
-        // Listen to typing indicators
-        window.Echo.channel('typing.thread.1') // Example channel
-            .listen('typing.started', (data) => {
-                this.handleTypingStarted(data);
-            })
-            .listen('typing.stopped', (data) => {
-                this.handleTypingStopped(data);
-            });
-
-        this.isConnected = true;
-        this.reconnectAttempts = 0;
-        this.triggerCallbacks('onConnect');
-        console.log('NotificationService: Connected via Echo');
+            const script = document.createElement('script');
+            script.src = 'https://cdn.socket.io/4.7.4/socket.io.min.js';
+            script.onload = () => {
+                console.log('NotificationService: Socket.IO loaded');
+                resolve();
+            };
+            script.onerror = () => {
+                console.error('NotificationService: Failed to load Socket.IO');
+                reject(new Error('Failed to load Socket.IO'));
+            };
+            document.head.appendChild(script);
+        });
     }
 
     /**
-     * Connect directly to WebSocket
+     * Establish Socket.IO connection
      */
-    connectDirectly() {
-        const wsUrl = `ws://localhost:6001/app/mechamap?protocol=7&client=js&version=4.3.1&flash=false`;
-        this.socket = new WebSocket(wsUrl);
+    establishConnection() {
+        this.socket = io(this.config.serverUrl, {
+            ...this.config,
+            auth: {
+                token: this.userToken,
+                userId: this.userId
+            }
+        });
 
-        this.socket.onopen = () => {
+        this.setupEventListeners();
+        this.socket.connect();
+    }
+
+    /**
+     * Setup Socket.IO event listeners
+     */
+    setupEventListeners() {
+        // Connection events
+        this.socket.on('connect', () => {
             this.isConnected = true;
             this.reconnectAttempts = 0;
+            console.log('NotificationService: Connected to WebSocket server');
+            console.log('   Socket ID:', this.socket.id);
             this.triggerCallbacks('onConnect');
-            console.log('NotificationService: Connected directly');
-        };
 
-        this.socket.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                this.handleWebSocketMessage(data);
-            } catch (error) {
-                console.error('NotificationService: Invalid message format', error);
-            }
-        };
+            // Subscribe to user's private channel
+            this.subscribeToUserChannel();
+        });
 
-        this.socket.onclose = () => {
+        this.socket.on('disconnect', (reason) => {
             this.isConnected = false;
-            this.triggerCallbacks('onDisconnect');
-            this.attemptReconnect();
-        };
+            console.log('NotificationService: Disconnected:', reason);
+            this.triggerCallbacks('onDisconnect', reason);
 
-        this.socket.onerror = (error) => {
-            console.error('NotificationService: WebSocket error', error);
+            // Auto-reconnect unless manually disconnected
+            if (reason !== 'io client disconnect') {
+                this.attemptReconnect();
+            }
+        });
+
+        this.socket.on('connect_error', (error) => {
+            console.error('NotificationService: Connection error:', error);
             this.handleConnectionError(error);
-        };
+        });
+
+        // Server events
+        this.socket.on('connected', (data) => {
+            console.log('NotificationService: Server confirmation:', data);
+        });
+
+        // Notification events
+        this.socket.on('notification.sent', (data) => {
+            console.log('NotificationService: Received notification:', data);
+            this.handleNotification(data);
+        });
+
+        this.socket.on('notification.read', (data) => {
+            console.log('NotificationService: Notification read:', data);
+            this.handleNotificationRead(data);
+        });
+
+        // Typing events
+        this.socket.on('user_typing', (data) => {
+            this.triggerCallbacks('onTyping', { ...data, isTyping: true });
+        });
+
+        this.socket.on('user_stopped_typing', (data) => {
+            this.triggerCallbacks('onTyping', { ...data, isTyping: false });
+        });
+
+        // User activity events
+        this.socket.on('user_activity', (data) => {
+            this.triggerCallbacks('onUserActivity', data);
+        });
+
+        // Error handling
+        this.socket.on('error', (error) => {
+            console.error('NotificationService: Server error:', error);
+            this.triggerCallbacks('onError', error);
+        });
     }
 
     /**
-     * Handle WebSocket message
+     * Subscribe to user's private channel
      */
-    handleWebSocketMessage(data) {
-        switch (data.event) {
-            case 'notification.sent':
-                this.handleNotification(data.data);
-                break;
-            case 'notification.read':
-                this.handleNotificationRead(data.data);
-                break;
-            case 'notification.deleted':
-                this.handleNotificationDeleted(data.data);
-                break;
-            case 'typing.started':
-                this.handleTypingStarted(data.data);
-                break;
-            case 'typing.stopped':
-                this.handleTypingStopped(data.data);
-                break;
-            default:
-                console.log('NotificationService: Unknown event', data.event);
-        }
+    subscribeToUserChannel() {
+        if (!this.socket || !this.userId) return;
+
+        const channel = `private-user.${this.userId}`;
+        console.log(`NotificationService: Subscribing to ${channel}`);
+
+        this.socket.emit('subscribe', { channel });
+
+        this.socket.on('subscribed', (data) => {
+            if (data.channel === channel) {
+                console.log(`NotificationService: Successfully subscribed to ${channel}`);
+            }
+        });
+
+        this.socket.on('subscription_error', (data) => {
+            console.error('NotificationService: Subscription error:', data);
+        });
     }
 
     /**
-     * Handle new notification
+     * Handle incoming notification
      */
-    handleNotification(data) {
-        console.log('NotificationService: New notification', data);
+    handleNotification(notification) {
+        // Trigger callbacks for notification managers
+        this.triggerCallbacks('onNotification', notification);
 
-        // Update notification counter
-        this.updateNotificationCounter(1);
-
-        // Show notification popup
-        this.showNotificationPopup(data.notification);
-
-        // Add to notification list
-        this.addToNotificationList(data.notification);
+        // Show browser notification if permission granted
+        this.showBrowserNotification(notification);
 
         // Play notification sound
         this.playNotificationSound();
-
-        // Trigger callbacks
-        this.triggerCallbacks('onNotification', data.notification);
     }
 
     /**
-     * Handle notification read
+     * Handle notification read event
      */
     handleNotificationRead(data) {
-        console.log('NotificationService: Notification read', data);
-
-        // Update notification counter
-        this.updateNotificationCounter(-1);
-
-        // Update UI
-        this.markNotificationAsRead(data.notification_id);
-    }
-
-    /**
-     * Handle notification deleted
-     */
-    handleNotificationDeleted(data) {
-        console.log('NotificationService: Notification deleted', data);
-
-        // Remove from UI
-        this.removeNotificationFromList(data.notification_id);
-
-        // Update counter if it was unread
-        if (!data.was_read) {
-            this.updateNotificationCounter(-1);
+        // Update UI to mark notification as read
+        const notificationElement = document.querySelector(`[data-notification-id="${data.notificationId}"]`);
+        if (notificationElement) {
+            notificationElement.classList.add('read');
+            notificationElement.classList.remove('unread');
         }
     }
 
     /**
-     * Handle typing started
+     * Show browser notification
      */
-    handleTypingStarted(data) {
-        console.log('NotificationService: Typing started', data);
-
-        // Show typing indicator
-        this.showTypingIndicator(data.indicator);
-    }
-
-    /**
-     * Handle typing stopped
-     */
-    handleTypingStopped(data) {
-        console.log('NotificationService: Typing stopped', data);
-
-        // Hide typing indicator
-        this.hideTypingIndicator(data.indicator);
-    }
-
-    /**
-     * Update notification counter
-     */
-    updateNotificationCounter(change) {
-        const counter = document.querySelector('.notification-counter');
-        if (counter) {
-            const currentCount = parseInt(counter.textContent) || 0;
-            const newCount = Math.max(0, currentCount + change);
-
-            counter.textContent = newCount;
-            counter.style.display = newCount > 0 ? 'inline' : 'none';
-
-            // Update page title
-            this.updatePageTitle(newCount);
-        }
-    }
-
-    /**
-     * Update page title with notification count
-     */
-    updatePageTitle(count) {
-        const originalTitle = document.title.replace(/^\(\d+\)\s*/, '');
-        document.title = count > 0 ? `(${count}) ${originalTitle}` : originalTitle;
-    }
-
-    /**
-     * Show notification popup
-     */
-    showNotificationPopup(notification) {
-        // Check if browser notifications are supported and permitted
+    showBrowserNotification(notification) {
         if ('Notification' in window && Notification.permission === 'granted') {
-            const browserNotification = new Notification(notification.title, {
-                body: notification.message,
-                icon: '/images/logo-small.png',
-                tag: `notification-${notification.id}`,
+            const browserNotification = new Notification(notification.title || 'MechaMap', {
+                body: notification.message || notification.content,
+                icon: '/images/logo/mechamap-icon.png',
+                tag: `mechamap-${notification.id}`,
                 requireInteraction: false
             });
 
@@ -270,220 +316,11 @@ class NotificationService {
             // Handle click
             browserNotification.onclick = () => {
                 window.focus();
-                if (notification.data && notification.data.action_url) {
-                    window.location.href = notification.data.action_url;
+                if (notification.url) {
+                    window.location.href = notification.url;
                 }
                 browserNotification.close();
             };
-        }
-
-        // Show in-app notification toast
-        this.showInAppNotification(notification);
-    }
-
-    /**
-     * Show in-app notification toast
-     */
-    showInAppNotification(notification) {
-        const toast = document.createElement('div');
-        toast.className = 'notification-toast';
-        toast.innerHTML = `
-            <div class="notification-toast-content">
-                <div class="notification-toast-header">
-                    <strong>${this.escapeHtml(notification.title)}</strong>
-                    <button type="button" class="notification-toast-close" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="notification-toast-body">
-                    ${this.escapeHtml(notification.message)}
-                </div>
-                ${notification.data && notification.data.action_url ? `
-                    <div class="notification-toast-actions">
-                        <a href="${notification.data.action_url}" class="btn btn-sm btn-primary">
-                            ${notification.data.action_text || 'Xem chi tiết'}
-                        </a>
-                    </div>
-                ` : ''}
-            </div>
-        `;
-
-        // Add to container
-        let container = document.querySelector('.notification-toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'notification-toast-container';
-            document.body.appendChild(container);
-        }
-
-        container.appendChild(toast);
-
-        // Handle close button
-        const closeBtn = toast.querySelector('.notification-toast-close');
-        closeBtn.addEventListener('click', () => {
-            this.removeToast(toast);
-        });
-
-        // Auto-remove after 8 seconds
-        setTimeout(() => {
-            this.removeToast(toast);
-        }, 8000);
-
-        // Animate in
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 100);
-    }
-
-    /**
-     * Remove toast notification
-     */
-    removeToast(toast) {
-        toast.classList.remove('show');
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 300);
-    }
-
-    /**
-     * Add notification to list
-     */
-    addToNotificationList(notification) {
-        const notificationList = document.querySelector('.notification-list');
-        if (notificationList) {
-            const notificationItem = this.createNotificationItem(notification);
-            notificationList.insertBefore(notificationItem, notificationList.firstChild);
-
-            // Limit to 50 notifications in DOM
-            const items = notificationList.querySelectorAll('.notification-item');
-            if (items.length > 50) {
-                items[items.length - 1].remove();
-            }
-        }
-    }
-
-    /**
-     * Create notification item element
-     */
-    createNotificationItem(notification) {
-        const item = document.createElement('div');
-        item.className = 'notification-item';
-        item.setAttribute('data-notification-id', notification.id);
-
-        const timeAgo = this.formatTimeAgo(new Date(notification.created_at));
-
-        item.innerHTML = `
-            <div class="notification-content">
-                <div class="notification-header">
-                    <span class="notification-title">${this.escapeHtml(notification.title)}</span>
-                    <span class="notification-time">${timeAgo}</span>
-                </div>
-                <div class="notification-message">
-                    ${this.escapeHtml(notification.message)}
-                </div>
-                ${notification.data && notification.data.action_url ? `
-                    <div class="notification-actions">
-                        <a href="${notification.data.action_url}" class="notification-action-link">
-                            ${notification.data.action_text || 'Xem chi tiết'}
-                        </a>
-                    </div>
-                ` : ''}
-            </div>
-            <div class="notification-controls">
-                <button type="button" class="btn-mark-read" title="Đánh dấu đã đọc">
-                    <i class="fas fa-check"></i>
-                </button>
-                <button type="button" class="btn-delete" title="Xóa">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-
-        // Add event listeners
-        const markReadBtn = item.querySelector('.btn-mark-read');
-        const deleteBtn = item.querySelector('.btn-delete');
-
-        markReadBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.markNotificationAsRead(notification.id);
-        });
-
-        deleteBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.deleteNotification(notification.id);
-        });
-
-        return item;
-    }
-
-    /**
-     * Mark notification as read
-     */
-    markNotificationAsRead(notificationId) {
-        // API call to mark as read
-        fetch(`/api/notifications/${notificationId}/read`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update UI
-                const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
-                if (item) {
-                    item.classList.add('read');
-                    const markReadBtn = item.querySelector('.btn-mark-read');
-                    if (markReadBtn) {
-                        markReadBtn.style.display = 'none';
-                    }
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Failed to mark notification as read:', error);
-        });
-    }
-
-    /**
-     * Delete notification
-     */
-    deleteNotification(notificationId) {
-        // API call to delete
-        fetch(`/api/notifications/${notificationId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                this.removeNotificationFromList(notificationId);
-            }
-        })
-        .catch(error => {
-            console.error('Failed to delete notification:', error);
-        });
-    }
-
-    /**
-     * Remove notification from list
-     */
-    removeNotificationFromList(notificationId) {
-        const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
-        if (item) {
-            item.classList.add('removing');
-            setTimeout(() => {
-                if (item.parentNode) {
-                    item.parentNode.removeChild(item);
-                }
-            }, 300);
         }
     }
 
@@ -491,61 +328,15 @@ class NotificationService {
      * Play notification sound
      */
     playNotificationSound() {
-        // Check user preferences
-        const soundEnabled = localStorage.getItem('notification-sound') !== 'false';
-        if (soundEnabled) {
+        try {
             const audio = new Audio('/sounds/notification.mp3');
             audio.volume = 0.3;
-            audio.play().catch(error => {
-                console.log('Could not play notification sound:', error);
+            audio.play().catch(e => {
+                // Ignore autoplay policy errors
+                console.log('NotificationService: Audio autoplay blocked');
             });
-        }
-    }
-
-    /**
-     * Show typing indicator
-     */
-    showTypingIndicator(indicator) {
-        const contextSelector = `[data-context-type="${indicator.context_type}"][data-context-id="${indicator.context_id}"]`;
-        const contextElement = document.querySelector(contextSelector);
-
-        if (contextElement) {
-            let typingContainer = contextElement.querySelector('.typing-indicators');
-            if (!typingContainer) {
-                typingContainer = document.createElement('div');
-                typingContainer.className = 'typing-indicators';
-                contextElement.appendChild(typingContainer);
-            }
-
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator';
-            typingIndicator.setAttribute('data-user-id', indicator.user.id);
-            typingIndicator.innerHTML = `
-                <span class="typing-user">${this.escapeHtml(indicator.user.name)}</span>
-                <span class="typing-text">đang gõ...</span>
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            `;
-
-            typingContainer.appendChild(typingIndicator);
-        }
-    }
-
-    /**
-     * Hide typing indicator
-     */
-    hideTypingIndicator(indicator) {
-        const typingIndicator = document.querySelector(`[data-user-id="${indicator.user.id}"]`);
-        if (typingIndicator) {
-            typingIndicator.classList.add('removing');
-            setTimeout(() => {
-                if (typingIndicator.parentNode) {
-                    typingIndicator.parentNode.removeChild(typingIndicator);
-                }
-            }, 300);
+        } catch (error) {
+            // Ignore audio errors
         }
     }
 
@@ -553,29 +344,124 @@ class NotificationService {
      * Attempt to reconnect
      */
     attemptReconnect() {
-        if (this.reconnectAttempts < this.maxReconnectAttempts) {
-            this.reconnectAttempts++;
-            console.log(`NotificationService: Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-
-            setTimeout(() => {
-                this.connect();
-            }, this.reconnectDelay * this.reconnectAttempts);
-        } else {
+        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
             console.error('NotificationService: Max reconnection attempts reached');
             this.triggerCallbacks('onError', new Error('Max reconnection attempts reached'));
+            return;
         }
+
+        this.reconnectAttempts++;
+        const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // Exponential backoff
+
+        console.log(`NotificationService: Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+
+        setTimeout(() => {
+            if (!this.isConnected) {
+                this.connect();
+            }
+        }, delay);
     }
 
     /**
      * Handle connection error
      */
     handleConnectionError(error) {
-        this.isConnected = false;
+        console.error('NotificationService: Connection error:', error);
         this.triggerCallbacks('onError', error);
+
+        // Start HTTP polling as fallback
+        setTimeout(() => {
+            if (!this.isConnected) {
+                console.log('NotificationService: Starting HTTP polling fallback');
+                this.startPolling();
+            }
+        }, 5000);
     }
 
     /**
-     * Add event listener
+     * Start HTTP polling as fallback
+     */
+    startPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+        }
+
+        this.pollingInterval = setInterval(async () => {
+            try {
+                const response = await fetch('/api/notifications/poll', {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Authorization': `Bearer ${this.userToken}`,
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+                    },
+                    credentials: 'same-origin'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.notifications && data.notifications.length > 0) {
+                        data.notifications.forEach(notification => {
+                            this.handleNotification(notification);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('NotificationService: Polling failed:', error);
+            }
+        }, 30000); // Poll every 30 seconds
+    }
+
+    /**
+     * Stop HTTP polling
+     */
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
+    }
+
+    /**
+     * Send typing indicator
+     */
+    sendTyping(threadId, isTyping = true) {
+        if (!this.socket || !this.isConnected) return;
+
+        this.socket.emit('typing', {
+            threadId,
+            userId: this.userId,
+            isTyping
+        });
+    }
+
+    /**
+     * Mark notification as read
+     */
+    markAsRead(notificationId) {
+        if (!this.socket || !this.isConnected) return;
+
+        this.socket.emit('notification.read', {
+            notificationId,
+            userId: this.userId
+        });
+    }
+
+    /**
+     * Send user activity update
+     */
+    updateActivity(activity = 'online') {
+        if (!this.socket || !this.isConnected) return;
+
+        this.socket.emit('user_activity', {
+            userId: this.userId,
+            activity,
+            timestamp: new Date().toISOString()
+        });
+    }
+
+    /**
+     * Register event callback
      */
     on(event, callback) {
         if (this.callbacks[event]) {
@@ -584,7 +470,7 @@ class NotificationService {
     }
 
     /**
-     * Remove event listener
+     * Remove event callback
      */
     off(event, callback) {
         if (this.callbacks[event]) {
@@ -596,7 +482,7 @@ class NotificationService {
     }
 
     /**
-     * Trigger callbacks
+     * Trigger callbacks for event
      */
     triggerCallbacks(event, data = null) {
         if (this.callbacks[event]) {
@@ -611,33 +497,35 @@ class NotificationService {
     }
 
     /**
-     * Escape HTML
+     * Disconnect from server
      */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    disconnect() {
+        if (this.socket) {
+            this.socket.disconnect();
+        }
+        this.stopPolling();
+        this.isConnected = false;
+        console.log('NotificationService: Manually disconnected');
     }
 
     /**
-     * Format time ago
+     * Get connection status
      */
-    formatTimeAgo(date) {
-        const now = new Date();
-        const diffInSeconds = Math.floor((now - date) / 1000);
+    getStatus() {
+        return {
+            connected: this.isConnected,
+            socketId: this.socket?.id,
+            userId: this.userId,
+            reconnectAttempts: this.reconnectAttempts,
+            serverUrl: this.config.serverUrl
+        };
+    }
 
-        if (diffInSeconds < 60) {
-            return 'vừa xong';
-        } else if (diffInSeconds < 3600) {
-            const minutes = Math.floor(diffInSeconds / 60);
-            return `${minutes} phút trước`;
-        } else if (diffInSeconds < 86400) {
-            const hours = Math.floor(diffInSeconds / 3600);
-            return `${hours} giờ trước`;
-        } else {
-            const days = Math.floor(diffInSeconds / 86400);
-            return `${days} ngày trước`;
-        }
+    /**
+     * Get connection status (alias for compatibility)
+     */
+    getConnectionStatus() {
+        return this.getStatus();
     }
 
     /**
@@ -646,92 +534,16 @@ class NotificationService {
     requestNotificationPermission() {
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission().then(permission => {
-                console.log('Notification permission:', permission);
+                console.log('NotificationService: Browser notification permission:', permission);
             });
         }
-    }
-
-    /**
-     * Start HTTP polling for notifications
-     */
-    startPolling() {
-        // Poll every 30 seconds for new notifications
-        this.pollingInterval = setInterval(() => {
-            this.pollNotifications();
-        }, 30000);
-
-        // Initial poll
-        this.pollNotifications();
-    }
-
-    /**
-     * Poll notifications via HTTP
-     */
-    async pollNotifications() {
-        try {
-            const response = await fetch('/api/notifications/recent', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                },
-                credentials: 'same-origin'
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success && data.data) {
-                    this.handlePolledNotifications(data.data);
-                }
-            }
-        } catch (error) {
-            console.warn('NotificationService: Polling failed', error);
-        }
-    }
-
-    /**
-     * Handle polled notifications
-     */
-    handlePolledNotifications(notifications) {
-        // Update notification count and trigger callbacks
-        if (notifications.length > 0) {
-            this.triggerCallbacks('onNotification', notifications);
-        }
-    }
-
-    /**
-     * Stop polling
-     */
-    stopPolling() {
-        if (this.pollingInterval) {
-            clearInterval(this.pollingInterval);
-            this.pollingInterval = null;
-        }
-    }
-
-    /**
-     * Disconnect
-     */
-    disconnect() {
-        if (this.socket) {
-            this.socket.close();
-        }
-        this.stopPolling();
-        this.isConnected = false;
-    }
-
-    /**
-     * Get connection status
-     */
-    getConnectionStatus() {
-        return {
-            isConnected: this.isConnected,
-            reconnectAttempts: this.reconnectAttempts,
-            userId: this.userId
-        };
     }
 }
 
 // Initialize global notification service
 window.NotificationService = new NotificationService();
+
+// Export for module systems
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = NotificationService;
+}

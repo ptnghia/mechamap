@@ -59,6 +59,9 @@ class CommentController extends Controller
                 $comment->user->avatar_url = $comment->user->getAvatarUrl();
             }
 
+            // Fire real-time event
+            event(new \App\Events\CommentCreated($comment));
+
             return response()->json([
                 'success' => true,
                 'data' => $comment,
@@ -129,6 +132,9 @@ class CommentController extends Controller
                 $comment->user->avatar_url = $comment->user->getAvatarUrl();
             }
 
+            // Fire real-time event
+            event(new \App\Events\CommentUpdated($comment));
+
             return response()->json([
                 'success' => true,
                 'data' => $comment,
@@ -176,6 +182,12 @@ class CommentController extends Controller
             // Get thread to update counts
             $thread = $comment->thread;
 
+            // Store data for event before deletion
+            $commentId = $comment->id;
+            $threadId = $comment->thread_id;
+            $userId = $comment->user_id;
+            $userName = $comment->user->name;
+
             // Delete comment
             $comment->delete();
 
@@ -184,6 +196,9 @@ class CommentController extends Controller
                 $thread->comments_count = $thread->comments()->count();
                 $thread->save();
             }
+
+            // Fire real-time event
+            event(new \App\Events\CommentDeleted($commentId, $threadId, $userId, $userName));
 
             return response()->json([
                 'success' => true,

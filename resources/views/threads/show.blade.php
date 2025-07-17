@@ -463,8 +463,16 @@
                     <label for="content" class="form-label">
                         <i class="fas fa-comment-text me-2"></i>{{ __('thread.reply_content') }} <span class="text-danger">*</span>
                     </label>
-                    <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content"
-                        placeholder="{{ __('thread.reply_content_placeholder') }}">{{ old('content') }}</textarea>
+                    <x-tinymce-editor
+                        name="content"
+                        id="content"
+                        :value="old('content')"
+                        :placeholder="__('thread.reply_content_placeholder')"
+                        context="comment"
+                        :height="300"
+                        :required="true"
+                        class="@error('content') is-invalid @enderror"
+                    />
                     @error('content')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -495,7 +503,7 @@
                         </div>
 
                         <!-- Image Previews Container -->
-                        <div id="image-preview-container" class="image-previews-grid mt-3"></div>
+                        <div id="image-preview-container" class="image-previews-grid"></div>
 
                         <!-- Upload Progress -->
                         <div id="upload-progress" class="upload-progress mt-2" style="display: none;">
@@ -549,7 +557,7 @@
                 </div>
                 <p class="mb-1">{{ Str::limit(strip_tags($relatedThread->content), 100) }}</p>
                 <small>Bởi {{ $relatedThread->user->name }} · {{ $relatedThread->view_count }} lượt xem · {{
-                    $relatedThread->comments_count ?? 0 }} phản hồi</small>
+                    $relatedThread->comments_count ?? 0 }} {{ __('thread.replies') }}</small>
             </a>
             @endforeach
         </div>
@@ -559,160 +567,13 @@
 @endsection
 
 @push('scripts')
-<!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/m3nymn6hdlv8nqnf4g88r0ccz9n86ks2aw92v0opuy7sx20y/tinymce/7/tinymce.min.js"
-    referrerpolicy="origin"></script>
+<!-- TinyMCE is now handled by the component -->
 <script>
-    // Initialize TinyMCE Editor when DOM is ready
+    // Initialize event handlers when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    initializeTinyMCE();
     initializeEventHandlers();
+    initializeRealTimeComments();
 });
-
-function initializeTinyMCE() {
-    tinymce.init({
-        selector: '#content',
-        height: 300,
-        readonly: false,
-        menubar: false,
-        branding: false,
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'charmap',
-            'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'table', 'wordcount', 'emoticons'
-        ],
-        toolbar: [
-            'undo redo formatselect bold italic underline alignleft aligncenter alignright bullist numlist quote blockquote emoticons fullscreen'
-        ],
-        toolbar_mode: 'floating',
-        placeholder: 'Nhập nội dung phản hồi của bạn...',
-        content_style: `
-            body {
-                font-family: "Roboto Condensed", sans-serif;
-                font-size: 14px;
-                line-height: 1.6;
-                color: #333;
-                margin: 8px;
-            }
-            blockquote {
-                border-left: 4px solid #007bff;
-                margin: 16px 0;
-                padding: 12px 16px;
-                background: #f8f9fa;
-                font-style: italic;
-                border-radius: 4px;
-            }
-            code {
-                background: #f1f3f4;
-                padding: 2px 6px;
-                border-radius: 4px;
-                font-family: "Monaco", "Consolas", "Courier New", monospace;
-                font-size: 13px;
-            }
-            pre {
-                background: #f8f9fa;
-                padding: 12px;
-                border-radius: 6px;
-                overflow-x: auto;
-                border: 1px solid #e9ecef;
-            }
-            img {
-                max-width: 100%;
-                height: auto;
-                border-radius: 4px;
-            }
-        `,
-        setup: function(editor) {
-            // Custom Quote Button
-            editor.ui.registry.addButton('quote', {
-                text: '{{ __('forms.upload.quote') }}',
-                icon: 'quote',
-                tooltip: '{{ __('forms.upload.add_quote') }}',
-                onAction: function() {
-                    editor.insertContent('<blockquote><p>Nội dung trích dẫn...</p></blockquote><p><br></p>');
-                }
-            });
-
-            // Custom Blockquote Button
-            editor.ui.registry.addButton('blockquote', {
-                text: 'Khối trích dẫn',
-                icon: 'blockquote',
-                tooltip: 'Định dạng khối trích dẫn',
-                onAction: function() {
-                    editor.execCommand('mceBlockQuote');
-                }
-            });
-
-            // Handle content change for validation
-            editor.on('input keyup change', function() {
-                const content = editor.getContent().trim();
-                const textarea = document.getElementById('content');
-                const errorDiv = document.getElementById('content-error');
-
-                if (textarea && errorDiv) {
-                    // Sync content to textarea
-                    textarea.value = editor.getContent();
-
-                    // Remove error if content exists
-                    if (content && content !== '<p></p>' && content !== '<p><br></p>') {
-                        textarea.classList.remove('is-invalid');
-                        errorDiv.style.display = 'none';
-                    }
-                }
-            });
-
-            // Handle initialization complete
-            editor.on('init', function() {
-                console.log('TinyMCE initialized successfully');
-
-                // Set initial content if any
-                const textarea = document.getElementById('content');
-                if (textarea && textarea.value) {
-                    editor.setContent(textarea.value);
-                }
-            });
-        },
-        // Image upload settings
-        images_upload_credentials: false,
-        images_reuse_filename: true,
-        automatic_uploads: false,
-
-        // Content filtering
-        valid_elements: '*[*]',
-        extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]',
-
-        // Performance settings
-        cache_suffix: '?v=7.0.0',
-
-        // Forum-specific settings
-        paste_data_images: true,
-        paste_as_text: false,
-        smart_paste: true,
-
-        // Remove problematic features
-        removed_menuitems: 'newdocument',
-
-        // Style formats for forum posts
-        style_formats: [
-            {title: 'Tiêu đề 1', format: 'h3'},
-            {title: 'Tiêu đề 2', format: 'h4'},
-            {title: 'Tiêu đề 3', format: 'h5'},
-            {title: 'Đoạn văn', format: 'p'},
-            {title: 'Trích dẫn', format: 'blockquote'},
-            {title: 'Code inline', format: 'code'}
-        ],
-
-        // Prevent form submission on Enter
-        init_instance_callback: function(editor) {
-            editor.on('keydown', function(e) {
-                // Prevent form submission when pressing Enter without Shift
-                if (e.keyCode === 13 && !e.shiftKey && !e.ctrlKey) {
-                    e.stopPropagation();
-                }
-            });
-        }
-    });
-}
 
 function initializeFileUpload() {
     const uploadArea = document.getElementById('file-upload-area');
@@ -1177,6 +1038,198 @@ function initializeEventHandlers() {
             });
         });
     });
+}
+
+// Real-time comments functionality
+function initializeRealTimeComments() {
+    const threadId = {{ $thread->id }};
+    const currentUserId = {{ Auth::id() ?? 'null' }};
+
+    // Subscribe to thread channel for real-time updates
+    if (window.notificationService && window.notificationService.socket) {
+        const socket = window.notificationService.socket;
+
+        // Join thread channel
+        socket.emit('subscribe_request', { channel: `thread.${threadId}` });
+
+        // Listen for new comments
+        socket.on('comment.created', function(data) {
+            console.log('New comment received:', data);
+            handleNewComment(data);
+        });
+
+        // Listen for comment updates
+        socket.on('comment.updated', function(data) {
+            console.log('Comment updated:', data);
+            handleCommentUpdate(data);
+        });
+
+        // Listen for comment deletions
+        socket.on('comment.deleted', function(data) {
+            console.log('Comment deleted:', data);
+            handleCommentDeletion(data);
+        });
+
+        console.log(`Real-time comments initialized for thread ${threadId}`);
+    } else {
+        console.warn('NotificationService not available for real-time comments');
+    }
+}
+
+function handleNewComment(data) {
+    const comment = data.comment;
+    const currentUserId = {{ Auth::id() ?? 'null' }};
+
+    // Don't show our own comments (they're already added by form submission)
+    if (comment.user.id === currentUserId) {
+        return;
+    }
+
+    // Create comment HTML
+    const commentHtml = createCommentHtml(comment);
+
+    // Add to comments section
+    const commentsContainer = document.querySelector('.comments-section .comments-container');
+    if (commentsContainer) {
+        commentsContainer.insertAdjacentHTML('beforeend', commentHtml);
+
+        // Update comment count
+        updateCommentCount(1);
+
+        // Show notification
+        showCommentNotification(comment.user.name + ' đã bình luận mới', 'success');
+
+        // Scroll to new comment if user is near bottom
+        scrollToNewCommentIfNeeded(comment.id);
+    }
+}
+
+function handleCommentUpdate(data) {
+    const comment = data.comment;
+    const commentElement = document.querySelector(`#comment-${comment.id}`);
+
+    if (commentElement) {
+        // Update comment content
+        const contentElement = commentElement.querySelector('.comment_item_content');
+        if (contentElement) {
+            contentElement.innerHTML = comment.content;
+
+            // Show update indicator
+            showCommentNotification('Bình luận đã được cập nhật', 'info');
+        }
+    }
+}
+
+function handleCommentDeletion(data) {
+    const commentElement = document.querySelector(`#comment-${data.comment_id}`);
+
+    if (commentElement) {
+        // Fade out and remove
+        commentElement.style.transition = 'opacity 0.3s ease';
+        commentElement.style.opacity = '0';
+
+        setTimeout(() => {
+            commentElement.remove();
+
+            // Update comment count
+            updateCommentCount(-1);
+
+            // Show notification
+            showCommentNotification('Bình luận đã được xóa', 'warning');
+        }, 300);
+    }
+}
+
+function createCommentHtml(comment) {
+    const timeAgo = formatTimeAgo(new Date(comment.created_at));
+
+    return `
+        <div class="comment_item" id="comment-${comment.id}">
+            <div class="comment_item_header">
+                <div class="d-flex align-items-center">
+                    <img src="${comment.user.avatar_url}" alt="${comment.user.name}"
+                         class="rounded-circle me-2" width="32" height="32"
+                         onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+                    <div>
+                        <a href="/users/${comment.user.username || comment.user.id}" class="fw-bold text-decoration-none">
+                            ${comment.user.name}
+                        </a>
+                        <div class="text-muted small">
+                            <span>${timeAgo}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment_item_content">
+                ${comment.content}
+            </div>
+            <div class="comment_item_actions">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-secondary like-button" data-comment-id="${comment.id}">
+                        <i class="fas fa-thumbs-up"></i> <span class="like-count">0</span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary reply-button" data-comment-id="${comment.id}">
+                        <i class="fas fa-reply"></i> Trả lời
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function updateCommentCount(delta) {
+    const countElements = document.querySelectorAll('.comments-count, [data-comments-count]');
+    countElements.forEach(element => {
+        const currentCount = parseInt(element.textContent) || 0;
+        const newCount = Math.max(0, currentCount + delta);
+        element.textContent = newCount;
+    });
+}
+
+function showCommentNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+function scrollToNewCommentIfNeeded(commentId) {
+    const scrollPosition = window.pageYOffset;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // If user is near bottom (within 200px), scroll to new comment
+    if (scrollPosition + windowHeight >= documentHeight - 200) {
+        setTimeout(() => {
+            const commentElement = document.querySelector(`#comment-${commentId}`);
+            if (commentElement) {
+                commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 100);
+    }
+}
+
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'vừa xong';
+    if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' phút trước';
+    if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' giờ trước';
+    return Math.floor(diffInSeconds / 86400) + ' ngày trước';
 }
 </script>
 @endpush

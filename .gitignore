@@ -212,6 +212,14 @@ test.txt
 # Ignore frontend-nextjs directory (separate project)
 /frontend-nextjs
 
+# ============================================================
+# REALTIME SERVER PROJECT IGNORES
+# ============================================================
+
+# Ignore realtime-server directory (separate Node.js project)
+# Repository: https://github.com/ptnghia/mechamap_realtime.git
+/realtime-server/
+
 # Node.js related (if accidentally created in root)
 /package.json
 /package-lock.json

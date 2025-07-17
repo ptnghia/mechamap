@@ -101,4 +101,13 @@ return [
         'select_all' => 'Chọn tất cả',
         'deselect_all' => 'Bỏ chọn tất cả',
     ],
+    'upload' => [
+        'drag_drop_here' => 'Kéo và thả hình ảnh vào đây',
+        'or' => 'hoặc',
+        'select_from_computer' => 'chọn từ máy tính',
+        'attach_images_optional' => 'Đính kèm hình ảnh (không bắt buộc)',
+        'supported_formats' => 'Định dạng được hỗ trợ: JPG, PNG, GIF (tối đa :size MB mỗi file)',
+        'add_quote' => 'Thêm trích dẫn',
+        'quote' => 'Trích dẫn',
+    ],
 ];

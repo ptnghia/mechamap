@@ -166,6 +166,31 @@ return [
     'create_showcase' => 'Tạo Showcase',
     'creating' => 'Đang tạo...',
 
+    // File Upload
+    'file_attachments' => 'File đính kèm',
+    'file_attachments_optional' => 'Tùy chọn',
+    'file_upload_area' => 'Kéo thả file vào đây hoặc',
+    'browse_files' => 'chọn file',
+    'file_upload_help' => 'Hỗ trợ: Images (JPG, PNG, GIF, WebP), Documents (PDF, DOC, DOCX), CAD Files (DWG, DXF, STEP, STL)',
+    'file_upload_limits' => 'Tối đa 10 file, mỗi file không quá 50MB',
+    'file_upload_description' => 'Thêm file CAD, hình ảnh, tài liệu kỹ thuật để minh họa cho dự án của bạn',
+    'files_selected' => 'File đã chọn:',
+    'file_too_large' => 'File ":filename" quá lớn. Kích thước tối đa là 50MB.',
+    'file_type_not_supported' => 'File ":filename" không được hỗ trợ.',
+    'max_files_exceeded' => 'Chỉ được chọn tối đa 10 file',
+    'file_validation_failed' => 'Vui lòng kiểm tra lại các file đã chọn',
+
+    // File Types
+    'file_types' => [
+        'image' => 'Hình ảnh',
+        'document' => 'Tài liệu',
+        'cad' => 'File CAD',
+        'spreadsheet' => 'Bảng tính',
+        'presentation' => 'Thuyết trình',
+        'archive' => 'File nén',
+        'other' => 'Khác',
+    ],
+
     // Validation
     'title_required' => 'Vui lòng nhập tiêu đề showcase',
     'category_required' => 'Vui lòng chọn danh mục',

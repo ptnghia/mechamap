@@ -278,8 +278,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     const cartItems = document.getElementById('cartItemsCount');
                     if (cartItems) {
-                        cartItems.textContent = data.data.count || '0';
-                        cartItems.style.display = data.data.count > 0 ? 'inline' : 'none';
+                        cartItems.textContent = data.count || '0';
+                        cartItems.style.display = data.count > 0 ? 'inline' : 'none';
                     }
                 }
             })

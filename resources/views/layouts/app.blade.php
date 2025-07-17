@@ -16,7 +16,7 @@
     @auth
     <meta name="user-id" content="{{ auth()->id() }}">
     <meta name="user-name" content="{{ auth()->user()->name }}">
-    <meta name="api-token" content="{{ auth()->user()->createToken('api-access')->plainTextToken }}">
+    <meta name="auth-token" content="{{ auth()->user()->createToken('websocket-access')->plainTextToken }}">
     @endauth
 
     <!-- SEO Meta Tags -->
@@ -257,8 +257,9 @@
     <!-- Main App JS -->
     <script src="{{ asset_versioned('js/app.js') }}"></script>
 
-    <!-- Real-time Notification System -->
+    <!-- WebSocket & Real-time Dependencies -->
     @auth
+    <!-- Socket.IO-based Notification Service for Node.js WebSocket server -->
     <script src="{{ asset_versioned('js/frontend/services/notification-service.js') }}"></script>
     <script src="{{ asset_versioned('js/frontend/components/notification-manager.js') }}"></script>
     <script src="{{ asset_versioned('js/frontend/components/typing-indicator.js') }}"></script>

@@ -146,6 +146,165 @@ return [
         'forgot_password' => 'Forgot Password',
         'email' => 'Email',
         'home' => 'Home',
+
+        // Members Section
+        'members' => [
+            // Page titles and descriptions
+            'list_title' => 'Members Directory',
+            'list_description' => 'Browse through our community members',
+            'online_title' => 'Online Members',
+            'online_description' => 'See who\'s online right now',
+            'staff_title' => 'Staff Team',
+            'staff_description' => 'Meet our administrators and moderators',
+
+            // Navigation
+            'all_members' => 'All Members',
+            'online_now' => 'Online Now',
+            'staff' => 'Staff',
+
+            // View options
+            'list_view' => 'List View',
+            'grid_view' => 'Grid View',
+
+            // Search and filters
+            'search_placeholder' => 'Search members...',
+            'search' => 'Search',
+            'sort_by' => 'Sort by',
+            'join_date' => 'Join Date',
+            'name' => 'Name',
+            'direction' => 'Direction',
+            'descending' => 'descending',
+            'ascending' => 'ascending',
+
+            // User information
+            'posts' => 'Posts',
+            'threads' => 'Threads',
+            'joined' => 'Joined',
+            'online' => 'Online',
+            'last_seen' => 'Last seen',
+            'followers' => 'Followers',
+            'admin' => 'Admin',
+
+            // User counts and statistics
+            'total' => 'Total',
+            'members_count' => 'members',
+            'online_members_info' => 'Online members',
+            'filtered_by' => 'Filtered by',
+
+            // Roles and status
+            'administrator' => 'Administrator',
+            'moderator' => 'Moderator',
+            'administrators' => 'Administrators',
+            'moderators' => 'Moderators',
+
+            // Profile information
+            'no_bio_available' => 'No bio available',
+            'member_since' => 'Member since',
+            'profile' => 'Profile',
+            'view_profile' => 'View Profile',
+
+            // Activity indicators
+            'active_member' => 'Active Member',
+            'new_member' => 'New Member',
+            'veteran_member' => 'Veteran Member',
+            'points' => 'points',
+            'recently' => 'recently',
+
+            // Empty states
+            'no_members_found' => 'No members found',
+            'no_online_members' => 'No members are currently online',
+            'no_staff_members' => 'No staff members found',
+            'try_different_search' => 'Try searching with different keywords',
+
+            // Pagination
+            'showing_members' => 'Showing :from to :to of :total members',
+            'members_per_page' => 'members per page',
+
+            // Additional labels
+            'member_info' => 'Member Information',
+            'contact_member' => 'Contact Member',
+            'send_message' => 'Send Message',
+            'follow' => 'Follow',
+            'unfollow' => 'Unfollow',
+            'block' => 'Block',
+            'unblock' => 'Unblock',
+            'report' => 'Report',
+        ],
+
+        // Thread Creation Showcase Integration
+        'thread_showcase' => [
+            // Step navigation
+            'step_title' => 'Create Showcase (Optional)',
+            'step_description' => 'Turn this thread into a showcase project to share with the community',
+            'step_aria' => 'Optional showcase creation step',
+
+            // Toggle options
+            'enable_showcase' => 'Create showcase from this thread',
+            'enable_showcase_help' => 'Showcase helps you display your engineering project professionally',
+            'attach_existing' => 'Attach existing showcase',
+            'create_new' => 'Create new showcase',
+
+            // Showcase form fields
+            'showcase_title' => 'Showcase Title',
+            'showcase_title_placeholder' => 'Enter showcase title (can be different from thread title)',
+            'showcase_description' => 'Project Description',
+            'showcase_description_placeholder' => 'Detailed description of the project, methodology, results achieved...',
+            'project_type' => 'Project Type',
+            'project_type_placeholder' => 'e.g., Design, Analysis, Manufacturing, Research',
+            'software_used' => 'Software Used',
+            'software_used_placeholder' => 'e.g., SolidWorks, AutoCAD, ANSYS, MATLAB',
+            'materials' => 'Materials',
+            'materials_placeholder' => 'e.g., Steel S355, Aluminum 6061, Composite',
+            'manufacturing_process' => 'Manufacturing Process',
+            'manufacturing_process_placeholder' => 'e.g., CNC, 3D Printing, Welding, Machining',
+            'complexity_level' => 'Complexity Level',
+            'industry_application' => 'Industry Application',
+            'industry_application_placeholder' => 'e.g., Automotive, Aerospace, Construction',
+
+            // Technical specifications
+            'technical_specs' => 'Technical Specifications',
+            'technical_specs_help' => 'Enter important technical specifications (JSON format)',
+            'learning_objectives' => 'Learning Objectives',
+            'learning_objectives_help' => 'What viewers can learn from this project',
+
+            // File attachments
+            'showcase_images' => 'Showcase Images',
+            'showcase_images_help' => 'Upload high-quality images to showcase your project',
+            'file_attachments' => 'File Attachments',
+            'file_attachments_help' => 'CAD files, drawings, reports, calculations (max 50MB per file)',
+
+            // Options
+            'is_public' => 'Public',
+            'is_public_help' => 'Allow everyone to view this showcase',
+            'allow_downloads' => 'Allow Downloads',
+            'allow_downloads_help' => 'Allow downloading attached files',
+            'allow_comments' => 'Allow Comments',
+            'allow_comments_help' => 'Allow members to comment on showcase',
+
+            // Features
+            'has_tutorial' => 'Has Tutorial',
+            'has_calculations' => 'Has Calculations',
+            'has_cad_files' => 'Has CAD Files',
+
+            // Validation messages
+            'title_required' => 'Showcase title is required',
+            'description_required' => 'Project description is required',
+            'description_min' => 'Project description must be at least 50 characters',
+            'project_type_required' => 'Project type is required',
+            'complexity_invalid' => 'Invalid complexity level',
+            'file_too_large' => 'File :filename is too large (max 50MB)',
+            'invalid_file_type' => 'File type not supported',
+
+            // Existing showcases
+            'select_existing' => 'Select existing showcase',
+            'no_existing_showcases' => 'You don\'t have any showcases yet',
+            'create_first_showcase' => 'Create your first showcase',
+
+            // Preview
+            'preview_showcase' => 'Preview Showcase',
+            'preview_help' => 'See how the showcase will be displayed',
+        ],
+
         'marketplace_actions' => [
             'by' => 'by',
             'add_to_cart' => 'Add to Cart',
