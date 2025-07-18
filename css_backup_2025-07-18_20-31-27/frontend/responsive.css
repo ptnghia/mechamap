@@ -1,0 +1,260 @@
+/**
+ * CSS Responsive cho MechaMap Frontend
+ * File này chứa tất cả các media queries để đảm bảo giao diện thích ứng
+ */
+
+/* Small devices (sm) */
+@media (min-width: 640px) {
+  .list_post_threads_footer .sm\:flex {
+    display: flex !important;
+  }
+
+  .list_post_threads_footer .sm\:hidden {
+    display: none !important;
+  }
+
+  .list_post_threads_footer .sm\:items-center {
+    align-items: center !important;
+  }
+
+  .list_post_threads_footer .sm\:justify-between {
+    justify-content: space-between !important;
+  }
+}
+
+/* Màn hình nhỏ (mobile) */
+@media (max-width: 480px) {
+  .user-container {
+    padding: 0 var(--user-space-xs);
+  }
+
+  .user-main-wrapper {
+    padding: var(--user-space-sm);
+  }
+
+  .user-header {
+    padding: var(--user-space-sm) 0;
+  }
+
+  .user-logo {
+    font-size: 1.25rem;
+  }
+
+  .user-nav {
+    flex-direction: column;
+  }
+  /* Tìm kiếm trên mobile */
+  .search-container{
+    position: relative;
+  }
+
+  .search-container .form-control:focus{
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
+  }
+
+  .search-results-dropdown{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* Badge trên mobile */
+  .nav-actions .badge{
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    font-size: 8px;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border: 1px solid #fff;
+  }
+
+  .dropdown-item .badge{
+    position: static;
+    margin-left: auto;
+  }
+
+  /* Progress container trên mobile */
+  .progress-container{
+    padding: 1rem;
+  }
+
+  .step-item{
+    padding: .5rem;
+  }
+
+  .step-number{
+    width: 32px;
+    height: 32px;
+    margin-right: .5rem;
+  }
+
+  .step-text{
+    font-size: .8rem;
+  }
+}
+
+/* Thread creation page - Medium screens */
+@media (max-width: 767.98px) {
+  .col-lg-4 {
+    margin-top: 2rem;
+  }
+}
+
+/* Tablet và Mobile (768px) */
+@media (max-width: 768px) {
+  /* Layout chung */
+  .modern-container {
+    padding: 1rem .5rem;
+  }
+
+  /* Page header */
+  .page-header {
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    justify-content: center;
+  }
+
+  /* Progress steps */
+  .progress-steps {
+    padding: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .step-item {
+    min-width: 80px;
+  }
+
+  .step-number {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .step-text {
+    font-size: .8rem;
+  }
+
+  /* Form elements */
+  .card-header-modern,
+  .card-body-modern {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .half-width {
+    min-width: auto;
+  }
+
+  /* Dropdown menu */
+  .dropdown-toggle::after {
+    position: relative !important;
+    margin-top: .5rem;
+  }
+
+  .navbar-nav .nav-item.dropdown {
+    margin-bottom: .5rem;
+  }
+
+  .dropdown-menu {
+    position: static !important;
+    float: none !important;
+    background-color: rgba(0, 0, 0, 0.05);
+    margin-left: 1rem;
+    animation: slideDown .2s ease-out;
+    transform-origin: top center;
+  }
+
+  .dropdown-menu.show {
+    animation: slideDown .2s ease-out;
+  }
+
+  /* Hiển thị mobile/desktop */
+  .mobile-only {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* Thread creation page - Large screens */
+@media (max-width: 991.98px) {
+  .page-header {
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+.thread-creation-sidebar .card{animation:none}
+.thread-creation-sidebar .category-link:hover{transform:none}
+.thread-creation-sidebar .card:hover{transform:none}
+}
+
+@media print {
+.modern-container{background:white;box-shadow:none}
+.progress-steps,.step-navigation,.btn-modern{display:none}
+.form-step{display:block!important}
+.page-header{box-shadow:none;border:1px solid #ccc}
+}
+@media (prefers-contrast: high) {
+.form-control-modern,.form-select-modern{border-width:3px}
+.btn-modern{border:2px solid currentColor}
+.step-number{border-width:3px}
+}
+@media (prefers-reduced-motion: reduce) {
+*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.form-step.active{animation:none}
+.poll-content.active{animation:none}
+}
+@media (prefers-contrast: high) {
+.progress-line{background:#000}
+.step-number{border:2px solid #000;background:#fff;color:#000}
+.step-item.active .step-number{background:#000;color:#fff}
+}
+@media (prefers-reduced-motion: reduce) {
+.form-step,.step-item,.btn-modern,.card-modern{transition:none;animation:none}
+.form-step.active{transform:none}
+}
+@media (prefers-color-scheme: dark) {
+:root{--light-color:#2d3748;--dark-color:#f7fafc;--border-color:#4a5568}
+.modern-container{background:linear-gradient(135deg,#2d3748 0%,#4a5568 100%)}
+.page-header,.form-wrapper,.form-control-modern,.form-select-modern,.upload-area,.poll-settings,.review-section,.content-preview,.poll-preview{background:#2d3748;color:#f7fafc;border-color:#4a5568}
+.upload-area:hover{background:#374151}
+.toggle-wrapper,.radio-item,.checkbox-item{background:#374151;border-color:#4a5568}
+.form-help-text,.page-subtitle,.card-subtitle,.review-value{color:#a0aec0}
+}

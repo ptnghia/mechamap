@@ -1,0 +1,32 @@
+/* Alert styles */
+.alert-icon .rounded-circle {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.alert-icon i {
+    font-size: 1.2rem;
+}
+
+.list-group-item.bg-light {
+    background-color: rgba(13, 110, 253, 0.05) !important;
+}
+
+.dropdown-item.active {
+    background-color: #f8f9fa;
+    color: #3366CC;
+    font-weight: 500;
+}
+
+/* Dark mode styles */
+.dark .list-group-item.bg-light {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.dark .dropdown-item.active {
+    background-color: #2D3748;
+    color: #fff;
+}

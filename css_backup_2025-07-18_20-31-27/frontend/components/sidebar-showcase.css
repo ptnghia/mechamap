@@ -1,0 +1,354 @@
+/* MechaMap Showcase Sidebar Styles */
+
+.sidebar-showcase {
+    width: 100%;
+    max-width: 320px;
+}
+
+.sidebar-showcase .sidebar-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-showcase .sidebar-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+/* Showcase Overview Card */
+.showcase-overview .showcase-header h5 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.showcase-overview .showcase-header p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.showcase-overview .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.showcase-overview .stat-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.showcase-overview .stat-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.showcase-overview .stat-number i {
+    color: #3498db;
+    font-size: 1rem;
+}
+
+.showcase-overview .stat-label {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Categories List */
+.categories-list .category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+.categories-list .category-item:hover {
+    background: #f8f9fa;
+    color: #3498db;
+}
+
+.categories-list .category-item:last-child {
+    border-bottom: none;
+}
+
+.categories-list .category-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.categories-list .category-stats {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.categories-list .category-stats span {
+    margin-right: 0.5rem;
+}
+
+.categories-list .category-trend i {
+    font-size: 0.8rem;
+}
+
+/* Featured Projects */
+.projects-list .project-item {
+    display: flex;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    gap: 0.75rem;
+}
+
+.projects-list .project-item:last-child {
+    border-bottom: none;
+}
+
+.projects-list .project-image {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.projects-list .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.projects-list .complexity-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 0.6rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+}
+
+.projects-list .project-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.projects-list .project-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.projects-list .project-title a {
+    color: #2c3e50;
+}
+
+.projects-list .project-title a:hover {
+    color: #3498db;
+}
+
+.projects-list .project-meta {
+    font-size: 0.7rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.projects-list .project-meta span {
+    margin-right: 0.5rem;
+}
+
+.projects-list .project-metrics {
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+.projects-list .project-metrics .metric {
+    margin-right: 0.5rem;
+}
+
+.projects-list .project-metrics .rating {
+    color: #f39c12;
+}
+
+/* Software Tools */
+.software-list .software-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    gap: 0.75rem;
+}
+
+.software-list .software-item:hover {
+    background: #f8f9fa;
+    color: #3498db;
+}
+
+.software-list .software-item:last-child {
+    border-bottom: none;
+}
+
+.software-list .software-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9ecef;
+    border-radius: 6px;
+    color: #495057;
+}
+
+.software-list .software-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
+}
+
+.software-list .software-count {
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+/* Top Contributors */
+.contributors-list .contributor-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    gap: 0.75rem;
+}
+
+.contributors-list .contributor-item:hover {
+    background: #f8f9fa;
+}
+
+.contributors-list .contributor-item:last-child {
+    border-bottom: none;
+}
+
+.contributors-list .contributor-rank {
+    font-weight: 700;
+    color: #3498db;
+    font-size: 0.8rem;
+    min-width: 24px;
+}
+
+.contributors-list .contributor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.contributors-list .contributor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contributors-list .contributor-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.contributors-list .contributor-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.1rem;
+    color: #2c3e50;
+}
+
+.contributors-list .contributor-stats {
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+.contributors-list .contributor-stats span {
+    margin-right: 0.5rem;
+}
+
+/* Complexity Badges */
+.badge-beginner { background-color: #10b981; }
+.badge-intermediate { background-color: #f59e0b; }
+.badge-advanced { background-color: #ef4444; }
+.badge-expert { background-color: #8b5cf6; }
+
+/* Card Headers */
+.sidebar-showcase .card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-showcase .card-header h6 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.sidebar-showcase .card-header .btn-link {
+    font-size: 0.75rem;
+    padding: 0;
+    text-decoration: none;
+}
+
+/* CTA Section */
+.cta-section .btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar-showcase {
+        max-width: 100%;
+    }
+    
+    .showcase-overview .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .projects-list .project-item {
+        padding: 0.5rem;
+    }
+    
+    .projects-list .project-image {
+        width: 50px;
+        height: 50px;
+    }
+}

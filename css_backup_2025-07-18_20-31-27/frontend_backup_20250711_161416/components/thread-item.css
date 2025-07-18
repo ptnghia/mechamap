@@ -1,0 +1,370 @@
+/* Thread Item Styles */
+
+.thread-item-container {
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+.thread-item{margin-bottom: 20px;font-family: "Roboto Condensed", sans-serif;/* border: 1px solid rgb(228 228 231/1); */padding: 16px;background-color: #fff;}
+.thread-user-name{font-size: 15px;}
+.thread-category-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+    width: auto;
+}
+
+.thread-category-badges .badge,
+.thread-badges .badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.thread-badges .badge i {
+    margin-right: 0.25rem;
+}
+
+/* Content and media styles */Common transitions */
+.hover-scale {
+    transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Avatar styling */
+.thread-user-info .rounded-circle {
+    border: 2px solid #e3e6f0;
+    transition: all 0.2s ease;
+    object-fit: cover;
+}
+
+.thread-user-info .rounded-circle:hover {
+    transform: scale(1.05);
+    border-color: var(--bs-primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.thread-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.thread-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.thread-title-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.thread-title {
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.thread-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.thread-title a:hover {
+    color: var(--bs-primary);
+}
+
+.thread-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+}
+.thread_status {
+    display: block;
+    align-items: center;
+    gap: 0.25rem;
+    margin-right: 3px;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none !important;
+}
+.thread-badges .btn{padding: 3px 10px;}
+/* Footer styling */
+.thread-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #f1f3f4;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 10px;
+}
+.thread-item-footer .btn{padding: 3px 10px;}
+.thread-meta-left {
+    display: flex;
+    gap: 0.5rem;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+/* Thread Meta Styles - Consolidated */
+.thread-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    justify-content: start;
+    margin-bottom: 0;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.meta-item,
+.thread-meta .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+.thread-meta .meta-item i {
+    margin-right: 0.25rem;
+}
+
+/* Thread Category Badges - Consolidated */
+.thread-category-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+    width: auto;
+    justify-content: end;
+}
+
+.thread-category-badges .badge {
+    padding: 8px 10px;
+    font-family: "Roboto Condensed", sans-serif;
+    border-radius: 5px;
+}
+
+/* Action buttons section */
+.thread-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Action buttons - Consolidated */
+.bookmark-btn,
+.follow-btn {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.bookmark-btn:hover,
+.follow-btn:hover {
+    transform: translateY(-1px);
+}
+
+.bookmark-btn.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.follow-btn.active {
+    background-color: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+
+/* Loading and disabled states */
+.bookmark-btn:disabled,
+.follow-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bookmark-btn .spinner-border,
+.follow-btn .spinner-border {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-width: 1px;
+}
+
+/* Content and media styles */
+.thread-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding: 0;
+    font-size: 14px;
+    color: #606060;
+    line-height: 23px;
+}
+
+/* Image and avatar containers */
+.thread-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.thread-image-container img,
+.avatar {
+    transition: transform 0.2s ease;
+    object-fit: cover;
+}
+
+.thread-image-container img {
+    width: 100%;
+    height: 130px;
+}
+
+.thread-image-container:hover img {
+    transform: scale(1.05);
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+    .thread-item-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .thread-category-badges {
+        margin-top: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    .thread-title-section {
+        flex-direction: column;
+    }
+
+    .thread-badges {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .thread-item-container {
+    background-color: var(--bs-dark);
+    border-color: var(--bs-gray-800);
+}
+
+[data-theme="dark"] .thread-title a {
+    color: var(--bs-light);
+}
+
+[data-theme="dark"] .thread-title a:hover {
+    color: var(--bs-primary);
+}
+
+/* Skeleton loading styles - Optimized */
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: 200px 0;
+    }
+}
+
+.skeleton-item {
+    pointer-events: none;
+}
+
+/* Apply base skeleton animation to all skeleton elements */
+.skeleton-text,
+.skeleton-circle,
+.skeleton-badge,
+.skeleton-image,
+.skeleton-button {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite linear;
+}
+
+.skeleton-text {
+    height: 16px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.skeleton-title {
+    height: 20px;
+    width: 70%;
+}
+
+.skeleton-title-long {
+    height: 24px;
+    width: 90%;
+}
+
+.skeleton-short {
+    width: 40%;
+}
+
+.skeleton-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.skeleton-badge {
+    height: 24px;
+    width: 60px;
+    border-radius: 12px;
+    margin-right: 8px;
+}
+
+.skeleton-image {
+    height: 100px;
+    border-radius: 6px;
+}
+
+.skeleton-button {
+    height: 32px;
+    width: 80px;
+    border-radius: 4px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+/* Dark mode skeleton */
+[data-theme="dark"] .skeleton-text,
+[data-theme="dark"] .skeleton-circle,
+[data-theme="dark"] .skeleton-badge,
+[data-theme="dark"] .skeleton-image,
+[data-theme="dark"] .skeleton-button {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200px 100%;
+}
