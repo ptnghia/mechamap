@@ -33,7 +33,191 @@ Route::middleware('web')->group(function () {
         ]);
     });
 
-// Get JWT token for WebSocket authentication (using web middleware)
+// Get Sanctum token for WebSocket authentication (following realtime server documentation)
+Route::middleware(['web'])->get('/user/websocket-token', function (Request $request) {
+    if (!Auth::check()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not authenticated'
+        ], 401);
+    }
+
+    $user = Auth::user();
+
+    try {
+        // Check if user is active
+        if (isset($user->status) && $user->status !== 'active') {
+            return response()->json([
+                'success' => false,
+                'message' => 'User account is not active'
+            ], 403);
+        }
+
+        // Revoke old WebSocket tokens to prevent multiple connections
+        $user->tokens()->where('name', 'websocket-connection')->delete();
+
+        // Create Sanctum token for WebSocket authentication (as per realtime server docs)
+        $token = $user->createToken('websocket-connection', [
+            'websocket:connect',
+            'websocket:receive-notifications'
+        ]);
+
+        \Log::info('Sanctum WebSocket token created for user:', [
+            'user_id' => $user->id,
+            'token_id' => $token->accessToken->id,
+            'token_prefix' => substr($token->plainTextToken, 0, 20) . '...'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'WebSocket token generated successfully',
+            'data' => [
+                'token' => $token->plainTextToken,
+                'user_id' => $user->id,
+                'websocket_url' => 'http://localhost:3000',
+                'expires_at' => now()->addHours(24)->toISOString(),
+                'permissions' => ['receive_notifications']
+            ]
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Failed to create WebSocket token:', [
+            'user_id' => $user->id,
+            'error' => $e->getMessage()
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to generate WebSocket token',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
+
+});
+
+// WebSocket verification endpoint (called by Realtime Server with API key)
+Route::middleware(['websocket.api'])->prefix('websocket-api')->group(function () {
+    Route::post('/verify-user', function (Request $request) {
+        try {
+            // Get Sanctum token from request body (sent by realtime server)
+            $sanctumToken = $request->input('token') ?? $request->input('sanctum_token');
+
+            if (!$sanctumToken) {
+                \Log::warning('WebSocket verify-user: Missing Sanctum token', [
+                    'request_data' => $request->all(),
+                    'ip' => $request->ip()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sanctum token required'
+                ], 400);
+            }
+
+            // Manually verify Sanctum token
+            $tokenModel = \Laravel\Sanctum\PersonalAccessToken::findToken($sanctumToken);
+
+            if (!$tokenModel) {
+                \Log::warning('WebSocket verify-user: Invalid Sanctum token', [
+                    'token_prefix' => substr($sanctumToken, 0, 20) . '...',
+                    'ip' => $request->ip()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Sanctum token'
+                ], 401);
+            }
+
+            // Check if token is expired
+            if ($tokenModel->expires_at && $tokenModel->expires_at->isPast()) {
+                \Log::warning('WebSocket verify-user: Expired Sanctum token', [
+                    'token_id' => $tokenModel->id,
+                    'expires_at' => $tokenModel->expires_at,
+                    'ip' => $request->ip()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token expired'
+                ], 401);
+            }
+
+            // Get user from token
+            $user = $tokenModel->tokenable;
+
+            if (!$user) {
+                \Log::warning('WebSocket verify-user: Token has no associated user', [
+                    'token_id' => $tokenModel->id,
+                    'ip' => $request->ip()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token has no associated user'
+                ], 401);
+            }
+
+            // Check if user is active
+            if (isset($user->status) && $user->status !== 'active') {
+                \Log::warning('WebSocket verify-user: User not active', [
+                    'user_id' => $user->id,
+                    'status' => $user->status,
+                    'ip' => $request->ip()
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User account is not active'
+                ], 403);
+            }
+
+            // Get user permissions for WebSocket
+            $userPermissions = ['receive_notifications'];
+
+            \Log::info('WebSocket user verification successful', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role ?? 'member',
+                'permissions' => $userPermissions,
+                'token_id' => $tokenModel->id,
+                'ip' => $request->ip()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User verified successfully',
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role ?? 'member',
+                        'permissions' => $userPermissions,
+                        'avatar' => $user->avatar ?? null,
+                        'status' => $user->status ?? 'active',
+                        'created_at' => $user->created_at,
+                        'updated_at' => $user->updated_at
+                    ]
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('WebSocket user verification error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'ip' => $request->ip()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Internal server error'
+            ], 500);
+        }
+    });
+});
+
+// Backward compatibility: Keep old JWT endpoint for existing code
 Route::middleware(['web'])->get('/user/token', function (Request $request) {
     if (!Auth::check()) {
         return response()->json([
@@ -83,7 +267,6 @@ Route::middleware(['web'])->get('/user/token', function (Request $request) {
             'error' => $e->getMessage()
         ], 500);
     }
-});
 });
 
 // Direct test route outside of all middleware

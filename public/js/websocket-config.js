@@ -51,7 +51,7 @@ window.MechaMapWebSocket = (function() {
         if (isProduction) {
             return 'https://realtime.mechamap.com';
         } else {
-            return 'http://localhost:3000';
+            return 'https://realtime.mechamap.com';
         }
     }
 
@@ -71,7 +71,7 @@ window.MechaMapWebSocket = (function() {
     async function getSanctumToken() {
         console.log('🔄 MechaMap WebSocket: Fetching Sanctum token from Laravel API...');
         try {
-            const response = await fetch('/api/user/token', {
+            const response = await fetch('/api/user/websocket-token', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -87,34 +87,44 @@ window.MechaMapWebSocket = (function() {
                 const data = await response.json();
                 console.log('📦 API Response data:', data);
 
-                // Handle nested response format from Laravel API
+                // Handle response format from WebSocket token endpoint (following official docs)
                 let token = null;
+                let websocketUrl = null;
+                let userId = null;
 
-                // Try different response structures
-                if (data.token) {
-                    token = data.token;
-                } else if (data.data && data.data.token) {
+                // Expected structure: { success: true, data: { token, user_id, websocket_url } }
+                if (data.success && data.data && data.data.token) {
                     token = data.data.token;
-                } else if (data.data && data.data.data && data.data.data.token) {
-                    token = data.data.data.token;
+                    websocketUrl = data.data.websocket_url;
+                    userId = data.data.user_id;
+                } else if (data.token) {
+                    // Fallback for direct token in response
+                    token = data.token;
+                    websocketUrl = data.websocket_url;
+                    userId = data.user_id;
                 }
 
                 console.log('🔍 API Response structure:', {
-                    hasToken: !!data.token,
+                    success: data.success,
+                    message: data.message,
                     hasDataToken: !!(data.data && data.data.token),
-                    hasNestedToken: !!(data.data && data.data.data && data.data.data.token),
+                    user_id: userId,
+                    websocket_url: websocketUrl,
+                    permissions: data.data ? data.data.permissions : null,
+                    expires_at: data.data ? data.data.expires_at : null,
                     extractedToken: token ? token.substring(0, 20) + '...' : 'null'
                 });
 
                 if (token) {
-                    console.log('✅ Successfully got JWT token:', token.substring(0, 10) + '...');
-                    // Don't store JWT token in localStorage as it should be fresh each time
+                    console.log('✅ Successfully got Sanctum WebSocket token:', token.substring(0, 10) + '...');
                     return token;
                 } else {
                     console.warn('⚠️ API response missing token field. Response structure:', data);
                 }
             } else {
                 console.warn('❌ API request failed with status:', response.status);
+                const errorText = await response.text();
+                console.warn('❌ Error response:', errorText);
             }
         } catch (error) {
             console.warn('❌ MechaMap WebSocket: Failed to get Sanctum token', error);
@@ -205,8 +215,10 @@ window.MechaMapWebSocket = (function() {
             ...defaultSocketConfig,
             ...options,
             auth: {
-                token: authToken,
-                type: 'jwt'
+                token: authToken
+            },
+            query: {
+                token: authToken
             }
         };
 

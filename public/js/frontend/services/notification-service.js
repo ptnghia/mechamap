@@ -42,13 +42,13 @@ class NotificationService {
         const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
 
         // Production: realtime.mechamap.com
-        // Local development: localhost:3000
+        // All environments now use production server
         if (hostname === 'mechamap.com' || hostname === 'www.mechamap.com') {
             return 'https://realtime.mechamap.com';
         } else if (hostname === 'mechamap.test' || hostname.includes('mechamap')) {
-            return 'http://localhost:3000';
+            return 'https://realtime.mechamap.com';
         } else {
-            return 'http://localhost:3000';
+            return 'https://realtime.mechamap.com';
         }
     }
 

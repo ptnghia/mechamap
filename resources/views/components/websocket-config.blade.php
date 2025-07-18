@@ -33,11 +33,11 @@
 @if($secure)
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 @else
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 @endif
 
 {{-- Load WebSocket configuration helper --}}
-<script src="{{ asset('js/websocket-config.js') }}"></script>
+<script src="{{ asset('js/websocket-config.js') }}?v={{ time() }}"></script>
 
 {{-- Auto-initialization is handled by websocket-config.js to prevent duplicate connections --}}
 {{-- Component only provides configuration, not initialization --}}
