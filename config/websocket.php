@@ -68,7 +68,7 @@ return [
 
     'environments' => [
         'local' => [
-            'server_url' => 'https://realtime.mechamap.com',
+            'server_url' => 'http://localhost:3000',
             'laravel_url' => 'https://mechamap.test',
             'cors_origins' => [
                 'https://mechamap.test',

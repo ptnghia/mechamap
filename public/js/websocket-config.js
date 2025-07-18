@@ -51,7 +51,7 @@ window.MechaMapWebSocket = (function() {
         if (isProduction) {
             return 'https://realtime.mechamap.com';
         } else {
-            return 'https://realtime.mechamap.com';
+            return 'http://localhost:3000';
         }
     }
 
@@ -144,7 +144,10 @@ window.MechaMapWebSocket = (function() {
         reconnectionAttempts: 5,
         maxReconnectionAttempts: 10,
         forceNew: false,
-        autoConnect: true
+        autoConnect: true,
+        // Disable SSL verification for development
+        rejectUnauthorized: false,
+        secure: false
     };
 
     /**
