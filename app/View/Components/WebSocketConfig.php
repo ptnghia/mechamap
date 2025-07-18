@@ -93,7 +93,15 @@ class WebSocketConfig extends Component
      */
     public function render()
     {
-        return view('components.websocket-config');
+        return view('components.websocket-config', [
+            'serverUrl' => $this->serverUrl,
+            'serverHost' => $this->serverHost,
+            'serverPort' => $this->serverPort,
+            'secure' => $this->secure,
+            'laravelUrl' => $this->laravelUrl,
+            'autoInit' => $this->autoInit,
+            'configJson' => $this->configJson(),
+        ]);
     }
 
     /**

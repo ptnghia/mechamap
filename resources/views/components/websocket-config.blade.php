@@ -1,7 +1,7 @@
 {{-- WebSocket Configuration Component --}}
 <script>
     // WebSocket Configuration from Laravel Backend
-    window.websocketConfig = {!! $configJson() !!};
+    window.websocketConfig = {!! $configJson !!};
 
     // Auto-initialize flag
     window.autoInitWebSocket = {{ $autoInit ? 'true' : 'false' }};
