@@ -57,20 +57,32 @@ class WebSocketConfig extends Component
      */
     public function __construct($autoInit = true)
     {
-        $this->autoInit = $autoInit;
+        try {
+            $this->autoInit = $autoInit;
 
-        // Auto-detect environment based on domain
-        $detectedEnv = $this->detectEnvironment();
-        $envConfig = Config::get("websocket.environments.{$detectedEnv}", []);
+            // Auto-detect environment based on domain
+            $detectedEnv = $this->detectEnvironment();
+            $envConfig = Config::get("websocket.environments.{$detectedEnv}", []);
 
-        // Set server URL based on detected environment or config
-        $this->serverUrl = Config::get('websocket.server.url') ?? $envConfig['server_url'];
-        $this->serverHost = Config::get('websocket.server.host') ?? parse_url($this->serverUrl, PHP_URL_HOST);
-        $this->serverPort = Config::get('websocket.server.port') ?? (parse_url($this->serverUrl, PHP_URL_SCHEME) === 'https' ? 443 : 3000);
-        $this->secure = Config::get('websocket.server.secure') ?? (parse_url($this->serverUrl, PHP_URL_SCHEME) === 'https');
+            // Set server URL based on detected environment or config
+            $this->serverUrl = Config::get('websocket.server.url') ?? $envConfig['server_url'] ?? 'http://localhost:3000';
+            $this->serverHost = Config::get('websocket.server.host') ?? parse_url($this->serverUrl, PHP_URL_HOST) ?? 'localhost';
+            $this->serverPort = Config::get('websocket.server.port') ?? (parse_url($this->serverUrl, PHP_URL_SCHEME) === 'https' ? 443 : 3000);
+            $this->secure = Config::get('websocket.server.secure') ?? (parse_url($this->serverUrl, PHP_URL_SCHEME) === 'https');
 
-        // Set Laravel URL
-        $this->laravelUrl = Config::get('app.url');
+            // Set Laravel URL
+            $this->laravelUrl = Config::get('app.url');
+        } catch (\Exception $e) {
+            // Fallback values if configuration fails
+            \Log::error('WebSocketConfig constructor error: ' . $e->getMessage());
+
+            $this->autoInit = $autoInit;
+            $this->serverUrl = 'http://localhost:3000';
+            $this->serverHost = 'localhost';
+            $this->serverPort = 3000;
+            $this->secure = false;
+            $this->laravelUrl = config('app.url', 'http://localhost');
+        }
     }
 
     /**
@@ -111,16 +123,32 @@ class WebSocketConfig extends Component
      */
     public function configJson()
     {
-        $config = [
-            'server_url' => $this->serverUrl,
-            'server_host' => $this->serverHost,
-            'server_port' => $this->serverPort,
-            'secure' => $this->secure,
-            'laravel_url' => $this->laravelUrl,
-            'environment' => app()->environment(),
-            'auto_init' => $this->autoInit,
-        ];
+        try {
+            $config = [
+                'server_url' => $this->serverUrl ?? 'http://localhost:3000',
+                'server_host' => $this->serverHost ?? 'localhost',
+                'server_port' => $this->serverPort ?? 3000,
+                'secure' => $this->secure ?? false,
+                'laravel_url' => $this->laravelUrl ?? config('app.url'),
+                'environment' => app()->environment(),
+                'auto_init' => $this->autoInit ?? true,
+            ];
 
-        return json_encode($config);
+            return json_encode($config);
+        } catch (\Exception $e) {
+            // Fallback configuration if there's an error
+            \Log::error('WebSocketConfig configJson error: ' . $e->getMessage());
+
+            return json_encode([
+                'server_url' => 'http://localhost:3000',
+                'server_host' => 'localhost',
+                'server_port' => 3000,
+                'secure' => false,
+                'laravel_url' => config('app.url'),
+                'environment' => app()->environment(),
+                'auto_init' => true,
+                'error' => true
+            ]);
+        }
     }
 }
