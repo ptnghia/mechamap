@@ -1,10 +1,10 @@
 {{-- WebSocket Configuration Component --}}
 <script>
     // WebSocket Configuration from Laravel Backend
-    window.websocketConfig = {!! $configJson !!};
+    window.websocketConfig = {!! $configJson ?? '{}' !!};
 
     // Auto-initialize flag
-    window.autoInitWebSocket = {{ $autoInit ? 'true' : 'false' }};
+    window.autoInitWebSocket = {{ ($autoInit ?? true) ? 'true' : 'false' }};
 
     // Environment information
     window.mechaMapEnv = {
@@ -12,10 +12,10 @@
         debug: {{ config('app.debug') ? 'true' : 'false' }},
         url: '{{ config('app.url') }}',
         websocket: {
-            url: '{{ $serverUrl }}',
-            host: '{{ $serverHost }}',
-            port: {{ $serverPort }},
-            secure: {{ $secure ? 'true' : 'false' }}
+            url: '{{ $serverUrl ?? "https://realtime.mechamap.com" }}',
+            host: '{{ $serverHost ?? "realtime.mechamap.com" }}',
+            port: {{ $serverPort ?? 443 }},
+            secure: {{ ($secure ?? true) ? 'true' : 'false' }}
         }
     };
 
@@ -30,7 +30,7 @@
 </script>
 
 {{-- Load Socket.IO client library --}}
-@if($secure)
+@if($secure ?? true)
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 @else
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>

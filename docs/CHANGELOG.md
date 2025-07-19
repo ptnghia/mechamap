@@ -1,7 +1,43 @@
 # 📝 MechaMap Project Changelog
 
-> **Complete project changelog for MechaMap platform**  
-> Last Updated: January 2025
+> **Complete project changelog for MechaMap platform**
+> Last Updated: July 2025
+
+---
+
+## 🔥 **Version 2.1.0 - WebSocket System Fixes (July 19, 2025)**
+
+### **🚨 Critical Fixes**
+
+#### **WebSocket Connection Resolution**
+- ✅ **FIXED**: "Undefined variable $configJson" error in Laravel WebSocket component
+- ✅ **FIXED**: "TRANSPORT_HANDSHAKE_ERROR: Bad request" in WebSocket connections
+- ✅ **FIXED**: Nginx missing WebSocket support headers
+- ✅ **FIXED**: Realtime server authentication middleware issues
+
+#### **Laravel Component Improvements**
+- ✅ **ENHANCED**: WebSocketConfig component constructor properly sets configJson property
+- ✅ **NEW**: generateConfigJson() method with comprehensive fallback handling
+- ✅ **ENHANCED**: Blade template with fallback values for all variables
+- ✅ **IMPROVED**: Error handling and logging throughout WebSocket system
+
+#### **Infrastructure Updates**
+- ✅ **UPDATED**: Nginx configuration with WebSocket proxy headers
+- ✅ **FIXED**: Realtime server token reading from query parameters
+- ✅ **IMPROVED**: Authentication middleware for production environment
+- ✅ **ENHANCED**: Debug logging for troubleshooting
+
+### **📚 Documentation Updates**
+- ✅ **NEW**: [WebSocket Connection Fix Guide](./troubleshooting/websocket-connection-fix-2025-07-19.md)
+- ✅ **UPDATED**: [Undefined $configJson Fix](./troubleshooting/undefined-configjson-fix.md)
+- ✅ **ENHANCED**: [WebSocket Architecture](./nodejs-websocket-architecture.md) with troubleshooting section
+- ✅ **UPDATED**: Main README with troubleshooting section
+
+### **🧪 Testing & Verification**
+- ✅ **VERIFIED**: WebSocket connections working in production
+- ✅ **VERIFIED**: Real-time notifications functional
+- ✅ **VERIFIED**: Sanctum token authentication working
+- ✅ **VERIFIED**: No JavaScript errors in browser console
 
 ---
 

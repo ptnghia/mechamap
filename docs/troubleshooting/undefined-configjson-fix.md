@@ -9,32 +9,42 @@ Undefined variable $configJson (View: /path/to/resources/views/components/websoc
 
 ## 🔍 **Nguyên nhân**
 
-### **1. Config cache outdated**
+### **1. Component property không được set trong constructor**
+- `configJson` property không được khởi tạo trong constructor
+- Laravel component system không tự động truyền properties vào view
+- Method `configJson()` được gọi nhưng kết quả không được lưu vào property
+
+### **2. Config cache outdated**
 - Laravel config cache chứa cấu hình cũ
 - WebSocket config không được load đúng
 
-### **2. Environment variables thiếu**
+### **3. Environment variables thiếu**
 - File `.env` thiếu WebSocket configuration
 - Các biến `WEBSOCKET_SERVER_*` không được set
 
-### **3. Config files thiếu**
+### **4. Config files thiếu**
 - File `config/websocket.php` không tồn tại trên VPS
 - Component không thể khởi tạo đúng
 
-### **4. Component initialization error**
+### **5. Component initialization error**
 - WebSocketConfig component fail khi khởi tạo
 - Method `configJson()` return null hoặc throw exception
 
 ## ✅ **Giải pháp nhanh**
 
-### **Bước 1: Chạy fix script**
+### **Bước 1: Fix component constructor (FIXED - 2025-07-19)**
 ```bash
-# Trên VPS
-chmod +x scripts/fix_websocket_vps.sh
-./scripts/fix_websocket_vps.sh
+# Component đã được fix để set configJson trong constructor
+# Không cần thực hiện thêm bước nào
 ```
 
-### **Bước 2: Debug chi tiết**
+### **Bước 2: Clear caches**
+```bash
+php artisan view:clear
+php artisan config:clear
+```
+
+### **Bước 3: Debug chi tiết (nếu cần)**
 ```bash
 # Kiểm tra cấu hình
 php scripts/debug_websocket_config.php
@@ -118,20 +128,53 @@ pm2 logs
 
 ## 🛡️ **Prevention**
 
-### **1. Error handling added**
-WebSocketConfig component now has fallback values:
+### **1. Component constructor fixed (COMPLETED - 2025-07-19)**
+WebSocketConfig component now properly sets configJson in constructor:
 ```php
-// Fallback configuration if there's an error
-return json_encode([
-    'server_url' => 'http://localhost:3000',
-    'server_host' => 'localhost',
-    'server_port' => 3000,
-    'secure' => false,
-    'laravel_url' => config('app.url'),
-    'environment' => app()->environment(),
-    'auto_init' => true,
-    'error' => true
-]);
+// In constructor - configJson is now set as property
+$this->configJson = $this->generateConfigJson();
+
+// New generateConfigJson method with fallback
+private function generateConfigJson(): string
+{
+    try {
+        $config = [
+            'server_url' => $this->serverUrl ?? 'https://realtime.mechamap.com',
+            'server_host' => $this->serverHost ?? 'realtime.mechamap.com',
+            'server_port' => $this->serverPort ?? 443,
+            'secure' => $this->secure ?? true,
+            'laravel_url' => $this->laravelUrl ?? config('app.url'),
+            'environment' => app()->environment(),
+            'auto_init' => $this->autoInit ?? true,
+        ];
+        return json_encode($config);
+    } catch (\Exception $e) {
+        // Fallback configuration
+        return json_encode([
+            'server_url' => 'https://realtime.mechamap.com',
+            'server_host' => 'realtime.mechamap.com',
+            'server_port' => 443,
+            'secure' => true,
+            'laravel_url' => config('app.url', 'https://mechamap.com'),
+            'environment' => 'production',
+            'auto_init' => true,
+            'error' => true
+        ]);
+    }
+}
+```
+
+### **2. View template updated**
+Blade template now uses fallback values:
+```php
+{{-- WebSocket Configuration Component --}}
+<script>
+    // WebSocket Configuration from Laravel Backend
+    window.websocketConfig = {!! $configJson ?? '{}' !!};
+
+    // Auto-initialize flag
+    window.autoInitWebSocket = {{ ($autoInit ?? true) ? 'true' : 'false' }};
+</script>
 ```
 
 ### **2. Deployment checklist**

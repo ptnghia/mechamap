@@ -125,31 +125,28 @@ echo "-------------------------"
 # Restart web server (if using systemd)
 if command -v systemctl &> /dev/null; then
     if systemctl is-active --quiet nginx; then
-        sudo systemctl reload nginx
+        systemctl reload nginx
         print_success "Nginx reloaded"
     elif systemctl is-active --quiet apache2; then
-        sudo systemctl reload apache2
+        systemctl reload apache2
         print_success "Apache reloaded"
     fi
 fi
 
 # Restart PHP-FPM if available
 if command -v systemctl &> /dev/null; then
-    if systemctl is-active --quiet php8.1-fpm; then
-        sudo systemctl reload php8.1-fpm
-        print_success "PHP-FPM reloaded"
+    if systemctl is-active --quiet php8.3-fpm; then
+        systemctl reload php8.3-fpm
+        print_success "PHP 8.3 FPM reloaded"
     elif systemctl is-active --quiet php8.2-fpm; then
-        sudo systemctl reload php8.2-fpm
-        print_success "PHP-FPM reloaded"
+        systemctl reload php8.2-fpm
+        print_success "PHP 8.2 FPM reloaded"
+    elif systemctl is-active --quiet php8.1-fpm; then
+        systemctl reload php8.1-fpm
+        print_success "PHP 8.1 FPM reloaded"
+    else
+        print_warning "No PHP-FPM service found"
     fi
-fi
-
-# Restart realtime server if using PM2
-if command -v pm2 &> /dev/null; then
-    cd realtime-server
-    pm2 restart ecosystem.config.js
-    print_success "Realtime server restarted"
-    cd ..
 fi
 
 echo ""
@@ -171,5 +168,5 @@ echo ""
 echo "🔍 If issues persist, check:"
 echo "• Browser console errors"
 echo "• Laravel logs: storage/logs/laravel.log"
-echo "• Realtime server logs: pm2 logs"
+echo "• WebSocket connection in browser console"
 echo ""

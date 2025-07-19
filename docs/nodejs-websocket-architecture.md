@@ -233,3 +233,131 @@ const userCache = {
   }
 };
 ```
+
+## 12. TROUBLESHOOTING & RECENT FIXES
+
+### 12.1 Common Issues & Solutions
+
+#### **Issue 1: "Undefined variable $configJson" (FIXED - 2025-07-19)**
+```
+Error: Undefined variable $configJson in websocket-config.blade.php
+```
+
+**Root Cause:** Laravel component property not set in constructor
+
+**Solution Applied:**
+```php
+// Fixed in app/View/Components/WebSocketConfig.php
+public function __construct($autoInit = true) {
+    // ... existing code ...
+    $this->configJson = $this->generateConfigJson();
+}
+
+private function generateConfigJson(): string {
+    // Robust config generation with fallbacks
+}
+```
+
+#### **Issue 2: "TRANSPORT_HANDSHAKE_ERROR" (FIXED - 2025-07-19)**
+```
+Error: WebSocket connection failed with Bad request
+```
+
+**Root Cause:** Nginx missing WebSocket support headers
+
+**Solution Applied:**
+```nginx
+# Added to nginx config
+location / {
+    include proxy_params;
+    proxy_pass http://realtime.mechamap.com;
+
+    # WebSocket support
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+```
+
+#### **Issue 3: Authentication Middleware Not Called**
+**Root Cause:** Token passed via query parameter, not auth headers
+
+**Solution Applied:**
+```javascript
+// Fixed in src/middleware/auth.js
+const token = socket.handshake.auth.token ||
+              socket.handshake.headers.authorization?.replace("Bearer ", "") ||
+              socket.handshake.query.token; // Added this line
+```
+
+### 12.2 Deployment Verification
+
+#### **Quick Health Check**
+```bash
+# 1. Check Laravel component
+php artisan tinker --execute="echo (new App\View\Components\WebSocketConfig())->configJson();"
+
+# 2. Check Nginx WebSocket headers
+curl -I -H "Connection: Upgrade" -H "Upgrade: websocket" https://realtime.mechamap.com/
+
+# 3. Check realtime server
+pm2 status
+pm2 logs --lines 10
+
+# 4. Test WebSocket connection
+node test-websocket.js
+```
+
+#### **Expected Results**
+```
+✅ Laravel Component: Valid JSON config output
+✅ Nginx: HTTP/1.1 101 Switching Protocols
+✅ Realtime Server: Online status, no errors
+✅ WebSocket Test: Connection successful
+```
+
+### 12.3 Monitoring & Logs
+
+#### **Log Locations**
+```bash
+# Laravel logs
+tail -f storage/logs/laravel.log
+
+# Realtime server logs
+pm2 logs mechamap-realtime
+
+# Nginx logs
+tail -f /var/log/nginx/realtime.mechamap.com.access.log
+tail -f /var/log/nginx/realtime.mechamap.com.error.log
+```
+
+#### **Key Metrics to Monitor**
+- WebSocket connection success rate
+- Authentication success rate
+- Memory usage (realtime server)
+- Response times
+- Error rates
+
+### 12.4 Performance Optimization
+
+#### **Current Status (2025-07-19)**
+- ✅ WebSocket connections: Working
+- ✅ Authentication: Sanctum token validation
+- ✅ Real-time notifications: Functional
+- ✅ Error handling: Comprehensive
+- ✅ Fallback mechanisms: Implemented
+
+#### **Future Improvements**
+- [ ] Connection pooling optimization
+- [ ] Redis cluster setup
+- [ ] Load balancer configuration
+- [ ] Monitoring dashboard
+- [ ] Automated health checks
+
+---
+
+**Last Updated:** 2025-07-19
+**Status:** ✅ Production Ready
+**Next Review:** 2025-08-19

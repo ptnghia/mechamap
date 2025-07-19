@@ -50,6 +50,13 @@ class WebSocketConfig extends Component
     public $autoInit;
 
     /**
+     * Configuration JSON string
+     *
+     * @var string
+     */
+    public $configJson;
+
+    /**
      * Create a new component instance.
      *
      * @param bool $autoInit
@@ -72,6 +79,9 @@ class WebSocketConfig extends Component
 
             // Set Laravel URL
             $this->laravelUrl = Config::get('app.url');
+
+            // Set configJson after all properties are set
+            $this->configJson = $this->generateConfigJson();
         } catch (\Exception $e) {
             // Fallback values if configuration fails
             \Log::error('WebSocketConfig constructor error: ' . $e->getMessage());
@@ -82,6 +92,43 @@ class WebSocketConfig extends Component
             $this->serverPort = 3000;
             $this->secure = false;
             $this->laravelUrl = config('app.url', 'http://localhost');
+
+            // Set fallback configJson
+            $this->configJson = $this->generateConfigJson();
+        }
+    }
+
+    /**
+     * Generate configuration JSON using current property values
+     */
+    private function generateConfigJson(): string
+    {
+        try {
+            $config = [
+                'server_url' => $this->serverUrl ?? 'https://realtime.mechamap.com',
+                'server_host' => $this->serverHost ?? 'realtime.mechamap.com',
+                'server_port' => $this->serverPort ?? 443,
+                'secure' => $this->secure ?? true,
+                'laravel_url' => $this->laravelUrl ?? config('app.url'),
+                'environment' => app()->environment(),
+                'auto_init' => $this->autoInit ?? true,
+            ];
+
+            return json_encode($config);
+        } catch (\Exception $e) {
+            \Log::error('generateConfigJson error: ' . $e->getMessage());
+
+            // Return minimal fallback config
+            return json_encode([
+                'server_url' => 'https://realtime.mechamap.com',
+                'server_host' => 'realtime.mechamap.com',
+                'server_port' => 443,
+                'secure' => true,
+                'laravel_url' => config('app.url', 'https://mechamap.com'),
+                'environment' => 'production',
+                'auto_init' => true,
+                'error' => true
+            ]);
         }
     }
 
@@ -105,15 +152,7 @@ class WebSocketConfig extends Component
      */
     public function render()
     {
-        return view('components.websocket-config', [
-            'serverUrl' => $this->serverUrl,
-            'serverHost' => $this->serverHost,
-            'serverPort' => $this->serverPort,
-            'secure' => $this->secure,
-            'laravelUrl' => $this->laravelUrl,
-            'autoInit' => $this->autoInit,
-            'configJson' => $this->configJson(),
-        ]);
+        return view('components.websocket-config');
     }
 
     /**
