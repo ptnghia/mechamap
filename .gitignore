@@ -265,9 +265,32 @@ Desktop.ini
 # LOGS AND CACHE FILES
 # ============================================================
 
-# Laravel Logs
-/storage/logs/*.log
-!storage/logs/.gitignore
+# Laravel Storage - Complete ignore patterns
+/storage/app/*
+!/storage/app/.gitignore
+!/storage/app/public/
+/storage/app/public/*
+!/storage/app/public/.gitignore
+
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+/storage/logs/*
+!/storage/logs/.gitignore
+
+# Storage Backups
+/storage/backups/*
+!/storage/backups/.gitignore
+
+# Bootstrap Cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
 
 # Cache Files
 *.cache
@@ -275,10 +298,6 @@ Desktop.ini
 .php_cs.cache
 .psalm_cache
 /.phpunit.result.cache
-
-# Session Files
-/storage/framework/sessions/*
-!storage/framework/sessions/.gitignore
 
 # Development Test Results
 /coverage/
