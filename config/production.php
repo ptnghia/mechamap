@@ -14,7 +14,7 @@ return [
     'domain' => [
         'primary' => 'mechamap.com',
         'www' => 'www.mechamap.com',
-        'cdn' => env('CDN_URL', 'https://cdn.mechamap.com'),
+        'cdn' => env('CDN_URL'), // No default CDN URL - must be explicitly set
         'api' => env('API_URL', 'https://api.mechamap.com'),
     ],
 
