@@ -170,7 +170,7 @@ test.txt
 # Configuration Backups
 /.env.*
 !/.env.example
-!.env.production
+# .env.production contains secrets - will be created manually on server
 
 # ============================================================
 # ALLOW ESSENTIAL ROOT FILES ONLY
@@ -186,6 +186,7 @@ test.txt
 !data_v2_fixed.sql         # Production database
 !.editorconfig             # Editor configuration (standard)
 !.env.example              # Environment template
+!.env.production.template  # Production environment template
 !.htaccess                 # Apache configuration
 
 # Block ALL other markdown files in root (must go to docs/)
