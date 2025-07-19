@@ -78,6 +78,13 @@ Migration từ Laravel WebSocket sang Node.js server
 - 🚀 [Deployment Guide](./nodejs-deployment-guide.md) - Hướng dẫn deployment
 - 📊 [Monitoring System](../realtime-server/docs/MONITORING.md) - Hệ thống monitoring
 
+### 🛠️ **[Troubleshooting](./troubleshooting/)**
+Giải quyết các vấn đề thường gặp
+
+- 🔧 [WebSocket Connection Fix](./troubleshooting/websocket-connection-fix-2025-07-19.md) - **NEW** Complete resolution
+- ⚠️ [Undefined $configJson Fix](./troubleshooting/undefined-configjson-fix.md) - Laravel component issues
+- 🔍 [General Troubleshooting](./troubleshooting/NOTIFICATION_TROUBLESHOOTING.md) - Common issues
+
 ### 🚀 **[/deployment/](./deployment/)** - Deployment & Operations
 - **[Production Guide](./deployment/PRODUCTION_GUIDE.md)** - Complete production deployment
 - **[Server Requirements](./deployment/SERVER_REQUIREMENTS.md)** - Infrastructure specifications
@@ -111,6 +118,7 @@ Hệ thống marketplace với 3 loại sản phẩm và phân quyền
 - ✅ **Advanced Monitoring**: Real-time metrics, health checks, Prometheus integration
 - ✅ **Laravel Sanctum Integration**: Seamless authentication với Laravel backend
 - ✅ **Production Ready**: PM2 clustering, SSL/TLS, comprehensive documentation
+- ✅ **Critical Fixes (2025-07-19)**: Resolved "Undefined $configJson" và WebSocket connection issues
 
 ### **Marketplace v2.0 (January 2025)**
 - ✅ **3 loại sản phẩm mới**: Digital, New Product, Used Product
