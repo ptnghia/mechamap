@@ -1,9 +1,0 @@
-
-/* Hide PWA Install Prompt */
-.pwa-banner,
-.install-prompt,
-[class*="install"],
-[class*="pwa-banner"] {
-    display: none !important;
-    visibility: hidden !important;
-}
