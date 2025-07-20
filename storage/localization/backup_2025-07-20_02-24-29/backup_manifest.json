@@ -1,0 +1,19 @@
+{
+    "timestamp": "2025-07-20 02:24:29",
+    "backup_directory": "storage\/localization\/backup_2025-07-20_02-24-29",
+    "git_commit": "b46ac84d049c624bf704c7b8991e6e06af3b5a4e",
+    "git_branch": "production",
+    "files": {
+        "language_files": 52,
+        "view_files": 26,
+        "php_files": 3,
+        "total": 81
+    },
+    "directories": {
+        "lang": "storage\/localization\/backup_2025-07-20_02-24-29\/lang",
+        "views": "storage\/localization\/backup_2025-07-20_02-24-29\/views",
+        "php": "storage\/localization\/backup_2025-07-20_02-24-29\/php"
+    },
+    "purpose": "Pre-localization restructuring backup",
+    "restore_instructions": "Run restore_backup.php to restore this backup"
+}
