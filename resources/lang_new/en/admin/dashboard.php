@@ -2,17 +2,21 @@
 
 /**
  * English translations for admin/dashboard
- * Category: Admin interface
+ * Admin dashboard and overview
  * 
  * Structure: admin.dashboard.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 5
  */
 
 return [
-    // TODO: Add translations for admin.dashboard
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'overview' => [
+        'title' => 'Overview',
+        'stats' => 'Statistics',
+    ],
+    'quick_actions' => [
+        'title' => 'Quick Actions',
+        'manage_users' => 'Manage Users',
+        'system_settings' => 'System Settings',
+    ],
 ];

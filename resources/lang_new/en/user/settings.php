@@ -2,17 +2,25 @@
 
 /**
  * English translations for user/settings
- * Category: User-related functionality
+ * User settings and preferences
  * 
  * Structure: user.settings.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 7
  */
 
 return [
-    // TODO: Add translations for user.settings
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'account' => [
+        'title' => 'Account Settings',
+        'password' => 'Change Password',
+        'email' => 'Change Email',
+    ],
+    'privacy' => [
+        'title' => 'Privacy Settings',
+        'profile_visibility' => 'Profile Visibility',
+    ],
+    'notifications' => [
+        'email_notifications' => 'Email Notifications',
+        'push_notifications' => 'Push Notifications',
+    ],
 ];

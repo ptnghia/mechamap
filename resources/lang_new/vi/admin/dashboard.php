@@ -2,17 +2,21 @@
 
 /**
  * Vietnamese translations for admin/dashboard
- * Category: Admin interface
+ * Admin dashboard and overview
  * 
  * Structure: admin.dashboard.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 5
  */
 
 return [
-    // TODO: Add translations for admin.dashboard
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'overview' => [
+        'title' => 'Tổng quan',
+        'stats' => 'Thống kê',
+    ],
+    'quick_actions' => [
+        'title' => 'Thao tác nhanh',
+        'manage_users' => 'Quản lý người dùng',
+        'system_settings' => 'Cài đặt hệ thống',
+    ],
 ];

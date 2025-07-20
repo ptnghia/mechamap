@@ -2,17 +2,22 @@
 
 /**
  * Vietnamese translations for admin/system
- * Category: Admin interface
+ * System settings and configuration
  * 
  * Structure: admin.system.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 6
  */
 
 return [
-    // TODO: Add translations for admin.system
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'settings' => [
+        'title' => 'Cài đặt hệ thống',
+        'general' => 'Cài đặt chung',
+        'security' => 'Bảo mật',
+    ],
+    'maintenance' => [
+        'title' => 'Bảo trì',
+        'backup' => 'Sao lưu',
+        'logs' => 'Nhật ký',
+    ],
 ];

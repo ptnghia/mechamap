@@ -2,17 +2,22 @@
 
 /**
  * English translations for admin/system
- * Category: Admin interface
+ * System settings and configuration
  * 
  * Structure: admin.system.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 6
  */
 
 return [
-    // TODO: Add translations for admin.system
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'settings' => [
+        'title' => 'System Settings',
+        'general' => 'General Settings',
+        'security' => 'Security',
+    ],
+    'maintenance' => [
+        'title' => 'Maintenance',
+        'backup' => 'Backup',
+        'logs' => 'Logs',
+    ],
 ];

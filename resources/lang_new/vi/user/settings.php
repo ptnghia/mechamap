@@ -2,17 +2,25 @@
 
 /**
  * Vietnamese translations for user/settings
- * Category: User-related functionality
+ * User settings and preferences
  * 
  * Structure: user.settings.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 7
  */
 
 return [
-    // TODO: Add translations for user.settings
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'account' => [
+        'title' => 'Cài đặt tài khoản',
+        'password' => 'Đổi mật khẩu',
+        'email' => 'Đổi email',
+    ],
+    'privacy' => [
+        'title' => 'Quyền riêng tư',
+        'profile_visibility' => 'Hiển thị hồ sơ',
+    ],
+    'notifications' => [
+        'email_notifications' => 'Thông báo email',
+        'push_notifications' => 'Thông báo đẩy',
+    ],
 ];

@@ -2,17 +2,66 @@
 
 /**
  * English translations for user/profile
- * Category: User-related functionality
+ * User profile management
  * 
  * Structure: user.profile.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:39:45
+ * Keys: 8
  */
 
 return [
-    // TODO: Add translations for user.profile
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'profile' => 'Profile',
+    'settings' => 'Settings',
+    'account' => 'Account',
+    'preferences' => 'Preferences',
+    'privacy' => 'Privacy',
+    'security' => 'Security',
+    'notifications' => 'Notifications',
+    'avatar' => [
+        'upload' => 'Upload Avatar',
+        'remove' => 'Remove Avatar',
+    ],
+    'cover_photo' => 'Cover Photo',
+    'bio' => 'Bio',
+    'location' => 'Location',
+    'website' => 'Website',
+    'social_links' => 'Social Links',
+    'joined_date' => 'Joined Date',
+    'last_seen' => 'Last Seen',
+    'posts_count' => 'Posts Count',
+    'threads_count' => 'Threads Count',
+    'reputation' => 'Reputation',
+    'badges' => 'Badges',
+    'achievements' => 'Achievements',
+    'followers' => 'Followers',
+    'following' => 'Following',
+    'friends' => 'Friends',
+    'blocked_users' => 'Blocked Users',
+    'email_notifications' => 'Email Notifications',
+    'push_notifications' => 'Push Notifications',
+    'language' => 'Language',
+    'timezone' => 'Timezone',
+    'theme' => 'Theme',
+    'password' => 'Password',
+    'two_factor' => 'Two Factor Authentication',
+    'login_history' => 'Login History',
+    'active_sessions' => 'Active Sessions',
+    'delete_account' => 'Delete Account',
+    'export_data' => 'Export Data',
+    'members' => 'Members',
+    'online' => 'Online',
+    'offline' => 'Offline',
+    'status' => 'Status',
+    'role' => 'Role',
+    'permissions' => 'Permissions',
+    'edit' => [
+        'title' => 'Edit Profile',
+        'save' => 'Save Changes',
+        'cancel' => 'Cancel',
+    ],
+    'info' => [
+        'name' => 'Full Name',
+        'email' => 'Email',
+        'bio' => 'Biography',
+    ],
 ];
