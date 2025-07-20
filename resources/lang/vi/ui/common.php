@@ -7,17 +7,27 @@
  */
 
 return [
+    'add' => 'Thêm',
     'auto_saving' => 'Đang lưu tự động...',
+    'community' => 'Cộng đồng',
     'copyright_text' => 'Bản quyền thuộc về Công ty Cổ phần Công nghệ MechaMap.',
     'dark_mode' => 'Chế độ tối',
+    'forum_management' => 'Quản lý diễn đàn',
     'language' => [
         'switch' => 'Chuyển ngôn ngữ',
         'select' => 'Chọn ngôn ngữ',
         'auto_detect' => 'Tự động phát hiện',
     ],
     'light_mode' => 'Chế độ sáng',
-    'no_results_found' => 'No results found',
-    'popular_searches' => 'Popular Searches',
+    'market_insights' => 'Thông tin thị trường',
+    'marketplace' => 'Thị trường',
+    'marketplace_analytics' => 'Phân tích thị trường',
+    'marketplace_management' => 'Quản lý thị trường',
+    'my_showcase' => 'Dự án của tôi',
+    'no_results_found' => 'Không tìm thấy kết quả',
+    'popular_searches' => 'Tìm kiếm phổ biến',
+    'promotion_opportunities' => 'Cơ hội quảng cáo',
+    'showcase' => 'Dự án',
     'site' => [
         'name' => 'MechaMap',
         'tagline' => 'Diễn đàn cộng đồng',
@@ -31,4 +41,5 @@ return [
         'updated' => 'Cập nhật',
         'created' => 'Tạo',
     ],
+    'verification_status' => 'Trạng thái xác minh',
 ];
