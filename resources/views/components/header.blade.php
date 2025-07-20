@@ -97,14 +97,14 @@
                                 {{ __('ui.common.showcase') }}
                             </a>
                         </li>
-
+k
                         <!-- 4. Marketplace - PRIORITY #3 - Always visible for everyone -->
-                        <li class="nav-item dropdown mega-menu">
+                        <li class="nav-item dropdown mega-menu-dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-store me-1"></i>
                                 {{ __('ui.common.marketplace') }}
                             </a>
-                            <div class="dropdown-menu mega-menu-dropdown" aria-labelledby="marketplaceDropdown">
+                            <div class="dropdown-menu mega-menu" aria-labelledby="marketplaceDropdown">
                                 @include('components.menu.marketplace-mega-menu')
                             </div>
                         </li>

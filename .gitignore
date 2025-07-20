@@ -137,6 +137,8 @@ test.txt
 /*_backup.*
 /*_bak.*
 /backup_*
+/backup_*/
+/env_backup_*/
 /old_*
 /*_old.*
 
@@ -186,7 +188,6 @@ test.txt
 !data_v2_fixed.sql         # Production database
 !.editorconfig             # Editor configuration (standard)
 !.env.example              # Environment template
-!.env.production.template  # Production environment template
 !.htaccess                 # Apache configuration
 
 # Block ALL other markdown files in root (must go to docs/)

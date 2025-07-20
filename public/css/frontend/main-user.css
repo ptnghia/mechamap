@@ -4677,7 +4677,7 @@ body.user-frontend {
     position: absolute;
     float: none;
     width: 100%;
-    min-width: 750px;
+    min-width: 900px;
     max-width: 100%;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,0.15);
@@ -4699,7 +4699,7 @@ body.user-frontend {
 }
 
 .mega-menu-header {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #495057;
     margin-bottom: 5px;

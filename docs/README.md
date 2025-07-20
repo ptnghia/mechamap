@@ -1,7 +1,7 @@
 # 📚 MechaMap Documentation Hub
 
 > **Nền tảng cộng đồng kỹ sư cơ khí Việt Nam**
-> Version: 2.0 | Last Updated: January 2025 | Status: Production Ready
+> Version: 2.0 | Last Updated: July 2025 | Status: Production Ready
 
 ---
 

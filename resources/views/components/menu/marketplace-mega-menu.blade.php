@@ -21,7 +21,6 @@
                                 <span class="mega-menu-item-title">{{ __('marketplace.products.all') }}</span>
                                 <small class="mega-menu-item-desc">{{ __('marketplace.products.all_desc') }}</small>
                             </div>
-                            <span class="activity-indicator" id="totalProductsCount">72</span>
                         </a>
                     </li>
                     <li>
@@ -89,7 +88,6 @@
                                 <span class="mega-menu-item-title">{{ __('marketplace.products.new') }}</span>
                                 <small class="mega-menu-item-desc">{{ __('marketplace.products.new_desc') }}</small>
                             </div>
-                            <span class="activity-indicator" id="newProductsCount">--</span>
                         </a>
                     </li>
                     <li>
@@ -99,7 +97,6 @@
                                 <span class="mega-menu-item-title">{{ __('marketplace.products.used') }}</span>
                                 <small class="mega-menu-item-desc">{{ __('marketplace.products.used_desc') }}</small>
                             </div>
-                            <span class="activity-indicator" id="usedProductsCount">--</span>
                         </a>
                     </li>
                 </ul>
@@ -121,7 +118,6 @@
                                 <span class="mega-menu-item-title">{{ __('marketplace.suppliers.all') }}</span>
                                 <small class="mega-menu-item-desc">{{ __('marketplace.suppliers.all_desc') }}</small>
                             </div>
-                            <span class="activity-indicator" id="totalSuppliersCount">29</span>
                         </a>
                     </li>
                     <li>
@@ -171,7 +167,6 @@
                                     <span class="mega-menu-item-title">{{ __('marketplace.cart.title') }}</span>
                                     <small class="mega-menu-item-desc">{{ __('marketplace.cart.desc') }}</small>
                                 </div>
-                                <span class="activity-indicator cart-count" id="cartItemsCount">0</span>
                             </a>
                         </li>
                         <li>

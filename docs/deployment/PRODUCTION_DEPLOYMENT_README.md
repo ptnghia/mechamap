@@ -54,16 +54,9 @@ sudo mv composer.phar /usr/local/bin/composer
    - Character Set: `utf8mb4`
    - Collation: `utf8mb4_unicode_ci`
 
-3. **Restore Database from SQL File**:
-```bash
-# Upload data_v2_fixed.sql to server
-# Restore database
-mysql -u mechamap_user -p'YPF1Dt5JyTgxJ95R' mechamap_db < data_v2_fixed.sql
-```
-
 **Alternative: Manual Setup**
 ```bash
-# Create database manually
+# If you prefer command line (FastPanel manages MySQL)
 sudo mysql -u root -p
 ```
 
@@ -74,31 +67,6 @@ GRANT ALL PRIVILEGES ON mechamap_db.* TO 'mechamap_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-
-```bash
-# Then restore from SQL file
-mysql -u mechamap_user -p'YPF1Dt5JyTgxJ95R' mechamap_db < data_v2_fixed.sql
-```
-
-### 3. Environment Configuration
-
-**Create production environment file:**
-```bash
-# Copy template
-cp .env.production.template .env.production
-
-# Edit with your actual secrets
-nano .env.production
-```
-
-**Required secrets to configure:**
-- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-- `FACEBOOK_CLIENT_ID` and `FACEBOOK_CLIENT_SECRET`
-- `STRIPE_KEY`, `STRIPE_SECRET`, and `STRIPE_WEBHOOK_SECRET`
-- `STRIPE_ADMIN_ACCOUNT_ID`
-- Other API keys as needed
-
-**Security Note:** `.env.production` is not tracked in git for security reasons.
 
 ### 3. Application Deployment
 

@@ -38,19 +38,6 @@ post_max_size = 10M
 2. **Database Name**: `mechamap_db`
 3. **Username**: `mechamap_user`
 4. **Password**: `YPF1Dt5JyTgxJ95R`
-5. **Restore Database**: Upload and restore `data_v2_fixed.sql`
-   ```bash
-   mysql -u mechamap_user -p'YPF1Dt5JyTgxJ95R' mechamap_db < data_v2_fixed.sql
-   ```
-
-#### 1.4 Environment Configuration
-1. **Copy template**: `cp .env.production.template .env.production`
-2. **Configure secrets**: Update the following values in `.env.production`:
-   - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-   - `FACEBOOK_CLIENT_ID` and `FACEBOOK_CLIENT_SECRET`
-   - `STRIPE_KEY`, `STRIPE_SECRET`, and `STRIPE_WEBHOOK_SECRET`
-   - `STRIPE_ADMIN_ACCOUNT_ID`
-   - Other API keys as needed
 
 ### 2. Realtime Server (realtime.mechamap.com)
 
