@@ -2,11 +2,12 @@
 
 /**
  * English translations for ui/forms
- * Form elements and validation
+ * Enhanced migration with source integration
  * 
  * Structure: ui.forms.*
- * Populated: 2025-07-20 02:32:30
- * Keys: 110
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 8
+ * Total keys: 107
  */
 
 return [
@@ -132,12 +133,5 @@ return [
     ],
     'related' => [
         'related_topics' => 'Related Topics',
-    ],
-    'required' => 'Required',
-    'optional' => 'Optional',
-    'placeholder' => [
-        'search' => 'Enter search keywords...',
-        'email' => 'Enter your email',
-        'password' => 'Enter password',
     ],
 ];

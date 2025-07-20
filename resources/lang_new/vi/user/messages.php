@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for user/messages
- * Private messaging system
+ * Enhanced migration with source integration
  * 
  * Structure: user.messages.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 399
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 204
+ * Total keys: 393
  */
 
 return [
@@ -618,14 +619,4 @@ return [
     'marketplace_highlights' => 'Nổi bật Marketplace',
     'browse_marketplace' => 'Duyệt Marketplace',
     'view_all' => 'Xem tất cả',
-    'compose' => [
-        'title' => 'Soạn tin nhắn',
-        'recipient' => 'Người nhận',
-        'subject' => 'Tiêu đề',
-    ],
-    'actions' => [
-        'send' => 'Gửi',
-        'delete' => 'Xóa',
-        'reply' => 'Trả lời',
-    ],
 ];

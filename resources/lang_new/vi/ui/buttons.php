@@ -2,18 +2,19 @@
 
 /**
  * Vietnamese translations for ui/buttons
- * Button labels and actions
+ * Enhanced migration with source integration
  * 
  * Structure: ui.buttons.*
- * Populated: 2025-07-20 02:32:30
- * Keys: 0
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 109
+ * Total keys: 0
  */
 
 return [
     'save' => 'Lưu',
     'submit' => 'Gửi',
     'send' => 'Gửi',
-    'create' => 'Tạo mới',
+    'create' => 'Tạo',
     'add' => 'Thêm',
     'update' => 'Cập nhật',
     'edit' => 'Chỉnh sửa',

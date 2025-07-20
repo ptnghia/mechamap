@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for features/marketplace
- * Marketplace and trading features
+ * Enhanced migration with source integration
  * 
  * Structure: features.marketplace.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 210
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 220
+ * Total keys: 201
  */
 
 return [
@@ -49,12 +50,7 @@ return [
         'related_products' => 'Sản phẩm liên quan',
         'seller_not_available' => 'Người bán không có sẵn',
     ],
-    'products' => [
-        'add' => 'Thêm sản phẩm',
-        'edit' => 'Chỉnh sửa sản phẩm',
-        'view' => 'Xem sản phẩm',
-        'delete' => 'Xóa sản phẩm',
-    ],
+    'products' => 'Sản phẩm',
     'categories' => [
         'title' => 'Danh mục',
         'all' => 'Tất cả danh mục',
@@ -443,13 +439,4 @@ return [
     'total_products_available' => 'Tổng Sản phẩm Có sẵn',
     'login' => 'Đăng nhập',
     'register' => 'Đăng ký',
-    'orders' => [
-        'place' => 'Đặt hàng',
-        'track' => 'Theo dõi đơn hàng',
-        'cancel' => 'Hủy đơn hàng',
-    ],
-    'sellers' => [
-        'profile' => 'Hồ sơ người bán',
-        'contact' => 'Liên hệ người bán',
-    ],
 ];

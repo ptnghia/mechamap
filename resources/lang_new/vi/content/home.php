@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for content/home
- * Homepage content and sections
+ * Enhanced migration with source integration
  * 
  * Structure: content.home.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 9
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 64
+ * Total keys: 0
  */
 
 return [
@@ -74,19 +75,4 @@ return [
     'newsletter_success' => 'Cảm ơn bạn đã đăng ký nhận tin!',
     'featured_showcases' => 'Dự án nổi bật',
     'featured_showcases_desc' => 'Khám phá những dự án cơ khí ấn tượng từ cộng đồng',
-    'hero' => [
-        'title' => 'Chào mừng đến với MechaMap',
-        'subtitle' => 'Cộng đồng chia sẻ kiến thức và kinh nghiệm',
-        'cta_button' => 'Tham gia ngay',
-    ],
-    'sections' => [
-        'featured_showcases' => 'Dự án nổi bật',
-        'latest_threads' => 'Thảo luận mới nhất',
-        'community_stats' => 'Thống kê cộng đồng',
-    ],
-    'stats' => [
-        'members' => 'Thành viên',
-        'threads' => 'Thảo luận',
-        'showcases' => 'Dự án',
-    ],
 ];

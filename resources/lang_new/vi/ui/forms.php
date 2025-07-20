@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for ui/forms
- * Form elements and validation
+ * Enhanced migration with source integration
  * 
  * Structure: ui.forms.*
- * Populated: 2025-07-20 02:32:30
- * Keys: 109
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 7
+ * Total keys: 106
  */
 
 return [
@@ -129,12 +130,5 @@ return [
         'max_files_exceeded' => 'Vượt quá số lượng file cho phép',
         'add_quote' => 'Thêm trích dẫn',
         'quote' => 'Trích dẫn',
-    ],
-    'required' => 'Bắt buộc',
-    'optional' => 'Tùy chọn',
-    'placeholder' => [
-        'search' => 'Nhập từ khóa tìm kiếm...',
-        'email' => 'Nhập email của bạn',
-        'password' => 'Nhập mật khẩu',
     ],
 ];

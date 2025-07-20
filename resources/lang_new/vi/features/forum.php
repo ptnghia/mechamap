@@ -2,27 +2,31 @@
 
 /**
  * Vietnamese translations for features/forum
- * Forum discussions and threads
+ * Enhanced migration with source integration
  * 
  * Structure: features.forum.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 156
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 117
+ * Total keys: 158
  */
 
 return [
     'threads' => [
-        'create' => 'Tạo thảo luận',
-        'edit' => 'Chỉnh sửa thảo luận',
-        'delete' => 'Xóa thảo luận',
-        'sticky' => 'Ghim',
-        'locked' => 'Khóa',
+        'title' => 'Chủ đề',
+        'no_threads' => 'Chưa có chủ đề nào',
+        'no_threads_found' => 'Không tìm thấy chủ đề',
+        'no_threads_found_desc' => 'Không có chủ đề nào phù hợp với tiêu chí tìm kiếm hoặc bộ lọc hiện tại.',
+        'no_threads_yet' => 'Chưa có chủ đề nào',
+        'be_first_to_post' => 'Hãy là người đầu tiên bắt đầu thảo luận trong diễn đàn này!',
+        'latest_threads' => 'Chủ đề mới nhất',
+        'recent_threads' => 'Chủ đề gần đây',
+        'popular_threads' => 'Chủ đề phổ biến',
+        'thread_count' => '{0} Không có chủ đề|{1} :count chủ đề|[2,*] :count chủ đề',
+        'replies_count' => '{0} Không có phản hồi|{1} :count phản hồi|[2,*] :count phản hồi',
+        'views_count' => '{0} Không có lượt xem|{1} :count lượt xem|[2,*] :count lượt xem',
+        'start_discussion' => 'Bắt đầu một cuộc thảo luận mới trong cộng đồng',
     ],
-    'posts' => [
-        'reply' => 'Trả lời',
-        'quote' => 'Trích dẫn',
-        'edit' => 'Chỉnh sửa',
-        'delete' => 'Xóa',
-    ],
+    'posts' => 'Bài viết',
     'replies' => 'Phản hồi',
     'views' => 'Lượt xem',
     'latest_post' => 'Bài viết mới nhất',
@@ -32,10 +36,7 @@ return [
     'delete' => 'Xóa',
     'pin' => 'Ghim',
     'lock' => 'Khóa',
-    'categories' => [
-        'all' => 'Tất cả danh mục',
-        'select' => 'Chọn danh mục',
-    ],
+    'categories' => 'Danh mục',
     'forums' => 'Diễn đàn',
     'discussions' => 'Thảo luận',
     'participants' => 'Người tham gia',

@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for content/alerts
- * Alert messages and notifications
+ * Enhanced migration with source integration
  * 
  * Structure: content.alerts.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 124
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 5
+ * Total keys: 114
  */
 
 return [
@@ -133,21 +134,5 @@ return [
         'archive_item' => 'Bạn có chắc chắn muốn lưu trữ mục này?',
         'activate_feature' => 'Bạn có chắc chắn muốn kích hoạt tính năng này?',
         'deactivate_feature' => 'Bạn có chắc chắn muốn vô hiệu hóa tính năng này?',
-    ],
-    'types' => [
-        'success' => 'Thành công',
-        'error' => 'Lỗi',
-        'warning' => 'Cảnh báo',
-        'info' => 'Thông tin',
-    ],
-    'actions' => [
-        'dismiss' => 'Đóng',
-        'view_details' => 'Xem chi tiết',
-        'retry' => 'Thử lại',
-    ],
-    'common' => [
-        'operation_successful' => 'Thao tác thành công',
-        'operation_failed' => 'Thao tác thất bại',
-        'please_try_again' => 'Vui lòng thử lại',
     ],
 ];

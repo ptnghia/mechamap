@@ -2,11 +2,12 @@
 
 /**
  * English translations for admin/system
- * System settings and configuration
+ * Enhanced migration with source integration
  * 
  * Structure: admin.system.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 6
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 0
+ * Total keys: 6
  */
 
 return [

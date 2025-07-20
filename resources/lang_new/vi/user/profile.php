@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for user/profile
- * User profile management
+ * Enhanced migration with source integration
  * 
  * Structure: user.profile.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 8
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 41
+ * Total keys: 0
  */
 
 return [
@@ -17,10 +18,7 @@ return [
     'privacy' => 'Riêng tư',
     'security' => 'Bảo mật',
     'notifications' => 'Thông báo',
-    'avatar' => [
-        'upload' => 'Tải lên ảnh đại diện',
-        'remove' => 'Xóa ảnh đại diện',
-    ],
+    'avatar' => 'Ảnh đại diện',
     'cover_photo' => 'Ảnh bìa',
     'bio' => 'Tiểu sử',
     'location' => 'Vị trí',
@@ -54,14 +52,4 @@ return [
     'status' => 'Trạng thái',
     'role' => 'Vai trò',
     'permissions' => 'Quyền hạn',
-    'edit' => [
-        'title' => 'Chỉnh sửa hồ sơ',
-        'save' => 'Lưu thay đổi',
-        'cancel' => 'Hủy',
-    ],
-    'info' => [
-        'name' => 'Họ và tên',
-        'email' => 'Email',
-        'bio' => 'Giới thiệu',
-    ],
 ];

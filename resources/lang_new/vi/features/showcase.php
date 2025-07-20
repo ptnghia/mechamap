@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for features/showcase
- * Project showcases and portfolios
+ * Enhanced migration with source integration
  * 
  * Structure: features.showcase.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 26
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 114
+ * Total keys: 22
  */
 
 return [
@@ -42,12 +43,7 @@ return [
     'search' => 'Tìm kiếm',
     'searching' => 'Đang tìm kiếm',
     'clear_filters' => 'Xóa bộ lọc',
-    'projects' => [
-        'create' => 'Tạo dự án',
-        'edit' => 'Chỉnh sửa dự án',
-        'view' => 'Xem dự án',
-        'featured' => 'Dự án nổi bật',
-    ],
+    'projects' => 'dự án',
     'avg_rating' => 'Đánh giá TB',
     'results' => 'kết quả',
     'ratings' => 'đánh giá',
@@ -78,9 +74,9 @@ return [
         'analysis' => 'Phân tích',
     ],
     'categories' => [
-        'web' => 'Web Development',
-        'mobile' => 'Mobile Apps',
-        'design' => 'Design',
+        'design' => 'Thiết kế',
+        'manufacturing' => 'Sản xuất',
+        'analysis' => 'Phân tích',
     ],
     'beginner' => 'Người mới',
     'intermediate' => 'Trung bình',

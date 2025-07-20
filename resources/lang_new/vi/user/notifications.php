@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for user/notifications
- * User notifications and alerts
+ * Enhanced migration with source integration
  * 
  * Structure: user.notifications.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 86
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 28
+ * Total keys: 95
  */
 
 return [
@@ -87,8 +88,20 @@ return [
         'message' => 'Hệ thống sẽ được bảo trì từ :start_time đến :end_time.',
     ],
     'actions' => [
-        'mark_read' => 'Đánh dấu đã đọc',
-        'mark_all_read' => 'Đánh dấu tất cả đã đọc',
+        'view_thread' => 'Xem thread',
+        'view_comment' => 'Xem bình luận',
+        'view_profile' => 'Xem hồ sơ',
+        'view_achievement' => 'Xem thành tích',
+        'view_product' => 'Xem sản phẩm',
+        'view_order' => 'Xem đơn hàng',
+        'view_review' => 'Xem đánh giá',
+        'view_message' => 'Xem tin nhắn',
+        'view_devices' => 'Quản lý thiết bị',
+        'view_security' => 'Cài đặt bảo mật',
+        'view_digest' => 'Xem chi tiết',
+        'view_details' => 'Xem chi tiết',
+        'take_action' => 'Thực hiện',
+        'dismiss' => 'Bỏ qua',
     ],
     'categories' => [
         'forum' => 'Diễn đàn',
@@ -148,10 +161,5 @@ return [
         'notification_deleted' => 'Thông báo đã được xóa.',
         'preferences_updated' => 'Cài đặt thông báo đã được cập nhật.',
         'all_marked_read' => 'Tất cả thông báo đã được đánh dấu đã đọc.',
-    ],
-    'types' => [
-        'mention' => 'Được nhắc đến',
-        'reply' => 'Trả lời',
-        'follow' => 'Theo dõi',
     ],
 ];

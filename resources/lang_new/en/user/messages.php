@@ -2,11 +2,12 @@
 
 /**
  * English translations for user/messages
- * Private messaging system
+ * Enhanced migration with source integration
  * 
  * Structure: user.messages.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 374
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 109
+ * Total keys: 368
  */
 
 return [
@@ -498,14 +499,4 @@ return [
     'marketplace_highlights' => 'Marketplace Highlights',
     'browse_marketplace' => 'Browse Marketplace',
     'view_all' => 'View All',
-    'compose' => [
-        'title' => 'Compose Message',
-        'recipient' => 'Recipient',
-        'subject' => 'Subject',
-    ],
-    'actions' => [
-        'send' => 'Send',
-        'delete' => 'Delete',
-        'reply' => 'Reply',
-    ],
 ];

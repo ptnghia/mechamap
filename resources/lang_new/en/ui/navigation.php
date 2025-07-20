@@ -2,11 +2,12 @@
 
 /**
  * English translations for ui/navigation
- * Navigation menus and links
+ * Enhanced migration with source integration
  * 
  * Structure: ui.navigation.*
- * Populated: 2025-07-20 02:32:30
- * Keys: 24
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 8
+ * Total keys: 24
  */
 
 return [
@@ -45,12 +46,4 @@ return [
         'register' => 'Register',
         'logout' => 'Logout',
     ],
-    'auth.login' => 'TODO: Migrate from nav.auth.login',
-    'about' => 'About',
-    'contact' => 'Contact',
-    'login' => 'Login',
-    'register' => 'Register',
-    'logout' => 'Logout',
-    'profile' => 'Profile',
-    'settings' => 'Settings',
 ];

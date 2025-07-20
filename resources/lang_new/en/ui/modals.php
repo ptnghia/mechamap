@@ -2,11 +2,12 @@
 
 /**
  * English translations for ui/modals
- * Modal dialogs and popups
+ * Enhanced migration with source integration
  * 
  * Structure: ui.modals.*
- * Populated: 2025-07-20 02:32:30
- * Keys: 4
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 0
+ * Total keys: 4
  */
 
 return [

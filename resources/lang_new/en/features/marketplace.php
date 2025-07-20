@@ -2,11 +2,12 @@
 
 /**
  * English translations for features/marketplace
- * Marketplace and trading features
+ * Enhanced migration with source integration
  * 
  * Structure: features.marketplace.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 199
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 162
+ * Total keys: 190
  */
 
 return [
@@ -49,12 +50,7 @@ return [
         'related_products' => 'Related Products',
         'seller_not_available' => 'Seller not available',
     ],
-    'products' => [
-        'add' => 'Add Product',
-        'edit' => 'Edit Product',
-        'view' => 'View Product',
-        'delete' => 'Delete Product',
-    ],
+    'products' => 'Products',
     'categories' => [
         'title' => 'Categories',
         'all' => 'All Categories',
@@ -373,13 +369,4 @@ return [
     'lead_time' => 'Lead Time',
     'view_all_products' => 'View All Products',
     'total_products_available' => 'Total Products Available',
-    'orders' => [
-        'place' => 'Place Order',
-        'track' => 'Track Order',
-        'cancel' => 'Cancel Order',
-    ],
-    'sellers' => [
-        'profile' => 'Seller Profile',
-        'contact' => 'Contact Seller',
-    ],
 ];

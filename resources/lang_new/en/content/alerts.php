@@ -2,11 +2,12 @@
 
 /**
  * English translations for content/alerts
- * Alert messages and notifications
+ * Enhanced migration with source integration
  * 
  * Structure: content.alerts.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 124
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 5
+ * Total keys: 114
  */
 
 return [
@@ -133,21 +134,5 @@ return [
         'archive_item' => 'Are you sure you want to archive this item?',
         'activate_feature' => 'Are you sure you want to activate this feature?',
         'deactivate_feature' => 'Are you sure you want to deactivate this feature?',
-    ],
-    'types' => [
-        'success' => 'Success',
-        'error' => 'Error',
-        'warning' => 'Warning',
-        'info' => 'Information',
-    ],
-    'actions' => [
-        'dismiss' => 'Dismiss',
-        'view_details' => 'View Details',
-        'retry' => 'Retry',
-    ],
-    'common' => [
-        'operation_successful' => 'Operation successful',
-        'operation_failed' => 'Operation failed',
-        'please_try_again' => 'Please try again',
     ],
 ];

@@ -2,11 +2,12 @@
 
 /**
  * English translations for admin/dashboard
- * Admin dashboard and overview
+ * Enhanced migration with source integration
  * 
  * Structure: admin.dashboard.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 5
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 0
+ * Total keys: 5
  */
 
 return [

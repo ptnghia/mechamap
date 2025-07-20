@@ -2,11 +2,12 @@
 
 /**
  * English translations for features/showcase
- * Project showcases and portfolios
+ * Enhanced migration with source integration
  * 
  * Structure: features.showcase.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 26
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 114
+ * Total keys: 22
  */
 
 return [
@@ -42,12 +43,7 @@ return [
     'search' => 'Search',
     'searching' => 'Searching',
     'clear_filters' => 'Clear Filters',
-    'projects' => [
-        'create' => 'Create Project',
-        'edit' => 'Edit Project',
-        'view' => 'View Project',
-        'featured' => 'Featured Projects',
-    ],
+    'projects' => 'projects',
     'avg_rating' => 'Avg Rating',
     'results' => 'results',
     'ratings' => 'ratings',
@@ -68,9 +64,9 @@ return [
         'analysis' => 'Analysis',
     ],
     'categories' => [
-        'web' => 'Web Development',
-        'mobile' => 'Mobile Apps',
         'design' => 'Design',
+        'manufacturing' => 'Manufacturing',
+        'analysis' => 'Analysis',
     ],
     'project_showcase' => 'Project Showcase',
     'discover_engineering_projects' => 'Discover engineering projects',

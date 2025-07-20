@@ -2,11 +2,12 @@
 
 /**
  * English translations for content/home
- * Homepage content and sections
+ * Enhanced migration with source integration
  * 
  * Structure: content.home.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 9
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 64
+ * Total keys: 0
  */
 
 return [
@@ -74,19 +75,4 @@ return [
     'newsletter_success' => 'Thank you for subscribing to our newsletter!',
     'featured_showcases' => 'Featured Projects',
     'featured_showcases_desc' => 'Discover impressive mechanical engineering projects from our community',
-    'hero' => [
-        'title' => 'Welcome to MechaMap',
-        'subtitle' => 'Community for sharing knowledge and experience',
-        'cta_button' => 'Join Now',
-    ],
-    'sections' => [
-        'featured_showcases' => 'Featured Showcases',
-        'latest_threads' => 'Latest Discussions',
-        'community_stats' => 'Community Statistics',
-    ],
-    'stats' => [
-        'members' => 'Members',
-        'threads' => 'Discussions',
-        'showcases' => 'Showcases',
-    ],
 ];

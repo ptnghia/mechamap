@@ -2,30 +2,41 @@
 
 /**
  * Vietnamese translations for content/pages
- * Static pages and general content
+ * Enhanced migration with source integration
  * 
  * Structure: content.pages.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 53
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 145
+ * Total keys: 63
  */
 
 return [
     'about' => [
         'title' => 'Giới thiệu',
-        'description' => 'Về MechaMap và cộng đồng',
+        'description' => 'Tìm hiểu về MechaMap',
+        'content' => 'Nội dung trang giới thiệu',
     ],
     'contact' => [
         'title' => 'Liên hệ',
-        'email' => 'Email liên hệ',
-        'phone' => 'Số điện thoại',
+        'description' => 'Liên hệ với chúng tôi',
+        'name' => 'Họ tên',
+        'email' => 'Email',
+        'subject' => 'Chủ đề',
+        'message' => 'Tin nhắn',
+        'send' => 'Gửi tin nhắn',
+        'success' => 'Tin nhắn đã được gửi thành công!',
     ],
     'terms' => [
         'title' => 'Điều khoản sử dụng',
-        'acceptance' => 'Chấp nhận điều khoản',
+        'description' => 'Điều khoản và điều kiện sử dụng dịch vụ',
+        'last_updated' => 'Cập nhật lần cuối',
     ],
     'privacy' => [
         'title' => 'Chính sách bảo mật',
-        'last_updated' => 'Cập nhật lần cuối',
+        'description' => 'Chính sách bảo mật thông tin người dùng',
+        'data_collection' => 'Thu thập dữ liệu',
+        'data_usage' => 'Sử dụng dữ liệu',
+        'data_protection' => 'Bảo vệ dữ liệu',
     ],
     'rules' => [
         'title' => 'Quy tắc cộng đồng',

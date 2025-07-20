@@ -2,11 +2,12 @@
 
 /**
  * English translations for features/knowledge
- * Knowledge base and documentation
+ * Enhanced migration with source integration
  * 
  * Structure: features.knowledge.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 6
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 0
+ * Total keys: 6
  */
 
 return [

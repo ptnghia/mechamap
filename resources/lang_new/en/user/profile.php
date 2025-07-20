@@ -2,11 +2,12 @@
 
 /**
  * English translations for user/profile
- * User profile management
+ * Enhanced migration with source integration
  * 
  * Structure: user.profile.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 8
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 41
+ * Total keys: 0
  */
 
 return [
@@ -17,10 +18,7 @@ return [
     'privacy' => 'Privacy',
     'security' => 'Security',
     'notifications' => 'Notifications',
-    'avatar' => [
-        'upload' => 'Upload Avatar',
-        'remove' => 'Remove Avatar',
-    ],
+    'avatar' => 'Avatar',
     'cover_photo' => 'Cover Photo',
     'bio' => 'Bio',
     'location' => 'Location',
@@ -54,14 +52,4 @@ return [
     'status' => 'Status',
     'role' => 'Role',
     'permissions' => 'Permissions',
-    'edit' => [
-        'title' => 'Edit Profile',
-        'save' => 'Save Changes',
-        'cancel' => 'Cancel',
-    ],
-    'info' => [
-        'name' => 'Full Name',
-        'email' => 'Email',
-        'bio' => 'Biography',
-    ],
 ];

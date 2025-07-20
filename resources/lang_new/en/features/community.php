@@ -2,11 +2,12 @@
 
 /**
  * English translations for features/community
- * Community features and interactions
+ * Enhanced migration with source integration
  * 
  * Structure: features.community.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 6
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 43
+ * Total keys: 0
  */
 
 return [
@@ -48,18 +49,9 @@ return [
     'No members are currently online.' => 'No members are currently online.',
     'Try a different search term.' => 'Try a different search term.',
     'Total' => 'Total',
-    'members' => [
-        'online' => 'Online',
-        'offline' => 'Offline',
-        'total' => 'Total Members',
-    ],
+    'members' => 'members',
     'Filtered by' => 'Filtered by',
     'Direction' => 'Direction',
     'Online' => 'Online',
     'No bio available.' => 'No bio available.',
-    'events' => [
-        'upcoming' => 'Upcoming Events',
-        'past' => 'Past Events',
-        'join' => 'Join Event',
-    ],
 ];

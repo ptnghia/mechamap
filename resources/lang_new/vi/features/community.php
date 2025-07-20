@@ -2,11 +2,12 @@
 
 /**
  * Vietnamese translations for features/community
- * Community features and interactions
+ * Enhanced migration with source integration
  * 
  * Structure: features.community.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 6
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 43
+ * Total keys: 0
  */
 
 return [
@@ -48,18 +49,9 @@ return [
     'No members are currently online.' => 'Hiện tại không có thành viên nào trực tuyến.',
     'Try a different search term.' => 'Thử từ khóa tìm kiếm khác.',
     'Total' => 'Tổng',
-    'members' => [
-        'online' => 'Đang trực tuyến',
-        'offline' => 'Ngoại tuyến',
-        'total' => 'Tổng thành viên',
-    ],
+    'members' => 'thành viên',
     'Filtered by' => 'Lọc theo',
     'No bio available.' => 'Chưa có thông tin cá nhân.',
     'Direction' => 'Hướng',
     'Online' => 'Trực tuyến',
-    'events' => [
-        'upcoming' => 'Sự kiện sắp tới',
-        'past' => 'Sự kiện đã qua',
-        'join' => 'Tham gia',
-    ],
 ];

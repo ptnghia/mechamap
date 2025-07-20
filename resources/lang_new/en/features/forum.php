@@ -2,27 +2,31 @@
 
 /**
  * English translations for features/forum
- * Forum discussions and threads
+ * Enhanced migration with source integration
  * 
  * Structure: features.forum.*
- * Populated: 2025-07-20 02:37:52
- * Keys: 156
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 117
+ * Total keys: 158
  */
 
 return [
     'threads' => [
-        'create' => 'Create Thread',
-        'edit' => 'Edit Thread',
-        'delete' => 'Delete Thread',
-        'sticky' => 'Sticky',
-        'locked' => 'Locked',
+        'title' => 'Threads',
+        'no_threads' => 'No threads yet',
+        'no_threads_found' => 'No threads found',
+        'no_threads_found_desc' => 'No threads match the current search criteria or filters.',
+        'no_threads_yet' => 'No threads yet',
+        'be_first_to_post' => 'Be the first to start a discussion in this forum!',
+        'latest_threads' => 'Latest Threads',
+        'recent_threads' => 'Recent Threads',
+        'popular_threads' => 'Popular Threads',
+        'thread_count' => '{0} No threads|{1} :count thread|[2,*] :count threads',
+        'replies_count' => '{0} No replies|{1} :count reply|[2,*] :count replies',
+        'views_count' => '{0} No views|{1} :count view|[2,*] :count views',
+        'start_discussion' => 'Start a new discussion in the community',
     ],
-    'posts' => [
-        'reply' => 'Reply',
-        'quote' => 'Quote',
-        'edit' => 'Edit',
-        'delete' => 'Delete',
-    ],
+    'posts' => 'Posts',
     'replies' => 'Replies',
     'views' => 'Views',
     'latest_post' => 'Latest Post',
@@ -32,10 +36,7 @@ return [
     'delete' => 'Delete',
     'pin' => 'Pin',
     'lock' => 'Lock',
-    'categories' => [
-        'all' => 'All Categories',
-        'select' => 'Select Category',
-    ],
+    'categories' => 'Categories',
     'forums' => 'Forums',
     'discussions' => 'Discussions',
     'participants' => 'Participants',

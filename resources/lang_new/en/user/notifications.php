@@ -2,11 +2,12 @@
 
 /**
  * English translations for user/notifications
- * User notifications and alerts
+ * Enhanced migration with source integration
  * 
  * Structure: user.notifications.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 86
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 28
+ * Total keys: 95
  */
 
 return [
@@ -87,8 +88,20 @@ return [
         'message' => 'System maintenance is scheduled from :start_time to :end_time.',
     ],
     'actions' => [
-        'mark_read' => 'Mark as Read',
-        'mark_all_read' => 'Mark All as Read',
+        'view_thread' => 'View Thread',
+        'view_comment' => 'View Comment',
+        'view_profile' => 'View Profile',
+        'view_achievement' => 'View Achievement',
+        'view_product' => 'View Product',
+        'view_order' => 'View Order',
+        'view_review' => 'View Review',
+        'view_message' => 'View Message',
+        'view_devices' => 'Manage Devices',
+        'view_security' => 'Security Settings',
+        'view_digest' => 'View Details',
+        'view_details' => 'View Details',
+        'take_action' => 'Take Action',
+        'dismiss' => 'Dismiss',
     ],
     'categories' => [
         'forum' => 'Forum',
@@ -148,10 +161,5 @@ return [
         'notification_deleted' => 'Notification deleted.',
         'preferences_updated' => 'Notification preferences updated.',
         'all_marked_read' => 'All notifications marked as read.',
-    ],
-    'types' => [
-        'mention' => 'Mentioned',
-        'reply' => 'Reply',
-        'follow' => 'Follow',
     ],
 ];

@@ -2,30 +2,41 @@
 
 /**
  * English translations for content/pages
- * Static pages and general content
+ * Enhanced migration with source integration
  * 
  * Structure: content.pages.*
- * Populated: 2025-07-20 02:35:44
- * Keys: 53
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 127
+ * Total keys: 63
  */
 
 return [
     'about' => [
-        'title' => 'About Us',
-        'description' => 'About MechaMap and our community',
+        'title' => 'About',
+        'description' => 'Learn about MechaMap',
+        'content' => 'About page content',
     ],
     'contact' => [
         'title' => 'Contact',
-        'email' => 'Contact Email',
-        'phone' => 'Phone Number',
+        'description' => 'Get in touch with us',
+        'name' => 'Name',
+        'email' => 'Email',
+        'subject' => 'Subject',
+        'message' => 'Message',
+        'send' => 'Send Message',
+        'success' => 'Message sent successfully!',
     ],
     'terms' => [
         'title' => 'Terms of Service',
-        'acceptance' => 'Terms Acceptance',
+        'description' => 'Terms and conditions of service',
+        'last_updated' => 'Last updated',
     ],
     'privacy' => [
         'title' => 'Privacy Policy',
-        'last_updated' => 'Last Updated',
+        'description' => 'User information privacy policy',
+        'data_collection' => 'Data Collection',
+        'data_usage' => 'Data Usage',
+        'data_protection' => 'Data Protection',
     ],
     'rules' => [
         'title' => 'Community Rules',

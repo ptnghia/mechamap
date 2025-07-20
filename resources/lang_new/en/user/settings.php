@@ -2,11 +2,12 @@
 
 /**
  * English translations for user/settings
- * User settings and preferences
+ * Enhanced migration with source integration
  * 
  * Structure: user.settings.*
- * Populated: 2025-07-20 02:39:45
- * Keys: 7
+ * Enhanced: 2025-07-20 02:51:02
+ * Source keys found: 0
+ * Total keys: 7
  */
 
 return [
