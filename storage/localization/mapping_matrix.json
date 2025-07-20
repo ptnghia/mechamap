@@ -1,0 +1,866 @@
+{
+    "timestamp": "2025-07-20 02:20:45",
+    "categories": {
+        "core": {
+            "description": "System core functionality",
+            "subcategories": [
+                "auth",
+                "validation",
+                "pagination",
+                "passwords"
+            ]
+        },
+        "ui": {
+            "description": "User interface elements",
+            "subcategories": [
+                "common",
+                "navigation",
+                "buttons",
+                "forms",
+                "modals"
+            ]
+        },
+        "content": {
+            "description": "Page content and static text",
+            "subcategories": [
+                "home",
+                "pages",
+                "alerts"
+            ]
+        },
+        "features": {
+            "description": "Feature-specific content",
+            "subcategories": [
+                "forum",
+                "marketplace",
+                "showcase",
+                "knowledge",
+                "community"
+            ]
+        },
+        "user": {
+            "description": "User-related functionality",
+            "subcategories": [
+                "profile",
+                "settings",
+                "notifications",
+                "messages"
+            ]
+        },
+        "admin": {
+            "description": "Admin interface",
+            "subcategories": [
+                "dashboard",
+                "users",
+                "system"
+            ]
+        }
+    },
+    "mapping_rules": {
+        "\/^auth\\.\/": "core.auth.",
+        "\/^validation\\.\/": "core.validation.",
+        "\/^pagination\\.\/": "core.pagination.",
+        "\/^passwords\\.\/": "core.passwords.",
+        "\/^nav\\.\/": "ui.navigation.",
+        "\/^buttons\\.\/": "ui.buttons.",
+        "\/^forms\\.\/": "ui.forms.",
+        "\/^common\\.\/": "ui.common.",
+        "\/^ui\\.\/": "ui.common.",
+        "\/^home\\.\/": "content.home.",
+        "\/^pages\\.\/": "content.pages.",
+        "\/^alerts\\.\/": "content.alerts.",
+        "\/^coming_soon\\.\/": "content.pages.",
+        "\/^forum\\.\/": "features.forum.",
+        "\/^forums\\.\/": "features.forum.",
+        "\/^marketplace\\.\/": "features.marketplace.",
+        "\/^showcase\\.\/": "features.showcase.",
+        "\/^thread\\.\/": "features.forum.",
+        "\/^user\\.\/": "user.profile.",
+        "\/^profile\\.\/": "user.profile.",
+        "\/^notifications\\.\/": "user.notifications.",
+        "\/^members\\.\/": "user.profile.",
+        "\/^messages\\.auth\\.\/": "core.auth.",
+        "\/^messages\\.validation\\.\/": "core.validation.",
+        "\/^messages\\.common\\.\/": "ui.common.",
+        "\/^messages\\.language\\.\/": "ui.common.language.",
+        "\/^messages\\.forum\\.\/": "features.forum.",
+        "\/^messages\\.marketplace\\.\/": "features.marketplace.",
+        "\/^messages\\.user\\.\/": "user.messages.",
+        "\/^messages\\.\/": "ui.common.",
+        "\/^language\\.\/": "ui.common.language.",
+        "\/^search\\.\/": "ui.common.search.",
+        "\/^content\\.\/": "content.pages.",
+        "\/^sidebar\\.\/": "ui.navigation.",
+        "\/^student\\.\/": "user.profile.",
+        "\/^companies\\.\/": "features.marketplace.",
+        "\/^media\\.\/": "ui.common."
+    },
+    "key_mappings": [
+        {
+            "old_key": "messages.language.switched_successfully",
+            "new_key": "ui.common.language.switched_successfully",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/partials\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.language.switch_failed",
+            "new_key": "ui.common.language.switch_failed",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/partials\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.language.auto_detect_failed",
+            "new_key": "ui.common.language.auto_detect_failed",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/partials\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "common.loading",
+            "new_key": "ui.common.loading",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "language.switched_successfully",
+            "new_key": "ui.common.language.switched_successfully",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "language.switch_failed",
+            "new_key": "ui.common.language.switch_failed",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/components\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "language.auto_detected",
+            "new_key": "ui.common.language.auto_detected",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/language-switcher.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.forgot_password",
+            "new_key": "ui.common.forgot_password",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/auth-modal.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "nav.auth.login",
+            "new_key": "ui.navigation.auth.login",
+            "category": "ui",
+            "subcategory": "navigation",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/components\/auth-modal.blade.php"
+            ],
+            "confidence": 70,
+            "action": "map"
+        },
+        {
+            "old_key": "content.processing",
+            "new_key": "content.pages.processing",
+            "category": "content",
+            "subcategory": "pages",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/auth-modal.blade.php"
+            ],
+            "confidence": 80,
+            "action": "map"
+        },
+        {
+            "old_key": "content.error_occurred",
+            "new_key": "content.pages.error_occurred",
+            "category": "content",
+            "subcategory": "pages",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/components\/auth-modal.blade.php"
+            ],
+            "confidence": 80,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.please_enter_valid_page",
+            "new_key": "ui.common.please_enter_valid_page",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.close",
+            "new_key": "ui.common.close",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.next",
+            "new_key": "ui.common.next",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.previous",
+            "new_key": "ui.common.previous",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.image",
+            "new_key": "ui.common.image",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.image_not_found",
+            "new_key": "ui.common.image_not_found",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 10,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.loading",
+            "new_key": "ui.common.loading",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.download",
+            "new_key": "ui.common.download",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/whats-new\/media.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.common.loading",
+            "new_key": "ui.common.loading",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.common.load_more",
+            "new_key": "ui.common.load_more",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.common.no_more_posts",
+            "new_key": "ui.common.no_more_posts",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.common.error_occurred",
+            "new_key": "ui.common.error_occurred",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.profile_updated",
+            "new_key": "ui.common.profile_updated",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.password_updated",
+            "new_key": "ui.common.password_updated",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.preferences_updated",
+            "new_key": "ui.common.preferences_updated",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.notifications_updated",
+            "new_key": "ui.common.notifications_updated",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.privacy_updated",
+            "new_key": "ui.common.privacy_updated",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.saving",
+            "new_key": "ui.common.saving",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/settings-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.error_occurred",
+            "new_key": "ui.common.error_occurred",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 20,
+            "files": {
+                "0": "resources\/views\/user\/settings-new.blade.php",
+                "4": "resources\/views\/user\/my-threads.blade.php",
+                "8": "resources\/views\/user\/bookmarks-new.blade.php"
+            },
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.confirm_delete_thread",
+            "new_key": "ui.common.confirm_delete_thread",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/my-threads.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.confirm_delete_bookmark",
+            "new_key": "ui.common.confirm_delete_bookmark",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/bookmarks-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.select_bookmarks_first",
+            "new_key": "ui.common.select_bookmarks_first",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/bookmarks-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "messages.confirm_delete_selected_bookmarks",
+            "new_key": "ui.common.confirm_delete_selected_bookmarks",
+            "category": "ui",
+            "subcategory": "common",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/user\/bookmarks-new.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "coming_soon.notify_success",
+            "new_key": "content.pages.notify_success",
+            "category": "content",
+            "subcategory": "pages",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/coming-soon.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "coming_soon.share_text",
+            "new_key": "content.pages.share_text",
+            "category": "content",
+            "subcategory": "pages",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/coming-soon.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        },
+        {
+            "old_key": "coming_soon.copied",
+            "new_key": "content.pages.copied",
+            "category": "content",
+            "subcategory": "pages",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/coming-soon.blade.php"
+            ],
+            "confidence": 50,
+            "action": "map"
+        }
+    ],
+    "merge_actions": [],
+    "unmapped_keys": [
+        {
+            "old_key": "status.sticky",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "status.locked",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/home.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Update your account's profile information and email address.",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/profile\/partials\/update-profile-information-form.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Số bài đăng",
+            "usage_count": 6,
+            "files": [
+                "resources\/views\/admin\/threads\/statistics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Đang tải lên...",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/media\/create.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Thứ tự danh mục đã được cập nhật.",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/page-categories\/index.blade.php",
+                "2": "resources\/views\/admin\/faq-categories\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Có lỗi xảy ra khi cập nhật thứ tự danh mục.",
+            "usage_count": 8,
+            "files": {
+                "0": "resources\/views\/admin\/page-categories\/index.blade.php",
+                "4": "resources\/views\/admin\/faq-categories\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục.",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có chắc chắn muốn bắt đầu quá trình đánh chỉ mục lại?",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Lỗi: ",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Quá trình đánh chỉ mục đã hoàn thành thành công!",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Quá trình đánh chỉ mục đã thất bại.",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Lỗi khi theo dõi tiến trình.",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Đánh chỉ mục lại",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có chắc chắn muốn hủy bỏ quá trình đánh chỉ mục?",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Quá trình đã bị hủy bỏ bởi người dùng.",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/reindex.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Số lượng tìm kiếm",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/analytics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Thời gian phản hồi (ms)",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/analytics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Chưa có tìm kiếm nào",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/analytics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Khách",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/analytics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có muốn tạo nội dung cho từ khóa",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/search\/analytics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Vui lòng chọn ít nhất một mục",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faq-categories\/index.blade.php",
+                "2": "resources\/views\/admin\/faqs\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có chắc muốn kích hoạt",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faq-categories\/index.blade.php",
+                "2": "resources\/views\/admin\/faqs\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "danh mục được chọn?",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/admin\/faq-categories\/index.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có chắc muốn vô hiệu hóa",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faq-categories\/index.blade.php",
+                "2": "resources\/views\/admin\/faqs\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Bạn có chắc muốn xóa",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faq-categories\/index.blade.php",
+                "2": "resources\/views\/admin\/faqs\/index.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "danh mục được chọn? Hành động này không thể hoàn tác!",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/faq-categories\/index.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Số bình luận",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/comments\/statistics.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Chưa nhập câu hỏi",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faqs\/edit.blade.php",
+                "2": "resources\/views\/admin\/faqs\/create.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Chưa nhập câu trả lời",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faqs\/edit.blade.php",
+                "2": "resources\/views\/admin\/faqs\/create.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "Chưa chọn danh mục",
+            "usage_count": 4,
+            "files": {
+                "0": "resources\/views\/admin\/faqs\/edit.blade.php",
+                "2": "resources\/views\/admin\/faqs\/create.blade.php"
+            },
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "câu hỏi được chọn?",
+            "usage_count": 4,
+            "files": [
+                "resources\/views\/admin\/faqs\/index.blade.php"
+            ],
+            "reason": "no_rule_match"
+        },
+        {
+            "old_key": "câu hỏi được chọn? Hành động này không thể hoàn tác!",
+            "usage_count": 2,
+            "files": [
+                "resources\/views\/admin\/faqs\/index.blade.php"
+            ],
+            "reason": "no_rule_match"
+        }
+    ],
+    "file_organization": {
+        "ui\/common.php": {
+            "category": "ui",
+            "subcategory": "common",
+            "estimated_keys": 31,
+            "sample_keys": [
+                "ui.common.language.switched_successfully",
+                "ui.common.language.switch_failed",
+                "ui.common.language.auto_detect_failed",
+                "ui.common.loading",
+                "ui.common.language.switched_successfully"
+            ],
+            "priority": "high"
+        },
+        "ui\/navigation.php": {
+            "category": "ui",
+            "subcategory": "navigation",
+            "estimated_keys": 1,
+            "sample_keys": [
+                "ui.navigation.auth.login"
+            ],
+            "priority": "low"
+        },
+        "content\/pages.php": {
+            "category": "content",
+            "subcategory": "pages",
+            "estimated_keys": 5,
+            "sample_keys": [
+                "content.pages.processing",
+                "content.pages.error_occurred",
+                "content.pages.notify_success",
+                "content.pages.share_text",
+                "content.pages.copied"
+            ],
+            "priority": "medium"
+        }
+    },
+    "statistics": {
+        "total_used_keys": 70,
+        "mapped_keys": 37,
+        "merge_actions": 0,
+        "unmapped_keys": 33,
+        "new_files_to_create": 37
+    }
+}
