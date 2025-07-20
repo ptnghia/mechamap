@@ -1,0 +1,301 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Cấu hình người dùng')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Cấu hình người dùng</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Cấu hình người dùng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-md-3 mb-4">
+        @include('admin.settings.partials.sidebar')
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Cấu hình người dùng') }}</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.settings.update-user') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <!-- Cấu hình đăng ký -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình đăng ký') }}</h6>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="user_allow_registration"
+                                        name="user_allow_registration" {{ old('user_allow_registration',
+                                        $settings['user_allow_registration'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_allow_registration">
+                                        {{ __('Cho phép đăng ký tài khoản') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng có thể tự tạo tài khoản mới') }}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="user_require_email_verification"
+                                        name="user_require_email_verification" {{ old('user_require_email_verification',
+                                        $settings['user_require_email_verification'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_require_email_verification">
+                                        {{ __('Yêu cầu xác thực email') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng phải xác thực email sau khi đăng ký') }}</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="user_allow_social_login"
+                                        name="user_allow_social_login" {{ old('user_allow_social_login',
+                                        $settings['user_allow_social_login'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_allow_social_login">
+                                        {{ __('Cho phép đăng nhập mạng xã hội') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng có thể đăng nhập bằng Facebook, Google') }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="user_default_role" class="form-label">{{ __('Vai trò mặc định') }}</label>
+                                <select class="form-select @error('user_default_role') is-invalid @enderror"
+                                    id="user_default_role" name="user_default_role" required>
+                                    <option value="member" {{ old('user_default_role', $settings['user_default_role']
+                                        ?? 'member' )=='member' ? 'selected' : '' }}>
+                                        {{ __('Thành viên') }}
+                                    </option>
+                                    <option value="guest" {{ old('user_default_role', $settings['user_default_role']
+                                        ?? 'member' )=='guest' ? 'selected' : '' }}>
+                                        {{ __('Khách') }}
+                                    </option>
+                                </select>
+                                <div class="form-text">{{ __('Vai trò được gán cho người dùng mới đăng ký') }}</div>
+                                @error('user_default_role')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Cấu hình mật khẩu -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình mật khẩu') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="user_min_password_length" class="form-label">{{ __('Độ dài mật khẩu tối
+                                    thiểu') }}</label>
+                                <input type="number"
+                                    class="form-control @error('user_min_password_length') is-invalid @enderror"
+                                    id="user_min_password_length" name="user_min_password_length"
+                                    value="{{ old('user_min_password_length', $settings['user_min_password_length'] ?? '8') }}"
+                                    min="6" max="30" required>
+                                <div class="form-text">{{ __('Số ký tự tối thiểu cho mật khẩu (6-30)') }}</div>
+                                @error('user_min_password_length')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="user_require_strong_password"
+                                        name="user_require_strong_password" {{ old('user_require_strong_password',
+                                        $settings['user_require_strong_password'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_require_strong_password">
+                                        {{ __('Yêu cầu mật khẩu mạnh') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc
+                                    biệt') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row">
+                        <!-- Cấu hình tên người dùng -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình tên người dùng') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="user_min_username_length" class="form-label">{{ __('Độ dài tên người dùng
+                                    tối thiểu') }}</label>
+                                <input type="number"
+                                    class="form-control @error('user_min_username_length') is-invalid @enderror"
+                                    id="user_min_username_length" name="user_min_username_length"
+                                    value="{{ old('user_min_username_length', $settings['user_min_username_length'] ?? '3') }}"
+                                    min="3" max="20" required>
+                                <div class="form-text">{{ __('Số ký tự tối thiểu cho tên người dùng (3-20)') }}</div>
+                                @error('user_min_username_length')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="user_allow_username_change"
+                                        name="user_allow_username_change" {{ old('user_allow_username_change',
+                                        $settings['user_allow_username_change'] ?? '0' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_allow_username_change">
+                                        {{ __('Cho phép thay đổi tên người dùng') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng có thể thay đổi tên người dùng sau khi đăng
+                                    ký') }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Cấu hình avatar -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình avatar') }}</h6>
+
+                            <div class="mb-3">
+                                <label for="user_avatar_max_size" class="form-label">{{ __('Kích thước avatar tối đa
+                                    (KB)') }}</label>
+                                <input type="number"
+                                    class="form-control @error('user_avatar_max_size') is-invalid @enderror"
+                                    id="user_avatar_max_size" name="user_avatar_max_size"
+                                    value="{{ old('user_avatar_max_size', $settings['user_avatar_max_size'] ?? '2048') }}"
+                                    min="100" max="5120" required>
+                                <div class="form-text">{{ __('Kích thước tối đa của file avatar (100-5120 KB)') }}</div>
+                                @error('user_avatar_max_size')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="user_avatar_allowed_types" class="form-label">{{ __('Loại file avatar được
+                                    phép') }}</label>
+                                <input type="text"
+                                    class="form-control @error('user_avatar_allowed_types') is-invalid @enderror"
+                                    id="user_avatar_allowed_types" name="user_avatar_allowed_types"
+                                    value="{{ old('user_avatar_allowed_types', $settings['user_avatar_allowed_types'] ?? 'jpg,jpeg,png,gif') }}"
+                                    placeholder="jpg,jpeg,png,gif">
+                                <div class="form-text">{{ __('Các phần mở rộng file được phép cho avatar') }}</div>
+                                @error('user_avatar_allowed_types')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row">
+                        <!-- Cấu hình hồ sơ -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold mb-3">{{ __('Cấu hình hồ sơ') }}</h6>
+
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="user_allow_profile_customization" name="user_allow_profile_customization" {{
+                                        old('user_allow_profile_customization',
+                                        $settings['user_allow_profile_customization'] ?? '1' )=='1' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="user_allow_profile_customization">
+                                        {{ __('Cho phép tùy chỉnh hồ sơ') }}
+                                    </label>
+                                </div>
+                                <div class="form-text">{{ __('Người dùng có thể tùy chỉnh thông tin hồ sơ cá nhân') }}
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="user_signature_max_length" class="form-label">{{ __('Độ dài chữ ký tối đa')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('user_signature_max_length') is-invalid @enderror"
+                                    id="user_signature_max_length" name="user_signature_max_length"
+                                    value="{{ old('user_signature_max_length', $settings['user_signature_max_length'] ?? '500') }}"
+                                    min="0" max="1000" required>
+                                <div class="form-text">{{ __('Số ký tự tối đa cho chữ ký (0-1000, 0 = không cho phép)')
+                                    }}</div>
+                                @error('user_signature_max_length')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="user_about_max_length" class="form-label">{{ __('Độ dài giới thiệu tối đa')
+                                    }}</label>
+                                <input type="number"
+                                    class="form-control @error('user_about_max_length') is-invalid @enderror"
+                                    id="user_about_max_length" name="user_about_max_length"
+                                    value="{{ old('user_about_max_length', $settings['user_about_max_length'] ?? '1000') }}"
+                                    min="0" max="5000" required>
+                                <div class="form-text">{{ __('Số ký tự tối đa cho phần giới thiệu (0-5000)') }}</div>
+                                @error('user_about_max_length')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('admin.settings.general') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+    // Auto-format file types input
+    $('#user_avatar_allowed_types').on('input', function() {
+        let value = $(this).val();
+        // Remove spaces and ensure lowercase
+        value = value.toLowerCase().replace(/\s+/g, '');
+        // Ensure comma separation
+        value = value.replace(/[;|]+/g, ',');
+        $(this).val(value);
+    });
+
+    // Password length validation
+    $('#user_min_password_length').on('change', function() {
+        let value = parseInt($(this).val());
+        if (value < 6) {
+            $(this).val(6);
+        } else if (value > 30) {
+            $(this).val(30);
+        }
+    });
+
+    // Username length validation
+    $('#user_min_username_length').on('change', function() {
+        let value = parseInt($(this).val());
+        if (value < 3) {
+            $(this).val(3);
+        } else if (value > 20) {
+            $(this).val(20);
+        }
+    });
+});
+</script>
+@endpush

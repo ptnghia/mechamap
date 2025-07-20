@@ -1,0 +1,275 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Thống kê tổng quan')
+
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thống kê tổng quan</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thống kê tổng quan</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('actions')
+    <div class="btn-group">
+        <a href="{{ route('admin.statistics.users') }}" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-users me-1"></i> {{ __('Người dùng') }}
+        </a>
+        <a href="{{ route('admin.statistics.content') }}" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-file-alt me-1"></i> {{ __('Nội dung') }}
+        </a>
+        <a href="{{ route('admin.statistics.interactions') }}" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-chart-line me-1"></i> {{ __('Tương tác') }}
+        </a>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#exportModal">
+        <i class="fas fa-download me-1"></i> {{ __('Xuất báo cáo') }}
+    </button>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-primary mb-2">{{ $overviewStats['users'] }}</div>
+                    <h5 class="card-title">{{ __('Người dùng') }}</h5>
+                    <p class="card-text text-muted">{{ __('Tổng số người dùng đã đăng ký') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-success mb-2">{{ $overviewStats['threads'] }}</div>
+                    <h5 class="card-title">{{ __('Bài đăng') }}</h5>
+                    <p class="card-text text-muted">{{ __('Tổng số bài đăng đã tạo') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-info mb-2">{{ $overviewStats['comments'] }}</div>
+                    <h5 class="card-title">{{ __('Bình luận') }}</h5>
+                    <p class="card-text text-muted">{{ __('Tổng số bình luận đã đăng') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="display-4 text-warning mb-2">{{ $overviewStats['forums'] }}</div>
+                    <h5 class="card-title">{{ __(__('forum.forums.title')) }}</h5>
+                    <p class="card-text text-muted">{{ __('Tổng số diễn đàn đã tạo') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Thống kê theo thời gian (12 tháng gần nhất)') }}</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="timeChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Phân bố nội dung') }}</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="contentDistributionChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Hoạt động gần đây') }}</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('Loại') }}</th>
+                                    <th>{{ __('Nội dung') }}</th>
+                                    <th>{{ __('Người dùng') }}</th>
+                                    <th>{{ __('Thời gian') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dữ liệu mẫu - sẽ được thay thế bằng dữ liệu thực tế -->
+                                <tr>
+                                    <td><span class="badge bg-primary">{{ __('Bài đăng') }}</span></td>
+                                    <td>{{ __('Bài đăng mới đã được tạo') }}</td>
+                                    <td>{{ __('Người dùng A') }}</td>
+                                    <td>{{ now()->subHours(2)->format('d/m/Y H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-info">{{ __('Bình luận') }}</span></td>
+                                    <td>{{ __('Bình luận mới đã được đăng') }}</td>
+                                    <td>{{ __('Người dùng B') }}</td>
+                                    <td>{{ now()->subHours(3)->format('d/m/Y H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-success">{{ __(__('nav.auth.register')) }}</span></td>
+                                    <td>{{ __('Người dùng mới đã đăng ký') }}</td>
+                                    <td>{{ __('Người dùng C') }}</td>
+                                    <td>{{ now()->subHours(5)->format('d/m/Y H:i') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal xuất báo cáo -->
+    <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">{{ __('Xuất báo cáo thống kê') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.statistics.export') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="type" class="form-label">{{ __('Loại báo cáo') }}</label>
+                            <select class="form-select" id="type" name="type">
+                                <option value="overview">{{ __('Tổng quan') }}</option>
+                                <option value="users">{{ __('Người dùng') }}</option>
+                                <option value="content">{{ __('Nội dung') }}</option>
+                                <option value="interactions">{{ __('Tương tác') }}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="format" class="form-label">{{ __('Định dạng') }}</label>
+                            <select class="form-select" id="format" name="format">
+                                <option value="csv">CSV</option>
+                                <option value="excel">Excel</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('Xuất báo cáo') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Biểu đồ thống kê theo thời gian
+        const timeChartCtx = document.getElementById('timeChart').getContext('2d');
+        const timeChart = new Chart(timeChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+                datasets: [
+                    {
+                        label: 'Người dùng mới',
+                        data: [65, 59, 80, 81, 56, 55, 40, 45, 50, 55, 60, 70],
+                        borderColor: 'rgba(51, 102, 204, 1)',
+                        backgroundColor: 'rgba(51, 102, 204, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Bài đăng mới',
+                        data: [28, 48, 40, 19, 86, 27, 90, 85, 80, 75, 70, 65],
+                        borderColor: 'rgba(29, 202, 188, 1)',
+                        backgroundColor: 'rgba(29, 202, 188, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Tương tác',
+                        data: [45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210],
+                        borderColor: 'rgba(255, 120, 70, 1)',
+                        backgroundColor: 'rgba(255, 120, 70, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Biểu đồ phân bố nội dung
+        const contentDistributionChartCtx = document.getElementById('contentDistributionChart').getContext('2d');
+        const contentDistributionChart = new Chart(contentDistributionChartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Bài đăng', 'Bình luận', 'Người dùng', __('forum.forums.title')],
+                datasets: [{
+                    data: [{{ $overviewStats['threads'] }}, {{ $overviewStats['comments'] }}, {{ $overviewStats['users'] }}, {{ $overviewStats['forums'] }}],
+                    backgroundColor: [
+                        'rgba(29, 202, 188, 0.8)',
+                        'rgba(51, 102, 204, 0.8)',
+                        'rgba(255, 120, 70, 0.8)',
+                        'rgba(255, 193, 7, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(29, 202, 188, 1)',
+                        'rgba(51, 102, 204, 1)',
+                        'rgba(255, 120, 70, 1)',
+                        'rgba(255, 193, 7, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endpush
