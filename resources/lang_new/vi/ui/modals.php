@@ -2,17 +2,18 @@
 
 /**
  * Vietnamese translations for ui/modals
- * Category: User interface elements
+ * Modal dialogs and popups
  * 
  * Structure: ui.modals.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:32:30
+ * Keys: 4
  */
 
 return [
-    // TODO: Add translations for ui.modals
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'confirm_delete' => [
+        'title' => 'Xác nhận xóa',
+        'message' => 'Bạn có chắc chắn muốn xóa?',
+        'confirm' => 'Xóa',
+        'cancel' => 'Hủy',
+    ],
 ];
