@@ -2,11 +2,11 @@
 
 /**
  * English translations for core/auth
- * Authentication related translations
+ * Migrated from original auth.php
  * 
  * Structure: core.auth.*
- * Migrated: 2025-07-20 02:30:27
- * Keys: 54
+ * Migrated: 2025-07-20 02:49:20
+ * Keys: 118
  */
 
 return [

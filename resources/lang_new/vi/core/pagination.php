@@ -2,11 +2,14 @@
 
 /**
  * Vietnamese translations for core/pagination
- * Pagination controls
+ * Migrated from original pagination.php
  * 
  * Structure: core.pagination.*
- * Migrated: 2025-07-20 02:30:27
+ * Migrated: 2025-07-20 02:49:20
  * Keys: 0
  */
 
-return [];
+return [
+    'previous' => '&laquo; Trước',
+    'next' => 'Tiếp &raquo;',
+];
