@@ -144,7 +144,7 @@
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>Sản phẩm</th>
+                                <th{{ t_features('supplier.labels.products') }}/th>
                                 <th>Danh mục</th>
                                 <th>Giá</th>
                                 <th>Tồn kho</th>

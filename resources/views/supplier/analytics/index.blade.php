@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <h6 class="text-muted mb-1">Doanh thu</h6>
+                                    <h6 class="text-muted mb-1"{{ t_features('supplier.labels.revenue') }}/h6>
                                     <h4 class="mb-0">{{ number_format($analytics['revenue']['current_period'], 0, ',', '.') }} VND</h4>
                                     <small class="text-{{ $analytics['revenue']['growth_rate'] >= 0 ? 'success' : 'danger' }}">
                                         <i class="fas fa-{{ $analytics['revenue']['growth_rate'] >= 0 ? 'arrow-up' : 'arrow-down' }}"></i>
@@ -56,7 +56,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <h6 class="text-muted mb-1">Đơn hàng</h6>
+                                    <h6 class="text-muted mb-1"{{ t_features('supplier.labels.orders') }}/h6>
                                     <h4 class="mb-0">{{ number_format($analytics['orders']['total_orders']) }}</h4>
                                     <small class="text-muted">Tổng đơn hàng</small>
                                 </div>
@@ -72,7 +72,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <h6 class="text-muted mb-1">Khách hàng</h6>
+                                    <h6 class="text-muted mb-1"{{ t_features('supplier.labels.customers') }}/h6>
                                     <h4 class="mb-0">{{ number_format($analytics['customers']['unique_customers']) }}</h4>
                                     <small class="text-muted">Khách hàng duy nhất</small>
                                 </div>
@@ -88,7 +88,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
-                                    <h6 class="text-muted mb-1">Sản phẩm</h6>
+                                    <h6 class="text-muted mb-1"{{ t_features('supplier.labels.products') }}/h6>
                                     <h4 class="mb-0">{{ number_format($analytics['products']['active_products']) }}</h4>
                                     <small class="text-muted">Đang hoạt động</small>
                                 </div>

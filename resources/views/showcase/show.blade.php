@@ -247,7 +247,7 @@
                             <button type="submit"
                                 class="btn btn-sm {{ $isBookmarked ? 'btn-warning' : 'btn-outline-warning' }}">
                                 <i class="fas {{ $isBookmarked ? 'fa-bookmark' : 'fa-bookmark' }}"></i>
-                                {{ $isBookmarked ? 'Đã lưu' : 'Lưu' }}
+                                {{ $isBookmarked ? 'Đã lưu' : {{ t_features('showcase.actions.save') }} }}
                             </button>
                         </form>
                         @else

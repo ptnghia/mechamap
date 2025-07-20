@@ -2,10 +2,34 @@
 
 /**
  * English translations for ui/notifications
- * Components localization - Updated: 2025-07-20 03:35:02
- * Keys: 1
+ * Batch low priority fixes - Updated: 2025-07-20 03:52:37
+ * Total keys: 21
  */
 
 return [
+    'actions' => [
+        'add' => 'Add',
+        'cancel' => 'Cancel',
+        'delete' => 'Delete',
+        'download' => 'Download',
+        'edit' => 'Edit',
+        'save' => 'Save',
+        'search' => 'Search',
+        'update' => 'Update',
+        'upload' => 'Upload',
+        'view' => 'View',
+    ],
     'marked_all_read' => 'Marked all notifications as read',
+    'status' => [
+        'completed' => 'Completed',
+        'draft' => 'Draft',
+        'error' => 'Error',
+        'failed' => 'Failed',
+        'info' => 'Info',
+        'pending' => 'Pending',
+        'processing' => 'Processing',
+        'published' => 'Published',
+        'success' => 'Success',
+        'warning' => 'Warning',
+    ],
 ];

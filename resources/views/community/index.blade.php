@@ -81,7 +81,7 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-calendar-days fa-3x text-info"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Sự kiện</h5>
+                        <h5 class="card-title fw-bold"{{ t_features('community.labels.events') }}/h5>
                         <p class="card-text text-muted">
                             Tham gia hội thảo, workshop và các sự kiện kỹ thuật chuyên ngành
                         </p>
@@ -99,7 +99,7 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-briefcase fa-3x text-danger"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Việc làm</h5>
+                        <h5 class="card-title fw-bold"{{ t_features('community.labels.jobs') }}/h5>
                         <p class="card-text text-muted">
                             Tìm kiếm cơ hội nghề nghiệp và đăng tin tuyển dụng trong ngành cơ khí
                         </p>

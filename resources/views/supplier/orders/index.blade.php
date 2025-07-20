@@ -135,8 +135,8 @@
                                 <thead>
                                     <tr>
                                         <th>Mã đơn hàng</th>
-                                        <th>Khách hàng</th>
-                                        <th>Sản phẩm</th>
+                                        <th{{ t_features('supplier.labels.customers') }}/th>
+                                        <th{{ t_features('supplier.labels.products') }}/th>
                                         <th class="text-end">Số lượng</th>
                                         <th class="text-end">Tổng tiền</th>
                                         <th>Trạng thái</th>
