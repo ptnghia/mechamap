@@ -132,7 +132,7 @@
                     <a class="nav-link dropdown-toggle admin-dropdown" href="#" id="adminDropdown" role="button" 
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-shield-alt me-1"></i>
-                        <span class="admin-badge">Quản trị</span>
+                        <span class="admin-badge"{{ t_ui('roles.admin') }}/span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end admin-menu" aria-labelledby="adminDropdown">
                         @foreach($adminDropdownItems as $key => $item)

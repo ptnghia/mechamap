@@ -2,15 +2,22 @@
 
 /**
  * Vietnamese translations for ui/common
- * Enhanced migration with source integration
- * 
- * Structure: ui.common.*
- * Enhanced: 2025-07-20 02:51:02
- * Source keys found: 3
- * Total keys: 12
+ * Components localization - Updated: 2025-07-20 03:35:02
+ * Keys: 9
  */
 
 return [
+    'auto_saving' => 'Đang lưu tự động...',
+    'copyright_text' => 'Bản quyền thuộc về Công ty Cổ phần Công nghệ MechaMap.',
+    'dark_mode' => 'Chế độ tối',
+    'language' => [
+        'switch' => 'Chuyển ngôn ngữ',
+        'select' => 'Chọn ngôn ngữ',
+        'auto_detect' => 'Tự động phát hiện',
+    ],
+    'light_mode' => 'Chế độ sáng',
+    'no_results_found' => 'No results found',
+    'popular_searches' => 'Popular Searches',
     'site' => [
         'name' => 'MechaMap',
         'tagline' => 'Diễn đàn cộng đồng',
@@ -23,10 +30,5 @@ return [
         'days_ago' => 'ngày trước',
         'updated' => 'Cập nhật',
         'created' => 'Tạo',
-    ],
-    'language' => [
-        'switch' => 'Chuyển ngôn ngữ',
-        'select' => 'Chọn ngôn ngữ',
-        'auto_detect' => 'Tự động phát hiện',
     ],
 ];

@@ -2,15 +2,40 @@
 
 /**
  * Vietnamese translations for ui/forms
- * Enhanced migration with source integration
- * 
- * Structure: ui.forms.*
- * Enhanced: 2025-07-20 02:51:02
- * Source keys found: 7
- * Total keys: 106
+ * Components localization - Updated: 2025-07-20 03:35:02
+ * Keys: 10
  */
 
 return [
+    'actions' => [
+        'submit' => 'Gửi',
+        'save' => 'Lưu',
+        'cancel' => 'Hủy',
+        'reset' => 'Đặt lại',
+        'clear' => 'Xóa',
+        'upload' => 'Tải lên',
+        'download' => 'Tải xuống',
+        'preview' => 'Xem trước',
+        'edit' => 'Chỉnh sửa',
+        'delete' => 'Xóa',
+        'add' => 'Thêm',
+        'remove' => 'Loại bỏ',
+        'select' => 'Chọn',
+        'deselect' => 'Bỏ chọn',
+        'select_all' => 'Chọn tất cả',
+        'deselect_all' => 'Bỏ chọn tất cả',
+    ],
+    'enter_message_placeholder' => 'Nhập tin nhắn...',
+    'help' => [
+        'password_requirements' => 'Mật khẩu phải có ít nhất 8 ký tự',
+        'username_requirements' => 'Tên đăng nhập chỉ chứa chữ cái, số và dấu gạch dưới',
+        'email_verification' => 'Chúng tôi sẽ gửi email xác nhận đến địa chỉ này',
+        'optional_field' => 'Trường tùy chọn',
+        'required_field' => 'Trường bắt buộc',
+        'file_upload' => 'Chọn file để tải lên',
+        'image_upload' => 'Chọn hình ảnh (JPG, PNG, GIF)',
+        'max_file_size' => 'Kích thước tối đa: :size MB',
+    ],
     'labels' => [
         'name' => 'Họ tên',
         'email' => 'Email',
@@ -57,31 +82,8 @@ return [
         'enter_comment' => 'Nhập bình luận của bạn...',
         'enter_message' => 'Nhập tin nhắn của bạn...',
     ],
-    'validation' => [
-        'required' => 'Trường này là bắt buộc',
-        'email' => 'Email không hợp lệ',
-        'min_length' => 'Tối thiểu :min ký tự',
-        'max_length' => 'Tối đa :max ký tự',
-        'confirmed' => 'Xác nhận không khớp',
-        'unique' => 'Giá trị này đã tồn tại',
-        'numeric' => 'Phải là số',
-        'file_size' => 'Kích thước file quá lớn',
-        'file_type' => 'Loại file không được hỗ trợ',
-        'image' => 'Phải là file hình ảnh',
-        'url' => 'URL không hợp lệ',
-        'date' => 'Ngày không hợp lệ',
-        'password_strength' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số',
-    ],
-    'help' => [
-        'password_requirements' => 'Mật khẩu phải có ít nhất 8 ký tự',
-        'username_requirements' => 'Tên đăng nhập chỉ chứa chữ cái, số và dấu gạch dưới',
-        'email_verification' => 'Chúng tôi sẽ gửi email xác nhận đến địa chỉ này',
-        'optional_field' => 'Trường tùy chọn',
-        'required_field' => 'Trường bắt buộc',
-        'file_upload' => 'Chọn file để tải lên',
-        'image_upload' => 'Chọn hình ảnh (JPG, PNG, GIF)',
-        'max_file_size' => 'Kích thước tối đa: :size MB',
-    ],
+    'search_conversations_placeholder' => 'Tìm kiếm cuộc trò chuyện...',
+    'search_members_placeholder' => 'Tìm kiếm thành viên...',
     'states' => [
         'loading' => 'Đang tải...',
         'saving' => 'Đang lưu...',
@@ -92,24 +94,6 @@ return [
         'uploaded' => 'Đã tải lên',
         'processing' => 'Đang xử lý...',
         'completed' => 'Hoàn thành',
-    ],
-    'actions' => [
-        'submit' => 'Gửi',
-        'save' => 'Lưu',
-        'cancel' => 'Hủy',
-        'reset' => 'Đặt lại',
-        'clear' => 'Xóa',
-        'upload' => 'Tải lên',
-        'download' => 'Tải xuống',
-        'preview' => 'Xem trước',
-        'edit' => 'Chỉnh sửa',
-        'delete' => 'Xóa',
-        'add' => 'Thêm',
-        'remove' => 'Loại bỏ',
-        'select' => 'Chọn',
-        'deselect' => 'Bỏ chọn',
-        'select_all' => 'Chọn tất cả',
-        'deselect_all' => 'Bỏ chọn tất cả',
     ],
     'upload' => [
         'drag_drop_here' => 'Kéo và thả file vào đây',
@@ -125,10 +109,25 @@ return [
         'files_selected' => 'File đã chọn',
         'uploading' => 'Đang tải lên...',
         'upload_complete' => 'Tải lên hoàn tất',
-        'file_too_large' => 'File \":filename\" quá lớn',
-        'file_type_not_supported' => 'File \":filename\" không được hỗ trợ',
+        'file_too_large' => 'File \\\":filename\\\" quá lớn',
+        'file_type_not_supported' => 'File \\\":filename\\\" không được hỗ trợ',
         'max_files_exceeded' => 'Vượt quá số lượng file cho phép',
         'add_quote' => 'Thêm trích dẫn',
         'quote' => 'Trích dẫn',
+    ],
+    'validation' => [
+        'required' => 'Trường này là bắt buộc',
+        'email' => 'Email không hợp lệ',
+        'min_length' => 'Tối thiểu :min ký tự',
+        'max_length' => 'Tối đa :max ký tự',
+        'confirmed' => 'Xác nhận không khớp',
+        'unique' => 'Giá trị này đã tồn tại',
+        'numeric' => 'Phải là số',
+        'file_size' => 'Kích thước file quá lớn',
+        'file_type' => 'Loại file không được hỗ trợ',
+        'image' => 'Phải là file hình ảnh',
+        'url' => 'URL không hợp lệ',
+        'date' => 'Ngày không hợp lệ',
+        'password_strength' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số',
     ],
 ];

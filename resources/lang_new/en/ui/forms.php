@@ -2,15 +2,40 @@
 
 /**
  * English translations for ui/forms
- * Enhanced migration with source integration
- * 
- * Structure: ui.forms.*
- * Enhanced: 2025-07-20 02:51:02
- * Source keys found: 8
- * Total keys: 107
+ * Components localization - Updated: 2025-07-20 03:35:02
+ * Keys: 11
  */
 
 return [
+    'actions' => [
+        'submit' => 'Submit',
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+        'reset' => 'Reset',
+        'clear' => 'Clear',
+        'upload' => 'Upload',
+        'download' => 'Download',
+        'preview' => 'Preview',
+        'edit' => 'Edit',
+        'delete' => 'Delete',
+        'add' => 'Add',
+        'remove' => 'Remove',
+        'select' => 'Select',
+        'deselect' => 'Deselect',
+        'select_all' => 'Select All',
+        'deselect_all' => 'Deselect All',
+    ],
+    'enter_message_placeholder' => 'Enter message...',
+    'help' => [
+        'password_requirements' => 'Password must be at least 8 characters',
+        'username_requirements' => 'Username can only contain letters, numbers and underscores',
+        'email_verification' => 'We will send a verification email to this address',
+        'optional_field' => 'Optional field',
+        'required_field' => 'Required field',
+        'file_upload' => 'Select file to upload',
+        'image_upload' => 'Select image (JPG, PNG, GIF)',
+        'max_file_size' => 'Maximum size: :size MB',
+    ],
     'labels' => [
         'name' => 'Name',
         'email' => 'Email',
@@ -57,31 +82,11 @@ return [
         'enter_comment' => 'Enter your comment...',
         'enter_message' => 'Enter your message...',
     ],
-    'validation' => [
-        'required' => 'This field is required',
-        'email' => 'Invalid email address',
-        'min_length' => 'Minimum :min characters',
-        'max_length' => 'Maximum :max characters',
-        'confirmed' => 'Confirmation does not match',
-        'unique' => 'This value already exists',
-        'numeric' => 'Must be a number',
-        'file_size' => 'File size too large',
-        'file_type' => 'File type not supported',
-        'image' => 'Must be an image file',
-        'url' => 'Invalid URL',
-        'date' => 'Invalid date',
-        'password_strength' => 'Password must be at least 8 characters with uppercase, lowercase and numbers',
+    'related' => [
+        'related_topics' => 'Related Topics',
     ],
-    'help' => [
-        'password_requirements' => 'Password must be at least 8 characters',
-        'username_requirements' => 'Username can only contain letters, numbers and underscores',
-        'email_verification' => 'We will send a verification email to this address',
-        'optional_field' => 'Optional field',
-        'required_field' => 'Required field',
-        'file_upload' => 'Select file to upload',
-        'image_upload' => 'Select image (JPG, PNG, GIF)',
-        'max_file_size' => 'Maximum size: :size MB',
-    ],
+    'search_conversations_placeholder' => 'Search conversations...',
+    'search_members_placeholder' => 'Search members...',
     'states' => [
         'loading' => 'Loading...',
         'saving' => 'Saving...',
@@ -92,24 +97,6 @@ return [
         'uploaded' => 'Uploaded',
         'processing' => 'Processing...',
         'completed' => 'Completed',
-    ],
-    'actions' => [
-        'submit' => 'Submit',
-        'save' => 'Save',
-        'cancel' => 'Cancel',
-        'reset' => 'Reset',
-        'clear' => 'Clear',
-        'upload' => 'Upload',
-        'download' => 'Download',
-        'preview' => 'Preview',
-        'edit' => 'Edit',
-        'delete' => 'Delete',
-        'add' => 'Add',
-        'remove' => 'Remove',
-        'select' => 'Select',
-        'deselect' => 'Deselect',
-        'select_all' => 'Select All',
-        'deselect_all' => 'Deselect All',
     ],
     'upload' => [
         'drag_drop_here' => 'Drag and drop files here',
@@ -125,13 +112,25 @@ return [
         'files_selected' => 'Selected Files',
         'uploading' => 'Uploading...',
         'upload_complete' => 'Upload Complete',
-        'file_too_large' => 'File \":filename\" is too large',
-        'file_type_not_supported' => 'File \":filename\" is not supported',
+        'file_too_large' => 'File \\\":filename\\\" is too large',
+        'file_type_not_supported' => 'File \\\":filename\\\" is not supported',
         'max_files_exceeded' => 'Maximum number of files exceeded',
         'add_quote' => 'Add Quote',
         'quote' => 'Quote',
     ],
-    'related' => [
-        'related_topics' => 'Related Topics',
+    'validation' => [
+        'required' => 'This field is required',
+        'email' => 'Invalid email address',
+        'min_length' => 'Minimum :min characters',
+        'max_length' => 'Maximum :max characters',
+        'confirmed' => 'Confirmation does not match',
+        'unique' => 'This value already exists',
+        'numeric' => 'Must be a number',
+        'file_size' => 'File size too large',
+        'file_type' => 'File type not supported',
+        'image' => 'Must be an image file',
+        'url' => 'Invalid URL',
+        'date' => 'Invalid date',
+        'password_strength' => 'Password must be at least 8 characters with uppercase, lowercase and numbers',
     ],
 ];

@@ -75,7 +75,7 @@
         <button type="button"
                 class="btn btn-link p-2"
                 onclick="showLoginModal()"
-                title="Đăng nhập để xem thông báo">
+                title={{ t_ui('auth.login_to_view_notifications') }}>
             <i class="fas fa-bell fs-5 text-muted"></i>
         </button>
     @endauth
