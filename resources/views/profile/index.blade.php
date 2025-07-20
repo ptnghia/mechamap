@@ -18,12 +18,12 @@
                 <div class="card-body">
                     <form action="{{ route('users.index') }}" method="GET" class="row g-3">
                         <div class="col-md-5">
-                            <label for="search" class="form-label"{{ t_user('profile.actions.search') }}/label>
+                            <label for="search" class="...">{{ t_user('profile.actions.search') }}</label>
                             <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Tên hoặc username...">
                         </div>
 
                         <div class="col-md-4">
-                            <label for="role" class="form-label"{{ t_user('profile.labels.role') }}/label>
+                            <label for="role" class="...">{{ t_user('profile.labels.role') }}</label>
                             <select class="form-select" id="role" name="role">
                                 <option value=""{{ t_user('profile.labels.all_roles') }}/option>
                                 <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>

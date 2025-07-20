@@ -1205,12 +1205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isDark) {
                 themeIconDark.classList.add('d-none');
                 themeIconLight.classList.remove('d-none');
-                themeText.textContent = {{ t_ui('common.light_mode') }};
+                themeText.textContent = '{{ t_ui('common.light_mode') }}';
                 document.body.classList.add('dark-mode');
             } else {
                 themeIconDark.classList.remove('d-none');
                 themeIconLight.classList.add('d-none');
-                themeText.textContent = {{ t_ui('common.dark_mode') }};
+                themeText.textContent = '{{ t_ui('common.dark_mode') }}';
                 document.body.classList.remove('dark-mode');
             }
         });

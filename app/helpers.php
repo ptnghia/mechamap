@@ -332,3 +332,82 @@ if (!function_exists('js_versioned')) {
         return '<script src="' . asset_versioned($path) . '"></script>';
     }
 }
+
+// ============================================================================
+// LOCALIZATION HELPER FUNCTIONS
+// ============================================================================
+
+if (!function_exists('t_core')) {
+    /**
+     * Get core translation
+     *
+     * @param string $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string
+     */
+    function t_core($key, $replace = [], $locale = null)
+    {
+        return __("core/$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_ui')) {
+    /**
+     * Get UI translation
+     *
+     * @param string $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string
+     */
+    function t_ui($key, $replace = [], $locale = null)
+    {
+        return __("ui/$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_content')) {
+    /**
+     * Get content translation
+     *
+     * @param string $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string
+     */
+    function t_content($key, $replace = [], $locale = null)
+    {
+        return __("content/$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_feature')) {
+    /**
+     * Get feature translation
+     *
+     * @param string $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string
+     */
+    function t_feature($key, $replace = [], $locale = null)
+    {
+        return __("features/$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_user')) {
+    /**
+     * Get user translation
+     *
+     * @param string $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string
+     */
+    function t_user($key, $replace = [], $locale = null)
+    {
+        return __("user/$key", $replace, $locale);
+    }
+}

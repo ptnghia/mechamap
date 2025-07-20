@@ -54,7 +54,7 @@
                 <div class="tab-pane fade show active" id="conversations" role="tabpanel">
                     <div class="conversations-search p-2">
                         <input type="text" class="form-control form-control-sm"
-                               id="conversationSearch" placeholder={{ t_ui('forms.search_conversations_placeholder') }}>
+                               id="conversationSearch" placeholder="{{ t_ui('forms.search_conversations_placeholder') }}">
                     </div>
                     <div id="conversationsList" class="conversations-list">
                         <div class="text-center p-3">
@@ -77,7 +77,7 @@
                         <form id="messageForm" class="d-flex">
                             <input type="hidden" id="activeConversationId" value="">
                             <input type="text" class="form-control" id="messageInput"
-                                   placeholder={{ t_ui('forms.enter_message_placeholder') }} disabled>
+                                   placeholder="{{ t_ui('forms.enter_message_placeholder') }}" disabled>
                             <button type="submit" class="btn btn-primary ms-2" disabled>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -105,7 +105,7 @@
                     <div class="mb-3">
                         <label for="recipientSearch" class="form-label">Người nhận:</label>
                         <input type="text" class="form-control" id="recipientSearch"
-                               placeholder={{ t_ui('forms.search_members_placeholder') }}>
+                               placeholder="{{ t_ui('forms.search_members_placeholder') }}">
                         <div id="recipientSuggestions" class="suggestions-dropdown"></div>
                         <input type="hidden" id="selectedRecipientId" value="">
                     </div>
@@ -117,7 +117,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"{{ t_ui('buttons.cancel') }}/button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t_ui('buttons.cancel') }}</button>
                 <button type="button" class="btn btn-primary" id="sendNewChat">
                     <i class="fas fa-paper-plane me-1"></i>
                     Gửi tin nhắn
