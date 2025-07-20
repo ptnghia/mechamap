@@ -46,7 +46,7 @@
                                                         'processing' => 'Đang xử lý',
                                                         'shipped' => 'Đã gửi',
                                                         'delivered' => 'Đã giao',
-                                                        'cancelled' => 'Đã hủy',
+                                                        'cancelled' => {{ t_user('profile.status.cancelled') }},
                                                         default => ucfirst($order->status)
                                                     };
                                                 @endphp

@@ -43,6 +43,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Register custom Blade directives for admin permissions
         $this->registerAdminBladeDirectives();
+
+        // Register localization Blade directives
+        $this->registerLocalizationBladeDirectives();
     }
 
     /**
@@ -78,6 +81,37 @@ class AppServiceProvider extends ServiceProvider
         // @endadminCannot directive
         Blade::directive('endadminCannot', function () {
             return "<?php endif; ?>";
+        });
+    }
+
+    /**
+     * Register custom Blade directives for localization
+     */
+    private function registerLocalizationBladeDirectives(): void
+    {
+        // @core directive
+        Blade::directive('core', function ($key) {
+            return "<?php echo t_core($key); ?>";
+        });
+
+        // @ui directive
+        Blade::directive('ui', function ($key) {
+            return "<?php echo t_ui($key); ?>";
+        });
+
+        // @content directive
+        Blade::directive('content', function ($key) {
+            return "<?php echo t_content($key); ?>";
+        });
+
+        // @feature directive
+        Blade::directive('feature', function ($key) {
+            return "<?php echo t_feature($key); ?>";
+        });
+
+        // @user directive
+        Blade::directive('user', function ($key) {
+            return "<?php echo t_user($key); ?>";
         });
     }
 

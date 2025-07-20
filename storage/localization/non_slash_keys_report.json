@@ -1,0 +1,50 @@
+{
+    "scan_date": "2025-07-20 11:53:59",
+    "total_files": 436,
+    "problematic_keys": 9,
+    "working_keys": 2,
+    "failing_keys": 7,
+    "failure_rate": 77.8,
+    "failing_keys_detail": {
+        "forum.poll.votes": [
+            "resources\/views\/threads\/partials\/poll.blade.php"
+        ],
+        "auth.login_to_view_notifications": [
+            "resources\/views\/components\/notification-dropdown.blade.php"
+        ],
+        "language.switched_successfully": [
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "language.switch_failed": [
+            "resources\/views\/components\/language-switcher.blade.php",
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "language.auto_detected": [
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "auth.register_mechamap_account": [
+            "resources\/views\/components\/registration-wizard.blade.php"
+        ],
+        "roles.admin": [
+            "resources\/views\/components\/menu\/admin-menu.blade.php"
+        ]
+    },
+    "patterns": {
+        "language": [
+            "language.switched_successfully",
+            "language.switch_failed",
+            "language.auto_detected"
+        ],
+        "auth": [
+            "auth.login_to_view_notifications",
+            "auth.register_mechamap_account"
+        ],
+        "roles": [
+            "roles.admin"
+        ],
+        "forum": [
+            "forum.poll.votes"
+        ]
+    },
+    "suggested_fixes": []
+}

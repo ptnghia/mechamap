@@ -138,7 +138,7 @@
                 tempResults.innerHTML = `
                     <div class="text-center py-4">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">{{ __('common.loading') }}</span>
+                            <span class="visually-hidden">{{ __('ui/common.loading') }}</span>
                         </div>
                         <p class="mt-2">{{ __('forum.poll.loading_results') }}</p>
                     </div>

@@ -347,7 +347,7 @@ function editBookmark(bookmarkId) {
 }
 
 function deleteBookmark(bookmarkId) {
-    if (confirm('{{ __("messages.confirm_delete_bookmark") }}')) {
+    if (confirm('{{ __("core/messages.confirm_delete_bookmark") }}')) {
         fetch(`/user/bookmarks/${bookmarkId}`, {
             method: 'DELETE',
             headers: {
@@ -360,12 +360,12 @@ function deleteBookmark(bookmarkId) {
             if (data.success) {
                 location.reload();
             } else {
-                alert(data.message || '{{ __("messages.error_occurred") }}');
+                alert(data.message || '{{ __("core/messages.error_occurred") }}');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('{{ __("messages.error_occurred") }}');
+            alert('{{ __("core/messages.error_occurred") }}');
         });
     }
 }
@@ -373,11 +373,11 @@ function deleteBookmark(bookmarkId) {
 function bulkDelete() {
     const selected = document.querySelectorAll('.bookmark-checkbox:checked');
     if (selected.length === 0) {
-        alert('{{ __("messages.select_bookmarks_first") }}');
+        alert('{{ __("core/messages.select_bookmarks_first") }}');
         return;
     }
 
-    if (confirm('{{ __("messages.confirm_delete_selected_bookmarks") }}')) {
+    if (confirm('{{ __("core/messages.confirm_delete_selected_bookmarks") }}')) {
         const ids = Array.from(selected).map(cb => cb.value);
 
         fetch('/user/bookmarks/bulk-delete', {
@@ -394,12 +394,12 @@ function bulkDelete() {
             if (data.success) {
                 location.reload();
             } else {
-                alert(data.message || '{{ __("messages.error_occurred") }}');
+                alert(data.message || '{{ __("core/messages.error_occurred") }}');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('{{ __("messages.error_occurred") }}');
+            alert('{{ __("core/messages.error_occurred") }}');
         });
     }
 }
@@ -427,12 +427,12 @@ document.getElementById('createFolderForm').addEventListener('submit', function(
         if (data.success) {
             location.reload();
         } else {
-            alert(data.message || '{{ __("messages.error_occurred") }}');
+            alert(data.message || '{{ __("core/messages.error_occurred") }}');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('{{ __("messages.error_occurred") }}');
+        alert('{{ __("core/messages.error_occurred") }}');
     });
 });
 </script>

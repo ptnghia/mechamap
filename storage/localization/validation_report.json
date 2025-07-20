@@ -1,0 +1,827 @@
+{
+    "validation_date": "2025-07-20 12:54:16",
+    "total_tested": 81,
+    "working_count": 43,
+    "failing_count": 38,
+    "success_rate": 53.1,
+    "working_keys": [
+        {
+            "function": "t_ui",
+            "key": "forms.search_conversations_placeholder",
+            "full_key": "ui\/forms.search_conversations_placeholder",
+            "result": "Tìm kiếm cuộc trò chuyện...",
+            "files": [
+                "resources\/views\/components\/chat-widget.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "forms.enter_message_placeholder",
+            "full_key": "ui\/forms.enter_message_placeholder",
+            "result": "Nhập tin nhắn...",
+            "files": [
+                "resources\/views\/components\/chat-widget.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "forms.search_members_placeholder",
+            "full_key": "ui\/forms.search_members_placeholder",
+            "result": "Tìm kiếm thành viên...",
+            "files": [
+                "resources\/views\/components\/chat-widget.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "buttons.cancel",
+            "full_key": "ui\/buttons.cancel",
+            "result": "Hủy",
+            "files": [
+                "resources\/views\/components\/chat-widget.blade.php",
+                "resources\/views\/components\/rich-text-editor.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.popular_searches",
+            "full_key": "ui\/common.popular_searches",
+            "result": "Tìm kiếm phổ biến",
+            "files": [
+                "resources\/views\/components\/marketplace\/quick-search.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.no_results_found",
+            "full_key": "ui\/common.no_results_found",
+            "result": "Không tìm thấy kết quả",
+            "files": [
+                "resources\/views\/components\/marketplace\/quick-search.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.copyright_text",
+            "full_key": "ui\/common.copyright_text",
+            "result": "Bản quyền thuộc về Công ty Cổ phần Công nghệ MechaMap.",
+            "files": [
+                "resources\/views\/components\/footer.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "buttons.toggle_theme",
+            "full_key": "ui\/buttons.toggle_theme",
+            "result": "Chuyển chế độ sáng\/tối",
+            "files": [
+                "resources\/views\/components\/footer.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "buttons.add",
+            "full_key": "ui\/buttons.add",
+            "result": "Thêm",
+            "files": [
+                "resources\/views\/components\/header.blade.php",
+                "resources\/views\/components\/rich-text-editor.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.light_mode",
+            "full_key": "ui\/common.light_mode",
+            "result": "Chế độ sáng",
+            "files": [
+                "resources\/views\/components\/header.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.dark_mode",
+            "full_key": "ui\/common.dark_mode",
+            "result": "Chế độ tối",
+            "files": [
+                "resources\/views\/components\/header.blade.php"
+            ]
+        },
+        {
+            "function": "t_ui",
+            "key": "common.auto_saving",
+            "full_key": "ui\/common.auto_saving",
+            "result": "Đang lưu tự động...",
+            "files": [
+                "resources\/views\/components\/registration-wizard.blade.php"
+            ]
+        },
+        {
+            "function": "t_user",
+            "key": "profile.actions.search",
+            "full_key": "user\/profile.actions.search",
+            "result": "Tìm kiếm",
+            "files": [
+                "resources\/views\/profile\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_user",
+            "key": "profile.labels.role",
+            "full_key": "user\/profile.labels.role",
+            "result": [
+                "Vai trò",
+                "Vai trò"
+            ],
+            "files": [
+                "resources\/views\/profile\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_user",
+            "key": "profile.labels.all_roles",
+            "full_key": "user\/profile.labels.all_roles",
+            "result": [
+                "Tất cả vai trò",
+                "Tất cả vai trò"
+            ],
+            "files": [
+                "resources\/views\/profile\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_user",
+            "key": "profile.status.cancelled",
+            "full_key": "user\/profile.status.cancelled",
+            "result": "Đã hủy",
+            "files": [
+                "resources\/views\/profile\/orders.blade.php"
+            ]
+        },
+        {
+            "function": "t_feature",
+            "key": "features\/marketplace.actions.reload",
+            "full_key": "features\/marketplace.actions.reload",
+            "result": "features\/features\/marketplace.actions.reload",
+            "files": [
+                "resources\/views\/marketplace\/downloads\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_feature",
+            "key": "features\/marketplace.actions.details",
+            "full_key": "features\/marketplace.actions.details",
+            "result": "features\/features\/marketplace.actions.details",
+            "files": [
+                "resources\/views\/marketplace\/downloads\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_feature",
+            "key": "features\/marketplace.time.just_now",
+            "full_key": "features\/marketplace.time.just_now",
+            "result": "features\/features\/marketplace.time.just_now",
+            "files": [
+                "resources\/views\/marketplace\/downloads\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_feature",
+            "key": "features\/marketplace.actions.cancel",
+            "full_key": "features\/marketplace.actions.cancel",
+            "result": "features\/features\/marketplace.actions.cancel",
+            "files": [
+                "resources\/views\/marketplace\/checkout\/index.blade.php"
+            ]
+        },
+        {
+            "function": "t_content",
+            "key": "pages.community_rules",
+            "full_key": "content\/pages.community_rules",
+            "result": "Quy tắc cộng đồng",
+            "files": [
+                "resources\/views\/pages\/about.blade.php"
+            ]
+        },
+        {
+            "function": "t_content",
+            "key": "pages.contact",
+            "full_key": "content\/pages.contact",
+            "result": "Liên hệ",
+            "files": [
+                "resources\/views\/pages\/about.blade.php",
+                "resources\/views\/pages\/static-pages-overview.blade.php"
+            ]
+        },
+        {
+            "function": "t_content",
+            "key": "pages.about_us",
+            "full_key": "content\/pages.about_us",
+            "result": "Về chúng tôi",
+            "files": [
+                "resources\/views\/pages\/static-pages-overview.blade.php"
+            ]
+        },
+        {
+            "function": "t_content",
+            "key": "pages.terms_of_service",
+            "full_key": "content\/pages.terms_of_service",
+            "result": "Điều khoản dịch vụ",
+            "files": [
+                "resources\/views\/pages\/static-pages-overview.blade.php"
+            ]
+        },
+        {
+            "function": "t_content",
+            "key": "pages.privacy_policy",
+            "full_key": "content\/pages.privacy_policy",
+            "result": "Chính sách bảo mật",
+            "files": [
+                "resources\/views\/pages\/static-pages-overview.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.threads.sticky",
+            "full_key": "forum.threads.sticky",
+            "result": "Ghim",
+            "files": [
+                "resources\/views\/threads\/saved.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.threads.locked",
+            "full_key": "forum.threads.locked",
+            "result": "Khóa",
+            "files": [
+                "resources\/views\/threads\/saved.blade.php",
+                "resources\/views\/admin\/threads\/show.blade.php",
+                "resources\/views\/admin\/threads\/show.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "ui.common.replies",
+            "full_key": "ui.common.replies",
+            "result": "Phản hồi",
+            "files": [
+                "resources\/views\/threads\/saved.blade.php",
+                "resources\/views\/showcase\/partials\/comment-form.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.closed",
+            "full_key": "forum.poll.closed",
+            "result": "Cuộc bình chọn đã đóng",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.vote",
+            "full_key": "forum.poll.vote",
+            "result": "Bình chọn",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.view_results",
+            "full_key": "forum.poll.view_results",
+            "result": "Xem kết quả",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.total_votes",
+            "full_key": "forum.poll.total_votes",
+            "result": "Tổng số phiếu",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.change_vote",
+            "full_key": "forum.poll.change_vote",
+            "result": "Thay đổi phiếu bầu",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.update_vote",
+            "full_key": "forum.poll.update_vote",
+            "result": "Cập nhật phiếu bầu",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "common.cancel",
+            "full_key": "common.cancel",
+            "result": "Hủy",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.voters",
+            "full_key": "forum.poll.voters",
+            "result": "Người bình chọn",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "ui\/common.loading",
+            "full_key": "ui\/common.loading",
+            "result": "Đang tải...",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php",
+                "resources\/views\/components\/language-switcher.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "forum.poll.loading_results",
+            "full_key": "forum.poll.loading_results",
+            "result": "Đang tải kết quả...",
+            "files": [
+                "resources\/views\/threads\/partials\/poll.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "ui.common.by",
+            "full_key": "ui.common.by",
+            "result": "Bởi",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "ui.actions.view_full_showcase",
+            "full_key": "ui.actions.view_full_showcase",
+            "result": "Xem showcase đầy đủ",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "ui.actions.view_details",
+            "full_key": "ui.actions.view_details",
+            "result": "Xem chi tiết",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/whats-new\/showcases.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "pagination.previous",
+            "full_key": "pagination.previous",
+            "result": "&laquo; Previous",
+            "files": [
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-default.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-default.blade.php",
+                "resources\/views\/vendor\/pagination\/default.blade.php",
+                "resources\/views\/vendor\/pagination\/default.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/semantic-ui.blade.php",
+                "resources\/views\/vendor\/pagination\/semantic-ui.blade.php"
+            ]
+        },
+        {
+            "function": "__",
+            "key": "pagination.next",
+            "full_key": "pagination.next",
+            "result": "Next &raquo;",
+            "files": [
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-5.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-default.blade.php",
+                "resources\/views\/vendor\/pagination\/simple-default.blade.php",
+                "resources\/views\/vendor\/pagination\/default.blade.php",
+                "resources\/views\/vendor\/pagination\/default.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/bootstrap-4.blade.php",
+                "resources\/views\/vendor\/pagination\/semantic-ui.blade.php",
+                "resources\/views\/vendor\/pagination\/semantic-ui.blade.php"
+            ]
+        }
+    ],
+    "failing_keys": [
+        {
+            "function": "t_ui",
+            "key": "core\/notifications.marked_all_read",
+            "full_key": "ui\/core\/notifications.marked_all_read",
+            "result": "ui\/core\/notifications.marked_all_read",
+            "files": [
+                "resources\/views\/components\/header.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "t_ui",
+            "key": "auth\/login_to_view_notifications",
+            "full_key": "ui\/auth\/login_to_view_notifications",
+            "result": "ui\/auth\/login_to_view_notifications",
+            "files": [
+                "resources\/views\/components\/notification-dropdown.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "t_ui",
+            "key": "auth\/register_mechamap_account",
+            "full_key": "ui\/auth\/register_mechamap_account",
+            "result": "ui\/auth\/register_mechamap_account",
+            "files": [
+                "resources\/views\/components\/registration-wizard.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "t_ui",
+            "key": "user\/roles\/admin",
+            "full_key": "ui\/user\/roles\/admin",
+            "result": "ui\/user\/roles\/admin",
+            "files": [
+                "resources\/views\/components\/menu\/admin-menu.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.related",
+            "full_key": "showcase.related",
+            "result": "showcase.related",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.for_thread",
+            "full_key": "showcase.for_thread",
+            "result": "showcase.for_thread",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.create_from_thread",
+            "full_key": "showcase.create_from_thread",
+            "result": "showcase.create_from_thread",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.create_showcase_info",
+            "full_key": "showcase.create_showcase_info",
+            "result": "showcase.create_showcase_info",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.create_showcase_button",
+            "full_key": "showcase.create_showcase_button",
+            "result": "showcase.create_showcase_button",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.create_from_thread_title",
+            "full_key": "showcase.create_from_thread_title",
+            "result": "showcase.create_from_thread_title",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.basic_info",
+            "full_key": "showcase.basic_info",
+            "result": "showcase.basic_info",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.content",
+            "full_key": "showcase.content",
+            "result": "showcase.content",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complete",
+            "full_key": "showcase.complete",
+            "result": "showcase.complete",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.step_1_title",
+            "full_key": "showcase.step_1_title",
+            "result": "showcase.step_1_title",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.showcase_title",
+            "full_key": "showcase.showcase_title",
+            "result": "showcase.showcase_title",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.showcase_title_help",
+            "full_key": "showcase.showcase_title_help",
+            "result": "showcase.showcase_title_help",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.category",
+            "full_key": "showcase.category",
+            "result": "showcase.category",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/showcase\/public.blade.php",
+                "resources\/views\/partials\/showcase-item.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.select_category",
+            "full_key": "showcase.select_category",
+            "result": "showcase.select_category",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.project_type",
+            "full_key": "showcase.project_type",
+            "result": "showcase.project_type",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/showcase\/public.blade.php",
+                "resources\/views\/partials\/showcase-item.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.select_project_type",
+            "full_key": "showcase.select_project_type",
+            "result": "showcase.select_project_type",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.step_2_title",
+            "full_key": "showcase.step_2_title",
+            "result": "showcase.step_2_title",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.project_description",
+            "full_key": "showcase.project_description",
+            "result": "showcase.project_description",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.project_description_help",
+            "full_key": "showcase.project_description_help",
+            "result": "showcase.project_description_help",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.cover_image",
+            "full_key": "showcase.cover_image",
+            "result": "showcase.cover_image",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.cover_image_help",
+            "full_key": "showcase.cover_image_help",
+            "result": "showcase.cover_image_help",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.current_thread_image",
+            "full_key": "showcase.current_thread_image",
+            "result": "showcase.current_thread_image",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complexity_level",
+            "full_key": "showcase.complexity_level",
+            "result": "showcase.complexity_level",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complexity_levels.beginner",
+            "full_key": "showcase.complexity_levels.beginner",
+            "result": "showcase.complexity_levels.beginner",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complexity_levels.intermediate",
+            "full_key": "showcase.complexity_levels.intermediate",
+            "result": "showcase.complexity_levels.intermediate",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complexity_levels.advanced",
+            "full_key": "showcase.complexity_levels.advanced",
+            "result": "showcase.complexity_levels.advanced",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.complexity_levels.expert",
+            "full_key": "showcase.complexity_levels.expert",
+            "result": "showcase.complexity_levels.expert",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.industry_application",
+            "full_key": "showcase.industry_application",
+            "result": "showcase.industry_application",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.industry_placeholder",
+            "full_key": "showcase.industry_placeholder",
+            "result": "showcase.industry_placeholder",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.file_attachments",
+            "full_key": "showcase.file_attachments",
+            "result": "showcase.file_attachments",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/threads\/create.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.file_attachments_optional",
+            "full_key": "showcase.file_attachments_optional",
+            "result": "showcase.file_attachments_optional",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/threads\/create.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.file_upload_area",
+            "full_key": "showcase.file_upload_area",
+            "result": "showcase.file_upload_area",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/threads\/create.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.browse_files",
+            "full_key": "showcase.browse_files",
+            "result": "showcase.browse_files",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/threads\/create.blade.php"
+            ],
+            "reason": "Translation not found"
+        },
+        {
+            "function": "__",
+            "key": "showcase.file_upload_help",
+            "full_key": "showcase.file_upload_help",
+            "result": "showcase.file_upload_help",
+            "files": [
+                "resources\/views\/threads\/partials\/showcase.blade.php",
+                "resources\/views\/threads\/create.blade.php"
+            ],
+            "reason": "Translation not found"
+        }
+    ]
+}

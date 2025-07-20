@@ -1,0 +1,181 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Chỉnh sửa thành viên - ' . $user->name)
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Chỉnh sửa thành viên</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa thành viên</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('actions')
+    <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+    </a>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle img-thumbnail mb-3" width="150" height="150" id="avatar-preview">
+                    <h5 class="card-title">{{ $user->name }}</h5>
+                    <p class="text-muted">
+                        @if($user->isAdmin())
+                            <span class="badge bg-danger">{{ __('Admin') }}</span>
+                        @elseif($user->isModerator())
+                            <span class="badge bg-primary">{{ __('Moderator') }}</span>
+                        @elseif($user->isSenior())
+                            <span class="badge bg-success">{{ __('Senior') }}</span>
+                        @else
+                            <span class="badge bg-secondary">{{ __('Member') }}</span>
+                        @endif
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <i class="fas fa-user"></i> {{ $user->username }}
+                        </small>
+                        <br>
+                        <small class="text-muted">
+                            <i class="fas fa-envelope"></i> {{ $user->email }}
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Thông tin thành viên') }}</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.users.update', $user) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">{{ __('Họ tên') }} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $user->name) }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">{{ __('Tên đăng nhập') }} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username', $user->username) }}" required>
+                                @error('username')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required>
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="role" class="form-label">{{ __('Vai trò') }} <span class="text-danger">*</span></label>
+                                <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
+                                    <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
+                                    <option value="moderator" {{ old('role', $user->role) === 'moderator' ? 'selected' : '' }}>{{ __('Moderator') }}</option>
+                                    <option value="senior" {{ old('role', $user->role) === 'senior' ? 'selected' : '' }}>{{ __('Senior') }}</option>
+                                    <option value="member" {{ old('role', $user->role) === 'member' ? 'selected' : '' }}>{{ __('Member') }}</option>
+                                </select>
+                                @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    {{ __('Admin và Moderator có quyền truy cập trang quản trị.') }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="avatar" class="form-label">{{ __('Ảnh đại diện') }}</label>
+                            <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
+                            <div class="form-text">{{ __('Chấp nhận các định dạng: JPG, PNG, GIF. Kích thước tối đa: 2MB.') }}</div>
+                            @error('avatar')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="about_me" class="form-label">{{ __('Giới thiệu') }}</label>
+                            <textarea class="form-control @error('about_me') is-invalid @enderror" id="about_me" name="about_me" rows="3">{{ old('about_me', $user->about_me) }}</textarea>
+                            @error('about_me')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="website" class="form-label">{{ __('Website') }}</label>
+                                <input type="url" class="form-control @error('website') is-invalid @enderror" id="website" name="website" value="{{ old('website', $user->website) }}">
+                                @error('website')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">{{ __('Địa điểm') }}</label>
+                                <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location', $user->location) }}">
+                                @error('location')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="signature" class="form-label">{{ __('Chữ ký') }}</label>
+                            <textarea class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" rows="2">{{ old('signature', $user->signature) }}</textarea>
+                            @error('signature')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.users.show', $user) }}" class="btn btn-outline-secondary">
+                                {{ __('Hủy') }}
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+<script>
+    // Preview avatar before upload
+    document.getElementById('avatar').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('avatar-preview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+@endpush

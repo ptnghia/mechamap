@@ -1,24 +1,17 @@
 <?php
 
-return [
-    'site' => [
-        'name' => 'MechaMap',
-        'tagline' => 'Community Forum',
-        'description' => 'MechaMap - Community forum for sharing knowledge and experience',
-    ],
-    'time' => [
-        'just_now' => 'Just now',
-        'minutes_ago' => 'minutes ago',
-        'hours_ago' => 'hours ago',
-        'days_ago' => 'days ago',
-        'updated' => 'Updated',
-        'created' => 'Created',
-    ],
+/**
+ * Common translations
+ * Updated: 2025-07-20 12:26:31
+ */
 
-    // Language switching
-    'language' => [
-        'switch' => 'Switch Language',
-        'select' => 'Select Language',
-        'auto_detect' => 'Auto Detect',
-    ],
-];
+return array (
+  'cancel' => 'Cancel',
+  'delete' => 'Delete',
+  'status' => 'Status',
+  'actions' => 'Actions',
+  'order' => 'Order',
+  'edit' => 'Edit',
+  'id' => 'ID',
+  'confirm_delete' => 'Confirm Delete',
+);

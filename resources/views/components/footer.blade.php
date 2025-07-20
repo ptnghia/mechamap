@@ -8,7 +8,7 @@
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                 <p class="small mb-0">
-                    © {{ date('Y') }} {{ get_site_name() }}. {{ get_copyright_info()['text'] ?? 'Bản quyền thuộc về Công ty Cổ phần Công nghệ MechaMap.' }}
+                    © {{ date('Y') }} {{ get_site_name() }}. {{ get_copyright_info()['text'] ?? t_ui('common.copyright_text') }}
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end">
@@ -63,7 +63,7 @@
                             class="btn btn-sm btn-outline-light rounded-circle p-2 ms-2"
                             id="darkModeToggle"
                             data-bs-toggle="tooltip"
-                            title="Chuyển chế độ sáng/tối">
+                            title="{{ t_ui('buttons.toggle_theme') }}">
                         <img src="{{ asset('images/moon.svg') }}" alt="Dark Mode" width="16" height="16" id="darkModeIcon">
                         <span class="visually-hidden">Chuyển chế độ sáng/tối</span>
                     </button>

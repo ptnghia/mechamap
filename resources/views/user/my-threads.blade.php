@@ -249,7 +249,7 @@
 
 <script>
 function deleteThread(threadId) {
-    if (confirm('{{ __("messages.confirm_delete_thread") }}')) {
+    if (confirm('{{ __("core/messages.confirm_delete_thread") }}')) {
         fetch(`/threads/${threadId}`, {
             method: 'DELETE',
             headers: {
@@ -262,12 +262,12 @@ function deleteThread(threadId) {
             if (data.success) {
                 location.reload();
             } else {
-                alert(data.message || '{{ __("messages.error_occurred") }}');
+                alert(data.message || '{{ __("core/messages.error_occurred") }}');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('{{ __("messages.error_occurred") }}');
+            alert('{{ __("core/messages.error_occurred") }}');
         });
     }
 }

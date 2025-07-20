@@ -1,0 +1,12 @@
+{
+    "status": "success",
+    "checks": [
+        "Directory lang exists",
+        "Directory views exists",
+        "Directory php exists",
+        "Backup manifest exists",
+        "Language files backed up: 52",
+        "View files backed up: 26"
+    ],
+    "errors": []
+}

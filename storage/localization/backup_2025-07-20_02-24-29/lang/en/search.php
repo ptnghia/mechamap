@@ -1,0 +1,30 @@
+<?php
+
+return [
+    // Search interface
+    'search' => 'Search',
+    'basic_search' => 'Basic Search',
+    'search_placeholder' => 'Search threads, posts, users...',
+    'advanced_search' => 'Advanced Search',
+    'search_results' => 'Search Results',
+    'no_results' => 'No results found',
+    'search_in_progress' => 'Searching...',
+    'enter_search_terms' => 'Enter search terms',
+    'search_description' => 'Search threads, posts, users and more content',
+    'found_results' => 'Found :count results for ":query"',
+    'all_content' => 'All Content',
+    'threads_only' => 'Threads Only',
+    'posts_only' => 'Posts Only',
+    'users_only' => 'Users Only',
+    'threads' => 'Threads',
+    'posts' => 'Posts',
+    'users' => 'Users',
+    'no_threads_found' => 'No threads found',
+    'no_posts_found' => 'No posts found',
+    'no_users_found' => 'No users found',
+    'try_different_keywords' => 'Try different keywords',
+    'view_post' => 'View Post',
+    'search_in_thread' => 'Search in Thread',
+    'search_in_forum' => 'Search in Forum',
+    'advanced' => 'Advanced Search',
+];

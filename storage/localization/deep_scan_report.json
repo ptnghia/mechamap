@@ -1,0 +1,416 @@
+{
+    "scan_date": "2025-07-20 11:48:48",
+    "total_files": 436,
+    "total_keys": 101,
+    "working_keys": 29,
+    "failing_keys": 72,
+    "success_rate": 28.7,
+    "failing_keys_detail": {
+        "notifications.marked_all_read": [
+            "resources\/views\/components\/header.blade.php"
+        ],
+        "auth.login_to_view_notifications": [
+            "resources\/views\/components\/notification-dropdown.blade.php"
+        ],
+        "ui\/common.loading": [
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "language.switched_successfully": [
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "language.switch_failed": [
+            "resources\/views\/components\/language-switcher.blade.php",
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "language.auto_detected": [
+            "resources\/views\/components\/language-switcher.blade.php"
+        ],
+        "auth.register_mechamap_account": [
+            "resources\/views\/components\/registration-wizard.blade.php"
+        ],
+        "core\/messages.forgot_password": [
+            "resources\/views\/components\/auth-modal.blade.php"
+        ],
+        "roles.admin": [
+            "resources\/views\/components\/menu\/admin-menu.blade.php"
+        ],
+        "marketplace.actions.reload": [
+            "resources\/views\/marketplace\/downloads\/index.blade.php"
+        ],
+        "marketplace.actions.details": [
+            "resources\/views\/marketplace\/downloads\/index.blade.php"
+        ],
+        "marketplace.time.just_now": [
+            "resources\/views\/marketplace\/downloads\/index.blade.php"
+        ],
+        "marketplace.actions.cancel": [
+            "resources\/views\/marketplace\/checkout\/index.blade.php"
+        ],
+        "pages.pages.community_rules": [
+            "resources\/views\/pages\/about.blade.php"
+        ],
+        "pages.pages.contact": [
+            "resources\/views\/pages\/about.blade.php",
+            "resources\/views\/pages\/static-pages-overview.blade.php"
+        ],
+        "pages.pages.about_us": [
+            "resources\/views\/pages\/static-pages-overview.blade.php"
+        ],
+        "pages.pages.terms_of_service": [
+            "resources\/views\/pages\/static-pages-overview.blade.php"
+        ],
+        "pages.pages.privacy_policy": [
+            "resources\/views\/pages\/static-pages-overview.blade.php"
+        ],
+        "core\/messages.please_enter_valid_page": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.close": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.next": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.previous": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.image": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.image_not_found": [
+            "resources\/views\/whats-new\/media.blade.php",
+            "resources\/views\/whats-new\/media.blade.php",
+            "resources\/views\/whats-new\/media.blade.php",
+            "resources\/views\/whats-new\/media.blade.php",
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.loading": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "core\/messages.download": [
+            "resources\/views\/whats-new\/media.blade.php"
+        ],
+        "status.sticky": [
+            "resources\/views\/home.blade.php"
+        ],
+        "status.locked": [
+            "resources\/views\/home.blade.php"
+        ],
+        "core\/messages.preferences_updated": [
+            "resources\/views\/user\/settings-new.blade.php"
+        ],
+        "core\/messages.notifications_updated": [
+            "resources\/views\/user\/settings-new.blade.php"
+        ],
+        "core\/messages.privacy_updated": [
+            "resources\/views\/user\/settings-new.blade.php"
+        ],
+        "core\/messages.saving": [
+            "resources\/views\/user\/settings-new.blade.php"
+        ],
+        "core\/messages.error_occurred": [
+            "resources\/views\/user\/settings-new.blade.php",
+            "resources\/views\/user\/settings-new.blade.php",
+            "resources\/views\/user\/my-threads.blade.php",
+            "resources\/views\/user\/my-threads.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php",
+            "resources\/views\/user\/bookmarks-new.blade.php"
+        ],
+        "core\/messages.confirm_delete_thread": [
+            "resources\/views\/user\/my-threads.blade.php"
+        ],
+        "core\/messages.confirm_delete_bookmark": [
+            "resources\/views\/user\/bookmarks-new.blade.php"
+        ],
+        "core\/messages.select_bookmarks_first": [
+            "resources\/views\/user\/bookmarks-new.blade.php"
+        ],
+        "core\/messages.confirm_delete_selected_bookmarks": [
+            "resources\/views\/user\/bookmarks-new.blade.php"
+        ],
+        "Update your account's profile information and email address.": [
+            "resources\/views\/profile\/partials\/update-profile-information-form.blade.php"
+        ],
+        "profile.actions.search": [
+            "resources\/views\/profile\/index.blade.php"
+        ],
+        "profile.labels.role": [
+            "resources\/views\/profile\/index.blade.php"
+        ],
+        "profile.labels.all_roles": [
+            "resources\/views\/profile\/index.blade.php"
+        ],
+        "profile.status.cancelled": [
+            "resources\/views\/profile\/orders.blade.php"
+        ],
+        "Số bài đăng": [
+            "resources\/views\/admin\/threads\/statistics.blade.php",
+            "resources\/views\/admin\/threads\/statistics.blade.php",
+            "resources\/views\/admin\/threads\/statistics.blade.php"
+        ],
+        "Đang tải lên...": [
+            "resources\/views\/admin\/media\/create.blade.php"
+        ],
+        "Thứ tự danh mục đã được cập nhật.": [
+            "resources\/views\/admin\/page-categories\/index.blade.php",
+            "resources\/views\/admin\/faq-categories\/index.blade.php"
+        ],
+        "Có lỗi xảy ra khi cập nhật thứ tự danh mục.": [
+            "resources\/views\/admin\/page-categories\/index.blade.php",
+            "resources\/views\/admin\/page-categories\/index.blade.php",
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faq-categories\/index.blade.php"
+        ],
+        "Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục.": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Bạn có chắc chắn muốn bắt đầu quá trình đánh chỉ mục lại?": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Lỗi: ": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Quá trình đánh chỉ mục đã hoàn thành thành công!": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Quá trình đánh chỉ mục đã thất bại.": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Lỗi khi theo dõi tiến trình.": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Đánh chỉ mục lại": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Bạn có chắc chắn muốn hủy bỏ quá trình đánh chỉ mục?": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Quá trình đã bị hủy bỏ bởi người dùng.": [
+            "resources\/views\/admin\/search\/reindex.blade.php"
+        ],
+        "Số lượng tìm kiếm": [
+            "resources\/views\/admin\/search\/analytics.blade.php"
+        ],
+        "Thời gian phản hồi (ms)": [
+            "resources\/views\/admin\/search\/analytics.blade.php"
+        ],
+        "Chưa có tìm kiếm nào": [
+            "resources\/views\/admin\/search\/analytics.blade.php"
+        ],
+        "Khách": [
+            "resources\/views\/admin\/search\/analytics.blade.php"
+        ],
+        "Bạn có muốn tạo nội dung cho từ khóa": [
+            "resources\/views\/admin\/search\/analytics.blade.php"
+        ],
+        "Vui lòng chọn ít nhất một mục": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ],
+        "Bạn có chắc muốn kích hoạt": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ],
+        "danh mục được chọn?": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faq-categories\/index.blade.php"
+        ],
+        "Bạn có chắc muốn vô hiệu hóa": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ],
+        "Bạn có chắc muốn xóa": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php",
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ],
+        "danh mục được chọn? Hành động này không thể hoàn tác!": [
+            "resources\/views\/admin\/faq-categories\/index.blade.php"
+        ],
+        "Số bình luận": [
+            "resources\/views\/admin\/comments\/statistics.blade.php"
+        ],
+        "Chưa nhập câu hỏi": [
+            "resources\/views\/admin\/faqs\/edit.blade.php",
+            "resources\/views\/admin\/faqs\/create.blade.php"
+        ],
+        "Chưa nhập câu trả lời": [
+            "resources\/views\/admin\/faqs\/edit.blade.php",
+            "resources\/views\/admin\/faqs\/create.blade.php"
+        ],
+        "Chưa chọn danh mục": [
+            "resources\/views\/admin\/faqs\/edit.blade.php",
+            "resources\/views\/admin\/faqs\/create.blade.php"
+        ],
+        "câu hỏi được chọn?": [
+            "resources\/views\/admin\/faqs\/index.blade.php",
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ],
+        "câu hỏi được chọn? Hành động này không thể hoàn tác!": [
+            "resources\/views\/admin\/faqs\/index.blade.php"
+        ]
+    },
+    "patterns": {
+        "no-dot": [
+            "Số bài đăng",
+            "Bạn có chắc chắn muốn bắt đầu quá trình đánh chỉ mục lại?",
+            "Lỗi: ",
+            "Quá trình đánh chỉ mục đã hoàn thành thành công!",
+            "Đánh chỉ mục lại",
+            "Bạn có chắc chắn muốn hủy bỏ quá trình đánh chỉ mục?",
+            "Số lượng tìm kiếm",
+            "Thời gian phản hồi (ms)",
+            "Chưa có tìm kiếm nào",
+            "Khách",
+            "Bạn có muốn tạo nội dung cho từ khóa",
+            "Vui lòng chọn ít nhất một mục",
+            "Bạn có chắc muốn kích hoạt",
+            "danh mục được chọn?",
+            "Bạn có chắc muốn vô hiệu hóa",
+            "Bạn có chắc muốn xóa",
+            "danh mục được chọn? Hành động này không thể hoàn tác!",
+            "Số bình luận",
+            "Chưa nhập câu hỏi",
+            "Chưa nhập câu trả lời",
+            "Chưa chọn danh mục",
+            "câu hỏi được chọn?",
+            "câu hỏi được chọn? Hành động này không thể hoàn tác!"
+        ],
+        "pages.pages": [
+            "pages.pages.community_rules",
+            "pages.pages.contact",
+            "pages.pages.about_us",
+            "pages.pages.terms_of_service",
+            "pages.pages.privacy_policy"
+        ],
+        "marketplace.actions": [
+            "marketplace.actions.reload",
+            "marketplace.actions.details",
+            "marketplace.actions.cancel"
+        ],
+        "profile.labels": [
+            "profile.labels.role",
+            "profile.labels.all_roles"
+        ],
+        "Đang tải lên.": [
+            "Đang tải lên..."
+        ],
+        "ui\/common.loading": [
+            "ui\/common.loading"
+        ],
+        "status.sticky": [
+            "status.sticky"
+        ],
+        "status.locked": [
+            "status.locked"
+        ],
+        "roles.admin": [
+            "roles.admin"
+        ],
+        "profile.status": [
+            "profile.status.cancelled"
+        ],
+        "profile.actions": [
+            "profile.actions.search"
+        ],
+        "notifications.marked_all_read": [
+            "notifications.marked_all_read"
+        ],
+        "marketplace.time": [
+            "marketplace.time.just_now"
+        ],
+        "language.switched_successfully": [
+            "language.switched_successfully"
+        ],
+        "language.switch_failed": [
+            "language.switch_failed"
+        ],
+        "language.auto_detected": [
+            "language.auto_detected"
+        ],
+        "core\/messages.select_bookmarks_first": [
+            "core\/messages.select_bookmarks_first"
+        ],
+        "core\/messages.saving": [
+            "core\/messages.saving"
+        ],
+        "core\/messages.privacy_updated": [
+            "core\/messages.privacy_updated"
+        ],
+        "core\/messages.previous": [
+            "core\/messages.previous"
+        ],
+        "core\/messages.preferences_updated": [
+            "core\/messages.preferences_updated"
+        ],
+        "core\/messages.please_enter_valid_page": [
+            "core\/messages.please_enter_valid_page"
+        ],
+        "core\/messages.notifications_updated": [
+            "core\/messages.notifications_updated"
+        ],
+        "core\/messages.next": [
+            "core\/messages.next"
+        ],
+        "core\/messages.loading": [
+            "core\/messages.loading"
+        ],
+        "core\/messages.image_not_found": [
+            "core\/messages.image_not_found"
+        ],
+        "core\/messages.image": [
+            "core\/messages.image"
+        ],
+        "core\/messages.forgot_password": [
+            "core\/messages.forgot_password"
+        ],
+        "core\/messages.error_occurred": [
+            "core\/messages.error_occurred"
+        ],
+        "core\/messages.download": [
+            "core\/messages.download"
+        ],
+        "core\/messages.confirm_delete_thread": [
+            "core\/messages.confirm_delete_thread"
+        ],
+        "core\/messages.confirm_delete_selected_bookmarks": [
+            "core\/messages.confirm_delete_selected_bookmarks"
+        ],
+        "core\/messages.confirm_delete_bookmark": [
+            "core\/messages.confirm_delete_bookmark"
+        ],
+        "core\/messages.close": [
+            "core\/messages.close"
+        ],
+        "auth.register_mechamap_account": [
+            "auth.register_mechamap_account"
+        ],
+        "auth.login_to_view_notifications": [
+            "auth.login_to_view_notifications"
+        ],
+        "Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục.": [
+            "Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục."
+        ],
+        "Update your account's profile information and email address.": [
+            "Update your account's profile information and email address."
+        ],
+        "Thứ tự danh mục đã được cập nhật.": [
+            "Thứ tự danh mục đã được cập nhật."
+        ],
+        "Quá trình đã bị hủy bỏ bởi người dùng.": [
+            "Quá trình đã bị hủy bỏ bởi người dùng."
+        ],
+        "Quá trình đánh chỉ mục đã thất bại.": [
+            "Quá trình đánh chỉ mục đã thất bại."
+        ],
+        "Lỗi khi theo dõi tiến trình.": [
+            "Lỗi khi theo dõi tiến trình."
+        ],
+        "Có lỗi xảy ra khi cập nhật thứ tự danh mục.": [
+            "Có lỗi xảy ra khi cập nhật thứ tự danh mục."
+        ]
+    }
+}

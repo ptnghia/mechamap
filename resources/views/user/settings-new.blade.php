@@ -463,27 +463,27 @@ document.getElementById('avatar').addEventListener('change', function(e) {
 // Form submissions
 document.getElementById('profileForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    submitForm(this, '{{ __("messages.profile_updated") }}');
+    submitForm(this, '{{ __("core/messages.profile_updated") }}');
 });
 
 document.getElementById('passwordForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    submitForm(this, '{{ __("messages.password_updated") }}');
+    submitForm(this, '{{ __("core/messages.password_updated") }}');
 });
 
 document.getElementById('preferencesForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    submitForm(this, '{{ __("messages.preferences_updated") }}');
+    submitForm(this, '{{ __("core/messages.preferences_updated") }}');
 });
 
 document.getElementById('notificationsForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    submitForm(this, '{{ __("messages.notifications_updated") }}');
+    submitForm(this, '{{ __("core/messages.notifications_updated") }}');
 });
 
 document.getElementById('privacyForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    submitForm(this, '{{ __("messages.privacy_updated") }}');
+    submitForm(this, '{{ __("core/messages.privacy_updated") }}');
 });
 
 function submitForm(form, successMessage) {
@@ -492,7 +492,7 @@ function submitForm(form, successMessage) {
     const originalText = submitBtn.innerHTML;
     
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("messages.saving") }}';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("core/messages.saving") }}';
     
     fetch(form.action, {
         method: 'POST',
@@ -510,12 +510,12 @@ function submitForm(form, successMessage) {
                 form.reset();
             }
         } else {
-            showAlert('danger', data.message || '{{ __("messages.error_occurred") }}');
+            showAlert('danger', data.message || '{{ __("core/messages.error_occurred") }}');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        showAlert('danger', '{{ __("messages.error_occurred") }}');
+        showAlert('danger', '{{ __("core/messages.error_occurred") }}');
     })
     .finally(() => {
         submitBtn.disabled = false;

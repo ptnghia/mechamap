@@ -1,0 +1,72 @@
+Key,"Usage Count",Files,Pattern
+messages.language.switched_successfully,2,resources/views/partials/language-switcher.blade.php,messages
+messages.language.switch_failed,4,resources/views/partials/language-switcher.blade.php,messages
+messages.language.auto_detect_failed,2,resources/views/partials/language-switcher.blade.php,messages
+common.loading,2,resources/views/components/language-switcher.blade.php,common
+language.switched_successfully,2,resources/views/components/language-switcher.blade.php,language
+language.switch_failed,4,resources/views/components/language-switcher.blade.php,language
+language.auto_detected,2,resources/views/components/language-switcher.blade.php,language
+messages.forgot_password,2,resources/views/components/auth-modal.blade.php,messages
+nav.auth.login,4,resources/views/components/auth-modal.blade.php,nav
+content.processing,2,resources/views/components/auth-modal.blade.php,content
+content.error_occurred,2,resources/views/components/auth-modal.blade.php,content
+messages.please_enter_valid_page,2,resources/views/whats-new/media.blade.php,messages
+messages.close,2,resources/views/whats-new/media.blade.php,messages
+messages.next,2,resources/views/whats-new/media.blade.php,messages
+messages.previous,2,resources/views/whats-new/media.blade.php,messages
+messages.image,2,resources/views/whats-new/media.blade.php,messages
+messages.image_not_found,10,resources/views/whats-new/media.blade.php,messages
+messages.loading,2,resources/views/whats-new/media.blade.php,messages
+messages.download,2,resources/views/whats-new/media.blade.php,messages
+status.sticky,2,resources/views/home.blade.php,status
+status.locked,2,resources/views/home.blade.php,status
+messages.common.loading,2,resources/views/home.blade.php,messages
+messages.common.load_more,2,resources/views/home.blade.php,messages
+messages.common.no_more_posts,2,resources/views/home.blade.php,messages
+messages.common.error_occurred,2,resources/views/home.blade.php,messages
+messages.profile_updated,2,resources/views/user/settings-new.blade.php,messages
+messages.password_updated,2,resources/views/user/settings-new.blade.php,messages
+messages.preferences_updated,2,resources/views/user/settings-new.blade.php,messages
+messages.notifications_updated,2,resources/views/user/settings-new.blade.php,messages
+messages.privacy_updated,2,resources/views/user/settings-new.blade.php,messages
+messages.saving,2,resources/views/user/settings-new.blade.php,messages
+messages.error_occurred,20,"resources/views/user/settings-new.blade.php; resources/views/user/my-threads.blade.php; resources/views/user/bookmarks-new.blade.php",messages
+messages.confirm_delete_thread,2,resources/views/user/my-threads.blade.php,messages
+messages.confirm_delete_bookmark,2,resources/views/user/bookmarks-new.blade.php,messages
+messages.select_bookmarks_first,2,resources/views/user/bookmarks-new.blade.php,messages
+messages.confirm_delete_selected_bookmarks,2,resources/views/user/bookmarks-new.blade.php,messages
+"Update your account's profile information and email address.",2,resources/views/profile/partials/update-profile-information-form.blade.php,"Update your account's profile information and email address"
+pagination.previous,14,"resources/views/vendor/pagination/bootstrap-5.blade.php; resources/views/vendor/pagination/simple-bootstrap-4.blade.php; resources/views/vendor/pagination/simple-default.blade.php; resources/views/vendor/pagination/default.blade.php; resources/views/vendor/pagination/bootstrap-4.blade.php; resources/views/vendor/pagination/semantic-ui.blade.php",pagination
+pagination.next,14,"resources/views/vendor/pagination/bootstrap-5.blade.php; resources/views/vendor/pagination/simple-bootstrap-4.blade.php; resources/views/vendor/pagination/simple-default.blade.php; resources/views/vendor/pagination/default.blade.php; resources/views/vendor/pagination/bootstrap-4.blade.php; resources/views/vendor/pagination/semantic-ui.blade.php",pagination
+"Số bài đăng",6,resources/views/admin/threads/statistics.blade.php,"Số bài đăng"
+"Đang tải lên...",2,resources/views/admin/media/create.blade.php,"Đang tải lên"
+"Thứ tự danh mục đã được cập nhật.",4,"resources/views/admin/page-categories/index.blade.php; resources/views/admin/faq-categories/index.blade.php","Thứ tự danh mục đã được cập nhật"
+"Có lỗi xảy ra khi cập nhật thứ tự danh mục.",8,"resources/views/admin/page-categories/index.blade.php; resources/views/admin/faq-categories/index.blade.php","Có lỗi xảy ra khi cập nhật thứ tự danh mục"
+"Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục.",2,resources/views/admin/search/reindex.blade.php,"Vui lòng chọn ít nhất một loại nội dung để đánh chỉ mục"
+"Bạn có chắc chắn muốn bắt đầu quá trình đánh chỉ mục lại?",2,resources/views/admin/search/reindex.blade.php,"Bạn có chắc chắn muốn bắt đầu quá trình đánh chỉ mục lại?"
+"Lỗi: ",2,resources/views/admin/search/reindex.blade.php,"Lỗi: "
+"Quá trình đánh chỉ mục đã hoàn thành thành công!",2,resources/views/admin/search/reindex.blade.php,"Quá trình đánh chỉ mục đã hoàn thành thành công!"
+"Quá trình đánh chỉ mục đã thất bại.",2,resources/views/admin/search/reindex.blade.php,"Quá trình đánh chỉ mục đã thất bại"
+"Lỗi khi theo dõi tiến trình.",2,resources/views/admin/search/reindex.blade.php,"Lỗi khi theo dõi tiến trình"
+"Đánh chỉ mục lại",2,resources/views/admin/search/reindex.blade.php,"Đánh chỉ mục lại"
+"Bạn có chắc chắn muốn hủy bỏ quá trình đánh chỉ mục?",2,resources/views/admin/search/reindex.blade.php,"Bạn có chắc chắn muốn hủy bỏ quá trình đánh chỉ mục?"
+"Quá trình đã bị hủy bỏ bởi người dùng.",2,resources/views/admin/search/reindex.blade.php,"Quá trình đã bị hủy bỏ bởi người dùng"
+"Số lượng tìm kiếm",2,resources/views/admin/search/analytics.blade.php,"Số lượng tìm kiếm"
+"Chưa có tìm kiếm nào",2,resources/views/admin/search/analytics.blade.php,"Chưa có tìm kiếm nào"
+Khách,2,resources/views/admin/search/analytics.blade.php,Khách
+"Bạn có muốn tạo nội dung cho từ khóa",2,resources/views/admin/search/analytics.blade.php,"Bạn có muốn tạo nội dung cho từ khóa"
+"Vui lòng chọn ít nhất một mục",4,"resources/views/admin/faq-categories/index.blade.php; resources/views/admin/faqs/index.blade.php","Vui lòng chọn ít nhất một mục"
+"Bạn có chắc muốn kích hoạt",4,"resources/views/admin/faq-categories/index.blade.php; resources/views/admin/faqs/index.blade.php","Bạn có chắc muốn kích hoạt"
+"danh mục được chọn?",4,resources/views/admin/faq-categories/index.blade.php,"danh mục được chọn?"
+"Bạn có chắc muốn vô hiệu hóa",4,"resources/views/admin/faq-categories/index.blade.php; resources/views/admin/faqs/index.blade.php","Bạn có chắc muốn vô hiệu hóa"
+"Bạn có chắc muốn xóa",4,"resources/views/admin/faq-categories/index.blade.php; resources/views/admin/faqs/index.blade.php","Bạn có chắc muốn xóa"
+"danh mục được chọn? Hành động này không thể hoàn tác!",2,resources/views/admin/faq-categories/index.blade.php,"danh mục được chọn? Hành động này không thể hoàn tác!"
+"Số bình luận",2,resources/views/admin/comments/statistics.blade.php,"Số bình luận"
+"Chưa nhập câu hỏi",4,"resources/views/admin/faqs/edit.blade.php; resources/views/admin/faqs/create.blade.php","Chưa nhập câu hỏi"
+"Chưa nhập câu trả lời",4,"resources/views/admin/faqs/edit.blade.php; resources/views/admin/faqs/create.blade.php","Chưa nhập câu trả lời"
+"Chưa chọn danh mục",4,"resources/views/admin/faqs/edit.blade.php; resources/views/admin/faqs/create.blade.php","Chưa chọn danh mục"
+"câu hỏi được chọn?",4,resources/views/admin/faqs/index.blade.php,"câu hỏi được chọn?"
+"câu hỏi được chọn? Hành động này không thể hoàn tác!",2,resources/views/admin/faqs/index.blade.php,"câu hỏi được chọn? Hành động này không thể hoàn tác!"
+coming_soon.notify_success,2,resources/views/coming-soon.blade.php,coming_soon
+coming_soon.share_text,4,resources/views/coming-soon.blade.php,coming_soon
+coming_soon.copied,2,resources/views/coming-soon.blade.php,coming_soon

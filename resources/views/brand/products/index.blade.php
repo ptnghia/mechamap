@@ -94,7 +94,7 @@
         <div class="card-body">
             <form method="GET" action="{{ route('brand.products.index') }}" class="row g-3">
                 <div class="col-md-3">
-                    <label class="form-label">Tìm kiếm</label>
+                    <label class="...">{{ t_features('brand.actions.search') }}</label>
                     <input type="text" name="search" class="form-control" placeholder="Tên sản phẩm..." 
                            value="{{ request('search') }}">
                 </div>
