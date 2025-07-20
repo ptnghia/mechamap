@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("content.processing") }}';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("content/alerts.processing") }}';
 
         // Clear previous errors
         form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlert('{{ __("content.error_occurred") }}', 'danger');
+            showAlert('{{ __("content/alerts.error_occurred") }}', 'danger');
         })
         .finally(() => {
             // Restore button state

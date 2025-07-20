@@ -3,7 +3,7 @@
 /**
  * English translations for content/alerts
  * Enhanced migration with source integration
- * 
+ *
  * Structure: content.alerts.*
  * Enhanced: 2025-07-20 02:51:02
  * Source keys found: 5
@@ -11,6 +11,10 @@
  */
 
 return [
+    // Direct access keys for auth-modal
+    'processing' => 'Processing...',
+    'error_occurred' => 'An error occurred. Please try again.',
+
     'success' => [
         'created' => 'Created successfully!',
         'updated' => 'Updated successfully!',

@@ -3,7 +3,7 @@
 /**
  * Vietnamese translations for content/alerts
  * Enhanced migration with source integration
- * 
+ *
  * Structure: content.alerts.*
  * Enhanced: 2025-07-20 02:51:02
  * Source keys found: 5
@@ -11,6 +11,10 @@
  */
 
 return [
+    // Direct access keys for auth-modal
+    'processing' => 'Đang xử lý...',
+    'error_occurred' => 'Có lỗi xảy ra. Vui lòng thử lại.',
+
     'success' => [
         'created' => 'Tạo thành công!',
         'updated' => 'Cập nhật thành công!',
