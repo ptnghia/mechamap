@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Vietnamese translations for content/pages
- * Auto-generated: 2025-07-20 04:49:50
- * Keys: 207
+ * Content pages translations
+ * Updated: 2025-07-20 12:10:11
  */
 
 return array (
@@ -42,17 +41,7 @@ return array (
   ),
   'community_stats' => 'Thống kê cộng đồng',
   'connect_engineers' => 'Kết nối với 64+ kỹ sư chuyên nghiệp',
-  'contact' => 
-  array (
-    'description' => 'Liên hệ với chúng tôi',
-    'email' => 'Email',
-    'message' => 'Tin nhắn',
-    'name' => 'Họ tên',
-    'send' => 'Gửi tin nhắn',
-    'subject' => 'Chủ đề',
-    'success' => 'Tin nhắn đã được gửi thành công!',
-    'title' => 'Liên hệ',
-  ),
+  'contact' => 'Liên hệ',
   'contributions' => 'đóng góp',
   'copied' => 'Đã sao chép!',
   'copy_link' => 'Sao chép link',
@@ -274,4 +263,8 @@ return array (
   'weekly_activity' => 'Hoạt động tuần này',
   'weekly_trends' => 'Xu hướng tuần này',
   'welcome' => 'Chào mừng',
+  'community_rules' => 'Quy tắc cộng đồng',
+  'about_us' => 'Về chúng tôi',
+  'terms_of_service' => 'Điều khoản dịch vụ',
+  'privacy_policy' => 'Chính sách bảo mật',
 );

@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Vietnamese translations for ui/forms
- * Auto-generated: 2025-07-20 04:48:40
- * Keys: 10
+ * UI forms translations
+ * Updated: 2025-07-20 12:37:32
  */
 
 return array (
@@ -137,4 +136,21 @@ return array (
     'date' => 'Ngày không hợp lệ',
     'password_strength' => 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số',
   ),
+  'required' => 'Bắt buộc',
+  'optional' => 'Tùy chọn',
+  'placeholder' => 'Nhập văn bản...',
+  'search_placeholder' => 'Tìm kiếm...',
+  'email_placeholder' => 'Nhập email của bạn',
+  'password_placeholder' => 'Nhập mật khẩu của bạn',
+  'confirm_password' => 'Xác nhận mật khẩu',
+  'choose_file' => 'Chọn tệp',
+  'no_file_chosen' => 'Chưa chọn tệp',
+  'select_option' => 'Chọn một tùy chọn',
+  'select_multiple' => 'Chọn nhiều tùy chọn',
+  'validation_error' => 'Vui lòng sửa các lỗi bên dưới',
+  'field_required' => 'Trường này là bắt buộc',
+  'invalid_email' => 'Vui lòng nhập địa chỉ email hợp lệ',
+  'password_mismatch' => 'Mật khẩu không khớp',
+  'file_too_large' => 'Tệp quá lớn',
+  'invalid_file_type' => 'Loại tệp không hợp lệ',
 );

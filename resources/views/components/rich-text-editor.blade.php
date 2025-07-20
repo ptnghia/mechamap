@@ -94,7 +94,7 @@
                     <div class="image-preview" id="{{ $editorId }}-image-preview"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"{{ t_ui('ui/buttons.cancel') }}/button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"{{ t_ui('buttons.cancel') }}/button>
                     <button type="button" class="btn btn-primary" id="{{ $editorId }}-insert-image">Chèn</button>
                 </div>
             </div>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="{{ $editorId }}-insert-link"{{ t_ui('ui/buttons.add') }}/button>
+                    <button type="button" class="btn btn-primary" id="{{ $editorId }}-insert-link"{{ t_ui('buttons.add') }}/button>
                 </div>
             </div>
         </div>

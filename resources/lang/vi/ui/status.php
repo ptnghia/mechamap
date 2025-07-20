@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Vietnamese translations for ui/status
- * Auto-generated: 2025-07-20 04:49:50
- * Keys: 1
+ * Ui status translations
+ * Updated: 2025-07-20 12:26:31
  */
 
 return array (
   'sticky' => 'Ghim',
+  'coming_soon' => 'Sắp ra mắt',
 );

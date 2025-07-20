@@ -1153,7 +1153,7 @@ function showSepayPaymentModal(paymentData, orderId) {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"{{ t_feature('features/marketplace.actions.cancel') }}/button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"{{ t_feature('marketplace.actions.cancel') }}/button>
                     <button type="button" class="btn btn-primary" onclick="checkPaymentStatus(${orderId})">
                         <i class="fas fa-sync-alt me-2"></i>
                         Kiểm tra thanh toán

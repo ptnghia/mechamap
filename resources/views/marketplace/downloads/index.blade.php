@@ -177,11 +177,11 @@
                                         <div class="btn-group btn-group-sm">
                                             <form action="{{ route('marketplace.downloads.redownload', $download) }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-outline-primary" title="{{ t_feature('features/marketplace.actions.reload') }}">
+                                                <button type="submit" class="btn btn-outline-primary" title="{{ t_feature('marketplace.actions.reload') }}">
                                                     <i class="fas fa-redo"></i>
                                                 </button>
                                             </form>
-                                            <button type="button" class="btn btn-outline-info" onclick="showDownloadDetails({{ $download->id }})" title="{{ t_feature('features/marketplace.actions.details') }}">
+                                            <button type="button" class="btn btn-outline-info" onclick="showDownloadDetails({{ $download->id }})" title="{{ t_feature('marketplace.actions.details') }}">
                                                 <i class="fas fa-info"></i>
                                             </button>
                                         </div>

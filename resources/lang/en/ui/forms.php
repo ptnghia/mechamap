@@ -1,9 +1,8 @@
 <?php
 
 /**
- * English translations for ui/forms
- * Auto-generated: 2025-07-20 04:48:40
- * Keys: 11
+ * UI forms translations
+ * Updated: 2025-07-20 12:37:32
  */
 
 return array (
@@ -141,4 +140,21 @@ return array (
     'date' => 'Invalid date',
     'password_strength' => 'Password must be at least 8 characters with uppercase, lowercase and numbers',
   ),
+  'required' => 'Required',
+  'optional' => 'Optional',
+  'placeholder' => 'Enter text...',
+  'search_placeholder' => 'Search...',
+  'email_placeholder' => 'Enter your email',
+  'password_placeholder' => 'Enter your password',
+  'confirm_password' => 'Confirm Password',
+  'choose_file' => 'Choose File',
+  'no_file_chosen' => 'No file chosen',
+  'select_option' => 'Select an option',
+  'select_multiple' => 'Select multiple options',
+  'validation_error' => 'Please correct the errors below',
+  'field_required' => 'This field is required',
+  'invalid_email' => 'Please enter a valid email address',
+  'password_mismatch' => 'Passwords do not match',
+  'file_too_large' => 'File is too large',
+  'invalid_file_type' => 'Invalid file type',
 );

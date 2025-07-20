@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Vietnamese translations for core/notifications
- * Auto-generated: 2025-07-20 04:49:50
- * Keys: 1
+ * Core notifications translations
+ * Updated: 2025-07-20 12:10:11
  */
 
 return array (
-  'marked_all_read' => 'Đã đánh dấu tất cả là đã đọc',
+  'marked_all_read' => 'Đã đánh dấu tất cả thông báo là đã đọc',
 );

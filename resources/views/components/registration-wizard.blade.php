@@ -6,7 +6,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
 @props([
     'currentStep' => 1,
     'totalSteps' => 2,
-    'title' => {{ t_ui('auth.register_mechamap_account') }},
+    'title' => t_ui('auth/register_mechamap_account'),
     'subtitle' => null,
     'progress' => null,
     'showBackButton' => true,
@@ -405,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoSaveIndicator = document.getElementById('autoSaveIndicator');
     const autoSaveText = document.getElementById('autoSaveText');
 
-    function showAutoSaveIndicator(message = {{ t_ui('ui/common.auto_saving') }}) {
+    function showAutoSaveIndicator(message = {{ t_ui('common.auto_saving') }}) {
         autoSaveText.textContent = message;
         autoSaveIndicator.style.display = 'block';
 

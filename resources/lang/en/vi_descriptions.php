@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Vietnamese keys translations (en)
+ * Auto-generated: 2025-07-20 12:35:31
+ * Keys: 50
+ */
+
+return array (
+  't__n_c___a_trang_web__hi___n_th________nhi___u_n__i_tr__n_trang_web' => 'Name của trang web, hiển thị ở nhiều nơi trên trang web.',
+  'th__ng_b__o_hi___n_th____khi_trang_web___ang_trong_ch__________b___o_tr' => '[EN] Thông báo hiển thị khi trang web đang trong chế độ bảo trì.',
+  't__n_c___a_ch____s____h___u_b___n_quy___n' => 'Name của chủ sở hữu bản quyền.',
+  't__n______y_______c___a_c__ng_ty' => 'Name đầy đủ của công ty.',
+  'm___t____ng___n_g___n_v____c__ng_ty' => 'Description ngắn gọn về công ty.',
+  'm___t____trang_n__n_d_____i_160_k___t' => 'Description trang nên dưới 160 ký tự.',
+  'm___t____ng___n_g___n_v____trang_web_c___a_b___n__hi___n_th____trong_k___t_qu____t__m_ki___m' => 'Description ngắn gọn về trang web của bạn. Hiển thị trong kết quả tìm kiếm.',
+  't__n_ng_____i_d__ng_twitter_c___a_b___n__kh__ng_bao_g___m_k___t' => 'Name người dùng Twitter của bạn, không bao gồm ký tự @.',
+  'm___t____khi_chia_s____trang_web_c___a_b___n_tr__n_facebook_v___c__c_n___n_t___ng_kh__c' => 'Description khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.',
+  'm___t____khi_chia_s____trang_web_c___a_b___n_tr__n_twitter' => 'Description khi chia sẻ trang web của bạn trên Twitter.',
+  't__n_file__ti__u________m___t' => 'Name file, tiêu đề, mô tả...',
+  'b__nh_lu___n_b________nh_d___u_s___________c_____nh_d___u_______xem_x__t_th__m' => '[EN] Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.',
+  'b__nh_lu___n_b_______n_s____kh__ng_hi___n_th____cho_ng_____i_d__ng' => '[EN] Bình luận bị ẩn sẽ không hiển thị cho người dùng.',
+  'm___t____ng___n_g___n_v____trang__hi___n_th____trong_k___t_qu____t__m_ki___m' => 'Description ngắn gọn về trang. Hiển thị trong kết quả tìm kiếm.',
+  'm___t____khi_chia_s____trang_tr__n_facebook_v___c__c_n___n_t___ng_kh__c' => 'Description khi chia sẻ trang trên Facebook và các nền tảng khác.',
+  'm___t____khi_chia_s____trang_tr__n_twitter' => 'Description khi chia sẻ trang trên Twitter.',
+  't__n_mi___n_ch__nh_c___a_trang_web__kh__ng_bao_g___m_http____ho___c_https' => 'Name miền chính của trang web, không bao gồm http:// hoặc https://.',
+  'b__nh_lu___n' => '[EN] Bình luận',
+  't__n_trang_web' => 'Name trang web',
+  't__n_mi___n' => 'Name miền',
+  't__n_c__ng_ty' => 'Name công ty',
+  't__n' => 'Name',
+  'm___t' => 'Description',
+  't__n_di___n_____n' => 'Name diễn đàn',
+  't__n_chuy__n_m___c' => 'Name chuyên mục',
+  't__n_file' => 'Name file',
+  'm___t____trang_web' => 'Description trang web',
+  'm___t____open_graph' => 'Description Open Graph',
+  'm___t____twitter' => 'Description Twitter',
+  't__n_danh_m___c' => 'Name danh mục',
+  't__n_____ng_nh___p' => 'Name đăng nhập',
+  'b__nh_lu___n_cha' => '[EN] Bình luận cha',
+  'ph___n_h___i' => '[EN] Phản hồi',
+  'm___t____trang' => 'Description trang',
+  'b__nh_lu___n_n__y______b_______n' => '[EN] Bình luận này đã bị ẩn',
+  'b__nh_lu___n_n__y______b________nh_d___u' => '[EN] Bình luận này đã bị đánh dấu',
+  'th__ng_b__o_b___o_tr' => '[EN] Thông báo bảo trì',
+  'th__ng_b__o_th___i_gian_th___c' => '[EN] Thông báo thời gian thực',
+  'th__ng_b__o_tr____l___i_m___i' => '[EN] Thông báo trả lời mới',
+  'th__ng_b__o_khi_c___tr____l___i_m___i_trong_b__i_____ng______theo_d__i' => '[EN] Thông báo khi có trả lời mới trong bài đăng đã theo dõi',
+  'th__ng_b__o_nh___c______n' => '[EN] Thông báo nhắc đến',
+  'th__ng_b__o_khi________c_nh___c______n_trong_b__i_vi___t_ho___c_b__nh_lu___n' => '[EN] Thông báo khi được nhắc đến trong bài viết hoặc bình luận',
+  'th__ng_b__o_l_____t_th__ch' => '[EN] Thông báo lượt thích',
+  'th__ng_b__o_khi_b__i_vi___t________c_th__ch' => '[EN] Thông báo khi bài viết được thích',
+  'th__ng_b__o_theo_d__i' => '[EN] Thông báo theo dõi',
+  'th__ng_b__o_khi_c___ng_____i_theo_d__i_m___i' => '[EN] Thông báo khi có người theo dõi mới',
+  'th__ng_b__o_h__nh______ng_qu___n_____________________________________tr' => '[EN] Thông báo hành động quản
+                                    trị',
+  'th__ng_b__o_v____c__c_h__nh______ng_c___a_qu___n_tr____vi__n' => '[EN] Thông báo về các hành động của quản trị viên',
+  'b__nh_lu___n__comments' => '[EN] Bình luận (Comments)',
+  'b__nh_lu___n_m___i_____________c_____ng' => '[EN] Bình luận mới đã được đăng',
+);

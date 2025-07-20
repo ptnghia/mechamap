@@ -87,7 +87,7 @@
                                 </div>
                             </div>
 
-                            <h3 class="h5 text-primary mt-4 mb-3"{{ t_content('content/pages.community_rules') }}/h3>
+                            <h3 class="h5 text-primary mt-4 mb-3"{{ t_content('pages.community_rules') }}/h3>
                             <p>
                                 Chúng tôi khuyến khích việc thảo luận chuyên nghiệp, chia sẻ kiến thức thực tế
                                 và tôn trọng lẫn nhau. Mọi thành viên đều được khuyến khích đóng góp ý kiến
@@ -150,7 +150,7 @@
 
                             <div class="card mt-3">
                                 <div class="card-body text-center">
-                                    <h5 class="text-primary mb-3"{{ t_content('content/pages.contact') }}/h5>
+                                    <h5 class="text-primary mb-3"{{ t_content('pages.contact') }}/h5>
                                     <p class="small text-muted">
                                         Có câu hỏi hoặc góp ý? Chúng tôi luôn sẵn sàng lắng nghe.
                                     </p>

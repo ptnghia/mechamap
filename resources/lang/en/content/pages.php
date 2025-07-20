@@ -1,9 +1,8 @@
 <?php
 
 /**
- * English translations for content/pages
- * Auto-generated: 2025-07-20 04:49:50
- * Keys: 189
+ * Content pages translations
+ * Updated: 2025-07-20 12:10:11
  */
 
 return array (
@@ -41,17 +40,7 @@ return array (
   ),
   'community_stats' => 'Community Stats',
   'connect_engineers' => 'Connect with 64+ professional engineers',
-  'contact' => 
-  array (
-    'description' => 'Get in touch with us',
-    'email' => 'Email',
-    'message' => 'Message',
-    'name' => 'Name',
-    'send' => 'Send Message',
-    'subject' => 'Subject',
-    'success' => 'Message sent successfully!',
-    'title' => 'Contact',
-  ),
+  'contact' => 'Contact',
   'contributions' => 'contributions',
   'date_created' => 'Date Created',
   'delete' => 'Delete',
@@ -256,4 +245,8 @@ return array (
   'weekly_activity' => 'Weekly Activity',
   'weekly_trends' => 'Weekly Trends',
   'welcome' => 'Welcome',
+  'community_rules' => 'Community Rules',
+  'about_us' => 'About Us',
+  'terms_of_service' => 'Terms of Service',
+  'privacy_policy' => 'Privacy Policy',
 );
