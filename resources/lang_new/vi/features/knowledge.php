@@ -2,17 +2,22 @@
 
 /**
  * Vietnamese translations for features/knowledge
- * Category: Feature-specific content
+ * Knowledge base and documentation
  * 
  * Structure: features.knowledge.*
- * Created: 2025-07-20 02:28:24
+ * Populated: 2025-07-20 02:37:52
+ * Keys: 6
  */
 
 return [
-    // TODO: Add translations for features.knowledge
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
+    'articles' => [
+        'create' => 'Tạo bài viết',
+        'edit' => 'Chỉnh sửa bài viết',
+        'publish' => 'Xuất bản',
+    ],
+    'categories' => [
+        'tutorials' => 'Hướng dẫn',
+        'guides' => 'Hướng dẫn chi tiết',
+        'tips' => 'Mẹo hay',
+    ],
 ];
