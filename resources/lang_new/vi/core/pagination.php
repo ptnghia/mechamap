@@ -2,17 +2,11 @@
 
 /**
  * Vietnamese translations for core/pagination
- * Category: System core functionality
+ * Pagination controls
  * 
  * Structure: core.pagination.*
- * Created: 2025-07-20 02:28:24
+ * Migrated: 2025-07-20 02:30:27
+ * Keys: 0
  */
 
-return [
-    // TODO: Add translations for core.pagination
-    // Example structure:
-    // 'key' => 'Translation value',
-    // 'nested' => [
-    //     'subkey' => 'Nested translation value'
-    // ]
-];
+return [];
