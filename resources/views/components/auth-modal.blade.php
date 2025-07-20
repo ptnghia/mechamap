@@ -25,7 +25,7 @@ $sizeClass = [
             <div class="modal-body px-4 pt-0 pb-4">
                 <!-- Modal Title -->
                 <div class="text-center mb-4">
-                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('nav.auth.login') }}</h4>
+                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('ui/navigation.auth.login') }}</h4>
                     <p class="text-muted mb-0">{{ __('auth.login.welcome_back') }}</p>
                 </div>
 
@@ -68,7 +68,7 @@ $sizeClass = [
                             </div>
                             <div class="d-grid mb-4">
                                 <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                                    {{ __('nav.auth.login') }}
+                                    {{ __('ui/navigation.auth.login') }}
                                 </button>
                             </div>
                         </form>
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("messages.forgot_password") }}';
+            modalTitle.textContent = '{{ __("core/messages.forgot_password") }}';
         }
     };
 
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("nav.auth.login") }}';
+            modalTitle.textContent = '{{ __("ui/navigation.auth.login") }}';
         }
     };
 
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("nav.auth.login") }}';
+            modalTitle.textContent = '{{ __("ui/navigation.auth.login") }}';
         }
     };
 

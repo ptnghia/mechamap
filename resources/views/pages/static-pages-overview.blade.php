@@ -104,7 +104,7 @@
                         <div class="page-icon completed">
                             <i class="fas fa-building"></i>
                         </div>
-                        <h5 class="card-title"{{ t_content('pages.pages.about_us') }}/h5>
+                        <h5 class="card-title"{{ t_content('content/pages.about_us') }}/h5>
                         <p class="card-text text-muted">Thông tin về MechaMap, tầm nhìn, sứ mệnh và đội ngũ phát triển.</p>
                         <a href="{{ route('about.index') }}" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-eye me-1"></i>Xem trang
@@ -120,7 +120,7 @@
                         <div class="page-icon completed">
                             <i class="fas fa-envelope"></i>
                         </div>
-                        <h5 class="card-title"{{ t_content('pages.pages.contact') }}/h5>
+                        <h5 class="card-title"{{ t_content('content/pages.contact') }}/h5>
                         <p class="card-text text-muted">Thông tin liên hệ, form gửi tin nhắn và địa chỉ văn phòng.</p>
                         <a href="{{ route('contact') }}" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-eye me-1"></i>Xem trang
@@ -136,7 +136,7 @@
                         <div class="page-icon completed">
                             <i class="fas fa-file-contract"></i>
                         </div>
-                        <h5 class="card-title"{{ t_content('pages.pages.terms_of_service') }}/h5>
+                        <h5 class="card-title"{{ t_content('content/pages.terms_of_service') }}/h5>
                         <p class="card-text text-muted">Quy định và điều khoản sử dụng dịch vụ MechaMap.</p>
                         <a href="{{ route('terms.index') }}" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-eye me-1"></i>Xem trang
@@ -152,7 +152,7 @@
                         <div class="page-icon completed">
                             <i class="fas fa-shield-alt"></i>
                         </div>
-                        <h5 class="card-title"{{ t_content('pages.pages.privacy_policy') }}/h5>
+                        <h5 class="card-title"{{ t_content('content/pages.privacy_policy') }}/h5>
                         <p class="card-text text-muted">Cam kết bảo vệ thông tin cá nhân và quyền riêng tư người dùng.</p>
                         <a href="{{ route('privacy.index') }}" class="btn btn-outline-primary btn-sm">
                             <i class="fas fa-eye me-1"></i>Xem trang

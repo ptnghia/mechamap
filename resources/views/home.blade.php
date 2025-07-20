@@ -61,12 +61,12 @@
 <script>
     // Biến dịch cho JavaScript
     const translations = {
-        sticky: '{{ __("status.sticky") }}',
-        locked: '{{ __("status.locked") }}',
-        loading: '{{ __("messages.common.loading") }}',
-        loadMore: '{{ __("messages.common.load_more") }}',
-        noMorePosts: '{{ __("messages.common.no_more_posts") }}',
-        errorOccurred: '{{ __("messages.common.error_occurred") }}'
+        sticky: '{{ __("ui/status.sticky") }}',
+        locked: '{{ __("ui/status.locked") }}',
+        loading: '{{ __("core/messages.common.loading") }}',
+        loadMore: '{{ __("core/messages.common.load_more") }}',
+        noMorePosts: '{{ __("core/messages.common.no_more_posts") }}',
+        errorOccurred: '{{ __("core/messages.common.error_occurred") }}'
     };
 
     // Load more threads functionality

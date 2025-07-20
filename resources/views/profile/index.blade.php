@@ -23,9 +23,9 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="role" class="...">{{ t_user('profile.labels.role') }}</label>
+                            <label for="role" class="...">{{ t_user('user/profile.labels.role') }}</label>
                             <select class="form-select" id="role" name="role">
-                                <option value=""{{ t_user('profile.labels.all_roles') }}/option>
+                                <option value=""{{ t_user('user/profile.labels.all_roles') }}/option>
                                 <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="moderator" {{ request('role') == 'moderator' ? 'selected' : '' }}>Moderator</option>
                                 <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>Thành viên</option>

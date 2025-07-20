@@ -114,7 +114,7 @@
  */
 function switchLanguage(locale) {
     // Show loading state
-    const loadingToast = showToast('{{ __("common.loading") }}...', 'info');
+    const loadingToast = showToast('{{ __("ui/common.loading") }}...', 'info');
     
     // Make AJAX request to switch language
     fetch('/language/switch', {

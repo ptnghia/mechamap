@@ -57,7 +57,7 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
 
         <!-- Popular Searches -->
         <div x-show="query.length === 0" class="p-4">
-            <h4 class="text-sm font-medium text-gray-900 mb-2">{{ t_ui('common.popular_searches') }}</h4>
+            <h4 class="text-sm font-medium text-gray-900 mb-2">{{ t_ui('ui/common.popular_searches') }}</h4>
             <div class="space-y-1">
                 <a href="{{ route('marketplace.products.index', ['search' => 'bearing']) }}" class="block text-sm text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-2 py-1 rounded">Ball Bearings</a>
                 <a href="{{ route('marketplace.products.index', ['search' => 'gear']) }}" class="block text-sm text-gray-600 hover:text-blue-600 hover:bg-gray-50 px-2 py-1 rounded">Gear Assembly</a>
@@ -115,7 +115,7 @@ $inputClass = $sizeClasses[$size] ?? $sizeClasses['md'];
             <!-- No Results -->
             <div x-show="suggestions.products && suggestions.products.length === 0 && suggestions.categories && suggestions.categories.length === 0" class="px-4 py-6 text-center">
                 <i class="fas fa-search text-gray-400 text-2xl mb-2"></i>
-                <p class="text-sm text-gray-500">{{ t_ui('common.no_results_found') }}</p>
+                <p class="text-sm text-gray-500">{{ t_ui('ui/common.no_results_found') }}</p>
                 <p class="text-xs text-gray-400 mt-1">Try different keywords or check spelling</p>
             </div>
         </div>

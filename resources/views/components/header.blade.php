@@ -122,7 +122,7 @@
 
                         {{-- CSS to hide duplicate menu items --}}
                         <style>
-                        /* Hide the 6th nav item (duplicate {{ t_ui('buttons.add') }} menu) */
+                        /* Hide the 6th nav item (duplicate {{ t_ui('ui/buttons.add') }} menu) */
                         .navbar-nav .nav-item:nth-child(6) {
                             display: none !important;
                         }
@@ -1205,12 +1205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isDark) {
                 themeIconDark.classList.add('d-none');
                 themeIconLight.classList.remove('d-none');
-                themeText.textContent = '{{ t_ui('common.light_mode') }}';
+                themeText.textContent = '{{ t_ui('ui/common.light_mode') }}';
                 document.body.classList.add('dark-mode');
             } else {
                 themeIconDark.classList.remove('d-none');
                 themeIconLight.classList.add('d-none');
-                themeText.textContent = '{{ t_ui('common.dark_mode') }}';
+                themeText.textContent = '{{ t_ui('ui/common.dark_mode') }}';
                 document.body.classList.remove('dark-mode');
             }
         });
@@ -1424,7 +1424,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 loadNotifications();
-                showNotification({{ t_ui('notifications.marked_all_read') }}, 'success');
+                showNotification({{ t_ui('core/notifications.marked_all_read') }}, 'success');
             }
         })
         .catch(error => console.error('Error marking notifications as read:', error));

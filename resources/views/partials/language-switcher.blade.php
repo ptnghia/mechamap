@@ -80,12 +80,12 @@ function switchLanguage(locale) {
     .then(data => {
         if (data.success) {
             // Hiển thị thông báo thành công
-            showNotification(data.message || '{{ __("messages.language.switched_successfully") }}', 'success');
+            showNotification(data.message || '{{ __("core/messages.language.switched_successfully") }}', 'success');
             // Reload trang để áp dụng ngôn ngữ mới
             setTimeout(() => window.location.reload(), 500);
         } else {
             // Hiển thị thông báo lỗi
-            showNotification(data.message || '{{ __("messages.language.switch_failed") }}', 'error');
+            showNotification(data.message || '{{ __("core/messages.language.switch_failed") }}', 'error');
             // Khôi phục button
             button.innerHTML = originalContent;
             button.disabled = false;
@@ -93,7 +93,7 @@ function switchLanguage(locale) {
     })
     .catch(error => {
         console.error('Language switch error:', error);
-        showNotification('{{ __("messages.language.switch_failed") }}', 'error');
+        showNotification('{{ __("core/messages.language.switch_failed") }}', 'error');
         // Khôi phục button
         button.innerHTML = originalContent;
         button.disabled = false;
@@ -123,7 +123,7 @@ function autoDetectLanguage() {
     })
     .catch(error => {
         console.error('Auto detect error:', error);
-        showNotification('{{ __("messages.language.auto_detect_failed") }}', 'error');
+        showNotification('{{ __("core/messages.language.auto_detect_failed") }}', 'error');
     });
 }
 

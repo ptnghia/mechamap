@@ -405,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoSaveIndicator = document.getElementById('autoSaveIndicator');
     const autoSaveText = document.getElementById('autoSaveText');
 
-    function showAutoSaveIndicator(message = {{ t_ui('common.auto_saving') }}) {
+    function showAutoSaveIndicator(message = {{ t_ui('ui/common.auto_saving') }}) {
         autoSaveText.textContent = message;
         autoSaveIndicator.style.display = 'block';
 

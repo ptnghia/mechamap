@@ -270,7 +270,7 @@
                 if (page >= 1 && page <= maxPages) {
                     window.location.href = `{{ route('whats-new.media') }}?page=${page}`;
                 } else {
-                    alert('{{ __("messages.please_enter_valid_page") }} (1-' + maxPages + ')');
+                    alert('{{ __("core/messages.please_enter_valid_page") }} (1-' + maxPages + ')');
                 }
             });
 
@@ -310,16 +310,16 @@
                     infinite: true,
                 },
                 l10n: {
-                    CLOSE: '{{ __("messages.close") }}',
-                    NEXT: '{{ __("messages.next") }}',
-                    PREV: '{{ __("messages.previous") }}',
-                    MODAL: '{{ __("messages.image") }}',
-                    ERROR: '{{ __("messages.image_not_found") }}',
-                    IMAGE_ERROR: '{{ __("messages.image_not_found") }}',
-                    ELEMENT_NOT_FOUND: '{{ __("messages.image_not_found") }}',
-                    AJAX_NOT_FOUND: '{{ __("messages.image_not_found") }}',
-                    LOADING: '{{ __("messages.loading") }}...',
-                    DOWNLOAD: '{{ __("messages.download") }}',
+                    CLOSE: '{{ __("core/messages.close") }}',
+                    NEXT: '{{ __("core/messages.next") }}',
+                    PREV: '{{ __("core/messages.previous") }}',
+                    MODAL: '{{ __("core/messages.image") }}',
+                    ERROR: '{{ __("core/messages.image_not_found") }}',
+                    IMAGE_ERROR: '{{ __("core/messages.image_not_found") }}',
+                    ELEMENT_NOT_FOUND: '{{ __("core/messages.image_not_found") }}',
+                    AJAX_NOT_FOUND: '{{ __("core/messages.image_not_found") }}',
+                    LOADING: '{{ __("core/messages.loading") }}...',
+                    DOWNLOAD: '{{ __("core/messages.download") }}',
                 },
                 // Custom styling
                 backdropClick: "close",
@@ -347,7 +347,7 @@
 
             img.addEventListener('error', function() {
                 this.src = '{{ asset("images/placeholder.jpg") }}';
-                this.alt = '{{ __("messages.image_not_found") }}';
+                this.alt = '{{ __("core/messages.image_not_found") }}';
             });
         });
     });
