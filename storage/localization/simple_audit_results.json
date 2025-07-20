@@ -1,0 +1,23 @@
+{
+    "timestamp": "2025-07-20 02:14:08",
+    "language_files": {
+        "vi_count": 27,
+        "en_count": 25,
+        "vi_keys": 3330,
+        "en_keys": 2799,
+        "synced": false
+    },
+    "view_files": {
+        "total_count": 436,
+        "sample_keys_found": 0,
+        "sample_keys": []
+    },
+    "key_patterns": [],
+    "missing_files": {
+        "missing_in_en": {
+            "0": "add_menu.php",
+            "4": "coming_soon.php"
+        },
+        "missing_in_vi": []
+    }
+}
