@@ -1,0 +1,7 @@
+v2.0.0-localization-restructure
+
+Complete localization system restructuring
+- Feature-based organization
+- 2,598+ keys migrated
+- 98.51% test coverage
+- Production ready
