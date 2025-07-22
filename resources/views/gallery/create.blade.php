@@ -19,7 +19,7 @@
                                     :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
                                     max-size="5MB"
                                     :required="true"
-                                    label="{{ __('Select File') }} <span class='text-danger'>*</span>"
+                                    label="{{ __('gallery.select_file') }} <span class='text-danger'>*</span>"
                                     id="gallery-file-upload"
                                 />
                                 @error('file')
@@ -29,18 +29,18 @@
                                 @enderror
 
                                 <div class="mb-4">
-                                    <label for="title" class="form-label">{{ __('Title') }}</label>
+                                    <label for="title" class="form-label">{{ __('gallery.title') }}</label>
                                     <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
-                                    <div class="form-text">{{ __('Give your media a descriptive title (optional).') }}</div>
+                                    <div class="form-text">{{ __('gallery.title_description') }}</div>
                                     @error('title')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="description" class="form-label">{{ __('Description') }}</label>
+                                    <label for="description" class="form-label">{{ __('gallery.description') }}</label>
                                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ old('description') }}</textarea>
-                                    <div class="form-text">{{ __('Add a description for your media (optional).') }}</div>
+                                    <div class="form-text">{{ __('gallery.description_help') }}</div>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -48,7 +48,7 @@
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-upload me-1"></i> {{ __('Upload Media') }}
+                                        <i class="fas fa-upload me-1"></i> {{ __('gallery.upload_media') }}
                                     </button>
                                 </div>
                             </form>

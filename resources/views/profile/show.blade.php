@@ -32,10 +32,10 @@
                                     {{ ucfirst($user->role) }}
                                 </span>
                             </p>
-                            
+
                             @if ($user->last_seen_at)
                                 <p class="small text-muted">
-                                    {{ __('Last seen:') }} {{ $user->last_seen_at->diffForHumans() }}
+                                    {{ __('profile.last_seen') }} {{ $user->last_seen_at->diffForHumans() }}
                                 </p>
                             @endif
                         </div>
@@ -43,15 +43,15 @@
                             <div class="row text-center">
                                 <div class="col">
                                     <div class="fw-bold">{{ $stats['replies'] }}</div>
-                                    <div class="small text-muted">{{ __('Replies') }}</div>
+                                    <div class="small text-muted">{{ __('profile.replies') }}</div>
                                 </div>
                                 <div class="col">
                                     <div class="fw-bold">{{ $stats['discussions_created'] }}</div>
-                                    <div class="small text-muted">{{ __('Threads') }}</div>
+                                    <div class="small text-muted">{{ __('profile.threads') }}</div>
                                 </div>
                                 <div class="col">
                                     <div class="fw-bold">{{ $stats['reaction_score'] }}</div>
-                                    <div class="small text-muted">{{ __('Reactions') }}</div>
+                                    <div class="small text-muted">{{ __('profile.reactions') }}</div>
                                 </div>
                             </div>
                         </div>
@@ -59,13 +59,13 @@
 
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('About') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('profile.about') }}</h5>
                         </div>
                         <div class="card-body">
                             @if ($user->about_me)
                                 <p>{{ $user->about_me }}</p>
                             @else
-                                <p class="text-muted">{{ __('No information provided.') }}</p>
+                                <p class="text-muted">{{ __('profile.no_information_provided') }}</p>
                             @endif
 
                             @if ($user->location)
@@ -76,28 +76,28 @@
 
                             @if ($user->website)
                                 <p>
-                                    <i class="link"></i> 
+                                    <i class="link"></i>
                                     <a href="{{ $user->website }}" target="_blank" rel="nofollow">{{ $user->website }}</a>
                                 </p>
                             @endif
 
                             <p>
-                                <i class="calendar3"></i> 
-                                {{ __('Joined:') }} {{ $user->created_at->format('M Y') }}
+                                <i class="calendar3"></i>
+                                {{ __('profile.joined') }} {{ $user->created_at->format('M Y') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">{{ __('Following') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('profile.following') }}</h5>
                             <span class="badge bg-secondary">{{ $following }}</span>
                         </div>
                     </div>
 
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">{{ __('Followers') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('profile.followers') }}</h5>
                             <span class="badge bg-secondary">{{ $followers }}</span>
                         </div>
                     </div>
@@ -109,18 +109,18 @@
                     @if (Auth::id() === $user->id && $setupProgress < 5)
                         <div class="card shadow-sm rounded-3 mb-4">
                             <div class="card-header">
-                                <h5 class="card-title mb-0">{{ __('Get set up on MechaMap Forum!') }}</h5>
+                                <h5 class="card-title mb-0">{{ __('profile.get_set_up_title') }}</h5>
                             </div>
                             <div class="card-body">
-                                <p>{{ __('Not sure what to do next? Here are some ideas to get you familiar with the community!') }}</p>
-                                
+                                <p>{{ __('profile.get_set_up_description') }}</p>
+
                                 <div class="progress mb-3">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ ($setupProgress / 5) * 100 }}%" 
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ ($setupProgress / 5) * 100 }}%"
                                         aria-valuenow="{{ $setupProgress }}" aria-valuemin="0" aria-valuemax="5">
                                         {{ $setupProgress }}/5
                                     </div>
                                 </div>
-                                
+
                                 <div class="list-group">
                                     <div class="list-group-item {{ $user->email_verified_at ? 'list-group-item-success' : '' }}">
                                         @if ($user->email_verified_at)
@@ -128,43 +128,43 @@
                                         @else
                                             <i class="circle text-muted me-2"></i>
                                         @endif
-                                        {{ __('Verify your email') }}
+                                        {{ __('profile.verify_email') }}
                                     </div>
-                                    
+
                                     <div class="list-group-item {{ $user->avatar ? 'list-group-item-success' : '' }}">
                                         @if ($user->avatar)
                                             <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
                                             <i class="circle text-muted me-2"></i>
                                         @endif
-                                        {{ __('Add an avatar') }}
+                                        {{ __('profile.add_avatar') }}
                                     </div>
-                                    
+
                                     <div class="list-group-item {{ $user->about_me ? 'list-group-item-success' : '' }}">
                                         @if ($user->about_me)
                                             <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
                                             <i class="circle text-muted me-2"></i>
                                         @endif
-                                        {{ __('Add information about yourself') }}
+                                        {{ __('profile.add_information') }}
                                     </div>
-                                    
+
                                     <div class="list-group-item {{ $user->location ? 'list-group-item-success' : '' }}">
                                         @if ($user->location)
                                             <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
                                             <i class="circle text-muted me-2"></i>
                                         @endif
-                                        {{ __('Add your location') }}
+                                        {{ __('profile.add_location') }}
                                     </div>
-                                    
+
                                     <div class="list-group-item {{ $stats['replies'] > 0 || $stats['discussions_created'] > 0 ? 'list-group-item-success' : '' }}">
                                         @if ($stats['replies'] > 0 || $stats['discussions_created'] > 0)
                                             <i class="fas fa-check-circle-fill text-success me-2"></i>
                                         @else
                                             <i class="circle text-muted me-2"></i>
                                         @endif
-                                        {{ __('Create a post or reply to a thread') }}
+                                        {{ __('profile.create_post_reply') }}
                                     </div>
                                 </div>
                             </div>
@@ -174,17 +174,17 @@
                     <!-- Profile Posts -->
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Profile Posts') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('profile.profile_posts') }}</h5>
                         </div>
                         <div class="card-body">
                             @auth
                                 <form action="{{ route('profile.posts.store', $user->username) }}" method="POST" class="mb-4">
                                     @csrf
                                     <div class="mb-3">
-                                        <textarea name="content" class="form-control" rows="3" placeholder="{{ __('Write something on') }} {{ $user->name }}'s {{ __('profile') }}..."></textarea>
+                                        <textarea name="content" class="form-control" rows="3" placeholder="{{ __('profile.write_something_on') }} {{ $user->name }}'s {{ __('profile.profile') }}..."></textarea>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary">{{ __('Post') }}</button>
+                                        <button type="submit" class="btn btn-primary">{{ __('profile.post') }}</button>
                                     </div>
                                 </form>
                             @endauth
@@ -212,7 +212,7 @@
                                 </div>
                             @else
                                 <div class="text-center py-4">
-                                    <p class="text-muted">{{ __('No profile posts yet.') }}</p>
+                                    <p class="text-muted">{{ __('profile.no_profile_posts') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -221,7 +221,7 @@
                     <!-- Recent Activity -->
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Recent Activity') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('profile.recent_activity') }}</h5>
                         </div>
                         <div class="card-body">
                             @if ($activities->count() > 0)
@@ -233,15 +233,15 @@
                                                     @switch($activity->activity_type)
                                                         @case('thread_created')
                                                             <i class="fas fa-plus-circle text-success me-2"></i>
-                                                            {{ __('Created a new thread') }}
+                                                            {{ __('profile.created_new_thread') }}
                                                             @break
                                                         @case('post_created')
                                                             <i class="fas fa-comment-left-text text-primary me-2"></i>
-                                                            {{ __('Replied to a thread') }}
+                                                            {{ __('profile.replied_to_thread') }}
                                                             @break
                                                         @case('profile_updated')
                                                             <i class="person text-info me-2"></i>
-                                                            {{ __('Updated profile information') }}
+                                                            {{ __('profile.updated_profile_info') }}
                                                             @break
                                                         @default
                                                             <i class="activity text-secondary me-2"></i>
@@ -255,7 +255,7 @@
                                 </div>
                             @else
                                 <div class="text-center py-4">
-                                    <p class="text-muted">{{ __('No recent activity.') }}</p>
+                                    <p class="text-muted">{{ __('profile.no_recent_activity') }}</p>
                                 </div>
                             @endif
                         </div>

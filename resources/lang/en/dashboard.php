@@ -64,4 +64,8 @@ return [
     'post_50_comments' => 'Post 50 comments',
     'maintain_4_star_rating' => 'Maintain 4-star rating',
     'keep_contributing' => 'Keep Contributing',
+  'quick_stats' => 'Quick Stats',
+  'products' => 'Products',
+  'orders' => 'Orders',
+  'total_revenue' => 'Total Revenue',
 ];

@@ -11,17 +11,17 @@
                     <div class="card-body">
                         <div class="list-group list-group-flush">
                             <a href="{{ route('following.index') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-users-fill me-2"></i> {{ __('Following') }}
+                                <i class="fas fa-users-fill me-2"></i> {{ __('following.following') }}
                             </a>
                             <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-user me-2"></i> {{ __('Followers') }}
+                                <i class="fas fa-user me-2"></i> {{ __('following.followers') }}
                             </a>
                             <a href="{{ route('following.threads') }}" class="list-group-item list-group-item-action">
-                                <i class="far fa-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                <i class="far fa-bookmark-fill me-2"></i> {{ __('following.followed_threads') }}
                             </a>
                             <a href="{{ route('following.participated') }}"
                                 class="list-group-item list-group-item-action active">
-                                <i class="fas fa-comment-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                <i class="fas fa-comment-dots-fill me-2"></i> {{ __('following.participated_discussions') }}
                             </a>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                                                     class="d-inline">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="far fa-bookmark-plus"></i> {{ __('Follow') }}
+                                                        <i class="far fa-bookmark-plus"></i> {{ __('following.follow') }}
                                                     </button>
                                                 </form>
                                                 @else
@@ -64,7 +64,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="far fa-bookmark-x"></i> {{ __('Unfollow') }}
+                                                        <i class="far fa-bookmark-x"></i> {{ __('following.unfollow') }}
                                                     </button>
                                                 </form>
                                                 @endif
@@ -97,7 +97,7 @@
                         <div class="text-center py-5">
                             <i class="fas fa-comment-dots fs-1 text-muted mb-3"></i>
                             <p class="mb-0">{{ __('You haven\'t participated in any discussions yet.') }}</p>
-                            <p class="text-muted">{{ __('Join the conversation by commenting on threads.') }}</p>
+                            <p class="text-muted">{{ __('following.join_conversation_help') }}</p>
                         </div>
                         @endif
                     </div>

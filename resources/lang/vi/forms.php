@@ -45,5 +45,9 @@ return [
         'password_confirmation' => 'Xác nhận mật khẩu không khớp',
         'file_too_large' => 'Tệp quá lớn',
         'invalid_file_type' => 'Loại tệp không được hỗ trợ'
-    ]
+    ],
+  'upload.drag_drop_here' => 'Kéo và thả tệp vào đây',
+  'upload.or' => 'hoặc',
+  'upload.select_from_computer' => 'Chọn từ máy tính',
+  'upload.select_files' => 'Chọn tệp',
 ];

@@ -5,25 +5,25 @@
  * Auto-updated: 2025-07-21 04:44:47
  */
 
-return array (
+return [
   'main' =>
-  array (
+  [
     'home' => 'Trang chủ',
     'forums' => 'Diễn đàn',
     'marketplace' => 'Thị trường',
     'showcase' => 'Trưng bày',
     'community' => 'Cộng đồng',
     'more' => 'Thêm',
-  ),
+  ],
   'auth' =>
-  array (
+  [
     'login' => 'Đăng nhập',
     'register' => 'Đăng ký',
-  ),
+  ],
   'actions' =>
-  array (
+  [
     'add' => 'Thêm',
-  ),
+  ],
 
   // General navigation
   'dashboard' => 'Bảng điều khiển',
@@ -33,43 +33,43 @@ return array (
   'settings' => 'Cài đặt',
 
   'admin' =>
-  array (
+  [
     'dashboard' => 'Bảng điều khiển Admin',
     'user_management' => 'Quản lý người dùng',
     'forum_management' => 'Quản lý diễn đàn',
     'marketplace_management' => 'Quản lý thị trường',
-  ),
+  ],
   'supplier' =>
-  array (
+  [
     'dashboard' => 'Bảng điều khiển',
     'my_products' => 'Sản phẩm của tôi',
     'orders' => 'Đơn hàng',
     'reports' => 'Báo cáo',
     'product_management' => 'Quản lý sản phẩm',
     'my_orders' => 'Đơn hàng của tôi',
-  ),
+  ],
   'manufacturer' =>
-  array (
+  [
     'dashboard' => 'Bảng điều khiển Nhà sản xuất',
     'design_management' => 'Quản lý thiết kế',
     'download_orders' => 'Đơn hàng tải xuống',
-  ),
+  ],
   'brand' =>
-  array (
+  [
     'dashboard' => 'Bảng điều khiển Thương hiệu',
     'market_insights' => 'Thông tin thị trường',
     'marketplace_analytics' => 'Phân tích thị trường',
     'promotion_opportunities' => 'Cơ hội quảng bá',
     'market_analysis' => 'Phân tích thị trường',
-  ),
+  ],
   'sections' =>
-  array (
+  [
     'search_discovery' => 'Tìm kiếm & Khám phá',
     'help_support' => 'Trợ giúp & Hỗ trợ',
     'about_mechamap' => 'Về MechaMap',
-  ),
+  ],
   'pages' =>
-  array (
+  [
     'photo_gallery' => 'Thư viện ảnh',
     'browse_by_tags' => 'Duyệt theo thẻ',
     'faq' => 'Câu hỏi thường gặp',
@@ -78,9 +78,9 @@ return array (
     'about_us' => 'Về chúng tôi',
     'terms_of_service' => 'Điều khoản dịch vụ',
     'privacy_policy' => 'Chính sách bảo mật',
-  ),
+  ],
   'user' =>
-  array (
+  [
     'messages' => 'Tin nhắn',
     'notifications' => 'Thông báo',
     'saved' => 'Đã lưu',
@@ -88,9 +88,9 @@ return array (
     'my_business' => 'Doanh nghiệp của tôi',
     'verification_status' => 'Trạng thái xác minh',
     'my_subscription' => 'Gói đăng ký của tôi',
-  ),
+  ],
   'community' =>
-  array (
+  [
     'quick_access' => 'Truy cập nhanh',
     'forum_home_desc' => 'Trang chủ diễn đàn cộng đồng',
     'popular_topics' => 'Chủ đề phổ biến',
@@ -113,9 +113,9 @@ return array (
     'events_webinars_desc' => 'Tham gia các sự kiện cộng đồng',
     'job_board' => 'Bảng việc làm',
     'job_board_desc' => 'Tìm kiếm cơ hội nghề nghiệp',
-  ),
+  ],
   'add_menu' =>
-  array (
+  [
     'create_content' => [
       'title' => 'Tạo nội dung mới',
       'new_thread' => 'Bắt đầu thảo luận',
@@ -193,5 +193,146 @@ return array (
       'keyboard_shortcut' => 'Phím tắt',
       'dark_mode' => 'Chế độ tối',
     ],
-  ),
-);
+  ],
+  'main.community' => 'Cộng đồng',
+  'main.showcase' => 'Showcase',
+  'actions.add' => 'Thêm',
+  'main.more' => 'Thêm',
+  'sections.search_discovery' => 'Tìm kiếm & Khám phá',
+  'sections.help_support' => 'Trợ giúp & Hỗ trợ',
+  'sections.about_mechamap' => 'Về MechaMap',
+  'pages.photo_gallery' => 'Thư viện ảnh',
+  'pages.browse_by_tags' => 'Duyệt theo thẻ',
+  'pages.faq' => 'Câu hỏi thường gặp',
+  'pages.help_center' => 'Trung tâm trợ giúp',
+  'pages.contact_support' => 'Liên hệ hỗ trợ',
+  'pages.about_us' => 'Về chúng tôi',
+  'pages.terms_of_service' => 'Điều khoản dịch vụ',
+  'pages.privacy_policy' => 'Chính sách bảo mật',
+  'admin.dashboard' => 'Bảng điều khiển',
+  'admin.user_management' => 'Quản lý người dùng',
+  'admin.forum_management' => 'Quản lý diễn đàn',
+  'admin.marketplace_management' => 'Quản lý marketplace',
+  'supplier.dashboard' => 'Bảng điều khiển',
+  'supplier.my_products' => 'Sản phẩm của tôi',
+  'supplier.orders' => 'Đơn hàng',
+  'supplier.reports' => 'Báo cáo',
+  'supplier.product_management' => 'Quản lý sản phẩm',
+  'supplier.my_orders' => 'Đơn hàng của tôi',
+  'brand.dashboard' => 'Bảng điều khiển',
+  'brand.market_insights' => 'Thông tin thị trường',
+  'brand.marketplace_analytics' => 'Phân tích marketplace',
+  'brand.promotion_opportunities' => 'Cơ hội quảng bá',
+  'brand.market_analysis' => 'Phân tích thị trường',
+  'manufacturer.dashboard' => 'Bảng điều khiển',
+  'manufacturer.design_management' => 'Quản lý thiết kế',
+  'manufacturer.download_orders' => 'Đơn hàng tải xuống',
+  'user.messages' => 'Tin nhắn',
+  'user.notifications' => 'Thông báo',
+  'user.saved' => 'Đã lưu',
+  'user.my_showcase' => 'Showcase của tôi',
+  'user.my_business' => 'Doanh nghiệp của tôi',
+  'user.verification_status' => 'Trạng thái xác thực',
+  'user.my_subscription' => 'Gói đăng ký',
+  'add_menu.create_content.title' => 'Tạo nội dung',
+  'add_menu.create_content.new_thread' => 'Chủ đề mới',
+  'add_menu.create_content.new_thread_desc' => 'Bắt đầu thảo luận mới trong cộng đồng',
+  'add_menu.create_content.new_showcase' => 'Showcase mới',
+  'add_menu.create_content.new_showcase_desc' => 'Chia sẻ dự án và thiết kế của bạn',
+  'add_menu.create_content.upload_photo' => 'Tải ảnh lên',
+  'add_menu.create_content.upload_photo_desc' => 'Chia sẻ hình ảnh với cộng đồng',
+  'add_menu.create_content.add_product' => 'Thêm sản phẩm',
+  'add_menu.create_content.add_product_desc' => 'Đăng sản phẩm lên marketplace',
+  'add_menu.create_content.become_seller' => 'Trở thành người bán',
+  'add_menu.create_content.become_seller_desc' => 'Đăng ký tài khoản người bán',
+  'add_menu.create_content.create_document' => 'Tạo tài liệu',
+  'add_menu.create_content.create_document_desc' => 'Viết hướng dẫn hoặc tài liệu kỹ thuật',
+  'add_menu.discovery.title' => 'Khám phá',
+  'add_menu.discovery.advanced_search' => 'Tìm kiếm nâng cao',
+  'add_menu.discovery.advanced_search_desc' => 'Tìm kiếm chi tiết với bộ lọc',
+  'add_menu.discovery.browse_tags' => 'Duyệt theo thẻ',
+  'add_menu.discovery.browse_tags_desc' => 'Khám phá nội dung theo chủ đề',
+  'add_menu.discovery.community_stats' => 'Thống kê cộng đồng',
+  'add_menu.discovery.community_stats_desc' => 'Xem số liệu và xu hướng',
+  'add_menu.discovery.tech_trends' => 'Xu hướng công nghệ',
+  'add_menu.discovery.tech_trends_desc' => 'Theo dõi công nghệ mới nhất',
+  'add_menu.discovery.recommendations' => 'Gợi ý',
+  'add_menu.discovery.recommendations_desc' => 'Nội dung được đề xuất cho bạn',
+  'add_menu.tools.title' => 'Công cụ',
+  'add_menu.tools.calculator' => 'Máy tính',
+  'add_menu.tools.calculator_desc' => 'Công cụ tính toán kỹ thuật',
+  'add_menu.tools.unit_converter' => 'Chuyển đổi đơn vị',
+  'add_menu.tools.unit_converter_desc' => 'Chuyển đổi các đơn vị đo lường',
+  'add_menu.tools.material_lookup' => 'Tra cứu vật liệu',
+  'add_menu.tools.material_lookup_desc' => 'Tìm thông tin về vật liệu',
+  'add_menu.tools.design_tools' => 'Công cụ thiết kế',
+  'add_menu.tools.design_tools_desc' => 'Công cụ hỗ trợ thiết kế',
+  'add_menu.tools.mobile_app' => 'Ứng dụng di động',
+  'add_menu.tools.mobile_app_desc' => 'Tải ứng dụng MechaMap',
+  'add_menu.tools.api_integration' => 'Tích hợp API',
+  'add_menu.tools.api_integration_desc' => 'Kết nối với hệ thống của bạn',
+  'add_menu.community.title' => 'Cộng đồng',
+  'add_menu.community.find_experts' => 'Tìm chuyên gia',
+  'add_menu.community.find_experts_desc' => 'Kết nối với các chuyên gia',
+  'add_menu.community.business_connect' => 'Kết nối doanh nghiệp',
+  'add_menu.community.business_connect_desc' => 'Mạng lưới doanh nghiệp',
+  'add_menu.community.mentorship' => 'Cố vấn',
+  'add_menu.community.mentorship_desc' => 'Chương trình cố vấn',
+  'add_menu.community.job_opportunities' => 'Cơ hội việc làm',
+  'add_menu.community.job_opportunities_desc' => 'Tìm việc làm trong ngành',
+  'add_menu.community.professional_groups' => 'Nhóm chuyên nghiệp',
+  'add_menu.community.professional_groups_desc' => 'Tham gia nhóm chuyên ngành',
+  'add_menu.community.events' => 'Sự kiện',
+  'add_menu.community.events_desc' => 'Hội thảo và sự kiện ngành',
+  'add_menu.support.title' => 'Hỗ trợ',
+  'add_menu.support.faq' => 'Câu hỏi thường gặp',
+  'add_menu.support.faq_desc' => 'Câu trả lời cho các thắc mắc',
+  'add_menu.support.contact' => 'Liên hệ',
+  'add_menu.support.contact_desc' => 'Liên hệ đội ngũ hỗ trợ',
+  'add_menu.support.about' => 'Về chúng tôi',
+  'add_menu.support.about_desc' => 'Tìm hiểu về MechaMap',
+  'add_menu.status.coming_soon' => 'Sắp ra mắt',
+  'add_menu.status.beta' => 'Beta',
+  'add_menu.status.new' => 'Mới',
+  'add_menu.footer.quick_tip' => 'Mẹo: Sử dụng phím tắt để tạo nội dung nhanh hơn',
+  'add_menu.footer.keyboard_shortcut' => 'Phím tắt tạo nội dung',
+  'add_menu.footer.dark_mode' => 'Chế độ tối có sẵn trong cài đặt',
+  'community.quick_access' => 'Truy cập nhanh',
+  'community.forum_home_desc' => 'Trang chủ diễn đàn và thảo luận',
+  'community.popular_topics' => 'Chủ đề phổ biến',
+  'community.popular_discussions_desc' => 'Các thảo luận được quan tâm nhất',
+  'community.browse_categories' => 'Duyệt danh mục',
+  'community.explore_topics_desc' => 'Khám phá các chủ đề theo danh mục',
+  'community.discover' => 'Khám phá',
+  'community.recent_discussions' => 'Thảo luận gần đây',
+  'community.recent_discussions_desc' => 'Các cuộc thảo luận mới nhất',
+  'community.trending' => 'Xu hướng',
+  'community.trending_desc' => 'Nội dung đang thịnh hành',
+  'community.most_viewed' => 'Xem nhiều nhất',
+  'community.most_viewed_desc' => 'Nội dung được xem nhiều nhất',
+  'community.hot_topics' => 'Chủ đề hot',
+  'community.hot_topics_desc' => 'Chủ đề đang được thảo luận sôi nổi',
+  'community.tools_connect' => 'Công cụ & Kết nối',
+  'community.member_directory' => 'Thư mục thành viên',
+  'community.member_directory_desc' => 'Tìm và kết nối với thành viên',
+  'community.events_webinars' => 'Sự kiện & Webinar',
+  'community.events_webinars_desc' => 'Tham gia các sự kiện cộng đồng',
+  'community.job_board' => 'Bảng việc làm',
+  'community.job_board_desc' => 'Tìm kiếm cơ hội nghề nghiệp',
+
+  'nav.main.home' => 'Trang chủ',
+  'nav.main.forums' => 'Diễn đàn',
+  'nav.main.marketplace' => 'Thị trường',
+  'nav.main.whats_new' => 'Có gì mới',
+  'auth.login' => 'Đăng nhập',
+  'dashboard' => 'Bảng điều khiển',
+  'products' => 'Sản phẩm',
+  'orders' => 'Đơn hàng',
+  'analytics' => 'Phân tích',
+  'settings' => 'Cài đặt',
+  'trending' => 'Xu hướng',
+  'most_viewed' => 'Xem nhiều nhất',
+  'hot_topics' => 'Chủ đề nóng',
+  'dashboard' => 'Bảng điều khiển',
+  'dashboard' => 'Bảng điều khiển',
+];

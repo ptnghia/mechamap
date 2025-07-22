@@ -25,7 +25,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary w-100">{{ t_search('form.submit') }}</button>
+                            <button type="submit" class="btn btn-primary w-100">{{ __('search.form.submit') }}</button>
                         </div>
                     </form>
                 </div>
@@ -62,7 +62,7 @@
                                         </div>
                                         <p class="mb-1">{{ Str::limit(strip_tags($thread->content), 150) }}</p>
                                         <small>
-                                            {{ __('By') }}
+                                            {{ __('common.by') }}
                                             <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
                                                 {{ $thread->user->name }}
                                             </a>
@@ -89,13 +89,13 @@
                                     <div class="list-group-item py-3">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1">
-                                                <a href="#" class="text-decoration-none">{{ __('Reply in') }}: {{ $post->thread->title }}</a>
+                                                <a href="#" class="text-decoration-none">{{ __('common.reply_in') }}: {{ $post->thread->title }}</a>
                                             </h5>
                                             <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
                                         </div>
                                         <p class="mb-1">{{ Str::limit(strip_tags($post->content), 150) }}</p>
                                         <small>
-                                            {{ __('By') }}
+                                            {{ __('common.by') }}
                                             <a href="{{ route('profile.show', $post->user->username) }}" class="text-decoration-none">
                                                 {{ $post->user->name }}
                                             </a>
@@ -125,7 +125,7 @@
                                                     </a>
                                                 </h5>
                                                 <p class="mb-0 text-muted small">
-                                                    {{ '@' . $user->username }} · {{ __('Joined') }} {{ $user->created_at->format('M Y') }}
+                                                    {{ '@' . $user->username }} · {{ __('common.joined') }} {{ $user->created_at->format('M Y') }}
                                                 </p>
                                             </div>
                                         </div>

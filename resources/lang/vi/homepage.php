@@ -83,4 +83,6 @@ return [
         'no_categories' => 'Không có danh mục nào',
         'loading_error' => 'Lỗi tải nội dung',
     ],
+  'sections.featured_showcases' => 'Showcase nổi bật',
+  'sections.featured_showcases_desc' => 'Khám phá các dự án kỹ thuật xuất sắc từ cộng đồng',
 ];

@@ -17,7 +17,7 @@
                 @if($media->description)
                 <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Description') }}</h5>
+                        <h5 class="card-title mb-0">{{ __('gallery.description') }}</h5>
                     </div>
                     <div class="card-body">
                         <p class="mb-0">{{ $media->description }}</p>
@@ -27,11 +27,11 @@
 
                 <div class="card shadow-sm rounded-3">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Comments') }}</h5>
+                        <h5 class="card-title mb-0">{{ __('gallery.comments') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="text-center py-4">
-                            <p class="mb-0">{{ __('Comments feature coming soon.') }}</p>
+                            <p class="mb-0">{{ __('gallery.comments_coming_soon') }}</p>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
             <div class="col-md-4">
                 <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Media Information') }}</h5>
+                        <h5 class="card-title mb-0">{{ __('gallery.media_information') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="d-flex mb-3">
@@ -53,7 +53,7 @@
                                         {{ $media->user->name }}
                                     </a>
                                 </h6>
-                                <p class="mb-0 text-muted small">{{ __('Uploaded') }} {{
+                                <p class="mb-0 text-muted small">{{ __('gallery.uploaded') }} {{
                                     $media->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
@@ -61,23 +61,23 @@
                         <hr>
 
                         <div class="mb-2">
-                            <strong>{{ __('File Name') }}:</strong> {{ $media->file_name }}
+                            <strong>{{ __('gallery.file_name') }}:</strong> {{ $media->file_name }}
                         </div>
                         <div class="mb-2">
-                            <strong>{{ __('File Type') }}:</strong> {{ $media->file_type }}
+                            <strong>{{ __('gallery.file_type') }}:</strong> {{ $media->file_type }}
                         </div>
                         <div class="mb-2">
-                            <strong>{{ __('File Size') }}:</strong> {{ round($media->file_size / 1024, 2) }} KB
+                            <strong>{{ __('gallery.file_size') }}:</strong> {{ round($media->file_size / 1024, 2) }} KB
                         </div>
                         <div class="mb-2">
-                            <strong>{{ __('Dimensions') }}:</strong>
+                            <strong>{{ __('gallery.dimensions') }}:</strong>
                             @php
                             $imagePath = storage_path('app/public/' . $media->file_path);
                             if (file_exists($imagePath)) {
                             $imageSize = getimagesize($imagePath);
                             echo $imageSize[0] . ' x ' . $imageSize[1] . ' px';
                             } else {
-                            echo __('Unknown');
+                            echo __('gallery.unknown');
                             }
                             @endphp
                         </div>
@@ -86,16 +86,16 @@
 
                         <div class="d-grid gap-2">
                             <a href="{{ $media->url }}" class="btn btn-primary" download="{{ $media->file_name }}">
-                                <i class="fas fa-download me-1"></i> {{ __('Download') }}
+                                <i class="fas fa-download me-1"></i> {{ __('gallery.download') }}
                             </a>
 
                             @if(Auth::check() && (Auth::id() === $media->user_id || Auth::user()->isAdmin()))
                             <form action="{{ route('gallery.destroy', $media) }}" method="POST"
-                                onsubmit="return confirm('{{ __('Are you sure you want to delete this media?') }}')">
+                                onsubmit="return confirm('{{ __('gallery.delete_confirm') }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger w-100">
-                                    <i class="fas fa-trash me-1"></i> {{ __('Delete') }}
+                                    <i class="fas fa-trash me-1"></i> {{ __('gallery.delete') }}
                                 </button>
                             </form>
                             @endif
@@ -105,7 +105,7 @@
 
                 <div class="card shadow-sm rounded-3">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Share') }}</h5>
+                        <h5 class="card-title mb-0">{{ __('gallery.share') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="input-group mb-3">
@@ -121,11 +121,11 @@
                                 target="_blank" class="btn btn-outline-primary">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('gallery.show', $media)) }}&text={{ urlencode($media->title ?: __('Check out this image')) }}"
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('gallery.show', $media)) }}&text={{ urlencode($media->title ?: __('gallery.check_out_image')) }}"
                                 target="_blank" class="btn btn-outline-info">
                                 <i class="fab fa-twitter"></i>
                             </a>
-                            <a href="https://pinterest.com/pin/create/button/?url={{ urlencode(route('gallery.show', $media)) }}&media={{ urlencode(asset('storage/' . $media->file_path)) }}&description={{ urlencode($media->title ?: __('Check out this image')) }}"
+                            <a href="https://pinterest.com/pin/create/button/?url={{ urlencode(route('gallery.show', $media)) }}&media={{ urlencode(asset('storage/' . $media->file_path)) }}&description={{ urlencode($media->title ?: __('gallery.check_out_image')) }}"
                                 target="_blank" class="btn btn-outline-danger">
                                 <i class="pinterest"></i>
                             </a>
@@ -143,9 +143,9 @@
             const shareUrl = document.getElementById('shareUrl');
             shareUrl.select();
             document.execCommand('copy');
-            
+
             // Show a tooltip or notification
-            alert('{{ __('URL copied to clipboard!') }}');
+            alert('{{ __('gallery.url_copied') }}');
         }
 </script>
 @endpush

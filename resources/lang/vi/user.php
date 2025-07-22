@@ -1,36 +1,31 @@
 <?php
 
 /**
- * Translation file
- * Auto-updated: 2025-07-21 04:44:47
+ * User Translation File - Vietnamese (COMPREHENSIVE)
+ * Complete translation coverage for user functionality
+ * Auto-updated: 2025-07-22 03:56:38
  */
 
 return array (
-  'profile' =>
-  array (
-    'title' => 'Hồ sơ cá nhân',
-  ),
-
-  // Profile page translations
+  'profile' => 'hồ sơ',
   'Last seen:' => 'Truy cập lần cuối:',
   'Replies' => 'Phản hồi',
   'Threads' => 'Chủ đề',
   'Reactions' => 'Phản ứng',
   'About' => 'Giới thiệu',
-  'No information provided.' => 'Chưa có thông tin nào được cung cấp.',
+  'No information provided.' => 'Chưa cung cấp thông tin.',
   'Joined:' => 'Tham gia:',
   'Following' => 'Đang theo dõi',
   'Followers' => 'Người theo dõi',
   'Get set up on MechaMap Forum!' => 'Thiết lập trên Diễn đàn MechaMap!',
-  'Not sure what to do next? Here are some ideas to get you familiar with the community!' => 'Không biết phải làm gì tiếp theo? Dưới đây là một số ý tưởng để bạn làm quen với cộng đồng!',
-  'Verify your email' => 'Xác minh email của bạn',
+  'Not sure what to do next? Here are some ideas to get you familiar with the community!' => 'Không chắc phải làm gì tiếp theo? Đây là một số ý tưởng giúp bạn làm quen với cộng đồng!',
+  'Verify your email' => 'Xác thực email của bạn',
   'Add an avatar' => 'Thêm ảnh đại diện',
   'Add information about yourself' => 'Thêm thông tin về bản thân',
   'Add your location' => 'Thêm vị trí của bạn',
   'Create a post or reply to a thread' => 'Tạo bài viết hoặc trả lời chủ đề',
   'Profile Posts' => 'Bài viết hồ sơ',
   'Write something on' => 'Viết gì đó trên',
-  'profile' => 'hồ sơ',
   'Post' => 'Đăng',
   'No profile posts yet.' => 'Chưa có bài viết hồ sơ nào.',
   'Recent Activity' => 'Hoạt động gần đây',
@@ -38,24 +33,23 @@ return array (
   'Replied to a thread' => 'Đã trả lời chủ đề',
   'Updated profile information' => 'Đã cập nhật thông tin hồ sơ',
   'No recent activity.' => 'Không có hoạt động gần đây.',
-  'settings' =>
+  'settings' => 
   array (
     'title' => 'Cài đặt',
   ),
-  'dashboard' =>
+  'dashboard' => 
   array (
     'title' => 'Bảng điều khiển',
   ),
-
-  'roles' => [
+  'roles' => 
+  array (
     'admin' => 'Quản trị viên',
     'moderator' => 'Điều hành viên',
     'member' => 'Thành viên',
-    'guest' => 'Khách'
-  ],
-
-  // Ratings system
-  'ratings' => [
+    'guest' => 'Khách',
+  ),
+  'ratings' => 
+  array (
     'title' => 'Đánh giá & Xếp hạng',
     'description' => 'Quản lý đánh giá đã cho và nhận được',
     'given' => 'Đánh giá đã cho',
@@ -82,10 +76,9 @@ return array (
     'no_received_yet' => 'Chưa nhận được đánh giá nào',
     'no_received_desc' => 'Chủ đề của bạn chưa được đánh giá. Hãy tạo nội dung chất lượng!',
     'create_thread' => 'Tạo chủ đề',
-  ],
-
-  // Activity system
-  'activity' => [
+  ),
+  'activity' => 
+  array (
     'title' => 'Hoạt động',
     'recent' => 'Hoạt động gần đây',
     'all_activity' => 'Tất cả hoạt động',
@@ -108,10 +101,9 @@ return array (
     'active_days' => 'Ngày hoạt động',
     'no_activity' => 'Chưa có hoạt động nào',
     'no_activity_desc' => 'Người dùng này chưa có hoạt động nào được ghi nhận',
-  ],
-
-  // Dashboard specific
-  'dashboard_guest' => [
+  ),
+  'dashboard_guest' => 
+  array (
     'welcome' => 'Chào mừng đến với MechaMap',
     'welcome_desc' => 'Khám phá cộng đồng kỹ thuật cơ khí hàng đầu Việt Nam',
     'join_community' => 'Tham gia cộng đồng',
@@ -139,9 +131,9 @@ return array (
     'access_premium' => 'Truy cập premium',
     'network_professionals' => 'Kết nối chuyên gia',
     'learn_grow' => 'Học hỏi & phát triển',
-  ],
-
-  'dashboard_member' => [
+  ),
+  'dashboard_member' => 
+  array (
     'welcome_back' => 'Chào mừng trở lại',
     'your_activity' => 'Hoạt động của bạn',
     'quick_stats' => 'Thống kê nhanh',
@@ -168,14 +160,10 @@ return array (
     'daily_goals' => 'Mục tiêu hàng ngày',
     'weekly_summary' => 'Tổng kết tuần',
     'monthly_recap' => 'Tóm tắt tháng',
-  ],
-
-  // Common user interface keys
-  'About' => 'Giới thiệu',
+  ),
   'About Me' => 'Về tôi',
   'See All' => 'Xem tất cả',
   'Edit in account settings' => 'Chỉnh sửa trong cài đặt tài khoản',
-  'No information provided.' => 'Chưa cung cấp thông tin.',
   'Website' => 'Trang web',
   'Location' => 'Vị trí',
   'Signature' => 'Chữ ký',
@@ -186,23 +174,25 @@ return array (
   'Never' => 'Chưa bao giờ',
   'Online' => 'Trực tuyến',
   'Last activity' => 'Hoạt động cuối',
-
-  // Profile specific keys
   'Registered' => 'Đã đăng ký',
   'Last seen' => 'Lần cuối nhìn thấy',
   'Viewing member profile' => 'Xem hồ sơ thành viên',
   'Report' => 'Báo cáo',
-  'Replies' => 'Phản hồi',
   'Discussions Created' => 'Thảo luận đã tạo',
   'Reaction score' => 'Điểm phản ứng',
   'Points' => 'Điểm',
-  'Get set up on MechaMap Forum!' => 'Thiết lập trên Diễn đàn MechaMap!',
-  'Not sure what to do next? Here are some ideas to get you familiar with the community!' => 'Không chắc phải làm gì tiếp theo? Đây là một số ý tưởng giúp bạn làm quen với cộng đồng!',
-  'Verify your email' => 'Xác thực email của bạn',
-  'Add an avatar' => 'Thêm ảnh đại diện',
   'Like a post' => 'Thích một bài viết',
   'Overview' => 'Tổng quan',
   'Profile posts' => 'Bài đăng hồ sơ',
   'Activity' => 'Hoạt động',
   'Gallery' => 'Thư viện ảnh',
+  'profile_settings' => 'Cài đặt hồ sơ',
+  'account_preferences' => 'Tùy chọn tài khoản',
+  'privacy_settings' => 'Cài đặt riêng tư',
+  'notification_preferences' => 'Tùy chọn thông báo',
+  'profile.actions.search' => 'Tìm kiếm hồ sơ',
+  'profile.labels.role' => 'Vai trò',
+  'profile.labels.all_roles' => 'Tất cả vai trò',
+  'profile.status.cancelled' => 'Đã hủy',
+  'roles.admin' => 'Quản trị viên',
 );

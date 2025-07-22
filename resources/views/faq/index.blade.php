@@ -93,7 +93,7 @@
                 <div class="col-md-3 mb-4">
                     <div class="card shadow-sm rounded-3 sticky-top" style="top: 20px;">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Categories') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('faq.categories') }}</h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="list-group list-group-flush">
@@ -136,9 +136,9 @@
 
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body">
-                            <h5 class="mb-3">{{ __('Still have questions?') }}</h5>
+                            <h5 class="mb-3">{{ __('faq.still_have_questions') }}</h5>
                             <p>{{ __('If you couldn\'t find the answer to your question, feel free to contact us.') }}</p>
-                            <a href="#" class="btn btn-primary">{{ __('Contact Support') }}</a>
+                            <a href="#" class="btn btn-primary">{{ __('faq.contact_support') }}</a>
                         </div>
                     </div>
                 </div>

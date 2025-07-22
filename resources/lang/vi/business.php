@@ -142,5 +142,14 @@ return [
     'Connect with industry professionals, potential clients, and partners to expand your
                             network.' => 'Kết nối với các chuyên gia trong ngành, khách hàng tiềm năng và đối tác để mở rộng mạng lưới của bạn.',
     'Access detailed analytics to measure the impact of your business presence and optimize
-                            your strategy.' => 'Truy cập phân tích chi tiết để đo lường tác động của sự hiện diện doanh nghiệp và tối ưu hóa chiến lược của bạn.'
+                            your strategy.' => 'Truy cập phân tích chi tiết để đo lường tác động của sự hiện diện doanh nghiệp và tối ưu hóa chiến lược của bạn.',
+  'premium_listing_description' => 'Danh sách cao cấp xuất hiện ở đầu kết quả tìm kiếm và trang danh mục, mang lại khả năng hiển thị tối đa cho doanh nghiệp của bạn. Chúng cũng bao gồm các yếu tố hình ảnh nâng cao để làm cho danh sách của bạn nổi bật so với đối thủ cạnh tranh.',
+  'can_cancel_anytime' => 'Có, bạn có thể hủy đăng ký bất cứ lúc nào. Dịch vụ của bạn sẽ tiếp tục cho đến hết chu kỳ thanh toán hiện tại.',
+  'enterprise_packages' => 'Có, chúng tôi cung cấp các gói doanh nghiệp tùy chỉnh cho các doanh nghiệp lớn hơn có nhu cầu cụ thể. Vui lòng liên hệ với đội ngũ bán hàng của chúng tôi để thảo luận về yêu cầu của bạn và nhận giải pháp phù hợp.',
+  'faq_analytics' => 'Tôi có thể theo dõi hiệu suất dịch vụ của mình không?',
+  'faq_custom_packages' => 'Bạn có cung cấp gói doanh nghiệp tùy chỉnh không?',
+  'analytics_description' => 'Bảng điều khiển phân tích của chúng tôi cung cấp thông tin chi tiết về lượt xem, nhấp chuột, yêu cầu và số liệu tương tác. Bạn sẽ có thể theo dõi hiệu suất theo thời gian và xem khía cạnh nào của sự hiện diện kinh doanh của bạn đang tạo ra sự quan tâm nhiều nhất.',
+  'premium_listings_description' => 'Danh sách cao cấp xuất hiện ở đầu kết quả tìm kiếm và trang danh mục, mang lại khả năng hiển thị tối đa cho doanh nghiệp của bạn. Chúng cũng bao gồm các yếu tố hình ảnh nâng cao để làm cho danh sách của bạn nổi bật so với đối thủ cạnh tranh.',
+  'cancel_subscription_description' => 'Có, bạn có thể hủy đăng ký bất cứ lúc nào. Dịch vụ của bạn sẽ tiếp tục cho đến khi kết thúc chu kỳ thanh toán hiện tại.',
+  'custom_packages_description' => 'Có, chúng tôi cung cấp các gói doanh nghiệp tùy chỉnh cho các doanh nghiệp lớn hơn có nhu cầu cụ thể. Vui lòng liên hệ với đội ngũ bán hàng của chúng tôi để thảo luận về yêu cầu của bạn và nhận giải pháp phù hợp.',
 ];

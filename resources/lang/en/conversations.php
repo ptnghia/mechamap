@@ -1,77 +1,83 @@
 <?php
 
-return [
-    // General conversation terms
-    'Conversation' => 'Conversation',
-    'conversations' => 'Conversations',
-    'conversation' => 'conversation',
+/**
+ * Conversations Translation File - English (COMPREHENSIVE)
+ * Complete translation coverage for conversations functionality
+ * Auto-updated: 2025-07-22 03:55:43
+ */
 
-    // Conversation actions
-    'Invite participants' => 'Invite participants',
-    'Mute conversation' => 'Mute conversation',
-    'Report' => 'Report',
-    'Leave conversation' => 'Leave conversation',
-
-    // Messages
-    'Messages' => 'Messages',
-    'messages' => 'messages',
-    'No messages yet' => 'No messages yet',
-    'No messages yet.' => 'No messages yet.',
-    'Send a message to start the conversation.' => 'Send a message to start the conversation.',
-    'Type your message...' => 'Type your message...',
-    'Message' => 'Message',
-    'Your message...' => 'Your message...',
-
-    // Time
-    'Today' => 'Today',
-    'Yesterday' => 'Yesterday',
-
-    // Conversation management
-    'Start conversation' => 'Start conversation',
-    'Start a new conversation to connect with other users.' => 'Start a new conversation to connect with other users.',
-    'There are no conversations to display.' => 'There are no conversations to display.',
-
-    // Form fields
-    'Recipients' => 'Recipients',
-    'You may enter multiple names here.' => 'You may enter multiple names here.',
-    'Select a user' => 'Select a user',
-    'Title' => 'Title',
-    'Conversation title...' => 'Conversation title...',
-
-    // Settings
-    'Allow anyone in the conversation to invite others' => 'Allow anyone in the conversation to invite others',
-    'Lock conversation (no responses will be allowed)' => 'Lock conversation (no responses will be allowed)',
-
-    // Actions
-    'Cancel' => 'Cancel',
-    'Send' => 'Send',
-    'Reply' => 'Reply',
-    'Forward' => 'Forward',
-    'Delete' => 'Delete',
-    'Archive' => 'Archive',
-    'Mark as read' => 'Mark as read',
-    'Mark as unread' => 'Mark as unread',
-
-    // Status
-    'Online' => 'Online',
-    'Offline' => 'Offline',
-    'Last seen' => 'Last seen',
-    'Typing...' => 'Typing...',
-
-    // Notifications
-    'New message from :user' => 'New message from :user',
-    'You have :count new messages' => 'You have :count new messages',
-    'Message sent successfully' => 'Message sent successfully',
-    'Message deleted successfully' => 'Message deleted successfully',
-
-    // Errors
-    'Failed to send message' => 'Failed to send message',
-    'Failed to load conversation' => 'Failed to load conversation',
-    'User not found' => 'User not found',
-    'Conversation not found' => 'Conversation not found',
-
-    // Privacy
-    'Private conversation' => 'Private conversation',
-    'Group conversation' => 'Group conversation',
-    'Only participants can see this conversation' => 'Only participants can see this conversation',
-];
+return array (
+  'Conversation' => 'Conversation',
+  'conversations' => 'Conversations',
+  'conversation' => 'conversation',
+  'Invite participants' => 'Invite participants',
+  'Mute conversation' => 'Mute conversation',
+  'Report' => 'Report',
+  'Leave conversation' => 'Leave conversation',
+  'Messages' => 'Messages',
+  'messages' => 'messages',
+  'No messages yet' => 'No messages yet',
+  'No messages yet.' => 'No messages yet.',
+  'Send a message to start the conversation.' => 'Send a message to start the conversation.',
+  'Type your message...' => 'Type your message...',
+  'Message' => 'Message',
+  'Your message...' => 'Your message...',
+  'Today' => 'Today',
+  'Yesterday' => 'Yesterday',
+  'Start conversation' => 'Start conversation',
+  'Start a new conversation to connect with other users.' => 'Start a new conversation to connect with other users.',
+  'There are no conversations to display.' => 'There are no conversations to display.',
+  'Recipients' => 'Recipients',
+  'You may enter multiple names here.' => 'You may enter multiple names here.',
+  'Select a user' => 'Select a user',
+  'Title' => 'Title',
+  'Conversation title...' => 'Conversation title...',
+  'Allow anyone in the conversation to invite others' => 'Allow anyone in the conversation to invite others',
+  'Lock conversation (no responses will be allowed)' => 'Lock conversation (no responses will be allowed)',
+  'Cancel' => 'Cancel',
+  'Send' => 'Send',
+  'Reply' => 'Reply',
+  'Forward' => 'Forward',
+  'Delete' => 'Delete',
+  'Archive' => 'Archive',
+  'Mark as read' => 'Mark as read',
+  'Mark as unread' => 'Mark as unread',
+  'Online' => 'Online',
+  'Offline' => 'Offline',
+  'Last seen' => 'Last seen',
+  'Typing...' => 'Typing...',
+  'New message from :user' => 'New message from :user',
+  'You have :count new messages' => 'You have :count new messages',
+  'Message sent successfully' => 'Message sent successfully',
+  'Message deleted successfully' => 'Message deleted successfully',
+  'Failed to send message' => 'Failed to send message',
+  'Failed to load conversation' => 'Failed to load conversation',
+  'User not found' => 'User not found',
+  'Conversation not found' => 'Conversation not found',
+  'Private conversation' => 'Private conversation',
+  'Group conversation' => 'Group conversation',
+  'Only participants can see this conversation' => 'Only participants can see this conversation',
+  'no_messages_yet' => 'No messages yet',
+  'send_message_to_start' => 'Send a message to start the conversation',
+  'type_your_message' => 'Type your message',
+  'when_someone_follows_you' => 'When someone follows you, they will appear here',
+  'you_are_not_following_anyone' => 'You are not following anyone yet',
+  'conversation' => 'Conversation',
+  'invite_participants' => 'Invite participants',
+  'mute_conversation' => 'Mute conversation',
+  'report' => 'Report',
+  'leave_conversation' => 'Leave conversation',
+  'conversation' => 'Conversation',
+  'invite_participants' => 'Invite participants',
+  'mute_conversation' => 'Mute conversation',
+  'report' => 'Report',
+  'leave_conversation' => 'Leave conversation',
+  'messages' => 'Messages',
+  'messages_count' => 'messages',
+  'no_messages_yet' => 'No messages yet.',
+  'send_message_to_start' => 'Send a message to start the conversation.',
+  'type_your_message' => 'Type your message...',
+  'send' => 'Send',
+  'today' => 'Today',
+  'yesterday' => 'Yesterday',
+);

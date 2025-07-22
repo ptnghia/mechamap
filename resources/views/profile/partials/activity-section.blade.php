@@ -1,8 +1,8 @@
 <div class="card activity-section mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">{{ __('Activity') }}</h5>
+        <h5 class="mb-0">{{ __('profile.activity') }}</h5>
         @if(!isset($showAll))
-            <a href="{{ route('profile.activities', $user) }}" class="see-all-link">{{ __('See All') }} <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ route('profile.activities', $user) }}" class="see-all-link">{{ __('profile.see_all') }} <i class="fas fa-arrow-right"></i></a>
         @endif
     </div>
     <div class="card-body">
@@ -18,41 +18,41 @@
                                 @case('thread_created')
                                     @if($activity->thread)
                                         <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
-                                            {{ __('Created thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                            {{ __('profile.created_thread') }} {{ Str::limit($activity->thread->title, 50) }}
                                         </a>
                                     @else
-                                        {{ __('Created a new thread') }}
+                                        {{ __('profile.created_a_new_thread') }}
                                     @endif
                                     @break
                                 @case('comment_created')
                                     @if($activity->comment && $activity->comment->thread)
                                         <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
-                                            {{ __('Commented on:') }} {{ Str::limit($activity->comment->thread->title, 50) }}
+                                            {{ __('profile.commented_on') }} {{ Str::limit($activity->comment->thread->title, 50) }}
                                         </a>
                                     @else
-                                        {{ __('Commented on a thread') }}
+                                        {{ __('profile.commented_on_a_thread') }}
                                     @endif
                                     @break
                                 @case('thread_liked')
                                     @if($activity->thread)
                                         <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
-                                            {{ __('Liked thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                            {{ __('profile.liked_thread') }} {{ Str::limit($activity->thread->title, 50) }}
                                         </a>
                                     @else
-                                        {{ __('Liked a thread') }}
+                                        {{ __('profile.liked_a_thread') }}
                                     @endif
                                     @break
                                 @case('thread_saved')
                                     @if($activity->thread)
                                         <a href="{{ $activity->getUrl() }}" class="text-decoration-none">
-                                            {{ __('Saved thread:') }} {{ Str::limit($activity->thread->title, 50) }}
+                                            {{ __('profile.saved_thread') }} {{ Str::limit($activity->thread->title, 50) }}
                                         </a>
                                     @else
-                                        {{ __('Saved a thread') }}
+                                        {{ __('profile.saved_a_thread') }}
                                     @endif
                                     @break
                                 @case('profile_updated')
-                                    {{ __('Updated profile information') }}
+                                    {{ __('profile.updated_profile_information') }}
                                     @break
                                 @default
                                     {{ $activity->activity_type }}
@@ -70,7 +70,7 @@
             @endif
         @else
             <div class="empty-state">
-                <p>{{ __('The news feed is currently empty.') }}</p>
+                <p>{{ __('profile.news_feed_empty') }}</p>
             </div>
         @endif
     </div>

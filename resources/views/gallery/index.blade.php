@@ -12,7 +12,7 @@
                     <div class="col-md-6">
                         <form action="{{ route('gallery.index') }}" method="GET" class="d-flex">
                             <input type="text" name="search" class="form-control me-2"
-                                placeholder="{{ __('Search gallery...') }}" value="{{ request('search') }}">
+                                placeholder="{{ __('gallery.search_gallery') }}" value="{{ request('search') }}">
                             <button type="submit" class="btn btn-primary">{{ t_search('form.submit') }}</button>
                         </form>
                     </div>
@@ -64,7 +64,7 @@
 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small class="text-muted">
-                                        {{ __('Uploaded by') }}
+                                        {{ __('gallery.uploaded_by') }}
                                         <a href="{{ route('profile.show', $media->user->username) }}"
                                             class="text-decoration-none">
                                             {{ $media->user->name }}
@@ -98,7 +98,7 @@
                                     </a>
                                 </h6>
                                 <p class="card-text small text-muted">
-                                    {{ __('By') }}
+                                    {{ __('gallery.by') }}
                                     <a href="{{ route('profile.show', $media->user->username) }}"
                                         class="text-decoration-none">
                                         {{ $media->user->name }}
@@ -120,10 +120,10 @@
                 @else
                 <div class="text-center py-5">
                     <i class="images fs-1 text-muted mb-3"></i>
-                    <p class="mb-0">{{ __('No media items found.') }}</p>
+                    <p class="mb-0">{{ __('gallery.no_media_found') }}</p>
                     @auth
                     <a href="{{ route('gallery.create') }}" class="btn btn-primary mt-3">
-                        <i class="fas fa-upload me-1"></i> {{ __('Upload Media') }}
+                        <i class="fas fa-upload me-1"></i> {{ __('gallery.upload_media') }}
                     </a>
                     @endauth
                 </div>

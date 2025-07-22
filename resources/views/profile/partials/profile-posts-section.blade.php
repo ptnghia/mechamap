@@ -1,16 +1,16 @@
 <div class="card mb-4">
     <div class="card-header">
-        <h5 class="mb-0">{{ __('Profile Posts') }}</h5>
+        <h5 class="mb-0">{{ __('profile.posts') }}</h5>
     </div>
     <div class="card-body">
         @auth
             <form action="{{ route('profile.posts.store', $user->username) }}" method="POST" class="mb-4">
                 @csrf
                 <div class="mb-3">
-                    <textarea name="content" class="form-control" rows="3" placeholder="{{ __('Write something on') }} {{ $user->name }}'s {{ __('profile') }}..."></textarea>
+                    <textarea name="content" class="form-control" rows="3" placeholder="{{ __('profile.write_something_on') }} {{ $user->name }}'s {{ __('profile.profile') }}..."></textarea>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">{{ __('Post') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('profile.post') }}</button>
                 </div>
             </form>
         @endauth
@@ -42,7 +42,7 @@
             </div>
         @else
             <div class="empty-state">
-                <p>{{ __('No profile posts yet.') }}</p>
+                <p>{{ __('profile.no_posts_yet') }}</p>
             </div>
         @endif
     </div>

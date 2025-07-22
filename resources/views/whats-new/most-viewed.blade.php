@@ -29,12 +29,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.trending') }}">
-                            <i class="fas fa-fire me-1"></i>Trending
+                            <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('whats-new.most-viewed') }}">
-                            <i class="fas fa-eye me-1"></i>Most Viewed
+                            <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -158,11 +158,11 @@
                     <div class="d-flex gap-2 justify-content-center">
                         <a href="{{ route('whats-new') }}" class="btn btn-outline-primary">
                             <i class="fas fa-list me-1"></i>
-                            View Latest Posts
+                            {{ __('common.actions.view_latest_posts') }}
                         </a>
                         <a href="{{ route('whats-new.popular') }}" class="btn btn-outline-success">
                             <i class="fas fa-star me-1"></i>
-                            View Popular
+                            {{ __('common.actions.view_popular') }}
                         </a>
                     </div>
                 </div>

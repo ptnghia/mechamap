@@ -125,4 +125,8 @@ return [
     'post_50_comments' => 'Đăng 50 bình luận',
     'maintain_4_star_rating' => 'Duy trì đánh giá 4 sao',
     'keep_contributing' => 'Tiếp tục đóng góp',
+  'quick_stats' => 'Thống kê nhanh',
+  'products' => 'Sản phẩm',
+  'orders' => 'Đơn hàng',
+  'total_revenue' => 'Tổng doanh thu',
 ];

@@ -29,17 +29,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.trending') }}">
-                            <i class="fas fa-fire me-1"></i>Trending
+                            <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.most-viewed') }}">
-                            <i class="fas fa-eye me-1"></i>Most Viewed
+                            <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('whats-new.hot-topics') }}">
-                            <i class="fas fa-flame me-1"></i>Hot Topics
+                            <i class="fas fa-flame me-1"></i>{{ __('navigation.hot_topics') }}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -158,11 +158,11 @@
                         </a>
                         <a href="{{ route('whats-new') }}" class="btn btn-outline-primary">
                             <i class="fas fa-list me-1"></i>
-                            View Latest Posts
+                            {{ __('common.actions.view_latest_posts') }}
                         </a>
                         <a href="{{ route('whats-new.trending') }}" class="btn btn-outline-warning">
                             <i class="fas fa-fire me-1"></i>
-                            View Trending
+                            {{ __('common.actions.view_trending') }}
                         </a>
                     </div>
                 </div>

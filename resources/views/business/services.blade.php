@@ -53,7 +53,7 @@
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                                         <div class="accordion-body">
-                                            {{ __('Premium listings appear at the top of search results and category pages, giving your business maximum visibility. They also include enhanced visual elements to make your listing stand out from the competition.') }}
+                                            {{ __('business.premium_listings_description') }}
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                                         <div class="accordion-body">
-                                            {{ __('Yes, you can cancel your subscription at any time. Your services will continue until the end of your current billing period.') }}
+                                            {{ __('business.cancel_subscription_description') }}
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                                     </h2>
                                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
                                         <div class="accordion-body">
-                                            {{ __('Yes, we offer custom enterprise packages for larger businesses with specific needs. Please contact our sales team to discuss your requirements and get a tailored solution.') }}
+                                            {{ __('business.custom_packages_description') }}
                                         </div>
                                     </div>
                                 </div>

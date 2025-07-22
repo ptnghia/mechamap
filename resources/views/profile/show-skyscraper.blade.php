@@ -18,22 +18,22 @@
                             <div class="avatar-letter">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
                         </div>
                         <h4 class="mb-1">{{ $user->name }}</h4>
-                        <p class="text-muted mb-2">{{ __('Registered') }}</p>
-                        <p class="small mb-1">{{ __('Joined') }}: {{ $user->created_at->format('M d, Y') }}</p>
+                        <p class="text-muted mb-2">{{ __('profile.registered') }}</p>
+                        <p class="small mb-1">{{ __('profile.joined') }}: {{ $user->created_at->format('M d, Y') }}</p>
                         <p class="small mb-1">
-                            {{ __('Last seen') }}:
+                            {{ __('profile.last_seen') }}:
                             @if($user->last_seen_at)
                                 <span title="{{ $user->last_seen_at->format('M d, Y H:i') }}">{{ $user->last_seen_at->diffForHumans() }}</span>
                             @else
-                                {{ __('Never') }}
+                                {{ __('profile.never') }}
                             @endif
                             ·
-                            <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">{{ __('Viewing member profile') }} {{ $user->username }}</a>
+                            <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">{{ __('profile.viewing_member_profile') }} {{ $user->username }}</a>
                         </p>
 
                         @if(Auth::check() && Auth::id() != $user->id)
                             <div class="mt-3">
-                                <button class="btn btn-sm btn-outline-secondary">{{ __('Report') }}</button>
+                                <button class="btn btn-sm btn-outline-secondary">{{ __('profile.report') }}</button>
                             </div>
                         @endif
                     </div>
@@ -42,19 +42,19 @@
                     <div class="col-md-9">
                         <div class="stats-section">
                             <div class="stat-item">
-                                <div class="stat-label">{{ __('Replies') }}</div>
+                                <div class="stat-label">{{ __('profile.replies') }}</div>
                                 <div class="stat-value">{{ $stats['replies'] }}</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-label">{{ __('Discussions Created') }}</div>
+                                <div class="stat-label">{{ __('profile.discussions_created') }}</div>
                                 <div class="stat-value">{{ $stats['discussions_created'] }}</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-label">{{ __('Reaction score') }}</div>
+                                <div class="stat-label">{{ __('profile.reaction_score') }}</div>
                                 <div class="stat-value">{{ $stats['reaction_score'] }}</div>
                             </div>
                             <div class="stat-item">
-                                <div class="stat-label">{{ __('Points') }}</div>
+                                <div class="stat-label">{{ __('profile.points') }}</div>
                                 <div class="stat-value">{{ $stats['points'] }}</div>
                             </div>
                         </div>
@@ -64,10 +64,10 @@
                             <div class="card setup-card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 class="mb-0">{{ __('Get set up on MechaMap Forum!') }}</h5>
+                                        <h5 class="mb-0">{{ __('profile.get_set_up_title') }}</h5>
                                         <button type="button" class="btn-close" aria-label="Close"></button>
                                     </div>
-                                    <p class="text-muted">{{ __('Not sure what to do next? Here are some ideas to get you familiar with the community!') }}</p>
+                                    <p class="text-muted">{{ __('profile.get_set_up_description') }}</p>
 
                                     <div class="progress mb-3" style="height: 8px;">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: {{ ($setupProgress / 5) * 100 }}%"
@@ -82,7 +82,7 @@
                                                 @else
                                                     <i class="circle"></i>
                                                 @endif
-                                                <span>{{ __('Verify your email') }}</span>
+                                                <span>{{ __('profile.verify_email') }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -92,7 +92,7 @@
                                                 @else
                                                     <i class="circle"></i>
                                                 @endif
-                                                <span>{{ __('Add an avatar') }}</span>
+                                                <span>{{ __('profile.add_avatar') }}</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -102,7 +102,7 @@
                                                 @else
                                                     <i class="circle"></i>
                                                 @endif
-                                                <span>{{ __('Like a post') }}</span>
+                                                <span>{{ __('profile.like_post') }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -117,19 +117,19 @@
         <!-- Profile Tabs -->
         <ul class="nav nav-tabs profile-tabs mb-4">
             <li class="nav-item">
-                <a class="nav-link active" href="#overview">{{ __('Overview') }}</a>
+                <a class="nav-link active" href="#overview">{{ __('profile.overview') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#about">{{ __('About') }}</a>
+                <a class="nav-link" href="#about">{{ __('profile.about') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#profile-posts">{{ __('Profile posts') }}</a>
+                <a class="nav-link" href="#profile-posts">{{ __('profile.profile_posts') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#activity">{{ __('Activity') }}</a>
+                <a class="nav-link" href="#activity">{{ __('profile.activity') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#gallery">{{ __('Gallery') }}</a>
+                <a class="nav-link" href="#gallery">{{ __('profile.gallery') }}</a>
             </li>
         </ul>
 
@@ -163,10 +163,10 @@
             <div id="gallery" class="tab-pane d-none">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">{{ __('Gallery') }}</h5>
+                        <h5 class="mb-0">{{ __('profile.gallery') }}</h5>
                     </div>
                     <div class="card-body">
-                        <p class="text-muted text-center py-5">{{ __('No media to display.') }}</p>
+                        <p class="text-muted text-center py-5">{{ __('profile.no_media_to_display') }}</p>
                     </div>
                 </div>
             </div>

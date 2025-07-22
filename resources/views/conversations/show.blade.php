@@ -21,7 +21,7 @@
                         @elseif($otherParticipant)
                             {{ $otherParticipant->name }}
                         @else
-                            {{ __('Conversation') }}
+                            {{ __('conversations.conversation') }}
                         @endif
                     </h1>
                 </div>
@@ -31,11 +31,11 @@
                         <i class="three-dots"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="conversationActions">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2"></i> {{ __('Invite participants') }}</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash me-2"></i> {{ __('Mute conversation') }}</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> {{ __('Report') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user-plus me-2"></i> {{ __('conversations.invite_participants') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash me-2"></i> {{ __('conversations.mute_conversation') }}</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> {{ __('conversations.report') }}</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> {{ __('Leave conversation') }}</a></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> {{ __('conversations.leave_conversation') }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -43,9 +43,9 @@
             <div class="card shadow-sm rounded-3">
                 <div class="card-header bg-white py-3">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">{{ __('Messages') }}</h5>
+                        <h5 class="mb-0">{{ __('conversations.messages') }}</h5>
                         <div>
-                            <span class="text-muted small">{{ $messages->total() }} {{ __('messages') }}</span>
+                            <span class="text-muted small">{{ $messages->total() }} {{ __('conversations.messages_count') }}</span>
                         </div>
                     </div>
                 </div>
@@ -73,9 +73,9 @@
                                     <div class="message-date-divider my-3 text-center">
                                         <span class="badge bg-light text-dark px-3 py-2">
                                             @if($message->created_at->isToday())
-                                                {{ __('Today') }}
+                                                {{ __('conversations.today') }}
                                             @elseif($message->created_at->isYesterday())
-                                                {{ __('Yesterday') }}
+                                                {{ __('conversations.yesterday') }}
                                             @else
                                                 {{ $message->created_at->format('F j, Y') }}
                                             @endif
@@ -114,8 +114,8 @@
                         @else
                             <div class="text-center py-5">
                                 <i class="fas fa-comment fs-1 text-muted mb-3"></i>
-                                <p class="mb-0">{{ __('No messages yet.') }}</p>
-                                <p class="text-muted">{{ __('Send a message to start the conversation.') }}</p>
+                                <p class="mb-0">{{ __('conversations.no_messages_yet') }}</p>
+                                <p class="text-muted">{{ __('conversations.send_message_to_start') }}</p>
                             </div>
                         @endif
                     </div>
@@ -124,9 +124,9 @@
                         <form action="{{ route('conversations.messages.store', $conversation) }}" method="POST" id="messageForm">
                             @csrf
                             <div class="input-group">
-                                <textarea name="message" id="messageInput" class="form-control" placeholder="{{ __('Type your message...') }}" required rows="2"></textarea>
+                                <textarea name="message" id="messageInput" class="form-control" placeholder="{{ __('conversations.type_your_message') }}" required rows="2"></textarea>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane"></i> {{ __('Send') }}
+                                    <i class="fas fa-paper-plane"></i> {{ __('conversations.send') }}
                                 </button>
                             </div>
                         </form>

@@ -11,18 +11,18 @@
                     <div class="card-body">
                         <div class="list-group list-group-flush">
                             <a href="{{ route('following.index') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-users-fill me-2"></i> {{ __('Following') }}
+                                <i class="fas fa-users-fill me-2"></i> {{ __('following.following') }}
                             </a>
                             <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-user me-2"></i> {{ __('Followers') }}
+                                <i class="fas fa-user me-2"></i> {{ __('following.followers') }}
                             </a>
                             <a href="{{ route('following.threads') }}"
                                 class="list-group-item list-group-item-action active">
-                                <i class="far fa-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                <i class="far fa-bookmark-fill me-2"></i> {{ __('following.followed_threads') }}
                             </a>
                             <a href="{{ route('following.participated') }}"
                                 class="list-group-item list-group-item-action">
-                                <i class="fas fa-comment-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                <i class="fas fa-comment-dots-fill me-2"></i> {{ __('following.participated_discussions') }}
                             </a>
                         </div>
                     </div>
@@ -32,14 +32,14 @@
             <div class="col-md-9">
                 <div class="card shadow-sm rounded-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">{{ __('Followed Threads') }}</h5>
+                        <h5 class="card-title mb-0">{{ __('following.followed_threads') }}</h5>
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                                 id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-filter me-1"></i> {{ __('Filters') }}
+                                <i class="fas fa-filter me-1"></i> {{ __('following.filters') }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
-                                <li><a class="dropdown-item" href="{{ route('following.threads') }}">{{ __('All Forums')
+                                <li><a class="dropdown-item" href="{{ route('following.threads') }}">{{ __('following.all_forums')
                                         }}</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -74,7 +74,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                        <i class="far fa-bookmark-x"></i> {{ __('Unfollow') }}
+                                                        <i class="far fa-bookmark-x"></i> {{ __('following.unfollow') }}
                                                     </button>
                                                 </form>
                                             </div>
@@ -105,8 +105,8 @@
                         @else
                         <div class="text-center py-5">
                             <i class="far fa-bookmark fs-1 text-muted mb-3"></i>
-                            <p class="mb-0">{{ __('You are not watching any threads.') }}</p>
-                            <p class="text-muted">{{ __('Follow threads to see them here.') }}</p>
+                            <p class="mb-0">{{ __('following.not_watching_any_threads') }}</p>
+                            <p class="text-muted">{{ __('following.follow_threads_to_see_here') }}</p>
                         </div>
                         @endif
                     </div>

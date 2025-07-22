@@ -65,7 +65,7 @@
                                 <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('search.scope.in_thread') }}</div>
                                 <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('search.scope.in_forum') }}</div>
                                 @if($isMarketplace)
-                                <div class="search-scope-option" data-scope="marketplace">{{ __('navigation.main.marketplace') }}</div>
+                                <div class="search-scope-option" data-scope="marketplace">{{ __('nav.main.marketplace') }}</div>
                                 @endif
                             </div>
                             <div class="search-results-content" id="search-results-content">

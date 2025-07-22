@@ -31,4 +31,5 @@ return [
     'premium_member' => 'Thành viên Premium',
     'contributor' => 'Cộng tác viên',
     'reviewer' => 'Người đánh giá',
+  'supplier' => 'Nhà cung cấp',
 ];

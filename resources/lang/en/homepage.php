@@ -83,4 +83,6 @@ return [
         'no_categories' => 'No categories available',
         'loading_error' => 'Error loading content',
     ],
+  'sections.featured_showcases' => 'Featured Showcases',
+  'sections.featured_showcases_desc' => 'Discover outstanding engineering projects from the community',
 ];

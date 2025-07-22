@@ -134,14 +134,14 @@ function switchLanguage(locale) {
             if (loadingToast) loadingToast.hide();
 
             // Show success message
-            showToast('{{ __('ui/language/switched_successfully') }}', 'success');
+            showToast('{{ __('ui.language.switched_successfully') }}', 'success');
 
             // Reload page to apply new language
             setTimeout(() => {
                 window.location.reload();
             }, 500);
         } else {
-            throw new Error(data.message || '{{ __('ui/language/switch_failed') }}');
+            throw new Error(data.message || '{{ __('ui.language.switch_failed') }}');
         }
     })
     .catch(error => {
@@ -151,7 +151,7 @@ function switchLanguage(locale) {
         if (loadingToast) loadingToast.hide();
 
         // Show error message
-        showToast('{{ __('ui/language/switch_failed') }}', 'error');
+        showToast('{{ __('ui.language.switch_failed') }}', 'error');
     });
 }
 
@@ -165,7 +165,7 @@ function autoDetectLanguage() {
     if (detectedLocale !== '{{ $currentLocale }}') {
         switchLanguage(detectedLocale);
     } else {
-        showToast('{{ __('ui/language/auto_detected') }}', 'info');
+        showToast('{{ __('ui.language.auto_detected') }}', 'info');
     }
 }
 

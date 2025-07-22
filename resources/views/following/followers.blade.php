@@ -12,16 +12,16 @@
                         <div class="card-body">
                             <div class="list-group list-group-flush">
                                 <a href="{{ route('following.index') }}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-users-fill me-2"></i> {{ __('Following') }}
+                                    <i class="fas fa-users-fill me-2"></i> {{ __('following.following') }}
                                 </a>
                                 <a href="{{ route('following.followers') }}" class="list-group-item list-group-item-action active">
-                                    <i class="fas fa-user me-2"></i> {{ __('Followers') }}
+                                    <i class="fas fa-user me-2"></i> {{ __('following.followers') }}
                                 </a>
                                 <a href="{{ route('following.threads') }}" class="list-group-item list-group-item-action">
-                                    <i class="far fa-bookmark-fill me-2"></i> {{ __('Followed Threads') }}
+                                    <i class="far fa-bookmark-fill me-2"></i> {{ __('following.followed_threads') }}
                                 </a>
                                 <a href="{{ route('following.participated') }}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-comment-dots-fill me-2"></i> {{ __('Participated Discussions') }}
+                                    <i class="fas fa-comment-dots-fill me-2"></i> {{ __('following.participated_discussions') }}
                                 </a>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                 <div class="col-md-9">
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('People Following You') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('following.people_following_you') }}</h5>
                         </div>
                         <div class="card-body">
                             @if($followers->count() > 0)
@@ -51,12 +51,12 @@
                                                         <form action="{{ route('profile.unfollow', $user->username) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Unfollow') }}</button>
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('following.unfollow') }}</button>
                                                         </form>
                                                     @else
                                                         <form action="{{ route('profile.follow', $user->username) }}" method="POST">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-primary">{{ __('Follow') }}</button>
+                                                            <button type="submit" class="btn btn-sm btn-primary">{{ __('following.follow') }}</button>
                                                         </form>
                                                     @endif
                                                 </div>
@@ -71,8 +71,8 @@
                             @else
                                 <div class="text-center py-5">
                                     <i class="person fs-1 text-muted mb-3"></i>
-                                    <p class="mb-0">{{ __('You don\'t have any followers yet.') }}</p>
-                                    <p class="text-muted">{{ __('When someone follows you, they will appear here.') }}</p>
+                                    <p class="mb-0">{{ __('following.no_followers_yet') }}</p>
+                                    <p class="text-muted">{{ __('following.when_someone_follows_you') }}</p>
                                 </div>
                             @endif
                         </div>

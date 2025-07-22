@@ -11,8 +11,8 @@
     {{-- Breadcrumb --}}
     <!--nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('navigation.main.home') }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ __('navigation.main.forums') }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('nav.main.home') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ __('nav.main.forums') }}</li>
         </ol>
     </nav-->
 
