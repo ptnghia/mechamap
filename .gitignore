@@ -45,6 +45,23 @@ test.txt
 *_temp.php
 *_debug.php
 
+# Translation and analysis scripts (temporary)
+add-*.php
+analyze-*.php
+fix-*.php
+find-*.php
+balance-*.php
+scan-*.php
+verify-*.php
+complete-*.php
+debug-*.php
+list-*.php
+standardize-*.php
+*-translation-*.php
+*-missing-*.php
+*-coverage.php
+*-syntax.php
+
 # ============================================================
 # PREVENT UNWANTED FILES IN ROOT DIRECTORY
 # ============================================================
