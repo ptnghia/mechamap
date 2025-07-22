@@ -488,7 +488,7 @@
                     max-size="5MB"
                     :multiple="true"
                     :max-files="10"
-                    :label="'<i class=\"fas fa-image me-2\"></i>' . __('thread.attach_images_optional')"
+                    label="{{ '<i class=\"fas fa-image me-2\"></i>' . __('thread.attach_images_optional') }}"
                     id="thread-reply-images"
                 />
 
