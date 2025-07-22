@@ -6,7 +6,7 @@
 
 @php
     $currentRoute = request()->route()->getName();
-    
+
     // Menu items cho guest (chưa đăng nhập)
     $menuItems = [
         'home' => [
@@ -34,17 +34,17 @@
             'description' => 'Marketplace (chỉ xem)'
         ]
     ];
-    
+
     // Auth menu items
     $authItems = [
         'login' => [
-            'title' => __('auth.login'),
+            'title' => t_auth('login.title'),
             'route' => 'login',
             'icon' => 'fas fa-sign-in-alt',
             'class' => 'btn btn-outline-primary'
         ],
         'register' => [
-            'title' => __('auth.register'),
+            'title' => t_auth('register.title'),
             'route' => 'register',
             'icon' => 'fas fa-user-plus',
             'class' => 'btn btn-primary'
@@ -62,7 +62,7 @@
         </a>
 
         <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guestNavbar" 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guestNavbar"
                 aria-controls="guestNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -74,7 +74,7 @@
                 @foreach($menuItems as $key => $item)
                     @if(Route::has($item['route']))
                         <li class="nav-item">
-                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}" 
+                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}"
                                href="{{ route($item['route']) }}"
                                title="{{ $item['description'] }}">
                                 <i class="{{ $item['icon'] }} me-1"></i>
@@ -89,7 +89,7 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Language Switcher -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe me-1"></i>
                         {{ strtoupper(app()->getLocale()) }}
@@ -127,7 +127,7 @@
             <div class="col-md-8">
                 <small class="text-muted">
                     <i class="fas fa-info-circle me-1"></i>
-                    Bạn đang xem với quyền khách. 
+                    Bạn đang xem với quyền khách.
                     <strong>Đăng ký</strong> để tham gia thảo luận và sử dụng đầy đủ tính năng.
                 </small>
             </div>
@@ -168,11 +168,11 @@
         text-align: center !important;
         margin-top: 10px;
     }
-    
+
     .navbar-nav .nav-item {
         text-align: center;
     }
-    
+
     .navbar-nav .ms-2 {
         margin-left: 0 !important;
         margin-top: 0.5rem;
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Auto-hide guest notice after 10 seconds
     setTimeout(function() {
         const guestNotice = document.querySelector('.guest-notice');

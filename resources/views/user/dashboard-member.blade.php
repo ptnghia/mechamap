@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('nav.user.dashboard') . ' - ' . __('auth.member_role'))
+@section('title', __('nav.user.dashboard') . ' - ' . __('dashboard.member_role'))
 
 @section('content')
 <div class="container py-4">
@@ -12,15 +12,15 @@
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h1 class="h2 mb-1 text-white">
-                                {{ __('messages.welcome_back') }}, {{ $user->name }}! 
+                                {{ __('dashboard.welcome_back') }}, {{ $user->name }}! 
                                 <span class="wave">👋</span>
                             </h1>
                             <p class="mb-0 opacity-75">
-                                {{ __('auth.member_role_desc') }}
+                                {{ __('dashboard.member_role_desc') }}
                             </p>
                             <small class="badge bg-light text-success mt-2">
                                 <i class="fas fa-user-tag me-1"></i>
-                                {{ __('auth.member_role') }} ({{ __('messages.level') }} 8)
+                                {{ __('dashboard.member_role') }} ({{ __('dashboard.level') }} 8)
                             </small>
                         </div>
                         <div class="col-md-4 text-md-end">
@@ -65,7 +65,7 @@
                 <div class="card-header bg-success text-white">
                     <h6 class="mb-0">
                         <i class="fas fa-chart-line me-2"></i>
-                        {{ __('messages.activity_level') }}
+                        {{ __('dashboard.activity_level') }}
                     </h6>
                 </div>
                 <div class="card-body text-center">
@@ -84,7 +84,7 @@
                     </div>
                     <span class="badge bg-{{ $config['badge'] }} fs-6">{{ $config['text'] }}</span>
                     <p class="small text-muted mt-2 mb-0">
-                        {{ __('messages.reputation_score') }}: {{ $stats['reputation_score'] ?? 0 }}
+                        {{ __('dashboard.reputation_score') }}: {{ $stats['reputation_score'] ?? 0 }}
                     </p>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                         <div class="card-body">
                             <i class="fas fa-comments text-primary fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['threads_created'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.threads_created') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.threads_created') }}</p>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                         <div class="card-body">
                             <i class="fas fa-comment text-success fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['comments_count'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.comments_count') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.comments_count') }}</p>
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         <div class="card-body">
                             <i class="fas fa-bookmark text-info fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['threads_bookmarked'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.bookmarks') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.bookmarks') }}</p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                         <div class="card-body">
                             <i class="fas fa-star text-warning fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ number_format($stats['average_rating_received'] ?? 0, 1) }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.avg_rating') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.avg_rating') }}</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                         {{ $widgets['recent_threads']['title'] }}
                     </h5>
                     <a href="{{ route('user.my-threads') }}" class="btn btn-sm btn-outline-primary">
-                        {{ __('messages.view_all') }}
+                        {{ __('dashboard.view_all') }}
                     </a>
                 </div>
                 <div class="card-body">
@@ -162,9 +162,9 @@
                         </div>
                         <div class="text-end">
                             @if($thread->status === 'published')
-                            <span class="badge bg-success">{{ __('messages.published') }}</span>
+                            <span class="badge bg-success">{{ __('dashboard.published') }}</span>
                             @elseif($thread->status === 'pending')
-                            <span class="badge bg-warning">{{ __('messages.pending') }}</span>
+                            <span class="badge bg-warning">{{ __('dashboard.pending') }}</span>
                             @else
                             <span class="badge bg-secondary">{{ $thread->status }}</span>
                             @endif
@@ -173,9 +173,9 @@
                     @empty
                     <div class="text-center text-muted py-4">
                         <i class="fas fa-comments fa-3x mb-3"></i>
-                        <p>{{ __('messages.no_threads_yet') }}</p>
+                        <p>{{ __('dashboard.no_threads_yet') }}</p>
                         <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                            {{ __('messages.create_first_thread') }}
+                            {{ __('dashboard.create_first_thread') }}
                         </a>
                     </div>
                     @endforelse
@@ -190,7 +190,7 @@
                         <div class="card-header">
                             <h6 class="mb-0">
                                 <i class="fas fa-trophy me-2"></i>
-                                {{ __('messages.achievements') }}
+                                {{ __('dashboard.achievements') }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -219,7 +219,7 @@
                         <div class="card-header">
                             <h6 class="mb-0">
                                 <i class="fas fa-chart-pie me-2"></i>
-                                {{ __('messages.forum_participation') }}
+                                {{ __('dashboard.forum_participation') }}
                             </h6>
                         </div>
                         <div class="card-body">
@@ -230,7 +230,7 @@
                             @endphp
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between mb-1">
-                                    <span class="small">{{ __('messages.threads') }}</span>
+                                    <span class="small">{{ __('dashboard.threads') }}</span>
                                     <span class="small">{{ number_format($threadPercentage, 1) }}%</span>
                                 </div>
                                 <div class="progress mb-2" style="height: 8px;">
@@ -239,7 +239,7 @@
                             </div>
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between mb-1">
-                                    <span class="small">{{ __('messages.comments') }}</span>
+                                    <span class="small">{{ __('dashboard.comments') }}</span>
                                     <span class="small">{{ number_format($commentPercentage, 1) }}%</span>
                                 </div>
                                 <div class="progress" style="height: 8px;">
@@ -247,7 +247,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <small class="text-muted">{{ __('messages.total_contributions') }}: {{ $totalActivity }}</small>
+                                <small class="text-muted">{{ __('dashboard.total_contributions') }}: {{ $totalActivity }}</small>
                             </div>
                         </div>
                     </div>
@@ -260,26 +260,26 @@
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">
                         <i class="fas fa-arrow-up me-2"></i>
-                        {{ __('messages.upgrade_to_senior') }}
+                        {{ __('dashboard.upgrade_to_senior') }}
                     </h5>
                 </div>
                 <div class="card-body">
-                    <p class="mb-3">{{ __('messages.senior_member_benefits_desc') }}</p>
+                    <p class="mb-3">{{ __('dashboard.senior_member_benefits_desc') }}</p>
                     <div class="row">
                         <div class="col-md-8">
-                            <h6>{{ __('messages.requirements') }}:</h6>
+                            <h6>{{ __('dashboard.requirements') }}:</h6>
                             <ul class="list-unstyled">
                                 <li class="mb-1">
                                     <i class="fas fa-{{ $stats['threads_created'] >= 10 ? 'check text-success' : 'times text-muted' }} me-2"></i>
-                                    {{ __('messages.create_10_threads') }} ({{ $stats['threads_created'] }}/10)
+                                    {{ __('dashboard.create_10_threads') }} ({{ $stats['threads_created'] }}/10)
                                 </li>
                                 <li class="mb-1">
                                     <i class="fas fa-{{ $stats['comments_count'] >= 50 ? 'check text-success' : 'times text-muted' }} me-2"></i>
-                                    {{ __('messages.post_50_comments') }} ({{ $stats['comments_count'] }}/50)
+                                    {{ __('dashboard.post_50_comments') }} ({{ $stats['comments_count'] }}/50)
                                 </li>
                                 <li class="mb-1">
                                     <i class="fas fa-{{ ($stats['average_rating_received'] ?? 0) >= 4 ? 'check text-success' : 'times text-muted' }} me-2"></i>
-                                    {{ __('messages.maintain_4_star_rating') }} ({{ number_format($stats['average_rating_received'] ?? 0, 1) }}/5.0)
+                                    {{ __('dashboard.maintain_4_star_rating') }} ({{ number_format($stats['average_rating_received'] ?? 0, 1) }}/5.0)
                                 </li>
                             </ul>
                         </div>
@@ -287,12 +287,12 @@
                             @if($stats['threads_created'] >= 10 && $stats['comments_count'] >= 50 && ($stats['average_rating_received'] ?? 0) >= 4)
                             <a href="{{ route('profile.upgrade') }}" class="btn btn-info">
                                 <i class="fas fa-crown me-2"></i>
-                                {{ __('messages.upgrade_now') }}
+                                {{ __('dashboard.upgrade_now') }}
                             </a>
                             @else
                             <button class="btn btn-outline-info" disabled>
                                 <i class="fas fa-hourglass-half me-2"></i>
-                                {{ __('messages.keep_contributing') }}
+                                {{ __('dashboard.keep_contributing') }}
                             </button>
                             @endif
                         </div>

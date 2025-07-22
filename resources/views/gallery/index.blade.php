@@ -13,7 +13,7 @@
                         <form action="{{ route('gallery.index') }}" method="GET" class="d-flex">
                             <input type="text" name="search" class="form-control me-2"
                                 placeholder="{{ __('Search gallery...') }}" value="{{ request('search') }}">
-                            <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ t_search('form.submit') }}</button>
                         </form>
                     </div>
                     <div class="col-md-6">

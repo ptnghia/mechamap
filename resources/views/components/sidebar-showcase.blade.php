@@ -17,9 +17,9 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
             <div class="showcase-header">
                 <h5 class="fw-bold">
                     <i class="fas fa-project-diagram me-2 text-primary"></i>
-                    {{ __('showcase.project_showcase') }}
+                    {{ t_sidebar('showcase.project_showcase') }}
                 </h5>
-                <p class="text-muted">{{ __('showcase.discover_engineering_projects') }}</p>
+                <p class="text-muted">{{ t_sidebar('showcase.discover_engineering_projects') }}</p>
             </div>
 
             <div class="stats-grid">
@@ -28,35 +28,35 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                         <i class="fa-solid fa-cubes"></i>
                         <span>{{ number_format($sidebarData['showcase_stats']['total_showcases']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('showcase.total_projects') }}</div>
+                    <div class="stat-label">{{ t_sidebar('showcase.total_projects') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-download"></i>
                         <span>{{ number_format($sidebarData['showcase_stats']['total_downloads']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('showcase.downloads') }}</div>
+                    <div class="stat-label">{{ t_sidebar('showcase.downloads') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-star"></i>
                         <span>{{ number_format($sidebarData['showcase_stats']['avg_rating'], 1) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('showcase.avg_rating') }}</div>
+                    <div class="stat-label">{{ t_sidebar('showcase.avg_rating') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-eye"></i>
                         <span>{{ number_format($sidebarData['showcase_stats']['total_views']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('showcase.total_views') }}</div>
+                    <div class="stat-label">{{ t_sidebar('showcase.total_views') }}</div>
                 </div>
             </div>
 
             @guest
             <div class="cta-section mt-3">
                 <a href="{{ route('showcase.create') }}" class="btn btn-primary w-100">
-                    <i class="fas fa-plus me-2"></i>{{ __('showcase.create_project') }}
+                    <i class="fas fa-plus me-2"></i>{{ t_sidebar('showcase.create_project') }}
                 </a>
             </div>
             @endguest
@@ -68,7 +68,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-folder-open me-2 text-success"></i>
-                {{ __('showcase.popular_categories') }}
+                {{ t_sidebar('showcase.popular_categories') }}
             </h6>
         </div>
         <div class="card-body p-0">
@@ -78,7 +78,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                     <div class="category-info">
                         <div class="category-name">{{ $category['name'] }}</div>
                         <div class="category-stats">
-                            <span class="project-count">{{ $category['project_count'] }} {{ __('showcase.projects') }}</span>
+                            <span class="project-count">{{ $category['project_count'] }} {{ t_sidebar('showcase.projects') }}</span>
                             <span class="avg-rating">
                                 <i class="fas fa-star text-warning"></i> {{ number_format($category['avg_rating'], 1) }}
                             </span>
@@ -102,10 +102,10 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-star me-2 text-warning"></i>
-                {{ __('showcase.featured_projects') }}
+                {{ t_sidebar('showcase.featured_projects') }}
             </h6>
             <a href="{{ route('showcase.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">
-                {{ __('content.view_all') }}
+                {{ t_sidebar('main.view_all') }}
             </a>
         </div>
         <div class="card-body p-0">
@@ -117,7 +117,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                              onerror="this.src='{{ asset('images/placeholder-project.jpg') }}'">
                         @if($project['complexity_level'])
                         <span class="complexity-badge badge-{{ $project['complexity_level'] }}">
-                            {{ __('showcase.complexity_levels.' . $project['complexity_level']) }}
+                            {{ t_sidebar('showcase.complexity_levels.' . $project['complexity_level']) }}
                         </span>
                         @endif
                     </div>
@@ -160,7 +160,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-tools me-2 text-info"></i>
-                {{ __('showcase.popular_software') }}
+                {{ t_sidebar('showcase.popular_software') }}
             </h6>
         </div>
         <div class="card-body p-0">
@@ -172,7 +172,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                     </div>
                     <div class="software-info">
                         <div class="software-name">{{ $software['name'] }}</div>
-                        <div class="software-count">{{ $software['project_count'] }} {{ __('showcase.projects') }}</div>
+                        <div class="software-count">{{ $software['project_count'] }} {{ t_sidebar('showcase.projects') }}</div>
                     </div>
                 </a>
                 @endforeach
@@ -185,7 +185,7 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-trophy me-2 text-primary"></i>
-                {{ __('showcase.top_contributors') }}
+                {{ t_sidebar('showcase.top_contributors') }}
             </h6>
         </div>
         <div class="card-body p-0">
@@ -200,8 +200,8 @@ $sidebarData = $sidebarService->getShowcaseSidebarData($user);
                     <div class="contributor-info">
                         <div class="contributor-name">{{ $contributor['name'] }}</div>
                         <div class="contributor-stats">
-                            <span class="project-count">{{ $contributor['project_count'] }} {{ __('showcase.projects') }}</span>
-                            <span class="total-views">{{ number_format($contributor['total_views']) }} {{ __('showcase.views') }}</span>
+                            <span class="project-count">{{ $contributor['project_count'] }} {{ t_sidebar('showcase.projects') }}</span>
+                            <span class="total-views">{{ number_format($contributor['total_views']) }} {{ t_sidebar('showcase.views') }}</span>
                         </div>
                     </div>
                 </a>

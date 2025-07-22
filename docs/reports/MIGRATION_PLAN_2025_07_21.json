@@ -1,0 +1,160 @@
+{
+    "phase1_structure_fixes": [
+        {
+            "old": "ui.common.",
+            "new": "common.",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "ui\/common.",
+            "new": "common.",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "ui.navigation.",
+            "new": "navigation.",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "content\/alerts.",
+            "new": "common.messages.",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "core\/messages.",
+            "new": "common.messages.",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "marketplace.cart.shopping_cart",
+            "new": "marketplace.cart.title",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "marketplace.cart.cart_empty",
+            "new": "marketplace.cart.empty_message",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "marketplace.cart.add_products",
+            "new": "marketplace.cart.add_items",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "forum.search.recent_searches",
+            "new": "search.history.recent",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "forum.search.no_recent_searches",
+            "new": "search.history.empty",
+            "type": "pattern_replace"
+        },
+        {
+            "old": "forum.search.popular_searches",
+            "new": "search.suggestions.popular",
+            "type": "pattern_replace"
+        }
+    ],
+    "phase2_helper_migration": [
+        {
+            "old": "__(\"auth.",
+            "new": "t_auth(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"common.",
+            "new": "t_common(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"navigation.",
+            "new": "t_navigation(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"forums.",
+            "new": "t_forums(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"marketplace.",
+            "new": "t_marketplace(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"search.",
+            "new": "t_search(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"user.",
+            "new": "t_user(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"admin.",
+            "new": "t_admin(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"pages.",
+            "new": "t_pages(\"",
+            "type": "helper_function"
+        },
+        {
+            "old": "__(\"showcase.",
+            "new": "t_showcase(\"",
+            "type": "helper_function"
+        }
+    ],
+    "phase3_key_additions": [
+        {
+            "key": "marketplace.cart.shopping_cart",
+            "value": "Gi\u1ecf h\u00e0ng",
+            "file": "marketplace"
+        },
+        {
+            "key": "marketplace.cart.cart_empty",
+            "value": "Gi\u1ecf h\u00e0ng tr\u1ed1ng",
+            "file": "marketplace"
+        },
+        {
+            "key": "marketplace.cart.add_products",
+            "value": "Th\u00eam s\u1ea3n ph\u1ea9m",
+            "file": "marketplace"
+        },
+        {
+            "key": "search.history.recent",
+            "value": "T\u00ecm ki\u1ebfm g\u1ea7n \u0111\u00e2y",
+            "file": "search"
+        },
+        {
+            "key": "search.history.empty",
+            "value": "Kh\u00f4ng c\u00f3 l\u1ecbch s\u1eed t\u00ecm ki\u1ebfm",
+            "file": "search"
+        },
+        {
+            "key": "search.suggestions.popular",
+            "value": "T\u00ecm ki\u1ebfm ph\u1ed5 bi\u1ebfn",
+            "file": "search"
+        },
+        {
+            "key": "common.technical.resources",
+            "value": "T\u00e0i nguy\u00ean k\u1ef9 thu\u1eadt",
+            "file": "common"
+        },
+        {
+            "key": "common.knowledge.title",
+            "value": "Tri th\u1ee9c",
+            "file": "common"
+        }
+    ],
+    "phase4_validation": [
+        "Check all translation keys exist",
+        "Verify no array returns from __() calls",
+        "Test all pages load without errors",
+        "Validate helper function usage",
+        "Monitor error logs for htmlspecialchars errors"
+    ]
+}

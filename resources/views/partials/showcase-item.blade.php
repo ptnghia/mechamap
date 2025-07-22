@@ -58,19 +58,19 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-badges">
             @if($complexityLevel)
             <span class="badge badge-complexity badge-{{ $complexityLevel }}">
-                <i class="fa-solid fa-layer-group me-1"></i> {{ __('showcase.complexity_levels.' . $complexityLevel) }}
+                <i class="fa-solid fa-layer-group me-1"></i> {{ t_showcase('complexity_levels.' . $complexityLevel) }}
             </span>
             @endif
 
             @if($hasCadFiles)
             <span class="badge badge-feature bg-success">
-                <i class="fas fa-cube me-1"></i>{{ __('showcase.features.cad') }}
+                <i class="fas fa-cube me-1"></i>{{ t_showcase('features.cad') }}
             </span>
             @endif
 
             @if($allowDownloads)
             <span class="badge badge-feature bg-info">
-                <i class="fas fa-download me-1"></i>{{ __('showcase.features.download') }}
+                <i class="fas fa-download me-1"></i>{{ t_showcase('features.download') }}
             </span>
             @endif
         </div>
@@ -78,7 +78,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-overlay">
             <div class="showcase-actions">
                 <a href="{{ $showcaseUrl }}" class="btn btn-light btn-sm">
-                    <i class="fas fa-eye"></i> {{ __('buttons.view_details') }}
+                    <i class="fas fa-eye"></i> {{ t_ui('buttons.view_details') }}
                 </a>
             </div>
         </div>
@@ -112,7 +112,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                     @endfor
                 </div>
                 <span class="rating-text small text-muted ms-2">
-                    {{ number_format($ratingAverage, 1) }} ({{ $ratingCount }} {{ __('showcase.ratings') }})
+                    {{ number_format($ratingAverage, 1) }} ({{ $ratingCount }} {{ t_showcase('ratings') }})
                 </span>
             </div>
         </div>
@@ -120,8 +120,6 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         @if($showcaseDescription)
         <p class="showcase-description">{{ $showcaseDescription }}</p>
         @endif
-
-
 
         {{-- Enhanced: Technical Info --}}
         @if($softwareUsed)
@@ -147,8 +145,6 @@ $allowDownloads = $showcase->allow_downloads ?? false;
             </div>
         </div>
         @endif
-
-
 
         <div class="showcase-stats">
             <div class="d-flex align-items-center">
@@ -181,18 +177,18 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                 @if($showCategory)
                     @if($categoryLink)
                         <a href="{{ $categoryLink }}" class="badge bg-primary text-decoration-none me-1"
-                           title="{{ __('showcase.view_category_showcases', ['category' => ucfirst($category)]) }}">
+                           title="{{ t_showcase('view_category_showcases', ['category' => ucfirst($category)]) }}">
                             <i class="fa-solid fa-folder-open me-1"></i> {{ ucfirst($category) }}
                         </a>
                     @else
-                        <span class="badge bg-primary me-1" title="{{ __('showcase.category') }}: {{ ucfirst($category) }}">
+                        <span class="badge bg-primary me-1" title="{{ t_showcase('category') }}: {{ ucfirst($category) }}">
                             <i class="fa-solid fa-folder-open me-1"></i> {{ ucfirst($category) }}
                         </span>
                     @endif
                 @endif
 
                 @if($showProjectType)
-                    <span class="badge bg-info text-dark" title="{{ __('showcase.project_type') }}: {{ ucfirst($projectType) }}">
+                    <span class="badge bg-info text-dark" title="{{ t_showcase('project_type') }}: {{ ucfirst($projectType) }}">
                         <i class="fa-solid fa-cogs me-1"></i> {{ ucfirst($projectType) }}
                     </span>
                 @endif

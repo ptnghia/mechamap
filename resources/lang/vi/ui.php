@@ -1,153 +1,249 @@
 <?php
 
-/**
- * Ui translations
- * Updated: 2025-07-20 13:20:57
- * Priority missing keys for frontend
- */
+return [
+    // General UI elements
+    'buttons' => [
+        'add' => 'Thêm',
+        'cancel' => 'Hủy',
+        'save' => 'Lưu',
+        'delete' => 'Xóa',
+        'edit' => 'Chỉnh sửa',
+        'close' => 'Đóng',
+        'submit' => 'Gửi',
+        'back' => 'Quay lại',
+        'next' => 'Tiếp theo',
+        'previous' => 'Trước',
+        'confirm' => 'Xác nhận',
+        'reset' => 'Đặt lại',
+        'view_details' => 'Xem chi tiết'
+    ],
 
-return array (
-  'language' => 
-  array (
-    'switched_successfully' => 'Đã chuyển đổi ngôn ngữ thành công',
-    'switch_failed' => 'Không thể chuyển đổi ngôn ngữ',
-    'auto_detected' => 'Ngôn ngữ được tự động phát hiện',
-  ),
-  'auth' => 
-  array (
-    'login_to_view_notifications' => 'Đăng nhập để xem thông báo',
-  ),
-  'common' => 
-  array (
-    'replies' => 'Phản hồi',
-    'by' => 'Bởi',
-    'recent_discussions' => 'Thảo luận gần đây',
-    'trending' => 'Xu hướng',
-    'popular_topics' => 'Chủ đề phổ biến',
-    'most_viewed' => 'Xem nhiều nhất',
-    'hot_topics' => 'Chủ đề nóng',
-    'member_directory' => 'Danh bạ thành viên',
-    'coming_soon' => 'Sắp ra mắt',
-    'discussions' => 'Thảo luận',
-    'posts' => 'Bài viết',
-    'members' => 'Thành viên',
-    'online' => 'Trực tuyến',
-    'latest' => 'Mới nhất',
-    'featured' => 'Nổi bật',
-    'popular' => 'Phổ biến',
-    'new' => 'Mới',
-    'active' => 'Hoạt động',
-    'community' => 'Cộng đồng',
-    'forum' => 'Diễn đàn',
-    'showcase' => 'Showcase',
-    'tools' => 'Công cụ',
-    'connect' => 'Kết nối',
-    'discover' => 'Khám phá',
-    'explore' => 'Khám phá',
-    'browse' => 'Duyệt',
-    'categories' => 'Danh mục',
-    'topics' => 'Chủ đề',
-    'activity' => 'Hoạt động',
-    'recent' => 'Gần đây',
-    'weekly' => 'Hàng tuần',
-    'directory' => 'Danh bạ',
-    'search' => 'Tìm kiếm',
-    'advanced' => 'Nâng cao',
-  ),
-  'actions' => 
-  array (
-    'view_full_showcase' => 'Xem showcase đầy đủ',
-    'view_details' => 'Xem chi tiết',
-  ),
-  'community' => 
-  array (
-    'quick_access' => 'Truy cập nhanh',
-    'discover' => 'Khám phá',
-    'tools_connect' => 'Công cụ & Kết nối',
-    'forum' => 
-    array (
-      'home_desc' => 'Tham gia thảo luận trong diễn đàn cộng đồng',
-    ),
-    'recent_discussions_desc' => 'Thảo luận mới nhất từ cộng đồng',
-    'trending_desc' => 'Những gì đang thịnh hành trong cộng đồng',
-    'popular_topics_desc' => 'Chủ đề thảo luận phổ biến nhất',
-    'most_viewed_desc' => 'Nội dung được xem nhiều nhất',
-    'hot_topics_desc' => 'Chủ đề thảo luận nóng nhất',
-    'member_directory_desc' => 'Duyệt thành viên cộng đồng',
-    'browse_categories' => 'Duyệt danh mục',
-    'explore_topics_desc' => 'Khám phá các danh mục chủ đề khác nhau',
-  ),
-  'search' => 
-  array (
-    'advanced_search' => 'Tìm kiếm nâng cao',
-    'advanced_search_desc' => 'Sử dụng tùy chọn tìm kiếm nâng cao',
-  ),
-  'status' => 
-  array (
-    'sticky' => 
-    array (
-      'en' => 
-      array (
-        0 => 'Sticky',
-        1 => 'Sticky',
-      ),
-      'vi' => 
-      array (
-        0 => 'Ghim',
-        1 => 'Ghim',
-      ),
-    ),
-    'locked' => 
-    array (
-      'en' => 
-      array (
-        0 => 'Locked',
-        1 => 'Locked',
-      ),
-      'vi' => 
-      array (
-        0 => 'Khóa',
-        1 => 'Khóa',
-      ),
-    ),
-    'featured' => 
-    array (
-      'en' => 
-      array (
-        0 => 'Featured',
-        1 => 'Featured',
-      ),
-      'vi' => 
-      array (
-        0 => 'Nổi bật',
-        1 => 'Nổi bật',
-      ),
-    ),
-    'active' => 
-    array (
-      'en' => 
-      array (
-        0 => 'Active',
-        1 => 'Active',
-      ),
-      'vi' => 
-      array (
-        0 => 'Hoạt động',
-        1 => 'Hoạt động',
-      ),
-    ),
-    'inactive' => 
-    array (
-      'en' => 
-      array (
-        0 => 'Inactive',
-        1 => 'Inactive',
-      ),
-      'vi' => 
-      array (
-        0 => 'Không hoạt động',
-        1 => 'Không hoạt động',
-      ),
-    ),
-  ),
-);
+    // Pagination
+    'pagination' => [
+        'previous' => 'Trước',
+        'next' => 'Tiếp theo',
+        'page' => 'Trang',
+        'of' => 'của',
+        'showing' => 'Hiển thị',
+        'to' => 'đến',
+        'results' => 'kết quả',
+        'first' => 'Đầu',
+        'last' => 'Cuối',
+    ],
+
+    // Forms
+    'forms' => [
+        'search_conversations_placeholder' => 'Tìm kiếm cuộc trò chuyện...',
+        'enter_message_placeholder' => 'Nhập tin nhắn...',
+        'search_members_placeholder' => 'Tìm kiếm thành viên...',
+        'search_placeholder' => 'Tìm kiếm...'
+    ],
+
+    // Common UI elements
+    'common' => [
+        'loading' => 'Đang tải...',
+        'error_occurred' => 'Đã xảy ra lỗi',
+        'save' => 'Lưu',
+        'cancel' => 'Hủy',
+        'submit' => 'Gửi',
+        'back' => 'Quay lại',
+        'next' => 'Tiếp theo',
+        'previous' => 'Trước',
+        'close' => 'Đóng',
+        'open' => 'Mở',
+        'toggle' => 'Chuyển đổi',
+        'expand' => 'Mở rộng',
+        'collapse' => 'Thu gọn',
+        'show' => 'Hiển thị',
+        'hide' => 'Ẩn',
+        'view' => 'Xem',
+        'edit' => 'Chỉnh sửa',
+        'delete' => 'Xóa',
+        'add' => 'Thêm',
+        'remove' => 'Xóa',
+        'update' => 'Cập nhật',
+        'confirm' => 'Xác nhận',
+        'decline' => 'Từ chối',
+        'accept' => 'Chấp nhận',
+        'approve' => 'Phê duyệt',
+        'reject' => 'Từ chối',
+        'apply' => 'Áp dụng',
+        'reset' => 'Đặt lại',
+        'clear' => 'Xóa',
+        'search' => 'Tìm kiếm',
+        'filter' => 'Lọc',
+        'sort' => 'Sắp xếp',
+        'export' => 'Xuất',
+        'import' => 'Nhập',
+        'download' => 'Tải xuống',
+        'upload' => 'Tải lên',
+        'copy' => 'Sao chép',
+        'cut' => 'Cắt',
+        'paste' => 'Dán',
+        'undo' => 'Hoàn tác',
+        'redo' => 'Làm lại',
+        'refresh' => 'Làm mới',
+        'reload' => 'Tải lại',
+        'print' => 'In',
+        'email' => 'Email',
+        'share' => 'Chia sẻ',
+        'like' => 'Thích',
+        'unlike' => 'Bỏ thích',
+        'follow' => 'Theo dõi',
+        'unfollow' => 'Bỏ theo dõi',
+        'subscribe' => 'Đăng ký',
+        'unsubscribe' => 'Hủy đăng ký',
+        'bookmark' => 'Đánh dấu',
+        'unbookmark' => 'Bỏ đánh dấu',
+        'favorite' => 'Yêu thích',
+        'unfavorite' => 'Bỏ yêu thích',
+        'rate' => 'Đánh giá',
+        'review' => 'Xem xét',
+        'comment' => 'Bình luận',
+        'reply' => 'Trả lời',
+        'quote' => 'Trích dẫn',
+        'report' => 'Báo cáo',
+        'flag' => 'Gắn cờ',
+        'block' => 'Chặn',
+        'unblock' => 'Bỏ chặn',
+        'ban' => 'Cấm',
+        'unban' => 'Bỏ cấm',
+        'mute' => 'Tắt tiếng',
+        'unmute' => 'Bật tiếng',
+        'hide' => 'Ẩn',
+        'unhide' => 'Hiện',
+        'pin' => 'Ghim',
+        'unpin' => 'Bỏ ghim',
+        'lock' => 'Khóa',
+        'unlock' => 'Mở khóa',
+        'archive' => 'Lưu trữ',
+        'unarchive' => 'Bỏ lưu trữ',
+        'restore' => 'Khôi phục',
+        'trash' => 'Thùng rác',
+        'publish' => 'Xuất bản',
+        'unpublish' => 'Hủy xuất bản',
+        'draft' => 'Bản nháp',
+        'pending' => 'Đang chờ',
+        'approved' => 'Đã phê duyệt',
+        'rejected' => 'Đã từ chối',
+        'active' => 'Hoạt động',
+        'inactive' => 'Không hoạt động',
+        'enabled' => 'Đã bật',
+        'disabled' => 'Đã tắt',
+        'online' => 'Trực tuyến',
+        'offline' => 'Ngoại tuyến',
+        'available' => 'Có sẵn',
+        'unavailable' => 'Không có sẵn',
+        'yes' => 'Có',
+        'no' => 'Không',
+        'true' => 'Đúng',
+        'false' => 'Sai',
+        'on' => 'Bật',
+        'off' => 'Tắt',
+        'all' => 'Tất cả',
+        'none' => 'Không có',
+        'some' => 'Một số',
+        'many' => 'Nhiều',
+        'few' => 'Ít',
+        'more' => 'Thêm',
+        'less' => 'Ít hơn',
+        'most' => 'Nhiều nhất',
+        'least' => 'Ít nhất',
+        'best' => 'Tốt nhất',
+        'worst' => 'Tệ nhất',
+        'new' => 'Mới',
+        'old' => 'Cũ',
+        'latest' => 'Mới nhất',
+        'oldest' => 'Cũ nhất',
+        'first' => 'Đầu tiên',
+        'last' => 'Cuối cùng',
+        'popular' => 'Phổ biến',
+        'trending' => 'Xu hướng',
+        'hot' => 'Nóng',
+        'featured' => 'Nổi bật',
+        'recommended' => 'Được đề xuất',
+        'create_showcase' => 'Tạo giới thiệu',
+        'showcase' => 'Giới thiệu',
+        'showcase_reason' => 'Lý do giới thiệu',
+        'no_showcases_found' => 'Không tìm thấy giới thiệu nào',
+        'create_first_showcase' => 'Tạo giới thiệu đầu tiên',
+        'forum' => 'Diễn đàn',
+    ],
+
+    // Actions
+    'actions' => [
+        'view' => 'Xem',
+        'view_details' => 'Xem chi tiết',
+        'view_full_showcase' => 'Xem showcase đầy đủ',
+        'view_all' => 'Xem tất cả',
+        'edit' => 'Chỉnh sửa',
+        'delete' => 'Xóa',
+        'create' => 'Tạo',
+        'update' => 'Cập nhật',
+        'save' => 'Lưu',
+        'cancel' => 'Hủy',
+        'submit' => 'Gửi',
+        'continue' => 'Tiếp tục',
+        'back' => 'Quay lại',
+        'close' => 'Đóng',
+        'open' => 'Mở',
+        'download' => 'Tải xuống',
+        'upload' => 'Tải lên',
+        'share' => 'Chia sẻ',
+        'copy' => 'Sao chép',
+        'search' => 'Tìm kiếm',
+        'filter' => 'Lọc',
+        'sort' => 'Sắp xếp',
+        'refresh' => 'Làm mới',
+        'reload' => 'Tải lại',
+        'apply_filters' => 'Áp dụng bộ lọc',
+        'clear_filters' => 'Xóa bộ lọc',
+    ],
+
+    // Community specific
+    'community' => [
+        'browse_categories' => 'Duyệt danh mục'
+    ],
+
+    // Search
+    'search' => [
+        'advanced_search' => 'Tìm kiếm nâng cao'
+    ],
+
+    // Auth related
+    'auth' => [
+        'register_mechamap_account' => 'Đăng ký tài khoản MechaMap',
+        'login_to_view_notifications' => 'Đăng nhập để xem thông báo'
+    ],
+
+    // Pagination
+    'pagination' => [
+        'load_more' => 'Tải thêm',
+        'no_more_posts' => 'Không còn bài viết nào',
+        'showing' => 'Hiển thị',
+        'to' => 'đến',
+        'of' => 'trong tổng số',
+        'results' => 'kết quả',
+        'page' => 'Trang',
+        'previous' => 'Trước',
+        'next' => 'Tiếp theo',
+        'go_to_page' => 'Đi đến trang'
+    ],
+
+    // Status
+    'status' => [
+        'sticky' => 'Ghim',
+        'locked' => 'Khóa',
+        'active' => 'Hoạt động',
+        'inactive' => 'Không hoạt động',
+        'online' => 'Trực tuyến',
+        'offline' => 'Ngoại tuyến'
+    ],
+
+    // Missing auth paths
+    'auth/register_mechamap_account' => 'Đăng ký tài khoản MechaMap',
+    'auth/login_to_view_notifications' => 'Đăng nhập để xem thông báo',
+
+    // Đảm bảo key này ở root
+    'get_started' => 'Bắt đầu ngay',
+];

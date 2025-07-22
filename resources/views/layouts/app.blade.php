@@ -20,11 +20,11 @@
     @endauth
 
     <!-- SEO Meta Tags -->
-    <title>{{ $title ?? $seo['site_title'] ?? config('app.name') }} - @yield('title', 'Diễn đàn cộng đồng')</title>
+    <title>{{ $title ?? $seo['site_title'] ?? config('app.name') }} - @yield('title', __('seo.site.tagline'))</title>
     <meta name="description"
-        content="{{ $description ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
+        content="{{ $description ?? $seo['site_description'] ?? __('seo.site.description') }}">
     <meta name="keywords"
-        content="{{ $keywords ?? $seo['site_keywords'] ?? 'mechamap, diễn đàn, cộng đồng, forum, laravel' }}">
+        content="{{ $keywords ?? $seo['site_keywords'] ?? __('seo.site.keywords') }}">
     <meta name="author" content="MechaMap Team">
 
     @if(!($seo['allow_indexing'] ?? true))
@@ -42,7 +42,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ $title ?? $seo['og_title'] ?? $seo['site_title'] ?? config('app.name') }}">
     <meta property="og:description"
-        content="{{ $description ?? $seo['og_description'] ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
+        content="{{ $description ?? $seo['og_description'] ?? $seo['site_description'] ?? __('seo.site.description') }}">
     @if(!empty($seo['og_image'] ?? ''))
     <meta property="og:image" content="{{ url($seo['og_image']) }}">
     @endif

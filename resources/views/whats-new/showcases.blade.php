@@ -12,7 +12,7 @@
         <h1 class="mb-0 title_page">{{ __('nav.main.whats_new') }}</h1>
 
         <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> {{ __('ui.common.create_showcase') }}
+            <i class="fa-solid fa-plus me-1"></i> {{ t_common("create_showcase") }}
         </a>
     </div>
 
@@ -23,7 +23,7 @@
                 <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular') }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
@@ -138,7 +138,7 @@
                                     <small class="text-muted">{{ $showcase->created_at->diffForHumans()
                                         }}</small>
                                 </div>
-                                <span class="badge bg-primary">{{ __('ui.common.' . strtolower($showcase->showcase_type)) }}</span>
+                                <span class="badge bg-primary">{{ __('common.' . strtolower($showcase->showcase_type)) }}</span>
                             </div>
                         </div>
 
@@ -168,7 +168,7 @@
                             <div class="mt-2 p-2 bg-light rounded">
                                 <small class="text-description">
                                     <i class="fa-solid fa-quote-left me-1"></i>
-                                    <strong>{{ __('ui.common.showcase_reason') }}</strong> {{ $showcase->description }}
+                                    <strong>{{ t_common("showcase_reason") }}</strong> {{ $showcase->description }}
                                 </small>
                             </div>
                             @endif
@@ -183,7 +183,7 @@
                                     </a>
                                     <a href="{{ route('showcase.show', $showcase) }}"
                                         class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-star me-1"></i> {{ __('ui.common.showcase') }}
+                                        <i class="fas fa-star me-1"></i> {{ t_common("showcase") }}
                                     </a>
                                 </div>
 
@@ -191,7 +191,7 @@
                                 'App\Models\Thread')
                                 <small class="text-muted">
                                     <i class="fa-solid fa-folder-closed"></i>
-                                    {{ $showcase->showcaseable->forum->name ?? __('ui.common.forum') }}
+                                    {{ $showcase->showcaseable->forum->name ?? __('common.labels.forum') }}
                                 </small>
                                 @endif
                             </div>
@@ -204,8 +204,8 @@
         @else
         <div class="card-body text-center py-5">
             <i class="fas fa-star display-4 text-muted"></i>
-            <p class="mt-3">{{ __('ui.common.no_showcases_found') }}</p>
-            <a href="{{ route('showcase.create') }}" class="btn btn-primary">{{ __('ui.common.create_first_showcase') }}</a>
+            <p class="mt-3">{{ t_common("no_showcases_found") }}</p>
+            <a href="{{ route('showcase.create') }}" class="btn btn-primary">{{ t_common("create_first_showcase") }}</a>
         </div>
         @endif
     </div>

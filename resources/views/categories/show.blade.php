@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - ' . __('ui.common.site.tagline'))
+@section('title', $category->name . ' - ' . t_common("site.tagline"))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/forums/index.css') }}">
@@ -57,7 +57,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-info">{{ number_format($categoryStats['views_count']) }}</div>
-                    <div class="text-muted">{{ __('ui.common.views') }}</div>
+                    <div class="text-muted">{{ t_common("views") }}</div>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
             <div class="card stats-card shadow-sm">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-warning">{{ number_format($categoryStats['posts_count']) }}</div>
-                    <div class="text-muted">{{ __('ui.common.comments') }}</div>
+                    <div class="text-muted">{{ t_common("comments") }}</div>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
                                     <h6 class="forum-title fw-bold mb-1 text-dark">{{ $forum->name }}</h6>
                                     <div class="forum-meta small text-muted">
                                         <i class="fas fa-clock me-1"></i>
-                                        {{ __('ui.common.updated') }} {{ $forum->updated_at->diffForHumans() }}
+                                        {{ t_common("updated") }} {{ $forum->updated_at->diffForHumans() }}
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@
     {{-- Recent Threads - Full Width using thread-item component --}}
     <div class="list-group">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0 title_page_sub">{{ __('ui.common.new_threads', ['category' => $category->name]) }}</h5>
+            <h5 class="mb-0 title_page_sub">{{ __('common.new_threads', ['category' => $category->name]) }}</h5>
         </div>
         @if($recentThreads->count() > 0)
         <div class="threads-list">

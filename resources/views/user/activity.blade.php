@@ -4,7 +4,7 @@
 
 @php
     $pageTitle = __('nav.user.activity');
-    $pageDescription = __('messages.activity_desc');
+    $pageDescription = __('activity.activity_desc');
     $breadcrumbs = [
         ['title' => __('nav.user.activity'), 'url' => '#']
     ];
@@ -19,7 +19,7 @@
                 <i class="fas fa-chart-line"></i>
             </div>
             <div class="stats-value" data-stat="total_activities">{{ $stats['total_activities'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.total_activities') }}</div>
+            <div class="stats-label">{{ __('activity.total_activities') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -28,7 +28,7 @@
                 <i class="fas fa-calendar-day"></i>
             </div>
             <div class="stats-value" data-stat="today_activities">{{ $stats['today_activities'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.today') }}</div>
+            <div class="stats-label">{{ __('activity.today') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -37,7 +37,7 @@
                 <i class="fas fa-calendar-week"></i>
             </div>
             <div class="stats-value" data-stat="week_activities">{{ $stats['week_activities'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.this_week') }}</div>
+            <div class="stats-label">{{ __('activity.this_week') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -46,7 +46,7 @@
                 <i class="fas fa-fire"></i>
             </div>
             <div class="stats-value" data-stat="streak_days">{{ $stats['streak_days'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.activity_streak') }}</div>
+            <div class="stats-label">{{ __('activity.activity_streak') }}</div>
         </div>
     </div>
 </div>
@@ -59,49 +59,49 @@
                 <div class="filter-group">
                     <label class="filter-label">Loại hoạt động</label>
                     <select name="type" class="form-select">
-                        <option value="">{{ __('messages.all_activities') }}</option>
+                        <option value="">{{ __('activity.all_activities') }}</option>
                         <option value="thread_created" {{ request('type') === 'thread_created' ? 'selected' : '' }}>
-                            {{ __('messages.thread_created') }}
+                            {{ __('activity.thread_created') }}
                         </option>
                         <option value="comment_posted" {{ request('type') === 'comment_posted' ? 'selected' : '' }}>
-                            {{ __('messages.comment_posted') }}
+                            {{ __('activity.comment_posted') }}
                         </option>
                         <option value="thread_bookmarked" {{ request('type') === 'thread_bookmarked' ? 'selected' : '' }}>
-                            {{ __('messages.thread_bookmarked') }}
+                            {{ __('activity.thread_bookmarked') }}
                         </option>
                         <option value="thread_rated" {{ request('type') === 'thread_rated' ? 'selected' : '' }}>
-                            {{ __('messages.thread_rated') }}
+                            {{ __('activity.thread_rated') }}
                         </option>
                         <option value="user_followed" {{ request('type') === 'user_followed' ? 'selected' : '' }}>
-                            {{ __('messages.user_followed') }}
+                            {{ __('activity.user_followed') }}
                         </option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="filter-group">
-                    <label class="filter-label">{{ __('messages.time_period') }}</label>
+                    <label class="filter-label">{{ __('activity.time_period') }}</label>
                     <select name="period" class="form-select">
                         <option value="all" {{ request('period', 'all') === 'all' ? 'selected' : '' }}>
-                            {{ __('messages.all_time') }}
+                            {{ __('activity.all_time') }}
                         </option>
                         <option value="today" {{ request('period') === 'today' ? 'selected' : '' }}>
-                            {{ __('messages.today') }}
+                            {{ __('activity.today') }}
                         </option>
                         <option value="week" {{ request('period') === 'week' ? 'selected' : '' }}>
-                            {{ __('messages.this_week') }}
+                            {{ __('activity.this_week') }}
                         </option>
                         <option value="month" {{ request('period') === 'month' ? 'selected' : '' }}>
-                            {{ __('messages.this_month') }}
+                            {{ __('activity.this_month') }}
                         </option>
                     </select>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="filter-group">
-                    <label class="filter-label">{{ __('messages.forum') }}</label>
+                    <label class="filter-label">{{ __('activity.forum') }}</label>
                     <select name="forum" class="form-select">
-                        <option value="">{{ __('messages.all_forums') }}</option>
+                        <option value="">{{ __('activity.all_forums') }}</option>
                         @foreach($forums ?? [] as $forum)
                             <option value="{{ $forum->id }}" {{ request('forum') == $forum->id ? 'selected' : '' }}>
                                 {{ $forum->name }}
@@ -112,9 +112,9 @@
             </div>
             <div class="col-md-3">
                 <div class="filter-group">
-                    <label class="filter-label">{{ __('messages.search') }}</label>
+                    <label class="filter-label">{{ __('activity.search') }}</label>
                     <input type="text" name="search" class="form-control"
-                           placeholder="{{ __('messages.search_activities') }}"
+                           placeholder="{{ __('activity.search_activities') }}"
                            value="{{ request('search') }}">
                 </div>
             </div>
@@ -138,9 +138,9 @@
                     <div class="timeline-date-header">
                         <h6 class="mb-0">
                             @if($activity->created_at->isToday())
-                                {{ __('messages.today') }}
+                                {{ __('activity.today') }}
                             @elseif($activity->created_at->isYesterday())
-                                {{ __('messages.yesterday') }}
+                                {{ __('activity.yesterday') }}
                             @else
                                 {{ $activity->created_at->format('d/m/Y') }}
                             @endif
@@ -190,7 +190,7 @@
                                         </div>
                                         <a href="{{ route('threads.show', $activity->comment->thread->slug) }}#comment-{{ $activity->comment->id }}"
                                            class="btn btn-sm btn-outline-primary mt-2">
-                                            {{ __('messages.view_comment') }}
+                                            {{ __('activity.view_comment') }}
                                         </a>
                                     </div>
                                 </div>
@@ -256,10 +256,10 @@
         <div class="empty-state-icon">
             <i class="fas fa-chart-line"></i>
         </div>
-        <div class="empty-state-title">{{ __('messages.no_activities_yet') }}</div>
-        <div class="empty-state-description">{{ __('messages.no_activities_desc') }}</div>
+        <div class="empty-state-title">{{ __('activity.no_activities_yet') }}</div>
+        <div class="empty-state-description">{{ __('activity.no_activities_desc') }}</div>
         <a href="{{ route('threads.index') }}" class="btn btn-primary">
-            <i class="fas fa-comments me-2"></i>{{ __('messages.start_participating') }}
+            <i class="fas fa-comments me-2"></i>{{ __('activity.start_participating') }}
         </a>
     </div>
 @endif

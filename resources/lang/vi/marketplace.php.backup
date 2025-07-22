@@ -1,0 +1,79 @@
+<?php return array (
+  'discover_shopping' => 'Khám phá & Mua sắm',
+  'by_purpose' => 'Theo mục đích sử dụng',
+  'suppliers_partners' => 'Nhà cung cấp & Đối tác',
+  'account_support' => 'Tài khoản & Hỗ trợ',
+  'products' =>
+  array (
+    'all' => 'Tất cả sản phẩm',
+    'all_desc' => 'Duyệt tất cả sản phẩm có sẵn',
+    'featured' => 'Sản phẩm nổi bật',
+    'featured_desc' => 'Sản phẩm chất lượng được tuyển chọn',
+    'newest' => 'Hàng mới về',
+    'newest_desc' => 'Sản phẩm mới nhất được thêm',
+    'discounts' => 'Ưu đãi & Giảm giá',
+    'discounts_desc' => 'Khuyến mãi đặc biệt và giảm giá',
+    'digital' => 'Sản phẩm số',
+    'digital_desc' => 'File CAD, thiết kế, phần mềm',
+    'new' => 'Sản phẩm mới',
+    'new_desc' => 'Hàng hoàn toàn mới',
+    'used' => 'Sản phẩm đã qua sử dụng',
+    'used_desc' => 'Hàng cũ chất lượng tốt',
+  ),
+  'search' =>
+  array (
+    'advanced' => 'Tìm kiếm nâng cao',
+    'advanced_desc' => 'Lọc sản phẩm chi tiết',
+  ),
+  'suppliers' =>
+  array (
+    'all' => 'Tất cả nhà cung cấp',
+    'all_desc' => 'Duyệt danh bạ nhà cung cấp',
+    'verified' => 'Nhà cung cấp đã xác minh',
+    'verified_desc' => 'Người bán đáng tin cậy đã xác minh',
+    'top_sellers' => 'Người bán hàng đầu',
+    'top_sellers_desc' => 'Nhà cung cấp được đánh giá cao nhất',
+    'title' => 'Nhà cung cấp'
+  ),
+  'company_profiles' => 'Hồ sơ công ty',
+  'company_profiles_desc' => 'Thông tin & liên hệ doanh nghiệp',
+  'cart' =>
+  array (
+    'title' => 'Giỏ hàng',
+    'desc' => 'Xem và quản lý sản phẩm trong giỏ',
+    'shopping_cart' => 'Giỏ hàng',
+    'cart_empty' => 'Giỏ hàng trống',
+    'add_products' => 'Thêm sản phẩm vào giỏ hàng',
+    'empty_message' => 'Giỏ hàng của bạn đang trống',
+    'add_items' => 'Thêm sản phẩm vào giỏ hàng'
+  ),
+  'my_orders' => 'Đơn hàng của tôi',
+  'my_orders_desc' => 'Theo dõi trạng thái & lịch sử đơn hàng',
+  'wishlist' => 'Danh sách yêu thích',
+  'wishlist_desc' => 'Sản phẩm yêu thích đã lưu',
+  'seller_dashboard' => 'Bảng điều khiển người bán',
+  'seller_dashboard_desc' => 'Quản lý sản phẩm & doanh số của bạn',
+  'help_support' => 'Trợ giúp & Hỗ trợ',
+  'help_support_desc' => 'Nhận hỗ trợ & hướng dẫn',
+  'login_desc' => 'Truy cập tài khoản marketplace của bạn',
+  'register_desc' => 'Tham gia cộng đồng marketplace',
+
+  'categories' => [
+    'title' => 'Danh mục sản phẩm'
+  ],
+  'suppliers' =>
+  array (
+    'all' => 'Tất cả nhà cung cấp',
+    'all_desc' => 'Duyệt danh bạ nhà cung cấp',
+    'verified' => 'Nhà cung cấp đã xác minh',
+    'verified_desc' => 'Người bán đáng tin cậy đã xác minh',
+    'top_sellers' => 'Người bán hàng đầu',
+    'top_sellers_desc' => 'Nhà cung cấp được đánh giá cao nhất',
+    'title' => 'Nhà cung cấp'
+  ),
+  'rfq' => [
+    'title' => 'Yêu cầu báo giá'
+  ],
+  'bulk_orders' => 'Đơn hàng số lượng lớn',
+  'downloads' => 'Tải xuống'
+);

@@ -13,13 +13,13 @@
                             <div class="mb-4">
                                 <i class="fas fa-check-circle-fill text-success" style="font-size: 5rem;"></i>
                             </div>
-                            <h3 class="mb-4">{{ __('Thank You for Your Subscription!') }}</h3>
-                            <p class="lead mb-4">{{ __('Your account has been successfully upgraded.') }}</p>
-                            <p class="mb-5">{{ __('You now have access to all premium features included in your subscription plan.') }}</p>
-                            
+                            <h3 class="mb-4">{{ __('subscription.Thank You for Your Subscription!') }}</h3>
+                            <p class="lead mb-4">{{ __('subscription.Your account has been successfully upgraded.') }}</p>
+                            <p class="mb-5">{{ __('subscription.You now have access to all premium features included in your subscription plan.') }}</p>
+
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="{{ route('dashboard') }}" class="btn btn-primary">{{ __('Go to Dashboard') }}</a>
-                                <a href="{{ route('profile.show', Auth::user()->username) }}" class="btn btn-outline-primary">{{ __('View Your Profile') }}</a>
+                                <a href="{{ route('dashboard') }}" class="btn btn-primary">{{ __('subscription.Go to Dashboard') }}</a>
+                                <a href="{{ route('profile.show', Auth::user()->username) }}" class="btn btn-outline-primary">{{ __('subscription.View Your Profile') }}</a>
                             </div>
                         </div>
                     </div>

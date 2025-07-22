@@ -14,18 +14,18 @@
                 <div class="card-body">
                     <form action="{{ route('search.index') }}" method="GET" class="row g-3">
                         <div class="col-md-8">
-                            <input type="text" name="query" class="form-control" placeholder="{{ __('Search...') }}" value="{{ $query }}">
+                            <input type="text" name="query" class="form-control" placeholder="{{ __('search.search_placeholder') }}" value="{{ $query }}">
                         </div>
                         <div class="col-md-2">
                             <select name="type" class="form-select">
-                                <option value="all" {{ $type == 'all' ? 'selected' : '' }}>{{ __('All') }}</option>
-                                <option value="threads" {{ $type == 'threads' ? 'selected' : '' }}>{{ __('Threads') }}</option>
-                                <option value="posts" {{ $type == 'posts' ? 'selected' : '' }}>{{ __('Posts') }}</option>
-                                <option value="users" {{ $type == 'users' ? 'selected' : '' }}>{{ __('Users') }}</option>
+                                <option value="all" {{ $type == 'all' ? 'selected' : '' }}>{{ __('search.all') }}</option>
+                                <option value="threads" {{ $type == 'threads' ? 'selected' : '' }}>{{ __('search.threads') }}</option>
+                                <option value="posts" {{ $type == 'posts' ? 'selected' : '' }}>{{ __('search.posts') }}</option>
+                                <option value="users" {{ $type == 'users' ? 'selected' : '' }}>{{ __('search.users') }}</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary w-100">{{ __('Search') }}</button>
+                            <button type="submit" class="btn btn-primary w-100">{{ t_search('form.submit') }}</button>
                         </div>
                     </form>
                 </div>
@@ -34,12 +34,12 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     @if($query)
-                        <p class="mb-0">{{ __('Search results for') }}: <strong>{{ $query }}</strong></p>
+                        <p class="mb-0">{{ __('search.search_results_for') }}: <strong>{{ $query }}</strong></p>
                     @endif
                 </div>
                 <div>
                     <a href="{{ route('forums.search.advanced') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
+                        <i class="fas fa-sliders-h me-1"></i> {{ __('search.advanced_search') }}
                     </a>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 @if(($type == 'all' || $type == 'threads') && $threads->count() > 0)
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Threads') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('search.threads') }}</h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="list-group list-group-flush">
@@ -66,7 +66,7 @@
                                             <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
                                                 {{ $thread->user->name }}
                                             </a>
-                                            {{ __('in') }}
+                                            {{ __('search.in') }}
                                             <a href="{{ route('forums.show', $thread->forum) }}" class="text-decoration-none fw-bold">
                                                 {{ $thread->forum->name }}
                                             </a>
@@ -81,7 +81,7 @@
                 @if(($type == 'all' || $type == 'posts') && $posts->count() > 0)
                     <div class="card shadow-sm rounded-3 mb-4">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Posts') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('search.posts') }}</h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="list-group list-group-flush">
@@ -110,7 +110,7 @@
                 @if(($type == 'all' || $type == 'users') && $users->count() > 0)
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Users') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('search.users') }}</h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="list-group list-group-flush">
@@ -143,10 +143,10 @@
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body text-center py-5">
                             <i class="fas fa-search fs-1 text-muted mb-3"></i>
-                            <p class="mb-0">{{ __('No results found for your search.') }}</p>
-                            <p class="text-muted">{{ __('Try different keywords or use the advanced search.') }}</p>
+                            <p class="mb-0">{{ __('search.no_results_found') }}</p>
+                            <p class="text-muted">{{ __('search.try_different_keywords') }}</p>
                             <a href="{{ route('search.advanced') }}" class="btn btn-primary mt-3">
-                                <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
+                                <i class="fas fa-sliders-h me-1"></i> {{ __('search.advanced_search') }}
                             </a>
                         </div>
                     </div>
@@ -155,10 +155,10 @@
                 <div class="card shadow-sm rounded-3">
                     <div class="card-body text-center py-5">
                         <i class="fas fa-search fs-1 text-muted mb-3"></i>
-                        <p class="mb-0">{{ __('Enter a search term to find content.') }}</p>
-                        <p class="text-muted">{{ __('You can search for threads, posts, and users.') }}</p>
+                        <p class="mb-0">{{ __('search.enter_search_term') }}</p>
+                        <p class="text-muted">{{ __('search.search_description') }}</p>
                         <a href="{{ route('search.advanced') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-sliders-h me-1"></i> {{ __('Advanced Search') }}
+                            <i class="fas fa-sliders-h me-1"></i> {{ __('search.advanced_search') }}
                         </a>
                     </div>
                 </div>

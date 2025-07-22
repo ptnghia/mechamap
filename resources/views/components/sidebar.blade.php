@@ -44,15 +44,15 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                 <div class="d-flex gap-4 mb-3">
                     <div class="stat-item">
                         <strong>{{ App\Models\Thread::count() }}</strong>
-                        <span class="text-muted">{{ __('forum.threads') }}</span>
+                        <span class="text-muted">{{ t_sidebar('main.threads') }}</span>
                     </div>
                     <div class="stat-item">
                         <strong>{{ App\Models\User::count() }}</strong>
-                        <span class="text-muted">{{ __('user.members') }}</span>
+                        <span class="text-muted">{{ t_sidebar('main.members') }}</span>
                     </div>
                 </div>
                 <div class="text-muted small mb-3">
-                    <i class="fas fa-calendar-check me-1"></i> {{ __('content.active_since') }} {{
+                    <i class="fas fa-calendar-check me-1"></i> {{ t_sidebar('main.established_since') }} {{
                     \Carbon\Carbon::parse(config('app.established_year', '2023'))->format('Y') }}
                 </div>
             </div>
@@ -63,11 +63,11 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
             <div class="d-grid gap-2">
                 @guest
                 <a href="{{ route('login') }}" class="btn btn-primary">
-                    <i class="fas fa-user-plus me-2"></i>{{ __('content.join_community') }}
+                    <i class="fas fa-user-plus me-2"></i>{{ t_sidebar('main.join_community') }}
                 </a>
                 @endguest
                 <a href="{{ route('business.index') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-chart-line me-2"></i>{{ __('content.business_development') }}
+                    <i class="fas fa-chart-line me-2"></i>{{ t_sidebar('main.business_development') }}
                 </a>
             </div>
         </div>
@@ -76,7 +76,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
     <!-- Các chủ đề mới/nổi bật -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="fas fa-star me-2 text-warning"></i>{{ __('content.featured_topics') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-star me-2 text-warning"></i>{{ t_sidebar('main.featured_topics') }}</h5>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -110,13 +110,13 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">{{ __('content.no_featured_topics') }}</p>
+                    <p class="text-muted mb-0 small">{{ t_sidebar('main.no_featured_topics') }}</p>
                 </div>
                 @endforelse
             </div>
 
             <div class="card-footer bg-white text-center">
-                <a href="{{ route('threads.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('content.view_more') }}</a>
+                <a href="{{ route('threads.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ t_sidebar('main.view_more') }}</a>
             </div>
         </div>
     </div>
@@ -124,8 +124,8 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
     <!-- Các diễn đàn hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="fas fa-folder me-2 text-primary"></i>{{ __('content.popular_forums') }}</h5>
-            <a href="{{ route('forums.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
+            <h5 class="card-title mb-0"><i class="fas fa-folder me-2 text-primary"></i>{{ t_sidebar('main.popular_forums') }}</h5>
+            <a href="{{ route('forums.index') }}" class="btn btn-sm btn-link">{{ t_sidebar('main.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -148,7 +148,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">{{ __('content.no_forums') }}</p>
+                    <p class="text-muted mb-0 small">{{ t_sidebar('main.no_forums') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -158,8 +158,8 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
     <!-- Những người đóng góp hàng đầu -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0"><i class="fas fa-users me-2 text-success"></i>{{ __('content.active_members') }}</h5>
-            <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
+            <h5 class="card-title mb-0"><i class="fas fa-users me-2 text-success"></i>{{ t_sidebar('main.active_members') }}</h5>
+            <a href="{{ route('members.index') }}" class="btn btn-sm btn-link">{{ t_sidebar('main.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
@@ -181,14 +181,14 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                         </div>
                         <div>
                             <h6 class="mb-1">{{ $user->name }}</h6>
-                            <p class="text-muted small mb-0">{{ $user->threads_count + $user->comments_count }} {{ __('content.contributions') }}
+                            <p class="text-muted small mb-0">{{ $user->threads_count + $user->comments_count }} {{ t_sidebar('main.contributions') }}
                             </p>
                         </div>
                     </div>
                 </a>
                 @empty
                 <div class="list-group-item py-2">
-                    <p class="text-muted mb-0 small">{{ __('content.no_active_members') }}</p>
+                    <p class="text-muted mb-0 small">{{ t_sidebar('main.no_active_members') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -198,7 +198,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
     <!-- Các cộng đồng được đề xuất -->
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0"><i class="fas fa-globe me-2 text-info"></i>{{ __('content.related_communities') }}</h5>
+            <h5 class="card-title mb-0"><i class="fas fa-globe me-2 text-info"></i>{{ t_sidebar('main.related_communities') }}</h5>
         </div>
         <div class="card-body">
             @php
@@ -246,13 +246,13 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                     </h6>
                     <p class="text-muted small mb-0">
                         <i class="fas fa-comments me-1"></i>{{ $forum->threads_count }}
-                        {{ __('content.topics') }}
+                        {{ t_sidebar('main.topics') }}
                     </p>
                 </div>
             </div>
             @empty
             <div class="text-center py-3">
-                <p class="text-muted mb-0 small">{{ __('content.no_forums') }}</p>
+                <p class="text-muted mb-0 small">{{ t_sidebar('main.no_forums') }}</p>
             </div>
             @endforelse
         </div>

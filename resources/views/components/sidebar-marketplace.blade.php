@@ -17,9 +17,9 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
             <div class="marketplace-header">
                 <h5 class="fw-bold">
                     <i class="fas fa-store me-2 text-success"></i>
-                    {{ __('marketplace.engineering_marketplace') }}
+                    {{ t_sidebar('marketplace.engineering_marketplace') }}
                 </h5>
-                <p class="text-muted">{{ __('marketplace.buy_sell_engineering_products') }}</p>
+                <p class="text-muted">{{ t_sidebar('marketplace.buy_sell_engineering_products') }}</p>
             </div>
 
             <div class="stats-grid">
@@ -28,28 +28,28 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                         <i class="fa-solid fa-box"></i>
                         <span>{{ number_format((int)($sidebarData['marketplace_stats']['total_products'] ?? 0)) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('marketplace.total_products') }}</div>
+                    <div class="stat-label">{{ t_sidebar('marketplace.total_products') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-handshake"></i>
                         <span>{{ number_format((int)($sidebarData['marketplace_stats']['total_sales'] ?? 0)) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('marketplace.total_sales') }}</div>
+                    <div class="stat-label">{{ t_sidebar('marketplace.total_sales') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-dong-sign"></i>
                         <span>{{ number_format((float)($sidebarData['marketplace_stats']['avg_price'] ?? 0)) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('marketplace.avg_price_vnd') }}</div>
+                    <div class="stat-label">{{ t_sidebar('marketplace.avg_price_vnd') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-users"></i>
                         <span>{{ number_format((int)($sidebarData['marketplace_stats']['active_sellers'] ?? 0)) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('marketplace.active_sellers') }}</div>
+                    <div class="stat-label">{{ t_sidebar('marketplace.active_sellers') }}</div>
                 </div>
             </div>
 
@@ -59,14 +59,14 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                 \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'used_product'))
             <div class="cta-section mt-3">
                 <a href="{{ route('marketplace.products.create') }}" class="btn btn-success w-100">
-                    <i class="fas fa-plus me-2"></i>{{ __('marketplace.list_product') }}
+                    <i class="fas fa-plus me-2"></i>{{ t_sidebar('marketplace.list_product') }}
                 </a>
             </div>
             @endif
             @else
             <div class="cta-section mt-3">
                 <a href="{{ route('register') }}" class="btn btn-primary w-100">
-                    <i class="fas fa-user-plus me-2"></i>{{ __('marketplace.join_marketplace') }}
+                    <i class="fas fa-user-plus me-2"></i>{{ t_sidebar('marketplace.join_marketplace') }}
                 </a>
             </div>
             @endauth
@@ -78,7 +78,7 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-tags me-2 text-primary"></i>
-                {{ __('marketplace.product_categories') }}
+                {{ t_sidebar('marketplace.product_categories') }}
             </h6>
         </div>
         <div class="card-body p-0">
@@ -91,7 +91,7 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                     <div class="category-info">
                         <div class="category-name">{{ $category['name'] }}</div>
                         <div class="category-stats">
-                            <span class="product-count">{{ (int)($category['product_count'] ?? 0) }} {{ __('marketplace.products.title') }}</span>
+                            <span class="product-count">{{ (int)($category['product_count'] ?? 0) }} {{ t_sidebar('marketplace.products') }}</span>
                             <span class="price-range">{{ number_format((float)($category['min_price'] ?? 0)) }} - {{ number_format((float)($category['max_price'] ?? 0)) }} VND</span>
                         </div>
                     </div>
@@ -113,10 +113,10 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-fire me-2 text-danger"></i>
-                {{ __('marketplace.hot_products') }}
+                {{ t_sidebar('marketplace.hot_products') }}
             </h6>
             <a href="{{ route('marketplace.products.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">
-                {{ __('content.view_all') }}
+                {{ t_sidebar('main.view_all') }}
             </a>
         </div>
         <div class="card-body p-0">
@@ -186,7 +186,7 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-crown me-2 text-warning"></i>
-                {{ __('marketplace.top_sellers') }}
+                {{ t_sidebar('marketplace.top_sellers') }}
             </h6>
         </div>
         <div class="card-body p-0">
@@ -210,8 +210,8 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                             {{ $seller['role_name'] }}
                         </div>
                         <div class="seller-stats">
-                            <span class="product-count">{{ (int)($seller['product_count'] ?? 0) }} {{ __('marketplace.products.title') }}</span>
-                            <span class="total-sales">{{ number_format((int)($seller['total_sales'] ?? 0)) }} {{ __('marketplace.sales.title') }}</span>
+                            <span class="product-count">{{ (int)($seller['product_count'] ?? 0) }} {{ t_sidebar('marketplace.products') }}</span>
+                            <span class="total-sales">{{ number_format((int)($seller['total_sales'] ?? 0)) }} {{ t_sidebar('marketplace.sales') }}</span>
                         </div>
                     </div>
                 </a>
@@ -225,23 +225,23 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
         <div class="card-header">
             <h6 class="mb-0">
                 <i class="fas fa-credit-card me-2 text-info"></i>
-                {{ __('marketplace.payment_methods') }}
+                {{ t_sidebar('marketplace.payment_methods') }}
             </h6>
         </div>
         <div class="card-body">
             <div class="payment-list">
                 <div class="payment-item">
                     <img src="{{ asset('images/payment/stripe.png') }}" alt="Stripe" class="payment-logo">
-                    <span class="payment-name">{{ __('marketplace.international_cards') }}</span>
+                    <span class="payment-name">{{ t_sidebar('marketplace.international_cards') }}</span>
                 </div>
                 <div class="payment-item">
                     <img src="{{ asset('images/payment/sepay.png') }}" alt="SePay" class="payment-logo">
-                    <span class="payment-name">{{ __('marketplace.vietnam_banking') }}</span>
+                    <span class="payment-name">{{ t_sidebar('marketplace.vietnam_banking') }}</span>
                 </div>
             </div>
             <div class="security-note mt-2">
                 <i class="fas fa-shield-alt me-1 text-success"></i>
-                <small class="text-muted">{{ __('marketplace.secure_payment_guarantee') }}</small>
+                <small class="text-muted">{{ t_sidebar('marketplace.secure_payment_guarantee') }}</small>
             </div>
         </div>
     </div>

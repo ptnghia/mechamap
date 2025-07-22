@@ -11,7 +11,7 @@
         <li>
             <a href="{{ url('/') }}">
                 <i class="fa-solid fa-home me-2"></i>
-                {{ __('ui.common.home') }}
+                {{ t_common("home") }}
             </a>
         </li>
 
@@ -19,7 +19,7 @@
         <li>
             <a href="{{ route('forums.index') }}">
                 <i class="fa-solid fa-users me-2"></i>
-                {{ __('ui.common.community') }}
+                {{ t_common("community") }}
             </a>
             <ul>
                 <!-- Quick Access -->
@@ -32,7 +32,7 @@
                 <li>
                     <a href="{{ route('whats-new.popular') }}">
                         <i class="fa-solid fa-star me-2"></i>
-                        {{ __('ui.common.popular_topics') }}
+                        {{ t_common("popular_topics") }}
                     </a>
                 </li>
                 <li>
@@ -46,25 +46,25 @@
                 <li>
                     <a href="{{ route('whats-new') }}">
                         <i class="fa-solid fa-clock me-2"></i>
-                        {{ __('ui.common.recent_discussions') }}
+                        {{ t_common("recent_discussions") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('whats-new.trending') }}">
                         <i class="fa-solid fa-chart-line me-2"></i>
-                        {{ __('ui.common.trending') }}
+                        {{ t_common("trending") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('whats-new.most-viewed') }}">
                         <i class="fa-solid fa-eye me-2"></i>
-                        {{ __('ui.common.most_viewed') }}
+                        {{ t_common("most_viewed") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('whats-new.hot-topics') }}">
                         <i class="fa-solid fa-flame me-2"></i>
-                        {{ __('ui.common.hot_topics') }}
+                        {{ t_common("hot_topics") }}
                     </a>
                 </li>
 
@@ -78,21 +78,21 @@
                 <li>
                     <a href="{{ route('members.index') }}">
                         <i class="fa-solid fa-users-gear me-2"></i>
-                        {{ __('ui.common.member_directory') }}
+                        {{ t_common("member_directory") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('events.index') }}">
                         <i class="fa-solid fa-calendar-days me-2"></i>
-                        {{ __('ui.common.events_webinars') }}
-                        <span class="badge badge-coming-soon">{{ __('ui.common.coming_soon') }}</span>
+                        {{ t_common("events_webinars") }}
+                        <span class="badge badge-coming-soon">{{ t_common("coming_soon") }}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('jobs.index') }}">
                         <i class="fa-solid fa-briefcase me-2"></i>
-                        {{ __('ui.common.job_board') }}
-                        <span class="badge badge-coming-soon">{{ __('ui.common.coming_soon') }}</span>
+                        {{ t_common("job_board") }}
+                        <span class="badge badge-coming-soon">{{ t_common("coming_soon") }}</span>
                     </a>
                 </li>
             </ul>
@@ -102,7 +102,7 @@
         <li>
             <a href="{{ route('showcase.index') }}">
                 <i class="fa-solid fa-trophy me-2"></i>
-                {{ __('ui.common.showcase') }}
+                {{ t_common("showcase") }}
             </a>
         </li>
 
@@ -110,7 +110,7 @@
         <li>
             <a href="{{ route('marketplace.index') }}">
                 <i class="fa-solid fa-store me-2"></i>
-                {{ __('ui.common.marketplace') }}
+                {{ t_common("marketplace_title") }}
             </a>
             <ul>
                 <!-- Shop -->
@@ -135,7 +135,7 @@
                 <li>
                     <a href="{{ route('companies.index') }}">
                         <i class="fa-solid fa-building-user me-2"></i>
-                        {{ __('ui.common.company_profiles') }}
+                        {{ t_common("company_profiles") }}
                     </a>
                 </li>
                 <li>
@@ -189,25 +189,25 @@
         <li>
             <a href="/search">
                 <i class="fa-solid fa-search me-2"></i>
-                {{ __('ui.common.search_discovery') }}
+                {{ t_common("search_discovery") }}
             </a>
             <ul>
                 <li>
                     <a href="/search/advanced">
                         <i class="fa-brands fa-searchengin me-2"></i>
-                        {{ __('ui.common.advanced_search') }}
+                        {{ t_common("advanced_search") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('gallery.index') }}">
                         <i class="fa-regular fa-images me-2"></i>
-                        {{ __('ui.common.photo_gallery') }}
+                        {{ t_common("photo_gallery") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('tags.index') }}">
                         <i class="fa-solid fa-tags me-2"></i>
-                        {{ __('ui.common.browse_by_tags') }}
+                        {{ t_common("browse_by_tags") }}
                     </a>
                 </li>
             </ul>
@@ -217,25 +217,25 @@
         <li>
             <a href="{{ route('help.index') }}">
                 <i class="fa-solid fa-life-ring me-2"></i>
-                {{ __('ui.common.help_support') }}
+                {{ t_common("help_support") }}
             </a>
             <ul>
                 <li>
                     <a href="{{ route('faq.index') }}">
                         <i class="fa-solid fa-question me-2"></i>
-                        {{ __('ui.common.faq') }}
+                        {{ t_common("faq") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('help.index') }}">
                         <i class="fa-solid fa-life-ring me-2"></i>
-                        {{ __('ui.common.help_center') }}
+                        {{ t_common("help_center") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('contact') }}">
                         <i class="fa-solid fa-envelope me-2"></i>
-                        {{ __('ui.common.contact_support') }}
+                        {{ t_common("contact_support") }}
                     </a>
                 </li>
             </ul>
@@ -245,25 +245,25 @@
         <li>
             <a href="{{ route('about.index') }}">
                 <i class="fa-solid fa-info me-2"></i>
-                {{ __('ui.common.about_mechamap') }}
+                {{ t_common("about_mechamap") }}
             </a>
             <ul>
                 <li>
                     <a href="{{ route('about.index') }}">
                         <i class="fa-solid fa-building me-2"></i>
-                        {{ __('ui.common.about_us') }}
+                        {{ t_common("about_us") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('terms.index') }}">
                         <i class="fa-solid fa-file-contract me-2"></i>
-                        {{ __('ui.common.terms_of_service') }}
+                        {{ t_common("terms_of_service") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('privacy.index') }}">
                         <i class="fa-solid fa-shield-halved me-2"></i>
-                        {{ __('ui.common.privacy_policy') }}
+                        {{ t_common("privacy_policy") }}
                     </a>
                 </li>
             </ul>
@@ -274,31 +274,31 @@
         <li>
             <a href="{{ route('profile.show', auth()->user()->username) }}">
                 <i class="fa-solid fa-user me-2"></i>
-                {{ __('ui.common.my_account') }}
+                {{ t_common("my_account") }}
             </a>
             <ul>
                 <li>
                     <a href="{{ route('profile.show', auth()->user()->username) }}">
                         <i class="fa-solid fa-user me-2"></i>
-                        {{ __('ui.common.my_profile') }}
+                        {{ t_common("my_profile") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('profile.edit') }}">
                         <i class="fa-solid fa-cog me-2"></i>
-                        {{ __('ui.common.account_settings') }}
+                        {{ t_common("account_settings") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('notifications.index') }}">
                         <i class="fa-solid fa-bell me-2"></i>
-                        {{ __('ui.common.notifications') }}
+                        {{ t_common("notifications") }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fa-solid fa-sign-out-alt me-2"></i>
-                        {{ __('ui.common.logout') }}
+                        {{ t_common("logout") }}
                     </a>
                 </li>
             </ul>
@@ -308,13 +308,13 @@
         <li>
             <a href="{{ route('login') }}">
                 <i class="fa-solid fa-sign-in-alt me-2"></i>
-                {{ __('ui.common.login') }}
+                {{ t_common("login") }}
             </a>
         </li>
         <li>
             <a href="{{ route('register') }}">
                 <i class="fa-solid fa-user-plus me-2"></i>
-                {{ __('ui.common.register') }}
+                {{ t_common("register") }}
             </a>
         </li>
         @endauth

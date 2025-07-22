@@ -130,7 +130,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">{{ __('student.educational_resources') }}</h5>
                         <a href="{{ route('student.resources.index') }}" class="btn btn-sm btn-primary">
-                            {{ __('buttons.view_all') }}
+                            {{ __('common.buttons.view_all') }}
                         </a>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                                     <h6>{{ __('student.textbooks') }}</h6>
                                     <p class="text-muted small">{{ $resourceCounts['textbooks'] ?? 0 }} {{ __('student.resources') }}</p>
                                     <a href="{{ route('student.resources.category', 'textbooks') }}" class="btn btn-sm btn-outline-primary">
-                                        {{ __('buttons.explore') }}
+                                        {{ __('common.buttons.explore') }}
                                     </a>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                                     <h6>{{ __('student.video_tutorials') }}</h6>
                                     <p class="text-muted small">{{ $resourceCounts['videos'] ?? 0 }} {{ __('student.resources') }}</p>
                                     <a href="{{ route('student.resources.category', 'videos') }}" class="btn btn-sm btn-outline-success">
-                                        {{ __('buttons.explore') }}
+                                        {{ __('common.buttons.explore') }}
                                     </a>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                                     <h6>{{ __('student.research_papers') }}</h6>
                                     <p class="text-muted small">{{ $resourceCounts['papers'] ?? 0 }} {{ __('student.resources') }}</p>
                                     <a href="{{ route('student.resources.category', 'papers') }}" class="btn btn-sm btn-outline-warning">
-                                        {{ __('buttons.explore') }}
+                                        {{ __('common.buttons.explore') }}
                                     </a>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                                     <h6>{{ __('student.tools_software') }}</h6>
                                     <p class="text-muted small">{{ $resourceCounts['tools'] ?? 0 }} {{ __('student.resources') }}</p>
                                     <a href="{{ route('student.resources.category', 'tools') }}" class="btn btn-sm btn-outline-info">
-                                        {{ __('buttons.explore') }}
+                                        {{ __('common.buttons.explore') }}
                                     </a>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">{{ __('student.study_groups') }}</h5>
                         <a href="{{ route('student.study-groups.create') }}" class="btn btn-sm btn-outline-primary">
-                            {{ __('buttons.create') }}
+                            {{ __('common.buttons.create') }}
                         </a>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                             <p class="text-muted small mb-0">{{ $group->members_count }} {{ __('student.members') }}</p>
                         </div>
                         <a href="{{ route('student.study-groups.show', $group->id) }}" class="btn btn-sm btn-outline-primary">
-                            {{ __('buttons.join') }}
+                            {{ __('common.buttons.join') }}
                         </a>
                     </div>
                     @empty

@@ -10,7 +10,7 @@
             id="languageDropdown"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            title="{{ __('ui.common.language.switch') }}">
+            title="{{ __('common.language.switch') }}">
         <i class="flag-icon flag-icon-{{ $currentLanguage['flag'] }} me-1"></i>
         <!--span class="d-none d-md-inline">{{ $currentLanguage['name'] }}</span-->
     </button>
@@ -18,7 +18,7 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
         <li class="dropdown-header">
             <i class="fas fa-globe me-2"></i>
-            {{ __('ui.common.language.select') }}
+            {{ __('common.language.select') }}
         </li>
         <li><hr class="dropdown-divider"></li>
 
@@ -43,7 +43,7 @@
                href="#"
                onclick="autoDetectLanguage(); return false;">
                 <i class="fas fa-magic me-2"></i>
-                {{ __('ui.common.language.auto_detect') }}
+                {{ __('common.language.auto_detect') }}
             </a>
         </li>
     </ul>
@@ -80,12 +80,12 @@ function switchLanguage(locale) {
     .then(data => {
         if (data.success) {
             // Hiển thị thông báo thành công
-            showNotification(data.message || '{{ __("core/messages.language.switched_successfully") }}', 'success');
+            showNotification(data.message || '{{ t_common("language.switched_successfully") }}', 'success');
             // Reload trang để áp dụng ngôn ngữ mới
             setTimeout(() => window.location.reload(), 500);
         } else {
             // Hiển thị thông báo lỗi
-            showNotification(data.message || '{{ __("core/messages.language.switch_failed") }}', 'error');
+            showNotification(data.message || '{{ t_common("language.switch_failed") }}', 'error');
             // Khôi phục button
             button.innerHTML = originalContent;
             button.disabled = false;
@@ -93,7 +93,7 @@ function switchLanguage(locale) {
     })
     .catch(error => {
         console.error('Language switch error:', error);
-        showNotification('{{ __("core/messages.language.switch_failed") }}', 'error');
+        showNotification('{{ t_common("language.switch_failed") }}', 'error');
         // Khôi phục button
         button.innerHTML = originalContent;
         button.disabled = false;
@@ -123,7 +123,7 @@ function autoDetectLanguage() {
     })
     .catch(error => {
         console.error('Auto detect error:', error);
-        showNotification('{{ __("core/messages.language.auto_detect_failed") }}', 'error');
+        showNotification('{{ t_common("language.auto_detect_failed") }}', 'error');
     });
 }
 

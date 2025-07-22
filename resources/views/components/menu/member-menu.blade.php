@@ -7,7 +7,7 @@
 @php
     $user = auth()->user();
     $currentRoute = request()->route()->getName();
-    
+
     // Main navigation items cho members
     $mainMenuItems = [
         'home' => [
@@ -36,7 +36,7 @@
             'icon' => 'fas fa-book'
         ]
     ];
-    
+
     // User profile dropdown items
     $profileDropdownItems = [
         'profile' => [
@@ -74,7 +74,7 @@
             'icon' => 'fas fa-cog'
         ]
     ];
-    
+
     // Conditional items based on role
     if ($user->role !== 'guest') {
         $profileDropdownItems['ratings'] = [
@@ -83,7 +83,7 @@
             'icon' => 'fas fa-star-half-alt'
         ];
     }
-    
+
     // Check if user can create content
     $canCreateContent = $user->role !== 'guest';
 @endphp
@@ -98,7 +98,7 @@
         </a>
 
         <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#memberNavbar" 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#memberNavbar"
                 aria-controls="memberNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -110,7 +110,7 @@
                 @foreach($mainMenuItems as $key => $item)
                     @if(Route::has($item['route']))
                         <li class="nav-item">
-                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}" 
+                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}"
                                href="{{ route($item['route']) }}">
                                 <i class="{{ $item['icon'] }} me-1"></i>
                                 {{ $item['title'] }}
@@ -125,7 +125,7 @@
                 <!-- Quick Create Dropdown (if can create content) -->
                 @if($canCreateContent)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle create-dropdown" href="#" id="createDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle create-dropdown" href="#" id="createDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-plus-circle me-1"></i>
                         <span class="create-text">Tạo mới</span>
@@ -160,7 +160,7 @@
 
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" 
+                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-bell"></i>
                         @if($user->unread_notifications_count > 0)
@@ -190,9 +190,9 @@
 
                 <!-- User Profile Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}" 
+                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}"
                              alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24">
                         <span class="user-name">{{ $user->name }}</span>
                         <span class="badge bg-{{ $user->role_color ?? 'primary' }} ms-1">{{ $user->role_display_name }}</span>
@@ -217,7 +217,7 @@
                                 @csrf
                                 <button type="submit" class="dropdown-item text-danger">
                                     <i class="fas fa-sign-out-alt me-2"></i>
-                                    {{ __('auth.logout') }}
+                                    {{ t_auth('logout.title') }}
                                 </button>
                             </form>
                         </li>
@@ -236,7 +236,7 @@
             <div class="col-md-8">
                 <small>
                     <i class="fas fa-info-circle me-1"></i>
-                    <strong>Tài khoản Guest:</strong> Một số tính năng bị hạn chế. 
+                    <strong>Tài khoản Guest:</strong> Một số tính năng bị hạn chế.
                     <a href="{{ route('register.upgrade') }}" class="text-white text-decoration-underline">
                         Nâng cấp tài khoản
                     </a>
@@ -290,15 +290,15 @@
         text-align: center !important;
         margin-top: 5px;
     }
-    
+
     .user-dropdown .user-name {
         display: none;
     }
-    
+
     .create-dropdown .create-text {
         display: none;
     }
-    
+
     .navbar-nav .nav-item {
         text-align: center;
     }

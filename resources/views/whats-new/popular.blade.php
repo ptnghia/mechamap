@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('ui.common.popular') . ' - MechaMap')
+@section('title', __('common.buttons.popular') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
@@ -25,7 +25,7 @@
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular')
+                        <a class="nav-link active" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular')
                             }}</a>
                     </li>
                     <li class="nav-item">
@@ -64,15 +64,15 @@
             <div class="timeframe-filter mb-4">
                 <div class="btn-group" role="group">
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'day']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'day' ? 'active' : '' }}">{{ __('ui.common.today') }}</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'day' ? 'active' : '' }}">{{ __('common.time.today') }}</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'week']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'week' ? 'active' : '' }}">{{ __('ui.common.this_week') }}</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'week' ? 'active' : '' }}">{{ __('common.time.this_week') }}</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'month']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'month' ? 'active' : '' }}">{{ __('ui.common.this_month') }}</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'month' ? 'active' : '' }}">{{ __('common.time.this_month') }}</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'year']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'year' ? 'active' : '' }}">{{ __('ui.common.this_year') }}</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'year' ? 'active' : '' }}">{{ __('common.time.this_year') }}</a>
                     <a href="{{ route('whats-new.popular', ['timeframe' => 'all']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'all' ? 'active' : '' }}">{{ __('ui.common.all_time') }}</a>
+                        class="btn btn-outline-secondary {{ $timeframe == 'all' ? 'active' : '' }}">{{ __('common.time.all_time') }}</a>
                 </div>
             </div>
 

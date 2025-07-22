@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Forums')
+@section('title', __('forums.title'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/forums/index.css') }}">
@@ -11,22 +11,22 @@
     {{-- Breadcrumb --}}
     <!--nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('nav.home') }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ __('nav.forums') }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('navigation.main.home') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ __('navigation.main.forums') }}</li>
         </ol>
     </nav-->
 
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h2 mb-1 title_page">{{ __('nav.forums') }}</h1>
+            <h1 class="h2 mb-1 title_page">{{ __('forums.title') }}</h1>
             <p class="text-muted mb-0">{{ __('forums.description') }}</p>
         </div>
         @auth
         <div>
             <a href="{{ route('threads.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus-circle me-1"></i>
-                {{ __('forums.actions.create_thread') }}
+                {{ __('forums.threads.actions.create') }}
             </a>
         </div>
         @endauth

@@ -10,9 +10,9 @@
                 <div class="col-md-12">
                     <div class="card shadow-sm rounded-3">
                         <div class="card-body">
-                            <h3 class="text-center mb-4">{{ __('Choose Your Plan') }}</h3>
-                            <p class="text-center mb-5">{{ __('Upgrade your account to unlock premium features and enhance your experience.') }}</p>
-                            
+                            <h3 class="text-center mb-4">{{ __('subscription.Choose Your Plan') }}</h3>
+                            <p class="text-center mb-5">{{ __('subscription.Upgrade your account to unlock premium features and enhance your experience.') }}</p>
+
                             <div class="row">
                                 @foreach($plans as $plan)
                                     <div class="col-md-4 mb-4">
@@ -20,7 +20,7 @@
                                             <div class="card-header {{ $currentSubscription && $currentSubscription->plan_id === $plan['id'] ? 'bg-primary text-white' : 'bg-light' }} text-center py-3">
                                                 <h5 class="mb-0">{{ $plan['name'] }}</h5>
                                                 @if($currentSubscription && $currentSubscription->plan_id === $plan['id'])
-                                                    <span class="badge bg-light text-primary mt-2">{{ __('Current Plan') }}</span>
+                                                    <span class="badge bg-light text-primary mt-2">{{ __('subscription.Current Plan') }}</span>
                                                 @endif
                                             </div>
                                             <div class="card-body d-flex flex-column">
@@ -35,11 +35,11 @@
                                                         </li>
                                                     @endforeach
                                                 </ul>
-                                                
+
                                                 @if($currentSubscription && $currentSubscription->plan_id === $plan['id'])
                                                     <div class="text-center mt-auto">
-                                                        <p class="text-muted mb-2">{{ __('Expires') }}: {{ $currentSubscription->expires_at->format('M d, Y') }}</p>
-                                                        <a href="{{ route('subscription.cancel') }}" class="btn btn-outline-danger">{{ __('Cancel Subscription') }}</a>
+                                                        <p class="text-muted mb-2">{{ __('subscription.Expires') }}: {{ $currentSubscription->expires_at->format('M d, Y') }}</p>
+                                                        <a href="{{ route('subscription.cancel') }}" class="btn btn-outline-danger">{{ __('subscription.Cancel Subscription') }}</a>
                                                     </div>
                                                 @else
                                                     <form action="{{ route('subscription.store') }}" method="POST" class="mt-auto">
@@ -47,9 +47,9 @@
                                                         <input type="hidden" name="plan_id" value="{{ $plan['id'] }}">
                                                         <button type="submit" class="btn btn-primary w-100">
                                                             @if($currentSubscription)
-                                                                {{ __('Switch Plan') }}
+                                                                {{ __('subscription.Switch Plan') }}
                                                             @else
-                                                                {{ __('Subscribe Now') }}
+                                                                {{ __('subscription.Subscribe Now') }}
                                                             @endif
                                                         </button>
                                                     </form>
@@ -63,12 +63,12 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card shadow-sm rounded-3">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">{{ __('Subscription Benefits') }}</h5>
+                            <h5 class="card-title mb-0">{{ __('subscription.Subscription Benefits') }}</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -78,8 +78,8 @@
                                             <i class="fas fa-shield-alt-check fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('Ad-Free Experience') }}</h5>
-                                            <p>{{ __('Enjoy browsing without any advertisements or distractions.') }}</p>
+                                            <h5>{{ __('subscription.Ad-Free Experience') }}</h5>
+                                            <p>{{ __('subscription.Enjoy browsing without any advertisements or distractions.') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -89,8 +89,8 @@
                                             <i class="fas fa-comment-square-dots fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('Unlimited Messages') }}</h5>
-                                            <p>{{ __('Send unlimited private messages to other users.') }}</p>
+                                            <h5>{{ __('subscription.Unlimited Messages') }}</h5>
+                                            <p>{{ __('subscription.Send unlimited private messages to other users.') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -100,8 +100,8 @@
                                             <i class="person-badge fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('Premium Badge') }}</h5>
-                                            <p>{{ __('Get a special badge that shows your premium status.') }}</p>
+                                            <h5>{{ __('subscription.Premium Badge') }}</h5>
+                                            <p>{{ __('subscription.Get a special badge that shows your premium status.') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -111,8 +111,8 @@
                                             <i class="headset fs-1 text-primary"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5>{{ __('Priority Support') }}</h5>
-                                            <p>{{ __('Get faster responses from our support team.') }}</p>
+                                            <h5>{{ __('subscription.Priority Support') }}</h5>
+                                            <p>{{ __('subscription.Get faster responses from our support team.') }}</p>
                                         </div>
                                     </div>
                                 </div>

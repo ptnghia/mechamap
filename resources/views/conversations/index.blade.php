@@ -66,7 +66,7 @@
 
                                         <span
                                             class="{{ $conversation->hasUnreadMessages(Auth::id()) ? 'fw-bold' : '' }}">{{
-                                            $otherParticipant->name ?? $conversation->title ?? __('Conversation')
+                                            $otherParticipant->name ?? $conversation->title ?? __('conversations.Conversation')
                                             }}</span>
                                     </h6>
                                     <p class="mb-1 text-truncate" style="max-width: 500px;">
@@ -76,7 +76,7 @@
                                         @elseif($conversation->lastMessage && $otherParticipant)
                                         <span class="text-muted">{{ $otherParticipant->name }}:</span>
                                         @endif
-                                        {{ $conversation->lastMessage->content ?? __('No messages yet') }}
+                                        {{ $conversation->lastMessage->content ?? __('conversations.No messages yet') }}
                                     </p>
                                     <small class="text-muted">
                                         {{ $conversation->lastMessage ?
@@ -96,11 +96,11 @@
                 @else
                 <div class="text-center py-5">
                     <i class="fas fa-comment-dots fs-1 text-muted mb-3"></i>
-                    <p class="mb-0">{{ __('There are no conversations to display.') }}</p>
-                    <p class="text-muted">{{ __('Start a new conversation to connect with other users.') }}</p>
+                    <p class="mb-0">{{ __('conversations.There are no conversations to display.') }}</p>
+                    <p class="text-muted">{{ __('conversations.Start a new conversation to connect with other users.') }}</p>
                     <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
                         data-bs-target="#newConversationModal">
-                        <i class="fas fa-edit-square me-1"></i> {{ __('Start conversation') }}
+                        <i class="fas fa-edit-square me-1"></i> {{ __('conversations.Start conversation') }}
                     </button>
                 </div>
                 @endif
@@ -117,36 +117,36 @@
             <form action="{{ route('conversations.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="newConversationModalLabel">{{ __('Start conversation') }}</h5>
+                    <h5 class="modal-title" id="newConversationModalLabel">{{ __('conversations.Start conversation') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-4">
-                        <label for="recipient_id" class="form-label fw-medium">{{ __('Recipients') }}</label>
-                        <p class="text-muted small mb-2">{{ __('You may enter multiple names here.') }}</p>
+                        <label for="recipient_id" class="form-label fw-medium">{{ __('conversations.Recipients') }}</label>
+                        <p class="text-muted small mb-2">{{ __('conversations.You may enter multiple names here.') }}</p>
                         <select name="recipient_id" id="recipient_id" class="form-select" required>
-                            <option value="">{{ __('Select a user') }}</option>
+                            <option value="">{{ __('conversations.Select a user') }}</option>
                             @foreach(App\Models\User::where('id', '!=', Auth::id())->orderBy('name')->get() as $user)
                             <option value="{{ $user->id }}">{{ $user->name }} (@{{ $user->username }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label for="title" class="form-label fw-medium">{{ __('Title') }}</label>
+                        <label for="title" class="form-label fw-medium">{{ __('conversations.Title') }}</label>
                         <input type="text" name="title" id="title" class="form-control"
-                            placeholder="{{ __('Conversation title...') }}">
+                            placeholder="{{ __('conversations.Conversation title...') }}">
                     </div>
                     <div class="mb-3">
-                        <label for="message" class="form-label fw-medium">{{ __('Message') }}</label>
+                        <label for="message" class="form-label fw-medium">{{ __('conversations.Message') }}</label>
                         <textarea name="message" id="message" class="form-control" rows="8"
-                            placeholder="{{ __('Your message...') }}" required></textarea>
+                            placeholder="{{ __('conversations.Your message...') }}" required></textarea>
                     </div>
                     <div class="mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="allow_invite" id="allow_invite"
                                 value="1">
                             <label class="form-check-label" for="allow_invite">
-                                {{ __('Allow anyone in the conversation to invite others') }}
+                                {{ __('conversations.Allow anyone in the conversation to invite others') }}
                             </label>
                         </div>
                     </div>
@@ -155,15 +155,15 @@
                             <input class="form-check-input" type="checkbox" name="lock_conversation"
                                 id="lock_conversation" value="1">
                             <label class="form-check-label" for="lock_conversation">
-                                {{ __('Lock conversation (no responses will be allowed)') }}
+                                {{ __('conversations.Lock conversation (no responses will be allowed)') }}
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('conversations.Cancel') }}</button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane me-1"></i> {{ __('Start conversation') }}
+                        <i class="fas fa-paper-plane me-1"></i> {{ __('conversations.Start conversation') }}
                     </button>
                 </div>
             </form>

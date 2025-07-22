@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('nav.main.home'))
+@section('title', t_navigation('main.home'))
 
 @push('styles')
 <!-- Swiper CSS -->
@@ -18,11 +18,11 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h2 class="section-title mb-1">{{ __('home.featured_showcases') }}</h2>
-                        <p class="text-muted mb-0">{{ __('home.featured_showcases_desc') }}</p>
+                        <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
+                        <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
                     </div>
                     <a href="{{ route('showcase.index') }}" class="btn btn-outline-primary">
-                        {{ __('buttons.view_all') }}
+                        {{ t_ui('buttons.view_all') }}
                     </a>
                 </div>
             </div>
@@ -52,7 +52,7 @@
         @endforeach
     </div>
     <div class="text-center">
-        <button id="load-more-threads" class="btn btn-outline-primary">{{ __('ui.pagination.load_more') }}</button>
+        <button id="load-more-threads" class="btn btn-outline-primary">{{ t_ui('pagination.load_more') }}</button>
     </div>
 </div>
 @endsection
@@ -61,12 +61,12 @@
 <script>
     // Biến dịch cho JavaScript
     const translations = {
-        sticky: '{{ __("ui/status.sticky") }}',
-        locked: '{{ __("ui/status.locked") }}',
-        loading: '{{ __("core/messages.common.loading") }}',
-        loadMore: '{{ __("core/messages.common.load_more") }}',
-        noMorePosts: '{{ __("core/messages.common.no_more_posts") }}',
-        errorOccurred: '{{ __("core/messages.common.error_occurred") }}'
+        sticky: '{{ t_ui("status.sticky") }}',
+        locked: '{{ t_ui("status.locked") }}',
+        loading: '{{ t_ui("common.loading") }}',
+        loadMore: '{{ t_ui("pagination.load_more") }}',
+        noMorePosts: '{{ t_ui("pagination.no_more_posts") }}',
+        errorOccurred: '{{ t_ui("common.error_occurred") }}'
     };
 
     // Load more threads functionality
@@ -129,8 +129,6 @@
 
 </script>
 @endpush
-
-
 
 @push('scripts')
 <!-- Swiper JS -->

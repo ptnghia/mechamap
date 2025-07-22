@@ -117,7 +117,7 @@
                                         @if($thread->is_featured)
                                             <span class="badge bg-warning me-1">{{ __('Nổi bật') }}</span>
                                         @endif
-                                        {{ __(__('ui.common.views')) }}: {{ $thread->view_count }}
+                                        {{ __(__("common.views")) }}: {{ $thread->view_count }}
                                     </div>
                                 </td>
                                 <td>

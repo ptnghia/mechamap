@@ -6,7 +6,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="lightbulb-fill me-2 text-warning"></i>
-                {{ __('sidebar.writing_tips') }}
+                {{ t_sidebar('thread_creation.writing_tips') }}
             </h5>
         </div>
         <div class="card-body">
@@ -15,8 +15,8 @@
                     <div class="d-flex align-items-start">
                         <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>{{ __('sidebar.clear_title') }}</strong>
-                            <p class="text-muted small mb-0">{{ __('sidebar.clear_title_desc') }}</p>
+                            <strong>{{ t_sidebar('thread_creation.clear_title') }}</strong>
+                            <p class="text-muted small mb-0">{{ t_sidebar('thread_creation.clear_title_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -25,8 +25,8 @@
                     <div class="d-flex align-items-start">
                         <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>{{ __('sidebar.detailed_content') }}</strong>
-                            <p class="text-muted small mb-0">{{ __('sidebar.detailed_content_desc') }}</p>
+                            <strong>{{ t_sidebar('thread_creation.detailed_content') }}</strong>
+                            <p class="text-muted small mb-0">{{ t_sidebar('thread_creation.detailed_content_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
                     <div class="d-flex align-items-start">
                         <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>{{ __('sidebar.use_images') }}</strong>
-                            <p class="text-muted small mb-0">{{ __('sidebar.use_images_desc') }}</p>
+                            <strong>{{ t_sidebar('thread_creation.use_images') }}</strong>
+                            <p class="text-muted small mb-0">{{ t_sidebar('thread_creation.use_images_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,8 @@
                     <div class="d-flex align-items-start">
                         <i class="fas fa-check-circle-fill text-success me-2 mt-1"></i>
                         <div>
-                            <strong>{{ __('sidebar.choose_right_category') }}</strong>
-                            <p class="text-muted small mb-0">{{ __('sidebar.choose_right_category_desc') }}</p>
+                            <strong>{{ t_sidebar('thread_creation.choose_right_category') }}</strong>
+                            <p class="text-muted small mb-0">{{ t_sidebar('thread_creation.choose_right_category_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -59,36 +59,36 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="fas fa-shield-alt-check-fill me-2 text-primary"></i>
-                {{ __('sidebar.community_rules') }}
+                {{ t_sidebar('thread_creation.community_rules') }}
             </h5>
         </div>
         <div class="card-body">
             <div class="rules-list">
                 <div class="rule-item mb-2">
                     <i class="dot text-primary"></i>
-                    <span class="small">{{ __('sidebar.respect_opinions') }}</span>
+                    <span class="small">{{ t_sidebar('thread_creation.respect_opinions') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="dot text-primary"></i>
-                    <span class="small">{{ __('sidebar.no_spam') }}</span>
+                    <span class="small">{{ t_sidebar('thread_creation.no_spam') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="dot text-primary"></i>
-                    <span class="small">{{ __('sidebar.appropriate_language') }}</span>
+                    <span class="small">{{ t_sidebar('thread_creation.appropriate_language') }}</span>
                 </div>
                 <div class="rule-item mb-2">
                     <i class="dot text-primary"></i>
-                    <span class="small">{{ __('sidebar.no_personal_info') }}</span>
+                    <span class="small">{{ t_sidebar('thread_creation.no_personal_info') }}</span>
                 </div>
                 <div class="rule-item">
                     <i class="dot text-primary"></i>
-                    <span class="small">{{ __('sidebar.verify_info') }}</span>
+                    <span class="small">{{ t_sidebar('thread_creation.verify_info') }}</span>
                 </div>
             </div>
             <div class="mt-3">
                 <a href="{{ route('rules') ?? '/rules' }}" class="btn btn-sm btn-outline-primary">
                     <i class="book me-1"></i>
-                    {{ __('sidebar.read_full_rules') }}
+                    {{ t_sidebar('thread_creation.read_full_rules') }}
                 </a>
             </div>
         </div>
@@ -99,7 +99,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="fas fa-folder me-2 text-info"></i>
-                {{ __('sidebar.popular_categories') }}
+                {{ t_sidebar('thread_creation.popular_categories') }}
             </h5>
         </div>
         <div class="card-body p-0">
@@ -125,7 +125,7 @@
                             @endif
                             <div>
                                 <span class="fw-medium">{{ $forum->name }}</span>
-                                <div class="text-muted small">{{ number_format($forum->threads_count) }} {{ __('sidebar.posts') }}</div>
+                                <div class="text-muted small">{{ number_format($forum->threads_count) }} {{ t_sidebar('thread_creation.posts') }}</div>
                             </div>
                         </div>
                         <small class="text-muted">
@@ -135,7 +135,7 @@
                 </div>
                 @empty
                 <div class="list-group-item py-2 border-0">
-                    <p class="text-muted mb-0 small">{{ __('sidebar.no_categories') }}</p>
+                    <p class="text-muted mb-0 small">{{ t_sidebar('thread_creation.no_categories') }}</p>
                 </div>
                 @endforelse
             </div>
@@ -147,21 +147,21 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="question-circle-fill me-2 text-secondary"></i>
-                {{ __('sidebar.need_support') }}
+                {{ t_sidebar('thread_creation.need_support') }}
             </h5>
         </div>
         <div class="card-body">
             <p class="text-muted small mb-3">
-                {{ __('sidebar.support_description') }}
+                {{ t_sidebar('thread_creation.support_description') }}
             </p>
             <div class="d-grid gap-2">
                 <a href="{{ route('help.writing-guide') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-comment-dots me-1"></i>
-                    {{ __('sidebar.detailed_guide') }}
+                    {{ t_sidebar('thread_creation.detailed_guide') }}
                 </a>
                 <a href="{{ route('contact') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-envelope me-1"></i>
-                    {{ __('sidebar.contact_support') }}
+                    {{ t_sidebar('thread_creation.contact_support') }}
                 </a>
             </div>
         </div>
@@ -173,7 +173,7 @@
         <div class="card-header">
             <h5 class="card-title mb-0">
                 <i class="person-circle me-2 text-success"></i>
-                {{ __('sidebar.your_activity') }}
+                {{ t_sidebar('thread_creation.your_activity') }}
             </h5>
         </div>
         <div class="card-body"> @php
@@ -190,17 +190,17 @@
 
             <div class="user-stats">
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted small">{{ __('sidebar.posts_count') }}</span>
+                    <span class="text-muted small">{{ t_sidebar('thread_creation.posts_count') }}</span>
                     <strong>{{ $userThreadsCount }}</strong>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <span class="text-muted small">{{ __('sidebar.comments_count') }}</span>
+                    <span class="text-muted small">{{ t_sidebar('thread_creation.comments_count') }}</span>
                     <strong>{{ $userCommentsCount }}</strong>
                 </div>
 
                 @if($userLastThread)
                 <div class="last-activity">
-                    <p class="text-muted small mb-1">{{ __('sidebar.recent_post') }}</p>
+                    <p class="text-muted small mb-1">{{ t_sidebar('thread_creation.recent_post') }}</p>
                     <a href="{{ route('threads.show', $userLastThread) }}" class="text-decoration-none small">
                         <i class="fas fa-arrow-right me-1"></i>
                         {{ Str::limit($userLastThread->title, 30) }}

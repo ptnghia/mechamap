@@ -25,7 +25,7 @@
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.trending') }}">

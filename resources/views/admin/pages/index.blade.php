@@ -85,7 +85,7 @@
                             <th scope="col">{{ __('Tiêu đề') }}</th>
                             <th scope="col" width="150">{{ __('Danh mục') }}</th>
                             <th scope="col" width="120">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="120">{{ __(__('ui.common.views')) }}</th>
+                            <th scope="col" width="120">{{ __(__("common.views")) }}</th>
                             <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
                             <th scope="col" width="120">{{ __('Thao tác') }}</th>
                         </tr>

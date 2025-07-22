@@ -18,9 +18,9 @@
 
                 <!-- Product Status Badge -->
                 @if($product->status === 'active')
-                    <span class="badge bg-success position-absolute top-0 start-0 m-2">{{ __('ui.common.marketplace.in_stock') }}</span>
+                    <span class="badge bg-success position-absolute top-0 start-0 m-2">{{ t_common("marketplace.in_stock") }}</span>
                 @elseif($product->status === 'out_of_stock')
-                    <span class="badge bg-warning position-absolute top-0 start-0 m-2">{{ __('ui.common.marketplace.out_of_stock') }}</span>
+                    <span class="badge bg-warning position-absolute top-0 start-0 m-2">{{ t_common("marketplace.out_of_stock") }}</span>
                 @endif
 
                 <!-- Discount Badge -->
@@ -52,7 +52,7 @@
             @if($showSeller && $product->seller)
                 <div class="mb-2">
                     <small class="text-muted">
-                        {{ __('ui.common.marketplace_actions.by') }} <a href="{{ url('/marketplace/sellers/' . $product->seller->store_slug) }}" class="text-decoration-none">
+                        {{ t_common("marketplace_actions.by") }} <a href="{{ url('/marketplace/sellers/' . $product->seller->store_slug) }}" class="text-decoration-none">
                             {{ $product->seller->business_name ?? $product->seller->user->name }}
                         </a>
                     </small>
@@ -93,12 +93,12 @@
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-primary btn-sm"
                                 onclick="addToWishlist({{ $product->id }})"
-                                title="{{ __('ui.common.marketplace_actions.add_to_wishlist') }}">
+                                title="{{ t_common("marketplace_actions.add_to_wishlist") }}">
                             <i class="heart"></i>
                         </button>
                         <button type="button" class="btn btn-primary btn-sm"
                                 onclick="addToCart({{ $product->id }})"
-                                title="{{ __('ui.common.marketplace_actions.add_to_cart') }}">
+                                title="{{ t_common("marketplace_actions.add_to_cart") }}">
                             <i class="fas fa-shopping-cart-plus"></i>
                         </button>
                     </div>
@@ -139,14 +139,14 @@ function addToWishlist(productId) {
     // TODO: Implement wishlist functionality
     console.log('Add to wishlist:', productId);
     // Show toast notification
-    showToast('{{ __('ui.common.marketplace_actions.added_to_wishlist') }}', 'success');
+    showToast('{{ t_common("marketplace_actions.added_to_wishlist") }}', 'success');
 }
 
 function addToCart(productId) {
     // TODO: Implement cart functionality
     console.log('Add to cart:', productId);
     // Show toast notification
-    showToast('{{ __('ui.common.marketplace_actions.added_to_cart') }}', 'success');
+    showToast('{{ t_common("marketplace_actions.added_to_cart") }}', 'success');
 }
 
 function showToast(message, type = 'info') {

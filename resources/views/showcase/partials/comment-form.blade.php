@@ -53,7 +53,7 @@
                         @endif
                         <button type="submit" class="btn btn-primary btn-sm">
                             <i class="fas fa-paper-plane"></i>
-                            {{ isset($parentId) ? __('ui.common.replies') : 'Gửi bình luận' }}
+                            {{ isset($parentId) ? __('common.labels.replies') : 'Gửi bình luận' }}
                         </button>
                     </div>
                 </div>

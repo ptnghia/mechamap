@@ -30,8 +30,8 @@
         </h6></li>
         @foreach($availableLocales as $locale => $data)
             <li>
-                <a class="dropdown-item {{ $locale === $currentLocale ? 'active' : '' }}" 
-                   href="#" 
+                <a class="dropdown-item {{ $locale === $currentLocale ? 'active' : '' }}"
+                   href="#"
                    onclick="switchLanguage('{{ $locale }}')">
                     <span class="me-2">{{ $data['flag'] }}</span>
                     {{ $data['name'] }}
@@ -55,8 +55,8 @@
 <div class="language-switcher-inline d-flex align-items-center">
     <span class="me-2 text-muted small">{{ __('language.select_language') }}:</span>
     @foreach($availableLocales as $locale => $data)
-        <button type="button" 
-                class="btn btn-sm {{ $locale === $currentLocale ? 'btn-primary' : 'btn-outline-secondary' }} me-1" 
+        <button type="button"
+                class="btn btn-sm {{ $locale === $currentLocale ? 'btn-primary' : 'btn-outline-secondary' }} me-1"
                 onclick="switchLanguage('{{ $locale }}')"
                 title="{{ $data['name'] }}">
             <span class="me-1">{{ $data['flag'] }}</span>
@@ -74,12 +74,12 @@
                 <h5 class="modal-title" id="languageModalLabel">
                     <i class="fa-solid fa-language me-2"></i>{{ __('language.select_language') }}
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('ui.common.close') }}"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ t_common("close") }}"></button>
             </div>
             <div class="modal-body">
                 <div class="list-group list-group-flush">
                     @foreach($availableLocales as $locale => $data)
-                        <a href="#" 
+                        <a href="#"
                            class="list-group-item list-group-item-action {{ $locale === $currentLocale ? 'active' : '' }}"
                            onclick="switchLanguage('{{ $locale }}'); bootstrap.Modal.getInstance(document.getElementById('languageModal')).hide();">
                             <div class="d-flex align-items-center">
@@ -95,7 +95,7 @@
                         </a>
                     @endforeach
                 </div>
-                
+
                 <div class="mt-3 pt-3 border-top">
                     <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="autoDetectLanguage()">
                         <i class="fa-solid fa-magic me-2"></i>{{ __('language.auto_detect') }}
@@ -114,8 +114,8 @@
  */
 function switchLanguage(locale) {
     // Show loading state
-    const loadingToast = showToast('{{ __("ui/common.loading") }}...', 'info');
-    
+    const loadingToast = showToast('{{ t_common("loading") }}...', 'info');
+
     // Make AJAX request to switch language
     fetch('/language/switch', {
         method: 'POST',
@@ -132,10 +132,10 @@ function switchLanguage(locale) {
         if (data.success) {
             // Hide loading toast
             if (loadingToast) loadingToast.hide();
-            
+
             // Show success message
             showToast('{{ __('ui/language/switched_successfully') }}', 'success');
-            
+
             // Reload page to apply new language
             setTimeout(() => {
                 window.location.reload();
@@ -146,10 +146,10 @@ function switchLanguage(locale) {
     })
     .catch(error => {
         console.error('Language switch error:', error);
-        
+
         // Hide loading toast
         if (loadingToast) loadingToast.hide();
-        
+
         // Show error message
         showToast('{{ __('ui/language/switch_failed') }}', 'error');
     });
@@ -161,7 +161,7 @@ function switchLanguage(locale) {
 function autoDetectLanguage() {
     const browserLang = navigator.language || navigator.userLanguage;
     const detectedLocale = browserLang.startsWith('vi') ? 'vi' : 'en';
-    
+
     if (detectedLocale !== '{{ $currentLocale }}') {
         switchLanguage(detectedLocale);
     } else {
@@ -175,7 +175,7 @@ function autoDetectLanguage() {
 function showToast(message, type = 'info') {
     // This is a placeholder - implement based on your toast system
     console.log(`Toast [${type}]: ${message}`);
-    
+
     // Example with Bootstrap Toast (if available)
     if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
         const toastHtml = `
@@ -186,7 +186,7 @@ function showToast(message, type = 'info') {
                 </div>
             </div>
         `;
-        
+
         // Add to toast container (create if doesn't exist)
         let toastContainer = document.getElementById('toast-container');
         if (!toastContainer) {
@@ -196,17 +196,17 @@ function showToast(message, type = 'info') {
             toastContainer.style.zIndex = '9999';
             document.body.appendChild(toastContainer);
         }
-        
+
         const toastElement = document.createElement('div');
         toastElement.innerHTML = toastHtml;
         toastContainer.appendChild(toastElement.firstElementChild);
-        
+
         const toast = new bootstrap.Toast(toastElement.firstElementChild);
         toast.show();
-        
+
         return toast;
     }
-    
+
     return null;
 }
 </script>

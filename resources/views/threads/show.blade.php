@@ -488,7 +488,7 @@
                     max-size="5MB"
                     :multiple="true"
                     :max-files="10"
-                    :label="'<i class=\"fas fa-image me-2\"></i>' . __('forms.upload.attach_images_optional')"
+                    :label="'<i class=\"fas fa-image me-2\"></i>' . __('thread.attach_images_optional')"
                     id="thread-reply-images"
                 />
 
@@ -523,7 +523,7 @@
     <!-- Related Threads -->
     @if(count($relatedThreads) > 0)
     <div class="related-threads mt-4">
-        <h3>{{ __('forms.related.related_topics') }}</h3>
+        <h3>{{ __('thread.related_topics') }}</h3>
         <div class="list-group">
             @foreach($relatedThreads as $relatedThread)
             <a href="{{ route('threads.show', $relatedThread) }}" class="list-group-item list-group-item-action">

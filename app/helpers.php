@@ -54,14 +54,14 @@ if (!function_exists('formatNumber')) {
 
 if (!function_exists('timeAgo')) {
     /**
-     * Get time ago format
+     * Get time ago string
      *
-     * @param \Carbon\Carbon $date
+     * @param mixed $time
      * @return string
      */
-    function timeAgo($date)
+    function timeAgo($time)
     {
-        return $date->diffForHumans();
+        return \Carbon\Carbon::parse($time)->diffForHumans();
     }
 }
 
@@ -259,6 +259,42 @@ if (!function_exists('get_banner_url')) {
     }
 }
 
+if (!function_exists('get_copyright_info')) {
+    /**
+     * Get copyright information
+     *
+     * @return array
+     */
+    function get_copyright_info()
+    {
+        return [
+            'text' => t_footer('copyright.all_rights_reserved'),
+            'year' => date('Y'),
+            'company' => get_site_name(),
+        ];
+    }
+}
+
+if (!function_exists('get_social_links')) {
+    /**
+     * Get social media links
+     *
+     * @return array
+     */
+    function get_social_links()
+    {
+        return [
+            'facebook' => get_setting('social.facebook', ''),
+            'twitter' => get_setting('social.twitter', ''),
+            'instagram' => get_setting('social.instagram', ''),
+            'linkedin' => get_setting('social.linkedin', ''),
+            'youtube' => get_setting('social.youtube', ''),
+            'github' => get_setting('social.github', ''),
+            'discord' => get_setting('social.discord', ''),
+        ];
+    }
+}
+
 if (!function_exists('asset_versioned')) {
     /**
      * Generate versioned asset URL for cache busting
@@ -337,77 +373,349 @@ if (!function_exists('js_versioned')) {
 // LOCALIZATION HELPER FUNCTIONS
 // ============================================================================
 
-if (!function_exists('t_core')) {
+// ===================================================================
+// NEW TRANSLATION HELPER FUNCTIONS - 2-LEVEL STRUCTURE
+// Format: {file}.{section}.{key}
+// Created: 2025-07-21
+// ===================================================================
+
+if (!function_exists('t_auth')) {
     /**
-     * Get core translation
-     *
-     * @param string $key
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
+     * Get authentication translation
+     * @param string $key Format: section.key (e.g., 'login.title')
      */
-    function t_core($key, $replace = [], $locale = null)
+    function t_auth($key, $replace = [], $locale = null)
     {
-        return __("core/$key", $replace, $locale);
+        return __("auth.$key", $replace, $locale);
     }
 }
 
-if (!function_exists('t_ui')) {
+if (!function_exists('t_common')) {
     /**
-     * Get UI translation
-     *
-     * @param string $key
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
+     * Get common UI translation
+     * @param string $key Format: section.key (e.g., 'buttons.save')
      */
-    function t_ui($key, $replace = [], $locale = null)
+    function t_common($key, $replace = [], $locale = null)
     {
-        return __("ui/$key", $replace, $locale);
+        return __("common.$key", $replace, $locale);
     }
 }
 
-if (!function_exists('t_content')) {
+if (!function_exists('t_navigation')) {
     /**
-     * Get content translation
-     *
-     * @param string $key
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
+     * Get navigation translation
+     * @param string $key Format: section.key (e.g., 'menu.home')
      */
-    function t_content($key, $replace = [], $locale = null)
+    function t_navigation($key, $replace = [], $locale = null)
     {
-        return __("content/$key", $replace, $locale);
+        return __("navigation.$key", $replace, $locale);
     }
 }
 
-if (!function_exists('t_feature')) {
+if (!function_exists('t_validation')) {
     /**
-     * Get feature translation
-     *
-     * @param string $key
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
+     * Get validation translation
+     * @param string $key Format: section.key (e.g., 'rules.required')
      */
-    function t_feature($key, $replace = [], $locale = null)
+    function t_validation($key, $replace = [], $locale = null)
     {
-        return __("features/$key", $replace, $locale);
+        return __("validation.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_forums')) {
+    /**
+     * Get forums translation
+     * @param string $key Format: section.key (e.g., 'threads.create')
+     */
+    function t_forums($key, $replace = [], $locale = null)
+    {
+        return __("forums.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_showcase')) {
+    /**
+     * Get showcase translation
+     * @param string $key Format: section.key (e.g., 'projects.title')
+     */
+    function t_showcase($key, $replace = [], $locale = null)
+    {
+        return __("showcase.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_marketplace')) {
+    /**
+     * Get marketplace translation
+     * @param string $key Format: section.key (e.g., 'products.add_to_cart')
+     */
+    function t_marketplace($key, $replace = [], $locale = null)
+    {
+        return __("marketplace.$key", $replace, $locale);
     }
 }
 
 if (!function_exists('t_user')) {
     /**
      * Get user translation
-     *
-     * @param string $key
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
+     * @param string $key Format: section.key (e.g., 'profile.edit')
      */
     function t_user($key, $replace = [], $locale = null)
     {
-        return __("user/$key", $replace, $locale);
+        return __("user.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_homepage')) {
+    /**
+     * Get homepage translation
+     * @param string $key Format: section.key (e.g., 'hero.title')
+     */
+    function t_homepage($key, $replace = [], $locale = null)
+    {
+        return __("homepage.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_pages')) {
+    /**
+     * Get pages translation
+     * @param string $key Format: section.key (e.g., 'about.title')
+     */
+    function t_pages($key, $replace = [], $locale = null)
+    {
+        return __("pages.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_search')) {
+    /**
+     * Get search translation
+     * @param string $key Format: section.key (e.g., 'filters.category')
+     */
+    function t_search($key, $replace = [], $locale = null)
+    {
+        return __("search.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_admin')) {
+    /**
+     * Get admin translation
+     * @param string $key Format: section.key (e.g., 'dashboard.title')
+     */
+    function t_admin($key, $replace = [], $locale = null)
+    {
+        return __("admin.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_moderation')) {
+    /**
+     * Get moderation translation
+     * @param string $key Format: section.key (e.g., 'reports.pending')
+     */
+    function t_moderation($key, $replace = [], $locale = null)
+    {
+        return __("moderation.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_notifications')) {
+    /**
+     * Get notifications translation
+     * @param string $key Format: section.key (e.g., 'types.comment')
+     */
+    function t_notifications($key, $replace = [], $locale = null)
+    {
+        return __("notifications.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_seo')) {
+    /**
+     * Get SEO translation
+     * @param string $key Format: section.key (e.g., 'meta.title')
+     */
+    function t_seo($key, $replace = [], $locale = null)
+    {
+        return __("seo.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_emails')) {
+    /**
+     * Get emails translation
+     * @param string $key Format: section.key (e.g., 'welcome.subject')
+     */
+    function t_emails($key, $replace = [], $locale = null)
+    {
+        return __("emails.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_errors')) {
+    /**
+     * Get errors translation
+     * @param string $key Format: section.key (e.g., 'http.404')
+     */
+    function t_errors($key, $replace = [], $locale = null)
+    {
+        return __("errors.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_ui')) {
+    /**
+     * Get UI translation
+     * @param string $key Format: section.key (e.g., 'buttons.save')
+     */
+    function t_ui($key, $replace = [], $locale = null)
+    {
+        return __("ui.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_core')) {
+    /**
+     * Get core translation
+     * @param string $key Format: section.key (e.g., 'messages.success')
+     */
+    function t_core($key, $replace = [], $locale = null)
+    {
+        return __("core.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_content')) {
+    /**
+     * Get content translation
+     * @param string $key Format: section.key (e.g., 'home.hero_title')
+     */
+    function t_content($key, $replace = [], $locale = null)
+    {
+        return __("content.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_feature')) {
+    /**
+     * Get feature translation
+     * @param string $key Format: section.key (e.g., 'chat.send_message')
+     */
+    function t_feature($key, $replace = [], $locale = null)
+    {
+        return __("features.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_sidebar')) {
+    /**
+     * Get sidebar translation
+     * @param string $key Format: section.key (e.g., 'main.featured_topics')
+     */
+    function t_sidebar($key, $replace = [], $locale = null)
+    {
+        return __("sidebar.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_footer')) {
+    /**
+     * Get footer translation
+     * @param string $key Format: section.key (e.g., 'copyright.all_rights_reserved')
+     */
+    function t_footer($key, $replace = [], $locale = null)
+    {
+        return __("footer.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_nav')) {
+    /**
+     * Get navigation translation
+     * @param string $key Format: section.key (e.g., 'user.profile')
+     */
+    function t_nav($key, $replace = [], $locale = null)
+    {
+        return __("nav.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_setting')) {
+    /**
+     * Get setting translation
+     * @param string $key Format: setting key (e.g., 'show_banner')
+     */
+    function t_setting($key, $replace = [], $locale = null)
+    {
+        return __("setting.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_badges')) {
+    /**
+     * Get badges translation
+     * @param string $key Format: badge key (e.g., 'complete')
+     */
+    function t_badges($key, $replace = [], $locale = null)
+    {
+        return __("badges.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_forms')) {
+    /**
+     * Get forms translation
+     * @param string $key Format: section.key (e.g., 'upload.attach_files')
+     */
+    function t_forms($key, $replace = [], $locale = null)
+    {
+        return __("forms.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_versioned')) {
+    /**
+     * Get versioned assets translation
+     * @param string $key Format: path key (e.g., 'css/frontend/components/file-upload.css')
+     */
+    function t_versioned($key, $replace = [], $locale = null)
+    {
+        return __("versioned.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_language')) {
+    /**
+     * Get language translation
+     * @param string $key Format: language key (e.g., 'vietnamese')
+     */
+    function t_language($key, $replace = [], $locale = null)
+    {
+        return __("language.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_thread')) {
+    /**
+     * Get thread translation
+     * @param string $key Format: thread key (e.g., 'following')
+     */
+    function t_thread($key, $replace = [], $locale = null)
+    {
+        return __("thread.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_forum')) {
+    /**
+     * Get forum translation (singular)
+     * @param string $key Format: forum key (e.g., 'search.advanced_search')
+     */
+    function t_forum($key, $replace = [], $locale = null)
+    {
+        return __("forum.$key", $replace, $locale);
     }
 }

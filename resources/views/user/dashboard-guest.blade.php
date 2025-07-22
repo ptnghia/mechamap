@@ -12,7 +12,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h1 class="h2 mb-1 text-white">
-                                {{ __('messages.welcome_back') }}, {{ $user->name }}!
+                                {{ __('dashboard.welcome_back') }}, {{ $user->name }}!
                                 <span class="wave">👋</span>
                             </h1>
                             <p class="mb-0 opacity-75">
@@ -20,7 +20,7 @@
                             </p>
                             <small class="badge bg-light text-primary mt-2">
                                 <i class="fas fa-user-tag me-1"></i>
-                                {{ __('auth.guest_role') }} ({{ __('messages.level') }} 9)
+                                {{ __('auth.guest_role') }} ({{ __('dashboard.level') }} 9)
                             </small>
                         </div>
                         <div class="col-md-4 text-md-end">
@@ -65,30 +65,30 @@
                 <div class="card-header bg-info text-white">
                     <h6 class="mb-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        {{ __('messages.your_permissions') }}
+                        {{ __('dashboard.your_permissions') }}
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="small">
                         <div class="mb-2">
                             <i class="fas fa-check text-success me-2"></i>
-                            {{ __('messages.view_content') }}
+                            {{ __('dashboard.view_content') }}
                         </div>
                         <div class="mb-2">
                             <i class="fas fa-check text-success me-2"></i>
-                            {{ __('messages.follow_users') }}
+                            {{ __('dashboard.follow_users') }}
                         </div>
                         <div class="mb-2">
                             <i class="fas fa-check text-success me-2"></i>
-                            {{ __('messages.marketplace_digital') }}
+                            {{ __('dashboard.marketplace_digital') }}
                         </div>
                         <div class="mb-2">
                             <i class="fas fa-times text-muted me-2"></i>
-                            {{ __('messages.create_threads') }}
+                            {{ __('dashboard.create_threads') }}
                         </div>
                         <div class="mb-0">
                             <i class="fas fa-times text-muted me-2"></i>
-                            {{ __('messages.post_comments') }}
+                            {{ __('dashboard.post_comments') }}
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         <div class="card-body">
                             <i class="fas fa-heart text-primary fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['following_count'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.following') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.following') }}</p>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         <div class="card-body">
                             <i class="fas fa-users text-success fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['followers_count'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.followers') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.followers') }}</p>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                         <div class="card-body">
                             <i class="fas fa-bookmark text-info fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['threads_bookmarked'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.bookmarks') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.bookmarks') }}</p>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                         <div class="card-body">
                             <i class="fas fa-store text-warning fa-2x mb-3"></i>
                             <h4 class="mb-1">{{ $stats['marketplace_views'] ?? 0 }}</h4>
-                            <p class="text-muted mb-0">{{ __('messages.marketplace_views') }}</p>
+                            <p class="text-muted mb-0">{{ __('dashboard.marketplace_views') }}</p>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-primary fw-bold">{{ number_format($product->price) }} VND</span>
                                         <a href="{{ route('marketplace.products.show', $product) }}" class="btn btn-sm btn-outline-primary">
-                                            {{ __('messages.view_details') }}
+                                            {{ __('dashboard.view_details') }}
                                         </a>
                                     </div>
                                 </div>
@@ -167,7 +167,7 @@
                         <div class="col-12">
                             <div class="text-center text-muted py-4">
                                 <i class="fas fa-box-open fa-3x mb-3"></i>
-                                <p>{{ __('messages.no_products_available') }}</p>
+                                <p>{{ __('dashboard.no_products_available') }}</p>
                             </div>
                         </div>
                         @endforelse
@@ -181,13 +181,13 @@
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-comments me-2"></i>
-                        {{ __('messages.community_activity') }}
+                        {{ __('dashboard.community_activity') }}
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>{{ __('messages.latest_threads') }}</h6>
+                            <h6>{{ __('dashboard.latest_threads') }}</h6>
                             <div class="list-group list-group-flush">
                                 @php
                                 $latestThreads = \App\Models\Thread::with(['user', 'forum'])
@@ -202,18 +202,18 @@
                                         <h6 class="mb-1">{{ Str::limit($thread->title, 40) }}</h6>
                                         <small>{{ $thread->created_at->diffForHumans() }}</small>
                                     </div>
-                                    <p class="mb-1 small text-muted">{{ __('messages.by') }} {{ $thread->user->name }}</p>
+                                    <p class="mb-1 small text-muted">{{ __('dashboard.by') }} {{ $thread->user->name }}</p>
                                     <small class="text-muted">{{ $thread->forum->name ?? '' }}</small>
                                 </a>
                                 @empty
                                 <div class="text-center text-muted py-3">
-                                    <p class="mb-0">{{ __('messages.no_threads_available') }}</p>
+                                    <p class="mb-0">{{ __('dashboard.no_threads_available') }}</p>
                                 </div>
                                 @endforelse
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h6>{{ __('messages.trending_topics') }}</h6>
+                            <h6>{{ __('dashboard.trending_topics') }}</h6>
                             <div class="list-group list-group-flush">
                                 @php
                                 $trendingTopics = ['CAD Design', 'Automation', 'IoT', 'Sustainability', 'Manufacturing'];
@@ -222,7 +222,7 @@
                                 <div class="list-group-item border-0">
                                     <div class="d-flex w-100 justify-content-between">
                                         <span class="badge bg-primary">{{ $topic }}</span>
-                                        <small class="text-muted">{{ rand(10, 50) }} {{ __('messages.discussions') }}</small>
+                                        <small class="text-muted">{{ rand(10, 50) }} {{ __('dashboard.discussions') }}</small>
                                     </div>
                                 </div>
                                 @endforeach
@@ -237,25 +237,25 @@
                 <div class="card-header bg-warning text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-arrow-up me-2"></i>
-                        {{ __('messages.upgrade_account') }}
+                        {{ __('dashboard.upgrade_account') }}
                     </h5>
                 </div>
                 <div class="card-body">
-                    <p class="mb-3">{{ __('messages.upgrade_to_member_desc') }}</p>
+                    <p class="mb-3">{{ __('dashboard.upgrade_to_member_desc') }}</p>
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>{{ __('messages.member_benefits') }}:</h6>
+                            <h6>{{ __('dashboard.member_benefits') }}:</h6>
                             <ul class="list-unstyled">
-                                <li><i class="fas fa-check text-success me-2"></i>{{ __('messages.create_threads') }}</li>
-                                <li><i class="fas fa-check text-success me-2"></i>{{ __('messages.post_comments') }}</li>
-                                <li><i class="fas fa-check text-success me-2"></i>{{ __('messages.rate_content') }}</li>
-                                <li><i class="fas fa-check text-success me-2"></i>{{ __('messages.upload_files') }}</li>
+                                <li><i class="fas fa-check text-success me-2"></i>{{ __('dashboard.create_threads') }}</li>
+                                <li><i class="fas fa-check text-success me-2"></i>{{ __('dashboard.post_comments') }}</li>
+                                <li><i class="fas fa-check text-success me-2"></i>{{ __('dashboard.rate_content') }}</li>
+                                <li><i class="fas fa-check text-success me-2"></i>{{ __('dashboard.upload_files') }}</li>
                             </ul>
                         </div>
                         <div class="col-md-6 text-md-end">
                             <a href="{{ route('register') }}" class="btn btn-warning">
                                 <i class="fas fa-user-plus me-2"></i>
-                                {{ __('messages.upgrade_now') }}
+                                {{ __('dashboard.upgrade_now') }}
                             </a>
                         </div>
                     </div>

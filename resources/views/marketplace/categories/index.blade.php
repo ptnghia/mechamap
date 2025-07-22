@@ -7,7 +7,7 @@
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('ui.common.home') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __("common.home") }}</a></li>
             <li class="breadcrumb-item"><a href="{{ route('marketplace.index') }}">{{ __('marketplace.marketplace.title') }}</a></li>
             <li class="breadcrumb-item active">{{ __('marketplace.categories.title') }}</li>
         </ol>

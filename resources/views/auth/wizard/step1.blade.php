@@ -224,7 +224,7 @@
                 <div class="upgrade-notice mt-3">
                     <div class="alert alert-info border-0">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>{{ __('ui.common.note') }}:</strong> {!! __('auth.register.note_community') !!}
+                        <strong>{{ __("common.note") }}:</strong> {!! __('auth.register.note_community') !!}
                     </div>
                 </div>
             </div>
@@ -300,7 +300,7 @@
                 <div class="business-notice mt-3">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>{{ __('ui.common.note') }}:</strong> {!! __('auth.register.note_business') !!}
+                        <strong>{{ __("common.note") }}:</strong> {!! __('auth.register.note_business') !!}
                     </div>
                 </div>
             </div>

@@ -59,7 +59,7 @@
                                 class="rounded-circle me-2"
                                 width="24" height="24">
                         <small class="text-muted">
-                            {{ __('ui.common.by') }}
+                            {{ __('common.labels.by') }}
                             <a href="{{ route('profile.show', $thread->showcase->user->id) }}"
                                 class="text-decoration-none">
                                 {{ $thread->showcase->user->name }}

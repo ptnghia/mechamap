@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">{{ __('SEO') }}</label>
+                            <label class="form-label">SEO</label>
                             <div class="card">
                                 <div class="card-body p-3">
                                     <div class="mb-2">

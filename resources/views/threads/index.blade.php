@@ -22,7 +22,7 @@
         <div class="card-body">
             <form action="{{ route('threads.index') }}" method="GET" class="row g-3">
                 <div class="col-md-4">
-                    <label for="category" class="form-label">{{ __('ui.common.category') }}</label>
+                    <label for="category" class="form-label">{{ __('common.labels.category') }}</label>
                     <select class="form-select select_search" id="category" name="category">
                         <option value="">{{ __('marketplace.categories.all') }}</option>
                         @foreach($categories as $category)
@@ -47,11 +47,11 @@
                     <label for="sort" class="form-label">{{ __('ui.actions.sort') }}</label>
                     <select class="form-select select_search" id="sort" name="sort">
                         <option value="latest" {{ request('sort', 'latest' )=='latest' ? 'selected' : '' }}>
-                            {{ __('ui.common.latest') }}</option>
-                        <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>{{ __('ui.common.oldest') }}</option>
-                        <option value="most_viewed" {{ request('sort')=='most_viewed' ? 'selected' : '' }}>{{ __('ui.common.most_viewed') }}</option>
+                            {{ __('common.buttons.latest') }}</option>
+                        <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>{{ t_common("oldest") }}</option>
+                        <option value="most_viewed" {{ request('sort')=='most_viewed' ? 'selected' : '' }}>{{ t_common("most_viewed") }}</option>
                         <option value="most_commented" {{ request('sort')=='most_commented' ? 'selected' : ''
-                            }}>{{ __('ui.common.most_commented') }}</option>
+                            }}>{{ t_common("most_commented") }}</option>
                     </select>
                 </div>
 

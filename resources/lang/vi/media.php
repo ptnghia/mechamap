@@ -1,0 +1,42 @@
+<?php
+
+return [
+    // Media types
+    'new' => 'Media mới',
+    'images' => 'Hình ảnh',
+    'videos' => 'Video',
+    'documents' => 'Tài liệu',
+    'gallery' => 'Thư viện',
+    'upload' => 'Tải lên',
+    'download' => 'Tải xuống',
+    'view' => 'Xem',
+    'edit' => 'Chỉnh sửa',
+    'delete' => 'Xóa',
+    'share' => 'Chia sẻ',
+    'preview' => 'Xem trước',
+    'thumbnail' => 'Hình thu nhỏ',
+    'original' => 'Gốc',
+    'size' => 'Kích thước',
+    'type' => 'Loại',
+    'uploaded' => 'Đã tải lên',
+    'created' => 'Đã tạo',
+    'modified' => 'Đã sửa đổi',
+
+    // Gallery specific
+    'Description' => 'Mô tả',
+    'Comments' => 'Bình luận',
+    'Comments feature coming soon.' => 'Tính năng bình luận sẽ sớm ra mắt.',
+    'Media Information' => 'Thông tin media',
+    'Uploaded' => 'Đã tải lên',
+    'File Name' => 'Tên file',
+    'File Type' => 'Loại file',
+    'File Size' => 'Kích thước file',
+    'Dimensions' => 'Kích thước',
+    'Unknown' => 'Không xác định',
+    'Download' => 'Tải xuống',
+    'Are you sure you want to delete this media?' => 'Bạn có chắc muốn xóa media này?',
+    'Delete' => 'Xóa',
+    'Share' => 'Chia sẻ',
+    'Check out this image' => 'Xem hình ảnh này',
+    'URL copied to clipboard!' => 'URL đã được sao chép vào clipboard!',
+];

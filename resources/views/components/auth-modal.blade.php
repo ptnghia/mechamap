@@ -25,7 +25,7 @@ $sizeClass = [
             <div class="modal-body px-4 pt-0 pb-4">
                 <!-- Modal Title -->
                 <div class="text-center mb-4">
-                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('ui/navigation.auth.login') }}</h4>
+                    <h4 class="mb-2" style="color: #8B7355; font-weight: 600;">{{ __('navigation.auth.login') }}</h4>
                     <p class="text-muted mb-0">{{ __('auth.login.welcome_back') }}</p>
                 </div>
 
@@ -48,7 +48,7 @@ $sizeClass = [
                                     <span class="input-group-text bg-light border-0" style="color: #6c757d;">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input type="password" class="form-control border-0 bg-light" id="loginPassword" name="password" placeholder="{{ __('ui.common.password') }}" required style="padding: 12px;">
+                                    <input type="password" class="form-control border-0 bg-light" id="loginPassword" name="password" placeholder="{{ t_common("password") }}" required style="padding: 12px;">
                                     <button class="btn bg-light border-0" type="button" onclick="togglePassword('loginPassword')" style="color: #6c757d;">
                                         <i class="fas fa-eye" id="loginPasswordIcon"></i>
                                     </button>
@@ -63,12 +63,12 @@ $sizeClass = [
                                     </label>
                                 </div>
                                 <button type="button" class="btn btn-link p-0 text-muted" onclick="switchToForgotPassword()" style="text-decoration: none; font-size: 14px;">
-                                    {{ __('ui.common.forgot_password') }}
+                                    {{ t_common("forgot_password") }}
                                 </button>
                             </div>
                             <div class="d-grid mb-4">
                                 <button type="submit" class="btn py-3" style="background-color: #8B7355; color: white; border: none; border-radius: 8px; font-weight: 600;">
-                                    {{ __('ui/navigation.auth.login') }}
+                                    {{ __('navigation.auth.login') }}
                                 </button>
                             </div>
                         </form>
@@ -106,7 +106,7 @@ $sizeClass = [
                         <form id="forgotForm" method="POST" action="{{ route('password.email') }}">
                             @csrf
                             <div class="text-center mb-4">
-                                <h5 class="mb-3" style="color: #8B7355;">{{ __('ui.common.forgot_password') }}</h5>
+                                <h5 class="mb-3" style="color: #8B7355;">{{ t_common("forgot_password") }}</h5>
                                 <p class="text-muted">{{ __('auth.password.forgot_description') }}</p>
                             </div>
                             <div class="mb-3">
@@ -114,7 +114,7 @@ $sizeClass = [
                                     <span class="input-group-text bg-light border-0" style="color: #6c757d;">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control border-0 bg-light" id="forgotEmail" name="email" placeholder="{{ __('ui.common.email') }}" required style="padding: 12px;">
+                                    <input type="email" class="form-control border-0 bg-light" id="forgotEmail" name="email" placeholder="{{ t_common("email") }}" required style="padding: 12px;">
                                 </div>
                                 <div class="invalid-feedback"></div>
                             </div>
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("core/messages.forgot_password") }}';
+            modalTitle.textContent = '{{ t_common("messages.forgot_password") }}';
         }
     };
 
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("ui/navigation.auth.login") }}';
+            modalTitle.textContent = '{{ t_navigation("auth.login") }}';
         }
     };
 
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update modal title
         const modalTitle = document.querySelector('#authModal .modal-body h4');
         if (modalTitle) {
-            modalTitle.textContent = '{{ __("ui/navigation.auth.login") }}';
+            modalTitle.textContent = '{{ t_navigation("auth.login") }}';
         }
     };
 
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __("content/alerts.processing") }}';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ __('common.messages.processing') }}';
 
         // Clear previous errors
         form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlert('{{ __("content/alerts.error_occurred") }}', 'danger');
+            showAlert('{{ t_common("messages.error_occurred") }}', 'danger');
         })
         .finally(() => {
             // Restore button state

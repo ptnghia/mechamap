@@ -116,7 +116,7 @@
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __(__('ui.common.views')) }}:</span>
+                                    <span>{{ __(__("common.views")) }}:</span>
                                     <span class="text-muted">{{ $thread->view_count }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">

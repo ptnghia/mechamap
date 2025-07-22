@@ -4,7 +4,7 @@
 
 @php
     $pageTitle = __('nav.user.ratings');
-    $pageDescription = __('messages.ratings_desc');
+    $pageDescription = __('ratings.ratings_desc');
     $breadcrumbs = [
         ['title' => __('nav.user.ratings'), 'url' => '#']
     ];
@@ -19,7 +19,7 @@
                 <i class="fas fa-star"></i>
             </div>
             <div class="stats-value" data-stat="total_ratings_given">{{ $stats['total_ratings_given'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.ratings_given') }}</div>
+            <div class="stats-label">{{ __('ratings.ratings_given') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -28,7 +28,7 @@
                 <i class="fas fa-star-half-alt"></i>
             </div>
             <div class="stats-value" data-stat="avg_rating_given">{{ number_format($stats['avg_rating_given'] ?? 0, 1) }}</div>
-            <div class="stats-label">{{ __('messages.average_rating_given') }}</div>
+            <div class="stats-label">{{ __('ratings.average_rating_given') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -37,7 +37,7 @@
                 <i class="fas fa-trophy"></i>
             </div>
             <div class="stats-value" data-stat="total_ratings_received">{{ $stats['total_ratings_received'] ?? 0 }}</div>
-            <div class="stats-label">{{ __('messages.ratings_received') }}</div>
+            <div class="stats-label">{{ __('ratings.ratings_received') }}</div>
         </div>
     </div>
     <div class="col-md-3">
@@ -46,7 +46,7 @@
                 <i class="fas fa-medal"></i>
             </div>
             <div class="stats-value" data-stat="avg_rating_received">{{ number_format($stats['avg_rating_received'] ?? 0, 1) }}</div>
-            <div class="stats-label">{{ __('messages.average_rating_received') }}</div>
+            <div class="stats-label">{{ __('ratings.average_rating_received') }}</div>
         </div>
     </div>
 </div>
@@ -56,7 +56,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h6 class="mb-0">{{ __('messages.ratings_given_distribution') }}</h6>
+                <h6 class="mb-0">{{ __('ratings.ratings_given_distribution') }}</h6>
             </div>
             <div class="card-body">
                 <canvas id="ratingsGivenChart" height="200"></canvas>
@@ -66,7 +66,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h6 class="mb-0">{{ __('messages.ratings_received_distribution') }}</h6>
+                <h6 class="mb-0">{{ __('ratings.ratings_received_distribution') }}</h6>
             </div>
             <div class="card-body">
                 <canvas id="ratingsReceivedChart" height="200"></canvas>
@@ -80,14 +80,14 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="given-tab" data-bs-toggle="tab" data-bs-target="#given"
                 type="button" role="tab" aria-controls="given" aria-selected="true">
-            <i class="fas fa-star me-2"></i>{{ __('messages.ratings_given') }}
+            <i class="fas fa-star me-2"></i>{{ __('ratings.ratings_given') }}
             <span class="badge bg-primary ms-2">{{ $stats['total_ratings_given'] ?? 0 }}</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="received-tab" data-bs-toggle="tab" data-bs-target="#received"
                 type="button" role="tab" aria-controls="received" aria-selected="false">
-            <i class="fas fa-trophy me-2"></i>{{ __('messages.ratings_received') }}
+            <i class="fas fa-trophy me-2"></i>{{ __('ratings.ratings_received') }}
             <span class="badge bg-success ms-2">{{ $stats['total_ratings_received'] ?? 0 }}</span>
         </button>
     </li>
@@ -103,9 +103,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="filter-group">
-                            <label class="filter-label">{{ __('messages.rating_value') }}</label>
+                            <label class="filter-label">{{ __('ratings.rating_value') }}</label>
                             <select name="rating" class="form-select">
-                                <option value="">{{ __('messages.all_ratings') }}</option>
+                                <option value="">{{ __('ratings.all_ratings') }}</option>
                                 <option value="5" {{ request('rating') === '5' ? 'selected' : '' }}>5 ⭐</option>
                                 <option value="4" {{ request('rating') === '4' ? 'selected' : '' }}>4 ⭐</option>
                                 <option value="3" {{ request('rating') === '3' ? 'selected' : '' }}>3 ⭐</option>
@@ -116,9 +116,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="filter-group">
-                            <label class="filter-label">{{ __('messages.forum') }}</label>
+                            <label class="filter-label">{{ __('ratings.forum') }}</label>
                             <select name="forum" class="form-select">
-                                <option value="">{{ __('messages.all_forums') }}</option>
+                                <option value="">{{ __('ratings.all_forums') }}</option>
                                 @foreach($forums ?? [] as $forum)
                                     <option value="{{ $forum->id }}" {{ request('forum') == $forum->id ? 'selected' : '' }}>
                                         {{ $forum->name }}
@@ -129,28 +129,28 @@
                     </div>
                     <div class="col-md-3">
                         <div class="filter-group">
-                            <label class="filter-label">{{ __('messages.time_period') }}</label>
+                            <label class="filter-label">{{ __('ratings.time_period') }}</label>
                             <select name="period" class="form-select">
                                 <option value="all" {{ request('period', 'all') === 'all' ? 'selected' : '' }}>
-                                    {{ __('messages.all_time') }}
+                                    {{ __('ratings.all_time') }}
                                 </option>
                                 <option value="week" {{ request('period') === 'week' ? 'selected' : '' }}>
-                                    {{ __('messages.this_week') }}
+                                    {{ __('ratings.this_week') }}
                                 </option>
                                 <option value="month" {{ request('period') === 'month' ? 'selected' : '' }}>
-                                    {{ __('messages.this_month') }}
+                                    {{ __('ratings.this_month') }}
                                 </option>
                                 <option value="year" {{ request('period') === 'year' ? 'selected' : '' }}>
-                                    {{ __('messages.this_year') }}
+                                    {{ __('ratings.this_year') }}
                                 </option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="filter-group">
-                            <label class="filter-label">{{ __('messages.search') }}</label>
+                            <label class="filter-label">{{ __('ratings.search') }}</label>
                             <input type="text" name="search" class="form-control"
-                                   placeholder="{{ __('messages.search_threads') }}"
+                                   placeholder="{{ __('ratings.search_threads') }}"
                                    value="{{ request('search') }}">
                         </div>
                     </div>
@@ -203,11 +203,11 @@
                                 <div class="rating-actions mt-2">
                                     <a href="{{ route('threads.show', $rating->thread->slug) }}"
                                        class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye me-1"></i>{{ __('messages.view_thread') }}
+                                        <i class="fas fa-eye me-1"></i>{{ __('ratings.view_thread') }}
                                     </a>
                                     <button type="button" class="btn btn-sm btn-outline-secondary"
                                             onclick="editRating({{ $rating->id }})">
-                                        <i class="fas fa-edit me-1"></i>{{ __('messages.edit_rating') }}
+                                        <i class="fas fa-edit me-1"></i>{{ __('ratings.edit_rating') }}
                                     </button>
                                 </div>
                             </div>
@@ -226,10 +226,10 @@
                 <div class="empty-state-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <div class="empty-state-title">{{ __('messages.no_ratings_given_yet') }}</div>
-                <div class="empty-state-description">{{ __('messages.no_ratings_given_desc') }}</div>
+                <div class="empty-state-title">{{ __('ratings.no_ratings_given_yet') }}</div>
+                <div class="empty-state-description">{{ __('ratings.no_ratings_given_desc') }}</div>
                 <a href="{{ route('threads.index') }}" class="btn btn-primary">
-                    <i class="fas fa-search me-2"></i>{{ __('messages.browse_threads') }}
+                    <i class="fas fa-search me-2"></i>{{ __('ratings.browse_threads') }}
                 </a>
             </div>
         @endif
@@ -256,7 +256,7 @@
                                             </a>
                                         </h6>
                                         <small class="text-muted">
-                                            {{ __('messages.rated_by') }}
+                                            {{ __('ratings.rated_by') }}
                                             <a href="{{ route('profile.show', $rating->user->username) }}"
                                                class="text-decoration-none">{{ $rating->user->name }}</a> •
                                             {{ $rating->created_at->format('d/m/Y H:i') }}
@@ -283,11 +283,11 @@
                                 <div class="rating-actions mt-2">
                                     <a href="{{ route('threads.show', $rating->thread->slug) }}"
                                        class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye me-1"></i>{{ __('messages.view_thread') }}
+                                        <i class="fas fa-eye me-1"></i>{{ __('ratings.view_thread') }}
                                     </a>
                                     <a href="{{ route('profile.show', $rating->user->username) }}"
                                        class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-user me-1"></i>{{ __('messages.view_profile') }}
+                                        <i class="fas fa-user me-1"></i>{{ __('ratings.view_profile') }}
                                     </a>
                                 </div>
                             </div>
@@ -306,10 +306,10 @@
                 <div class="empty-state-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <div class="empty-state-title">{{ __('messages.no_ratings_received_yet') }}</div>
-                <div class="empty-state-description">{{ __('messages.no_ratings_received_desc') }}</div>
+                <div class="empty-state-title">{{ __('ratings.no_ratings_received_yet') }}</div>
+                <div class="empty-state-description">{{ __('ratings.no_ratings_received_desc') }}</div>
                 <a href="{{ route('threads.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>{{ __('messages.create_thread') }}
+                    <i class="fas fa-plus me-2"></i>{{ __('ratings.create_thread') }}
                 </a>
             </div>
         @endif

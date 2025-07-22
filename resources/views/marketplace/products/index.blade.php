@@ -13,11 +13,11 @@
                     <li class="breadcrumb-item">
                         <a href="{{ url('/') }}" class="text-decoration-none">
                             <i class="fas fa-home me-2"></i>
-                            {{ __('ui.common.home') }}
+                            {{ __("common.home") }}
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ url('/marketplace') }}" class="text-decoration-none">{{ __('ui.common.marketplace') }}</a>
+                        <a href="{{ url('/marketplace') }}" class="text-decoration-none">{{ __("common.marketplace") }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ __('marketplace.products.title') }}</li>
                 </ol>

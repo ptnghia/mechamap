@@ -5,51 +5,49 @@
     // Define menu items based on user role
     $menuItems = [
         'dashboard' => [
-            'title' => __('nav.user.dashboard'),
+            'title' => t_sidebar('user_dashboard.dashboard'),
             'icon' => 'fas fa-tachometer-alt',
             'route' => 'user.dashboard',
             'badge' => null,
         ],
         'my-threads' => [
-            'title' => __('nav.user.my_threads'),
+            'title' => t_sidebar('user_dashboard.my_threads'),
             'icon' => 'fas fa-comments',
             'route' => 'user.my-threads',
             'badge' => $user->threads()->count(),
         ],
         'comments' => [
-            'title' => __('nav.user.my_comments'),
+            'title' => t_sidebar('user_dashboard.my_comments'),
             'icon' => 'fas fa-comment-dots',
             'route' => 'user.comments',
             'badge' => $user->comments()->count(),
         ],
         'bookmarks' => [
-            'title' => __('nav.user.bookmarks'),
+            'title' => t_sidebar('user_dashboard.bookmarks'),
             'icon' => 'fas fa-bookmark',
             'route' => 'user.bookmarks',
             'badge' => $user->bookmarks()->count(),
         ],
         'activity' => [
-            'title' => __('nav.user.activity'),
+            'title' => t_sidebar('user_dashboard.activity'),
             'icon' => 'fas fa-chart-line',
             'route' => 'user.activity',
             'badge' => null,
         ],
         'following' => [
-            'title' => __('nav.user.following'),
+            'title' => t_sidebar('user_dashboard.following'),
             'icon' => 'fas fa-heart',
             'route' => 'user.following',
             'badge' => $user->following()->count(),
         ],
         'ratings' => [
-            'title' => __('nav.user.ratings'),
+            'title' => t_sidebar('user_dashboard.ratings'),
             'icon' => 'fas fa-star',
             'route' => 'user.ratings',
             'badge' => 0, // TODO: Implement ratings count
         ],
 
     ];
-
-
 
     if ($user->role === 'guest') {
         // Remove some features for guest users
@@ -89,23 +87,23 @@
 
     <!-- Quick Stats -->
     <div class="sidebar-stats mt-4">
-        <h6 class="stats-title">{{ __('messages.quick_stats') }}</h6>
+        <h6 class="stats-title">{{ t_sidebar('user_dashboard.quick_stats') }}</h6>
         <div class="stats-grid">
             <div class="stat-item">
                 <div class="stat-value">{{ $user->threads()->count() }}</div>
-                <div class="stat-label">{{ __('ui.common.threads') }}</div>
+                <div class="stat-label">{{ t_sidebar('user_dashboard.threads') }}</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">0</div>
-                <div class="stat-label">{{ __('ui.common.comments') }}</div>
+                <div class="stat-label">{{ t_sidebar('user_dashboard.comments') }}</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">0</div>
-                <div class="stat-label">{{ __('ui.common.following') }}</div>
+                <div class="stat-label">{{ t_sidebar('user_dashboard.following') }}</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">{{ $user->points ?? 0 }}</div>
-                <div class="stat-label">{{ __('ui.common.points') }}</div>
+                <div class="stat-label">{{ t_sidebar('user_dashboard.points') }}</div>
             </div>
         </div>
     </div>
@@ -114,10 +112,10 @@
     @if($user->role === 'guest')
         <div class="sidebar-upgrade mt-4">
             <div class="upgrade-card">
-                <h6>{{ __('messages.upgrade_account') }}</h6>
-                <p class="small text-muted">{{ __('messages.upgrade_to_member_desc') }}</p>
+                <h6>{{ t_sidebar('user_dashboard.upgrade_account') }}</h6>
+                <p class="small text-muted">{{ t_sidebar('user_dashboard.upgrade_to_member_desc') }}</p>
                 <a href="{{ route('register') }}" class="btn btn-primary btn-sm">
-                    {{ __('messages.upgrade_now') }}
+                    {{ t_sidebar('user_dashboard.upgrade_now') }}
                 </a>
             </div>
         </div>

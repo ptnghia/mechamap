@@ -11,7 +11,7 @@
             <div class="mega-menu-section">
                 <h6 class="mega-menu-header">
                     <i class="fa-solid fa-rocket me-2 text-primary"></i>
-                    <span>{{ __('ui.community.quick_access') }}</span>
+                    <span>{{ __('navigation.community.quick_access') }}</span>
                 </h6>
                 <ul class="mega-menu-list">
                     <li>
@@ -19,7 +19,7 @@
                             <i class="fa-solid fa-home me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ __('forum.threads.title') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.forum_home_desc') }}</small>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.forum_home_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -27,8 +27,8 @@
                         <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
                             <i class="fa-solid fa-star me-2 text-warning"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.popular_topics') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.popular_discussions_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.popular_topics') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.popular_discussions_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -36,8 +36,8 @@
                         <a href="{{ route('forums.index') }}#categories" class="mega-menu-item">
                             <i class="fa-solid fa-folder-tree me-2 text-info"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.community.browse_categories') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.explore_topics_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.browse_categories') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.explore_topics_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -50,15 +50,15 @@
             <div class="mega-menu-section">
                 <h6 class="mega-menu-header">
                     <i class="fa-solid fa-compass me-2 text-success"></i>
-                    <span>{{ __('ui.community.discover') }}</span>
+                    <span>{{ __('navigation.community.discover') }}</span>
                 </h6>
                 <ul class="mega-menu-list">
                     <li>
                         <a href="{{ route('whats-new') }}" class="mega-menu-item">
                             <i class="fa-solid fa-clock me-2"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.recent_discussions') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.recent_discussions_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.recent_discussions') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.recent_discussions_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -66,8 +66,8 @@
                         <a href="{{ route('whats-new.trending') }}" class="mega-menu-item">
                             <i class="fa-solid fa-chart-line me-2 text-success"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.trending') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.trending_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.trending') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.trending_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -75,8 +75,8 @@
                         <a href="{{ route('whats-new.most-viewed') }}" class="mega-menu-item">
                             <i class="fa-solid fa-eye me-2 text-primary"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.most_viewed') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.most_viewed_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.most_viewed') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.most_viewed_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -84,8 +84,8 @@
                         <a href="{{ route('whats-new.hot-topics') }}" class="mega-menu-item">
                             <i class="fa-solid fa-fire me-2"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.hot_topics') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.hot_topics_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.hot_topics') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.hot_topics_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -98,15 +98,15 @@
             <div class="mega-menu-section">
                 <h6 class="mega-menu-header">
                     <i class="fa-solid fa-tools me-2 text-warning"></i>
-                    <span>{{ __('ui.community.tools_connect') }}</span>
+                    <span>{{ __('navigation.community.tools_connect') }}</span>
                 </h6>
                 <ul class="mega-menu-list">
                     <li>
                         <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
                             <i class="fa-solid fa-search-plus me-2"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.search.advanced_search') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.search.advanced_search_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('search.actions.advanced') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('search.actions.advanced_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -114,8 +114,8 @@
                         <a href="{{ route('members.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-users-gear me-2"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.member_directory') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.member_directory_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.member_directory') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.member_directory_desc') }}</small>
                             </div>
                         </a>
                     </li>
@@ -123,20 +123,20 @@
                         <a href="{{ route('events.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-calendar-days me-2 text-primary"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.events_webinars') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.events_webinars_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.events_webinars') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.events_webinars_desc') }}</small>
                             </div>
-                            <span class="activity-indicator trending">{{ __('ui.common.coming_soon') }}</span>
+                            <span class="activity-indicator trending">{{ __('common.status.coming_soon') }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('jobs.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-briefcase me-2 text-success"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ __('ui.common.job_board') }}</span>
-                                <small class="mega-menu-item-desc">{{ __('ui.community.job_board_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ __('navigation.community.job_board') }}</span>
+                                <small class="mega-menu-item-desc">{{ __('navigation.community.job_board_desc') }}</small>
                             </div>
-                            <span class="activity-indicator trending">{{ __('ui.common.coming_soon') }}</span>
+                            <span class="activity-indicator trending">{{ __('common.status.coming_soon') }}</span>
                         </a>
                     </li>
                 </ul>

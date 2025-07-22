@@ -7,7 +7,7 @@
 @php
     $user = auth()->user();
     $currentRoute = request()->route()->getName();
-    
+
     // Main navigation items cho business users
     $mainMenuItems = [
         'home' => [
@@ -31,10 +31,10 @@
             'icon' => 'fas fa-store'
         ]
     ];
-    
+
     // Business dashboard dropdown items
     $businessDropdownItems = [];
-    
+
     // Role-specific dashboard routes
     switch($user->role) {
         case 'verified_partner':
@@ -66,7 +66,7 @@
             ];
             break;
     }
-    
+
     // Common business menu items
     if ($user->role !== 'brand') {
         $businessDropdownItems['products'] = [
@@ -80,13 +80,13 @@
             'icon' => 'fas fa-shopping-cart'
         ];
     }
-    
+
     $businessDropdownItems['analytics'] = [
         'title' => __('nav.business.analytics'),
         'route' => $user->role . '.analytics.index',
         'icon' => 'fas fa-chart-line'
     ];
-    
+
     // Brand specific items
     if ($user->role === 'brand') {
         $businessDropdownItems['insights'] = [
@@ -100,7 +100,7 @@
             'icon' => 'fas fa-ad'
         ];
     }
-    
+
     // User profile dropdown items
     $profileDropdownItems = [
         'profile' => [
@@ -120,7 +120,7 @@
             'icon' => 'fas fa-cog'
         ]
     ];
-    
+
     // Check marketplace permissions
     $canSell = in_array($user->role, ['verified_partner', 'manufacturer', 'supplier']);
     $canBuy = in_array($user->role, ['verified_partner', 'manufacturer', 'supplier']);
@@ -137,7 +137,7 @@
         </a>
 
         <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#businessNavbar" 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#businessNavbar"
                 aria-controls="businessNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -149,7 +149,7 @@
                 @foreach($mainMenuItems as $key => $item)
                     @if(Route::has($item['route']))
                         <li class="nav-item">
-                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}" 
+                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}"
                                href="{{ route($item['route']) }}">
                                 <i class="{{ $item['icon'] }} me-1"></i>
                                 {{ $item['title'] }}
@@ -163,7 +163,7 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Business Dashboard Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle business-dropdown" href="#" id="businessDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle business-dropdown" href="#" id="businessDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-briefcase me-1"></i>
                         <span class="business-badge">{{ $user->role_display_name }}</span>
@@ -209,7 +209,7 @@
                 <!-- Quick Actions (if can sell) -->
                 @if($canSell && $isVerified)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="quickActionsDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle" href="#" id="quickActionsDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-plus-circle me-1"></i>
                         <span class="d-none d-md-inline">Tạo mới</span>
@@ -237,7 +237,7 @@
 
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" 
+                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-bell"></i>
                         @if($user->unread_notifications_count > 0)
@@ -267,9 +267,9 @@
 
                 <!-- User Profile Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}" 
+                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}"
                              alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24">
                         <span class="user-name">{{ $user->name }}</span>
                         @if($isVerified)
@@ -295,7 +295,7 @@
                                 @csrf
                                 <button type="submit" class="dropdown-item text-danger">
                                     <i class="fas fa-sign-out-alt me-2"></i>
-                                    {{ __('auth.logout') }}
+                                    {{ t_auth('logout.title') }}
                                 </button>
                             </form>
                         </li>
@@ -380,11 +380,11 @@
         text-align: center !important;
         margin-top: 5px;
     }
-    
+
     .user-dropdown .user-name {
         display: none;
     }
-    
+
     .business-dropdown .business-badge {
         font-size: 0.7rem;
         padding: 1px 6px;

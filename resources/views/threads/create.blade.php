@@ -40,9 +40,9 @@
             <div class="step-number">2</div>
             <div class="step-text">{{ __('forum.create.step_content') }}</div>
         </button>
-        <button type="button" class="step-item" data-step="showcase" aria-label="{{ __('ui.common.thread_showcase.step_aria') }}" disabled>
+        <button type="button" class="step-item" data-step="showcase" aria-label="{{ t_common("thread_showcase.step_aria") }}" disabled>
             <div class="step-number">3</div>
-            <div class="step-text">{{ __('ui.common.thread_showcase.step_title') }}</div>
+            <div class="step-text">{{ t_common("thread_showcase.step_title") }}</div>
         </button>
         <button type="button" class="step-item" data-step="poll" aria-label="{{ __('forum.create.step_poll_aria') }}" disabled>
             <div class="step-number">4</div>
@@ -272,9 +272,9 @@
             <div class="card-header-modern">
                 <div class="card-title">
                     <i class="fas fa-star"></i>
-                    <span>{{ __('ui.common.thread_showcase.step_title') }}</span>
+                    <span>{{ t_common("thread_showcase.step_title") }}</span>
                 </div>
-                <div class="card-subtitle">{{ __('ui.common.thread_showcase.step_description') }}</div>
+                <div class="card-subtitle">{{ t_common("thread_showcase.step_description") }}</div>
             </div>
             <div class="card-body-modern">
                 <!-- Showcase Toggle -->
@@ -286,8 +286,8 @@
                                 <div class="toggle-slider"></div>
                             </div>
                             <div class="toggle-text">
-                                <span class="toggle-title">{{ __('ui.common.thread_showcase.enable_showcase') }}</span>
-                                <span class="toggle-subtitle">{{ __('ui.common.thread_showcase.enable_showcase_help') }}</span>
+                                <span class="toggle-title">{{ t_common("thread_showcase.enable_showcase") }}</span>
+                                <span class="toggle-subtitle">{{ t_common("thread_showcase.enable_showcase_help") }}</span>
                             </div>
                         </label>
                     </div>
@@ -308,7 +308,7 @@
                                         <div class="radio-content">
                                             <i class="fas fa-plus-circle"></i>
                                             <div class="radio-text">
-                                                <span class="radio-title">{{ __('ui.common.thread_showcase.create_new') }}</span>
+                                                <span class="radio-title">{{ t_common("thread_showcase.create_new") }}</span>
                                                 <span class="radio-subtitle">Tạo showcase mới từ chủ đề này</span>
                                             </div>
                                         </div>
@@ -320,7 +320,7 @@
                                         <div class="radio-content">
                                             <i class="fas fa-link"></i>
                                             <div class="radio-text">
-                                                <span class="radio-title">{{ __('ui.common.thread_showcase.attach_existing') }}</span>
+                                                <span class="radio-title">{{ t_common("thread_showcase.attach_existing") }}</span>
                                                 <span class="radio-subtitle">Đính kèm showcase đã có sẵn</span>
                                             </div>
                                         </div>
@@ -334,7 +334,7 @@
                     <div class="existing-showcase-section" style="{{ old('showcase_type') == 'existing' ? '' : 'display: none;' }}">
                         <div class="form-group-modern">
                             <label for="existing_showcase_id" class="form-label-modern">
-                                <span class="label-text">{{ __('ui.common.thread_showcase.select_existing') }}</span>
+                                <span class="label-text">{{ t_common("thread_showcase.select_existing") }}</span>
                                 <span class="label-required">*</span>
                             </label>
                             <div class="select-wrapper">
@@ -355,7 +355,7 @@
                             @if(auth()->user()->showcaseItems->count() == 0)
                                 <div class="form-help-text">
                                     <i class="info-circle"></i>
-                                    <span>{{ __('ui.common.thread_showcase.no_existing_showcases') }}</span>
+                                    <span>{{ t_common("thread_showcase.no_existing_showcases") }}</span>
                                 </div>
                             @endif
                         </div>
@@ -366,13 +366,13 @@
                         <!-- Showcase Title -->
                         <div class="form-group-modern">
                             <label for="showcase_title" class="form-label-modern">
-                                <span class="label-text">{{ __('ui.common.thread_showcase.showcase_title') }}</span>
+                                <span class="label-text">{{ t_common("thread_showcase.showcase_title") }}</span>
                                 <span class="label-required">*</span>
                             </label>
                             <div class="input-wrapper">
                                 <input type="text" class="form-control-modern" id="showcase_title" name="showcase_title"
                                        value="{{ old('showcase_title') }}"
-                                       placeholder="{{ __('ui.common.thread_showcase.showcase_title_placeholder') }}">
+                                       placeholder="{{ t_common("thread_showcase.showcase_title_placeholder") }}">
                                 <div class="input-icon">
                                     <i class="fas fa-star"></i>
                                 </div>
@@ -382,14 +382,14 @@
                         <!-- Showcase Description -->
                         <div class="form-group-modern">
                             <label for="showcase_description" class="form-label-modern">
-                                <span class="label-text">{{ __('ui.common.thread_showcase.showcase_description') }}</span>
+                                <span class="label-text">{{ t_common("thread_showcase.showcase_description") }}</span>
                                 <span class="label-required">*</span>
                             </label>
                             <x-tinymce-editor
                                 name="showcase_description"
                                 id="showcase_description"
                                 :value="old('showcase_description')"
-                                :placeholder="__('ui.common.thread_showcase.showcase_description_placeholder')"
+                                :placeholder="t_common("thread_showcase.showcase_description_placeholder")"
                                 context="showcase"
                                 :height="200"
                                 :required="false"
@@ -401,12 +401,12 @@
                         <div class="form-row">
                             <div class="form-group-modern half-width">
                                 <label for="project_type" class="form-label-modern">
-                                    <span class="label-text">{{ __('ui.common.thread_showcase.project_type') }}</span>
+                                    <span class="label-text">{{ t_common("thread_showcase.project_type") }}</span>
                                 </label>
                                 <div class="input-wrapper">
                                     <input type="text" class="form-control-modern" id="project_type" name="project_type"
                                            value="{{ old('project_type') }}"
-                                           placeholder="{{ __('ui.common.thread_showcase.project_type_placeholder') }}">
+                                           placeholder="{{ t_common("thread_showcase.project_type_placeholder") }}">
                                     <div class="input-icon">
                                         <i class="fas fa-cogs"></i>
                                     </div>
@@ -415,7 +415,7 @@
 
                             <div class="form-group-modern half-width">
                                 <label for="complexity_level" class="form-label-modern">
-                                    <span class="label-text">{{ __('ui.common.thread_showcase.complexity_level') }}</span>
+                                    <span class="label-text">{{ t_common("thread_showcase.complexity_level") }}</span>
                                 </label>
                                 <div class="select-wrapper">
                                     <select class="form-select-modern" id="complexity_level" name="complexity_level">
@@ -1145,17 +1145,17 @@ function validateShowcase() {
         const showcaseDescription = document.getElementById('showcase_description');
 
         if (!showcaseTitle.value.trim()) {
-            showValidationMessage('{{ __('ui.common.thread_showcase.title_required') }}', 'error');
+            showValidationMessage('{{ t_common("thread_showcase.title_required") }}', 'error');
             return false;
         }
 
         if (!showcaseDescription.value.trim()) {
-            showValidationMessage('{{ __('ui.common.thread_showcase.description_required') }}', 'error');
+            showValidationMessage('{{ t_common("thread_showcase.description_required") }}', 'error');
             return false;
         }
 
         if (showcaseDescription.value.trim().length < 50) {
-            showValidationMessage('{{ __('ui.common.thread_showcase.description_min') }}', 'error');
+            showValidationMessage('{{ t_common("thread_showcase.description_min") }}', 'error');
             return false;
         }
     }

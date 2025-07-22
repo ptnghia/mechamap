@@ -70,7 +70,7 @@
                                         <span class="me-3"><i class="fas fa-eye"></i> {{ $thread->view_count }}
                                             views</span>
                                         <span class="me-3"><i class="fas fa-comment"></i> {{ $thread->allComments->count()
-                                            }} {{ __('ui.common.replies') }}</span>
+                                            }} {{ __('common.labels.replies') }}</span>
                                         <span><i class="fas fa-users"></i> {{ $thread->participant_count }}
                                             participants</span>
                                     </div>

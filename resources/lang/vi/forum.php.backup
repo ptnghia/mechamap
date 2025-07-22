@@ -1,0 +1,28 @@
+<?php
+
+return [
+    // Forum sections
+    'threads' => [
+        'title' => 'Thảo luận kỹ thuật'
+    ],
+
+    // Forum actions
+    'actions' => [
+        'create_thread' => 'Tạo chủ đề mới',
+        'follow_thread' => 'Theo dõi chủ đề',
+        'unfollow_thread' => 'Bỏ theo dõi chủ đề',
+        'follow' => 'Theo dõi',
+        'following' => 'Đang theo dõi',
+        'login_to_follow' => 'Đăng nhập để theo dõi',
+        'error_occurred' => 'Có lỗi xảy ra',
+        'request_error' => 'Lỗi yêu cầu'
+    ],
+
+    // Search in forum
+    'search' => [
+        'cad_files' => 'File CAD',
+        'iso_standards' => 'Tiêu chuẩn ISO',
+        'forum' => 'Diễn đàn',
+        'threads' => 'Chủ đề thảo luận'
+    ]
+];

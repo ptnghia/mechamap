@@ -16,7 +16,7 @@
                         @if(Auth::id() == $user->id)
                             <a href="{{ route('profile.edit') }}">{{ __('Edit in account settings') }}</a>
                         @else
-                            {{ __('No information provided.') }}
+                            {{ __('profile.no_information_provided') }}
                         @endif
                     </div>
                 @endif
@@ -32,7 +32,7 @@
                         @if(Auth::id() == $user->id)
                             <a href="{{ route('profile.edit') }}">{{ __('Edit in account settings') }}</a>
                         @else
-                            {{ __('No information provided.') }}
+                            {{ __('profile.no_information_provided') }}
                         @endif
                     </div>
                 @endif
@@ -46,7 +46,7 @@
                         @if(Auth::id() == $user->id)
                             <a href="{{ route('profile.edit') }}">{{ __('Edit in account settings') }}</a>
                         @else
-                            {{ __('No information provided.') }}
+                            {{ __('profile.no_information_provided') }}
                         @endif
                     </div>
                 @endif
@@ -60,17 +60,17 @@
                         @if(Auth::id() == $user->id)
                             <a href="{{ route('profile.edit') }}">{{ __('Edit in account settings') }}</a>
                         @else
-                            {{ __('No information provided.') }}
+                            {{ __('profile.no_information_provided') }}
                         @endif
                     </div>
                 @endif
             </div>
         </div>
-        
+
         @if(isset($showAll))
             <hr>
         @endif
-        
+
         <div class="row">
             <div class="col-md-3 mb-3">
                 <div class="about-label">{{ __('Following') }}</div>
@@ -88,11 +88,11 @@
                     @if($followers > 0)
                         {{ $followers }} {{ __('members') }}
                     @else
-                        {{ __('No followers yet.') }}
+                        {{ __('profile.no_followers_yet') }}
                     @endif
                 </div>
             </div>
-            
+
             @if(isset($showAll))
                 <div class="col-md-3 mb-3">
                     <div class="about-label">{{ __('Joined') }}</div>

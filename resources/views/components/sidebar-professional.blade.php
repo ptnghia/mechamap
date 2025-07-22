@@ -15,8 +15,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <div class="sidebar-card community-overview" data-aos="fade-up">
         <div class="card-body">
             <div class="community_header">
-                <h5 class="fw-bold">{{ $sidebarData['site_settings']['name'] ?? __('content.mechamap_community') }}</h5>
-                <p class="text-muted">{{ $sidebarData['site_settings']['tagline'] ?? __('content.professional_network') }}</p>
+                <h5 class="fw-bold">{{ $sidebarData['site_settings']['name'] ?? t_sidebar('professional.mechamap_community') }}</h5>
+                <p class="text-muted">{{ $sidebarData['site_settings']['tagline'] ?? t_sidebar('professional.professional_network') }}</p>
             </div>
 
             <div class="stats-grid">
@@ -25,35 +25,35 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         <i class="fa-regular fa-comment-dots"></i>
                         <span>{{ number_format($sidebarData['community_stats']['total_threads']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('content.technical_discussions') }}</div>
+                    <div class="stat-label">{{ t_sidebar('professional.technical_discussions') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-user-tie"></i>
                         <span>{{ number_format($sidebarData['community_stats']['verified_users']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('content.engineers') }}</div>
+                    <div class="stat-label">{{ t_sidebar('professional.engineers') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-chart-area"></i>
                         <span>{{number_format($sidebarData['community_stats']['active_users_week']) }}</span>
                     </div>
-                    <div class="stat-label">{{ __('content.weekly_activity') }}</div>
+                    <div class="stat-label">{{ t_sidebar('professional.weekly_activity') }}</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-number">
                         <i class="fa-solid fa-chart-line"></i>
                         <span>+{{ $sidebarData['community_stats']['growth_rate'] }}%</span>
                     </div>
-                    <div class="stat-label">{{ __('content.growth_rate') }}</div>
+                    <div class="stat-label">{{ t_sidebar('professional.growth_rate') }}</div>
                 </div>
             </div>
 
             @guest
             <div class="cta-section mt-3">
                 <a href="{{ route('register') }}" class="btn btn-primary w-100">
-                    <i class="fas fa-user-plus me-2"></i>{{ __('content.join_professional_network') }}
+                    <i class="fas fa-user-plus me-2"></i>{{ t_sidebar('professional.join_professional_network') }}
                 </a>
             </div>
             @endguest
@@ -65,7 +65,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @if(isset($sidebarData['trending_topics']) && count($sidebarData['trending_topics']) > 0)
     <div class="sidebar-card trending-topics" data-aos="fade-up" data-aos-delay="100">
         <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-chart-line me-2 text-success"></i>{{ __('content.weekly_trends') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-chart-line me-2 text-success"></i>{{ t_sidebar('professional.weekly_trends') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="trending-list">
@@ -75,8 +75,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
                     <div class="trend-content">
                         <div class="trend-name">{{ $topic['name'] }}</div>
                         <div class="trend-stats">
-                            <span class="trend-score">{{ $topic['trend_score'] }} {{ __('content.points') }}</span>
-                            <span class="trend-threads">{{ $topic['thread_count'] }} {{ __('content.discussions') }}</span>
+                            <span class="trend-score">{{ $topic['trend_score'] }} {{ t_sidebar('professional.points') }}</span>
+                            <span class="trend-threads">{{ $topic['thread_count'] }} {{ t_sidebar('professional.discussions') }}</span>
                         </div>
                     </div>
                     <div class="trend-indicator">
@@ -90,8 +90,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @endif <!-- Featured Discussions Card -->
     <div class="sidebar-card featured-discussions" data-aos="fade-up" data-aos-delay="200">
         <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-bolt me-2 text-warning"></i>{{ __('content.featured_discussions') }}</h6>
-            <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">{{ __('content.view_all') }}</a>
+            <h6 class="mb-0"><i class="fas fa-bolt me-2 text-warning"></i>{{ t_sidebar('professional.featured_discussions') }}</h6>
+            <a href="{{ route('threads.index', ['featured' => 1]) }}" class="btn btn-sm btn-link">{{ t_sidebar('main.view_all') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="discussion-list">
@@ -142,8 +142,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Top Engineers Card -->
     <div class="sidebar-card top-engineers" data-aos="fade-up" data-aos-delay="300">
         <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-trophy me-2 text-primary"></i>{{ __('content.top_engineers') }}</h6>
-            <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">{{ __('content.leaderboard') }}</a>
+            <h6 class="mb-0"><i class="fas fa-trophy me-2 text-primary"></i>{{ t_sidebar('professional.top_engineers') }}</h6>
+            <a href="{{ route('members.leaderboard') }}" class="btn btn-sm btn-link">{{ t_sidebar('professional.leaderboard') }}</a>
         </div>
         <div class="card-body p-0">
             <div class="engineers-list">
@@ -164,9 +164,9 @@ $sidebarData = $sidebarService->getSidebarData($user);
                             {{ $member['badge']['name'] }}
                         </div>
                         <div class="engineer-score">
-                            {{ $member['contribution_score'] }} {{ __('content.points') }}
+                            {{ $member['contribution_score'] }} {{ t_sidebar('professional.points') }}
                             @if($member['recent_activity_score'] > 0)
-                            <small class="text-success">(+{{ $member['recent_activity_score'] }} {{ __('content.recently') }})</small>
+                            <small class="text-success">(+{{ $member['recent_activity_score'] }} {{ t_sidebar('professional.recently') }})</small>
                             @endif
                         </div>
                     </div>
@@ -180,7 +180,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     @if($user && !empty($sidebarData['user_recommendations'])) <div class="sidebar-card recommendations"
         data-aos="fade-up" data-aos-delay="400">
         <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-star me-2 text-info"></i>{{ __('content.recommendations_for_you') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-star me-2 text-info"></i>{{ t_sidebar('professional.recommendations_for_you') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="recommendations-list">
@@ -189,8 +189,8 @@ $sidebarData = $sidebarService->getSidebarData($user);
                     <div class="rec-content">
                         <h6 class="rec-title">{{ Str::limit($recommendation['title'], 50) }}</h6>
                         <div class="rec-meta">
-                            <span>{{ __('content.by') }} {{ $recommendation['author'] }}</span>
-                            <span>{{ __('content.in') }} {{ $recommendation['forum'] }}</span>
+                            <span>{{ t_sidebar('professional.by') }} {{ $recommendation['author'] }}</span>
+                            <span>{{ t_sidebar('professional.in') }} {{ $recommendation['forum'] }}</span>
                         </div>
                     </div>
                     <div class="rec-score">{{ $recommendation['relevance_score'] }}%</div>
@@ -203,7 +203,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
     <!-- Popular Forums Card -->
     <div class="sidebar-card popular-forums" data-aos="fade-up" data-aos-delay="500">
         <div class="card-header">
-            <h6 class="mb-0"><i class="fas fa-layer-group me-2 text-primary"></i>{{ __('content.active_forums') }}</h6>
+            <h6 class="mb-0"><i class="fas fa-layer-group me-2 text-primary"></i>{{ t_sidebar('professional.active_forums') }}</h6>
         </div>
         <div class="card-body p-0">
             <div class="forums-list">
@@ -213,14 +213,14 @@ $sidebarData = $sidebarService->getSidebarData($user);
                         <h6 class="forum-name">{{ $forum['name'] }}</h6>
                         <p class="forum-desc">{{ $forum['description'] }}</p>
                         <div class="forum-stats">
-                            <span class="stat">{{ $forum['recent_threads'] }} {{ __('content.new_this_month') }}</span>
+                            <span class="stat">{{ $forum['recent_threads'] }} {{ t_sidebar('professional.new_this_month') }}</span>
                             <span class="activity-badge activity-{{ $forum['activity_level'] }}">
                                 @if($forum['activity_level'] == 'high')
-                                {{ __('content.high_activity') }}
+                                {{ t_sidebar('professional.high_activity') }}
                                 @elseif($forum['activity_level'] == 'medium')
-                                {{ __('content.medium_activity') }}
+                                {{ t_sidebar('professional.medium_activity') }}
                                 @else
-                                {{ __('content.low_activity') }}
+                                {{ t_sidebar('professional.low_activity') }}
                                 @endif
                             </span>
                         </div>
@@ -232,7 +232,6 @@ $sidebarData = $sidebarService->getSidebarData($user);
     </div>
     @endif
 </div>
-
 
 <script>
     // Professional Sidebar JavaScript

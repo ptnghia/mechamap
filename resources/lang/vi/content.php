@@ -1,12 +1,47 @@
 <?php
 
-/**
- * Content translations
- * Updated: 2025-07-20 12:56:50
- * Visible keys from UI
- */
+return [
+    // Content types
+    'new_message' => 'Tin nhắn mới',
+    'minimize' => 'Thu nhỏ',
+    'list' => 'Danh sách',
+    'chat' => 'Trò chuyện',
+    'engineers' => 'kỹ sư',
+    'active_today' => 'hoạt động hôm nay',
+    'growth_rate' => 'Tỷ lệ tăng trưởng',
+    'join_professional_network' => 'Tham gia mạng lưới chuyên nghiệp',
+    'weekly_trends' => 'Xu hướng tuần',
+    'this_week' => 'tuần này',
+    'featured_discussions' => 'Thảo luận nổi bật',
+    'view_all' => 'Xem tất cả',
+    'top_engineers' => 'Kỹ sư hàng đầu',
+    'leaderboard' => 'Bảng xếp hạng',
+    'this_month' => 'tháng này',
+    'points' => 'điểm',
+    'quick_actions' => 'Thao tác nhanh',
+    'share_project' => 'Chia sẻ dự án',
+    'my_profile' => 'Hồ sơ của tôi',
+    'mechamap' => 'MechaMap',
+    'engineering_community' => 'Cộng đồng Kỹ thuật',
+    'showcase_item' => 'Mục giới thiệu',
 
-return array (
-  'recent_activity' => 'Hoạt động gần đây',
-  'weekly_activity' => 'Hoạt động tuần',
-);
+    // New content specific keys
+    'Newest Threads' => 'Chủ đề mới nhất',
+    'View All' => 'Xem tất cả',
+    'By' => 'Bởi',
+    'in' => 'trong',
+    'Unknown Forum' => 'Diễn đàn không xác định',
+    'No threads found.' => 'Không tìm thấy chủ đề nào.',
+    'Newest Replies' => 'Phản hồi mới nhất',
+    'Reply to' => 'Phản hồi cho',
+    'Unknown Thread' => 'Chủ đề không xác định',
+    'No posts found.' => 'Không tìm thấy bài viết nào.',
+    'Statistics' => 'Thống kê',
+    'Threads' => 'Chủ đề',
+    'Posts' => 'Bài viết',
+    'Members' => 'Thành viên',
+    'Newest Member' => 'Thành viên mới nhất',
+    'None' => 'Không có',
+    'Online Now' => 'Trực tuyến ngay',
+    'Total online' => 'Tổng trực tuyến',
+];

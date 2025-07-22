@@ -41,24 +41,24 @@
                             <img src="{{ Storage::url($page->attachments->first()->file_path) }}" alt="{{ $page->title }}" class="img-fluid rounded" style="max-height: 300px;">
                         </div>
                     @endif
-                    
+
                     <h1 class="mb-3">{{ $page->title }}</h1>
-                    
+
                     @if($page->excerpt)
                         <div class="lead mb-4">
                             {{ $page->excerpt }}
                         </div>
                     @endif
-                    
+
                     <div class="page-content">
                         {!! $page->content !!}
                     </div>
                 </div>
             </div>
-            
+
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('SEO') }}</h5>
+                    <h5 class="card-title mb-0">SEO</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
@@ -133,7 +133,7 @@
                             <span class="text-muted">{{ $page->order }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __(__('ui.common.views')) }}:</span>
+                            <span>{{ __(__("common.views")) }}:</span>
                             <span class="text-muted">{{ $page->view_count }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
@@ -147,7 +147,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="card-title mb-0">{{ __('Thao tác') }}</h5>
@@ -157,7 +157,7 @@
                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-primary">
                             <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
                         </a>
-                        
+
                         @if($page->status == 'draft')
                             <form action="{{ route('admin.pages.update', $page) }}" method="POST">
                                 @csrf
@@ -177,7 +177,7 @@
                                 </button>
                             </form>
                         @endif
-                        
+
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                             <i class="fas fa-trash me-1"></i> {{ __('Xóa bài viết') }}
                         </button>
@@ -186,7 +186,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal xóa bài viết -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">

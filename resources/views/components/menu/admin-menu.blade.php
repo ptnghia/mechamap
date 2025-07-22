@@ -7,7 +7,7 @@
 @php
     $user = auth()->user();
     $currentRoute = request()->route()->getName();
-    
+
     // Main navigation items cho admin
     $mainMenuItems = [
         'home' => [
@@ -35,7 +35,7 @@
             'permission' => 'view-content'
         ]
     ];
-    
+
     // Admin dropdown items
     $adminDropdownItems = [
         'dashboard' => [
@@ -69,7 +69,7 @@
             'permission' => 'manage-system'
         ]
     ];
-    
+
     // User profile dropdown items
     $profileDropdownItems = [
         'profile' => [
@@ -102,7 +102,7 @@
         </a>
 
         <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
                 aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -114,7 +114,7 @@
                 @foreach($mainMenuItems as $key => $item)
                     @if(Route::has($item['route']) && (!$item['permission'] || $user->hasPermission($item['permission'])))
                         <li class="nav-item">
-                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}" 
+                            <a class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}"
                                href="{{ route($item['route']) }}">
                                 <i class="{{ $item['icon'] }} me-1"></i>
                                 {{ $item['title'] }}
@@ -129,7 +129,7 @@
                 <!-- Admin Quick Access Dropdown -->
                 @if($user->canAccessAdmin())
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle admin-dropdown" href="#" id="adminDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle admin-dropdown" href="#" id="adminDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-shield-alt me-1"></i>
                         <span class="...">{{ t_user('roles.admin') }}</span>
@@ -151,7 +151,7 @@
 
                 <!-- Notifications -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" 
+                    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-bell"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -176,9 +176,9 @@
 
                 <!-- User Profile Dropdown -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button" 
+                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}" 
+                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}"
                              alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24">
                         <span class="user-name">{{ $user->name }}</span>
                         <span class="badge bg-{{ $user->role_color ?? 'primary' }} ms-1">{{ $user->role_display_name }}</span>
@@ -200,7 +200,7 @@
                                 @csrf
                                 <button type="submit" class="dropdown-item text-danger">
                                     <i class="fas fa-sign-out-alt me-2"></i>
-                                    {{ __('auth.logout') }}
+                                    {{ t_auth('logout.title') }}
                                 </button>
                             </form>
                         </li>
@@ -277,11 +277,11 @@
         text-align: center !important;
         margin-top: 5px;
     }
-    
+
     .user-dropdown .user-name {
         display: none;
     }
-    
+
     .admin-dropdown .admin-badge {
         font-size: 0.7rem;
         padding: 1px 6px;
