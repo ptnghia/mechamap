@@ -29,15 +29,15 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
 <!-- Marketplace Sidebar -->
 @include('components.sidebar-marketplace', ['user' => auth()->user()])
 @elseif($sidebarType === 'thread-creation')
-<!-- Sidebar chuyên dụng cho trang tạo threads -->
+{{-- {{ t_sidebar('main.thread_creation_sidebar') }} --}}
 @include('components.thread-creation-sidebar')
 @elseif($sidebarType === 'professional')
-<!-- Professional Engineering Sidebar -->
+{{-- {{ t_sidebar('main.professional_sidebar') }} --}}
 @include('components.sidebar-professional', ['user' => auth()->user()])
 @else
-<!-- Sidebar thông thường -->
+{{-- {{ t_sidebar('main.default_sidebar') }} --}}
 <div class="sidebar-container">
-    <!-- Thông tin về cộng đồng -->
+    {{-- {{ t_sidebar('main.community_info') }} --}}
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-body">
             <div class="forum-stats mb-3">
@@ -57,8 +57,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
                 </div>
             </div>
 
-            <p class="mb-3">{{ config('app.description', 'Cộng đồng chia sẻ thông tin về kiến trúc, xây dựng, giao
-                thông, quy hoạch đô thị và nhiều chủ đề khác.') }}</p>
+            <p class="mb-3">{{ config('app.description', t_sidebar('main.community_description')) }}</p>
 
             <div class="d-grid gap-2">
                 @guest
@@ -73,7 +72,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
         </div>
     </div>
 
-    <!-- Các chủ đề mới/nổi bật -->
+    {{-- {{ t_sidebar('main.featured_topics') }} --}}
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0"><i class="fas fa-star me-2 text-warning"></i>{{ t_sidebar('main.featured_topics') }}</h5>
@@ -121,7 +120,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
         </div>
     </div>
 
-    <!-- Các diễn đàn hàng đầu -->
+    {{-- {{ t_sidebar('main.popular_forums') }} --}}
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0"><i class="fas fa-folder me-2 text-primary"></i>{{ t_sidebar('main.popular_forums') }}</h5>
@@ -155,7 +154,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
         </div>
     </div>
 
-    <!-- Những người đóng góp hàng đầu -->
+    {{-- {{ t_sidebar('main.active_members') }} --}}
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0"><i class="fas fa-users me-2 text-success"></i>{{ t_sidebar('main.active_members') }}</h5>
@@ -195,7 +194,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
         </div>
     </div>
 
-    <!-- Các cộng đồng được đề xuất -->
+    {{-- {{ t_sidebar('main.related_communities') }} --}}
     <div class="card shadow-sm rounded-3 mb-4">
         <div class="card-header">
             <h5 class="card-title mb-0"><i class="fas fa-globe me-2 text-info"></i>{{ t_sidebar('main.related_communities') }}</h5>

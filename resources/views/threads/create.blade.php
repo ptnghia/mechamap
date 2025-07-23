@@ -66,28 +66,27 @@
             <div class="card-header-modern">
                 <div class="card-title">
                     <i class="info-circle"></i>
-                    <span>Thông Tin Cơ Bản</span>
+                    <span>{{ __('forum.create.step_basic') }}</span>
                 </div>
-                <div class="card-subtitle">Nhập thông tin cơ bản cho chủ đề của bạn</div>
+                <div class="card-subtitle">{{ __('forum.create.basic_info_subtitle') }}</div>
             </div>
             <div class="card-body-modern">
                 <div class="form-group-modern">
                     <label for="title" class="form-label-modern">
-                        <span class="label-text">Tiêu Đề Chủ Đề</span>
+                        <span class="label-text">{{ __('forum.create.thread_title') }}</span>
                         <span class="label-required">*</span>
                     </label>
                     <div class="input-wrapper">
                         <input type="text" class="form-control-modern @error('title') is-invalid @enderror" id="title"
                             name="title" value="{{ old('title') }}" required
-                            placeholder="Nhập tiêu đề mô tả cho chủ đề của bạn">
+                            placeholder="{{ __('forum.create.title_placeholder') }}">
                         <div class="input-icon">
                             <i class="fas fa-edit-square"></i>
                         </div>
                     </div>
                     <div class="form-help-text">
                         <i class="lightbulb"></i>
-                        <span>Gợi ý: THÀNH PHỐ | Tên Dự Án | Số Tầng | Trạng Thái (VD: HÀ NỘI | Landmark 81 |
-                            81T | Hoàn Thành)</span>
+                        <span>{{ __('forum.create.title_help') }}</span>
                     </div>
                     @error('title')
                     <div class="error-message">
@@ -100,13 +99,13 @@
                 <div class="form-row">
                     <div class="form-group-modern half-width">
                         <label for="category_id" class="form-label-modern">
-                            <span class="label-text">Danh Mục</span>
+                            <span class="label-text">{{ __('forum.create.category_label') }}</span>
                             <span class="label-required">*</span>
                         </label>
                         <div class="select-wrapper">
                             <select class="form-select-modern @error('category_id') is-invalid @enderror"
                                 id="category_id" name="category_id" required>
-                                <option value="">Chọn danh mục</option>
+                                <option value="">{{ __('forum.create.select_category') }}</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id')==$category->id ?
                                     'selected' : '' }}>
@@ -128,13 +127,13 @@
 
                     <div class="form-group-modern half-width">
                         <label for="forum_id" class="form-label-modern">
-                            <span class="label-text">Diễn Đàn</span>
+                            <span class="label-text">{{ __('forum.create.forum_label') }}</span>
                             <span class="label-required">*</span>
                         </label>
                         <div class="select-wrapper">
                             <select class="form-select-modern @error('forum_id') is-invalid @enderror" id="forum_id"
                                 name="forum_id" required>
-                                <option value="">Chọn diễn đàn</option>
+                                <option value="">{{ __('forum.create.select_forum') }}</option>
                                 @foreach($forums as $forum)
                                 <option value="{{ $forum->id }}" {{ old('forum_id')==$forum->id ? 'selected' :
                                     '' }}>
@@ -161,10 +160,10 @@
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" disabled>
                 <i class="chevron-left"></i>
-                <span>Trước</span>
+                <span>{{ __('forum.create.previous') }}</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
-                <span>Tiếp Theo</span>
+                <span>{{ __('forum.create.next') }}</span>
                 <i class="chevron-right"></i>
             </button>
         </div>
@@ -176,14 +175,14 @@
             <div class="card-header-modern">
                 <div class="card-title">
                     <i class="file-text"></i>
-                    <span>Nội Dung Chủ Đề</span>
+                    <span>{{ __('forum.create.step_content') }}</span>
                 </div>
-                <div class="card-subtitle">Viết nội dung chi tiết cho chủ đề của bạn</div>
+                <div class="card-subtitle">{{ __('forum.create.content_subtitle') }}</div>
             </div>
             <div class="card-body-modern">
                 <div class="form-group-modern">
                     <label for="content" class="form-label-modern">
-                        <span class="label-text">Nội Dung</span>
+                        <span class="label-text">{{ __('forum.create.content_label') }}</span>
                         <span class="label-required">*</span>
                     </label>
                     <div class="editor-wrapper">
@@ -191,7 +190,7 @@
                             name="content"
                             id="content"
                             :value="old('content')"
-                            placeholder="Viết nội dung chi tiết cho chủ đề của bạn..."
+                            placeholder="{{ __('forum.create.content_placeholder') }}"
                             context="admin"
                             :height="400"
                             :required="true"
@@ -200,8 +199,7 @@
                     </div>
                     <div class="form-help-text">
                         <i class="magic"></i>
-                        <span>Sử dụng trình soạn thảo để định dạng văn bản, thêm liên kết và chèn hình
-                            ảnh</span>
+                        <span>{{ __('forum.create.content_help') }}</span>
                     </div>
                     @error('content')
                     <div class="error-message">

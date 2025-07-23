@@ -34,6 +34,7 @@ return [
 
   'admin' =>
   [
+    'title' => 'Quản trị',
     'dashboard' => 'Bảng điều khiển Admin',
     'user_management' => 'Quản lý người dùng',
     'forum_management' => 'Quản lý diễn đàn',

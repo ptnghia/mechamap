@@ -11,7 +11,7 @@
     <!-- Banner (optional) -->
     @if($showBanner && get_setting('show_banner', true))
     <div class="header-banner">
-        <img src="{{ get_banner_url() }}" alt="{{ __('messages.header.banner_alt') }}" class="w-100">
+        <img src="{{ get_banner_url() }}" alt="Banner" class="w-100">
     </div>
     @endif
     <div class="header-content" id="header-content">
@@ -41,7 +41,7 @@
                     @endauth
 
                     <!-- Mobile Menu Button - HC-MobileNav -->
-                    <button class="hc-mobile-nav-toggle border-0 bg-transparent" type="button" aria-label="{{ __('messages.header.mobile_nav_toggle') }}">
+                    <button class="hc-mobile-nav-toggle border-0 bg-transparent" type="button" aria-label="Toggle mobile navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
@@ -209,7 +209,7 @@ k
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-shield-check me-1"></i>
-                                    {{ __('navigation.admin.title') }}
+                                    Quản trị
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
@@ -232,7 +232,7 @@ k
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="supplierDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-store me-1"></i>
-                                    {{ __('messages.header.roles.supplier') }}
+                                    Nhà cung cấp
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="supplierDropdown">
                                     <li><a class="dropdown-item" href="{{ route('supplier.dashboard') }}">
@@ -257,7 +257,7 @@ k
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="brandDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-bullhorn me-1"></i>
-                                    {{ __('messages.header.roles.brand') }}
+                                    Thương hiệu
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="brandDropdown">
                                     <li><a class="dropdown-item" href="{{ route('brand.dashboard') }}">
@@ -349,7 +349,7 @@ k
                                         <span id="themeLabel">
                                             <i class="fas fa-moon theme-icon-dark me-2"></i>
                                             <i class="fas fa-sun theme-icon-light me-2 d-none"></i>
-                                            <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? __('messages.header.theme.light_mode') : __('messages.header.theme.dark_mode') }}</span>
+                                            <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? 'Light Mode' : 'Dark Mode' }}</span>
                                         </span>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked' : '' }}>
@@ -389,20 +389,20 @@ k
                                 </div>
                                 <div class="p-3 border-top" id="miniCartFooter" style="display: none;">
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span>{{ __('messages.cart.subtotal') }}</span>
+                                        <span>Subtotal:</span>
                                         <span class="fw-bold" id="miniCartSubtotal">$0.00</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-3 small text-muted">
-                                        <span>{{ __('messages.cart.shipping_taxes_note') }}</span>
+                                        <span>Shipping & taxes calculated at checkout</span>
                                     </div>
                                     <div class="d-grid gap-2">
                                         <a href="{{ route('marketplace.cart.index') }}" class="btn btn-outline-primary btn-sm">
                                             <i class="fas fa-shopping-cart me-1"></i>
-                                            {{ __('messages.cart.view_cart') }}
+                                            View Cart
                                         </a>
                                         <button type="button" class="btn btn-primary btn-sm" onclick="proceedToCheckout()">
                                             <i class="fas fa-credit-card me-1"></i>
-                                            {{ __('messages.cart.checkout') }}
+                                            Checkout
                                         </button>
                                     </div>
                                 </div>
@@ -635,13 +635,13 @@ k
             <div class="modal-content">
                 <div class="modal-header border-0 pb-0">
                     <h5 class="modal-title" id="mobileSearchModalLabel">
-                        <i class="fa-solid fa-search me-2"></i>{{ __('messages.search.mobile.title') }}
+                        <i class="fa-solid fa-search me-2"></i>Search MechaMap
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-2">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg" id="mobileSearchInput" placeholder="{{ __('messages.search.mobile.placeholder') }}" aria-label="Search">
+                        <input type="text" class="form-control form-control-lg" id="mobileSearchInput" placeholder="Search products, forums, members..." aria-label="Search">
                         <button class="btn btn-primary" type="button" id="mobileSearchButton">
                             <i class="fa-solid fa-search"></i>
                         </button>
@@ -651,22 +651,22 @@ k
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="marketplace">
-                                <i class="fa-solid fa-store me-1"></i>{{ __('messages.search.mobile.categories.products') }}
+                                <i class="fa-solid fa-store me-1"></i>Products
                             </button>
                         </div>
                         <div class="col-6">
                             <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="forum">
-                                <i class="fa-solid fa-comments me-1"></i>{{ __('messages.search.mobile.categories.forums') }}
+                                <i class="fa-solid fa-comments me-1"></i>Forums
                             </button>
                         </div>
                         <div class="col-6">
                             <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="members">
-                                <i class="fa-solid fa-users me-1"></i>{{ __('messages.search.mobile.categories.members') }}
+                                <i class="fa-solid fa-users me-1"></i>Members
                             </button>
                         </div>
                         <div class="col-6">
                             <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="technical">
-                                <i class="fa-solid fa-screwdriver-wrench me-1"></i>{{ __('messages.search.mobile.categories.technical') }}
+                                <i class="fa-solid fa-screwdriver-wrench me-1"></i>Technical
                             </button>
                         </div>
                     </div>
@@ -683,10 +683,10 @@ k
                     <div>
                         <h6 class="text-muted mb-2">{{ __('search.suggestions.popular') }}</h6>
                         <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.bearings') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.steel_materials') }}</span>
+                            <span class="badge bg-light text-dark">bearings</span>
+                            <span class="badge bg-light text-dark">steel materials</span>
                             <span class="badge bg-light text-dark">{{ __('forum.search.cad_files') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.manufacturing') }}</span>
+                            <span class="badge bg-light text-dark">manufacturing</span>
                             <span class="badge bg-light text-dark">{{ __('forum.search.iso_standards') }}</span>
                         </div>
                     </div>
@@ -789,7 +789,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (query.length >= 2) {
             // Show loading state
             showSearchResults();
-            searchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="fas fa-hourglass-half me-2"></i>{{ __("messages.search.searching") }}</div>';
+            searchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="fas fa-hourglass-half me-2"></i>Searching...</div>';
 
             // Set a timeout to avoid too many requests
             searchTimeout = setTimeout(function() {
@@ -908,10 +908,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (totalResults === 0) {
             searchResultsContent.innerHTML = `
                 <div class="search-no-results p-3 text-center">
-                    <i class="fas fa-search me-2"></i>{{ t_search("no_results_for") }} "${results.meta.query}".
+                    <i class="fas fa-search me-2"></i>No results found for "${results.meta.query}".
                     <p class="mt-2 mb-0">
                         <a href="${data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
-                            <i class="fas fa-sliders-h me-1"></i>{{ t_search("try_advanced") }}
+                            <i class="fas fa-sliders-h me-1"></i>THỬ TÌM KIẾM NÂNG CAO
                         </a>
                     </p>
                 </div>
@@ -953,7 +953,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Showcases
         if (results.showcases && results.showcases.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-success mb-2"><i class="fas fa-star me-1"></i>{{ __("messages.search.results.showcase") }}</h6>';
+            html += '<h6 class="search-category-title text-success mb-2"><i class="fas fa-star me-1"></i>Showcase</h6>';
             results.showcases.forEach(showcase => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -982,7 +982,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Products
         if (results.products && results.products.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-warning mb-2"><i class="fas fa-shopping-cart me-1"></i>{{ __("messages.search.results.products") }}</h6>';
+            html += '<h6 class="search-category-title text-warning mb-2"><i class="fas fa-shopping-cart me-1"></i>Sản phẩm</h6>';
             results.products.forEach(product => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1013,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Users
         if (results.users && results.users.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-info mb-2"><i class="fas fa-users me-1"></i>{{ __("messages.search.results.members") }}</h6>';
+            html += '<h6 class="search-category-title text-info mb-2"><i class="fas fa-users me-1"></i>Thành viên</h6>';
             results.users.forEach(user => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1042,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted">Tìm thấy ${totalResults} kết quả</small>
                     <a href="${data.advanced_search_url}" class="btn btn-sm btn-outline-primary">
-                        <i class="fas fa-search-plus me-1"></i>{{ __('messages.search.advanced_search') }}
+                        <i class="fas fa-search-plus me-1"></i>Tìm kiếm nâng cao
                     </a>
                 </div>
             </div>
@@ -1067,10 +1067,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!hasThreads && !hasPosts && !hasForum && !hasThread) {
             searchResultsContent.innerHTML = `
                 <div class="search-no-results p-3 text-center">
-                    <i class="fas fa-search me-2"></i>{{ t_search("no_results_for") }} "${searchInput.value}".
+                    <i class="fas fa-search me-2"></i>No results found for "${searchInput.value}".
                     <p class="mt-2">
                         <a href="${data.advanced_search_url || '{{ route('forums.search.advanced') }}'}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
-                            <i class="fas fa-sliders-h me-1"></i>{{ t_search("try_advanced") }}
+                            <i class="fas fa-sliders-h me-1"></i>THỬ TÌM KIẾM NÂNG CAO
                         </a>
                     </p>
                 </div>
@@ -1160,7 +1160,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsHTML += `
             <div class="text-center mt-3">
                 <a href="/search?query=${encodeURIComponent(searchInput.value)}&type=all" class="btn btn-sm btn-outline-primary">
-                    {{ __('messages.search.view_all_results') }}
+                    Xem tất cả kết quả
                 </a>
             </div>
         `;
@@ -1205,12 +1205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isDark) {
                 themeIconDark.classList.add('d-none');
                 themeIconLight.classList.remove('d-none');
-                themeText.textContent = '{{ __('messages.header.theme.light_mode') }}';
+                themeText.textContent = '{{ t_ui('common.light_mode') }}';
                 document.body.classList.add('dark-mode');
             } else {
                 themeIconDark.classList.remove('d-none');
                 themeIconLight.classList.add('d-none');
-                themeText.textContent = '{{ __('messages.header.theme.dark_mode') }}';
+                themeText.textContent = '{{ t_ui('common.dark_mode') }}';
                 document.body.classList.remove('dark-mode');
             }
         });
@@ -1263,8 +1263,8 @@ document.addEventListener('DOMContentLoaded', function() {
             miniCartItems.innerHTML = `
                 <div class="text-center text-muted py-4">
                     <i class="fas fa-shopping-cart-x" style="font-size: 2.5rem;"></i>
-                    <p class="mb-0 mt-2">{{ __('messages.cart.empty_message') }}</p>
-                    <small>{{ __('messages.cart.add_items_message') }}</small>
+                    <p class="mb-0 mt-2">Your cart is empty</p>
+                    <small>Add some products to get started</small>
                 </div>
             `;
         } else {
@@ -1295,7 +1295,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="col-3 text-end">
                                 <div class="fw-bold small">$${item.total_price}</div>
                                 <button type="button" class="btn btn-sm btn-outline-danger mt-1 mini-cart-remove-btn"
-                                        data-item-id="${item.id}" title="{{ __('messages.cart.remove_item') }}">
+                                        data-item-id="${item.id}" title="Remove">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
@@ -1336,7 +1336,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             if (typeof showToast === 'function') {
-                showToast('error', '{{ __('messages.cart.remove_failed') }}');
+                showToast('error', 'Failed to remove item');
             }
         });
     };
@@ -1390,7 +1390,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="mb-1 text-muted font-size-13">${notification.message}</p>
                             <small class="text-muted">${notification.time_ago}</small>
                         </div>
-                        ${!notification.is_read ? '<div class="ms-2"><span class="badge bg-primary rounded-pill">{{ __('messages.notifications.new_badge') }}</span></div>' : ''}
+                        ${!notification.is_read ? '<div class="ms-2"><span class="badge bg-primary rounded-pill">Mới</span></div>' : ''}
                     </div>
                 </div>
             `;

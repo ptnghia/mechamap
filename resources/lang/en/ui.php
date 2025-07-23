@@ -1,101 +1,197 @@
 <?php
 
-/**
- * Ui Translation File - English (COMPREHENSIVE)
- * Complete translation coverage for ui functionality
- * Auto-updated: 2025-07-22 03:56:38
- */
+return [
+    'actions' => [
+        'close' => 'Close',
+    ],
 
-return array (
-  'buttons' =>
-  array (
-    'add' => 'Add',
-    'cancel' => 'Cancel',
-    'save' => 'Save',
-    'delete' => 'Delete',
-    'edit' => 'Edit',
-    'close' => 'Close',
-    'submit' => 'Submit',
-    'back' => 'Back',
-    'next' => 'Next',
-    'previous' => 'Previous',
-    'confirm' => 'Confirm',
-    'reset' => 'Reset',
-    'view_details' => 'View details',
-    'view_all' => 'View all',
-  ),
-  'pagination' =>
-  array (
-    'previous' => 'Previous',
-    'next' => 'Next',
-    'page' => 'Page',
-    'of' => 'of',
-    'showing' => 'Showing',
-    'to' => 'to',
-    'results' => 'results',
-    'first' => 'First',
-    'last' => 'Last',
-  ),
-  'forms' =>
-  array (
-    'search_conversations_placeholder' => 'Search conversations...',
-    'enter_message_placeholder' => 'Enter message...',
-    'search_members_placeholder' => 'Search members...',
-    'search_placeholder' => 'Search...',
-  ),
-  'get_started' => 'Get started',
-  'no_media_to_display' => 'No media to display',
-  'no_information_provided' => 'No information provided',
-  'no_recent_activity' => 'No recent activity',
-  'no_posts_found_matching_criteria' => 'No posts found matching your search criteria',
-  'common' =>
-  array (
-    'loading' => 'Loading...',
-  ),
-  'common.light_mode' => 'Light mode',
-  'common.dark_mode' => 'Dark mode',
-  'common.popular_searches' => 'Popular searches',
-  'common.no_results_found' => 'No results found',
-  'common.auto_saving' => 'Auto saving...',
-  'language.switched_successfully' => 'Language switched successfully',
-  'language.switch_failed' => 'Language switch failed',
-  'language.auto_detected' => 'Auto detected',
-  'actions.view_full_showcase' => 'View full showcase',
-  'actions.cancel' => 'Cancel',
-  'buttons.add' => 'Add',
-  'common.light_mode' => 'Light mode',
-  'common.dark_mode' => 'Dark mode',
-  'ui.menu.toggle' => 'Toggle menu',
-  'ui.menu.close' => 'Close menu',
-  'community.browse_categories' => 'Browse Categories',
-  'search.advanced_search' => 'Advanced Search',
-  'actions.view_full_showcase' => 'View full showcase',
-  'actions.view_details' => 'View details',
-  'actions.cancel' => 'Cancel',
-  'actions.sort' => 'Sort',
-  'actions.search' => 'Search',
-  'actions.apply_filters' => 'Apply Filters',
-  'actions.clear_filters' => 'Clear Filters',
-  'pagination.page' => 'Page',
-  'pagination.of' => 'of',
-  'pagination.previous' => 'Previous',
-  'pagination.next' => 'Next',
-  'actions.view_details' => 'View Details',
-  'pagination.go_to_page' => 'Go to Page',
-  'buttons.view_all' => 'View All',
-  'pagination.load_more' => 'Load More',
-  'status.sticky' => 'Sticky',
-  'status.locked' => 'Locked',
-  'common.loading' => 'Loading...',
-  'pagination.no_more_posts' => 'No more posts',
-  'common.error_occurred' => 'An error occurred',
-  'forms.search_conversations_placeholder' => 'Search conversations...',
-  'forms.enter_message_placeholder' => 'Enter message...',
-  'forms.search_members_placeholder' => 'Search members...',
-  'buttons.cancel' => 'Cancel',
-  'language.switched_successfully' => 'Language switched successfully',
-  'language.switch_failed' => 'Language switch failed',
-  'language.auto_detected' => 'Auto detected',
-  'pagination_navigation' => 'Pagination Navigation',
-  'auth.login_to_view_notifications' => 'Login to view notifications',
-);
+    'actions.apply_filters' => [
+    ],
+
+    'actions.cancel' => [
+    ],
+
+    'actions.clear_filters' => [
+    ],
+
+    'actions.search' => [
+    ],
+
+    'actions.sort' => [
+    ],
+
+    'actions.view_details' => [
+    ],
+
+    'actions.view_full_showcase' => [
+    ],
+
+    'auth.login_to_view_notifications' => [
+    ],
+
+    'buttons' => [
+        'add' => 'Add',
+        'back' => 'Back',
+        'cancel' => 'Cancel',
+        'close' => 'Close',
+        'confirm' => 'Confirm',
+        'delete' => 'Delete',
+        'edit' => 'Edit',
+        'next' => 'Next',
+        'previous' => 'Previous',
+        'reset' => 'Reset',
+        'save' => 'Save',
+        'submit' => 'Submit',
+        'view_all' => 'View all',
+        'view_details' => 'View details',
+    ],
+
+    'buttons.add' => [
+    ],
+
+    'buttons.cancel' => [
+    ],
+
+    'buttons.view_all' => [
+    ],
+
+    'common' => [
+        'loading' => 'Loading...',
+    ],
+
+    'common.auto_saving' => [
+    ],
+
+    'common.dark_mode' => [
+    ],
+
+    'common.error_occurred' => [
+    ],
+
+    'common.light_mode' => [
+    ],
+
+    'common.loading' => [
+    ],
+
+    'common.no_results_found' => [
+    ],
+
+    'common.popular_searches' => [
+    ],
+
+    'community.browse_categories' => [
+    ],
+
+    'forms' => [
+        'enter_message_placeholder' => 'Enter message...',
+        'search_conversations_placeholder' => 'Search conversations...',
+        'search_members_placeholder' => 'Search members...',
+        'search_placeholder' => 'Search...',
+    ],
+
+    'forms.enter_message_placeholder' => [
+    ],
+
+    'forms.search_conversations_placeholder' => [
+    ],
+
+    'forms.search_members_placeholder' => [
+    ],
+
+    'get_started' => [
+    ],
+
+    'language.auto_detected' => [
+    ],
+
+    'language.switch_failed' => [
+    ],
+
+    'language.switched_successfully' => [
+    ],
+
+    'navigation' => [
+        'admin' => 'Admin',
+        'brand' => 'Brand',
+        'discussions' => 'Discussions',
+        'members' => 'Members',
+        'products' => 'Products',
+        'supplier' => 'Supplier',
+    ],
+
+    'no_information_provided' => [
+    ],
+
+    'no_media_to_display' => [
+    ],
+
+    'no_posts_found_matching_criteria' => [
+    ],
+
+    'no_recent_activity' => [
+    ],
+
+    'notifications' => [
+        'checking_duplicate' => 'Checking for duplicate',
+        'hidden_duplicate' => 'Hidden duplicate',
+        'no_duplicate' => 'No duplicate',
+    ],
+
+    'pagination' => [
+        'first' => 'First',
+        'go_to_page' => 'Go to page',
+        'last' => 'Last',
+        'load_more' => 'Load more',
+        'next' => 'Next',
+        'no_more_posts' => 'No more posts',
+        'of' => 'of',
+        'page' => 'Page',
+        'previous' => 'Previous',
+        'results' => 'results',
+        'showing' => 'Showing',
+        'to' => 'to',
+    ],
+
+
+
+    'pagination_navigation' => [
+    ],
+
+    'search' => [
+        'advanced' => 'Advanced Search',
+        'error_message' => 'Search failed. Please try again.',
+        'found' => 'Found',
+        'no_results_for' => 'No results found for',
+        'placeholder' => 'Search products, forums, members...',
+        'results' => 'results',
+        'title' => 'Search MechaMap',
+        'try_advanced' => 'TRY ADVANCED SEARCH',
+        'view_all_results' => 'View all results',
+    ],
+
+    'search.advanced_search' => [
+    ],
+
+    'status' => [
+        'new' => 'New',
+    ],
+
+    'status.locked' => [
+    ],
+
+    'status.sticky' => [
+    ],
+
+    'theme' => [
+        'dark_mode' => 'Dark Mode',
+        'light_mode' => 'Light Mode',
+    ],
+
+    'ui.menu.close' => [
+    ],
+
+    'ui.menu.toggle' => [
+    ],
+
+];

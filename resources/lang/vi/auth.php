@@ -194,6 +194,12 @@ return array (
     'note_verification_time' => 'Quá trình xác thực có thể mất 1-3 ngày làm việc',
     'note_email_notification' => 'Bạn sẽ nhận được email thông báo khi xác thực hoàn tất',
     'note_pending_access' => 'Trong thời gian chờ xác thực, bạn có thể duyệt nội dung với quyền hạn chế',
+    'account_type_placeholder' => 'Chọn loại tài khoản của bạn',
+    'account_type_help' => 'Chọn loại tài khoản phù hợp với mục đích sử dụng. Bạn có thể thay đổi sau này.',
+    'step_indicator' => 'Bước :current/:total',
+    'step1_label' => 'Thông tin cá nhân',
+    'step2_label' => 'Thông tin doanh nghiệp',
+    'progress_complete' => ':percent% hoàn thành',
   ),
   'verification' =>
   array (

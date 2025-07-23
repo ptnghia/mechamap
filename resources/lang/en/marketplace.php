@@ -1,501 +1,1083 @@
 <?php
 
-/**
- * Marketplace Translation File - English (COMPREHENSIVE)
- * Complete translation coverage for marketplace functionality
- * Auto-updated: 2025-07-22 03:55:43
- */
+return [
+    'account_support' => [
+    ],
 
-return array (
-  'discover_shopping' => 'Discover & Shopping',
-  'by_purpose' => 'By Purpose',
-  'suppliers_partners' => 'Suppliers & Partners',
-  'account_support' => 'Account & Support',
-  'products' =>
-  array (
-    'all' => 'All Products',
-    'all_desc' => 'Browse all available products',
-    'featured' => 'Featured Products',
-    'featured_desc' => 'Handpicked quality products',
-    'newest' => 'New Arrivals',
-    'newest_desc' => 'Latest products added',
-    'discounts' => 'Deals & Discounts',
-    'discounts_desc' => 'Special offers and sales',
-    'digital' => 'Digital Products',
-    'digital_desc' => 'CAD files, designs, software',
-    'new' => 'New Products',
-    'new_desc' => 'Brand new items',
-    'used' => 'Used Products',
-    'used_desc' => 'Pre-owned quality items',
-  ),
-  'search' =>
-  array (
-    'advanced' => 'Advanced Search',
-    'advanced_desc' => 'Detailed product filtering',
-  ),
-  'suppliers' =>
-  array (
-    'all' => 'All Suppliers',
-    'all_desc' => 'Browse supplier directory',
-    'verified' => 'Verified Suppliers',
-    'verified_desc' => 'Trusted verified sellers',
-    'top_sellers' => 'Top Sellers',
-    'top_sellers_desc' => 'Highest rated suppliers',
-  ),
-  'company_profiles' => 'Company Profiles',
-  'company_profiles_desc' => 'Business information & contacts',
-  'cart' =>
-  array (
-    'title' => 'Shopping Cart',
-    'desc' => 'View and manage cart items',
-  ),
-  'my_orders' => 'My Orders',
-  'my_orders_desc' => 'Track order status & history',
-  'wishlist' => 'Wishlist',
-  'wishlist_desc' => 'Saved favorite products',
-  'seller_dashboard' => 'Seller Dashboard',
-  'seller_dashboard_desc' => 'Manage your products & sales',
-  'help_support' => 'Help & Support',
-  'help_support_desc' => 'Get assistance & guidance',
-  'login_desc' => 'Access your marketplace account',
-  'register_desc' => 'Join the marketplace community',
-  'cart.empty_message' => 'Cart is empty',
-  'cart.add_items' => 'Add items',
-  'suppliers.title' => 'Suppliers',
-  'rfq.title' => 'Request for Quote',
-  'bulk_orders' => 'Bulk orders',
-  'downloads' => 'Downloads',
-  'in_stock' => 'In stock',
-  'out_of_stock' => 'Out of stock',
-  'advanced_search' => 'Advanced search',
-  'close' => 'Close',
-  'keywords' => 'Keywords',
-  'search_descriptions' => 'Search descriptions',
-  'use_quotes_help' => 'Use quotes for exact phrase search',
-  'checkout.title' => 'Checkout',
-  'checkout.secure_checkout' => 'Secure Checkout',
-  'checkout.steps.shipping' => 'Shipping',
-  'checkout.steps.payment' => 'Payment',
-  'checkout.steps.review' => 'Review',
-  'checkout.shipping_information' => 'Shipping Information',
-  'checkout.first_name' => 'First Name',
-  'checkout.last_name' => 'Last Name',
-  'checkout.email_address' => 'Email Address',
-  'checkout.phone_number' => 'Phone Number',
-  'checkout.address_line_1' => 'Address Line 1',
-  'checkout.address_line_2' => 'Address Line 2',
-  'checkout.city' => 'City',
-  'checkout.state_province' => 'State/Province',
-  'checkout.postal_code' => 'Postal Code',
-  'checkout.country' => 'Country',
-  'checkout.select_country' => 'Select Country',
-  'countries.vietnam' => 'Vietnam',
-  'countries.united_states' => 'United States',
-  'countries.canada' => 'Canada',
-  'countries.united_kingdom' => 'United Kingdom',
-  'countries.australia' => 'Australia',
-  'checkout.billing_same_as_shipping' => 'Billing address same as shipping',
-  'checkout.billing_information' => 'Billing Information',
-  'checkout.back_to_cart' => 'Back to Cart',
-  'checkout.continue_to_payment' => 'Continue to Payment',
-  'checkout.back_to_shipping' => 'Back to Shipping',
-  'checkout.review_order' => 'Review Order',
-  'checkout.back_to_payment' => 'Back to Payment',
-  'checkout.complete_order' => 'Complete Order',
-  'checkout.payment_information' => 'Payment Information',
-  'checkout.payment_method' => 'Payment Method',
-  'checkout.credit_debit_card' => 'Credit/Debit Card',
-  'checkout.bank_transfer' => 'Bank Transfer',
-  'checkout.stripe_redirect_message' => 'You will be redirected to Stripe for secure payment',
-  'checkout.sepay_redirect_message' => 'You will be redirected to SePay for payment',
-  'checkout.review_your_order' => 'Review Your Order',
-  'checkout.shipping_address' => 'Shipping Address',
-  'checkout.payment_method_label' => 'Payment Method',
-  'cart.subtotal' => 'Subtotal',
-  'cart.shipping' => 'Shipping',
-  'cart.tax' => 'Tax',
-  'cart.total' => 'Total',
-  'checkout.calculated_at_next_step' => 'Calculated at next step',
-  'checkout.payment_secure_encrypted' => 'Payment is secure and encrypted',
-  'checkout.failed_to_process_payment' => 'Failed to process payment',
-  'checkout.failed_to_load_review' => 'Failed to load review',
-  'checkout.place_order' => 'Place Order',
-  'error' => 'Error',
-  'success' => 'Success',
-  'product_management.create_product' => 'Create Product',
-  'product_management.create_physical_product' => 'Create new physical product',
-  'product_management.back' => 'Back',
-  'product_management.basic_information' => 'Basic Information',
-  'product_management.product_name' => 'Product Name',
-  'product_management.category' => 'Category',
-  'product_management.select_category' => 'Select Category',
-  'product_management.material' => 'Material',
-  'product_management.material_placeholder' => 'e.g., Stainless Steel, Aluminum, Plastic...',
-  'product_management.short_description' => 'Short Description',
-  'product_management.short_description_placeholder' => 'Brief description of the product...',
-  'product_management.detailed_description' => 'Detailed Description',
-  'product_management.detailed_description_placeholder' => 'Detailed description of product, features, applications...',
-  'product_management.pricing_inventory' => 'Pricing & Inventory',
-  'product_management.selling_price' => 'Selling Price',
-  'product_management.currency_vnd' => 'VND',
-  'product_management.sale_price' => 'Sale Price',
-  'product_management.stock_quantity' => 'Stock Quantity',
-  'product_management.inventory_management' => 'Inventory Management',
-  'product_management.auto_manage_stock' => 'Automatically manage stock',
-  'product_management.auto_manage_stock_help' => 'System will automatically update stock quantity when orders are placed',
-  'product_management.technical_specifications' => 'Technical Specifications',
-  'product_management.manufacturing_process' => 'Manufacturing Process',
-  'product_management.manufacturing_process_placeholder' => 'e.g., CNC Machining, Casting, Welding...',
-  'product_management.tags' => 'Tags',
-  'product_management.tags_placeholder' => 'Enter tags separated by commas',
-  'product_management.detailed_technical_specs' => 'Detailed Technical Specifications',
-  'product_management.spec_name_placeholder' => 'Specification name',
-  'product_management.spec_value_placeholder' => 'Value',
-  'product_management.spec_unit_placeholder' => 'Unit',
-  'product_management.add_specification' => 'Add Specification',
-  'product_management.product_images' => 'Product Images',
-  'product_management.upload_images' => 'Upload Images',
-  'product_management.image_upload_help' => 'Upload up to 10 images. Formats: JPG, PNG, WEBP. Max size: 5MB per file.',
-  'product_management.actions' => 'Actions',
-  'product_management.create_product_btn' => 'Create Product',
-  'product_management.save_draft' => 'Save Draft',
-  'product_management.cancel' => 'Cancel',
-  'product_management.help_guide' => 'Help Guide',
-  'product_management.help_complete_info' => 'Complete product information to increase sales potential',
-  'product_management.help_quality_images' => 'Use high-quality images to attract customers',
-  'product_management.help_detailed_description' => 'Detailed descriptions help customers understand the product',
-  'product_management.help_approval_time' => 'Products will be approved within 24-48 hours',
-  'product_management.price_validation_error' => 'Sale price must be lower than regular selling price',
-  'cart.title' => 'Shopping Cart',
-  'cart.shopping_cart' => 'Shopping Cart',
-  'cart.items' => 'items',
-  'cart.select_all' => 'Select All',
-  'cart.remove_selected' => 'Remove Selected',
-  'cart.clear_cart' => 'Clear Cart',
-  'cart.remove' => 'Remove',
-  'cart.save_for_later' => 'Save for Later',
-  'cart.empty_cart' => 'Your cart is empty',
-  'cart.empty_cart_message' => 'You have no items in your cart',
-  'cart.continue_shopping' => 'Continue Shopping',
-  'cart.product_no_longer_available' => 'Product no longer available',
-  'cart.available' => 'available',
-  'cart.order_summary' => 'Order Summary',
-  'cart.subtotal' => 'Subtotal',
-  'cart.shipping' => 'Shipping',
-  'cart.free' => 'Free',
-  'cart.calculate_shipping' => 'Calculate Shipping',
-  'cart.tax' => 'Tax',
-  'cart.total' => 'Total',
-  'cart.coupon_code' => 'Coupon Code',
-  'cart.apply' => 'Apply',
-  'cart.proceed_to_checkout' => 'Proceed to Checkout',
-  'cart.ssl_encryption' => 'SSL Encryption',
-  'cart.shipping_information' => 'Shipping Information',
-  'cart.free_shipping_over' => 'Free shipping for orders over 500,000 VND',
-  'cart.standard_delivery' => 'Standard delivery: 2-3 business days',
-  'cart.express_delivery_available' => 'Express same-day delivery available',
-  'cart.recently_viewed_products' => 'Recently Viewed Products',
-  'cart.no_recently_viewed' => 'No recently viewed products',
-  'cart.clear_cart_confirm' => 'Are you sure you want to clear all items from your cart?',
-  'cart.clear_cart_success' => 'All items removed from cart',
-  'cart.clear_cart_failed' => 'Failed to clear cart',
-  'cart.remove_selected_confirm' => 'Are you sure you want to remove :count selected items?',
-  'cart.remove_selected_failed' => 'Failed to remove selected items',
-  'cart.please_select_items' => 'Please select items to remove',
-  'cart.coupon_required' => 'Please enter coupon code',
-  'cart.coupon_apply_failed' => 'Failed to apply coupon',
-  'cart.save_for_later_message' => 'Item saved for later',
-  'loading' => 'Loading...',
-  'error' => 'Error',
-  'success' => 'Success',
-  'warning' => 'Warning',
-  'checkout.place_order' => 'Place Order',
-  'categories.title' => 'Product Categories',
-  'categories.page_title' => 'Marketplace Categories',
-  'categories.description' => 'Explore product categories in the marketplace',
-  'categories.browse_categories' => 'Browse Categories',
-  'categories.all_categories' => 'All Categories',
-  'categories.products_count' => 'products',
-  'categories.view_category' => 'View Category',
-  'categories.view_all_products' => 'View All Products',
-  'categories.no_products' => 'No products yet',
-  'categories.popular_categories' => 'Popular Categories',
-  'categories.featured_categories' => 'Featured Categories',
-  'categories.search_categories' => 'Search Categories',
-  'categories.search_placeholder' => 'Enter category name...',
-  'categories.filter_by' => 'Filter by',
-  'categories.sort_by' => 'Sort by',
-  'categories.sort_name' => 'Name',
-  'categories.sort_products_count' => 'Product Count',
-  'categories.sort_popularity' => 'Popularity',
-  'categories.main_categories' => 'Main Categories',
-  'categories.subcategories' => 'Subcategories',
-  'categories.parent_category' => 'Parent Category',
-  'categories.explore' => 'Explore',
-  'categories.browse' => 'Browse',
-  'categories.view_details' => 'View Details',
-  'categories.total_categories' => 'Total Categories',
-  'categories.active_categories' => 'Active Categories',
-  'categories.new_this_month' => 'New This Month',
-  'categories.no_categories_found' => 'No categories found',
-  'categories.try_different_search' => 'Try a different search',
-  'categories.browse_all' => 'Browse All',
-  'categories.category_info' => 'Category Information',
-  'categories.created_date' => 'Created Date',
-  'categories.last_updated' => 'Last Updated',
-  'categories.status' => 'Status',
-  'categories.active' => 'Active',
-  'categories.inactive' => 'Inactive',
-  'marketplace.title' => 'Marketplace',
-  'marketplace.product_categories' => 'Product Categories',
-  'marketplace.browse_products_by_category' => 'Browse products by category',
-  'marketplace.advanced_search' => 'Advanced Search',
-  'marketplace.view_options' => 'View Options',
-  'marketplace.grid_view' => 'Grid View',
-  'marketplace.list_view' => 'List View',
-  'marketplace.sort_by_name' => 'Sort by Name',
-  'marketplace.sort_by_product_count' => 'Sort by Product Count',
-  'marketplace.total_categories' => 'Total Categories',
-  'marketplace.total_products' => 'Total Products',
-  'marketplace.active_sellers' => 'Active Sellers',
-  'marketplace.new_this_week' => 'New This Week',
-  'marketplace.featured_categories' => 'Featured Categories',
-  'marketplace.featured' => 'Featured',
-  'marketplace.browse' => 'Browse',
-  'marketplace.all_categories' => 'All Categories',
-  'marketplace.subcategories' => 'Subcategories',
-  'marketplace.more' => 'More',
-  'marketplace.browse_products' => 'Browse Products',
-  'marketplace.commission' => 'Commission',
-  'marketplace.watch_for_new_products' => 'Watch for new products',
-  'marketplace.updated' => 'Updated',
-  'marketplace.trending' => 'Trending',
-  'cart.title' => 'Shopping Cart',
-  'cart.empty_message' => 'Your cart is empty',
-  'cart.add_items' => 'Add items to your cart',
-  'marketplace.browse' => 'Browse marketplace',
-  'marketplace.categories' => 'Categories',
-  'marketplace.featured' => 'Featured',
-  'marketplace.new_arrivals' => 'New Arrivals',
-  'marketplace.deals' => 'Deals',
-  'products.digital_products' => 'Digital Products',
-  'products.cad_files' => 'CAD Files',
-  'products.technical_drawings' => 'Technical Drawings',
-  'products.3d_models' => '3D Models',
-  'products.software_tools' => 'Software Tools',
-  'products.physical_products' => 'Physical Products',
-  'products.components' => 'Components',
-  'products.materials' => 'Materials',
-  'products.tools_equipment' => 'Tools & Equipment',
-  'products.machinery' => 'Machinery',
-  'products.services' => 'Services',
-  'products.consulting' => 'Consulting',
-  'products.design_services' => 'Design Services',
-  'products.manufacturing' => 'Manufacturing',
-  'products.testing_validation' => 'Testing & Validation',
-  'products.featured_products' => 'Featured Products',
-  'products.new_arrivals' => 'New Arrivals',
-  'products.best_sellers' => 'Best Sellers',
-  'products.on_sale' => 'On Sale',
-  'products.browse_all' => 'Browse All',
-  'products.view_category' => 'View Category',
-  'products.explore_more' => 'Explore More',
-  'discover_shopping' => 'Discover Shopping',
-  'by_purpose' => 'By Purpose',
-  'suppliers_partners' => 'Suppliers & Partners',
-  'account_support' => 'Account & Support',
-  'products.all' => 'All Products',
-  'products.all_desc' => 'Browse entire marketplace',
-  'products.featured' => 'Featured Products',
-  'products.featured_desc' => 'Top recommended products',
-  'products.newest' => 'Newest Items',
-  'products.newest_desc' => 'Recently added products',
-  'products.discounts' => 'Deals & Discounts',
-  'products.discounts_desc' => 'Save with best deals',
-  'search.advanced' => 'Advanced Search',
-  'search.advanced_desc' => 'Search with detailed filters',
-  'products.digital' => 'Digital Products',
-  'products.digital_desc' => 'CAD files, drawings, software',
-  'products.new' => 'New Products',
-  'products.new_desc' => 'New components and equipment',
-  'products.used' => 'Used Products',
-  'products.used_desc' => 'Pre-owned machinery and equipment',
-  'suppliers.all' => 'All Suppliers',
-  'suppliers.all_desc' => 'Browse supplier directory',
-  'suppliers.verified' => 'Verified Suppliers',
-  'suppliers.verified_desc' => 'Trusted verified partners',
-  'suppliers.top_sellers' => 'Top Sellers',
-  'suppliers.top_sellers_desc' => 'Highest rated sellers',
-  'company_profiles' => 'Company Profiles',
-  'company_profiles_desc' => 'Detailed business information',
-  'cart.title' => 'Shopping Cart',
-  'cart.desc' => 'View and manage your cart',
-  'my_orders' => 'My Orders',
-  'my_orders_desc' => 'Track orders and history',
-  'wishlist' => 'Wishlist',
-  'wishlist_desc' => 'Save items for later',
-  'seller_dashboard' => 'Seller Dashboard',
-  'seller_dashboard_desc' => 'Manage products and sales',
-  'login_desc' => 'Sign in to your account',
-  'register_desc' => 'Create new account',
-  'help_support' => 'Help & Support',
-  'help_support_desc' => 'Get help and support',
-  'products.all' => 'All Products',
-  'categories.title' => 'Categories',
-  'suppliers.title' => 'Suppliers',
-  'products.featured' => 'Featured Products',
-  'rfq.title' => 'Request for Quote',
-  'bulk_orders' => 'Bulk Orders',
-  'my_orders' => 'My Orders',
-  'cart.title' => 'Shopping Cart',
-  'downloads' => 'Downloads',
-  'checkout.title' => 'Checkout',
-  'checkout.secure_checkout' => 'Secure Checkout',
-  'checkout.steps.shipping' => 'Shipping',
-  'checkout.steps.payment' => 'Payment',
-  'checkout.steps.review' => 'Review',
-  'checkout.shipping_information' => 'Shipping Information',
-  'checkout.first_name' => 'First Name',
-  'checkout.last_name' => 'Last Name',
-  'checkout.email_address' => 'Email Address',
-  'checkout.phone_number' => 'Phone Number',
-  'checkout.address_line_1' => 'Address Line 1',
-  'checkout.address_line_2' => 'Address Line 2',
-  'checkout.city' => 'City',
-  'checkout.state_province' => 'State/Province',
-  'checkout.postal_code' => 'Postal Code',
-  'checkout.country' => 'Country',
-  'checkout.select_country' => 'Select Country',
-  'countries.vietnam' => 'Vietnam',
-  'countries.united_states' => 'United States',
-  'countries.canada' => 'Canada',
-  'countries.united_kingdom' => 'United Kingdom',
-  'countries.australia' => 'Australia',
-  'checkout.billing_same_as_shipping' => 'Billing address same as shipping',
-  'checkout.billing_information' => 'Billing Information',
-  'checkout.back_to_cart' => 'Back to Cart',
-  'checkout.continue_to_payment' => 'Continue to Payment',
-  'checkout.back_to_shipping' => 'Back to Shipping',
-  'checkout.review_order' => 'Review Order',
-  'checkout.back_to_payment' => 'Back to Payment',
-  'checkout.complete_order' => 'Complete Order',
-  'checkout.payment_information' => 'Payment Information',
-  'checkout.payment_method' => 'Payment Method',
-  'checkout.credit_debit_card' => 'Credit/Debit Card',
-  'checkout.bank_transfer' => 'Bank Transfer',
-  'checkout.stripe_redirect_message' => 'You will be redirected to Stripe for secure payment',
-  'checkout.sepay_redirect_message' => 'You will be redirected to SePay for payment',
-  'checkout.review_your_order' => 'Review Your Order',
-  'checkout.shipping_address' => 'Shipping Address',
-  'checkout.payment_method_label' => 'Payment Method',
-  'cart.subtotal' => 'Subtotal',
-  'cart.shipping' => 'Shipping',
-  'cart.tax' => 'Tax',
-  'cart.total' => 'Total',
-  'checkout.calculated_at_next_step' => 'Calculated at next step',
-  'checkout.payment_secure_encrypted' => 'Payment is secure and encrypted',
-  'checkout.failed_to_process_payment' => 'Failed to process payment',
-  'checkout.failed_to_load_review' => 'Failed to load review',
-  'checkout.place_order' => 'Place Order',
-  'error' => 'Error',
-  'success' => 'Success',
-  'marketplace.home' => 'Home',
-  'marketplace.marketplace' => 'Marketplace',
-  'products.title' => 'Products',
-  'products.verified' => 'Verified',
-  'products.service' => 'Service',
-  'products.manufacturer' => 'Manufacturer',
-  'marketplace.sold_by' => 'Sold by',
-  'marketplace.seller_not_available' => 'Seller not available',
-  'marketplace.reviews' => 'reviews',
-  'marketplace.in_stock' => 'In Stock',
-  'marketplace.out_of_stock' => 'Out of Stock',
-  'marketplace.add_to_cart' => 'Add to Cart',
-  'marketplace.add_to_wishlist' => 'Add to Wishlist',
-  'marketplace.product_description' => 'Product Description',
-  'marketplace.technical_specifications' => 'Technical Specifications',
-  'marketplace.lead_time' => 'Lead Time',
-  'marketplace.minimum_order' => 'Minimum Order',
-  'marketplace.precision' => 'Precision',
-  'marketplace.quality_standard' => 'Quality Standard',
-  'marketplace.material_options' => 'Material Options',
-  'marketplace.delivery' => 'Delivery',
-  'marketplace.related_products' => 'Related Products',
-  'seller_dashboard' => 'Seller Dashboard',
-  'seller_menu' => 'Seller Menu',
-  'dashboard' => 'Dashboard',
-  'my_products' => 'My Products',
-  'my_orders' => 'My Orders',
-  'analytics' => 'Analytics',
-  'seller_info' => 'Seller Info',
-  'status' => 'Status',
-  'status.active' => 'Active',
-  'status.pending' => 'Pending',
-  'status.approved' => 'Approved',
-  'welcome_seller' => 'Welcome, :name!',
-  'seller_dashboard_desc' => 'Manage your products, orders and track your sales.',
-  'add_product' => 'Add Product',
-  'total_products' => 'Total Products',
-  'total_sales' => 'Total Sales',
-  'total_orders' => 'Total Orders',
-  'this_month_sales' => 'This Month Sales',
-  'quick_actions' => 'Quick Actions',
-  'add_new_product' => 'Add New Product',
-  'manage_products' => 'Manage Products',
-  'view_orders' => 'View Orders',
-  'product_status' => 'Product Status',
-  'active' => 'Active',
-  'pending' => 'Pending',
-  'total' => 'Total',
-  'recent_products' => 'Recent Products',
-  'view_all' => 'View All',
-  'no_products_yet' => 'No products yet.',
-  'recent_orders' => 'Recent Orders',
-  'order_status.completed' => 'Completed',
-  'order_status.pending' => 'Pending',
-  'order_status.processing' => 'Processing',
-  'order_status.shipped' => 'Shipped',
-  'no_orders_yet' => 'No orders yet.',
-  'products.title' => 'Products',
-  'marketplace.discover_products' => 'Discover Products',
-  'marketplace.advanced_search' => 'Advanced Search',
-  'marketplace.sort' => 'Sort',
-  'marketplace.relevance' => 'Relevance',
-  'marketplace.latest' => 'Latest',
-  'marketplace.price_low_to_high' => 'Price: Low to High',
-  'marketplace.price_high_to_low' => 'Price: High to Low',
-  'marketplace.highest_rated' => 'Highest Rated',
-  'marketplace.most_popular' => 'Most Popular',
-  'marketplace.name_a_z' => 'Name A-Z',
-  'marketplace.view' => 'View',
-  'marketplace.no_products_found' => 'No products found',
-  'marketplace.try_adjusting_filters' => 'Try adjusting your filters',
-  'marketplace.view_all_products' => 'View All Products',
-  'marketplace.discover_products' => 'Discover Products',
-  'marketplace.advanced_search' => 'Advanced Search',
-  'marketplace.sort' => 'Sort',
-  'marketplace.relevance' => 'Relevance',
-  'marketplace.latest' => 'Latest',
-  'marketplace.price_low_to_high' => 'Price: Low to High',
-  'marketplace.price_high_to_low' => 'Price: High to Low',
-  'marketplace.highest_rated' => 'Highest Rated',
-  'marketplace.most_popular' => 'Most Popular',
-  'marketplace.name_a_z' => 'Name A-Z',
-  'marketplace.view' => 'View',
-  'marketplace.no_products_found' => 'No products found',
-  'marketplace.try_adjusting_filters' => 'Try adjusting your filters',
-  'marketplace.view_all_products' => 'View All Products',
-  'categories.all' => 'All Categories',
-  'marketplace.title' => 'Marketplace',
-  'marketplace.subtitle' => 'Discover high-quality mechanical engineering products from trusted suppliers',
-  'marketplace.search_placeholder' => 'Search products, suppliers...',
-  'marketplace.products_available' => 'Products Available',
-  'marketplace.verified_sellers' => 'Verified Sellers',
-  'marketplace.browse_categories' => 'Browse Categories',
-  'marketplace.view_all' => 'View All',
-  'marketplace.items' => 'items',
-  'marketplace.no_categories_available' => 'No categories available',
-  'marketplace.featured_products' => 'Featured Products',
-  'marketplace.no_featured_products_available' => 'No featured products available',
-  'marketplace.check_back_later' => 'Please check back later',
-);
+    'active' => [
+    ],
+
+    'add_new_product' => [
+    ],
+
+    'add_product' => [
+    ],
+
+    'advanced_search' => [
+    ],
+
+    'analytics' => [
+    ],
+
+    'bulk_orders' => [
+    ],
+
+    'by_purpose' => [
+    ],
+
+    'cart' => [
+        'checkout' => 'Checkout',
+        'desc' => 'View and manage cart items',
+        'title' => 'Shopping Cart',
+        'view' => 'View Cart',
+    ],
+
+    'cart.add_items' => [
+    ],
+
+    'cart.apply' => [
+    ],
+
+    'cart.available' => [
+    ],
+
+    'cart.calculate_shipping' => [
+    ],
+
+    'cart.clear_cart' => [
+    ],
+
+    'cart.clear_cart_confirm' => [
+    ],
+
+    'cart.clear_cart_failed' => [
+    ],
+
+    'cart.clear_cart_success' => [
+    ],
+
+    'cart.continue_shopping' => [
+    ],
+
+    'cart.coupon_apply_failed' => [
+    ],
+
+    'cart.coupon_code' => [
+    ],
+
+    'cart.coupon_required' => [
+    ],
+
+    'cart.desc' => [
+    ],
+
+    'cart.empty_cart' => [
+    ],
+
+    'cart.empty_cart_message' => [
+    ],
+
+    'cart.empty_message' => [
+    ],
+
+    'cart.express_delivery_available' => [
+    ],
+
+    'cart.free' => [
+    ],
+
+    'cart.free_shipping_over' => [
+    ],
+
+    'cart.items' => [
+    ],
+
+    'cart.no_recently_viewed' => [
+    ],
+
+    'cart.order_summary' => [
+    ],
+
+    'cart.please_select_items' => [
+    ],
+
+    'cart.proceed_to_checkout' => [
+    ],
+
+    'cart.product_no_longer_available' => [
+    ],
+
+    'cart.recently_viewed_products' => [
+    ],
+
+    'cart.remove' => [
+    ],
+
+    'cart.remove_selected' => [
+    ],
+
+    'cart.remove_selected_confirm' => [
+    ],
+
+    'cart.remove_selected_failed' => [
+    ],
+
+    'cart.save_for_later' => [
+    ],
+
+    'cart.save_for_later_message' => [
+    ],
+
+    'cart.select_all' => [
+    ],
+
+    'cart.shipping' => [
+    ],
+
+    'cart.shipping_information' => [
+    ],
+
+    'cart.shopping_cart' => [
+    ],
+
+    'cart.ssl_encryption' => [
+    ],
+
+    'cart.standard_delivery' => [
+    ],
+
+    'cart.subtotal' => [
+    ],
+
+    'cart.tax' => [
+    ],
+
+    'cart.title' => [
+    ],
+
+    'cart.total' => [
+    ],
+
+    'categories.active' => [
+    ],
+
+    'categories.active_categories' => [
+    ],
+
+    'categories.all' => [
+    ],
+
+    'categories.all_categories' => [
+    ],
+
+    'categories.browse' => [
+    ],
+
+    'categories.browse_all' => [
+    ],
+
+    'categories.browse_categories' => [
+    ],
+
+    'categories.category_info' => [
+    ],
+
+    'categories.created_date' => [
+    ],
+
+    'categories.description' => [
+    ],
+
+    'categories.explore' => [
+    ],
+
+    'categories.featured_categories' => [
+    ],
+
+    'categories.filter_by' => [
+    ],
+
+    'categories.inactive' => [
+    ],
+
+    'categories.last_updated' => [
+    ],
+
+    'categories.main_categories' => [
+    ],
+
+    'categories.new_this_month' => [
+    ],
+
+    'categories.no_categories_found' => [
+    ],
+
+    'categories.no_products' => [
+    ],
+
+    'categories.page_title' => [
+    ],
+
+    'categories.parent_category' => [
+    ],
+
+    'categories.popular_categories' => [
+    ],
+
+    'categories.products_count' => [
+    ],
+
+    'categories.search_categories' => [
+    ],
+
+    'categories.search_placeholder' => [
+    ],
+
+    'categories.sort_by' => [
+    ],
+
+    'categories.sort_name' => [
+    ],
+
+    'categories.sort_popularity' => [
+    ],
+
+    'categories.sort_products_count' => [
+    ],
+
+    'categories.status' => [
+    ],
+
+    'categories.subcategories' => [
+    ],
+
+    'categories.title' => [
+    ],
+
+    'categories.total_categories' => [
+    ],
+
+    'categories.try_different_search' => [
+    ],
+
+    'categories.view_all_products' => [
+    ],
+
+    'categories.view_category' => [
+    ],
+
+    'categories.view_details' => [
+    ],
+
+    'checkout.address_line_1' => [
+    ],
+
+    'checkout.address_line_2' => [
+    ],
+
+    'checkout.back_to_cart' => [
+    ],
+
+    'checkout.back_to_payment' => [
+    ],
+
+    'checkout.back_to_shipping' => [
+    ],
+
+    'checkout.bank_transfer' => [
+    ],
+
+    'checkout.billing_information' => [
+    ],
+
+    'checkout.billing_same_as_shipping' => [
+    ],
+
+    'checkout.calculated_at_next_step' => [
+    ],
+
+    'checkout.city' => [
+    ],
+
+    'checkout.complete_order' => [
+    ],
+
+    'checkout.continue_to_payment' => [
+    ],
+
+    'checkout.country' => [
+    ],
+
+    'checkout.credit_debit_card' => [
+    ],
+
+    'checkout.email_address' => [
+    ],
+
+    'checkout.failed_to_load_review' => [
+    ],
+
+    'checkout.failed_to_process_payment' => [
+    ],
+
+    'checkout.first_name' => [
+    ],
+
+    'checkout.last_name' => [
+    ],
+
+    'checkout.payment_information' => [
+    ],
+
+    'checkout.payment_method' => [
+    ],
+
+    'checkout.payment_method_label' => [
+    ],
+
+    'checkout.payment_secure_encrypted' => [
+    ],
+
+    'checkout.phone_number' => [
+    ],
+
+    'checkout.place_order' => [
+    ],
+
+    'checkout.postal_code' => [
+    ],
+
+    'checkout.review_order' => [
+    ],
+
+    'checkout.review_your_order' => [
+    ],
+
+    'checkout.secure_checkout' => [
+    ],
+
+    'checkout.select_country' => [
+    ],
+
+    'checkout.sepay_redirect_message' => [
+    ],
+
+    'checkout.shipping_address' => [
+    ],
+
+    'checkout.shipping_information' => [
+    ],
+
+    'checkout.state_province' => [
+    ],
+
+    'checkout.steps.payment' => [
+    ],
+
+    'checkout.steps.review' => [
+    ],
+
+    'checkout.steps.shipping' => [
+    ],
+
+    'checkout.stripe_redirect_message' => [
+    ],
+
+    'checkout.title' => [
+    ],
+
+    'close' => [
+    ],
+
+    'company_profiles' => [
+    ],
+
+    'company_profiles_desc' => [
+    ],
+
+    'countries.australia' => [
+    ],
+
+    'countries.canada' => [
+    ],
+
+    'countries.united_kingdom' => [
+    ],
+
+    'countries.united_states' => [
+    ],
+
+    'countries.vietnam' => [
+    ],
+
+    'dashboard' => [
+    ],
+
+    'discover_shopping' => [
+    ],
+
+    'downloads' => [
+    ],
+
+    'error' => [
+    ],
+
+    'help_support' => [
+    ],
+
+    'help_support_desc' => [
+    ],
+
+    'in_stock' => [
+    ],
+
+    'keywords' => [
+    ],
+
+    'loading' => [
+    ],
+
+    'login_desc' => [
+    ],
+
+    'manage_products' => [
+    ],
+
+    'marketplace.active_sellers' => [
+    ],
+
+    'marketplace.add_to_cart' => [
+    ],
+
+    'marketplace.add_to_wishlist' => [
+    ],
+
+    'marketplace.advanced_search' => [
+    ],
+
+    'marketplace.all_categories' => [
+    ],
+
+    'marketplace.browse' => [
+    ],
+
+    'marketplace.browse_categories' => [
+    ],
+
+    'marketplace.browse_products' => [
+    ],
+
+    'marketplace.browse_products_by_category' => [
+    ],
+
+    'marketplace.categories' => [
+    ],
+
+    'marketplace.check_back_later' => [
+    ],
+
+    'marketplace.commission' => [
+    ],
+
+    'marketplace.deals' => [
+    ],
+
+    'marketplace.delivery' => [
+    ],
+
+    'marketplace.discover_products' => [
+    ],
+
+    'marketplace.featured' => [
+    ],
+
+    'marketplace.featured_categories' => [
+    ],
+
+    'marketplace.featured_products' => [
+    ],
+
+    'marketplace.grid_view' => [
+    ],
+
+    'marketplace.highest_rated' => [
+    ],
+
+    'marketplace.home' => [
+    ],
+
+    'marketplace.in_stock' => [
+    ],
+
+    'marketplace.items' => [
+    ],
+
+    'marketplace.latest' => [
+    ],
+
+    'marketplace.lead_time' => [
+    ],
+
+    'marketplace.list_view' => [
+    ],
+
+    'marketplace.marketplace' => [
+    ],
+
+    'marketplace.material_options' => [
+    ],
+
+    'marketplace.minimum_order' => [
+    ],
+
+    'marketplace.more' => [
+    ],
+
+    'marketplace.most_popular' => [
+    ],
+
+    'marketplace.name_a_z' => [
+    ],
+
+    'marketplace.new_arrivals' => [
+    ],
+
+    'marketplace.new_this_week' => [
+    ],
+
+    'marketplace.no_categories_available' => [
+    ],
+
+    'marketplace.no_featured_products_available' => [
+    ],
+
+    'marketplace.no_products_found' => [
+    ],
+
+    'marketplace.out_of_stock' => [
+    ],
+
+    'marketplace.precision' => [
+    ],
+
+    'marketplace.price_high_to_low' => [
+    ],
+
+    'marketplace.price_low_to_high' => [
+    ],
+
+    'marketplace.product_categories' => [
+    ],
+
+    'marketplace.product_description' => [
+    ],
+
+    'marketplace.products_available' => [
+    ],
+
+    'marketplace.quality_standard' => [
+    ],
+
+    'marketplace.related_products' => [
+    ],
+
+    'marketplace.relevance' => [
+    ],
+
+    'marketplace.reviews' => [
+    ],
+
+    'marketplace.search_placeholder' => [
+    ],
+
+    'marketplace.seller_not_available' => [
+    ],
+
+    'marketplace.sold_by' => [
+    ],
+
+    'marketplace.sort' => [
+    ],
+
+    'marketplace.sort_by_name' => [
+    ],
+
+    'marketplace.sort_by_product_count' => [
+    ],
+
+    'marketplace.subcategories' => [
+    ],
+
+    'marketplace.subtitle' => [
+    ],
+
+    'marketplace.technical_specifications' => [
+    ],
+
+    'marketplace.title' => [
+    ],
+
+    'marketplace.total_categories' => [
+    ],
+
+    'marketplace.total_products' => [
+    ],
+
+    'marketplace.trending' => [
+    ],
+
+    'marketplace.try_adjusting_filters' => [
+    ],
+
+    'marketplace.updated' => [
+    ],
+
+    'marketplace.verified_sellers' => [
+    ],
+
+    'marketplace.view' => [
+    ],
+
+    'marketplace.view_all' => [
+    ],
+
+    'marketplace.view_all_products' => [
+    ],
+
+    'marketplace.view_options' => [
+    ],
+
+    'marketplace.watch_for_new_products' => [
+    ],
+
+    'my_orders' => [
+    ],
+
+    'my_orders_desc' => [
+    ],
+
+    'my_products' => [
+    ],
+
+    'no_orders_yet' => [
+    ],
+
+    'no_products_yet' => [
+    ],
+
+    'order_status.completed' => [
+    ],
+
+    'order_status.pending' => [
+    ],
+
+    'order_status.processing' => [
+    ],
+
+    'order_status.shipped' => [
+    ],
+
+    'out_of_stock' => [
+    ],
+
+    'pending' => [
+    ],
+
+    'product_management.actions' => [
+    ],
+
+    'product_management.add_specification' => [
+    ],
+
+    'product_management.auto_manage_stock' => [
+    ],
+
+    'product_management.auto_manage_stock_help' => [
+    ],
+
+    'product_management.back' => [
+    ],
+
+    'product_management.basic_information' => [
+    ],
+
+    'product_management.cancel' => [
+    ],
+
+    'product_management.category' => [
+    ],
+
+    'product_management.create_physical_product' => [
+    ],
+
+    'product_management.create_product' => [
+    ],
+
+    'product_management.create_product_btn' => [
+    ],
+
+    'product_management.currency_vnd' => [
+    ],
+
+    'product_management.detailed_description' => [
+    ],
+
+    'product_management.detailed_description_placeholder' => [
+    ],
+
+    'product_management.detailed_technical_specs' => [
+    ],
+
+    'product_management.help_approval_time' => [
+    ],
+
+    'product_management.help_complete_info' => [
+    ],
+
+    'product_management.help_detailed_description' => [
+    ],
+
+    'product_management.help_guide' => [
+    ],
+
+    'product_management.help_quality_images' => [
+    ],
+
+    'product_management.image_upload_help' => [
+    ],
+
+    'product_management.inventory_management' => [
+    ],
+
+    'product_management.manufacturing_process' => [
+    ],
+
+    'product_management.manufacturing_process_placeholder' => [
+    ],
+
+    'product_management.material' => [
+    ],
+
+    'product_management.material_placeholder' => [
+    ],
+
+    'product_management.price_validation_error' => [
+    ],
+
+    'product_management.pricing_inventory' => [
+    ],
+
+    'product_management.product_images' => [
+    ],
+
+    'product_management.product_name' => [
+    ],
+
+    'product_management.sale_price' => [
+    ],
+
+    'product_management.save_draft' => [
+    ],
+
+    'product_management.select_category' => [
+    ],
+
+    'product_management.selling_price' => [
+    ],
+
+    'product_management.short_description' => [
+    ],
+
+    'product_management.short_description_placeholder' => [
+    ],
+
+    'product_management.spec_name_placeholder' => [
+    ],
+
+    'product_management.spec_unit_placeholder' => [
+    ],
+
+    'product_management.spec_value_placeholder' => [
+    ],
+
+    'product_management.stock_quantity' => [
+    ],
+
+    'product_management.tags' => [
+    ],
+
+    'product_management.tags_placeholder' => [
+    ],
+
+    'product_management.technical_specifications' => [
+    ],
+
+    'product_management.upload_images' => [
+    ],
+
+    'product_status' => [
+    ],
+
+    'products' => [
+        'all' => 'All Products',
+        'all_desc' => 'Browse all available products',
+        'digital' => 'Digital Products',
+        'digital_desc' => 'CAD files, designs, software',
+        'discounts' => 'Deals & Discounts',
+        'discounts_desc' => 'Special offers and sales',
+        'featured' => 'Featured Products',
+        'featured_desc' => 'Handpicked quality products',
+        'new' => 'New Products',
+        'new_desc' => 'Brand new items',
+        'newest' => 'New Arrivals',
+        'newest_desc' => 'Latest products added',
+        'used' => 'Used Products',
+        'used_desc' => 'Pre-owned quality items',
+    ],
+
+    'products.3d_models' => [
+    ],
+
+    'products.all' => [
+    ],
+
+    'products.all_desc' => [
+    ],
+
+    'products.best_sellers' => [
+    ],
+
+    'products.browse_all' => [
+    ],
+
+    'products.cad_files' => [
+    ],
+
+    'products.components' => [
+    ],
+
+    'products.consulting' => [
+    ],
+
+    'products.design_services' => [
+    ],
+
+    'products.digital' => [
+    ],
+
+    'products.digital_desc' => [
+    ],
+
+    'products.digital_products' => [
+    ],
+
+    'products.discounts' => [
+    ],
+
+    'products.discounts_desc' => [
+    ],
+
+    'products.explore_more' => [
+    ],
+
+    'products.featured' => [
+    ],
+
+    'products.featured_desc' => [
+    ],
+
+    'products.featured_products' => [
+    ],
+
+    'products.machinery' => [
+    ],
+
+    'products.manufacturer' => [
+    ],
+
+    'products.manufacturing' => [
+    ],
+
+    'products.materials' => [
+    ],
+
+    'products.new' => [
+    ],
+
+    'products.new_arrivals' => [
+    ],
+
+    'products.new_desc' => [
+    ],
+
+    'products.newest' => [
+    ],
+
+    'products.newest_desc' => [
+    ],
+
+    'products.on_sale' => [
+    ],
+
+    'products.physical_products' => [
+    ],
+
+    'products.service' => [
+    ],
+
+    'products.services' => [
+    ],
+
+    'products.software_tools' => [
+    ],
+
+    'products.technical_drawings' => [
+    ],
+
+    'products.testing_validation' => [
+    ],
+
+    'products.title' => [
+    ],
+
+    'products.tools_equipment' => [
+    ],
+
+    'products.used' => [
+    ],
+
+    'products.used_desc' => [
+    ],
+
+    'products.verified' => [
+    ],
+
+    'products.view_category' => [
+    ],
+
+    'quick_actions' => [
+    ],
+
+    'recent_orders' => [
+    ],
+
+    'recent_products' => [
+    ],
+
+    'register_desc' => [
+    ],
+
+    'rfq.title' => [
+    ],
+
+    'search' => [
+        'advanced' => 'Advanced Search',
+        'advanced_desc' => 'Detailed product filtering',
+    ],
+
+    'search.advanced' => [
+    ],
+
+    'search.advanced_desc' => [
+    ],
+
+    'search_descriptions' => [
+    ],
+
+    'seller_dashboard' => [
+    ],
+
+    'seller_dashboard_desc' => [
+    ],
+
+    'seller_info' => [
+    ],
+
+    'seller_menu' => [
+    ],
+
+    'status' => [
+    ],
+
+    'status.active' => [
+    ],
+
+    'status.approved' => [
+    ],
+
+    'status.pending' => [
+    ],
+
+    'success' => [
+    ],
+
+    'suppliers' => [
+        'all' => 'All Suppliers',
+        'all_desc' => 'Browse supplier directory',
+        'top_sellers' => 'Top Sellers',
+        'top_sellers_desc' => 'Highest rated suppliers',
+        'verified' => 'Verified Suppliers',
+        'verified_desc' => 'Trusted verified sellers',
+    ],
+
+    'suppliers.all' => [
+    ],
+
+    'suppliers.all_desc' => [
+    ],
+
+    'suppliers.title' => [
+    ],
+
+    'suppliers.top_sellers' => [
+    ],
+
+    'suppliers.top_sellers_desc' => [
+    ],
+
+    'suppliers.verified' => [
+    ],
+
+    'suppliers.verified_desc' => [
+    ],
+
+    'suppliers_partners' => [
+    ],
+
+    'this_month_sales' => [
+    ],
+
+    'total' => [
+    ],
+
+    'total_orders' => [
+    ],
+
+    'total_products' => [
+    ],
+
+    'total_sales' => [
+    ],
+
+    'use_quotes_help' => [
+    ],
+
+    'view_all' => [
+    ],
+
+    'view_orders' => [
+    ],
+
+    'warning' => [
+    ],
+
+    'welcome_seller' => [
+    ],
+
+    'wishlist' => [
+    ],
+
+    'wishlist_desc' => [
+    ],
+
+];

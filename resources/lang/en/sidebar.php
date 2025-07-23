@@ -9,6 +9,7 @@ return [
     'main' => [
         // Community Overview
         'community_overview' => 'Community Overview',
+        'community_description' => 'Community for sharing information about architecture, construction, transportation, urban planning and many other topics.',
         'established_since' => 'Active since',
         'join_community' => 'Join Community',
         'business_development' => 'Business Development',

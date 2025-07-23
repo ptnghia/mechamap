@@ -13,6 +13,7 @@ return [
     'advanced_search' => 'Tìm kiếm nâng cao',
     'enter_search_terms' => 'Nhập từ khóa tìm kiếm',
     'search' => 'Tìm kiếm',
+    'searching' => 'Đang tìm kiếm...',
     'search_description' => 'Tìm kiếm nội dung, người dùng và sản phẩm trong hệ thống',
 
     // Search placeholders and labels
@@ -35,8 +36,10 @@ return [
     'Joined' => 'Tham gia',
     'No results found for your search.' => 'Không tìm thấy kết quả cho tìm kiếm của bạn.',
     'no_results_found' => 'Không tìm thấy kết quả nào cho tìm kiếm của bạn.',
+    'no_results_for' => 'Không tìm thấy kết quả cho',
     'Try different keywords or use the advanced search.' => 'Thử từ khóa khác hoặc sử dụng tìm kiếm nâng cao.',
     'try_different_keywords' => 'Hãy thử từ khóa khác hoặc sử dụng tìm kiếm nâng cao.',
+    'try_advanced' => 'THỬ TÌM KIẾM NÂNG CAO',
     'Enter a search term to find content.' => 'Nhập từ khóa để tìm nội dung.',
     'enter_search_term' => 'Nhập từ khóa để tìm kiếm nội dung.',
     'You can search for threads, posts, and users.' => 'Bạn có thể tìm kiếm chủ đề, bài viết và người dùng.',

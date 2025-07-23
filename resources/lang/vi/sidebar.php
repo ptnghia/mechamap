@@ -9,6 +9,7 @@ return [
     'main' => [
         // Community Overview
         'community_overview' => 'Tổng quan cộng đồng',
+        'community_description' => 'Cộng đồng chia sẻ thông tin về kiến trúc, xây dựng, giao thông, quy hoạch đô thị và nhiều chủ đề khác.',
         'established_since' => 'Hoạt động từ',
         'join_community' => 'Tham gia cộng đồng',
         'business_development' => 'Phát triển kinh doanh',

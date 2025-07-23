@@ -96,33 +96,33 @@
         <!-- Account Type -->
         <div class="mb-4">
             <label for="account_type" class="form-label">
-                <i class="fas fa-user-tag me-2"></i>Loại tài khoản
+                <i class="fas fa-user-tag me-2"></i>{{ __('auth.account_type_label') }}
             </label>
             <select id="account_type" name="account_type"
                     class="form-select @error('account_type') is-invalid @enderror" required>
-                <option value="">Chọn loại tài khoản của bạn</option>
+                <option value="">{{ __('auth.register.account_type_placeholder') }}</option>
 
-                <optgroup label="🌟 Thành viên cộng đồng">
+                <optgroup label="🌟 {{ __('auth.register.community_member_title') }}">
                     <option value="member" {{ old('account_type') == 'member' ? 'selected' : '' }}>
-                        Thành viên - Tham gia thảo luận và chia sẻ kiến thức
+                        {{ __('auth.register.member_role') }} - {{ __('auth.register.member_role_desc') }}
                     </option>
 
                 </optgroup>
 
-                <optgroup label="🏢 Đối tác kinh doanh">
+                <optgroup label="🏢 {{ __('auth.register.business_partner_title') }}">
                     <option value="manufacturer" {{ old('account_type') == 'manufacturer' ? 'selected' : '' }}>
-                        Nhà sản xuất - Sản xuất và cung cấp sản phẩm cơ khí
+                        {{ __('auth.register.manufacturer_role') }} - {{ __('auth.register.manufacturer_role_desc') }}
                     </option>
                     <option value="supplier" {{ old('account_type') == 'supplier' ? 'selected' : '' }}>
-                        Nhà cung cấp - Phân phối thiết bị và vật tư cơ khí
+                        {{ __('auth.register.supplier_role') }} - {{ __('auth.register.supplier_role_desc') }}
                     </option>
                     <option value="brand" {{ old('account_type') == 'brand' ? 'selected' : '' }}>
-                        Nhãn hàng - Quảng bá thương hiệu và sản phẩm
+                        {{ __('auth.register.brand_role') }} - {{ __('auth.register.brand_role_desc') }}
                     </option>
                 </optgroup>
             </select>
             @error('account_type')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            <small class="form-text text-muted">Chọn loại tài khoản phù hợp với mục đích sử dụng. Bạn có thể thay đổi sau này.</small>
+            <small class="form-text text-muted">{{ __('auth.register.account_type_help') }}</small>
         </div>
 
         <!-- Terms and Privacy -->
@@ -130,8 +130,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                 <label class="form-check-label" for="terms">
-                    Tôi đồng ý với <a href="#" class="text-primary">Điều khoản sử dụng</a> và
-                    <a href="#" class="text-primary">Chính sách bảo mật</a>
+                    {!! __('auth.register.terms_agreement') !!}
                 </label>
             </div>
         </div>
@@ -139,15 +138,15 @@
         <!-- Submit Button -->
         <div class="d-grid mb-3">
             <button type="submit" class="btn btn-primary btn-lg">
-                <i class="fas fa-user-plus me-2"></i>Tạo tài khoản
+                <i class="fas fa-user-plus me-2"></i>{{ __('auth.register.submit') }}
             </button>
         </div>
 
         <!-- Login Link -->
         <div class="text-center">
-            <span class="text-muted">Đã có tài khoản? </span>
+            <span class="text-muted">{{ __('auth.register.already_have_account') }} </span>
             <a href="{{ route('login') }}" class="text-primary text-decoration-none fw-medium">
-                Đăng nhập ngay
+                {{ __('auth.register.sign_in') }}
             </a>
         </div>
     </form>
