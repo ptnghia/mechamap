@@ -352,4 +352,25 @@ return [
     'ui.menu.toggle' => [
     ],
 
+    // Layout specific
+    'layout' => [
+        'meta_author' => 'MechaMap Team',
+        'fancybox' => [
+            'modal_esc_hint' => 'Bạn có thể đóng modal này bằng phím ESC',
+            'error_loading' => 'Có lỗi xảy ra khi tải nội dung. <br/> Vui lòng thử lại sau.',
+            'image_error' => 'Không thể tải hình ảnh. <br/> Vui lòng thử lại sau.',
+            'element_not_found' => 'Không tìm thấy phần tử HTML.',
+            'ajax_not_found' => 'Lỗi khi tải AJAX: Không tìm thấy',
+            'ajax_forbidden' => 'Lỗi khi tải AJAX: Bị cấm',
+            'iframe_error' => 'Lỗi khi tải trang',
+            'toggle_zoom' => 'Phóng to/thu nhỏ',
+            'toggle_thumbs' => 'Hiện/ẩn thumbnails',
+            'toggle_slideshow' => 'Bật/tắt slideshow',
+            'toggle_fullscreen' => 'Bật/tắt toàn màn hình',
+        ],
+        'console' => [
+            'theme_button_fallback' => 'Adding fallback click handler to theme button',
+        ],
+    ],
+
 ];

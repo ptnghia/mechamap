@@ -11,7 +11,7 @@ return array (
   'subtitle' => 'Dự án và sản phẩm của cộng đồng',
   'description' => 'Khám phá các dự án kỹ thuật cơ khí xuất sắc từ cộng đồng',
   'new' => 'Trưng bày mới',
-  'categories' => 
+  'categories' =>
   array (
     'all' => 'Tất cả',
     'mechanical_design' => 'Thiết kế Cơ khí',
@@ -49,12 +49,20 @@ return array (
   'cover_image_help' => 'Hình ảnh đại diện cho dự án của bạn',
   'current_thread_image' => 'Sử dụng ảnh từ thread hiện tại',
   'complexity_level' => 'Mức độ phức tạp',
-  'complexity_levels' => 
+  'complexity_levels' =>
   array (
     'beginner' => 'Cơ bản',
     'intermediate' => 'Trung bình',
     'advanced' => 'Nâng cao',
     'expert' => 'Chuyên gia',
+  ),
+  'project_types' =>
+  array (
+    'design_project' => 'Dự án Thiết kế',
+    'case_study' => 'Nghiên cứu Tình huống',
+    'manufacturing' => 'Sản xuất',
+    'analysis_simulation' => 'Phân tích & Mô phỏng',
+    'research_development' => 'Nghiên cứu & Phát triển',
   ),
   'industry_application' => 'Ứng dụng ngành',
   'industry_placeholder' => 'VD: Ô tô, Hàng không, Chế tạo máy...',
@@ -64,7 +72,7 @@ return array (
   'browse_files' => 'duyệt file',
   'file_upload_help' => 'Hỗ trợ: PNG, JPG, PDF, DWG, STEP, ZIP',
   'file_upload_limits' => 'Tối đa 10MB mỗi file, tối đa 5 file',
-  'actions' => 
+  'actions' =>
   array (
     'create' => 'Tạo showcase',
     'edit' => 'Sửa showcase',
@@ -85,7 +93,7 @@ return array (
     'feature' => 'Nổi bật',
     'promote' => 'Quảng bá',
   ),
-  'create' => 
+  'create' =>
   array (
     'title' => 'Tạo Showcase mới',
     'step_1' => 'Thông tin cơ bản',
@@ -117,7 +125,7 @@ return array (
     'next_steps' => 'Bước tiếp theo',
     'contact_info' => 'Thông tin liên hệ',
   ),
-  'form' => 
+  'form' =>
   array (
     'title_placeholder' => 'Nhập tiêu đề dự án...',
     'description_placeholder' => 'Mô tả chi tiết về dự án của bạn...',
@@ -138,7 +146,7 @@ return array (
     'member_role' => 'Vai trò',
     'member_contact' => 'Liên hệ',
   ),
-  'status' => 
+  'status' =>
   array (
     'draft' => 'Bản nháp',
     'in_progress' => 'Đang thực hiện',
@@ -152,7 +160,7 @@ return array (
     'production' => 'Sản xuất',
     'published' => 'Đã xuất bản',
   ),
-  'visibility' => 
+  'visibility' =>
   array (
     'public' => 'Công khai',
     'private' => 'Riêng tư',
@@ -160,7 +168,7 @@ return array (
     'members_only' => 'Chỉ thành viên',
     'featured' => 'Nổi bật',
   ),
-  'display' => 
+  'display' =>
   array (
     'featured_projects' => 'Dự án nổi bật',
     'latest_projects' => 'Dự án mới nhất',
@@ -179,7 +187,7 @@ return array (
     'no_projects' => 'Không có dự án nào',
     'empty_state' => 'Chưa có dự án nào được tạo',
   ),
-  'details' => 
+  'details' =>
   array (
     'overview' => 'Tổng quan',
     'specifications' => 'Thông số kỹ thuật',
@@ -202,7 +210,7 @@ return array (
     'updated_date' => 'Ngày cập nhật',
     'completion_date' => 'Ngày hoàn thành',
   ),
-  'comments' => 
+  'comments' =>
   array (
     'add_comment' => 'Thêm bình luận',
     'write_comment' => 'Viết bình luận...',
@@ -221,7 +229,7 @@ return array (
     'comment_updated' => 'Đã cập nhật bình luận',
     'comment_deleted' => 'Đã xóa bình luận',
   ),
-  'interactions' => 
+  'interactions' =>
   array (
     'liked' => 'Đã thích',
     'unliked' => 'Đã bỏ thích',
@@ -237,7 +245,7 @@ return array (
     'action_completed' => 'Đã thực hiện',
   ),
   'search' => 'Tìm kiếm',
-  'errors' => 
+  'errors' =>
   array (
     'project_not_found' => 'Không tìm thấy dự án',
     'access_denied' => 'Không có quyền truy cập',
@@ -255,7 +263,7 @@ return array (
     'server_error' => 'Lỗi máy chủ',
     'validation_error' => 'Lỗi xác thực dữ liệu',
   ),
-  'success' => 
+  'success' =>
   array (
     'project_created' => 'Đã tạo dự án thành công',
     'project_updated' => 'Đã cập nhật dự án thành công',
@@ -267,7 +275,7 @@ return array (
     'comment_posted' => 'Đã đăng bình luận thành công',
     'settings_saved' => 'Đã lưu cài đặt thành công',
   ),
-  'notifications' => 
+  'notifications' =>
   array (
     'new_project' => 'Dự án mới đã được tạo',
     'project_updated' => 'Dự án đã được cập nhật',
@@ -285,7 +293,7 @@ return array (
   'files_selected' => 'File đã chọn',
   'file_upload_description' => 'Mô tả về các file đính kèm (tùy chọn)',
   'confirm_info' => 'Xác nhận thông tin',
-  'confirm_points' => 
+  'confirm_points' =>
   array (
     0 => 'Tất cả thông tin đã nhập chính xác',
     1 => 'Hình ảnh và file đính kèm phù hợp',
@@ -300,7 +308,7 @@ return array (
   'cover_image_required' => 'Ảnh bìa là bắt buộc',
   'file_size_error' => 'File quá lớn',
   'terms_required' => 'Vui lòng đồng ý với điều khoản',
-  'labels' => 
+  'labels' =>
   array (
     'author' => 'Tác giả',
     'category' => 'Danh mục',
@@ -360,7 +368,7 @@ return array (
   'no_projects_found' => 'Không tìm thấy dự án nào',
   'try_different_filters' => 'Hãy thử sử dụng bộ lọc khác hoặc từ khóa khác',
   'create_new_project' => 'Tạo dự án mới',
-  'features' => 
+  'features' =>
   array (
     'cad' => 'CAD',
     'download' => 'Download',
@@ -571,4 +579,35 @@ return array (
   'features.cad' => 'CAD',
   'features.download' => 'Tải xuống',
   'ratings' => 'Đánh giá',
+
+  // Show page specific
+  'show' => [
+    'default_title' => 'Showcase Item',
+    'image_alt' => 'Showcase image',
+    'share_options' => 'Share options',
+    'comment_placeholder' => 'Viết bình luận của bạn...',
+    'avatar_alt' => 'Avatar của bạn',
+    'user_avatar_alt' => 'Avatar của :name',
+    'delete_comment_confirm' => 'Bạn có chắc muốn xóa bình luận này?',
+  ],
+
+  // Create showcase (max 3 levels)
+  'create' => [
+    'title' => 'Tạo Showcase Mới',
+    'heading' => 'Tạo Showcase Mới',
+    'description' => 'Chia sẻ dự án, sản phẩm hoặc thành tựu kỹ thuật của bạn với cộng đồng',
+    'showcase_title' => 'Tiêu đề showcase',
+    'detailed_description' => 'Mô tả chi tiết',
+    'description_placeholder' => 'Mô tả chi tiết về dự án: mục tiêu, công nghệ sử dụng, đặc điểm nổi bật, kết quả đạt được...',
+    'cover_image_section' => 'Hình Ảnh Đại Diện',
+    'upload_cover_image' => 'Upload hình ảnh đại diện',
+    'cover_image_help' => 'Hình ảnh đại diện cho showcase của bạn',
+    'technical_category' => 'Danh mục kỹ thuật',
+    'choose_category' => 'Chọn danh mục',
+    'create_button' => 'Tạo Showcase',
+    'close_button' => 'Đóng',
+    'title_placeholder' => 'Tiêu đề showcase',
+    'desc_placeholder' => 'Mô tả showcase...',
+    'location_label' => 'Địa điểm:',
+  ],
 );

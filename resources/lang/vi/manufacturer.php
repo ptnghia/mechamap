@@ -32,4 +32,32 @@ return [
     'tax_identification' => 'Mã số thuế doanh nghiệp',
     'company_address' => 'Địa chỉ công ty',
     'contact_information' => 'Thông tin liên hệ',
+
+    // Products management (max 3 levels)
+    'products' => [
+        'create_title' => 'Thêm Sản phẩm Kỹ thuật - Manufacturer Dashboard',
+        'create_heading' => 'Thêm Sản phẩm Kỹ thuật',
+        'product_name' => 'Tên sản phẩm',
+        'product_type' => 'Loại sản phẩm',
+        'choose_type' => 'Chọn loại sản phẩm',
+        'short_description' => 'Mô tả ngắn',
+        'detailed_description' => 'Mô tả chi tiết',
+        'price' => 'Giá bán',
+        'technical_specs' => 'Thông số kỹ thuật chi tiết',
+        'add_spec' => 'Thêm thông số',
+        'spec_name' => 'Tên thông số',
+        'spec_value' => 'Giá trị',
+        'spec_unit' => 'Đơn vị',
+        'main_image' => 'Ảnh đại diện',
+        'image_help' => 'Chọn nhiều hình ảnh (JPG, PNG, GIF - tối đa 2MB mỗi file). Hình đầu tiên sẽ là ảnh đại diện.',
+        'service_description' => 'Dịch vụ: Mô tả rõ quy trình và deliverable',
+        'detailed_specs' => 'Thông số kỹ thuật chi tiết và chính xác',
+        'price_validation' => 'Giá khuyến mãi phải nhỏ hơn giá bán thường!',
+        'cad_required' => 'Vui lòng upload ít nhất một file CAD cho sản phẩm digital!',
+        // Placeholders
+        'short_desc_placeholder' => 'Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)',
+        'detailed_desc_placeholder' => 'Mô tả chi tiết về sản phẩm, tính năng, ứng dụng...',
+        'material_placeholder' => 'VD: Thép không gỉ 304, Nhôm 6061...',
+        'tags_placeholder' => 'VD: cad, thiết kế, cơ khí (phân cách bằng dấu phẩy)',
+    ],
 ];

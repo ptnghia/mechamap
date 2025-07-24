@@ -1,0 +1,194 @@
+[
+    {
+        "line": 59,
+        "original": "POST",
+        "replacement": "__('threads.create.form.post')",
+        "context": "<form action=\"{{ route('threads.store') }}\" method=\"POST\" enctype=\"multipart\/form-data\" class=\"modern-form\""
+    },
+    {
+        "line": 526,
+        "original": "Nhập câu hỏi cho cuộc khảo sát",
+        "replacement": "__('threads.create.placeholders.nhp_cu_hi_cho_cuc_kho_st')",
+        "context": "placeholder=\"Nhập câu hỏi cho cuộc khảo sát\">"
+    },
+    {
+        "line": 550,
+        "original": "Lựa chọn 1",
+        "replacement": "__('threads.create.placeholders.la_chn_1')",
+        "context": "placeholder=\"Lựa chọn 1\">"
+    },
+    {
+        "line": 561,
+        "original": "Lựa chọn 2",
+        "replacement": "__('threads.create.placeholders.la_chn_2')",
+        "context": "placeholder=\"Lựa chọn 2\">"
+    },
+    {
+        "line": 575,
+        "original": "Lựa chọn {{ $index + 1 }}",
+        "replacement": "__('threads.create.placeholders.la_chn_index_1')",
+        "context": "placeholder=\"Lựa chọn {{ $index + 1 }}\">"
+    },
+    {
+        "line": 758,
+        "original": "DOMContentLoaded",
+        "replacement": "__('threads.create.form.domcontentloaded')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 841,
+        "original": "TinyMCE content editor ready for progress tracking",
+        "replacement": "__('threads.create.form.tinymce_content_editor_ready_for_progress_tracking')",
+        "context": "console.log('TinyMCE content editor ready for progress tracking');"
+    },
+    {
+        "line": 955,
+        "original": "Bytes",
+        "replacement": "__('threads.create.form.bytes')",
+        "context": "const sizes = ['Bytes', 'KB', 'MB', 'GB'];"
+    },
+    {
+        "line": 1015,
+        "original": "Lựa chọn ${optionCount}",
+        "replacement": "__('threads.create.placeholders.la_chn_optioncount')",
+        "context": "placeholder=\"Lựa chọn ${optionCount}\">"
+    },
+    {
+        "line": 1130,
+        "original": "Vui lòng chọn loại showcase",
+        "replacement": "__('threads.create.form.vui_lng_chn_loi_showcase')",
+        "context": "showValidationMessage('Vui lòng chọn loại showcase', 'error');"
+    },
+    {
+        "line": 1137,
+        "original": "Vui lòng chọn showcase có sẵn",
+        "replacement": "__('threads.create.form.vui_lng_chn_showcase_c_sn')",
+        "context": "showValidationMessage('Vui lòng chọn showcase có sẵn', 'error');"
+    },
+    {
+        "line": 1253,
+        "original": "Vui lòng nhập tiêu đề",
+        "replacement": "__('threads.create.titles.vui_lng_nhp_tiu')",
+        "context": "showFieldError(title, 'Vui lòng nhập tiêu đề');"
+    },
+    {
+        "line": 1267,
+        "original": "Vui lòng chọn diễn đàn",
+        "replacement": "__('threads.create.form.vui_lng_chn_din_n')",
+        "context": "showFieldError(forum, 'Vui lòng chọn diễn đàn');"
+    },
+    {
+        "line": 1281,
+        "original": "Vui lòng nhập nội dung cho chủ đề",
+        "replacement": "__('threads.create.form.vui_lng_nhp_ni_dung_cho_ch')",
+        "context": "showValidationMessage('Vui lòng nhập nội dung cho chủ đề', 'error');"
+    },
+    {
+        "line": 1300,
+        "original": "Vui lòng nhập câu hỏi khảo sát",
+        "replacement": "__('threads.create.form.vui_lng_nhp_cu_hi_kho_st')",
+        "context": "showFieldError(question, 'Vui lòng nhập câu hỏi khảo sát');"
+    },
+    {
+        "line": 1314,
+        "original": "Khảo sát cần ít nhất 2 lựa chọn",
+        "replacement": "__('threads.create.form.kho_st_cn_t_nht_2_la_chn')",
+        "context": "showValidationMessage('Khảo sát cần ít nhất 2 lựa chọn', 'error');"
+    },
+    {
+        "line": 1410,
+        "original": "Không có hình ảnh",
+        "replacement": "__('threads.create.form.khng_c_hnh_nh')",
+        "context": "imageCount > 0 ? `${imageCount} hình ảnh` : 'Không có hình ảnh';"
+    },
+    {
+        "line": 1418,
+        "original": "Có khảo sát",
+        "replacement": "__('threads.create.form.c_kho_st')",
+        "context": "pollReview.textContent = question ? `${question} (${optionCount} lựa chọn)` : 'Có khảo sát';"
+    },
+    {
+        "line": 1420,
+        "original": "Không có khảo sát",
+        "replacement": "__('threads.create.form.khng_c_kho_st')",
+        "context": "pollReview.textContent = 'Không có khảo sát';"
+    },
+    {
+        "line": 1434,
+        "original": "Showcase có sẵn",
+        "replacement": "__('threads.create.form.showcase_c_sn')",
+        "context": "const selectedText = existingSelect.options[existingSelect.selectedIndex]?.text || 'Showcase có sẵn';"
+    },
+    {
+        "line": 1449,
+        "original": "Không có showcase",
+        "replacement": "__('threads.create.form.khng_c_showcase')",
+        "context": "showcaseReview.textContent = 'Không có showcase';"
+    },
+    {
+        "line": 1466,
+        "original": "Enter",
+        "replacement": "__('threads.create.form.enter')",
+        "context": "if (e.key === 'Enter' || e.key === ' ') {"
+    },
+    {
+        "line": 1474,
+        "original": "ArrowRight",
+        "replacement": "__('threads.create.form.arrowright')",
+        "context": "if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {"
+    },
+    {
+        "line": 1474,
+        "original": "ArrowDown",
+        "replacement": "__('threads.create.form.arrowdown')",
+        "context": "if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {"
+    },
+    {
+        "line": 1482,
+        "original": "ArrowLeft",
+        "replacement": "__('threads.create.form.arrowleft')",
+        "context": "if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {"
+    },
+    {
+        "line": 1482,
+        "original": "ArrowUp",
+        "replacement": "__('threads.create.form.arrowup')",
+        "context": "if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {"
+    },
+    {
+        "line": 1630,
+        "original": "Tối đa 10 file được phép tải lên",
+        "replacement": "__('threads.create.form.ti_a_10_file_c_php_ti_ln')",
+        "context": "showValidationMessage('Tối đa 10 file được phép tải lên', 'error');"
+    },
+    {
+        "line": 1649,
+        "original": "quá lớn. Tối đa 50MB.`,",
+        "replacement": "__('threads.create.form.qu_ln_ti_a_50mb')",
+        "context": "showValidationMessage(`File \"${file.name}\" quá lớn. Tối đa 50MB.`, 'error');"
+    },
+    {
+        "line": 1663,
+        "original": "không được hỗ trợ.`,",
+        "replacement": "__('threads.create.form.khng_c_h_tr')",
+        "context": "showValidationMessage(`File \"${file.name}\" không được hỗ trợ.`, 'error');"
+    },
+    {
+        "line": 1717,
+        "original": "Bytes",
+        "replacement": "__('threads.create.form.bytes_1')",
+        "context": "const sizes = ['Bytes', 'KB', 'MB', 'GB'];"
+    },
+    {
+        "line": 1757,
+        "original": "Vui lòng kiểm tra lại các thông tin đã nhập",
+        "replacement": "__('threads.create.form.vui_lng_kim_tra_li_cc_thng_tin_nhp')",
+        "context": "showValidationMessage('Vui lòng kiểm tra lại các thông tin đã nhập', 'error');"
+    },
+    {
+        "line": 1765,
+        "original": "><\/i> <span>Đang tạo...<\/span>",
+        "replacement": "__('threads.create.form.i_spanang_tospan')",
+        "context": "submitButton.innerHTML = '<i class=\"fas fa-hourglass-half\"><\/i> <span>Đang tạo...<\/span>';"
+    }
+]

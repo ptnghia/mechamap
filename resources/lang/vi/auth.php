@@ -589,4 +589,28 @@ return array (
   'secure_area_message' => 'Đây là khu vực bảo mật của ứng dụng. Vui lòng xác nhận mật khẩu trước khi tiếp tục.',
   'register.already_have_account' => 'Đã có tài khoản?',
   'register.login_now' => 'Đăng nhập ngay',
+
+  // Reset password (max 3 levels)
+  'reset_password' => [
+    'title' => 'Đặt lại mật khẩu',
+    'subtitle' => 'Tạo mật khẩu mới cho tài khoản của bạn',
+    'heading' => 'Tạo mật khẩu mới',
+    'description' => 'Vui lòng nhập mật khẩu mới cho tài khoản của bạn',
+    'new_password' => 'Mật khẩu mới',
+    'confirm_password' => 'Xác nhận mật khẩu mới',
+    'password_placeholder' => 'Nhập mật khẩu mới',
+    'confirm_placeholder' => 'Nhập lại mật khẩu mới',
+    'password_hint' => 'Sử dụng ít nhất 8 ký tự với chữ cái, số và ký hiệu',
+    'update_password' => 'Cập nhật mật khẩu',
+    'password_match' => 'Mật khẩu khớp',
+    'password_mismatch' => 'Mật khẩu không khớp',
+    'tips' => [
+      'strong_title' => 'Mật khẩu mạnh',
+      'strong_desc' => 'Sử dụng ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký hiệu',
+      'avoid_personal_title' => 'Tránh thông tin cá nhân',
+      'avoid_personal_desc' => 'Không sử dụng tên, ngày sinh, số điện thoại trong mật khẩu',
+      'unique_title' => 'Mật khẩu duy nhất',
+      'unique_desc' => 'Không sử dụng lại mật khẩu từ các tài khoản khác',
+    ],
+  ],
 );

@@ -24,7 +24,7 @@
                 </a>
             </li>
             @endif
-            <li class="breadcrumb-item active" aria-current="page">{{ $showcase->title ?? 'Showcase Item' }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $showcase->title ?? __('showcase.show.default_title') }}</li>
         </ol>
     </nav>
 
@@ -134,7 +134,7 @@
                         <a href="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
                             data-fancybox="showcase-gallery" data-caption="{{ $media->title ?? $showcase->title }}">
                             <img src="{{ $media->url ?? asset('storage/' . $media->file_path) }}"
-                                class="img-fluid rounded shadow-sm" alt="{{ $media->title ?? 'Showcase image' }}"
+                                class="img-fluid rounded shadow-sm" alt="{{ $media->title ?? __('showcase.show.image_alt') }}"
                                 class="showcase-gallery-image"
                                 onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
                         </a>
@@ -278,7 +278,7 @@
 
                     {{-- Social Sharing Buttons --}}
                     <div class="social-share-buttons">
-                        <div class="btn-group" role="group" aria-label="Share options">
+                        <div class="btn-group" role="group" aria-label="{{ __('showcase.show.share_options') }}">
                             <button class="btn btn-sm btn-outline-primary" onclick="shareOnFacebook()">
                                 <i class="fab fa-facebook-f"></i> Facebook
                             </button>
@@ -366,12 +366,12 @@
                             <div class="d-flex gap-3">
                                 <img src="{{ auth()->user()->getAvatarUrl() }}"
                                      class="user-avatar"
-                                     alt="Avatar của bạn"
+                                     alt="{{ __('showcase.show.avatar_alt') }}"
                                      onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=48'">
                                 <div class="flex-grow-1">
                                     <x-ckeditor5-comment
                                         name="content"
-                                        placeholder="Viết bình luận của bạn..."
+                                        placeholder="{{ __('showcase.show.comment_placeholder') }}"
                                         id="main-comment-editor"
                                         :required="true"
                                         minHeight="100px"
@@ -416,7 +416,7 @@
                                 <a href="{{ route('profile.show', $comment->user->username) }}">
                                     <img src="{{ $comment->user->getAvatarUrl() }}"
                                          class="comment-avatar"
-                                         alt="Avatar của {{ $comment->user->display_name }}"
+                                         alt="{{ __('showcase.show.user_avatar_alt', ['name' => $comment->user->display_name]) }}"
                                          onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($comment->user->name, 0, 1))) }}&background=6366f1&color=fff&size=44'">
                                 </a>
                                 <div class="comment-user-info">
@@ -436,7 +436,7 @@
                                     @if($comment->user_id === auth()->id() || $showcase->user_id === auth()->id())
                                     <form action="{{ route('showcase.comment.delete', $comment) }}"
                                           method="POST"
-                                          onsubmit="return confirm('Bạn có chắc muốn xóa bình luận này?')"
+                                          onsubmit="return confirm('{!! addslashes(__('showcase.show.delete_comment_confirm')) !!}')"
                                           class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -502,7 +502,7 @@
                                         <a href="{{ route('profile.show', $reply->user->username) }}">
                                             <img src="{{ $reply->user->getAvatarUrl() }}"
                                                  class="reply-avatar"
-                                                 alt="Avatar của {{ $reply->user->display_name }}"
+                                                 alt="{{ __('showcase.show.user_avatar_alt', ['name' => $reply->user->display_name]) }}"
                                                  onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($reply->user->name, 0, 1))) }}&background=6366f1&color=fff&size=32'">
                                         </a>
                                         <div class="flex-grow-1">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Thiết lập tài khoản bán hàng')
+@section('title', __('marketplace.seller.setup_title'))
 
 @section('content')
 <div class="container">
@@ -10,7 +10,7 @@
                 <div class="card-header">
                     <h4 class="mb-0">
                         <i class="bx bx-store-alt me-2"></i>
-                        Thiết lập tài khoản bán hàng - {{ $user->getRoleDisplayName() }}
+                        {{ __('marketplace.seller.setup_heading') }} - {{ $user->getRoleDisplayName() }}
                     </h4>
                 </div>
                 <div class="card-body">
@@ -20,13 +20,13 @@
                                 <i class="bx bx-store font-size-24"></i>
                             </div>
                         </div>
-                        <h5>Chào mừng đến với MechaMap Marketplace!</h5>
-                        <p class="text-muted">Hoàn thành thông tin dưới đây để bắt đầu bán hàng trên nền tảng của chúng tôi.</p>
+                        <h5>{{ __('marketplace.seller.welcome_message') }}</h5>
+                        <p class="text-muted">{{ __('marketplace.seller.welcome_description') }}</p>
                     </div>
 
                     <form action="{{ route('marketplace.seller.setup.store') }}" method="POST" enctype="multipart/form-data" id="sellerSetupForm">
                         @csrf
-                        
+
                         <!-- Progress Steps -->
                         <div class="row mb-4">
                             <div class="col-12">
@@ -37,11 +37,11 @@
                                     <div class="progress-steps">
                                         <div class="step active">
                                             <span class="step-number">1</span>
-                                            <span class="step-title">Thông tin doanh nghiệp</span>
+                                            <span class="step-title">{{ __('marketplace.seller.business_info') }}</span>
                                         </div>
                                         <div class="step">
                                             <span class="step-number">2</span>
-                                            <span class="step-title">Thông tin cửa hàng</span>
+                                            <span class="step-title">{{ __('marketplace.seller.store_info') }}</span>
                                         </div>
                                         <div class="step">
                                             <span class="step-number">3</span>
@@ -55,14 +55,14 @@
                         <!-- Step 1: Business Information -->
                         <div class="step-content" id="step-1">
                             <h6 class="mb-3">
-                                <i class="bx bx-building me-2"></i>Thông tin doanh nghiệp
+                                <i class="bx bx-building me-2"></i>{{ __('marketplace.seller.business_info') }}
                             </h6>
-                            
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="business_name" class="form-label">Tên doanh nghiệp <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('business_name') is-invalid @enderror" 
+                                        <input type="text" class="form-control @error('business_name') is-invalid @enderror"
                                                id="business_name" name="business_name" value="{{ old('business_name') }}" required>
                                         @error('business_name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -72,7 +72,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="business_type" class="form-label">Loại hình kinh doanh <span class="text-danger">*</span></label>
-                                        <select class="form-select @error('business_type') is-invalid @enderror" 
+                                        <select class="form-select @error('business_type') is-invalid @enderror"
                                                 id="business_type" name="business_type" required>
                                             <option value="">Chọn loại hình</option>
                                             <option value="individual" {{ old('business_type') === 'individual' ? 'selected' : '' }}>Cá nhân</option>
@@ -90,7 +90,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="tax_id" class="form-label">Mã số thuế</label>
-                                        <input type="text" class="form-control @error('tax_id') is-invalid @enderror" 
+                                        <input type="text" class="form-control @error('tax_id') is-invalid @enderror"
                                                id="tax_id" name="tax_id" value="{{ old('tax_id') }}">
                                         @error('tax_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -99,8 +99,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror" 
+                                        <label for="phone" class="form-label">{{ __('marketplace.seller.phone_number') }} <span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
                                                id="phone" name="phone" value="{{ old('phone') }}" required>
                                         @error('phone')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -110,8 +110,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="address" class="form-label">Địa chỉ kinh doanh <span class="text-danger">*</span></label>
-                                <textarea class="form-control @error('address') is-invalid @enderror" 
+                                <label for="address" class="form-label">{{ __('marketplace.seller.business_address') }} <span class="text-danger">*</span></label>
+                                <textarea class="form-control @error('address') is-invalid @enderror"
                                           id="address" name="address" rows="3" required>{{ old('address') }}</textarea>
                                 @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -128,14 +128,14 @@
                         <!-- Step 2: Store Information -->
                         <div class="step-content d-none" id="step-2">
                             <h6 class="mb-3">
-                                <i class="bx bx-store me-2"></i>Thông tin cửa hàng
+                                <i class="bx bx-store me-2"></i>{{ __('marketplace.seller.store_info') }}
                             </h6>
-                            
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="store_name" class="form-label">Tên cửa hàng <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('store_name') is-invalid @enderror" 
+                                        <label for="store_name" class="form-label">{{ __('marketplace.seller.store_name') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('store_name') is-invalid @enderror"
                                                id="store_name" name="store_name" value="{{ old('store_name') }}" required>
                                         @error('store_name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -147,7 +147,7 @@
                                         <label for="store_slug" class="form-label">URL cửa hàng <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text">mechamap.test/store/</span>
-                                            <input type="text" class="form-control @error('store_slug') is-invalid @enderror" 
+                                            <input type="text" class="form-control @error('store_slug') is-invalid @enderror"
                                                    id="store_slug" name="store_slug" value="{{ old('store_slug') }}" required>
                                         </div>
                                         <div id="slug-feedback" class="form-text"></div>
@@ -159,10 +159,10 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="store_description" class="form-label">Mô tả cửa hàng</label>
-                                <textarea class="form-control @error('store_description') is-invalid @enderror" 
-                                          id="store_description" name="store_description" rows="4" 
-                                          placeholder="Giới thiệu về cửa hàng của bạn...">{{ old('store_description') }}</textarea>
+                                <label for="store_description" class="form-label">{{ __('marketplace.seller.store_description') }}</label>
+                                <textarea class="form-control @error('store_description') is-invalid @enderror"
+                                          id="store_description" name="store_description" rows="4"
+                                          placeholder="{{ __('marketplace.seller.store_desc_placeholder') }}">{{ old('store_description') }}</textarea>
                                 @error('store_description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -170,7 +170,7 @@
 
                             <div class="mb-3">
                                 <label for="store_logo" class="form-label">Logo cửa hàng</label>
-                                <input type="file" class="form-control @error('store_logo') is-invalid @enderror" 
+                                <input type="file" class="form-control @error('store_logo') is-invalid @enderror"
                                        id="store_logo" name="store_logo" accept="image/*">
                                 <small class="text-muted">Định dạng: JPG, PNG. Kích thước tối đa: 2MB</small>
                                 @error('store_logo')
@@ -195,7 +195,7 @@
                                     @foreach($categories as $value => $label)
                                     <div class="col-md-4">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" 
+                                            <input class="form-check-input" type="checkbox"
                                                    id="cat_{{ $value }}" name="categories[]" value="{{ $value }}"
                                                    {{ in_array($value, old('categories', [])) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="cat_{{ $value }}">{{ $label }}</label>
@@ -218,23 +218,23 @@
                         <!-- Step 3: Confirmation -->
                         <div class="step-content d-none" id="step-3">
                             <h6 class="mb-3">
-                                <i class="bx bx-check-circle me-2"></i>Xác nhận thông tin
+                                <i class="bx bx-check-circle me-2"></i>{{ __('marketplace.seller.confirm_info') }}
                             </h6>
 
                             <div class="alert alert-info">
                                 <i class="bx bx-info-circle me-2"></i>
-                                Vui lòng kiểm tra lại thông tin trước khi gửi. Sau khi gửi, chúng tôi sẽ xem xét và xác minh tài khoản trong vòng 24-48 giờ.
+                                {{ __('marketplace.seller.review_message') }}
                             </div>
 
                             <!-- Terms & Conditions -->
                             <div class="mb-4">
                                 <div class="form-check">
-                                    <input class="form-check-input @error('agree_terms') is-invalid @enderror" 
+                                    <input class="form-check-input @error('agree_terms') is-invalid @enderror"
                                            type="checkbox" id="agree_terms" name="agree_terms" required
                                            {{ old('agree_terms') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="agree_terms">
-                                        Tôi đồng ý với <a href="#" target="_blank">Điều khoản dịch vụ</a> và 
-                                        <a href="#" target="_blank">Chính sách bán hàng</a> của MechaMap 
+                                        Tôi đồng ý với <a href="#" target="_blank">Điều khoản dịch vụ</a> và
+                                        <a href="#" target="_blank">Chính sách bán hàng</a> của MechaMap
                                         <span class="text-danger">*</span>
                                     </label>
                                     @error('agree_terms')
@@ -248,7 +248,7 @@
                                     <i class="bx bx-left-arrow-alt me-1"></i> Quay lại
                                 </button>
                                 <button type="submit" class="btn btn-success btn-lg">
-                                    <i class="bx bx-check me-2"></i>Hoàn thành thiết lập
+                                    <i class="bx bx-check me-2"></i>{{ __('marketplace.seller.complete_setup') }}
                                 </button>
                             </div>
                         </div>
@@ -334,11 +334,11 @@ function nextStep(step) {
     if (validateCurrentStep()) {
         document.getElementById(`step-${currentStep}`).classList.add('d-none');
         document.getElementById(`step-${step}`).classList.remove('d-none');
-        
+
         // Update progress
         const progress = (step / 3) * 100;
         document.querySelector('.progress-bar').style.width = progress + '%';
-        
+
         // Update step indicators
         document.querySelectorAll('.step').forEach((el, index) => {
             if (index + 1 <= step) {
@@ -347,7 +347,7 @@ function nextStep(step) {
                 el.classList.remove('active');
             }
         });
-        
+
         currentStep = step;
     }
 }
@@ -355,11 +355,11 @@ function nextStep(step) {
 function prevStep(step) {
     document.getElementById(`step-${currentStep}`).classList.add('d-none');
     document.getElementById(`step-${step}`).classList.remove('d-none');
-    
+
     // Update progress
     const progress = (step / 3) * 100;
     document.querySelector('.progress-bar').style.width = progress + '%';
-    
+
     // Update step indicators
     document.querySelectorAll('.step').forEach((el, index) => {
         if (index + 1 <= step) {
@@ -368,7 +368,7 @@ function prevStep(step) {
             el.classList.remove('active');
         }
     });
-    
+
     currentStep = step;
 }
 
@@ -376,7 +376,7 @@ function validateCurrentStep() {
     const currentStepEl = document.getElementById(`step-${currentStep}`);
     const requiredFields = currentStepEl.querySelectorAll('[required]');
     let isValid = true;
-    
+
     requiredFields.forEach(field => {
         if (!field.value.trim()) {
             field.classList.add('is-invalid');
@@ -385,7 +385,7 @@ function validateCurrentStep() {
             field.classList.remove('is-invalid');
         }
     });
-    
+
     return isValid;
 }
 
@@ -404,7 +404,7 @@ document.getElementById('store_name').addEventListener('input', function() {
 // Check slug availability
 function checkSlugAvailability(slug) {
     if (slug.length < 3) return;
-    
+
     fetch(`{{ route('marketplace.seller.check-slug') }}?slug=${slug}`)
         .then(response => response.json())
         .then(data => {

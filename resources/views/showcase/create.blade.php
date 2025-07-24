@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tạo Showcase Mới')
+@section('title', __('showcase.create.title'))
 
 @push('styles')
 <style>
@@ -64,8 +64,8 @@
 
             <!-- Header -->
             <div class="text-center mb-5">
-                <h2><i class="stars me-2"></i>Tạo Showcase Mới</h2>
-                <p class="text-muted">Chia sẻ dự án, sản phẩm hoặc thành tựu kỹ thuật của bạn với cộng đồng</p>
+                <h2><i class="stars me-2"></i>{{ __('showcase.create.heading') }}</h2>
+                <p class="text-muted">{{ __('showcase.create.description') }}</p>
             </div>
 
             <!-- Help Information -->
@@ -91,7 +91,7 @@
 
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <label for="title" class="form-label">Tiêu đề showcase <span
+                            <label for="title" class="form-label">{{ __('showcase.create.showcase_title') }} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
                                 name="title" value="{{ old('title') }}"
@@ -124,11 +124,11 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="description" class="form-label">Mô tả chi tiết <span
+                        <label for="description" class="form-label">{{ __('showcase.create.detailed_description') }} <span
                                 class="text-danger">*</span></label>
                         <textarea class="form-control @error('description') is-invalid @enderror" id="description"
                             name="description" rows="5"
-                            placeholder="Mô tả chi tiết về dự án: mục tiêu, công nghệ sử dụng, đặc điểm nổi bật, kết quả đạt được..."
+                            placeholder="{{ __('showcase.create.description_placeholder') }}"
                             required>{{ old('description') }}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -139,10 +139,10 @@
 
                 <!-- Cover Image Section -->
                 <div class="form-section">
-                    <h5><i class="fas fa-image me-2"></i>Hình Ảnh Đại Diện</h5>
+                    <h5><i class="fas fa-image me-2"></i>{{ __('showcase.create.cover_image_section') }}</h5>
 
                     <div class="mb-3">
-                        <label for="cover_image" class="form-label">Upload hình ảnh đại diện <span
+                        <label for="cover_image" class="form-label">{{ __('showcase.create.upload_cover_image') }} <span
                                 class="text-danger">*</span></label>
                         <div class="file-upload-area" id="fileUploadArea">
                             <i class="fas fa-cloud-upload-alt fs-1 text-muted mb-3"></i>
@@ -165,7 +165,7 @@
                         @error('cover_image')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                        <div class="form-text">Hình ảnh đại diện cho showcase của bạn</div>
+                        <div class="form-text">{{ __('showcase.create.cover_image_help') }}</div>
                     </div>
                 </div>
 
@@ -190,9 +190,9 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="category" class="form-label">Danh mục kỹ thuật</label>
+                            <label for="category" class="form-label">{{ __('showcase.create.technical_category') }}</label>
                             <select class="form-select" id="category" name="category">
-                                <option value="">Chọn danh mục</option>
+                                <option value="">{{ __('showcase.create.choose_category') }}</option>
                                 <option value="mechanical-design">Thiết kế cơ khí</option>
                                 <option value="automation">Tự động hóa</option>
                                 <option value="robotics">Robot học</option>
@@ -217,7 +217,7 @@
                             <i class="fas fa-eye me-2"></i>Xem trước
                         </button>
                         <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="fas fa-check-circle me-2"></i>Tạo Showcase
+                            <i class="fas fa-check-circle me-2"></i>{{ __('showcase.create.create_button') }}
                         </button>
                     </div>
                 </div>
@@ -240,8 +240,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary" id="submitFromPreview">Tạo Showcase</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('showcase.create.close_button') }}</button>
+                <button type="button" class="btn btn-primary" id="submitFromPreview">{{ __('showcase.create.create_button') }}</button>
             </div>
         </div>
     </div>
@@ -338,10 +338,10 @@
             <div class="card">
                 ${previewImg.src ? `<img src="${previewImg.src}" class="card-img-top" style="height: 250px; object-fit: cover;">` : ''}
                 <div class="card-body">
-                    <h5 class="card-title">${title || 'Tiêu đề showcase'}</h5>
-                    <p class="card-text">${description || 'Mô tả showcase...'}</p>
+                    <h5 class="card-title">${title || '{!! addslashes(__('showcase.create.title_placeholder')) !!}'}</h5>
+                    <p class="card-text">${description || '{!! addslashes(__('showcase.create.desc_placeholder')) !!}'}</p>
 
-                    ${location ? `<p><i class="geo-alt"></i> <strong>Địa điểm:</strong> ${location}</p>` : ''}
+                    ${location ? `<p><i class="geo-alt"></i> <strong>{!! addslashes(__('showcase.create.location_label')) !!}</strong> ${location}</p>` : ''}
                     ${usage ? `<p><i class="tools"></i> <strong>Ứng dụng:</strong> ${usage}</p>` : ''}
                     ${floors ? `<p><i class="layers"></i> <strong>Quy mô:</strong> ${floorsText[floors]}</p>` : ''}
 

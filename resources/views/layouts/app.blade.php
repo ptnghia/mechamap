@@ -25,7 +25,7 @@
         content="{{ $description ?? $seo['site_description'] ?? __('seo.site.description') }}">
     <meta name="keywords"
         content="{{ $keywords ?? $seo['site_keywords'] ?? __('seo.site.keywords') }}">
-    <meta name="author" content="MechaMap Team">
+    <meta name="author" content="{{ __('ui.layout.meta_author') }}">
 
     @if(!($seo['allow_indexing'] ?? true))
     <meta name="robots" content="noindex, nofollow">
@@ -300,21 +300,21 @@
                 },
                 // Vietnamese labels
                 l10n: {
-                    CLOSE: "Đóng",
-                    NEXT: "Tiếp theo",
-                    PREV: "Trước đó",
-                    MODAL: "Bạn có thể đóng modal này bằng phím ESC",
-                    ERROR: "Có lỗi xảy ra khi tải nội dung. <br/> Vui lòng thử lại sau.",
-                    IMAGE_ERROR: "Không thể tải hình ảnh. <br/> Vui lòng thử lại sau.",
-                    ELEMENT_NOT_FOUND: "Không tìm thấy phần tử HTML.",
-                    AJAX_NOT_FOUND: "Lỗi khi tải AJAX: Không tìm thấy",
-                    AJAX_FORBIDDEN: "Lỗi khi tải AJAX: Bị cấm",
-                    IFRAME_ERROR: "Lỗi khi tải trang",
-                    TOGGLE_ZOOM: "Phóng to/thu nhỏ",
-                    TOGGLE_THUMBS: "Hiện/ẩn thumbnails",
-                    TOGGLE_SLIDESHOW: "Bật/tắt slideshow",
-                    TOGGLE_FULLSCREEN: "Bật/tắt toàn màn hình",
-                    DOWNLOAD: "Tải xuống"
+                    CLOSE: {!! json_encode(__('ui.actions.close')) !!},
+                    NEXT: {!! json_encode(__('ui.pagination.next')) !!},
+                    PREV: {!! json_encode(__('ui.pagination.previous')) !!},
+                    MODAL: {!! json_encode(__('ui.layout.fancybox.modal_esc_hint')) !!},
+                    ERROR: {!! json_encode(__('ui.layout.fancybox.error_loading')) !!},
+                    IMAGE_ERROR: {!! json_encode(__('ui.layout.fancybox.image_error')) !!},
+                    ELEMENT_NOT_FOUND: {!! json_encode(__('ui.layout.fancybox.element_not_found')) !!},
+                    AJAX_NOT_FOUND: {!! json_encode(__('ui.layout.fancybox.ajax_not_found')) !!},
+                    AJAX_FORBIDDEN: {!! json_encode(__('ui.layout.fancybox.ajax_forbidden')) !!},
+                    IFRAME_ERROR: {!! json_encode(__('ui.layout.fancybox.iframe_error')) !!},
+                    TOGGLE_ZOOM: {!! json_encode(__('ui.layout.fancybox.toggle_zoom')) !!},
+                    TOGGLE_THUMBS: {!! json_encode(__('ui.layout.fancybox.toggle_thumbs')) !!},
+                    TOGGLE_SLIDESHOW: {!! json_encode(__('ui.layout.fancybox.toggle_slideshow')) !!},
+                    TOGGLE_FULLSCREEN: {!! json_encode(__('ui.layout.fancybox.toggle_fullscreen')) !!},
+                    DOWNLOAD: {!! json_encode(__('ui.actions.download')) !!}
                 }
             });
         });
@@ -333,7 +333,7 @@
             setTimeout(function() {
                 const toggleBtn = document.getElementById('theme-toggle');
                 if (toggleBtn && !toggleBtn._hasClickHandler) {
-                    console.log('Adding fallback click handler to theme button');
+                    console.log({!! json_encode(__('ui.layout.console.theme_button_fallback')) !!});
                     toggleBtn._hasClickHandler = true;
                     toggleBtn.addEventListener('click', function(e) {
                         console.log('Theme button clicked (fallback handler)');

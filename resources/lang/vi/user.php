@@ -33,22 +33,22 @@ return array (
   'Replied to a thread' => 'Đã trả lời chủ đề',
   'Updated profile information' => 'Đã cập nhật thông tin hồ sơ',
   'No recent activity.' => 'Không có hoạt động gần đây.',
-  'settings' => 
+  'settings' =>
   array (
     'title' => 'Cài đặt',
   ),
-  'dashboard' => 
+  'dashboard' =>
   array (
     'title' => 'Bảng điều khiển',
   ),
-  'roles' => 
+  'roles' =>
   array (
     'admin' => 'Quản trị viên',
     'moderator' => 'Điều hành viên',
     'member' => 'Thành viên',
     'guest' => 'Khách',
   ),
-  'ratings' => 
+  'ratings' =>
   array (
     'title' => 'Đánh giá & Xếp hạng',
     'description' => 'Quản lý đánh giá đã cho và nhận được',
@@ -77,7 +77,7 @@ return array (
     'no_received_desc' => 'Chủ đề của bạn chưa được đánh giá. Hãy tạo nội dung chất lượng!',
     'create_thread' => 'Tạo chủ đề',
   ),
-  'activity' => 
+  'activity' =>
   array (
     'title' => 'Hoạt động',
     'recent' => 'Hoạt động gần đây',
@@ -102,7 +102,7 @@ return array (
     'no_activity' => 'Chưa có hoạt động nào',
     'no_activity_desc' => 'Người dùng này chưa có hoạt động nào được ghi nhận',
   ),
-  'dashboard_guest' => 
+  'dashboard_guest' =>
   array (
     'welcome' => 'Chào mừng đến với MechaMap',
     'welcome_desc' => 'Khám phá cộng đồng kỹ thuật cơ khí hàng đầu Việt Nam',
@@ -132,7 +132,7 @@ return array (
     'network_professionals' => 'Kết nối chuyên gia',
     'learn_grow' => 'Học hỏi & phát triển',
   ),
-  'dashboard_member' => 
+  'dashboard_member' =>
   array (
     'welcome_back' => 'Chào mừng trở lại',
     'your_activity' => 'Hoạt động của bạn',
@@ -195,4 +195,74 @@ return array (
   'profile.labels.all_roles' => 'Tất cả vai trò',
   'profile.status.cancelled' => 'Đã hủy',
   'roles.admin' => 'Quản trị viên',
+
+  // Bookmarks management
+  'bookmarks' => [
+    'title' => 'Bookmarks của tôi',
+    'filter_title' => 'Bộ lọc Bookmarks',
+    'search_placeholder' => 'Tìm kiếm thread...',
+    'folder_label' => 'Thư mục:',
+    'no_folder' => 'Không có thư mục',
+    'stats' => [
+      'total_bookmarks' => 'Tổng bookmarks:',
+      'with_folders' => 'Có thư mục:',
+    ],
+    'actions' => [
+      'create_folder' => 'Tạo thư mục',
+      'delete_selected' => 'Xóa đã chọn',
+      'results_count' => ':count kết quả',
+    ],
+    'folder_modal' => [
+      'create_title' => 'Tạo thư mục mới',
+      'name_label' => 'Tên thư mục:',
+      'name_placeholder' => 'Ví dụ: Lập trình, Thiết kế...',
+      'description_label' => 'Mô tả (tùy chọn):',
+      'description_placeholder' => 'Mô tả ngắn về thư mục này...',
+      'cancel_button' => 'Hủy',
+      'create_button' => 'Tạo thư mục',
+    ],
+    'edit_modal' => [
+      'folder_label' => 'Thư mục:',
+    ],
+    'confirmations' => [
+      'delete_bookmark' => 'Bạn có chắc muốn xóa bookmark này?',
+      'delete_multiple' => 'Bạn có chắc muốn xóa :count bookmark đã chọn?',
+      'select_at_least_one' => 'Vui lòng chọn ít nhất một bookmark để xóa',
+    ],
+    'errors' => [
+      'create_folder_failed' => 'Có lỗi xảy ra khi tạo thư mục',
+      'delete_bookmark_failed' => 'Có lỗi xảy ra khi xóa bookmark',
+      'delete_bookmarks_failed' => 'Có lỗi xảy ra khi xóa bookmarks',
+    ],
+  ],
+
+  // Settings page
+  'settings' => [
+    'title' => 'Cài đặt tài khoản',
+    'page_title' => 'Cài đặt',
+    'placeholders' => [
+      'location' => 'Thành phố, Tỉnh',
+      'bio' => 'Hãy giới thiệu về bản thân, sở thích, chuyên môn...',
+      'profession' => 'Kỹ sư, Thiết kế...',
+    ],
+    'sections' => [
+      'notifications' => 'Cài đặt thông báo',
+    ],
+    'actions' => [
+      'save_settings' => 'Lưu cài đặt',
+    ],
+    'confirmations' => [
+      'delete_account_1' => 'Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác!',
+      'delete_account_2' => 'Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn. Bạn có thực sự muốn tiếp tục?',
+    ],
+    'errors' => [
+      'general_error' => 'Có lỗi xảy ra',
+      'update_profile_failed' => 'Có lỗi xảy ra khi cập nhật thông tin',
+      'change_password_failed' => 'Có lỗi xảy ra khi đổi mật khẩu',
+      'save_preferences_failed' => 'Có lỗi xảy ra khi lưu tùy chọn',
+      'save_notifications_failed' => 'Có lỗi xảy ra khi lưu cài đặt thông báo',
+      'save_privacy_failed' => 'Có lỗi xảy ra khi lưu cài đặt quyền riêng tư',
+      'delete_account_failed' => 'Có lỗi xảy ra khi xóa tài khoản',
+    ],
+  ],
 );

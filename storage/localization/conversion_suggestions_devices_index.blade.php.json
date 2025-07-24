@@ -1,0 +1,86 @@
+[
+    {
+        "line": 3,
+        "original": "Quản lý thiết bị",
+        "replacement": "__('devices.index.titles.qun_l_thit_b')",
+        "context": "@section('title', 'Quản lý thiết bị')"
+    },
+    {
+        "line": 164,
+        "original": "Bỏ tin cậy",
+        "replacement": "__('devices.index.titles.b_tin_cy')",
+        "context": "title=\"Bỏ tin cậy\">"
+    },
+    {
+        "line": 171,
+        "original": "Đánh dấu tin cậy",
+        "replacement": "__('devices.index.titles.nh_du_tin_cy')",
+        "context": "title=\"Đánh dấu tin cậy\">"
+    },
+    {
+        "line": 180,
+        "original": "Xóa thiết bị",
+        "replacement": "__('devices.index.titles.xa_thit_b')",
+        "context": "title=\"Xóa thiết bị\">"
+    },
+    {
+        "line": 245,
+        "original": "DOMContentLoaded",
+        "replacement": "__('devices.index.table.domcontentloaded')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 252,
+        "original": "PATCH",
+        "replacement": "__('devices.index.table.patch')",
+        "context": "method: 'PATCH',"
+    },
+    {
+        "line": 279,
+        "original": "Bỏ đánh dấu tin cậy thiết bị này?",
+        "replacement": "__('devices.index.table.b_nh_du_tin_cy_thit_b_ny')",
+        "context": "if (confirm('Bỏ đánh dấu tin cậy thiết bị này?')) {"
+    },
+    {
+        "line": 281,
+        "original": "PATCH",
+        "replacement": "__('devices.index.table.patch_1')",
+        "context": "method: 'PATCH',"
+    },
+    {
+        "line": 311,
+        "original": "DELETE",
+        "replacement": "__('devices.index.table.delete')",
+        "context": "method: 'DELETE',"
+    },
+    {
+        "line": 358,
+        "original": "Tin cậy",
+        "replacement": "__('devices.index.table.tin_cy')",
+        "context": "${device.is_trusted ? 'Tin cậy' : 'Chưa tin cậy'}"
+    },
+    {
+        "line": 358,
+        "original": "Chưa tin cậy",
+        "replacement": "__('devices.index.table.cha_tin_cy')",
+        "context": "${device.is_trusted ? 'Tin cậy' : 'Chưa tin cậy'}"
+    },
+    {
+        "line": 378,
+        "original": "Không thể tải thông tin thiết bị",
+        "replacement": "__('devices.index.messages.khng_th_ti_thng_tin_thit_b')",
+        "context": "${data.message || 'Không thể tải thông tin thiết bị'}"
+    },
+    {
+        "line": 396,
+        "original": "Xóa tất cả thiết bị chưa tin cậy và không hoạt động trong 90 ngày qua?",
+        "replacement": "__('devices.index.table.xa_tt_c_thit_b')",
+        "context": "if (confirm('Xóa tất cả thiết bị chưa tin cậy và không hoạt động trong 90 ngày qua?')) {"
+    },
+    {
+        "line": 398,
+        "original": "POST",
+        "replacement": "__('devices.index.table.post')",
+        "context": "method: 'POST',"
+    }
+]

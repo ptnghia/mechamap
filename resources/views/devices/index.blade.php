@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Quản lý thiết bị')
+@section('title', __('devices.title'))
 
 @section('content')
 <div class="container py-4">
@@ -11,14 +11,14 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fas fa-shield-alt me-2 text-primary"></i>
-                        Quản lý thiết bị
+                        {{ __('devices.title') }}
                     </h1>
-                    <p class="text-muted mb-0">Xem và quản lý các thiết bị đã đăng nhập vào tài khoản của bạn</p>
+                    <p class="text-muted mb-0">{{ __('devices.subtitle') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-warning" id="cleanOldDevicesBtn">
                         <i class="fas fa-broom me-1"></i>
-                        Dọn dẹp thiết bị cũ
+                        {{ __('devices.clean_old_devices') }}
                     </button>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                 @endif
             </h5>
         </div>
-        
+
         <div class="card-body p-0">
             @if($devices->count() > 0)
                 <div class="device-list">
@@ -106,8 +106,8 @@
                                 default => 'fas fa-laptop'
                             };
                         @endphp
-                        
-                        <div class="device-item border-bottom p-3 {{ $isCurrentDevice ? 'bg-light' : '' }}" 
+
+                        <div class="device-item border-bottom p-3 {{ $isCurrentDevice ? 'bg-light' : '' }}"
                              data-device-id="{{ $device->id }}">
                             <div class="d-flex">
                                 <!-- Device Icon -->
@@ -116,7 +116,7 @@
                                         <i class="{{ $deviceIcon }} text-{{ $device->is_trusted ? 'success' : 'warning' }} fs-5"></i>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Device Info -->
                                 <div class="device-info flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -147,43 +147,43 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- Device Actions -->
                                         <div class="device-actions d-flex gap-1">
-                                            <button type="button" 
+                                            <button type="button"
                                                     class="btn btn-sm btn-outline-info view-details-btn"
                                                     data-device-id="{{ $device->id }}"
                                                     title="Xem chi tiết">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                            
+
                                             @if($device->is_trusted)
-                                                <button type="button" 
+                                                <button type="button"
                                                         class="btn btn-sm btn-outline-warning untrust-btn"
                                                         data-device-id="{{ $device->id }}"
-                                                        title="Bỏ tin cậy">
+                                                        title="{{ __('devices.actions.untrust') }}">
                                                     <i class="fas fa-shield-alt"></i>
                                                 </button>
                                             @else
-                                                <button type="button" 
+                                                <button type="button"
                                                         class="btn btn-sm btn-outline-success trust-btn"
                                                         data-device-id="{{ $device->id }}"
-                                                        title="Đánh dấu tin cậy">
+                                                        title="{{ __('devices.actions.trust') }}">
                                                     <i class="fas fa-shield-check"></i>
                                                 </button>
                                             @endif
-                                            
+
                                             @if(!$isCurrentDevice)
-                                                <button type="button" 
+                                                <button type="button"
                                                         class="btn btn-sm btn-outline-danger remove-btn"
                                                         data-device-id="{{ $device->id }}"
-                                                        title="Xóa thiết bị">
+                                                        title="{{ __('devices.actions.remove') }}">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             @endif
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Security Info -->
                                     <div class="security-info">
                                         <small class="text-muted">
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.trust-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const deviceId = this.dataset.deviceId;
-            
+
             fetch(`/ajax/devices/${deviceId}/trust`, {
                 method: 'PATCH',
                 headers: {
@@ -270,13 +270,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
+
     // Untrust device
     document.querySelectorAll('.untrust-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const deviceId = this.dataset.deviceId;
-            
-            if (confirm('Bỏ đánh dấu tin cậy thiết bị này?')) {
+
+            if (confirm('{!! addslashes(__('devices.confirmations.untrust_device')) !!}')) {
                 fetch(`/ajax/devices/${deviceId}/untrust`, {
                     method: 'PATCH',
                     headers: {
@@ -300,12 +300,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Remove device
     document.querySelectorAll('.remove-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const deviceId = this.dataset.deviceId;
-            
+
             if (confirm('Xóa thiết bị này khỏi danh sách? Bạn sẽ cần đăng nhập lại từ thiết bị đó.')) {
                 fetch(`/ajax/devices/${deviceId}`, {
                     method: 'DELETE',
@@ -329,16 +329,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // View device details
     document.querySelectorAll('.view-details-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const deviceId = this.dataset.deviceId;
             const modal = new bootstrap.Modal(document.getElementById('deviceDetailsModal'));
-            
+
             // Show modal with loading
             modal.show();
-            
+
             fetch(`/ajax/devices/${deviceId}`)
             .then(response => response.json())
             .then(data => {
@@ -353,9 +353,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <li><strong>Loại:</strong> ${device.device_type}</li>
                                     <li><strong>Trình duyệt:</strong> ${device.browser}</li>
                                     <li><strong>Hệ điều hành:</strong> ${device.platform}</li>
-                                    <li><strong>Trạng thái:</strong> 
+                                    <li><strong>Trạng thái:</strong>
                                         <span class="badge bg-${device.is_trusted ? 'success' : 'warning'}">
-                                            ${device.is_trusted ? 'Tin cậy' : 'Chưa tin cậy'}
+                                            ${device.is_trusted ? '{!! addslashes(__('devices.status.trusted')) !!}' : '{!! addslashes(__('devices.status.untrusted')) !!}'}
                                         </span>
                                     </li>
                                 </ul>
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     document.getElementById('deviceDetailsContent').innerHTML = `
                         <div class="alert alert-danger">
-                            ${data.message || 'Không thể tải thông tin thiết bị'}
+                            ${data.message || '{!! addslashes(__('devices.errors.load_failed')) !!}'}
                         </div>
                     `;
                 }
@@ -390,10 +390,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
+
     // Clean old devices
     document.getElementById('cleanOldDevicesBtn')?.addEventListener('click', function() {
-        if (confirm('Xóa tất cả thiết bị chưa tin cậy và không hoạt động trong 90 ngày qua?')) {
+        if (confirm('{!! addslashes(__('devices.confirmations.clean_old_devices')) !!}')) {
             fetch('/ajax/devices/clean-old', {
                 method: 'POST',
                 headers: {
@@ -430,9 +430,9 @@ function showToast(message, type = 'info') {
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         if (toast.parentNode) {
             toast.remove();
@@ -482,7 +482,7 @@ function showToast(message, type = 'info') {
     .device-item .device-actions {
         opacity: 1;
     }
-    
+
     .device-details {
         font-size: 0.8rem;
     }

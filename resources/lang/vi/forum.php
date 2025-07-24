@@ -379,6 +379,9 @@ return array (
     'voters' => 'Người bỏ phiếu',
     'loading_results' => 'Đang tải kết quả...',
     'max_options_exceeded' => 'Chỉ được chọn tối đa :max tùy chọn',
+    'question_placeholder' => 'Nhập câu hỏi cho cuộc khảo sát',
+    'option_placeholder' => 'Lựa chọn :number',
+    'option_placeholder_dynamic' => 'Lựa chọn',
   ),
   'stats' =>
   array (

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bookmarks của tôi')
+@section('title', __('user.bookmarks.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-bookmark me-2"></i>
-                        Bộ lọc Bookmarks
+                        {{ __('user.bookmarks.filter_title') }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -19,7 +19,7 @@
                     <form method="GET" class="mb-3">
                         <div class="input-group">
                             <input type="text" class="form-control form-control-sm" name="search"
-                                value="{{ request('search') }}" placeholder="Tìm kiếm thread...">
+                                value="{{ request('search') }}" placeholder="{{ __('user.bookmarks.search_placeholder') }}">
                             <button class="btn btn-outline-primary btn-sm" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -28,7 +28,7 @@
 
                     <!-- Folder filter -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Thư mục:</label>
+                        <label class="form-label fw-bold">{{ __('user.bookmarks.folder_label') }}</label>
                         <div class="list-group list-group-flush">
                             <a href="{{ route('user.bookmarks') }}"
                                 class="list-group-item list-group-item-action {{ !request('folder') ? 'active' : '' }}">
@@ -40,7 +40,7 @@
                             <a href="{{ route('user.bookmarks', ['folder' => $folder->folder]) }}"
                                 class="list-group-item list-group-item-action {{ request('folder') === $folder->folder ? 'active' : '' }}">
                                 <i class="fas fa-folder me-2"></i>
-                                {{ $folder->folder ?: 'Không có thư mục' }} ({{ $folder->count }})
+                                {{ $folder->folder ?: __('user.bookmarks.no_folder') }} ({{ $folder->count }})
                             </a>
                             @endforeach
                         </div>
@@ -51,11 +51,11 @@
                         <h6 class="fw-bold mb-2">Thống kê:</h6>
                         <div class="text-muted small">
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Tổng bookmarks:</span>
+                                <span>{{ __('user.bookmarks.stats.total_bookmarks') }}</span>
                                 <span class="fw-bold">{{ $stats['total'] }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Có thư mục:</span>
+                                <span>{{ __('user.bookmarks.stats.with_folders') }}</span>
                                 <span class="fw-bold">{{ $stats['with_folders'] }}</span>
                             </div>
                             <div class="d-flex justify-content-between">
@@ -74,7 +74,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-bookmark me-2"></i>
-                        Bookmarks của tôi
+                        {{ __('user.bookmarks.title') }}
                         @if(request('folder'))
                         - {{ request('folder') }}
                         @endif
@@ -84,11 +84,11 @@
                         <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#addFolderModal">
                             <i class="fas fa-folder-plus me-1"></i>
-                            Tạo thư mục
+                            {{ __('user.bookmarks.actions.create_folder') }}
                         </button>
                         <button class="btn btn-sm btn-outline-danger" onclick="bulkDelete()">
                             <i class="fas fa-trash me-1"></i>
-                            Xóa đã chọn
+                            {{ __('user.bookmarks.actions.delete_selected') }}
                         </button>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                         <label for="selectAll" class="form-check-label">Chọn tất cả</label>
 
                         <div class="ms-auto">
-                            <span class="text-muted">{{ $bookmarks->total() }} kết quả</span>
+                            <span class="text-muted">{{ trans('user.bookmarks.actions.results_count', ['count' => $bookmarks->total()]) }}</span>
                         </div>
                     </div>
 
@@ -223,25 +223,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tạo thư mục mới</h5>
+                <h5 class="modal-title">{{ __('user.bookmarks.folder_modal.create_title') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="addFolderForm">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="folderName" class="form-label">Tên thư mục:</label>
+                        <label for="folderName" class="form-label">{{ __('user.bookmarks.folder_modal.name_label') }}</label>
                         <input type="text" class="form-control" id="folderName" name="folder_name"
-                            placeholder="Ví dụ: Lập trình, Thiết kế..." required>
+                            placeholder="{{ __('user.bookmarks.folder_modal.name_placeholder') }}" required>
                     </div>
                     <div class="mb-3">
-                        <label for="folderDescription" class="form-label">Mô tả (tùy chọn):</label>
+                        <label for="folderDescription" class="form-label">{{ __('user.bookmarks.folder_modal.description_label') }}</label>
                         <textarea class="form-control" id="folderDescription" name="description" rows="3"
-                            placeholder="Mô tả ngắn về thư mục này..."></textarea>
+                            placeholder="{{ __('user.bookmarks.folder_modal.description_placeholder') }}"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Tạo thư mục</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('user.bookmarks.folder_modal.cancel_button') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('user.bookmarks.folder_modal.create_button') }}</button>
                 </div>
             </form>
         </div>
@@ -260,9 +260,9 @@
                 <input type="hidden" id="editBookmarkId">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="editFolder" class="form-label">Thư mục:</label>
+                        <label for="editFolder" class="form-label">{{ __('user.bookmarks.edit_modal.folder_label') }}</label>
                         <select class="form-select" id="editFolder" name="folder">
-                            <option value="">Không có thư mục</option>
+                            <option value="">{{ __('user.bookmarks.no_folder') }}</option>
                             @foreach($folders as $folder)
                             <option value="{{ $folder->folder }}">{{ $folder->folder }}</option>
                             @endforeach
@@ -323,7 +323,7 @@
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi tạo thư mục');
+            showAlert('danger', {!! json_encode(__('user.bookmarks.errors.create_folder_failed')) !!});
         });
     });
 
@@ -371,7 +371,7 @@ function editBookmark(id, folder, notes) {
 }
 
 function deleteBookmark(id) {
-    if (confirm('Bạn có chắc muốn xóa bookmark này?')) {
+    if (confirm({!! json_encode(__('user.bookmarks.confirmations.delete_bookmark')) !!})) {
         fetch(`{{ url('user/bookmarks') }}/${id}`, {
             method: 'DELETE',
             headers: {
@@ -389,7 +389,7 @@ function deleteBookmark(id) {
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi xóa bookmark');
+            showAlert('danger', {!! json_encode(__('user.bookmarks.errors.delete_bookmark_failed')) !!});
         });
     }
 }
@@ -399,11 +399,11 @@ function bulkDelete() {
     const ids = Array.from(selectedCheckboxes).map(cb => cb.value);
 
     if (ids.length === 0) {
-        showAlert('warning', 'Vui lòng chọn ít nhất một bookmark để xóa');
+        showAlert('warning', {!! json_encode(__('user.bookmarks.confirmations.select_at_least_one')) !!});
         return;
     }
 
-    if (confirm(`Bạn có chắc muốn xóa ${ids.length} bookmark đã chọn?`)) {
+    if (confirm({!! json_encode(__('user.bookmarks.confirmations.delete_multiple', ['count' => '${ids.length}'])) !!}.replace('${ids.length}', ids.length))) {
         fetch('{{ route("user.bookmarks.bulk-delete") }}', {
             method: 'POST',
             headers: {
@@ -423,7 +423,7 @@ function bulkDelete() {
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi xóa bookmarks');
+            showAlert('danger', {!! json_encode(__('user.bookmarks.errors.delete_bookmarks_failed')) !!});
         });
     }
 }

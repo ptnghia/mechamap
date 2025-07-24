@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cài đặt tài khoản')
+@section('title', __('user.settings.title'))
 
 @section('content')
 <div class="container">
@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-cog me-2"></i>
-                        Cài đặt
+                        {{ __('user.settings.page_title') }}
                     </h5>
                 </div>
                 <div class="list-group list-group-flush">
@@ -95,13 +95,13 @@
                                                 <label for="location" class="form-label">Địa điểm</label>
                                                 <input type="text" class="form-control" id="location" name="location"
                                                     value="{{ auth()->user()->location }}"
-                                                    placeholder="Thành phố, Tỉnh">
+                                                    placeholder="{{ __('user.settings.placeholders.location') }}">
                                             </div>
 
                                             <div class="col-12 mb-3">
                                                 <label for="bio" class="form-label">Giới thiệu bản thân</label>
                                                 <textarea class="form-control" id="bio" name="bio" rows="4"
-                                                    placeholder="Hãy giới thiệu về bản thân, sở thích, chuyên môn...">{{ auth()->user()->bio }}</textarea>
+                                                    placeholder="{{ __('user.settings.placeholders.bio') }}">{{ auth()->user()->bio }}</textarea>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
@@ -114,7 +114,7 @@
                                                 <label for="profession" class="form-label">Nghề nghiệp</label>
                                                 <input type="text" class="form-control" id="profession"
                                                     name="profession" value="{{ auth()->user()->profession }}"
-                                                    placeholder="Kỹ sư, Thiết kế...">
+                                                    placeholder="{{ __('user.settings.placeholders.profession') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -273,7 +273,7 @@
                 <div class="tab-pane fade" id="notifications">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">Cài đặt thông báo</h5>
+                            <h5 class="mb-0">{{ __('user.settings.sections.notifications') }}</h5>
                         </div>
                         <div class="card-body">
                             <form id="notificationForm">
@@ -347,7 +347,7 @@
                                 <div class="d-flex justify-content-end mt-4">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-save me-1"></i>
-                                        Lưu cài đặt
+                                        {{ __('user.settings.actions.save_settings') }}
                                     </button>
                                 </div>
                             </form>
@@ -423,7 +423,7 @@
                                     </button>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fas fa-save me-1"></i>
-                                        Lưu cài đặt
+                                        {{ __('user.settings.actions.save_settings') }}
                                     </button>
                                 </div>
                             </form>
@@ -470,11 +470,11 @@
             if (data.success) {
                 showAlert('success', data.message);
             } else {
-                showAlert('danger', data.message || 'Có lỗi xảy ra');
+                showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi cập nhật thông tin');
+            showAlert('danger', {!! json_encode(__('user.settings.errors.update_profile_failed')) !!});
         });
     });
 
@@ -498,11 +498,11 @@
                 showAlert('success', data.message);
                 this.reset(); // Clear form
             } else {
-                showAlert('danger', data.message || 'Có lỗi xảy ra');
+                showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi đổi mật khẩu');
+            showAlert('danger', {!! json_encode(__('user.settings.errors.change_password_failed')) !!});
         });
     });
 
@@ -525,11 +525,11 @@
             if (data.success) {
                 showAlert('success', data.message);
             } else {
-                showAlert('danger', data.message || 'Có lỗi xảy ra');
+                showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi lưu tùy chọn');
+            showAlert('danger', {!! json_encode(__('user.settings.errors.save_preferences_failed')) !!});
         });
     });
 
@@ -552,11 +552,11 @@
             if (data.success) {
                 showAlert('success', data.message);
             } else {
-                showAlert('danger', data.message || 'Có lỗi xảy ra');
+                showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi lưu cài đặt thông báo');
+            showAlert('danger', {!! json_encode(__('user.settings.errors.save_notifications_failed')) !!});
         });
     });
 
@@ -579,18 +579,18 @@
             if (data.success) {
                 showAlert('success', data.message);
             } else {
-                showAlert('danger', data.message || 'Có lỗi xảy ra');
+                showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
             }
         })
         .catch(error => {
-            showAlert('danger', 'Có lỗi xảy ra khi lưu cài đặt quyền riêng tư');
+            showAlert('danger', {!! json_encode(__('user.settings.errors.save_privacy_failed')) !!});
         });
     });
 });
 
 function deleteAccount() {
-    if (confirm('Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác!')) {
-        if (confirm('Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn. Bạn có thực sự muốn tiếp tục?')) {
+    if (confirm({!! json_encode(__('user.settings.confirmations.delete_account_1')) !!})) {
+        if (confirm({!! json_encode(__('user.settings.confirmations.delete_account_2')) !!})) {
             fetch('{{ route("user.settings.delete-account") }}', {
                 method: 'DELETE',
                 headers: {
@@ -606,11 +606,11 @@ function deleteAccount() {
                         window.location.href = '/';
                     }, 2000);
                 } else {
-                    showAlert('danger', data.message || 'Có lỗi xảy ra');
+                    showAlert('danger', data.message || {!! json_encode(__('user.settings.errors.general_error')) !!});
                 }
             })
             .catch(error => {
-                showAlert('danger', 'Có lỗi xảy ra khi xóa tài khoản');
+                showAlert('danger', {!! json_encode(__('user.settings.errors.delete_account_failed')) !!});
             });
         }
     }

@@ -1080,4 +1080,23 @@ return [
     'wishlist_desc' => [
     ],
 
+    // Seller setup (max 3 levels)
+    'seller' => [
+        'setup_title' => 'Seller Account Setup',
+        'setup_heading' => 'Seller Account Setup',
+        'welcome_message' => 'Welcome to MechaMap Marketplace!',
+        'welcome_description' => 'Complete the information below to start selling on our platform.',
+        'business_info' => 'Business Information',
+        'store_info' => 'Store Information',
+        'confirm_info' => 'Confirm Information',
+        'phone_number' => 'Phone Number',
+        'business_address' => 'Business Address',
+        'store_name' => 'Store Name',
+        'store_description' => 'Store Description',
+        'review_message' => 'Please review the information before submitting. After submission, we will review and verify your account within 24-48 hours.',
+        'complete_setup' => 'Complete Setup',
+        'store_desc_placeholder' => 'Tell us about your store...',
+        'website_placeholder' => 'https://example.com',
+    ],
+
 ];

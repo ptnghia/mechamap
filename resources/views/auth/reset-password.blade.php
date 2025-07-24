@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Đặt lại mật khẩu')
+@section('title', __('auth.reset_password.title'))
 
 @section('content')
 <x-auth-layout
-    title="Đặt lại mật khẩu"
-    subtitle="Tạo mật khẩu mới cho tài khoản của bạn"
+    title="{{ __('auth.reset_password.title') }}"
+    subtitle="{{ __('auth.reset_password.subtitle') }}"
     :show-social-login="false">
 
     <!-- Page Title -->
@@ -13,8 +13,8 @@
         <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
             <i class="fas fa-shield-alt text-success fs-2"></i>
         </div>
-        <h2 class="fw-bold text-dark mb-2">Tạo mật khẩu mới</h2>
-        <p class="text-muted">Vui lòng nhập mật khẩu mới cho tài khoản của bạn</p>
+        <h2 class="fw-bold text-dark mb-2">{{ __('auth.reset_password.heading') }}</h2>
+        <p class="text-muted">{{ __('auth.reset_password.description') }}</p>
     </div>
 
     <!-- Status Messages -->
@@ -51,19 +51,19 @@
         <!-- New Password -->
         <div class="mb-3">
             <label for="password" class="form-label">
-                <i class="fas fa-key me-2"></i>Mật khẩu mới
+                <i class="fas fa-key me-2"></i>{{ __('auth.reset_password.new_password') }}
             </label>
             <div class="input-group">
                 <input id="password" type="password" name="password"
                        class="form-control @error('password') is-invalid @enderror"
                        required autocomplete="new-password"
-                       placeholder="Nhập mật khẩu mới">
+                       placeholder="{{ __('auth.reset_password.password_placeholder') }}">
                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                     <i class="fas fa-eye"></i>
                 </button>
                 @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-            <small class="form-text text-muted">Sử dụng ít nhất 8 ký tự với chữ cái, số và ký hiệu</small>
+            <small class="form-text text-muted">{{ __('auth.reset_password.password_hint') }}</small>
 
             <!-- Password Strength Indicator -->
             <div class="mt-2">
@@ -77,13 +77,13 @@
         <!-- Confirm Password -->
         <div class="mb-4">
             <label for="password_confirmation" class="form-label">
-                <i class="fas fa-check-double me-2"></i>Xác nhận mật khẩu mới
+                <i class="fas fa-check-double me-2"></i>{{ __('auth.reset_password.confirm_password') }}
             </label>
             <div class="input-group">
                 <input id="password_confirmation" type="password" name="password_confirmation"
                        class="form-control @error('password_confirmation') is-invalid @enderror"
                        required autocomplete="new-password"
-                       placeholder="Nhập lại mật khẩu mới">
+                       placeholder="{{ __('auth.reset_password.confirm_placeholder') }}">
                 <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirm">
                     <i class="fas fa-eye"></i>
                 </button>
@@ -95,7 +95,7 @@
         <!-- Submit Button -->
         <div class="d-grid mb-4">
             <button type="submit" class="btn btn-success btn-lg" id="submitBtn">
-                <i class="fas fa-shield-alt me-2"></i>Cập nhật mật khẩu
+                <i class="fas fa-shield-alt me-2"></i>{{ __('auth.reset_password.update_password') }}
             </button>
         </div>
 
@@ -117,8 +117,8 @@
                 <div class="d-flex align-items-start">
                     <i class="fas fa-check text-success me-3 mt-1"></i>
                     <div>
-                        <strong>Mật khẩu mạnh</strong>
-                        <p class="mb-0 small text-muted">Sử dụng ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký hiệu</p>
+                        <strong>{{ __('auth.reset_password.tips.strong_title') }}</strong>
+                        <p class="mb-0 small text-muted">{{ __('auth.reset_password.tips.strong_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -126,8 +126,8 @@
                 <div class="d-flex align-items-start">
                     <i class="fas fa-check text-success me-3 mt-1"></i>
                     <div>
-                        <strong>Tránh thông tin cá nhân</strong>
-                        <p class="mb-0 small text-muted">Không sử dụng tên, ngày sinh, số điện thoại trong mật khẩu</p>
+                        <strong>{{ __('auth.reset_password.tips.avoid_personal_title') }}</strong>
+                        <p class="mb-0 small text-muted">{{ __('auth.reset_password.tips.avoid_personal_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -135,8 +135,8 @@
                 <div class="d-flex align-items-start">
                     <i class="fas fa-check text-success me-3 mt-1"></i>
                     <div>
-                        <strong>Mật khẩu duy nhất</strong>
-                        <p class="mb-0 small text-muted">Không sử dụng lại mật khẩu từ các tài khoản khác</p>
+                        <strong>{{ __('auth.reset_password.tips.unique_title') }}</strong>
+                        <p class="mb-0 small text-muted">{{ __('auth.reset_password.tips.unique_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -220,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (password.value && passwordConfirm.value) {
             const isMatch = password.value === passwordConfirm.value;
             passwordMatch.innerHTML = isMatch
-                ? '<small class="text-success"><i class="fas fa-check me-1"></i>Mật khẩu khớp</small>'
-                : '<small class="text-danger"><i class="fas fa-times me-1"></i>Mật khẩu không khớp</small>';
+                ? '<small class="text-success"><i class="fas fa-check me-1"></i>{!! addslashes(__('auth.reset_password.password_match')) !!}</small>'
+                : '<small class="text-danger"><i class="fas fa-times me-1"></i>{!! addslashes(__('auth.reset_password.password_mismatch')) !!}</small>';
 
             submitBtn.disabled = !isMatch;
         } else {

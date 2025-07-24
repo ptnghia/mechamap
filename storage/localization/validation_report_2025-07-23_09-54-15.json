@@ -1,0 +1,1292 @@
+{
+    "timestamp": "2025-07-23 09:54:15",
+    "summary": {
+        "total_files": 5,
+        "valid_files": 2,
+        "overall_coverage": 80,
+        "total_keys": 110,
+        "working_keys": 88,
+        "remaining_hardcoded": 138
+    },
+    "results": {
+        "threads\/partials\/showcase.blade.php": {
+            "file": "threads\/partials\/showcase.blade.php",
+            "syntax_check": {
+                "valid": false,
+                "errors": [
+                    "Line 157: Nested quotes in translation call",
+                    "Line 164: Nested quotes in translation call",
+                    "Line 192: Nested quotes in translation call",
+                    "Line 203: Nested quotes in translation call",
+                    "Line 204: Nested quotes in translation call",
+                    "Line 210: Nested quotes in translation call",
+                    "Line 230: Nested quotes in translation call",
+                    "Line 245: Nested quotes in translation call",
+                    "Line 294: Nested quotes in translation call",
+                    "Line 457: Nested quotes in translation call",
+                    "Line 491: Nested quotes in translation call",
+                    "Line 493: Nested quotes in translation call",
+                    "Line 495: Nested quotes in translation call",
+                    "Line 501: Nested quotes in translation call",
+                    "Line 503: Nested quotes in translation call",
+                    "Line 534: Nested quotes in translation call",
+                    "Line 535: Nested quotes in translation call",
+                    "Line 536: Nested quotes in translation call",
+                    "Line 537: Nested quotes in translation call",
+                    "Line 539: Nested quotes in translation call",
+                    "Line 639: Nested quotes in translation call",
+                    "Line 644: Nested quotes in translation call",
+                    "Line 661: Nested quotes in translation call",
+                    "Line 666: Nested quotes in translation call",
+                    "Line 671: Nested quotes in translation call",
+                    "Line 690: Nested quotes in translation call",
+                    "Line 764: Nested quotes in translation call",
+                    "Line 806: Nested quotes in translation call",
+                    "Line 866: Nested quotes in translation call",
+                    "Line 885: Nested quotes in translation call",
+                    "Line 906: Nested quotes in translation call",
+                    "Line 977: Nested quotes in translation call",
+                    "Line 979: Nested quotes in translation call"
+                ],
+                "warnings": [
+                    "Line 157: Potentially malformed translation key",
+                    "Line 164: Potentially malformed translation key",
+                    "Line 167: Possible remaining Vietnamese hardcoded text",
+                    "Line 168: Possible remaining Vietnamese hardcoded text",
+                    "Line 169: Possible remaining Vietnamese hardcoded text",
+                    "Line 170: Possible remaining Vietnamese hardcoded text",
+                    "Line 192: Potentially malformed translation key",
+                    "Line 203: Potentially malformed translation key",
+                    "Line 204: Potentially malformed translation key",
+                    "Line 210: Potentially malformed translation key",
+                    "Line 230: Potentially malformed translation key",
+                    "Line 245: Potentially malformed translation key",
+                    "Line 294: Potentially malformed translation key",
+                    "Line 457: Potentially malformed translation key",
+                    "Line 491: Potentially malformed translation key",
+                    "Line 493: Potentially malformed translation key",
+                    "Line 495: Potentially malformed translation key",
+                    "Line 501: Potentially malformed translation key",
+                    "Line 503: Potentially malformed translation key",
+                    "Line 534: Potentially malformed translation key",
+                    "Line 535: Potentially malformed translation key",
+                    "Line 536: Potentially malformed translation key",
+                    "Line 537: Potentially malformed translation key",
+                    "Line 538: Possible remaining Vietnamese hardcoded text",
+                    "Line 539: Potentially malformed translation key",
+                    "Line 639: Potentially malformed translation key",
+                    "Line 644: Potentially malformed translation key",
+                    "Line 661: Potentially malformed translation key",
+                    "Line 666: Potentially malformed translation key",
+                    "Line 671: Potentially malformed translation key",
+                    "Line 690: Potentially malformed translation key",
+                    "Line 764: Potentially malformed translation key",
+                    "Line 806: Potentially malformed translation key",
+                    "Line 866: Potentially malformed translation key",
+                    "Line 885: Potentially malformed translation key",
+                    "Line 906: Potentially malformed translation key",
+                    "Line 977: Potentially malformed translation key",
+                    "Line 979: Potentially malformed translation key"
+                ]
+            },
+            "translation_keys": {
+                "total_keys": 72,
+                "working_keys": 58,
+                "missing_keys": 14,
+                "missing_list": [
+                    "threads.showcase.options.design_project",
+                    "threads.showcase.options.case_study",
+                    "threads.showcase.categories.thread_image",
+                    "threads.showcase.placeholders.m_t_chi_tit_v_d_n_phng_php_v_kt_qu_t_c",
+                    "threads.showcase.categories.thm_trch_dn",
+                    "threads.showcase.categories.blockquotepni_dung_trch_dnpblockquotepbrp",
+                    "threads.showcase.categories.khi_trch_dn",
+                    "threads.showcase.categories.nh_dng_khi_trch_dn",
+                    "threads.showcase.titles.tiu_1",
+                    "threads.showcase.titles.tiu_2",
+                    "threads.showcase.titles.tiu_3",
+                    "threads.showcase.titles.on_vn",
+                    "threads.showcase.titles.code_inline",
+                    "threads.showcase.categories.bytes"
+                ],
+                "working_list": [
+                    "showcase.related",
+                    "showcase.for_thread",
+                    "common.labels.by",
+                    "ui.actions.view_full_showcase",
+                    "ui.actions.view_details",
+                    "showcase.create_from_thread",
+                    "showcase.create_showcase_info",
+                    "showcase.create_showcase_button",
+                    "showcase.create_from_thread_title",
+                    "showcase.basic_info",
+                    "showcase.content",
+                    "showcase.complete",
+                    "showcase.step_1_title",
+                    "showcase.showcase_title",
+                    "showcase.showcase_title_help",
+                    "showcase.category",
+                    "showcase.select_category",
+                    "showcase.project_type",
+                    "showcase.select_project_type",
+                    "showcase.step_2_title",
+                    "showcase.project_description",
+                    "showcase.project_description_help",
+                    "showcase.cover_image",
+                    "showcase.cover_image_help",
+                    "showcase.current_thread_image",
+                    "showcase.complexity_level",
+                    "showcase.complexity_levels.beginner",
+                    "showcase.complexity_levels.intermediate",
+                    "showcase.complexity_levels.advanced",
+                    "showcase.complexity_levels.expert",
+                    "showcase.industry_application",
+                    "showcase.industry_placeholder",
+                    "showcase.file_attachments",
+                    "showcase.file_attachments_optional",
+                    "showcase.file_upload_area",
+                    "showcase.browse_files",
+                    "showcase.file_upload_help",
+                    "showcase.file_upload_limits",
+                    "showcase.files_selected",
+                    "showcase.file_upload_description",
+                    "showcase.step_3_title",
+                    "showcase.confirm_info",
+                    "showcase.confirm_points",
+                    "showcase.agree_terms",
+                    "showcase.previous",
+                    "showcase.next",
+                    "showcase.create_showcase",
+                    "ui.actions.cancel",
+                    "showcase.title_required",
+                    "showcase.category_required",
+                    "showcase.description_required",
+                    "showcase.cover_image_required",
+                    "showcase.file_size_error",
+                    "showcase.terms_required",
+                    "showcase.creating",
+                    "showcase.max_files_exceeded",
+                    "showcase.file_too_large",
+                    "showcase.file_type_not_supported"
+                ],
+                "coverage": 80.56
+            },
+            "hardcoded_remaining": {
+                "count": 15,
+                "strings": [
+                    {
+                        "text": "POST",
+                        "line": 120,
+                        "type": "english",
+                        "context": "<form id=\"createShowcaseForm\" action=\"{{ route('threads.create-showcase', $thread) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+                    },
+                    {
+                        "text": "Close",
+                        "line": 127,
+                        "type": "english",
+                        "context": "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><\/button>"
+                    },
+                    {
+                        "text": "Thiết kế Cơ khí",
+                        "line": 167,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Thiết kế Cơ khí\" {{ $thread->category && $thread->category->name == 'Thiết kế Cơ khí' ? 'selected' : '' }}>Thiết kế Cơ khí<\/option>"
+                    },
+                    {
+                        "text": "Thiết kế Cơ khí",
+                        "line": 167,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Thiết kế Cơ khí\" {{ $thread->category && $thread->category->name == 'Thiết kế Cơ khí' ? 'selected' : '' }}>Thiết kế Cơ khí<\/option>"
+                    },
+                    {
+                        "text": "Công nghệ Chế tạo",
+                        "line": 168,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Công nghệ Chế tạo\" {{ $thread->category && $thread->category->name == 'Công nghệ Chế tạo' ? 'selected' : '' }}>Công nghệ Chế tạo<\/option>"
+                    },
+                    {
+                        "text": "Công nghệ Chế tạo",
+                        "line": 168,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Công nghệ Chế tạo\" {{ $thread->category && $thread->category->name == 'Công nghệ Chế tạo' ? 'selected' : '' }}>Công nghệ Chế tạo<\/option>"
+                    },
+                    {
+                        "text": "Vật liệu Kỹ thuật",
+                        "line": 169,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Vật liệu Kỹ thuật\" {{ $thread->category && $thread->category->name == 'Vật liệu Kỹ thuật' ? 'selected' : '' }}>Vật liệu Kỹ thuật<\/option>"
+                    },
+                    {
+                        "text": "Vật liệu Kỹ thuật",
+                        "line": 169,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Vật liệu Kỹ thuật\" {{ $thread->category && $thread->category->name == 'Vật liệu Kỹ thuật' ? 'selected' : '' }}>Vật liệu Kỹ thuật<\/option>"
+                    },
+                    {
+                        "text": "Tự động hóa & Robotics",
+                        "line": 170,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Tự động hóa & Robotics\" {{ $thread->category && $thread->category->name == 'Tự động hóa & Robotics' ? 'selected' : '' }}>Tự động hóa & Robotics<\/option>"
+                    },
+                    {
+                        "text": "Tự động hóa & Robotics",
+                        "line": 170,
+                        "type": "vietnamese",
+                        "context": "<option value=\"Tự động hóa & Robotics\" {{ $thread->category && $thread->category->name == 'Tự động hóa & Robotics' ? 'selected' : '' }}>Tự động hóa & Robotics<\/option>"
+                    },
+                    {
+                        "text": "Manufacturing",
+                        "line": 179,
+                        "type": "english",
+                        "context": "<option value=\"Manufacturing\">Manufacturing<\/option>"
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 432,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "Segoe UI",
+                        "line": 460,
+                        "type": "english",
+                        "context": "font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;"
+                    },
+                    {
+                        "text": "Helvetica Neue",
+                        "line": 460,
+                        "type": "english",
+                        "context": "font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;"
+                    },
+                    {
+                        "text": "Trích dẫn",
+                        "line": 538,
+                        "type": "vietnamese",
+                        "context": "{title: 'Trích dẫn', format: 'blockquote'},"
+                    }
+                ]
+            },
+            "functionality_check": {
+                "potential_issues": 0,
+                "issues": []
+            },
+            "performance_check": {
+                "translation_calls": 75,
+                "helper_calls": 1,
+                "impact_level": "high",
+                "recommendations": [
+                    "Consider caching translations for this view",
+                    "Group related translations to reduce file I\/O",
+                    "Monitor page load time impact"
+                ]
+            }
+        },
+        "threads\/create.blade.php": {
+            "file": "threads\/create.blade.php",
+            "syntax_check": {
+                "valid": false,
+                "errors": [
+                    "Line 30: Nested quotes in translation call",
+                    "Line 35: Nested quotes in translation call",
+                    "Line 39: Nested quotes in translation call",
+                    "Line 47: Nested quotes in translation call",
+                    "Line 51: Nested quotes in translation call",
+                    "Line 82: Nested quotes in translation call",
+                    "Line 193: Nested quotes in translation call",
+                    "Line 448: Nested quotes in translation call"
+                ],
+                "warnings": [
+                    "Line 30: Potentially malformed translation key",
+                    "Line 35: Potentially malformed translation key",
+                    "Line 39: Potentially malformed translation key",
+                    "Line 47: Potentially malformed translation key",
+                    "Line 51: Potentially malformed translation key",
+                    "Line 82: Potentially malformed translation key",
+                    "Line 193: Potentially malformed translation key",
+                    "Line 448: Potentially malformed translation key",
+                    "Line 526: Possible remaining Vietnamese hardcoded text",
+                    "Line 550: Possible remaining Vietnamese hardcoded text",
+                    "Line 561: Possible remaining Vietnamese hardcoded text",
+                    "Line 575: Possible remaining Vietnamese hardcoded text",
+                    "Line 1015: Possible remaining Vietnamese hardcoded text",
+                    "Line 1130: Possible remaining Vietnamese hardcoded text",
+                    "Line 1137: Possible remaining Vietnamese hardcoded text",
+                    "Line 1253: Possible remaining Vietnamese hardcoded text",
+                    "Line 1260: Possible remaining Vietnamese hardcoded text",
+                    "Line 1267: Possible remaining Vietnamese hardcoded text",
+                    "Line 1281: Possible remaining Vietnamese hardcoded text",
+                    "Line 1300: Possible remaining Vietnamese hardcoded text",
+                    "Line 1314: Possible remaining Vietnamese hardcoded text",
+                    "Line 1410: Possible remaining Vietnamese hardcoded text",
+                    "Line 1418: Possible remaining Vietnamese hardcoded text",
+                    "Line 1420: Possible remaining Vietnamese hardcoded text",
+                    "Line 1434: Possible remaining Vietnamese hardcoded text",
+                    "Line 1441: Possible remaining Vietnamese hardcoded text",
+                    "Line 1449: Possible remaining Vietnamese hardcoded text",
+                    "Line 1630: Possible remaining Vietnamese hardcoded text",
+                    "Line 1649: Possible remaining Vietnamese hardcoded text",
+                    "Line 1663: Possible remaining Vietnamese hardcoded text",
+                    "Line 1757: Possible remaining Vietnamese hardcoded text",
+                    "Line 1765: Possible remaining Vietnamese hardcoded text"
+                ]
+            },
+            "translation_keys": {
+                "total_keys": 35,
+                "working_keys": 27,
+                "missing_keys": 8,
+                "missing_list": [
+                    "forum.create.basic_info_subtitle",
+                    "forum.create.title_placeholder",
+                    "forum.create.title_help",
+                    "forum.create.category_label",
+                    "forum.create.forum_label",
+                    "forum.create.select_forum",
+                    "forum.create.content_subtitle",
+                    "forum.create.content_label"
+                ],
+                "working_list": [
+                    "forum.create.title",
+                    "forum.create.subtitle",
+                    "forum.create.back",
+                    "forum.create.progress_label",
+                    "forum.create.step_basic_aria",
+                    "forum.create.step_basic",
+                    "forum.create.step_content_aria",
+                    "forum.create.step_content",
+                    "forum.create.step_poll_aria",
+                    "forum.create.step_poll",
+                    "forum.create.step_review_aria",
+                    "forum.create.step_review",
+                    "forum.create.thread_title",
+                    "forum.create.select_category",
+                    "forum.create.previous",
+                    "forum.create.next",
+                    "forum.create.content_placeholder",
+                    "forum.create.content_help",
+                    "showcase.file_attachments",
+                    "showcase.file_attachments_optional",
+                    "showcase.file_upload_area",
+                    "showcase.browse_files",
+                    "showcase.file_upload_help",
+                    "showcase.file_upload_limits",
+                    "showcase.files_selected",
+                    "showcase.file_upload_description",
+                    "forum.create.create_button"
+                ],
+                "coverage": 77.14
+            },
+            "hardcoded_remaining": {
+                "count": 42,
+                "strings": [
+                    {
+                        "text": "POST",
+                        "line": 59,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('threads.store') }}\" method=\"POST\" enctype=\"multipart\/form-data\" class=\"modern-form\""
+                    },
+                    {
+                        "text": "Beginner",
+                        "line": 421,
+                        "type": "english",
+                        "context": "<option value=\"Beginner\" {{ old('complexity_level') == 'Beginner' ? 'selected' : '' }}>Cơ bản<\/option>"
+                    },
+                    {
+                        "text": "Beginner",
+                        "line": 421,
+                        "type": "english",
+                        "context": "<option value=\"Beginner\" {{ old('complexity_level') == 'Beginner' ? 'selected' : '' }}>Cơ bản<\/option>"
+                    },
+                    {
+                        "text": "Intermediate",
+                        "line": 422,
+                        "type": "english",
+                        "context": "<option value=\"Intermediate\" {{ old('complexity_level') == 'Intermediate' ? 'selected' : '' }}>Trung bình<\/option>"
+                    },
+                    {
+                        "text": "Intermediate",
+                        "line": 422,
+                        "type": "english",
+                        "context": "<option value=\"Intermediate\" {{ old('complexity_level') == 'Intermediate' ? 'selected' : '' }}>Trung bình<\/option>"
+                    },
+                    {
+                        "text": "Advanced",
+                        "line": 423,
+                        "type": "english",
+                        "context": "<option value=\"Advanced\" {{ old('complexity_level') == 'Advanced' ? 'selected' : '' }}>Nâng cao<\/option>"
+                    },
+                    {
+                        "text": "Advanced",
+                        "line": 423,
+                        "type": "english",
+                        "context": "<option value=\"Advanced\" {{ old('complexity_level') == 'Advanced' ? 'selected' : '' }}>Nâng cao<\/option>"
+                    },
+                    {
+                        "text": "Expert",
+                        "line": 424,
+                        "type": "english",
+                        "context": "<option value=\"Expert\" {{ old('complexity_level') == 'Expert' ? 'selected' : '' }}>Chuyên gia<\/option>"
+                    },
+                    {
+                        "text": "Expert",
+                        "line": 424,
+                        "type": "english",
+                        "context": "<option value=\"Expert\" {{ old('complexity_level') == 'Expert' ? 'selected' : '' }}>Chuyên gia<\/option>"
+                    },
+                    {
+                        "text": "Nhập câu hỏi cho cuộc khảo sát",
+                        "line": 526,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Nhập câu hỏi cho cuộc khảo sát\">"
+                    },
+                    {
+                        "text": "Lựa chọn 1",
+                        "line": 550,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Lựa chọn 1\">"
+                    },
+                    {
+                        "text": "Lựa chọn 2",
+                        "line": 561,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Lựa chọn 2\">"
+                    },
+                    {
+                        "text": "Lựa chọn {{ $index + 1 }}",
+                        "line": 575,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Lựa chọn {{ $index + 1 }}\">"
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 758,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "TinyMCE content editor ready for progress tracking",
+                        "line": 841,
+                        "type": "english",
+                        "context": "console.log('TinyMCE content editor ready for progress tracking');"
+                    },
+                    {
+                        "text": "Bytes",
+                        "line": 955,
+                        "type": "english",
+                        "context": "const sizes = ['Bytes', 'KB', 'MB', 'GB'];"
+                    },
+                    {
+                        "text": "Lựa chọn ${optionCount}",
+                        "line": 1015,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Lựa chọn ${optionCount}\">"
+                    },
+                    {
+                        "text": "Vui lòng chọn loại showcase",
+                        "line": 1130,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Vui lòng chọn loại showcase', 'error');"
+                    },
+                    {
+                        "text": "Vui lòng chọn showcase có sẵn",
+                        "line": 1137,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Vui lòng chọn showcase có sẵn', 'error');"
+                    },
+                    {
+                        "text": "Vui lòng nhập tiêu đề",
+                        "line": 1253,
+                        "type": "vietnamese",
+                        "context": "showFieldError(title, 'Vui lòng nhập tiêu đề');"
+                    },
+                    {
+                        "text": "Vui lòng chọn danh mục",
+                        "line": 1260,
+                        "type": "vietnamese",
+                        "context": "showFieldError(category, 'Vui lòng chọn danh mục');"
+                    },
+                    {
+                        "text": "Vui lòng chọn diễn đàn",
+                        "line": 1267,
+                        "type": "vietnamese",
+                        "context": "showFieldError(forum, 'Vui lòng chọn diễn đàn');"
+                    },
+                    {
+                        "text": "Vui lòng nhập nội dung cho chủ đề",
+                        "line": 1281,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Vui lòng nhập nội dung cho chủ đề', 'error');"
+                    },
+                    {
+                        "text": "Vui lòng nhập câu hỏi khảo sát",
+                        "line": 1300,
+                        "type": "vietnamese",
+                        "context": "showFieldError(question, 'Vui lòng nhập câu hỏi khảo sát');"
+                    },
+                    {
+                        "text": "Khảo sát cần ít nhất 2 lựa chọn",
+                        "line": 1314,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Khảo sát cần ít nhất 2 lựa chọn', 'error');"
+                    },
+                    {
+                        "text": "Không có hình ảnh",
+                        "line": 1410,
+                        "type": "vietnamese",
+                        "context": "imageCount > 0 ? `${imageCount} hình ảnh` : 'Không có hình ảnh';"
+                    },
+                    {
+                        "text": "Có khảo sát",
+                        "line": 1418,
+                        "type": "vietnamese",
+                        "context": "pollReview.textContent = question ? `${question} (${optionCount} lựa chọn)` : 'Có khảo sát';"
+                    },
+                    {
+                        "text": "Không có khảo sát",
+                        "line": 1420,
+                        "type": "vietnamese",
+                        "context": "pollReview.textContent = 'Không có khảo sát';"
+                    },
+                    {
+                        "text": "Showcase có sẵn",
+                        "line": 1434,
+                        "type": "vietnamese",
+                        "context": "const selectedText = existingSelect.options[existingSelect.selectedIndex]?.text || 'Showcase có sẵn';"
+                    },
+                    {
+                        "text": "Showcase mới",
+                        "line": 1441,
+                        "type": "vietnamese",
+                        "context": "let showcaseInfo = showcaseTitle || 'Showcase mới';"
+                    },
+                    {
+                        "text": "Không có showcase",
+                        "line": 1449,
+                        "type": "vietnamese",
+                        "context": "showcaseReview.textContent = 'Không có showcase';"
+                    },
+                    {
+                        "text": "Enter",
+                        "line": 1466,
+                        "type": "english",
+                        "context": "if (e.key === 'Enter' || e.key === ' ') {"
+                    },
+                    {
+                        "text": "ArrowRight",
+                        "line": 1474,
+                        "type": "english",
+                        "context": "if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {"
+                    },
+                    {
+                        "text": "ArrowDown",
+                        "line": 1474,
+                        "type": "english",
+                        "context": "if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {"
+                    },
+                    {
+                        "text": "ArrowLeft",
+                        "line": 1482,
+                        "type": "english",
+                        "context": "if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {"
+                    },
+                    {
+                        "text": "ArrowUp",
+                        "line": 1482,
+                        "type": "english",
+                        "context": "if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {"
+                    },
+                    {
+                        "text": "Tối đa 10 file được phép tải lên",
+                        "line": 1630,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Tối đa 10 file được phép tải lên', 'error');"
+                    },
+                    {
+                        "text": "quá lớn. Tối đa 50MB.`,",
+                        "line": 1649,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage(`File \"${file.name}\" quá lớn. Tối đa 50MB.`, 'error');"
+                    },
+                    {
+                        "text": "không được hỗ trợ.`,",
+                        "line": 1663,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage(`File \"${file.name}\" không được hỗ trợ.`, 'error');"
+                    },
+                    {
+                        "text": "Bytes",
+                        "line": 1717,
+                        "type": "english",
+                        "context": "const sizes = ['Bytes', 'KB', 'MB', 'GB'];"
+                    },
+                    {
+                        "text": "Vui lòng kiểm tra lại các thông tin đã nhập",
+                        "line": 1757,
+                        "type": "vietnamese",
+                        "context": "showValidationMessage('Vui lòng kiểm tra lại các thông tin đã nhập', 'error');"
+                    },
+                    {
+                        "text": "><\/i> <span>Đang tạo...<\/span>",
+                        "line": 1765,
+                        "type": "vietnamese",
+                        "context": "submitButton.innerHTML = '<i class=\"fas fa-hourglass-half\"><\/i> <span>Đang tạo...<\/span>';"
+                    }
+                ]
+            },
+            "functionality_check": {
+                "potential_issues": 0,
+                "issues": []
+            },
+            "performance_check": {
+                "translation_calls": 39,
+                "helper_calls": 20,
+                "impact_level": "medium",
+                "recommendations": [
+                    "Monitor page load time impact"
+                ]
+            }
+        },
+        "showcase\/show.blade.php": {
+            "file": "showcase\/show.blade.php",
+            "syntax_check": {
+                "valid": true,
+                "errors": [],
+                "warnings": [
+                    "Line 49: Possible remaining Vietnamese hardcoded text",
+                    "Line 369: Possible remaining Vietnamese hardcoded text",
+                    "Line 374: Possible remaining Vietnamese hardcoded text",
+                    "Line 419: Possible remaining Vietnamese hardcoded text",
+                    "Line 439: Possible remaining Vietnamese hardcoded text",
+                    "Line 505: Possible remaining Vietnamese hardcoded text",
+                    "Line 524: Possible remaining Vietnamese hardcoded text",
+                    "Line 577: Possible remaining Vietnamese hardcoded text",
+                    "Line 582: Possible remaining Vietnamese hardcoded text",
+                    "Line 682: Possible remaining Vietnamese hardcoded text",
+                    "Line 722: Possible remaining Vietnamese hardcoded text",
+                    "Line 767: Possible remaining Vietnamese hardcoded text",
+                    "Line 782: Possible remaining Vietnamese hardcoded text",
+                    "Line 824: Possible remaining Vietnamese hardcoded text",
+                    "Line 839: Possible remaining Vietnamese hardcoded text"
+                ]
+            },
+            "translation_keys": {
+                "total_keys": 0,
+                "working_keys": 0,
+                "missing_keys": 0,
+                "missing_list": [],
+                "working_list": [],
+                "coverage": 100
+            },
+            "hardcoded_remaining": {
+                "count": 37,
+                "strings": [
+                    {
+                        "text": "Showcase Item",
+                        "line": 27,
+                        "type": "english",
+                        "context": "<li class=\"breadcrumb-item active\" aria-current=\"page\">{{ $showcase->title ?? 'Showcase Item' }}<\/li>"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 45,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('showcase.toggle-follow', $showcase) }}\" method=\"POST\" class=\"follow-form d-inline\">"
+                    },
+                    {
+                        "text": "Đang theo dõi",
+                        "line": 49,
+                        "type": "vietnamese",
+                        "context": "{{ $showcase->isFollowedBy(auth()->user()) ? 'Đang theo dõi' : 'Theo dõi' }}"
+                    },
+                    {
+                        "text": "Theo dõi",
+                        "line": 49,
+                        "type": "vietnamese",
+                        "context": "{{ $showcase->isFollowedBy(auth()->user()) ? 'Đang theo dõi' : 'Theo dõi' }}"
+                    },
+                    {
+                        "text": "Showcase image",
+                        "line": 137,
+                        "type": "english",
+                        "context": "class=\"img-fluid rounded shadow-sm\" alt=\"{{ $media->title ?? 'Showcase image' }}\""
+                    },
+                    {
+                        "text": "POST",
+                        "line": 227,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('showcase.toggle-like', $showcase) }}\" method=\"POST\""
+                    },
+                    {
+                        "text": "POST",
+                        "line": 238,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('showcase.bookmark', $showcase) }}\" method=\"POST\""
+                    },
+                    {
+                        "text": "Share options",
+                        "line": 281,
+                        "type": "english",
+                        "context": "<div class=\"btn-group\" role=\"group\" aria-label=\"Share options\">"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 364,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('showcase.comment', $showcase) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+                    },
+                    {
+                        "text": "Avatar của bạn",
+                        "line": 369,
+                        "type": "vietnamese",
+                        "context": "alt=\"Avatar của bạn\""
+                    },
+                    {
+                        "text": "Viết bình luận của bạn...",
+                        "line": 374,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Viết bình luận của bạn...\""
+                    },
+                    {
+                        "text": "Avatar của {{ $comment->user->display_name }}",
+                        "line": 419,
+                        "type": "vietnamese",
+                        "context": "alt=\"Avatar của {{ $comment->user->display_name }}\""
+                    },
+                    {
+                        "text": "POST",
+                        "line": 438,
+                        "type": "english",
+                        "context": "method=\"POST\""
+                    },
+                    {
+                        "text": "Bạn có chắc muốn xóa bình luận này?",
+                        "line": 439,
+                        "type": "vietnamese",
+                        "context": "onsubmit=\"return confirm('Bạn có chắc muốn xóa bình luận này?')\""
+                    },
+                    {
+                        "text": "Avatar của {{ $reply->user->display_name }}",
+                        "line": 505,
+                        "type": "vietnamese",
+                        "context": "alt=\"Avatar của {{ $reply->user->display_name }}\""
+                    },
+                    {
+                        "text": "POST",
+                        "line": 523,
+                        "type": "english",
+                        "context": "method=\"POST\""
+                    },
+                    {
+                        "text": "Bạn có chắc muốn xóa phản hồi này?",
+                        "line": 524,
+                        "type": "vietnamese",
+                        "context": "onsubmit=\"return confirm('Bạn có chắc muốn xóa phản hồi này?')\""
+                    },
+                    {
+                        "text": "POST",
+                        "line": 572,
+                        "type": "english",
+                        "context": "<form action=\"{{ route('showcase.comment', $showcase) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+                    },
+                    {
+                        "text": "Avatar của bạn",
+                        "line": 577,
+                        "type": "vietnamese",
+                        "context": "width=\"30\" height=\"30\" alt=\"Avatar của bạn\""
+                    },
+                    {
+                        "text": "Trả lời bình luận...",
+                        "line": 582,
+                        "type": "vietnamese",
+                        "context": "placeholder=\"Trả lời bình luận...\""
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 648,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "Showcase comments system initialized",
+                        "line": 649,
+                        "type": "english",
+                        "context": "console.log('Showcase comments system initialized');"
+                    },
+                    {
+                        "text": "><\/i> Đã sao chép!",
+                        "line": 682,
+                        "type": "vietnamese",
+                        "context": "button.innerHTML = '<i class=\"fas fa-check\"><\/i> Đã sao chép!';"
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 712,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "><\/i> Đang xử lý...",
+                        "line": 722,
+                        "type": "vietnamese",
+                        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 725,
+                        "type": "english",
+                        "context": "method: 'POST',"
+                    },
+                    {
+                        "text": "Accept",
+                        "line": 729,
+                        "type": "english",
+                        "context": "'Accept': 'application\/json',"
+                    },
+                    {
+                        "text": "><\/i> Đang xử lý...",
+                        "line": 767,
+                        "type": "vietnamese",
+                        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 770,
+                        "type": "english",
+                        "context": "method: 'POST',"
+                    },
+                    {
+                        "text": "Accept",
+                        "line": 774,
+                        "type": "english",
+                        "context": "'Accept': 'application\/json',"
+                    },
+                    {
+                        "text": "Đã lưu",
+                        "line": 782,
+                        "type": "vietnamese",
+                        "context": "const text = data.is_bookmarked ? 'Đã lưu' : 'Lưu';"
+                    },
+                    {
+                        "text": "Lưu",
+                        "line": 782,
+                        "type": "vietnamese",
+                        "context": "const text = data.is_bookmarked ? 'Đã lưu' : 'Lưu';"
+                    },
+                    {
+                        "text": "><\/i> Đang xử lý...",
+                        "line": 824,
+                        "type": "vietnamese",
+                        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 827,
+                        "type": "english",
+                        "context": "method: 'POST',"
+                    },
+                    {
+                        "text": "Accept",
+                        "line": 831,
+                        "type": "english",
+                        "context": "'Accept': 'application\/json',"
+                    },
+                    {
+                        "text": "Đang theo dõi",
+                        "line": 839,
+                        "type": "vietnamese",
+                        "context": "const text = data.is_following ? 'Đang theo dõi' : 'Theo dõi';"
+                    },
+                    {
+                        "text": "Theo dõi",
+                        "line": 839,
+                        "type": "vietnamese",
+                        "context": "const text = data.is_following ? 'Đang theo dõi' : 'Theo dõi';"
+                    }
+                ]
+            },
+            "functionality_check": {
+                "potential_issues": 0,
+                "issues": []
+            },
+            "performance_check": {
+                "translation_calls": 0,
+                "helper_calls": 4,
+                "impact_level": "low",
+                "recommendations": []
+            }
+        },
+        "devices\/index.blade.php": {
+            "file": "devices\/index.blade.php",
+            "syntax_check": {
+                "valid": true,
+                "errors": [],
+                "warnings": [
+                    "Line 156: Possible remaining Vietnamese hardcoded text",
+                    "Line 164: Possible remaining Vietnamese hardcoded text",
+                    "Line 171: Possible remaining Vietnamese hardcoded text",
+                    "Line 180: Possible remaining Vietnamese hardcoded text",
+                    "Line 264: Possible remaining Vietnamese hardcoded text",
+                    "Line 269: Possible remaining Vietnamese hardcoded text",
+                    "Line 279: Possible remaining Vietnamese hardcoded text",
+                    "Line 293: Possible remaining Vietnamese hardcoded text",
+                    "Line 298: Possible remaining Vietnamese hardcoded text",
+                    "Line 309: Possible remaining Vietnamese hardcoded text",
+                    "Line 322: Possible remaining Vietnamese hardcoded text",
+                    "Line 327: Possible remaining Vietnamese hardcoded text",
+                    "Line 358: Possible remaining Vietnamese hardcoded text",
+                    "Line 367: Possible remaining Vietnamese hardcoded text",
+                    "Line 368: Possible remaining Vietnamese hardcoded text",
+                    "Line 378: Possible remaining Vietnamese hardcoded text",
+                    "Line 396: Possible remaining Vietnamese hardcoded text",
+                    "Line 413: Possible remaining Vietnamese hardcoded text",
+                    "Line 418: Possible remaining Vietnamese hardcoded text"
+                ]
+            },
+            "translation_keys": {
+                "total_keys": 0,
+                "working_keys": 0,
+                "missing_keys": 0,
+                "missing_list": [],
+                "working_list": [],
+                "coverage": 100
+            },
+            "hardcoded_remaining": {
+                "count": 24,
+                "strings": [
+                    {
+                        "text": "Xem chi tiết",
+                        "line": 156,
+                        "type": "vietnamese",
+                        "context": "title=\"Xem chi tiết\">"
+                    },
+                    {
+                        "text": "Bỏ tin cậy",
+                        "line": 164,
+                        "type": "vietnamese",
+                        "context": "title=\"Bỏ tin cậy\">"
+                    },
+                    {
+                        "text": "Đánh dấu tin cậy",
+                        "line": 171,
+                        "type": "vietnamese",
+                        "context": "title=\"Đánh dấu tin cậy\">"
+                    },
+                    {
+                        "text": "Xóa thiết bị",
+                        "line": 180,
+                        "type": "vietnamese",
+                        "context": "title=\"Xóa thiết bị\">"
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 245,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "PATCH",
+                        "line": 252,
+                        "type": "english",
+                        "context": "method: 'PATCH',"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 264,
+                        "type": "vietnamese",
+                        "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 269,
+                        "type": "vietnamese",
+                        "context": "showToast('Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Bỏ đánh dấu tin cậy thiết bị này?",
+                        "line": 279,
+                        "type": "vietnamese",
+                        "context": "if (confirm('Bỏ đánh dấu tin cậy thiết bị này?')) {"
+                    },
+                    {
+                        "text": "PATCH",
+                        "line": 281,
+                        "type": "english",
+                        "context": "method: 'PATCH',"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 293,
+                        "type": "vietnamese",
+                        "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 298,
+                        "type": "vietnamese",
+                        "context": "showToast('Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "DELETE",
+                        "line": 311,
+                        "type": "english",
+                        "context": "method: 'DELETE',"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 322,
+                        "type": "vietnamese",
+                        "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 327,
+                        "type": "vietnamese",
+                        "context": "showToast('Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Tin cậy",
+                        "line": 358,
+                        "type": "vietnamese",
+                        "context": "${device.is_trusted ? 'Tin cậy' : 'Chưa tin cậy'}"
+                    },
+                    {
+                        "text": "Chưa tin cậy",
+                        "line": 358,
+                        "type": "vietnamese",
+                        "context": "${device.is_trusted ? 'Tin cậy' : 'Chưa tin cậy'}"
+                    },
+                    {
+                        "text": "Không xác định",
+                        "line": 367,
+                        "type": "vietnamese",
+                        "context": "<li><strong>Quốc gia:<\/strong> ${device.country || 'Không xác định'}<\/li>"
+                    },
+                    {
+                        "text": "Không xác định",
+                        "line": 368,
+                        "type": "vietnamese",
+                        "context": "<li><strong>Thành phố:<\/strong> ${device.city || 'Không xác định'}<\/li>"
+                    },
+                    {
+                        "text": "Không thể tải thông tin thiết bị",
+                        "line": 378,
+                        "type": "vietnamese",
+                        "context": "${data.message || 'Không thể tải thông tin thiết bị'}"
+                    },
+                    {
+                        "text": "Xóa tất cả thiết bị chưa tin cậy và không hoạt động trong 90 ngày qua?",
+                        "line": 396,
+                        "type": "vietnamese",
+                        "context": "if (confirm('Xóa tất cả thiết bị chưa tin cậy và không hoạt động trong 90 ngày qua?')) {"
+                    },
+                    {
+                        "text": "POST",
+                        "line": 398,
+                        "type": "english",
+                        "context": "method: 'POST',"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 413,
+                        "type": "vietnamese",
+                        "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+                    },
+                    {
+                        "text": "Có lỗi xảy ra",
+                        "line": 418,
+                        "type": "vietnamese",
+                        "context": "showToast('Có lỗi xảy ra', 'error');"
+                    }
+                ]
+            },
+            "functionality_check": {
+                "potential_issues": 0,
+                "issues": []
+            },
+            "performance_check": {
+                "translation_calls": 0,
+                "helper_calls": 0,
+                "impact_level": "low",
+                "recommendations": []
+            }
+        },
+        "layouts\/app.blade.php": {
+            "file": "layouts\/app.blade.php",
+            "syntax_check": {
+                "valid": false,
+                "errors": [
+                    "Line 25: Nested quotes in translation call",
+                    "Line 27: Nested quotes in translation call",
+                    "Line 45: Nested quotes in translation call"
+                ],
+                "warnings": [
+                    "Line 25: Potentially malformed translation key",
+                    "Line 27: Potentially malformed translation key",
+                    "Line 45: Potentially malformed translation key",
+                    "Line 63: Possible remaining Vietnamese hardcoded text",
+                    "Line 303: Possible remaining Vietnamese hardcoded text",
+                    "Line 304: Possible remaining Vietnamese hardcoded text",
+                    "Line 305: Possible remaining Vietnamese hardcoded text",
+                    "Line 306: Possible remaining Vietnamese hardcoded text",
+                    "Line 307: Possible remaining Vietnamese hardcoded text",
+                    "Line 308: Possible remaining Vietnamese hardcoded text",
+                    "Line 309: Possible remaining Vietnamese hardcoded text",
+                    "Line 310: Possible remaining Vietnamese hardcoded text",
+                    "Line 311: Possible remaining Vietnamese hardcoded text",
+                    "Line 312: Possible remaining Vietnamese hardcoded text",
+                    "Line 313: Possible remaining Vietnamese hardcoded text",
+                    "Line 314: Possible remaining Vietnamese hardcoded text",
+                    "Line 315: Possible remaining Vietnamese hardcoded text",
+                    "Line 316: Possible remaining Vietnamese hardcoded text",
+                    "Line 317: Possible remaining Vietnamese hardcoded text"
+                ]
+            },
+            "translation_keys": {
+                "total_keys": 3,
+                "working_keys": 3,
+                "missing_keys": 0,
+                "missing_list": [],
+                "working_list": [
+                    "seo.site.tagline",
+                    "seo.site.description",
+                    "seo.site.keywords"
+                ],
+                "coverage": 100
+            },
+            "hardcoded_remaining": {
+                "count": 20,
+                "strings": [
+                    {
+                        "text": "MechaMap Team",
+                        "line": 28,
+                        "type": "english",
+                        "context": "<meta name=\"author\" content=\"MechaMap Team\">"
+                    },
+                    {
+                        "text": "MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm",
+                        "line": 63,
+                        "type": "vietnamese",
+                        "context": "content=\"{{ $description ?? $seo['twitter_description'] ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}\">"
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 279,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "Đóng",
+                        "line": 303,
+                        "type": "vietnamese",
+                        "context": "CLOSE: \"Đóng\","
+                    },
+                    {
+                        "text": "Tiếp theo",
+                        "line": 304,
+                        "type": "vietnamese",
+                        "context": "NEXT: \"Tiếp theo\","
+                    },
+                    {
+                        "text": "Trước đó",
+                        "line": 305,
+                        "type": "vietnamese",
+                        "context": "PREV: \"Trước đó\","
+                    },
+                    {
+                        "text": "Bạn có thể đóng modal này bằng phím ESC",
+                        "line": 306,
+                        "type": "vietnamese",
+                        "context": "MODAL: \"Bạn có thể đóng modal này bằng phím ESC\","
+                    },
+                    {
+                        "text": "Có lỗi xảy ra khi tải nội dung. <br\/> Vui lòng thử lại sau.",
+                        "line": 307,
+                        "type": "vietnamese",
+                        "context": "ERROR: \"Có lỗi xảy ra khi tải nội dung. <br\/> Vui lòng thử lại sau.\","
+                    },
+                    {
+                        "text": "Không thể tải hình ảnh. <br\/> Vui lòng thử lại sau.",
+                        "line": 308,
+                        "type": "vietnamese",
+                        "context": "IMAGE_ERROR: \"Không thể tải hình ảnh. <br\/> Vui lòng thử lại sau.\","
+                    },
+                    {
+                        "text": "Không tìm thấy phần tử HTML.",
+                        "line": 309,
+                        "type": "vietnamese",
+                        "context": "ELEMENT_NOT_FOUND: \"Không tìm thấy phần tử HTML.\","
+                    },
+                    {
+                        "text": "Lỗi khi tải AJAX: Không tìm thấy",
+                        "line": 310,
+                        "type": "vietnamese",
+                        "context": "AJAX_NOT_FOUND: \"Lỗi khi tải AJAX: Không tìm thấy\","
+                    },
+                    {
+                        "text": "Lỗi khi tải AJAX: Bị cấm",
+                        "line": 311,
+                        "type": "vietnamese",
+                        "context": "AJAX_FORBIDDEN: \"Lỗi khi tải AJAX: Bị cấm\","
+                    },
+                    {
+                        "text": "Lỗi khi tải trang",
+                        "line": 312,
+                        "type": "vietnamese",
+                        "context": "IFRAME_ERROR: \"Lỗi khi tải trang\","
+                    },
+                    {
+                        "text": "Phóng to\/thu nhỏ",
+                        "line": 313,
+                        "type": "vietnamese",
+                        "context": "TOGGLE_ZOOM: \"Phóng to\/thu nhỏ\","
+                    },
+                    {
+                        "text": "Hiện\/ẩn thumbnails",
+                        "line": 314,
+                        "type": "vietnamese",
+                        "context": "TOGGLE_THUMBS: \"Hiện\/ẩn thumbnails\","
+                    },
+                    {
+                        "text": "Bật\/tắt slideshow",
+                        "line": 315,
+                        "type": "vietnamese",
+                        "context": "TOGGLE_SLIDESHOW: \"Bật\/tắt slideshow\","
+                    },
+                    {
+                        "text": "Bật\/tắt toàn màn hình",
+                        "line": 316,
+                        "type": "vietnamese",
+                        "context": "TOGGLE_FULLSCREEN: \"Bật\/tắt toàn màn hình\","
+                    },
+                    {
+                        "text": "Tải xuống",
+                        "line": 317,
+                        "type": "vietnamese",
+                        "context": "DOWNLOAD: \"Tải xuống\""
+                    },
+                    {
+                        "text": "DOMContentLoaded",
+                        "line": 325,
+                        "type": "english",
+                        "context": "document.addEventListener('DOMContentLoaded', function() {"
+                    },
+                    {
+                        "text": "Adding fallback click handler to theme button",
+                        "line": 336,
+                        "type": "english",
+                        "context": "console.log('Adding fallback click handler to theme button');"
+                    }
+                ]
+            },
+            "functionality_check": {
+                "potential_issues": 0,
+                "issues": []
+            },
+            "performance_check": {
+                "translation_calls": 4,
+                "helper_calls": 20,
+                "impact_level": "low",
+                "recommendations": []
+            }
+        }
+    }
+}

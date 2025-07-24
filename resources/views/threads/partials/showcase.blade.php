@@ -175,11 +175,11 @@
                                 <label for="project_type" class="form-label">{{ __('showcase.project_type') }}</label>
                                 <select class="form-select" id="project_type" name="project_type">
                                     <option value="">{{ __('showcase.select_project_type') }}</option>
-                                    <option value="Design Project">Design Project</option>
-                                    <option value="Manufacturing">Manufacturing</option>
-                                    <option value="Analysis & Simulation">Analysis & Simulation</option>
-                                    <option value="Research & Development">Research & Development</option>
-                                    <option value="Case Study">Case Study</option>
+                                    <option value="Design Project">{{ __('showcase.project_types.design_project') }}</option>
+                                    <option value="Manufacturing">{{ __('showcase.project_types.manufacturing') }}</option>
+                                    <option value="Analysis & Simulation">{{ __('showcase.project_types.analysis_simulation') }}</option>
+                                    <option value="Research & Development">{{ __('showcase.project_types.research_development') }}</option>
+                                    <option value="Case Study">{{ __('showcase.project_types.case_study') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                             @if($thread->featured_image)
                             <div class="mt-2">
                                 <small class="text-muted">{{ __('showcase.current_thread_image') }}</small><br>
-                                <img src="{{ asset('' . $thread->featured_image) }}" alt="Thread Image" class="img-thumbnail" style="max-width: 200px;">
+                                <img src="{{ asset('' . $thread->featured_image) }}" alt="{{ __('thread.image_alt.thread_image') }}" class="img-thumbnail" style="max-width: 200px;">
                             </div>
                             @endif
 
@@ -454,7 +454,7 @@
                 'undo redo formatselect bold italic underline alignleft aligncenter alignright bullist numlist quote blockquote emoticons fullscreen'
             ],
             language: 'vi',
-            placeholder: 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...',
+            placeholder: '{!! json_encode(__('thread.editor.placeholder')) !!}',
             content_style: `
                 body {
                     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
@@ -488,19 +488,19 @@
             setup: function(editor) {
                 // Custom Quote Button
                 editor.ui.registry.addButton('quote', {
-                    text: 'Trích dẫn',
+                    text: {!! json_encode(__('thread.editor.quote_button')) !!},
                     icon: 'quote',
-                    tooltip: 'Thêm trích dẫn',
+                    tooltip: {!! json_encode(__('thread.editor.quote_tooltip')) !!},
                     onAction: function() {
-                        editor.insertContent('<blockquote><p>Nội dung trích dẫn...</p></blockquote><p><br></p>');
+                        editor.insertContent({!! json_encode(__('thread.editor.quote_content')) !!});
                     }
                 });
 
                 // Custom Blockquote Button
                 editor.ui.registry.addButton('blockquote', {
-                    text: 'Khối trích dẫn',
+                    text: {!! json_encode(__('thread.editor.blockquote_button')) !!},
                     icon: 'blockquote',
-                    tooltip: 'Định dạng khối trích dẫn',
+                    tooltip: {!! json_encode(__('thread.editor.blockquote_tooltip')) !!},
                     onAction: function() {
                         editor.execCommand('mceBlockQuote');
                     }
@@ -531,12 +531,12 @@
 
             // Style formats for showcase descriptions
             style_formats: [
-                {title: 'Tiêu đề 1', format: 'h3'},
-                {title: 'Tiêu đề 2', format: 'h4'},
-                {title: 'Tiêu đề 3', format: 'h5'},
-                {title: 'Đoạn văn', format: 'p'},
-                {title: 'Trích dẫn', format: 'blockquote'},
-                {title: 'Code inline', format: 'code'}
+                {title: {!! json_encode(__('thread.editor.heading_1')) !!}, format: 'h3'},
+                {title: {!! json_encode(__('thread.editor.heading_2')) !!}, format: 'h4'},
+                {title: {!! json_encode(__('thread.editor.heading_3')) !!}, format: 'h5'},
+                {title: {!! json_encode(__('thread.editor.paragraph')) !!}, format: 'p'},
+                {title: {!! json_encode(__('thread.editor.quote_button')) !!}, format: 'blockquote'},
+                {title: {!! json_encode(__('thread.editor.code_inline')) !!}, format: 'code'}
             ],
 
             // Prevent form submission on Enter
@@ -974,9 +974,9 @@
         }
 
         function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
+            if (bytes === 0) return '0 ' + {!! json_encode(__('thread.file_size.bytes')) !!};
             const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const sizes = [{!! json_encode(__('thread.file_size.bytes')) !!}, 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }

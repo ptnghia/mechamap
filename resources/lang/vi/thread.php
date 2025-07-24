@@ -144,4 +144,40 @@ return array (
   'last_post_by' => 'Bài cuối bởi',
   'following' => 'Đang theo dõi',
   'follow' => 'Theo dõi',
+
+  // CKEditor Configuration
+  'editor' => [
+    'placeholder' => 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...',
+    'quote_button' => 'Trích dẫn',
+    'quote_tooltip' => 'Thêm trích dẫn',
+    'quote_content' => '<blockquote><p>Nội dung trích dẫn...</p></blockquote><p><br></p>',
+    'blockquote_button' => 'Khối trích dẫn',
+    'blockquote_tooltip' => 'Định dạng khối trích dẫn',
+    'heading_1' => 'Tiêu đề 1',
+    'heading_2' => 'Tiêu đề 2',
+    'heading_3' => 'Tiêu đề 3',
+    'paragraph' => 'Đoạn văn',
+    'code_inline' => 'Code nội tuyến',
+  ],
+
+  // File size units
+  'file_size' => [
+    'bytes' => 'Bytes',
+  ],
+
+  // Image alt text
+  'image_alt' => [
+    'thread_image' => 'Hình ảnh bài viết',
+  ],
+
+  // Validation messages
+  'validation' => [
+    'select_showcase_type' => 'Vui lòng chọn loại showcase',
+  ],
+
+  // JavaScript console messages
+  'console' => [
+    'tinymce_ready' => 'TinyMCE content editor ready for progress tracking',
+    'dom_loaded' => 'DOMContentLoaded',
+  ],
 );

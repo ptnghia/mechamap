@@ -1,0 +1,110 @@
+[
+    {
+        "line": 120,
+        "original": "POST",
+        "replacement": "__('threads.showcase.categories.post')",
+        "context": "<form id=\"createShowcaseForm\" action=\"{{ route('threads.create-showcase', $thread) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+    },
+    {
+        "line": 178,
+        "original": "Design Project",
+        "replacement": "__('threads.showcase.options.design_project')",
+        "context": "<option value=\"Design Project\">Design Project<\/option>"
+    },
+    {
+        "line": 182,
+        "original": "Case Study",
+        "replacement": "__('threads.showcase.options.case_study')",
+        "context": "<option value=\"Case Study\">Case Study<\/option>"
+    },
+    {
+        "line": 210,
+        "original": "Thread Image",
+        "replacement": "__('threads.showcase.categories.thread_image')",
+        "context": "<img src=\"{{ asset('' . $thread->featured_image) }}\" alt=\"Thread Image\" class=\"img-thumbnail\" style=\"max-width: 200px;\">"
+    },
+    {
+        "line": 432,
+        "original": "DOMContentLoaded",
+        "replacement": "__('threads.showcase.categories.domcontentloaded')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 457,
+        "original": "Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...",
+        "replacement": "__('threads.showcase.placeholders.m_t_chi_tit_v_d_n_phng_php_v_kt_qu_t_c')",
+        "context": "placeholder: 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...',"
+    },
+    {
+        "line": 460,
+        "original": "Segoe UI",
+        "replacement": "__('threads.showcase.categories.segoe_ui')",
+        "context": "font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;"
+    },
+    {
+        "line": 460,
+        "original": "Helvetica Neue",
+        "replacement": "__('threads.showcase.categories.helvetica_neue')",
+        "context": "font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;"
+    },
+    {
+        "line": 493,
+        "original": "Thêm trích dẫn",
+        "replacement": "__('threads.showcase.categories.thm_trch_dn')",
+        "context": "tooltip: 'Thêm trích dẫn',"
+    },
+    {
+        "line": 495,
+        "original": "<blockquote><p>Nội dung trích dẫn...<\/p><\/blockquote><p><br><\/p>",
+        "replacement": "__('threads.showcase.categories.blockquotepni_dung_trch_dnpblockquotepbrp')",
+        "context": "editor.insertContent('<blockquote><p>Nội dung trích dẫn...<\/p><\/blockquote><p><br><\/p>');"
+    },
+    {
+        "line": 501,
+        "original": "Khối trích dẫn",
+        "replacement": "__('threads.showcase.categories.khi_trch_dn')",
+        "context": "text: 'Khối trích dẫn',"
+    },
+    {
+        "line": 503,
+        "original": "Định dạng khối trích dẫn",
+        "replacement": "__('threads.showcase.categories.nh_dng_khi_trch_dn')",
+        "context": "tooltip: 'Định dạng khối trích dẫn',"
+    },
+    {
+        "line": 534,
+        "original": "Tiêu đề 1",
+        "replacement": "__('threads.showcase.titles.tiu_1')",
+        "context": "{title: 'Tiêu đề 1', format: 'h3'},"
+    },
+    {
+        "line": 535,
+        "original": "Tiêu đề 2",
+        "replacement": "__('threads.showcase.titles.tiu_2')",
+        "context": "{title: 'Tiêu đề 2', format: 'h4'},"
+    },
+    {
+        "line": 536,
+        "original": "Tiêu đề 3",
+        "replacement": "__('threads.showcase.titles.tiu_3')",
+        "context": "{title: 'Tiêu đề 3', format: 'h5'},"
+    },
+    {
+        "line": 537,
+        "original": "Đoạn văn",
+        "replacement": "__('threads.showcase.titles.on_vn')",
+        "context": "{title: 'Đoạn văn', format: 'p'},"
+    },
+    {
+        "line": 539,
+        "original": "Code inline",
+        "replacement": "__('threads.showcase.titles.code_inline')",
+        "context": "{title: 'Code inline', format: 'code'}"
+    },
+    {
+        "line": 979,
+        "original": "Bytes",
+        "replacement": "__('threads.showcase.categories.bytes')",
+        "context": "const sizes = ['Bytes', 'KB', 'MB', 'GB'];"
+    }
+]

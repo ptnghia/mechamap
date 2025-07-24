@@ -10,7 +10,7 @@ return array (
   'title' => 'Marketplace',
   'subtitle' => 'Nền tảng thương mại điện tử kỹ thuật cơ khí',
   'description' => 'Khám phá và mua sắm các sản phẩm kỹ thuật chất lượng cao',
-  'marketplace' => 
+  'marketplace' =>
   array (
     'title' => 'Marketplace',
     'subtitle' => 'Nền tảng thương mại điện tử kỹ thuật cơ khí',
@@ -83,20 +83,20 @@ return array (
     'featured_categories' => 'Danh mục nổi bật',
     'featured' => 'Nổi bật',
   ),
-  'products' => 
+  'products' =>
   array (
     'title' => 'Sản phẩm',
     'popular' => 'Phổ biến',
     'verified' => 'Đã xác thực',
   ),
-  'categories' => 
+  'categories' =>
   array (
     'title' => 'Danh mục sản phẩm',
     'all' => 'Tất cả danh mục',
     'subcategories' => 'Danh mục con',
     'featured' => 'Danh mục nổi bật',
   ),
-  'cart' => 
+  'cart' =>
   array (
     'title' => 'Giỏ hàng',
     'shopping_cart' => 'Giỏ hàng của bạn',
@@ -138,11 +138,11 @@ return array (
     'coupon_apply_failed' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn',
     'save_for_later_message' => 'Sản phẩm đã được lưu vào danh sách mua sau',
   ),
-  'checkout' => 
+  'checkout' =>
   array (
     'title' => 'Thanh toán',
     'secure_checkout' => 'Thanh toán bảo mật',
-    'steps' => 
+    'steps' =>
     array (
       'shipping' => 'Thông tin giao hàng',
       'payment' => 'Thanh toán',
@@ -183,7 +183,7 @@ return array (
     'failed_to_load_review' => 'Không thể tải thông tin xác nhận',
     'place_order' => 'Đặt hàng',
   ),
-  'countries' => 
+  'countries' =>
   array (
     'vietnam' => 'Việt Nam',
     'united_states' => 'Hoa Kỳ',
@@ -220,7 +220,7 @@ return array (
   'no_products_yet' => 'Chưa có sản phẩm nào',
   'recent_orders' => 'Đơn hàng gần đây',
   'no_orders_yet' => 'Chưa có đơn hàng nào',
-  'product_management' => 
+  'product_management' =>
   array (
     'create_product' => 'Tạo sản phẩm',
     'create_physical_product' => 'Tạo sản phẩm vật lý',
@@ -708,4 +708,23 @@ return array (
   'marketplace.featured_products' => 'Sản phẩm nổi bật',
   'marketplace.no_featured_products_available' => 'Không có sản phẩm nổi bật nào',
   'marketplace.check_back_later' => 'Vui lòng quay lại sau',
+
+  // Seller setup (max 3 levels)
+  'seller' => [
+    'setup_title' => 'Thiết lập tài khoản bán hàng',
+    'setup_heading' => 'Thiết lập tài khoản bán hàng',
+    'welcome_message' => 'Chào mừng đến với MechaMap Marketplace!',
+    'welcome_description' => 'Hoàn thành thông tin dưới đây để bắt đầu bán hàng trên nền tảng của chúng tôi.',
+    'business_info' => 'Thông tin doanh nghiệp',
+    'store_info' => 'Thông tin cửa hàng',
+    'confirm_info' => 'Xác nhận thông tin',
+    'phone_number' => 'Số điện thoại',
+    'business_address' => 'Địa chỉ kinh doanh',
+    'store_name' => 'Tên cửa hàng',
+    'store_description' => 'Mô tả cửa hàng',
+    'review_message' => 'Vui lòng kiểm tra lại thông tin trước khi gửi. Sau khi gửi, chúng tôi sẽ xem xét và xác minh tài khoản trong vòng 24-48 giờ.',
+    'complete_setup' => 'Hoàn thành thiết lập',
+    'store_desc_placeholder' => 'Giới thiệu về cửa hàng của bạn...',
+    'website_placeholder' => 'https://example.com',
+  ],
 );

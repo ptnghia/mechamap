@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Thêm Sản phẩm Kỹ thuật - Manufacturer Dashboard')
+@section('title', __('manufacturer.products.create_title'))
 
 @section('content')
 <div class="container-fluid py-4">
@@ -11,7 +11,7 @@
                 <div>
                     <h1 class="h2 mb-1">
                         <i class="bx bx-plus-circle text-primary me-2"></i>
-                        Thêm Sản phẩm Kỹ thuật
+                        {{ __('manufacturer.products.create_heading') }}
                     </h1>
                     <p class="text-muted mb-0">Tạo file CAD hoặc dịch vụ kỹ thuật mới cho MechaMap Marketplace</p>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="name" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ __('manufacturer.products.product_name') }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                        id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
@@ -50,10 +50,10 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="product_type" class="form-label">Loại sản phẩm <span class="text-danger">*</span></label>
+                                <label for="product_type" class="form-label">{{ __('manufacturer.products.product_type') }} <span class="text-danger">*</span></label>
                                 <select class="form-select @error('product_type') is-invalid @enderror"
                                         id="product_type" name="product_type" required>
-                                    <option value="">Chọn loại sản phẩm</option>
+                                    <option value="">{{ __('manufacturer.products.choose_type') }}</option>
                                     <option value="digital" {{ old('product_type') === 'digital' ? 'selected' : '' }}>
                                         File CAD/Thiết kế
                                     </option>
@@ -83,20 +83,20 @@
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="short_description" class="form-label">Mô tả ngắn</label>
+                                <label for="short_description" class="form-label">{{ __('manufacturer.products.short_description') }}</label>
                                 <textarea class="form-control @error('short_description') is-invalid @enderror"
                                           id="short_description" name="short_description" rows="2"
-                                          placeholder="Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)">{{ old('short_description') }}</textarea>
+                                          placeholder="{{ __('manufacturer.products.short_desc_placeholder') }}">{{ old('short_description') }}</textarea>
                                 @error('short_description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label for="description" class="form-label">Mô tả chi tiết <span class="text-danger">*</span></label>
+                                <label for="description" class="form-label">{{ __('manufacturer.products.detailed_description') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control @error('description') is-invalid @enderror"
                                           id="description" name="description" rows="6" required
-                                          placeholder="Mô tả chi tiết về sản phẩm, tính năng, ứng dụng...">{{ old('description') }}</textarea>
+                                          placeholder="{{ __('manufacturer.products.detailed_desc_placeholder') }}">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -116,7 +116,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="price" class="form-label">Giá bán <span class="text-danger">*</span></label>
+                                <label for="price" class="form-label">{{ __('manufacturer.products.price') }} <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control @error('price') is-invalid @enderror"
                                            id="price" name="price" value="{{ old('price') }}" min="0" step="1000" required>
@@ -193,7 +193,7 @@
                                 <label for="material" class="form-label">Vật liệu</label>
                                 <input type="text" class="form-control @error('material') is-invalid @enderror"
                                        id="material" name="material" value="{{ old('material') }}"
-                                       placeholder="VD: Thép không gỉ 304, Nhôm 6061...">
+                                       placeholder="{{ __('manufacturer.products.material_placeholder') }}">
                                 @error('material')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -213,27 +213,27 @@
                                 <label for="tags" class="form-label">Tags</label>
                                 <input type="text" class="form-control @error('tags') is-invalid @enderror"
                                        id="tags" name="tags" value="{{ old('tags') }}"
-                                       placeholder="VD: cad, thiết kế, cơ khí (phân cách bằng dấu phẩy)">
+                                       placeholder="{{ __('manufacturer.products.tags_placeholder') }}">
                                 @error('tags')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label class="form-label">Thông số kỹ thuật chi tiết</label>
+                                <label class="form-label">{{ __('manufacturer.products.technical_specs') }}</label>
                                 <div id="technical-specs">
                                     <div class="row mb-2">
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" name="technical_specs[0][name]"
-                                                   placeholder="Tên thông số" value="{{ old('technical_specs.0.name') }}">
+                                                   placeholder="{{ __('manufacturer.products.spec_name') }}" value="{{ old('technical_specs.0.name') }}">
                                         </div>
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" name="technical_specs[0][value]"
-                                                   placeholder="Giá trị" value="{{ old('technical_specs.0.value') }}">
+                                                   placeholder="{{ __('manufacturer.products.spec_value') }}" value="{{ old('technical_specs.0.value') }}">
                                         </div>
                                         <div class="col-md-3">
                                             <input type="text" class="form-control" name="technical_specs[0][unit]"
-                                                   placeholder="Đơn vị" value="{{ old('technical_specs.0.unit') }}">
+                                                   placeholder="{{ __('manufacturer.products.spec_unit') }}" value="{{ old('technical_specs.0.unit') }}">
                                         </div>
                                         <div class="col-md-1">
                                             <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeSpec(this)">
@@ -244,7 +244,7 @@
                                 </div>
                                 <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSpec()">
                                     <i class="bx bx-plus me-1"></i>
-                                    Thêm thông số
+                                    {{ __('manufacturer.products.add_spec') }}
                                 </button>
                             </div>
                         </div>
@@ -265,7 +265,7 @@
                             <input type="file" class="form-control @error('images') is-invalid @enderror"
                                    id="images" name="images[]" multiple accept="image/*">
                             <small class="text-muted">
-                                Chọn nhiều hình ảnh (JPG, PNG, GIF - tối đa 2MB mỗi file). Hình đầu tiên sẽ là ảnh đại diện.
+                                {{ __('manufacturer.products.image_help') }}
                             </small>
                             @error('images')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -320,11 +320,11 @@
                             </li>
                             <li class="mb-2">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Dịch vụ: Mô tả rõ quy trình và deliverable
+                                {{ __('manufacturer.products.service_description') }}
                             </li>
                             <li class="mb-2">
                                 <i class="bx bx-check text-success me-2"></i>
-                                Thông số kỹ thuật chi tiết và chính xác
+                                {{ __('manufacturer.products.detailed_specs') }}
                             </li>
                             <li class="mb-0">
                                 <i class="bx bx-check text-success me-2"></i>
@@ -413,13 +413,13 @@ function addSpec() {
     newSpec.className = 'row mb-2';
     newSpec.innerHTML = `
         <div class="col-md-4">
-            <input type="text" class="form-control" name="technical_specs[${specIndex}][name]" placeholder="Tên thông số">
+            <input type="text" class="form-control" name="technical_specs[${specIndex}][name]" placeholder="{!! addslashes(__('manufacturer.products.spec_name')) !!}">
         </div>
         <div class="col-md-4">
-            <input type="text" class="form-control" name="technical_specs[${specIndex}][value]" placeholder="Giá trị">
+            <input type="text" class="form-control" name="technical_specs[${specIndex}][value]" placeholder="{!! addslashes(__('manufacturer.products.spec_value')) !!}">
         </div>
         <div class="col-md-3">
-            <input type="text" class="form-control" name="technical_specs[${specIndex}][unit]" placeholder="Đơn vị">
+            <input type="text" class="form-control" name="technical_specs[${specIndex}][unit]" placeholder="{!! addslashes(__('manufacturer.products.spec_unit')) !!}">
         </div>
         <div class="col-md-1">
             <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeSpec(this)">
@@ -490,7 +490,7 @@ document.getElementById('images').addEventListener('change', function(e) {
                             <button type="button" class="remove-item" onclick="removeImage(this, ${index})">
                                 <i class="bx bx-x"></i>
                             </button>
-                            ${index === 0 ? '<small class="text-primary">Ảnh đại diện</small>' : ''}
+                            ${index === 0 ? '<small class="text-primary">{!! addslashes(__('manufacturer.products.main_image')) !!}</small>' : ''}
                         </div>
                     `;
                     preview.appendChild(col);
@@ -585,7 +585,7 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
 
     if (salePrice && salePrice >= price) {
         e.preventDefault();
-        alert('Giá khuyến mãi phải nhỏ hơn giá bán thường!');
+        alert({!! json_encode(__('manufacturer.products.price_validation')) !!});
         return false;
     }
 
@@ -594,7 +594,7 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
 
     if (productType === 'digital' && digitalFiles.length === 0) {
         e.preventDefault();
-        alert('Vui lòng upload ít nhất một file CAD cho sản phẩm digital!');
+        alert({!! json_encode(__('manufacturer.products.cad_required')) !!});
         return false;
     }
 });

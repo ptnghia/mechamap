@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hướng Dẫn Viết Bài')
+@section('title', __('pages.writing_guide.title'))
 
 @section('content')
 <div class="container py-4">
@@ -10,7 +10,7 @@
                 <div class="card-header bg-success text-white">
                     <h1 class="h3 mb-0">
                         <i class="book me-2"></i>
-                        Hướng Dẫn Viết Bài Chất Lượng
+                        {{ __('pages.writing_guide.heading') }}
                     </h1>
                 </div>
                 <div class="card-body">
@@ -19,13 +19,13 @@
                         <div class="col-lg-3">
                             <div class="list-group sticky-top" style="top: 20px;">
                                 <a href="#section-title" class="list-group-item list-group-item-action">
-                                    <i class="1-circle me-2"></i>Viết Tiêu Đề
+                                    <i class="1-circle me-2"></i>{{ __('pages.writing_guide.nav_title') }}
                                 </a>
                                 <a href="#section-content" class="list-group-item list-group-item-action">
-                                    <i class="2-circle me-2"></i>Cấu Trúc Nội Dung
+                                    <i class="2-circle me-2"></i>{{ __('pages.writing_guide.nav_content') }}
                                 </a>
                                 <a href="#section-images" class="list-group-item list-group-item-action">
-                                    <i class="3-circle me-2"></i>Sử Dụng Hình Ảnh
+                                    <i class="3-circle me-2"></i>{{ __('pages.writing_guide.nav_images') }}
                                 </a>
                                 <a href="#section-category" class="list-group-item list-group-item-action">
                                     <i class="4-circle me-2"></i>Chọn Danh Mục
@@ -41,11 +41,11 @@
                             <section id="section-title" class="mb-5">
                                 <h3 class="text-success mb-3">
                                     <i class="1-circle-fill me-2"></i>
-                                    Cách Viết Tiêu Đề Hiệu Quả
+                                    {{ __('pages.writing_guide.effective_title') }}
                                 </h3>
 
                                 <div class="alert alert-info">
-                                    <strong>Tiêu đề tốt = 50% thành công của bài viết!</strong>
+                                    <strong>{{ __('pages.writing_guide.title_success') }}</strong>
                                 </div>
 
                                 <h5>✅ Nên làm:</h5>
@@ -62,7 +62,7 @@
                                 <ul class="text-danger">
                                     <li>"Help me!!!", "Cần gấp!!!", "SOS!!!"</li>
                                     <li>"Hỏi về thiết kế" (quá chung chung)</li>
-                                    <li>VIẾT HOA TOÀN BỘ TIÊU ĐỀ</li>
+                                    <li>{{ __('pages.writing_guide.avoid_caps') }}</li>
                                     <li>Dùng quá nhiều ký tự đặc biệt !!??***</li>
                                 </ul>
                             </section>
@@ -70,7 +70,7 @@
                             <section id="section-content" class="mb-5">
                                 <h3 class="text-success mb-3">
                                     <i class="2-circle-fill me-2"></i>
-                                    Cấu Trúc Nội Dung Hoàn Hảo
+                                    {{ __('pages.writing_guide.perfect_structure') }}
                                 </h3>
 
                                 <div class="card bg-light mb-3">
@@ -78,8 +78,8 @@
                                         <h6>📝 Template chuẩn:</h6>
                                         <ol>
                                             <li><strong>Mở đầu:</strong> Giới thiệu vấn đề/chủ đề</li>
-                                            <li><strong>Thân bài:</strong> Chi tiết, ví dụ, hình ảnh</li>
-                                            <li><strong>Kết luận:</strong> Tóm tắt, đặt câu hỏi để thảo luận</li>
+                                            <li><strong>{{ __('pages.writing_guide.body_detail') }}</strong></li>
+                                            <li><strong>{{ __('pages.writing_guide.conclusion_discuss') }}</strong></li>
                                         </ol>
                                     </div>
                                 </div>
@@ -96,12 +96,12 @@
                             <section id="section-images" class="mb-5">
                                 <h3 class="text-success mb-3">
                                     <i class="3-circle-fill me-2"></i>
-                                    Sử Dụng Hình Ảnh Hiệu Quả
+                                    {{ __('pages.writing_guide.effective_images') }}
                                 </h3>
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h5>📸 Loại hình ảnh nên dùng:</h5>
+                                        <h5>📸 {{ __('pages.writing_guide.image_types') }}</h5>
                                         <ul>
                                             <li>Bản vẽ kỹ thuật, sơ đồ</li>
                                             <li>Ảnh chụp công trình thực tế</li>
@@ -110,18 +110,18 @@
                                         </ul>
                                     </div>
                                     <div class="col-md-6">
-                                        <h5>⚙️ Yêu cầu kỹ thuật:</h5>
+                                        <h5>⚙️ {{ __('pages.writing_guide.tech_requirements') }}</h5>
                                         <ul>
-                                            <li>Định dạng: JPG, PNG, WebP</li>
+                                            <li>{{ __('pages.writing_guide.format_support') }}</li>
                                             <li>Kích thước: Tối đa 2MB</li>
                                             <li>Độ phân giải: Tối thiểu 800px chiều rộng</li>
-                                            <li>Chất lượng: Rõ nét, không mờ</li>
+                                            <li>{{ __('pages.writing_guide.quality_clear') }}</li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 <div class="alert alert-warning">
-                                    <strong>⚠️ Lưu ý bản quyền:</strong> Chỉ sử dụng hình ảnh do bạn chụp hoặc có quyền
+                                    <strong>⚠️ {{ __('pages.writing_guide.copyright_notice') }}</strong> Chỉ sử dụng hình ảnh do bạn chụp hoặc có quyền
                                     sử dụng. Ghi rõ nguồn nếu sử dụng hình từ internet.
                                 </div>
                             </section>
@@ -234,7 +234,7 @@
 
                             <div class="text-center mt-5">
                                 <div class="alert alert-success">
-                                    <h5><i class="fas fa-check-circle me-2"></i>Sẵn sàng viết bài?</h5>
+                                    <h5><i class="fas fa-check-circle me-2"></i>{{ __('pages.writing_guide.ready_to_write') }}</h5>
                                     <p class="mb-3">Áp dụng những hướng dẫn trên và tạo ra những bài viết chất lượng!
                                     </p>
                                     <a href="{{ route('threads.create') }}" class="btn btn-success btn-lg">

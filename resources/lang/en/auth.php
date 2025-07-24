@@ -446,4 +446,28 @@ return array (
   'secure_area_message' => 'This is a secure area of the application. Please confirm your password before continuing.',
   'register.already_have_account' => 'Already have an account?',
   'register.login_now' => 'Login now',
+
+  // Reset password (max 3 levels)
+  'reset_password' => [
+    'title' => 'Reset Password',
+    'subtitle' => 'Create a new password for your account',
+    'heading' => 'Create New Password',
+    'description' => 'Please enter a new password for your account',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm New Password',
+    'password_placeholder' => 'Enter new password',
+    'confirm_placeholder' => 'Re-enter new password',
+    'password_hint' => 'Use at least 8 characters with letters, numbers and symbols',
+    'update_password' => 'Update Password',
+    'password_match' => 'Passwords match',
+    'password_mismatch' => 'Passwords do not match',
+    'tips' => [
+      'strong_title' => 'Strong Password',
+      'strong_desc' => 'Use at least 8 characters including uppercase, lowercase, numbers and symbols',
+      'avoid_personal_title' => 'Avoid Personal Information',
+      'avoid_personal_desc' => 'Do not use names, birth dates, phone numbers in passwords',
+      'unique_title' => 'Unique Password',
+      'unique_desc' => 'Do not reuse passwords from other accounts',
+    ],
+  ],
 );

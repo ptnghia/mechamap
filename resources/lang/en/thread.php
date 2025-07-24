@@ -75,4 +75,40 @@ return array (
   'last_post_by' => 'Last post by',
   'following' => 'Following',
   'follow' => 'Follow',
+
+  // CKEditor Configuration
+  'editor' => [
+    'placeholder' => 'Detailed description of the project, methods and results achieved...',
+    'quote_button' => 'Quote',
+    'quote_tooltip' => 'Add quote',
+    'quote_content' => '<blockquote><p>Quote content...</p></blockquote><p><br></p>',
+    'blockquote_button' => 'Blockquote',
+    'blockquote_tooltip' => 'Format blockquote',
+    'heading_1' => 'Heading 1',
+    'heading_2' => 'Heading 2',
+    'heading_3' => 'Heading 3',
+    'paragraph' => 'Paragraph',
+    'code_inline' => 'Code inline',
+  ],
+
+  // File size units
+  'file_size' => [
+    'bytes' => 'Bytes',
+  ],
+
+  // Image alt text
+  'image_alt' => [
+    'thread_image' => 'Thread Image',
+  ],
+
+  // Validation messages
+  'validation' => [
+    'select_showcase_type' => 'Please select showcase type',
+  ],
+
+  // JavaScript console messages
+  'console' => [
+    'tinymce_ready' => 'TinyMCE content editor ready for progress tracking',
+    'dom_loaded' => 'DOMContentLoaded',
+  ],
 );

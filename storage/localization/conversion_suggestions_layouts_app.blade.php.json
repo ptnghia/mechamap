@@ -1,0 +1,92 @@
+[
+    {
+        "line": 28,
+        "original": "MechaMap Team",
+        "replacement": "__('layouts.app.navigation.mechamap_team')",
+        "context": "<meta name=\"author\" content=\"MechaMap Team\">"
+    },
+    {
+        "line": 279,
+        "original": "DOMContentLoaded",
+        "replacement": "__('layouts.app.navigation.domcontentloaded')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 306,
+        "original": "Bạn có thể đóng modal này bằng phím ESC",
+        "replacement": "__('layouts.app.navigation.bn_c_th_ng_modal_ny_bng_phm_esc')",
+        "context": "MODAL: \"Bạn có thể đóng modal này bằng phím ESC\","
+    },
+    {
+        "line": 307,
+        "original": "Có lỗi xảy ra khi tải nội dung. <br\/> Vui lòng thử lại sau.",
+        "replacement": "__('layouts.app.navigation.c_li_xy_ra_khi_ti_ni_dung_br_vui_lng_th_li_sau')",
+        "context": "ERROR: \"Có lỗi xảy ra khi tải nội dung. <br\/> Vui lòng thử lại sau.\","
+    },
+    {
+        "line": 308,
+        "original": "Không thể tải hình ảnh. <br\/> Vui lòng thử lại sau.",
+        "replacement": "__('layouts.app.navigation.khng_th_ti_hnh_nh_br_vui_lng_th_li_sau')",
+        "context": "IMAGE_ERROR: \"Không thể tải hình ảnh. <br\/> Vui lòng thử lại sau.\","
+    },
+    {
+        "line": 309,
+        "original": "Không tìm thấy phần tử HTML.",
+        "replacement": "__('layouts.app.navigation.khng_tm_thy_phn_t_html')",
+        "context": "ELEMENT_NOT_FOUND: \"Không tìm thấy phần tử HTML.\","
+    },
+    {
+        "line": 310,
+        "original": "Lỗi khi tải AJAX: Không tìm thấy",
+        "replacement": "__('layouts.app.navigation.li_khi_ti_ajax_khng_tm_thy')",
+        "context": "AJAX_NOT_FOUND: \"Lỗi khi tải AJAX: Không tìm thấy\","
+    },
+    {
+        "line": 311,
+        "original": "Lỗi khi tải AJAX: Bị cấm",
+        "replacement": "__('layouts.app.navigation.li_khi_ti_ajax_b_cm')",
+        "context": "AJAX_FORBIDDEN: \"Lỗi khi tải AJAX: Bị cấm\","
+    },
+    {
+        "line": 312,
+        "original": "Lỗi khi tải trang",
+        "replacement": "__('layouts.app.navigation.li_khi_ti_trang')",
+        "context": "IFRAME_ERROR: \"Lỗi khi tải trang\","
+    },
+    {
+        "line": 313,
+        "original": "Phóng to\/thu nhỏ",
+        "replacement": "__('layouts.app.navigation.phng_tothu_nh')",
+        "context": "TOGGLE_ZOOM: \"Phóng to\/thu nhỏ\","
+    },
+    {
+        "line": 314,
+        "original": "Hiện\/ẩn thumbnails",
+        "replacement": "__('layouts.app.navigation.hinn_thumbnails')",
+        "context": "TOGGLE_THUMBS: \"Hiện\/ẩn thumbnails\","
+    },
+    {
+        "line": 315,
+        "original": "Bật\/tắt slideshow",
+        "replacement": "__('layouts.app.navigation.bttt_slideshow')",
+        "context": "TOGGLE_SLIDESHOW: \"Bật\/tắt slideshow\","
+    },
+    {
+        "line": 316,
+        "original": "Bật\/tắt toàn màn hình",
+        "replacement": "__('layouts.app.navigation.bttt_ton_mn_hnh')",
+        "context": "TOGGLE_FULLSCREEN: \"Bật\/tắt toàn màn hình\","
+    },
+    {
+        "line": 325,
+        "original": "DOMContentLoaded",
+        "replacement": "__('layouts.app.navigation.domcontentloaded_1')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 336,
+        "original": "Adding fallback click handler to theme button",
+        "replacement": "__('layouts.app.actions.adding_fallback_click_handler_to_theme_button')",
+        "context": "console.log('Adding fallback click handler to theme button');"
+    }
+]

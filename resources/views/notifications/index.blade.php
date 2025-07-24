@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Quản lý thông báo')
+@section('title', __('notifications.index.title'))
 
 @section('content')
 <div class="container py-4">
@@ -11,18 +11,18 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fas fa-bell me-2 text-primary"></i>
-                        Quản lý thông báo
+                        {{ __('notifications.index.heading') }}
                     </h1>
-                    <p class="text-muted mb-0">Xem và quản lý tất cả thông báo của bạn</p>
+                    <p class="text-muted mb-0">{{ __('notifications.index.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-primary" id="markAllReadBtn">
                         <i class="fas fa-check-double me-1"></i>
-                        Đánh dấu tất cả đã đọc
+                        {{ __('notifications.index.mark_all_read') }}
                     </button>
                     <button type="button" class="btn btn-outline-danger" id="deleteAllReadBtn">
                         <i class="fas fa-trash me-1"></i>
-                        Xóa đã đọc
+                        {{ __('notifications.index.delete_read') }}
                     </button>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <h3 class="mb-1">{{ number_format($stats['total']) }}</h3>
-                    <p class="text-muted mb-0">Tổng thông báo</p>
+                    <p class="text-muted mb-0">{{ __('notifications.index.total_notifications') }}</p>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <h3 class="mb-1">{{ number_format($stats['unread']) }}</h3>
-                    <p class="text-muted mb-0">Chưa đọc</p>
+                    <p class="text-muted mb-0">{{ __('notifications.index.unread_count') }}</p>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <h3 class="mb-1">{{ number_format($stats['read']) }}</h3>
-                    <p class="text-muted mb-0">Đã đọc</p>
+                    <p class="text-muted mb-0">{{ __('notifications.index.read_count') }}</p>
                 </div>
             </div>
         </div>
@@ -77,9 +77,9 @@
         <div class="card-body">
             <form method="GET" action="{{ route('notifications.index') }}" class="row g-3">
                 <div class="col-md-4">
-                    <label for="type" class="form-label">Loại thông báo</label>
+                    <label for="type" class="form-label">{{ __('notifications.index.notification_type') }}</label>
                     <select name="type" id="type" class="form-select">
-                        <option value="all" {{ $type === 'all' || !$type ? 'selected' : '' }}>Tất cả loại</option>
+                        <option value="all" {{ $type === 'all' || !$type ? 'selected' : '' }}>{{ __('notifications.index.all_types') }}</option>
                         @foreach($notificationTypes as $notificationType)
                             <option value="{{ $notificationType['value'] }}" {{ $type === $notificationType['value'] ? 'selected' : '' }}>
                                 {{ $notificationType['label'] }}
@@ -90,9 +90,9 @@
                 <div class="col-md-4">
                     <label for="status" class="form-label">Trạng thái</label>
                     <select name="status" id="status" class="form-select">
-                        <option value="all" {{ $status === 'all' || !$status ? 'selected' : '' }}>Tất cả</option>
-                        <option value="unread" {{ $status === 'unread' ? 'selected' : '' }}>Chưa đọc</option>
-                        <option value="read" {{ $status === 'read' ? 'selected' : '' }}>Đã đọc</option>
+                        <option value="all" {{ $status === 'all' || !$status ? 'selected' : '' }}>{{ __('notifications.index.status_all') }}</option>
+                        <option value="unread" {{ $status === 'unread' ? 'selected' : '' }}>{{ __('notifications.index.status_unread') }}</option>
+                        <option value="read" {{ $status === 'read' ? 'selected' : '' }}>{{ __('notifications.index.status_read') }}</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -119,7 +119,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
                     <i class="fas fa-list me-2"></i>
-                    Danh sách thông báo
+                    {{ __('notifications.index.notification_list') }}
                     @if($notifications->total() > 0)
                         <span class="badge bg-primary ms-2">{{ $notifications->total() }}</span>
                     @endif
@@ -127,19 +127,19 @@
                 @if($notifications->hasPages())
                     <div class="d-flex align-items-center gap-2">
                         <small class="text-muted">
-                            Hiển thị {{ $notifications->firstItem() }}-{{ $notifications->lastItem() }} 
+                            Hiển thị {{ $notifications->firstItem() }}-{{ $notifications->lastItem() }}
                             trong {{ $notifications->total() }} kết quả
                         </small>
                     </div>
                 @endif
             </div>
         </div>
-        
+
         <div class="card-body p-0">
             @if($notifications->count() > 0)
                 <div class="notification-list">
                     @foreach($notifications as $notification)
-                        <div class="notification-item border-bottom p-3 {{ !$notification->is_read ? 'bg-light' : '' }}" 
+                        <div class="notification-item border-bottom p-3 {{ !$notification->is_read ? 'bg-light' : '' }}"
                              data-notification-id="{{ $notification->id }}">
                             <div class="d-flex">
                                 <!-- Icon -->
@@ -148,7 +148,7 @@
                                         <i class="{{ $notification->icon }} text-{{ $notification->color }}"></i>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Content -->
                                 <div class="notification-content flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -159,25 +159,25 @@
                                             @if(!$notification->is_read)
                                                 <span class="badge bg-primary">Mới</span>
                                             @endif
-                                            <button type="button" 
+                                            <button type="button"
                                                     class="btn btn-sm btn-outline-primary mark-read-btn"
                                                     data-notification-id="{{ $notification->id }}"
-                                                    title="{{ $notification->is_read ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc' }}">
+                                                    title="{{ $notification->is_read ? __('notifications.index.mark_unread') : __('notifications.index.mark_read') }}">
                                                 <i class="fas {{ $notification->is_read ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                                             </button>
-                                            <button type="button" 
+                                            <button type="button"
                                                     class="btn btn-sm btn-outline-danger delete-btn"
                                                     data-notification-id="{{ $notification->id }}"
-                                                    title="Xóa thông báo">
+                                                    title="{{ __('notifications.index.delete_notification') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    
+
                                     <p class="notification-message text-muted mb-2">
                                         {{ $notification->message }}
                                     </p>
-                                    
+
                                     <div class="notification-meta d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center gap-3">
                                             <small class="text-muted">
@@ -189,9 +189,9 @@
                                                 {{ $notification->getTypeLabel() }}
                                             </small>
                                         </div>
-                                        
+
                                         @if($notification->getActionUrl())
-                                            <a href="{{ $notification->getActionUrl() }}" 
+                                            <a href="{{ $notification->getActionUrl() }}"
                                                class="btn btn-sm btn-outline-primary">
                                                 <i class="fas fa-external-link-alt me-1"></i>
                                                 Xem chi tiết
@@ -209,24 +209,24 @@
                     <div class="mb-4">
                         <i class="fas fa-bell-slash text-muted" style="font-size: 4rem;"></i>
                     </div>
-                    <h5 class="text-muted mb-2">Không có thông báo nào</h5>
+                    <h5 class="text-muted mb-2">{{ __('notifications.index.no_notifications') }}</h5>
                     <p class="text-muted mb-4">
                         @if($type && $type !== 'all')
-                            Không tìm thấy thông báo loại "{{ collect($notificationTypes)->firstWhere('value', $type)['label'] ?? $type }}"
+                            {{ __('notifications.index.no_notifications_type') }} "{{ collect($notificationTypes)->firstWhere('value', $type)['label'] ?? $type }}"
                         @elseif($status && $status !== 'all')
-                            Không có thông báo {{ $status === 'read' ? 'đã đọc' : 'chưa đọc' }}
+                            {{ $status === 'read' ? __('notifications.index.no_read_notifications') : __('notifications.index.no_unread_notifications') }}
                         @else
-                            Bạn chưa có thông báo nào. Thông báo sẽ xuất hiện ở đây khi có hoạt động mới.
+                            {{ __('notifications.index.no_notifications_desc') }}
                         @endif
                     </p>
                     <a href="{{ route('notifications.index') }}" class="btn btn-primary">
                         <i class="fas fa-refresh me-1"></i>
-                        Xem tất cả thông báo
+                        {{ __('notifications.index.view_all') }}
                     </a>
                 </div>
             @endif
         </div>
-        
+
         @if($notifications->hasPages())
             <div class="card-footer bg-white">
                 {{ $notifications->links() }}
@@ -241,7 +241,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Mark all as read
     document.getElementById('markAllReadBtn')?.addEventListener('click', function() {
-        if (confirm('Đánh dấu tất cả thông báo là đã đọc?')) {
+        if (confirm('{!! addslashes(__('notifications.index.confirm_mark_all')) !!}')) {
             fetch('/ajax/notifications/mark-all-read', {
                 method: 'PATCH',
                 headers: {
@@ -263,12 +263,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-    
+
     // Individual mark as read/unread
     document.querySelectorAll('.mark-read-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const notificationId = this.dataset.notificationId;
-            
+
             fetch(`/ajax/notifications/${notificationId}/read`, {
                 method: 'PATCH',
                 headers: {
@@ -290,13 +290,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
+
     // Delete notification
     document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            if (confirm('Xóa thông báo này?')) {
+            if (confirm('{!! addslashes(__('notifications.index.confirm_delete')) !!}')) {
                 const notificationId = this.dataset.notificationId;
-                
+
                 fetch(`/ajax/notifications/${notificationId}`, {
                     method: 'DELETE',
                     headers: {
@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .notification-item .notification-actions {
         opacity: 1;
     }
-    
+
     .notification-meta {
         flex-direction: column;
         align-items: flex-start !important;

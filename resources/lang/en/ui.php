@@ -194,4 +194,25 @@ return [
     'ui.menu.toggle' => [
     ],
 
+    // Layout specific
+    'layout' => [
+        'meta_author' => 'MechaMap Team',
+        'fancybox' => [
+            'modal_esc_hint' => 'You can close this modal with ESC key',
+            'error_loading' => 'Error loading content. <br/> Please try again later.',
+            'image_error' => 'Unable to load image. <br/> Please try again later.',
+            'element_not_found' => 'HTML element not found.',
+            'ajax_not_found' => 'AJAX loading error: Not found',
+            'ajax_forbidden' => 'AJAX loading error: Forbidden',
+            'iframe_error' => 'Error loading page',
+            'toggle_zoom' => 'Zoom in/out',
+            'toggle_thumbs' => 'Show/hide thumbnails',
+            'toggle_slideshow' => 'Start/stop slideshow',
+            'toggle_fullscreen' => 'Toggle fullscreen',
+        ],
+        'console' => [
+            'theme_button_fallback' => 'Adding fallback click handler to theme button',
+        ],
+    ],
+
 ];

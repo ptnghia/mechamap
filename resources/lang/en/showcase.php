@@ -8,7 +8,7 @@
 
 return array (
   'title' => 'Showcase',
-  'actions' => 
+  'actions' =>
   array (
     'create' => 'Create Showcase',
     'edit' => 'Edit Showcase',
@@ -181,6 +181,13 @@ return array (
         'advanced' => 'Advanced',
         'expert' => 'Expert',
     ],
+  'project_types' => [
+        'design_project' => 'Design Project',
+        'case_study' => 'Case Study',
+        'manufacturing' => 'Manufacturing',
+        'analysis_simulation' => 'Analysis & Simulation',
+        'research_development' => 'Research & Development',
+    ],
   'industry_application' => 'Industry application',
   'industry_placeholder' => 'e.g: Automotive, Aerospace, Construction...',
   'file_attachments' => 'File attachments',
@@ -217,4 +224,35 @@ return array (
   'features.cad' => 'CAD',
   'features.download' => 'Download',
   'ratings' => 'Ratings',
+
+  // Show page specific
+  'show' => [
+    'default_title' => 'Showcase Item',
+    'image_alt' => 'Showcase image',
+    'share_options' => 'Share options',
+    'comment_placeholder' => 'Write your comment...',
+    'avatar_alt' => 'Your avatar',
+    'user_avatar_alt' => 'Avatar of :name',
+    'delete_comment_confirm' => 'Are you sure you want to delete this comment?',
+  ],
+
+  // Create showcase (max 3 levels)
+  'create' => [
+    'title' => 'Create New Showcase',
+    'heading' => 'Create New Showcase',
+    'description' => 'Share your projects, products or technical achievements with the community',
+    'showcase_title' => 'Showcase title',
+    'detailed_description' => 'Detailed description',
+    'description_placeholder' => 'Detailed description of the project: objectives, technologies used, key features, results achieved...',
+    'cover_image_section' => 'Cover Image',
+    'upload_cover_image' => 'Upload cover image',
+    'cover_image_help' => 'Cover image for your showcase',
+    'technical_category' => 'Technical category',
+    'choose_category' => 'Choose category',
+    'create_button' => 'Create Showcase',
+    'close_button' => 'Close',
+    'title_placeholder' => 'Showcase title',
+    'desc_placeholder' => 'Showcase description...',
+    'location_label' => 'Location:',
+  ],
 );

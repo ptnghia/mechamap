@@ -1,0 +1,2227 @@
+{
+    "scan_date": "2025-07-23 13:40:07",
+    "statistics": {
+        "total_files_scanned": 260,
+        "files_with_hardcoded": 86,
+        "total_hardcoded_strings": 409
+    },
+    "results": {
+        "alerts\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Thông báo",
+                "context": "@section('title', 'Thông báo')"
+            },
+            {
+                "line": 224,
+                "text": "Bạn có chắc chắn muốn xóa thông báo này?",
+                "context": "if (confirm('Bạn có chắc chắn muốn xóa thông báo này?')) {"
+            },
+            {
+                "line": 243,
+                "text": "Bạn có chắc chắn muốn đánh dấu tất cả thông báo là đã đọc?",
+                "context": "if (confirm('Bạn có chắc chắn muốn đánh dấu tất cả thông báo là đã đọc?')) {"
+            },
+            {
+                "line": 262,
+                "text": "Bạn có chắc chắn muốn xóa tất cả thông báo? Hành động này không thể hoàn tác.",
+                "context": "if (confirm('Bạn có chắc chắn muốn xóa tất cả thông báo? Hành động này không thể hoàn tác.')) {"
+            }
+        ],
+        "auth\/forgot-password.blade.php": [
+            {
+                "line": 3,
+                "text": "Quên mật khẩu",
+                "context": "@section('title', 'Quên mật khẩu')"
+            },
+            {
+                "line": 7,
+                "text": "Khôi phục mật khẩu",
+                "context": "title=\"Khôi phục mật khẩu\""
+            },
+            {
+                "line": 8,
+                "text": "Lấy lại quyền truy cập vào tài khoản của bạn",
+                "context": "subtitle=\"Lấy lại quyền truy cập vào tài khoản của bạn\""
+            },
+            {
+                "line": 40,
+                "text": "Nhập địa chỉ email đã đăng ký",
+                "context": "placeholder=\"Nhập địa chỉ email đã đăng ký\">"
+            },
+            {
+                "line": 120,
+                "text": "><\/i>Đang gửi...",
+                "context": "submitBtn.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"><\/i>Đang gửi...';"
+            }
+        ],
+        "auth\/login.blade.php": [
+            {
+                "line": 134,
+                "text": "••••••••",
+                "context": "placeholder=\"••••••••\">"
+            }
+        ],
+        "auth\/register-redirect.blade.php": [
+            {
+                "line": 3,
+                "text": "Đăng ký tài khoản MechaMap",
+                "context": "@section('title', 'Đăng ký tài khoản MechaMap')"
+            }
+        ],
+        "auth\/reset-password.blade.php": [
+            {
+                "line": 3,
+                "text": "Đặt lại mật khẩu",
+                "context": "@section('title', 'Đặt lại mật khẩu')"
+            },
+            {
+                "line": 7,
+                "text": "Đặt lại mật khẩu",
+                "context": "title=\"Đặt lại mật khẩu\""
+            },
+            {
+                "line": 8,
+                "text": "Tạo mật khẩu mới cho tài khoản của bạn",
+                "context": "subtitle=\"Tạo mật khẩu mới cho tài khoản của bạn\""
+            },
+            {
+                "line": 60,
+                "text": "Nhập mật khẩu mới",
+                "context": "placeholder=\"Nhập mật khẩu mới\">"
+            },
+            {
+                "line": 86,
+                "text": "Nhập lại mật khẩu mới",
+                "context": "placeholder=\"Nhập lại mật khẩu mới\">"
+            },
+            {
+                "line": 212,
+                "text": "Rất yếu",
+                "context": "const texts = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];"
+            },
+            {
+                "line": 212,
+                "text": "Yếu",
+                "context": "const texts = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];"
+            },
+            {
+                "line": 212,
+                "text": "Trung bình",
+                "context": "const texts = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];"
+            },
+            {
+                "line": 212,
+                "text": "Mạnh",
+                "context": "const texts = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];"
+            },
+            {
+                "line": 212,
+                "text": "Rất mạnh",
+                "context": "const texts = ['Rất yếu', 'Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];"
+            },
+            {
+                "line": 216,
+                "text": "Độ mạnh:",
+                "context": "strengthText.textContent = strength > 0 ? 'Độ mạnh: ' + (texts[strength - 1] || 'Rất yếu') : '';"
+            },
+            {
+                "line": 216,
+                "text": "Rất yếu",
+                "context": "strengthText.textContent = strength > 0 ? 'Độ mạnh: ' + (texts[strength - 1] || 'Rất yếu') : '';"
+            },
+            {
+                "line": 223,
+                "text": "><\/i>Mật khẩu khớp<\/small>",
+                "context": "? '<small class=\"text-success\"><i class=\"fas fa-check me-1\"><\/i>Mật khẩu khớp<\/small>'"
+            },
+            {
+                "line": 224,
+                "text": "><\/i>Mật khẩu không khớp<\/small>",
+                "context": ": '<small class=\"text-danger\"><i class=\"fas fa-times me-1\"><\/i>Mật khẩu không khớp<\/small>';"
+            },
+            {
+                "line": 237,
+                "text": "><\/i>Đang cập nhật...",
+                "context": "submitBtn.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"><\/i>Đang cập nhật...';"
+            }
+        ],
+        "auth\/verify-email.blade.php": [
+            {
+                "line": 3,
+                "text": "Xác minh email",
+                "context": "@section('title', 'Xác minh email')"
+            },
+            {
+                "line": 7,
+                "text": "Xác minh email",
+                "context": "title=\"Xác minh email\""
+            },
+            {
+                "line": 8,
+                "text": "Hoàn tất quá trình đăng ký tài khoản",
+                "context": "subtitle=\"Hoàn tất quá trình đăng ký tài khoản\""
+            },
+            {
+                "line": 42,
+                "text": ">Tìm email từ <strong>MechaMap<\/strong> với tiêu đề",
+                "context": "<li class=\"mb-2\">Tìm email từ <strong>MechaMap<\/strong> với tiêu đề \"Xác minh địa chỉ email\"<\/li>"
+            },
+            {
+                "line": 43,
+                "text": ">Nhấp vào nút <strong>",
+                "context": "<li class=\"mb-2\">Nhấp vào nút <strong>\"Xác minh Email\"<\/strong> trong email<\/li>"
+            },
+            {
+                "line": 88,
+                "text": ">Đợi 2-3 phút rồi kiểm tra lại, hoặc nhấn",
+                "context": "<p class=\"mb-0 small text-muted\">Đợi 2-3 phút rồi kiểm tra lại, hoặc nhấn \"Gửi lại email xác minh\"<\/p>"
+            },
+            {
+                "line": 191,
+                "text": "><\/i>Đang gửi...",
+                "context": "submitBtn.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"><\/i>Đang gửi...';"
+            },
+            {
+                "line": 196,
+                "text": "><\/i>Gửi lại email xác minh",
+                "context": "submitBtn.innerHTML = '<i class=\"fas fa-redo me-2\"><\/i>Gửi lại email xác minh';"
+            }
+        ],
+        "auth\/wizard\/complete.blade.php": [
+            {
+                "line": 3,
+                "text": "Đăng ký thành công",
+                "context": "@section('title', 'Đăng ký thành công')"
+            }
+        ],
+        "auth\/wizard\/step2.blade.php": [
+            {
+                "line": 125,
+                "text": "Mô tả chi tiết về hoạt động kinh doanh, sản phẩm\/dịch vụ chính của công ty...",
+                "context": "placeholder=\"Mô tả chi tiết về hoạt động kinh doanh, sản phẩm\/dịch vụ chính của công ty...\""
+            },
+            {
+                "line": 198,
+                "text": "Ví dụ: +84 123 456 789",
+                "context": "placeholder=\"Ví dụ: +84 123 456 789\">"
+            },
+            {
+                "line": 215,
+                "text": "Ví dụ: info@company.com",
+                "context": "placeholder=\"Ví dụ: info@company.com\">"
+            },
+            {
+                "line": 235,
+                "text": "Nhập địa chỉ đầy đủ của công ty...",
+                "context": "placeholder=\"Nhập địa chỉ đầy đủ của công ty...\">{{ old('business_address', $sessionData['business_address'] ?? '') }}<\/textarea>"
+            },
+            {
+                "line": 411,
+                "text": "Chỉ được tải lên tối đa 5 tài liệu",
+                "context": "alert('Chỉ được tải lên tối đa 5 tài liệu');"
+            },
+            {
+                "line": 474,
+                "text": "Chỉ được chọn tối đa 5 lĩnh vực kinh doanh",
+                "context": "alert('Chỉ được chọn tối đa 5 lĩnh vực kinh doanh');"
+            }
+        ],
+        "brand\/dashboard.blade.php": [
+            {
+                "line": 3,
+                "text": "Bảng điều khiển Thương hiệu",
+                "context": "@section('title', 'Bảng điều khiển Thương hiệu')"
+            },
+            {
+                "line": 137,
+                "text": "Chưa phân loại",
+                "context": "<td>{{ $category->category ?? 'Chưa phân loại' }}<\/td>"
+            }
+        ],
+        "brand\/products\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý Showcase - Brand Dashboard",
+                "context": "@section('title', 'Quản lý Showcase - Brand Dashboard')"
+            },
+            {
+                "line": 98,
+                "text": "Tên sản phẩm...",
+                "context": "<input type=\"text\" name=\"search\" class=\"form-control\" placeholder=\"Tên sản phẩm...\""
+            },
+            {
+                "line": 257,
+                "text": "Bạn có chắc chắn muốn xóa showcase này?",
+                "context": "onsubmit=\"return confirm('Bạn có chắc chắn muốn xóa showcase này?')\">"
+            }
+        ],
+        "chat\/create.blade.php": [
+            {
+                "line": 3,
+                "text": "Tin nhắn mới",
+                "context": "@section('title', 'Tin nhắn mới')"
+            },
+            {
+                "line": 34,
+                "text": "Tìm kiếm thành viên...",
+                "context": "placeholder=\"Tìm kiếm thành viên...\" autocomplete=\"off\">"
+            },
+            {
+                "line": 70,
+                "text": "Nhập tin nhắn...",
+                "context": "placeholder=\"Nhập tin nhắn...\" maxlength=\"1000\" required>{{ old('message') }}<\/textarea>"
+            },
+            {
+                "line": 86,
+                "text": "Chào bạn! Tôi thấy profile của bạn rất thú vị. Có thể kết nối và trao đổi kinh nghiệm không?",
+                "context": "onclick=\"useTemplate('Chào bạn! Tôi thấy profile của bạn rất thú vị. Có thể kết nối và trao đổi kinh nghiệm không?')\">"
+            },
+            {
+                "line": 90,
+                "text": "Xin chào! Tôi có một câu hỏi kỹ thuật và nghĩ bạn có thể giúp đỡ. Bạn có thời gian trao đổi không?",
+                "context": "onclick=\"useTemplate('Xin chào! Tôi có một câu hỏi kỹ thuật và nghĩ bạn có thể giúp đỡ. Bạn có thời gian trao đổi không?')\">"
+            },
+            {
+                "line": 94,
+                "text": "Hi! Tôi thấy bạn có kinh nghiệm về CAD\/CNC. Có thể chia sẻ một số tips không?",
+                "context": "onclick=\"useTemplate('Hi! Tôi thấy bạn có kinh nghiệm về CAD\/CNC. Có thể chia sẻ một số tips không?')\">"
+            },
+            {
+                "line": 98,
+                "text": "Chào bạn! Tôi đang tìm hiểu về dự án và nghĩ chúng ta có thể hợp tác. Bạn có quan tâm không?",
+                "context": "onclick=\"useTemplate('Chào bạn! Tôi đang tìm hiểu về dự án và nghĩ chúng ta có thể hợp tác. Bạn có quan tâm không?')\">"
+            },
+            {
+                "line": 204,
+                "text": ">Không tìm thấy người dùng nào<\/div>",
+                "context": "searchResults.innerHTML = '<div class=\"dropdown-item text-muted\">Không tìm thấy người dùng nào<\/div>';"
+            }
+        ],
+        "chat\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Tin nhắn",
+                "context": "@section('title', 'Tin nhắn')"
+            }
+        ],
+        "chat\/show.blade.php": [
+            {
+                "line": 3,
+                "text": "Trò chuyện với",
+                "context": "@section('title', 'Trò chuyện với ' . ($otherParticipant->name ?? 'Unknown'))"
+            },
+            {
+                "line": 193,
+                "text": "Nhập tin nhắn...",
+                "context": "class=\"form-control\" placeholder=\"Nhập tin nhắn...\""
+            },
+            {
+                "line": 306,
+                "text": "Không thể gửi tin nhắn. Vui lòng thử lại.",
+                "context": "alert('Không thể gửi tin nhắn. Vui lòng thử lại.');"
+            },
+            {
+                "line": 311,
+                "text": "Có lỗi xảy ra. Vui lòng thử lại.",
+                "context": "alert('Có lỗi xảy ra. Vui lòng thử lại.');"
+            },
+            {
+                "line": 359,
+                "text": "Bạn có chắc chắn muốn xóa cuộc trò chuyện này?",
+                "context": "if (confirm('Bạn có chắc chắn muốn xóa cuộc trò chuyện này?')) {"
+            },
+            {
+                "line": 361,
+                "text": "Chức năng này sẽ được phát triển trong phiên bản tiếp theo.",
+                "context": "alert('Chức năng này sẽ được phát triển trong phiên bản tiếp theo.');"
+            },
+            {
+                "line": 366,
+                "text": "Bạn có chắc chắn muốn chặn người dùng này?",
+                "context": "if (confirm('Bạn có chắc chắn muốn chặn người dùng này?')) {"
+            },
+            {
+                "line": 368,
+                "text": "Chức năng này sẽ được phát triển trong phiên bản tiếp theo.",
+                "context": "alert('Chức năng này sẽ được phát triển trong phiên bản tiếp theo.');"
+            }
+        ],
+        "community\/companies\/products.blade.php": [
+            {
+                "line": 57,
+                "text": "Tìm kiếm sản phẩm...",
+                "context": "placeholder=\"Tìm kiếm sản phẩm...\""
+            },
+            {
+                "line": 263,
+                "text": "Đã thêm vào giỏ hàng",
+                "context": "showToast(data.message || 'Đã thêm vào giỏ hàng');"
+            },
+            {
+                "line": 267,
+                "text": "Có lỗi xảy ra. Vui lòng thử lại.",
+                "context": "showToast('Có lỗi xảy ra. Vui lòng thử lại.');"
+            }
+        ],
+        "community\/companies\/show.blade.php": [
+            {
+                "line": 116,
+                "text": "Chưa có mô tả về doanh nghiệp.",
+                "context": "<p>{{ $company->business_description ?: 'Chưa có mô tả về doanh nghiệp.' }}<\/p>"
+            },
+            {
+                "line": 185,
+                "text": "Khách hàng",
+                "context": "<strong>{{ $review->user->name ?? 'Khách hàng' }}<\/strong>"
+            },
+            {
+                "line": 312,
+                "text": "Có lỗi xảy ra. Vui lòng thử lại.",
+                "context": "showToast('Có lỗi xảy ra. Vui lòng thử lại.');"
+            },
+            {
+                "line": 325,
+                "text": "Đã sao chép liên kết vào clipboard!",
+                "context": "showToast('Đã sao chép liên kết vào clipboard!');"
+            }
+        ],
+        "community\/events\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Sự Kiện & Webinar - Đang Phát Triển",
+                "context": "@section('title', 'Sự Kiện & Webinar - Đang Phát Triển')"
+            }
+        ],
+        "community\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Cộng đồng - MechaMap",
+                "context": "@section('title', 'Cộng đồng - MechaMap')"
+            }
+        ],
+        "community\/jobs\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Bảng Việc Làm - Đang Phát Triển",
+                "context": "@section('title', 'Bảng Việc Làm - Đang Phát Triển')"
+            }
+        ],
+        "components\/auth-layout.blade.php": [
+            {
+                "line": 4,
+                "text": "Nơi hội tụ tri thức cơ khí",
+                "context": "'subtitle' => 'Nơi hội tụ tri thức cơ khí',"
+            }
+        ],
+        "components\/chat-widget.blade.php": [
+            {
+                "line": 115,
+                "text": "Nhập tin nhắn...",
+                "context": "placeholder=\"Nhập tin nhắn...\"><\/textarea>"
+            }
+        ],
+        "components\/ckeditor5-comment.blade.php": [
+            {
+                "line": 4,
+                "text": "Viết bình luận của bạn...",
+                "context": "'placeholder' => 'Viết bình luận của bạn...',"
+            },
+            {
+                "line": 156,
+                "text": "Mở trong tab mới",
+                "context": "label: 'Mở trong tab mới',"
+            }
+        ],
+        "components\/dynamic-header.blade.php": [
+            {
+                "line": 43,
+                "text": "Nhập từ khóa tìm kiếm...",
+                "context": "name=\"q\" placeholder=\"Nhập từ khóa tìm kiếm...\""
+            },
+            {
+                "line": 110,
+                "text": "Tìm kiếm...",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"q\" placeholder=\"Tìm kiếm...\" autocomplete=\"off\">"
+            },
+            {
+                "line": 291,
+                "text": ">Lỗi tìm kiếm<\/div>",
+                "context": "resultsList.innerHTML = '<div class=\"text-muted text-center py-2\">Lỗi tìm kiếm<\/div>';"
+            },
+            {
+                "line": 297,
+                "text": ">Không tìm thấy kết quả<\/div>",
+                "context": "resultsList.innerHTML = '<div class=\"text-muted text-center py-2\">Không tìm thấy kết quả<\/div>';"
+            }
+        ],
+        "components\/expert-badge.blade.php": [
+            {
+                "line": 47,
+                "text": ">✓ Verified<\/small>",
+                "context": "$tooltipContent .= '<br><small class=\"text-success\">✓ Verified<\/small>';"
+            },
+            {
+                "line": 49,
+                "text": ">⏳ Pending Verification<\/small>",
+                "context": "$tooltipContent .= '<br><small class=\"text-warning\">⏳ Pending Verification<\/small>';"
+            }
+        ],
+        "components\/header.blade.php": [
+            {
+                "line": 927,
+                "text": "><\/i>Thảo luận<\/h6>",
+                "context": "html += '<h6 class=\"search-category-title text-primary mb-2\"><i class=\"fas fa-comments me-1\"><\/i>Thảo luận<\/h6>';"
+            },
+            {
+                "line": 1463,
+                "text": "🔍 Checking for duplicate",
+                "context": "console.log('🔍 Checking for duplicate \"Thêm\" menus...');"
+            },
+            {
+                "line": 1463,
+                "text": "Thêm",
+                "context": "console.log('🔍 Checking for duplicate \"Thêm\" menus...');"
+            },
+            {
+                "line": 1471,
+                "text": "Thêm",
+                "context": "if (link && link.textContent.includes('Thêm')) {"
+            },
+            {
+                "line": 1480,
+                "text": "Thêm",
+                "context": "console.log(`Found \"Thêm\" menu #${addMenus.length}:`, {"
+            },
+            {
+                "line": 1490,
+                "text": "Thêm",
+                "context": "console.log(`⚠️ Found ${addMenus.length} duplicate \"Thêm\" menus. Hiding duplicates...`);"
+            },
+            {
+                "line": 1496,
+                "text": "Thêm",
+                "context": "console.log(`✅ Hidden duplicate \"Thêm\" menu: ${menu.text}`);"
+            },
+            {
+                "line": 1500,
+                "text": "✅ No duplicate",
+                "context": "console.log('✅ No duplicate \"Thêm\" menus found');"
+            },
+            {
+                "line": 1500,
+                "text": "Thêm",
+                "context": "console.log('✅ No duplicate \"Thêm\" menus found');"
+            }
+        ],
+        "components\/language-switcher.blade.php": [
+            {
+                "line": 8,
+                "text": "🇻🇳",
+                "context": "'flag' => '🇻🇳',"
+            },
+            {
+                "line": 13,
+                "text": "🇺🇸",
+                "context": "'flag' => '🇺🇸',"
+            }
+        ],
+        "components\/menu\/business-menu.blade.php": [
+            {
+                "line": 276,
+                "text": "Đã xác thực",
+                "context": "<i class=\"fas fa-check-circle text-success ms-1\" title=\"Đã xác thực\"><\/i>"
+            },
+            {
+                "line": 278,
+                "text": "Chờ xác thực",
+                "context": "<i class=\"fas fa-clock text-warning ms-1\" title=\"Chờ xác thực\"><\/i>"
+            }
+        ],
+        "components\/menu\/guest-menu.blade.php": [
+            {
+                "line": 16,
+                "text": "Trang chủ MechaMap",
+                "context": "'description' => 'Trang chủ MechaMap'"
+            },
+            {
+                "line": 22,
+                "text": "Diễn đàn cộng đồng (chỉ xem)",
+                "context": "'description' => 'Diễn đàn cộng đồng (chỉ xem)'"
+            },
+            {
+                "line": 28,
+                "text": "Showcase sản phẩm (chỉ xem)",
+                "context": "'description' => 'Showcase sản phẩm (chỉ xem)'"
+            },
+            {
+                "line": 34,
+                "text": "Marketplace (chỉ xem)",
+                "context": "'description' => 'Marketplace (chỉ xem)'"
+            }
+        ],
+        "components\/notification-dropdown.blade.php": [
+            {
+                "line": 11,
+                "text": "Thông báo",
+                "context": "title=\"Thông báo\">"
+            },
+            {
+                "line": 33,
+                "text": "Đánh dấu tất cả là đã đọc",
+                "context": "title=\"Đánh dấu tất cả là đã đọc\">"
+            },
+            {
+                "line": 39,
+                "text": "Xóa tất cả",
+                "context": "title=\"Xóa tất cả\">"
+            },
+            {
+                "line": 173,
+                "text": "Không thể tải thông báo",
+                "context": "this.showError('Không thể tải thông báo');"
+            },
+            {
+                "line": 177,
+                "text": "Có lỗi xảy ra khi tải thông báo",
+                "context": "this.showError('Có lỗi xảy ra khi tải thông báo');"
+            },
+            {
+                "line": 221,
+                "text": ">Mới<\/span>",
+                "context": "${isUnread ? '<span class=\"badge bg-primary\">Mới<\/span>' : ''}"
+            },
+            {
+                "line": 224,
+                "text": "Xóa thông báo",
+                "context": "title=\"Xóa thông báo\">"
+            },
+            {
+                "line": 320,
+                "text": "Có lỗi xảy ra",
+                "context": "showToast('Có lỗi xảy ra', 'error');"
+            },
+            {
+                "line": 359,
+                "text": "Có lỗi xảy ra khi xóa thông báo",
+                "context": "showToast('Có lỗi xảy ra khi xóa thông báo', 'error');"
+            }
+        ],
+        "components\/registration-wizard.blade.php": [
+            {
+                "line": 14,
+                "text": "Tiếp tục",
+                "context": "'nextButtonText' => 'Tiếp tục',"
+            },
+            {
+                "line": 15,
+                "text": "Quay lại",
+                "context": "'backButtonText' => 'Quay lại',"
+            },
+            {
+                "line": 85,
+                "text": "Bước $i",
+                "context": "{{ $stepLabels[$i] ?? \"Bước $i\" }}"
+            }
+        ],
+        "components\/rich-text-editor.blade.php": [
+            {
+                "line": 4,
+                "text": "Viết nội dung...",
+                "context": "'placeholder' => 'Viết nội dung...',"
+            },
+            {
+                "line": 20,
+                "text": "Đậm",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"bold\" title=\"Đậm\">"
+            },
+            {
+                "line": 23,
+                "text": "Nghiêng",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"italic\" title=\"Nghiêng\">"
+            },
+            {
+                "line": 26,
+                "text": "Gạch chân",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"underline\" title=\"Gạch chân\">"
+            },
+            {
+                "line": 32,
+                "text": "Danh sách",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"insertUnorderedList\" title=\"Danh sách\">"
+            },
+            {
+                "line": 35,
+                "text": "Danh sách số",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"insertOrderedList\" title=\"Danh sách số\">"
+            },
+            {
+                "line": 41,
+                "text": "Liên kết",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"createLink\" title=\"Liên kết\">"
+            },
+            {
+                "line": 45,
+                "text": "Chèn hình ảnh",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"insertImage\" title=\"Chèn hình ảnh\">"
+            },
+            {
+                "line": 52,
+                "text": "Hoàn tác",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"undo\" title=\"Hoàn tác\">"
+            },
+            {
+                "line": 55,
+                "text": "Làm lại",
+                "context": "<button type=\"button\" class=\"toolbar-btn\" data-command=\"redo\" title=\"Làm lại\">"
+            },
+            {
+                "line": 122,
+                "text": "Nhập văn bản...",
+                "context": "placeholder=\"Nhập văn bản...\">"
+            }
+        ],
+        "components\/tinymce-editor.blade.php": [
+            {
+                "line": 6,
+                "text": "Nhập nội dung của bạn...",
+                "context": "'placeholder' => 'Nhập nội dung của bạn...',"
+            }
+        ],
+        "emails\/notifications\/comment-mention.blade.php": [
+            {
+                "line": 3,
+                "text": "Bạn được nhắc đến trong bình luận",
+                "context": "@section('title', 'Bạn được nhắc đến trong bình luận')"
+            }
+        ],
+        "emails\/notifications\/new-device-login.blade.php": [
+            {
+                "line": 3,
+                "text": "Đăng nhập từ thiết bị mới",
+                "context": "@section('title', 'Đăng nhập từ thiết bị mới')"
+            }
+        ],
+        "emails\/notifications\/offline-fallback.blade.php": [
+            {
+                "line": 3,
+                "text": "Thông báo quan trọng",
+                "context": "@section('title', 'Thông báo quan trọng')"
+            },
+            {
+                "line": 54,
+                "text": "Trung bình",
+                "context": "{{ $notification->priority === 'high' ? 'Cao' : ($notification->priority === 'normal' ? 'Trung bình' : 'Thấp') }}"
+            },
+            {
+                "line": 54,
+                "text": "Thấp",
+                "context": "{{ $notification->priority === 'high' ? 'Cao' : ($notification->priority === 'normal' ? 'Trung bình' : 'Thấp') }}"
+            },
+            {
+                "line": 82,
+                "text": "nhiều",
+                "context": "Chúng tôi đã thử gửi thông báo này qua hệ thống real-time {{ $notification->data['delivery_attempts'] ?? 'nhiều' }} lần"
+            }
+        ],
+        "emails\/notifications\/password-changed.blade.php": [
+            {
+                "line": 3,
+                "text": "Mật khẩu đã được thay đổi",
+                "context": "@section('title', 'Mật khẩu đã được thay đổi')"
+            }
+        ],
+        "emails\/notifications\/product-out-of-stock.blade.php": [
+            {
+                "line": 3,
+                "text": "Sản phẩm hết hàng",
+                "context": "@section('title', 'Sản phẩm hết hàng')"
+            }
+        ],
+        "emails\/notifications\/review-received.blade.php": [
+            {
+                "line": 3,
+                "text": "Nhận được đánh giá mới",
+                "context": "@section('title', 'Nhận được đánh giá mới')"
+            },
+            {
+                "line": 110,
+                "text": "Đánh giá",
+                "context": "{{ $notificationData['rating_text'] ?? 'Đánh giá' }}"
+            },
+            {
+                "line": 125,
+                "text": "Tích cực",
+                "context": "{{ $review->rating >= 4 ? '+' : '' }}{{ $review->rating >= 4 ? 'Tích cực' : ($review->rating >= 3 ? 'Trung tính' : 'Cần cải thiện') }}"
+            },
+            {
+                "line": 125,
+                "text": "Trung tính",
+                "context": "{{ $review->rating >= 4 ? '+' : '' }}{{ $review->rating >= 4 ? 'Tích cực' : ($review->rating >= 3 ? 'Trung tính' : 'Cần cải thiện') }}"
+            },
+            {
+                "line": 125,
+                "text": "Cần cải thiện",
+                "context": "{{ $review->rating >= 4 ? '+' : '' }}{{ $review->rating >= 4 ? 'Tích cực' : ($review->rating >= 3 ? 'Trung tính' : 'Cần cải thiện') }}"
+            },
+            {
+                "line": 131,
+                "text": "Có",
+                "context": "{{ $review->is_verified_purchase ? 'Có' : 'Không' }}"
+            },
+            {
+                "line": 131,
+                "text": "Không",
+                "context": "{{ $review->is_verified_purchase ? 'Có' : 'Không' }}"
+            }
+        ],
+        "emails\/notifications\/seller-message.blade.php": [
+            {
+                "line": 3,
+                "text": "Tin nhắn mới",
+                "context": "@section('title', 'Tin nhắn mới')"
+            },
+            {
+                "line": 14,
+                "text": "người dùng",
+                "context": "Bạn có tin nhắn mới từ {{ $notificationData['sender_role'] ?? 'người dùng' }}"
+            },
+            {
+                "line": 28,
+                "text": "người dùng",
+                "context": "<p>Bạn vừa nhận được một tin nhắn mới từ {{ $notificationData['sender_role'] ?? 'người dùng' }}:<\/p>"
+            },
+            {
+                "line": 55,
+                "text": "Người dùng",
+                "context": "{{ $notificationData['sender_role'] ?? 'Người dùng' }}"
+            }
+        ],
+        "emails\/notifications\/thread-created.blade.php": [
+            {
+                "line": 3,
+                "text": "Thread mới trong forum bạn quan tâm",
+                "context": "@section('title', 'Thread mới trong forum bạn quan tâm')"
+            }
+        ],
+        "emails\/notifications\/thread-replied.blade.php": [
+            {
+                "line": 3,
+                "text": "Reply mới trong thread bạn theo dõi",
+                "context": "@section('title', 'Reply mới trong thread bạn theo dõi')"
+            }
+        ],
+        "emails\/notifications\/wishlist-available.blade.php": [
+            {
+                "line": 3,
+                "text": "Sản phẩm có hàng trở lại",
+                "context": "@section('title', 'Sản phẩm có hàng trở lại')"
+            }
+        ],
+        "faq\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Câu hỏi thường gặp - MechaMap",
+                "context": "@section('title', 'Câu hỏi thường gặp - MechaMap')"
+            },
+            {
+                "line": 76,
+                "text": "Tìm kiếm câu hỏi...",
+                "context": "placeholder=\"Tìm kiếm câu hỏi...\">"
+            }
+        ],
+        "manufacturer\/dashboard.blade.php": [
+            {
+                "line": 3,
+                "text": "Bảng điều khiển Nhà sản xuất",
+                "context": "@section('title', 'Bảng điều khiển Nhà sản xuất')"
+            }
+        ],
+        "manufacturer\/products\/create.blade.php": [
+            {
+                "line": 3,
+                "text": "Thêm Sản phẩm Kỹ thuật - Manufacturer Dashboard",
+                "context": "@section('title', 'Thêm Sản phẩm Kỹ thuật - Manufacturer Dashboard')"
+            },
+            {
+                "line": 44,
+                "text": ">Tên sản phẩm <span class=",
+                "context": "<label for=\"name\" class=\"form-label\">Tên sản phẩm <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 53,
+                "text": ">Loại sản phẩm <span class=",
+                "context": "<label for=\"product_type\" class=\"form-label\">Loại sản phẩm <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 89,
+                "text": "Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)",
+                "context": "placeholder=\"Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)\">{{ old('short_description') }}<\/textarea>"
+            },
+            {
+                "line": 96,
+                "text": ">Mô tả chi tiết <span class=",
+                "context": "<label for=\"description\" class=\"form-label\">Mô tả chi tiết <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 99,
+                "text": "Mô tả chi tiết về sản phẩm, tính năng, ứng dụng...",
+                "context": "placeholder=\"Mô tả chi tiết về sản phẩm, tính năng, ứng dụng...\">{{ old('description') }}<\/textarea>"
+            },
+            {
+                "line": 119,
+                "text": ">Giá bán <span class=",
+                "context": "<label for=\"price\" class=\"form-label\">Giá bán <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 196,
+                "text": "VD: Thép không gỉ 304, Nhôm 6061...",
+                "context": "placeholder=\"VD: Thép không gỉ 304, Nhôm 6061...\">"
+            },
+            {
+                "line": 216,
+                "text": "VD: cad, thiết kế, cơ khí (phân cách bằng dấu phẩy)",
+                "context": "placeholder=\"VD: cad, thiết kế, cơ khí (phân cách bằng dấu phẩy)\">"
+            },
+            {
+                "line": 228,
+                "text": "Tên thông số",
+                "context": "placeholder=\"Tên thông số\" value=\"{{ old('technical_specs.0.name') }}\">"
+            },
+            {
+                "line": 232,
+                "text": "Giá trị",
+                "context": "placeholder=\"Giá trị\" value=\"{{ old('technical_specs.0.value') }}\">"
+            },
+            {
+                "line": 236,
+                "text": "Đơn vị",
+                "context": "placeholder=\"Đơn vị\" value=\"{{ old('technical_specs.0.unit') }}\">"
+            },
+            {
+                "line": 416,
+                "text": "Tên thông số",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][name]\" placeholder=\"Tên thông số\">"
+            },
+            {
+                "line": 419,
+                "text": "Giá trị",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][value]\" placeholder=\"Giá trị\">"
+            },
+            {
+                "line": 422,
+                "text": "Đơn vị",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][unit]\" placeholder=\"Đơn vị\">"
+            },
+            {
+                "line": 493,
+                "text": ">Ảnh đại diện<\/small>",
+                "context": "${index === 0 ? '<small class=\"text-primary\">Ảnh đại diện<\/small>' : ''}"
+            },
+            {
+                "line": 588,
+                "text": "Giá khuyến mãi phải nhỏ hơn giá bán thường!",
+                "context": "alert('Giá khuyến mãi phải nhỏ hơn giá bán thường!');"
+            },
+            {
+                "line": 597,
+                "text": "Vui lòng upload ít nhất một file CAD cho sản phẩm digital!",
+                "context": "alert('Vui lòng upload ít nhất một file CAD cho sản phẩm digital!');"
+            }
+        ],
+        "manufacturer\/products\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý Sản phẩm - Manufacturer Dashboard",
+                "context": "@section('title', 'Quản lý Sản phẩm - Manufacturer Dashboard')"
+            },
+            {
+                "line": 98,
+                "text": "Tên sản phẩm, SKU...",
+                "context": "<input type=\"text\" name=\"search\" class=\"form-control\" placeholder=\"Tên sản phẩm, SKU...\""
+            },
+            {
+                "line": 273,
+                "text": "Bạn có chắc chắn muốn xóa sản phẩm này?",
+                "context": "onsubmit=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">"
+            }
+        ],
+        "marketplace\/cart\/ux-demo.blade.php": [
+            {
+                "line": 295,
+                "text": "🎨 Cart UX Demo initialized",
+                "context": "console.log('🎨 Cart UX Demo initialized');"
+            }
+        ],
+        "marketplace\/checkout\/index.blade.php": [
+            {
+                "line": 1202,
+                "text": "Hết thời gian chờ thanh toán. Vui lòng kiểm tra lại.",
+                "context": "updatePaymentStatus('timeout', 'Hết thời gian chờ thanh toán. Vui lòng kiểm tra lại.');"
+            },
+            {
+                "line": 1231,
+                "text": "Thanh toán thành công!",
+                "context": "updatePaymentStatus('success', 'Thanh toán thành công!');"
+            },
+            {
+                "line": 1238,
+                "text": "Thanh toán thất bại. Vui lòng thử lại.",
+                "context": "updatePaymentStatus('error', 'Thanh toán thất bại. Vui lòng thử lại.');"
+            },
+            {
+                "line": 1261,
+                "text": "Đã sao chép vào clipboard",
+                "context": "showToast('success', 'Đã sao chép vào clipboard');"
+            },
+            {
+                "line": 1264,
+                "text": "Không thể sao chép",
+                "context": "showToast('error', 'Không thể sao chép');"
+            },
+            {
+                "line": 1310,
+                "text": ">Không thể tạo QR Code<\/div>",
+                "context": "qrCodeElement.innerHTML = '<div class=\"text-muted\">Không thể tạo QR Code<\/div>';"
+            }
+        ],
+        "marketplace\/checkout\/payment-gateway.blade.php": [
+            {
+                "line": 3,
+                "text": "Thanh toán đơn hàng - MechaMap",
+                "context": "@section('title', 'Thanh toán đơn hàng - MechaMap')"
+            },
+            {
+                "line": 113,
+                "text": "QR Code thanh toán",
+                "context": "alt=\"QR Code thanh toán\""
+            },
+            {
+                "line": 298,
+                "text": "Hết thời gian chờ thanh toán. Vui lòng kiểm tra lại.",
+                "context": "updatePaymentStatus('timeout', 'Hết thời gian chờ thanh toán. Vui lòng kiểm tra lại.');"
+            },
+            {
+                "line": 327,
+                "text": "Thanh toán thành công!",
+                "context": "updatePaymentStatus('success', 'Thanh toán thành công!');"
+            },
+            {
+                "line": 339,
+                "text": "Thanh toán thất bại. Vui lòng thử lại.",
+                "context": "updatePaymentStatus('error', 'Thanh toán thất bại. Vui lòng thử lại.');"
+            },
+            {
+                "line": 377,
+                "text": "Đã sao chép vào clipboard",
+                "context": "showToast('success', 'Đã sao chép vào clipboard');"
+            },
+            {
+                "line": 380,
+                "text": "Không thể sao chép",
+                "context": "showToast('error', 'Không thể sao chép');"
+            }
+        ],
+        "marketplace\/downloads\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Lịch Sử Tải Xuống",
+                "context": "@section('title', 'Lịch Sử Tải Xuống')"
+            },
+            {
+                "line": 323,
+                "text": ">Thành Công<\/span>",
+                "context": "'<span class=\"badge bg-success\">Thành Công<\/span>' :"
+            },
+            {
+                "line": 324,
+                "text": ">Thất Bại<\/span>",
+                "context": "'<span class=\"badge bg-danger\">Thất Bại<\/span>'"
+            },
+            {
+                "line": 331,
+                "text": "Tải lại",
+                "context": "<button type=\"submit\" class=\"btn btn-outline-primary\" title=\"Tải lại\">"
+            },
+            {
+                "line": 335,
+                "text": "Chi tiết",
+                "context": "<button type=\"button\" class=\"btn btn-outline-info\" onclick=\"showDownloadDetails(${download.id})\" title=\"Chi tiết\">"
+            },
+            {
+                "line": 384,
+                "text": "phút trước",
+                "context": "if (diffInSeconds < 3600) return Math.floor(diffInSeconds \/ 60) + ' phút trước';"
+            },
+            {
+                "line": 385,
+                "text": "giờ trước",
+                "context": "if (diffInSeconds < 86400) return Math.floor(diffInSeconds \/ 3600) + ' giờ trước';"
+            },
+            {
+                "line": 386,
+                "text": "ngày trước",
+                "context": "return Math.floor(diffInSeconds \/ 86400) + ' ngày trước';"
+            }
+        ],
+        "marketplace\/downloads\/item-files.blade.php": [
+            {
+                "line": 3,
+                "text": "Tải File -",
+                "context": "@section('title', 'Tải File - ' . $orderItem->product->name)"
+            },
+            {
+                "line": 253,
+                "text": "Đang tải file xuống...",
+                "context": "showNotification('success', 'Đang tải file xuống...');"
+            },
+            {
+                "line": 255,
+                "text": "Có lỗi xảy ra",
+                "context": "showNotification('error', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 260,
+                "text": "Có lỗi xảy ra khi tạo link download",
+                "context": "showNotification('error', 'Có lỗi xảy ra khi tạo link download');"
+            }
+        ],
+        "marketplace\/downloads\/order-files.blade.php": [
+            {
+                "line": 3,
+                "text": "File Tải Xuống - Đơn Hàng #",
+                "context": "@section('title', 'File Tải Xuống - Đơn Hàng #' . $order->order_number)"
+            },
+            {
+                "line": 22,
+                "text": ">Ngày đặt: {{ $order->created_at->format(",
+                "context": "<p class=\"card-title-desc mb-0\">Ngày đặt: {{ $order->created_at->format('d\/m\/Y H:i') }}<\/p>"
+            },
+            {
+                "line": 43,
+                "text": "Không có",
+                "context": "<p><strong>Ghi chú:<\/strong> {{ $order->customer_notes ?? 'Không có' }}<\/p>"
+            }
+        ],
+        "marketplace\/index-old.blade.php": [
+            {
+                "line": 479,
+                "text": "★",
+                "context": "${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))}"
+            }
+        ],
+        "marketplace\/seller\/setup.blade.php": [
+            {
+                "line": 3,
+                "text": "Thiết lập tài khoản bán hàng",
+                "context": "@section('title', 'Thiết lập tài khoản bán hàng')"
+            },
+            {
+                "line": 64,
+                "text": ">Tên doanh nghiệp <span class=",
+                "context": "<label for=\"business_name\" class=\"form-label\">Tên doanh nghiệp <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 74,
+                "text": ">Loại hình kinh doanh <span class=",
+                "context": "<label for=\"business_type\" class=\"form-label\">Loại hình kinh doanh <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 102,
+                "text": ">Số điện thoại <span class=",
+                "context": "<label for=\"phone\" class=\"form-label\">Số điện thoại <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 113,
+                "text": ">Địa chỉ kinh doanh <span class=",
+                "context": "<label for=\"address\" class=\"form-label\">Địa chỉ kinh doanh <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 137,
+                "text": ">Tên cửa hàng <span class=",
+                "context": "<label for=\"store_name\" class=\"form-label\">Tên cửa hàng <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 147,
+                "text": ">URL cửa hàng <span class=",
+                "context": "<label for=\"store_slug\" class=\"form-label\">URL cửa hàng <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 165,
+                "text": "Giới thiệu về cửa hàng của bạn...",
+                "context": "placeholder=\"Giới thiệu về cửa hàng của bạn...\">{{ old('store_description') }}<\/textarea>"
+            },
+            {
+                "line": 187,
+                "text": "Linh kiện cơ khí",
+                "context": "'mechanical_parts' => 'Linh kiện cơ khí',"
+            },
+            {
+                "line": 188,
+                "text": "Dụng cụ & Thiết bị",
+                "context": "'tools' => 'Dụng cụ & Thiết bị',"
+            },
+            {
+                "line": 189,
+                "text": "Vật liệu",
+                "context": "'materials' => 'Vật liệu',"
+            },
+            {
+                "line": 190,
+                "text": "Linh kiện điện tử",
+                "context": "'electronics' => 'Linh kiện điện tử',"
+            },
+            {
+                "line": 191,
+                "text": "Thiết bị an toàn",
+                "context": "'safety' => 'Thiết bị an toàn',"
+            },
+            {
+                "line": 192,
+                "text": "Khác",
+                "context": "'other' => 'Khác'"
+            },
+            {
+                "line": 414,
+                "text": "✓ URL có thể sử dụng",
+                "context": "feedback.textContent = '✓ URL có thể sử dụng';"
+            },
+            {
+                "line": 417,
+                "text": "✗ URL này đã được sử dụng",
+                "context": "feedback.textContent = '✗ URL này đã được sử dụng';"
+            }
+        ],
+        "members\/index.blade.php": [
+            {
+                "line": 172,
+                "text": ". $member->username }} · {{ t_common(",
+                "context": "<p class=\"mb-0 text-muted small\">{{ '@' . $member->username }} · {{ t_common(\"members.joined\") }} {{ $member->created_at->format('M Y') }}<\/p>"
+            }
+        ],
+        "notifications\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý thông báo",
+                "context": "@section('title', 'Quản lý thông báo')"
+            },
+            {
+                "line": 165,
+                "text": "Đánh dấu chưa đọc",
+                "context": "title=\"{{ $notification->is_read ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc' }}\">"
+            },
+            {
+                "line": 165,
+                "text": "Đánh dấu đã đọc",
+                "context": "title=\"{{ $notification->is_read ? 'Đánh dấu chưa đọc' : 'Đánh dấu đã đọc' }}\">"
+            },
+            {
+                "line": 171,
+                "text": "Xóa thông báo",
+                "context": "title=\"Xóa thông báo\">"
+            },
+            {
+                "line": 217,
+                "text": "đã đọc",
+                "context": "Không có thông báo {{ $status === 'read' ? 'đã đọc' : 'chưa đọc' }}"
+            },
+            {
+                "line": 217,
+                "text": "chưa đọc",
+                "context": "Không có thông báo {{ $status === 'read' ? 'đã đọc' : 'chưa đọc' }}"
+            },
+            {
+                "line": 244,
+                "text": "Đánh dấu tất cả thông báo là đã đọc?",
+                "context": "if (confirm('Đánh dấu tất cả thông báo là đã đọc?')) {"
+            },
+            {
+                "line": 257,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            },
+            {
+                "line": 262,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            },
+            {
+                "line": 284,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            },
+            {
+                "line": 289,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            },
+            {
+                "line": 297,
+                "text": "Xóa thông báo này?",
+                "context": "if (confirm('Xóa thông báo này?')) {"
+            },
+            {
+                "line": 311,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            },
+            {
+                "line": 316,
+                "text": "Có lỗi xảy ra",
+                "context": "alert('Có lỗi xảy ra');"
+            }
+        ],
+        "notifications\/preferences.blade.php": [
+            {
+                "line": 3,
+                "text": "Cài đặt thông báo",
+                "context": "@section('title', 'Cài đặt thông báo')"
+            },
+            {
+                "line": 104,
+                "text": "Mô tả thông báo",
+                "context": "{{ $typePrefs['description'] ?? 'Mô tả thông báo' }}"
+            },
+            {
+                "line": 285,
+                "text": "Có lỗi xảy ra",
+                "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+            },
+            {
+                "line": 290,
+                "text": "Có lỗi xảy ra khi lưu cài đặt",
+                "context": "showToast('Có lỗi xảy ra khi lưu cài đặt', 'error');"
+            },
+            {
+                "line": 296,
+                "text": "Khôi phục tất cả cài đặt về mặc định?",
+                "context": "if (confirm('Khôi phục tất cả cài đặt về mặc định?')) {"
+            },
+            {
+                "line": 310,
+                "text": "Có lỗi xảy ra",
+                "context": "showToast(data.message || 'Có lỗi xảy ra', 'error');"
+            },
+            {
+                "line": 315,
+                "text": "Có lỗi xảy ra",
+                "context": "showToast('Có lỗi xảy ra', 'error');"
+            }
+        ],
+        "pages\/about.blade.php": [
+            {
+                "line": 3,
+                "text": "Về MechaMap",
+                "context": "@section('title', 'Về MechaMap')"
+            }
+        ],
+        "pages\/contact.blade.php": [
+            {
+                "line": 3,
+                "text": "Liên Hệ Hỗ Trợ",
+                "context": "@section('title', 'Liên Hệ Hỗ Trợ')"
+            },
+            {
+                "line": 81,
+                "text": "Tạo Chủ Đề Mới",
+                "context": "<li>Chọn \"Tạo Chủ Đề Mới\" trên menu<\/li>"
+            },
+            {
+                "line": 104,
+                "text": "Chọn File",
+                "context": "<li>Hoặc nhấn vào nút \"Chọn File\" để chọn từ máy tính<\/li>"
+            },
+            {
+                "line": 122,
+                "text": "Quên mật khẩu?",
+                "context": "<li>Nhấn vào \"Quên mật khẩu?\" ở trang đăng nhập<\/li>"
+            },
+            {
+                "line": 171,
+                "text": "Mô tả chi tiết vấn đề của bạn...",
+                "context": "placeholder=\"Mô tả chi tiết vấn đề của bạn...\" required><\/textarea>"
+            }
+        ],
+        "pages\/dynamic.blade.php": [
+            {
+                "line": 202,
+                "text": "›",
+                "context": "content: \"›\";"
+            },
+            {
+                "line": 467,
+                "text": "Thành công",
+                "context": "window.cartUX.showToast('success', 'Thành công', 'Đã copy link vào clipboard');"
+            },
+            {
+                "line": 467,
+                "text": "Đã copy link vào clipboard",
+                "context": "window.cartUX.showToast('success', 'Thành công', 'Đã copy link vào clipboard');"
+            },
+            {
+                "line": 469,
+                "text": "Đã copy link vào clipboard",
+                "context": "alert('Đã copy link vào clipboard');"
+            },
+            {
+                "line": 478,
+                "text": "Không thể copy link",
+                "context": "alert('Không thể copy link');"
+            }
+        ],
+        "pages\/rules.blade.php": [
+            {
+                "line": 3,
+                "text": "Quy Tắc Cộng Đồng",
+                "context": "@section('title', 'Quy Tắc Cộng Đồng')"
+            }
+        ],
+        "pages\/static-pages-overview.blade.php": [
+            {
+                "line": 3,
+                "text": "Tổng quan trang cố định - MechaMap",
+                "context": "@section('title', 'Tổng quan trang cố định - MechaMap')"
+            }
+        ],
+        "pages\/writing-guide.blade.php": [
+            {
+                "line": 3,
+                "text": "Hướng Dẫn Viết Bài",
+                "context": "@section('title', 'Hướng Dẫn Viết Bài')"
+            },
+            {
+                "line": 55,
+                "text": "Quy hoạch",
+                "context": "<li><strong>Sử dụng từ khóa quan trọng:<\/strong> \"Autocad\", \"Quy hoạch\", \"Kết cấu\""
+            },
+            {
+                "line": 55,
+                "text": "Kết cấu",
+                "context": "<li><strong>Sử dụng từ khóa quan trọng:<\/strong> \"Autocad\", \"Quy hoạch\", \"Kết cấu\""
+            },
+            {
+                "line": 58,
+                "text": "5 sai lầm phổ biến khi thiết kế cầu thang",
+                "context": "<li><strong>Tạo tò mò:<\/strong> \"5 sai lầm phổ biến khi thiết kế cầu thang\"<\/li>"
+            },
+            {
+                "line": 63,
+                "text": "Cần gấp!!!",
+                "context": "<li>\"Help me!!!\", \"Cần gấp!!!\", \"SOS!!!\"<\/li>"
+            },
+            {
+                "line": 64,
+                "text": "Hỏi về thiết kế",
+                "context": "<li>\"Hỏi về thiết kế\" (quá chung chung)<\/li>"
+            },
+            {
+                "line": 91,
+                "text": "Tăng 15%",
+                "context": "<li><strong>Thêm số liệu cụ thể:<\/strong> \"Tăng 15%\" thay vì \"tăng nhiều\"<\/li>"
+            },
+            {
+                "line": 91,
+                "text": "tăng nhiều",
+                "context": "<li><strong>Thêm số liệu cụ thể:<\/strong> \"Tăng 15%\" thay vì \"tăng nhiều\"<\/li>"
+            },
+            {
+                "line": 138,
+                "text": "Kiến Trúc & Thiết Kế",
+                "context": "['name' => 'Kiến Trúc & Thiết Kế', 'desc' => 'Thiết kế nhà, nội thất, cảnh quan',"
+            },
+            {
+                "line": 138,
+                "text": "Thiết kế nhà, nội thất, cảnh quan",
+                "context": "['name' => 'Kiến Trúc & Thiết Kế', 'desc' => 'Thiết kế nhà, nội thất, cảnh quan',"
+            },
+            {
+                "line": 140,
+                "text": "Kết Cấu & Xây Dựng",
+                "context": "['name' => 'Kết Cấu & Xây Dựng', 'desc' => 'Tính toán kết cấu, vật liệu xây dựng',"
+            },
+            {
+                "line": 140,
+                "text": "Tính toán kết cấu, vật liệu xây dựng",
+                "context": "['name' => 'Kết Cấu & Xây Dựng', 'desc' => 'Tính toán kết cấu, vật liệu xây dựng',"
+            },
+            {
+                "line": 142,
+                "text": "Giao Thông & Hạ Tầng",
+                "context": "['name' => 'Giao Thông & Hạ Tầng', 'desc' => 'Đường bộ, cầu đường, quy hoạch',"
+            },
+            {
+                "line": 142,
+                "text": "Đường bộ, cầu đường, quy hoạch",
+                "context": "['name' => 'Giao Thông & Hạ Tầng', 'desc' => 'Đường bộ, cầu đường, quy hoạch',"
+            },
+            {
+                "line": 144,
+                "text": "Phần Mềm & Công Nghệ",
+                "context": "['name' => 'Phần Mềm & Công Nghệ', 'desc' => 'AutoCAD, Revit, BIM, GIS', 'icon' =>"
+            }
+        ],
+        "partials\/showcase-item.blade.php": [
+            {
+                "line": 4,
+                "text": "Người dùng",
+                "context": "$userName = $showcase->user->name ?? 'Người dùng';"
+            }
+        ],
+        "partials\/thread-item.blade.php": [
+            {
+                "line": 4,
+                "text": "Người dùng",
+                "context": "$userName = $thread->user->name ?? 'Người dùng';"
+            }
+        ],
+        "profile\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Danh sách thành viên",
+                "context": "@section('title', 'Danh sách thành viên')"
+            },
+            {
+                "line": 22,
+                "text": "Tên hoặc username...",
+                "context": "<input type=\"text\" class=\"form-control\" id=\"search\" name=\"search\" value=\"{{ request('search') }}\" placeholder=\"Tên hoặc username...\">"
+            }
+        ],
+        "profile\/orders.blade.php": [
+            {
+                "line": 3,
+                "text": "Đơn hàng của tôi",
+                "context": "@section('title', 'Đơn hàng của tôi')"
+            },
+            {
+                "line": 45,
+                "text": "Chờ xử lý",
+                "context": "'pending' => 'Chờ xử lý',"
+            },
+            {
+                "line": 46,
+                "text": "Đang xử lý",
+                "context": "'processing' => 'Đang xử lý',"
+            },
+            {
+                "line": 47,
+                "text": "Đã gửi",
+                "context": "'shipped' => 'Đã gửi',"
+            },
+            {
+                "line": 48,
+                "text": "Đã giao",
+                "context": "'delivered' => 'Đã giao',"
+            }
+        ],
+        "search\/advanced.blade.php": [
+            {
+                "line": 27,
+                "text": "Tìm kiếm sản phẩm, thảo luận, tài liệu...",
+                "context": "placeholder=\"Tìm kiếm sản phẩm, thảo luận, tài liệu...\""
+            },
+            {
+                "line": 66,
+                "text": "máy tiện CNC",
+                "context": "<a href=\"{{ route('forums.search.advanced', ['q' => 'máy tiện CNC']) }}\" class=\"popular-search-item\">máy tiện CNC<\/a>"
+            },
+            {
+                "line": 67,
+                "text": "động cơ servo",
+                "context": "<a href=\"{{ route('forums.search.advanced', ['q' => 'động cơ servo']) }}\" class=\"popular-search-item\">động cơ servo<\/a>"
+            },
+            {
+                "line": 69,
+                "text": "thép không gỉ",
+                "context": "<a href=\"{{ route('forums.search.advanced', ['q' => 'thép không gỉ']) }}\" class=\"popular-search-item\">thép không gỉ<\/a>"
+            },
+            {
+                "line": 70,
+                "text": "máy phay",
+                "context": "<a href=\"{{ route('forums.search.advanced', ['q' => 'máy phay']) }}\" class=\"popular-search-item\">máy phay<\/a>"
+            },
+            {
+                "line": 88,
+                "text": "]) }} kết quả cho",
+                "context": "<h5>Tìm thấy {{ number_format($results['total']) }} kết quả cho \"{{ $query }}\"<\/h5>"
+            },
+            {
+                "line": 90,
+                "text": ">Thời gian: {{ $results[",
+                "context": "<small class=\"text-muted\">Thời gian: {{ $results['meta']['search_time'] }}ms<\/small>"
+            }
+        ],
+        "showcase\/create.blade.php": [
+            {
+                "line": 3,
+                "text": "Tạo Showcase Mới",
+                "context": "@section('title', 'Tạo Showcase Mới')"
+            },
+            {
+                "line": 98,
+                "text": "VD: Robot hàn tự động cho ngành sản xuất ô tô",
+                "context": "placeholder=\"VD: Robot hàn tự động cho ngành sản xuất ô tô\" required>"
+            },
+            {
+                "line": 109,
+                "text": "VD: Nhà máy ABC, Bình Dương",
+                "context": "placeholder=\"VD: Nhà máy ABC, Bình Dương\">"
+            },
+            {
+                "line": 119,
+                "text": "VD: Sản xuất ô tô, Cơ khí chính xác",
+                "context": "placeholder=\"VD: Sản xuất ô tô, Cơ khí chính xác\">"
+            },
+            {
+                "line": 131,
+                "text": "Mô tả chi tiết về dự án: mục tiêu, công nghệ sử dụng, đặc điểm nổi bật, kết quả đạt được...",
+                "context": "placeholder=\"Mô tả chi tiết về dự án: mục tiêu, công nghệ sử dụng, đặc điểm nổi bật, kết quả đạt được...\""
+            },
+            {
+                "line": 330,
+                "text": "Pilot\/Thử nghiệm",
+                "context": "'2': 'Pilot\/Thử nghiệm',"
+            },
+            {
+                "line": 331,
+                "text": "Sản xuất nhỏ",
+                "context": "'3': 'Sản xuất nhỏ',"
+            },
+            {
+                "line": 332,
+                "text": "Sản xuất hàng loạt",
+                "context": "'4': 'Sản xuất hàng loạt',"
+            },
+            {
+                "line": 333,
+                "text": "Quy mô công nghiệp",
+                "context": "'5': 'Quy mô công nghiệp'"
+            },
+            {
+                "line": 341,
+                "text": "Tiêu đề showcase",
+                "context": "<h5 class=\"card-title\">${title || 'Tiêu đề showcase'}<\/h5>"
+            },
+            {
+                "line": 342,
+                "text": "Mô tả showcase...",
+                "context": "<p class=\"card-text\">${description || 'Mô tả showcase...'}<\/p>"
+            },
+            {
+                "line": 344,
+                "text": "><\/i> <strong>Địa điểm:<\/strong> ${location}<\/p>` :",
+                "context": "${location ? `<p><i class=\"geo-alt\"><\/i> <strong>Địa điểm:<\/strong> ${location}<\/p>` : ''}"
+            },
+            {
+                "line": 345,
+                "text": "><\/i> <strong>Ứng dụng:<\/strong> ${usage}<\/p>` :",
+                "context": "${usage ? `<p><i class=\"tools\"><\/i> <strong>Ứng dụng:<\/strong> ${usage}<\/p>` : ''}"
+            },
+            {
+                "line": 346,
+                "text": "><\/i> <strong>Quy mô:<\/strong> ${floorsText[floors]}<\/p>` :",
+                "context": "${floors ? `<p><i class=\"layers\"><\/i> <strong>Quy mô:<\/strong> ${floorsText[floors]}<\/p>` : ''}"
+            },
+            {
+                "line": 380,
+                "text": "Vui lòng điền đầy đủ các thông tin bắt buộc",
+                "context": "alert('Vui lòng điền đầy đủ các thông tin bắt buộc');"
+            }
+        ],
+        "showcase\/partials\/comment-form.blade.php": [
+            {
+                "line": 11,
+                "text": "Avatar của bạn",
+                "context": "class=\"rounded-circle\" width=\"40\" height=\"40\" alt=\"Avatar của bạn\">"
+            },
+            {
+                "line": 17,
+                "text": "Viết bình luận của bạn...",
+                "context": "placeholder=\"{{ $placeholder ?? 'Viết bình luận của bạn...' }}\""
+            },
+            {
+                "line": 155,
+                "text": "Chỉ được chọn tối đa 5 ảnh.",
+                "context": "alert('Chỉ được chọn tối đa 5 ảnh.');"
+            }
+        ],
+        "showcases\/partials\/rating-item.blade.php": [
+            {
+                "line": 6,
+                "text": "Avatar của {{ $rating->user->display_name }}",
+                "context": "alt=\"Avatar của {{ $rating->user->display_name }}\""
+            },
+            {
+                "line": 26,
+                "text": "Bạn có chắc muốn xóa đánh giá này?",
+                "context": "onsubmit=\"return confirm('Bạn có chắc muốn xóa đánh giá này?')\">"
+            }
+        ],
+        "showcases\/partials\/rating.blade.php": [
+            {
+                "line": 80,
+                "text": "Chia sẻ nhận xét chi tiết về showcase này...",
+                "context": "placeholder=\"Chia sẻ nhận xét chi tiết về showcase này...\""
+            }
+        ],
+        "supplier\/analytics\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Phân tích dữ liệu - Supplier Dashboard",
+                "context": "@section('title', 'Phân tích dữ liệu - Supplier Dashboard')"
+            }
+        ],
+        "supplier\/dashboard.blade.php": [
+            {
+                "line": 3,
+                "text": "Bảng điều khiển Nhà cung cấp",
+                "context": "@section('title', 'Bảng điều khiển Nhà cung cấp')"
+            }
+        ],
+        "supplier\/orders\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý đơn hàng - Supplier Dashboard",
+                "context": "@section('title', 'Quản lý đơn hàng - Supplier Dashboard')"
+            },
+            {
+                "line": 179,
+                "text": "Chờ xử lý",
+                "context": "'pending' => 'Chờ xử lý',"
+            },
+            {
+                "line": 180,
+                "text": "Đang xử lý",
+                "context": "'processing' => 'Đang xử lý',"
+            },
+            {
+                "line": 181,
+                "text": "Đã giao",
+                "context": "'shipped' => 'Đã giao',"
+            },
+            {
+                "line": 182,
+                "text": "Hoàn thành",
+                "context": "'delivered' => 'Hoàn thành',"
+            },
+            {
+                "line": 183,
+                "text": "Đã hủy",
+                "context": "'cancelled' => 'Đã hủy'"
+            },
+            {
+                "line": 263,
+                "text": "Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?",
+                "context": "if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?')) {"
+            },
+            {
+                "line": 276,
+                "text": "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.",
+                "context": "alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.');"
+            },
+            {
+                "line": 281,
+                "text": "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.",
+                "context": "alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.');"
+            }
+        ],
+        "supplier\/orders\/show.blade.php": [
+            {
+                "line": 3,
+                "text": "Chi tiết đơn hàng - Supplier Dashboard",
+                "context": "@section('title', 'Chi tiết đơn hàng - Supplier Dashboard')"
+            },
+            {
+                "line": 44,
+                "text": "Chờ xử lý",
+                "context": "'pending' => 'Chờ xử lý',"
+            },
+            {
+                "line": 45,
+                "text": "Đang xử lý",
+                "context": "'processing' => 'Đang xử lý',"
+            },
+            {
+                "line": 46,
+                "text": "Đã giao",
+                "context": "'shipped' => 'Đã giao',"
+            },
+            {
+                "line": 47,
+                "text": "Hoàn thành",
+                "context": "'delivered' => 'Hoàn thành',"
+            },
+            {
+                "line": 48,
+                "text": "Đã hủy",
+                "context": "'cancelled' => 'Đã hủy'"
+            },
+            {
+                "line": 110,
+                "text": "Chưa cung cấp",
+                "context": "{{ $orderItem->order->customer->phone ?? 'Chưa cung cấp' }}"
+            },
+            {
+                "line": 114,
+                "text": "Chưa cung cấp",
+                "context": "{{ $orderItem->order->shipping_address ?? 'Chưa cung cấp' }}"
+            },
+            {
+                "line": 309,
+                "text": "Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?",
+                "context": "if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?')) {"
+            },
+            {
+                "line": 322,
+                "text": "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.",
+                "context": "alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.');"
+            },
+            {
+                "line": 327,
+                "text": "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.",
+                "context": "alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng.');"
+            }
+        ],
+        "supplier\/products\/create.blade.php": [
+            {
+                "line": 359,
+                "text": "Tên thông số",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][name]\" placeholder=\"Tên thông số\">"
+            },
+            {
+                "line": 362,
+                "text": "Giá trị",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][value]\" placeholder=\"Giá trị\">"
+            },
+            {
+                "line": 365,
+                "text": "Đơn vị",
+                "context": "<input type=\"text\" class=\"form-control\" name=\"technical_specs[${specIndex}][unit]\" placeholder=\"Đơn vị\">"
+            },
+            {
+                "line": 402,
+                "text": ">Ảnh đại diện<\/small>",
+                "context": "${index === 0 ? '<small class=\"text-primary\">Ảnh đại diện<\/small>' : ''}"
+            }
+        ],
+        "supplier\/products\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý Sản phẩm - Supplier Dashboard",
+                "context": "@section('title', 'Quản lý Sản phẩm - Supplier Dashboard')"
+            },
+            {
+                "line": 98,
+                "text": "Tên sản phẩm, SKU...",
+                "context": "<input type=\"text\" name=\"search\" class=\"form-control\" placeholder=\"Tên sản phẩm, SKU...\""
+            },
+            {
+                "line": 245,
+                "text": "Bạn có chắc chắn muốn xóa sản phẩm này?",
+                "context": "onsubmit=\"return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')\">"
+            }
+        ],
+        "supplier\/setup-required.blade.php": [
+            {
+                "line": 3,
+                "text": "Thiết lập tài khoản Nhà cung cấp",
+                "context": "@section('title', 'Thiết lập tài khoản Nhà cung cấp')"
+            },
+            {
+                "line": 30,
+                "text": ">Tên doanh nghiệp <span class=",
+                "context": "<label for=\"business_name\" class=\"form-label\">Tên doanh nghiệp <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 36,
+                "text": ">Loại hình kinh doanh <span class=",
+                "context": "<label for=\"business_type\" class=\"form-label\">Loại hình kinh doanh <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 56,
+                "text": ">Số điện thoại <span class=",
+                "context": "<label for=\"phone\" class=\"form-label\">Số điện thoại <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 63,
+                "text": ">Địa chỉ kinh doanh <span class=",
+                "context": "<label for=\"address\" class=\"form-label\">Địa chỉ kinh doanh <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 75,
+                "text": ">Tên cửa hàng <span class=",
+                "context": "<label for=\"store_name\" class=\"form-label\">Tên cửa hàng <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 81,
+                "text": ">URL cửa hàng <span class=",
+                "context": "<label for=\"store_slug\" class=\"form-label\">URL cửa hàng <span class=\"text-danger\">*<\/span><\/label>"
+            },
+            {
+                "line": 92,
+                "text": "Giới thiệu về cửa hàng của bạn...",
+                "context": "<textarea class=\"form-control\" id=\"store_description\" name=\"store_description\" rows=\"4\" placeholder=\"Giới thiệu về cửa hàng của bạn...\"><\/textarea>"
+            },
+            {
+                "line": 150,
+                "text": ">Điều khoản dịch vụ<\/a> và <a href=",
+                "context": "Tôi đồng ý với <a href=\"#\" target=\"_blank\">Điều khoản dịch vụ<\/a> và <a href=\"#\" target=\"_blank\">Chính sách bán hàng<\/a> của MechaMap <span class=\"text-danger\">*<\/span>"
+            },
+            {
+                "line": 150,
+                "text": ">Chính sách bán hàng<\/a> của MechaMap <span class=",
+                "context": "Tôi đồng ý với <a href=\"#\" target=\"_blank\">Điều khoản dịch vụ<\/a> và <a href=\"#\" target=\"_blank\">Chính sách bán hàng<\/a> của MechaMap <span class=\"text-danger\">*<\/span>"
+            }
+        ],
+        "technical\/index.blade.php": [
+            {
+                "line": 3,
+                "text": "Tài nguyên Kỹ thuật - MechaMap",
+                "context": "@section('title', 'Tài nguyên Kỹ thuật - MechaMap')"
+            }
+        ],
+        "test\/thread-actions.blade.php": [
+            {
+                "line": 39,
+                "text": "showBookmark",
+                "context": "'showBookmark' => true,"
+            }
+        ],
+        "threads\/show.blade.php": [
+            {
+                "line": 775,
+                "text": "Chỉnh sửa bình luận...",
+                "context": "placeholder: 'Chỉnh sửa bình luận...',"
+            },
+            {
+                "line": 851,
+                "text": "đã bình luận mới",
+                "context": "showCommentNotification(comment.user.name + ' đã bình luận mới', 'success');"
+            },
+            {
+                "line": 869,
+                "text": "Bình luận đã được cập nhật",
+                "context": "showCommentNotification('Bình luận đã được cập nhật', 'info');"
+            },
+            {
+                "line": 889,
+                "text": "Bình luận đã được xóa",
+                "context": "showCommentNotification('Bình luận đã được xóa', 'warning');"
+            },
+            {
+                "line": 980,
+                "text": "vừa xong",
+                "context": "if (diffInSeconds < 60) return 'vừa xong';"
+            },
+            {
+                "line": 981,
+                "text": "phút trước",
+                "context": "if (diffInSeconds < 3600) return Math.floor(diffInSeconds \/ 60) + ' phút trước';"
+            },
+            {
+                "line": 982,
+                "text": "giờ trước",
+                "context": "if (diffInSeconds < 86400) return Math.floor(diffInSeconds \/ 3600) + ' giờ trước';"
+            },
+            {
+                "line": 983,
+                "text": "ngày trước",
+                "context": "return Math.floor(diffInSeconds \/ 86400) + ' ngày trước';"
+            }
+        ],
+        "user\/bookmarks.blade.php": [
+            {
+                "line": 3,
+                "text": "Bookmarks của tôi",
+                "context": "@section('title', 'Bookmarks của tôi')"
+            },
+            {
+                "line": 22,
+                "text": "Tìm kiếm thread...",
+                "context": "value=\"{{ request('search') }}\" placeholder=\"Tìm kiếm thread...\">"
+            },
+            {
+                "line": 43,
+                "text": "Không có thư mục",
+                "context": "{{ $folder->folder ?: 'Không có thư mục' }} ({{ $folder->count }})"
+            },
+            {
+                "line": 182,
+                "text": "editBookmark({{ $bookmark->id }},",
+                "context": "onclick=\"editBookmark({{ $bookmark->id }}, '{{ $bookmark->folder }}', '{{ addslashes($bookmark->notes) }}')\">"
+            },
+            {
+                "line": 186,
+                "text": "deleteBookmark({{ $bookmark->id }})",
+                "context": "onclick=\"deleteBookmark({{ $bookmark->id }})\">"
+            },
+            {
+                "line": 234,
+                "text": "Ví dụ: Lập trình, Thiết kế...",
+                "context": "placeholder=\"Ví dụ: Lập trình, Thiết kế...\" required>"
+            },
+            {
+                "line": 239,
+                "text": "Mô tả ngắn về thư mục này...",
+                "context": "placeholder=\"Mô tả ngắn về thư mục này...\"><\/textarea>"
+            },
+            {
+                "line": 252,
+                "text": "editBookmarkModal",
+                "context": "<div class=\"modal fade\" id=\"editBookmarkModal\" tabindex=\"-1\">"
+            },
+            {
+                "line": 259,
+                "text": "editBookmarkForm",
+                "context": "<form id=\"editBookmarkForm\">"
+            },
+            {
+                "line": 260,
+                "text": "editBookmarkId",
+                "context": "<input type=\"hidden\" id=\"editBookmarkId\">"
+            },
+            {
+                "line": 274,
+                "text": "Ghi chú cá nhân về thread này...",
+                "context": "placeholder=\"Ghi chú cá nhân về thread này...\"><\/textarea>"
+            },
+            {
+                "line": 326,
+                "text": "Có lỗi xảy ra khi tạo thư mục",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi tạo thư mục');"
+            },
+            {
+                "line": 331,
+                "text": "editBookmarkForm",
+                "context": "document.getElementById('editBookmarkForm')?.addEventListener('submit', function(e) {"
+            },
+            {
+                "line": 334,
+                "text": "editBookmarkId",
+                "context": "const bookmarkId = document.getElementById('editBookmarkId').value;"
+            },
+            {
+                "line": 353,
+                "text": "editBookmarkModal",
+                "context": "bootstrap.Modal.getInstance(document.getElementById('editBookmarkModal')).hide();"
+            },
+            {
+                "line": 360,
+                "text": "Có lỗi xảy ra khi cập nhật bookmark",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi cập nhật bookmark');"
+            },
+            {
+                "line": 366,
+                "text": "editBookmarkId",
+                "context": "document.getElementById('editBookmarkId').value = id;"
+            },
+            {
+                "line": 370,
+                "text": "editBookmarkModal",
+                "context": "new bootstrap.Modal(document.getElementById('editBookmarkModal')).show();"
+            },
+            {
+                "line": 374,
+                "text": "Bạn có chắc muốn xóa bookmark này?",
+                "context": "if (confirm('Bạn có chắc muốn xóa bookmark này?')) {"
+            },
+            {
+                "line": 392,
+                "text": "Có lỗi xảy ra khi xóa bookmark",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi xóa bookmark');"
+            },
+            {
+                "line": 402,
+                "text": "Vui lòng chọn ít nhất một bookmark để xóa",
+                "context": "showAlert('warning', 'Vui lòng chọn ít nhất một bookmark để xóa');"
+            },
+            {
+                "line": 426,
+                "text": "Có lỗi xảy ra khi xóa bookmarks",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi xóa bookmarks');"
+            }
+        ],
+        "user\/comments.blade.php": [
+            {
+                "line": 3,
+                "text": "Quản lý Comments -",
+                "context": "@section('title', 'Quản lý Comments - ' . config('app.name'))"
+            },
+            {
+                "line": 78,
+                "text": "Đã duyệt",
+                "context": "'approved' => 'Đã duyệt',"
+            },
+            {
+                "line": 79,
+                "text": "Chờ duyệt",
+                "context": "'pending' => 'Chờ duyệt',"
+            },
+            {
+                "line": 80,
+                "text": "Bị từ chối",
+                "context": "'rejected' => 'Bị từ chối'"
+            }
+        ],
+        "user\/dashboard-member.blade.php": [
+            {
+                "line": 75,
+                "text": "Rất tích cực",
+                "context": "'very_active' => ['badge' => 'success', 'icon' => 'fire', 'text' => 'Rất tích cực'],"
+            },
+            {
+                "line": 76,
+                "text": "Tích cực",
+                "context": "'active' => ['badge' => 'primary', 'icon' => 'star', 'text' => 'Tích cực'],"
+            },
+            {
+                "line": 77,
+                "text": "Vừa phải",
+                "context": "'moderate' => ['badge' => 'warning', 'icon' => 'thumbs-up', 'text' => 'Vừa phải'],"
+            },
+            {
+                "line": 78,
+                "text": "Mới bắt đầu",
+                "context": "'new' => ['badge' => 'secondary', 'icon' => 'seedling', 'text' => 'Mới bắt đầu']"
+            }
+        ],
+        "user\/dashboard.blade.php": [
+            {
+                "line": 4,
+                "text": "Dashboard - Quản lý nội dung của tôi",
+                "context": "@section('title', 'Dashboard - Quản lý nội dung của tôi')"
+            },
+            {
+                "line": 195,
+                "text": "Chờ duyệt",
+                "context": "'pending' => 'Chờ duyệt',"
+            },
+            {
+                "line": 196,
+                "text": "Đã duyệt",
+                "context": "'approved' => 'Đã duyệt',"
+            },
+            {
+                "line": 197,
+                "text": "Từ chối",
+                "context": "'rejected' => 'Từ chối',"
+            },
+            {
+                "line": 198,
+                "text": "Đã báo cáo",
+                "context": "'flagged' => 'Đã báo cáo'"
+            },
+            {
+                "line": 261,
+                "text": "Chờ duyệt",
+                "context": "'pending' => 'Chờ duyệt',"
+            },
+            {
+                "line": 262,
+                "text": "Đã duyệt",
+                "context": "'approved' => 'Đã duyệt',"
+            },
+            {
+                "line": 263,
+                "text": "Từ chối",
+                "context": "'rejected' => 'Từ chối',"
+            },
+            {
+                "line": 264,
+                "text": "Đã báo cáo",
+                "context": "'flagged' => 'Đã báo cáo'"
+            }
+        ],
+        "user\/settings.blade.php": [
+            {
+                "line": 3,
+                "text": "Cài đặt tài khoản",
+                "context": "@section('title', 'Cài đặt tài khoản')"
+            },
+            {
+                "line": 98,
+                "text": "Thành phố, Tỉnh",
+                "context": "placeholder=\"Thành phố, Tỉnh\">"
+            },
+            {
+                "line": 104,
+                "text": "Hãy giới thiệu về bản thân, sở thích, chuyên môn...",
+                "context": "placeholder=\"Hãy giới thiệu về bản thân, sở thích, chuyên môn...\">{{ auth()->user()->bio }}<\/textarea>"
+            },
+            {
+                "line": 117,
+                "text": "Kỹ sư, Thiết kế...",
+                "context": "placeholder=\"Kỹ sư, Thiết kế...\">"
+            },
+            {
+                "line": 473,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 477,
+                "text": "Có lỗi xảy ra khi cập nhật thông tin",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi cập nhật thông tin');"
+            },
+            {
+                "line": 501,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 505,
+                "text": "Có lỗi xảy ra khi đổi mật khẩu",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi đổi mật khẩu');"
+            },
+            {
+                "line": 528,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 532,
+                "text": "Có lỗi xảy ra khi lưu tùy chọn",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi lưu tùy chọn');"
+            },
+            {
+                "line": 555,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 559,
+                "text": "Có lỗi xảy ra khi lưu cài đặt thông báo",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi lưu cài đặt thông báo');"
+            },
+            {
+                "line": 582,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 586,
+                "text": "Có lỗi xảy ra khi lưu cài đặt quyền riêng tư",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi lưu cài đặt quyền riêng tư');"
+            },
+            {
+                "line": 592,
+                "text": "Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác!",
+                "context": "if (confirm('Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác!')) {"
+            },
+            {
+                "line": 593,
+                "text": "Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn. Bạn có thực sự muốn tiếp tục?",
+                "context": "if (confirm('Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn. Bạn có thực sự muốn tiếp tục?')) {"
+            },
+            {
+                "line": 609,
+                "text": "Có lỗi xảy ra",
+                "context": "showAlert('danger', data.message || 'Có lỗi xảy ra');"
+            },
+            {
+                "line": 613,
+                "text": "Có lỗi xảy ra khi xóa tài khoản",
+                "context": "showAlert('danger', 'Có lỗi xảy ra khi xóa tài khoản');"
+            }
+        ]
+    }
+}

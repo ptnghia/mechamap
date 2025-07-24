@@ -523,7 +523,7 @@
                         <div class="input-wrapper">
                             <input type="text" class="form-control-modern @error('poll_question') is-invalid @enderror"
                                 id="poll_question" name="poll_question" value="{{ old('poll_question') }}"
-                                placeholder="Nhập câu hỏi cho cuộc khảo sát">
+                                placeholder="{{ __('forum.poll.question_placeholder') }}">
                             <div class="input-icon">
                                 <i class="question-circle"></i>
                             </div>
@@ -547,7 +547,7 @@
                                     <input type="text"
                                         class="form-control-modern @error('poll_options.0') is-invalid @enderror"
                                         name="poll_options[]" value="{{ old('poll_options.0') }}"
-                                        placeholder="Lựa chọn 1">
+                                        placeholder="{{ __('forum.poll.option_placeholder', ['number' => 1]) }}">
                                     <button type="button" class="remove-option-btn" disabled>
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -558,7 +558,7 @@
                                     <input type="text"
                                         class="form-control-modern @error('poll_options.1') is-invalid @enderror"
                                         name="poll_options[]" value="{{ old('poll_options.1') }}"
-                                        placeholder="Lựa chọn 2">
+                                        placeholder="{{ __('forum.poll.option_placeholder', ['number' => 2]) }}">
                                     <button type="button" class="remove-option-btn" disabled>
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -572,7 +572,7 @@
                                     <input type="text"
                                         class="form-control-modern @error('poll_options.'.$index) is-invalid @enderror"
                                         name="poll_options[]" value="{{ $option }}"
-                                        placeholder="Lựa chọn {{ $index + 1 }}">
+                                        placeholder="{{ __('forum.poll.option_placeholder', ['number' => $index + 1]) }}">
                                     <button type="button" class="remove-option-btn">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -838,7 +838,7 @@ function initializeEditor() {
             });
 
             window.contentEditor = editor;
-            console.log('TinyMCE content editor ready for progress tracking');
+            console.log({!! json_encode(__('thread.console.tinymce_ready')) !!});
         }
     }, 100);
 }
@@ -950,9 +950,9 @@ function removeImagePreview(button) {
 
 // Format file size
 function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return '0 ' + {!! json_encode(__('thread.file_size.bytes')) !!};
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = [{!! json_encode(__('thread.file_size.bytes')) !!}, 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
@@ -1012,7 +1012,7 @@ function addPollOption() {
             <input type="text"
                    class="form-control-modern"
                    name="poll_options[]"
-                   placeholder="Lựa chọn ${optionCount}">
+                   placeholder="{!! json_encode(__('forum.poll.option_placeholder_dynamic')) !!} ${optionCount}">
             <button type="button" class="remove-option-btn">
                 <i class="fas fa-trash"></i>
             </button>
@@ -1127,7 +1127,7 @@ function validateShowcase() {
     const showcaseType = document.querySelector('input[name="showcase_type"]:checked');
 
     if (!showcaseType) {
-        showValidationMessage('Vui lòng chọn loại showcase', 'error');
+        showValidationMessage({!! json_encode(__('thread.validation.select_showcase_type')) !!}, 'error');
         return false;
     }
 

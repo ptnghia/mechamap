@@ -32,4 +32,32 @@ return [
     'tax_identification' => 'Business tax identification',
     'company_address' => 'Company address',
     'contact_information' => 'Contact information',
+
+    // Products management (max 3 levels)
+    'products' => [
+        'create_title' => 'Add Technical Product - Manufacturer Dashboard',
+        'create_heading' => 'Add Technical Product',
+        'product_name' => 'Product Name',
+        'product_type' => 'Product Type',
+        'choose_type' => 'Choose product type',
+        'short_description' => 'Short Description',
+        'detailed_description' => 'Detailed Description',
+        'price' => 'Price',
+        'technical_specs' => 'Detailed Technical Specifications',
+        'add_spec' => 'Add Specification',
+        'spec_name' => 'Specification Name',
+        'spec_value' => 'Value',
+        'spec_unit' => 'Unit',
+        'main_image' => 'Main Image',
+        'image_help' => 'Select multiple images (JPG, PNG, GIF - max 2MB each). First image will be the main image.',
+        'service_description' => 'Service: Describe process and deliverables clearly',
+        'detailed_specs' => 'Detailed and accurate technical specifications',
+        'price_validation' => 'Sale price must be lower than regular price!',
+        'cad_required' => 'Please upload at least one CAD file for digital products!',
+        // Placeholders
+        'short_desc_placeholder' => 'Brief description of the product (max 500 characters)',
+        'detailed_desc_placeholder' => 'Detailed description of product, features, applications...',
+        'material_placeholder' => 'e.g: Stainless Steel 304, Aluminum 6061...',
+        'tags_placeholder' => 'e.g: cad, design, mechanical (separated by commas)',
+    ],
 ];

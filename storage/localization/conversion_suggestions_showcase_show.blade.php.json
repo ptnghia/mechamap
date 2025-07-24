@@ -1,0 +1,182 @@
+[
+    {
+        "line": 27,
+        "original": "Showcase Item",
+        "replacement": "__('showcase.show.titles.showcase_item')",
+        "context": "<li class=\"breadcrumb-item active\" aria-current=\"page\">{{ $showcase->title ?? 'Showcase Item' }}<\/li>"
+    },
+    {
+        "line": 45,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post')",
+        "context": "<form action=\"{{ route('showcase.toggle-follow', $showcase) }}\" method=\"POST\" class=\"follow-form d-inline\">"
+    },
+    {
+        "line": 137,
+        "original": "Showcase image",
+        "replacement": "__('showcase.show.titles.showcase_image')",
+        "context": "class=\"img-fluid rounded shadow-sm\" alt=\"{{ $media->title ?? 'Showcase image' }}\""
+    },
+    {
+        "line": 227,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_1')",
+        "context": "<form action=\"{{ route('showcase.toggle-like', $showcase) }}\" method=\"POST\""
+    },
+    {
+        "line": 238,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_2')",
+        "context": "<form action=\"{{ route('showcase.bookmark', $showcase) }}\" method=\"POST\""
+    },
+    {
+        "line": 281,
+        "original": "Share options",
+        "replacement": "__('showcase.show.actions.share_options')",
+        "context": "<div class=\"btn-group\" role=\"group\" aria-label=\"Share options\">"
+    },
+    {
+        "line": 364,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_3')",
+        "context": "<form action=\"{{ route('showcase.comment', $showcase) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+    },
+    {
+        "line": 369,
+        "original": "Avatar của bạn",
+        "replacement": "__('showcase.show.actions.avatar_ca_bn')",
+        "context": "alt=\"Avatar của bạn\""
+    },
+    {
+        "line": 374,
+        "original": "Viết bình luận của bạn...",
+        "replacement": "__('showcase.show.placeholders.vit_bnh_lun_ca_bn')",
+        "context": "placeholder=\"Viết bình luận của bạn...\""
+    },
+    {
+        "line": 419,
+        "original": "Avatar của {{ $comment->user->display_name }}",
+        "replacement": "__('showcase.show.actions.avatar_ca_commentuserdisplayname')",
+        "context": "alt=\"Avatar của {{ $comment->user->display_name }}\""
+    },
+    {
+        "line": 438,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_4')",
+        "context": "method=\"POST\""
+    },
+    {
+        "line": 439,
+        "original": "Bạn có chắc muốn xóa bình luận này?",
+        "replacement": "__('showcase.show.actions.bn_c_chc_mun_xa_bnh_lun_ny')",
+        "context": "onsubmit=\"return confirm('Bạn có chắc muốn xóa bình luận này?')\""
+    },
+    {
+        "line": 442,
+        "original": "DELETE",
+        "replacement": "__('showcase.show.actions.delete')",
+        "context": "@method('DELETE')"
+    },
+    {
+        "line": 505,
+        "original": "Avatar của {{ $reply->user->display_name }}",
+        "replacement": "__('showcase.show.actions.avatar_ca_replyuserdisplayname')",
+        "context": "alt=\"Avatar của {{ $reply->user->display_name }}\""
+    },
+    {
+        "line": 523,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_5')",
+        "context": "method=\"POST\""
+    },
+    {
+        "line": 524,
+        "original": "Bạn có chắc muốn xóa phản hồi này?",
+        "replacement": "__('showcase.show.actions.bn_c_chc_mun_xa_phn_hi_ny')",
+        "context": "onsubmit=\"return confirm('Bạn có chắc muốn xóa phản hồi này?')\""
+    },
+    {
+        "line": 527,
+        "original": "DELETE",
+        "replacement": "__('showcase.show.actions.delete_1')",
+        "context": "@method('DELETE')"
+    },
+    {
+        "line": 572,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_6')",
+        "context": "<form action=\"{{ route('showcase.comment', $showcase) }}\" method=\"POST\" enctype=\"multipart\/form-data\">"
+    },
+    {
+        "line": 577,
+        "original": "Avatar của bạn",
+        "replacement": "__('showcase.show.actions.avatar_ca_bn_1')",
+        "context": "width=\"30\" height=\"30\" alt=\"Avatar của bạn\""
+    },
+    {
+        "line": 582,
+        "original": "Trả lời bình luận...",
+        "replacement": "__('showcase.show.placeholders.tr_li_bnh_lun')",
+        "context": "placeholder=\"Trả lời bình luận...\""
+    },
+    {
+        "line": 648,
+        "original": "DOMContentLoaded",
+        "replacement": "__('showcase.show.actions.domcontentloaded')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 649,
+        "original": "Showcase comments system initialized",
+        "replacement": "__('showcase.show.actions.showcase_comments_system_initialized')",
+        "context": "console.log('Showcase comments system initialized');"
+    },
+    {
+        "line": 682,
+        "original": "><\/i> Đã sao chép!",
+        "replacement": "__('showcase.show.actions.i_sao_chp')",
+        "context": "button.innerHTML = '<i class=\"fas fa-check\"><\/i> Đã sao chép!';"
+    },
+    {
+        "line": 712,
+        "original": "DOMContentLoaded",
+        "replacement": "__('showcase.show.actions.domcontentloaded_1')",
+        "context": "document.addEventListener('DOMContentLoaded', function() {"
+    },
+    {
+        "line": 722,
+        "original": "><\/i> Đang xử lý...",
+        "replacement": "__('showcase.show.actions.i_ang_x_l')",
+        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+    },
+    {
+        "line": 725,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_7')",
+        "context": "method: 'POST',"
+    },
+    {
+        "line": 767,
+        "original": "><\/i> Đang xử lý...",
+        "replacement": "__('showcase.show.actions.i_ang_x_l_1')",
+        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+    },
+    {
+        "line": 770,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_8')",
+        "context": "method: 'POST',"
+    },
+    {
+        "line": 824,
+        "original": "><\/i> Đang xử lý...",
+        "replacement": "__('showcase.show.actions.i_ang_x_l_2')",
+        "context": "button.innerHTML = '<i class=\"fas fa-spinner fa-spin\"><\/i> Đang xử lý...';"
+    },
+    {
+        "line": 827,
+        "original": "POST",
+        "replacement": "__('showcase.show.actions.post_9')",
+        "context": "method: 'POST',"
+    }
+]
