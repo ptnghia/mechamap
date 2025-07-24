@@ -78,7 +78,6 @@
                                 <span class="mega-menu-item-title">{{ t_marketplace('products.digital') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_marketplace('products.digital_desc') }}</small>
                             </div>
-                            <span class="activity-indicator" id="digitalProductsCount">--</span>
                         </a>
                     </li>
                     <li>
@@ -232,68 +231,3 @@
         </div>
     </div>
 </div>
-
-{{-- JavaScript for loading marketplace stats --}}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Load marketplace stats when mega menu is shown
-    function loadMarketplaceStats() {
-        fetch('/api/marketplace/quick-stats')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update product counts
-                    const totalProducts = document.getElementById('totalProductsCount');
-                    const digitalProducts = document.getElementById('digitalProductsCount');
-                    const newProducts = document.getElementById('newProductsCount');
-                    const usedProducts = document.getElementById('usedProductsCount');
-                    const totalSuppliers = document.getElementById('totalSuppliersCount');
-                    const cartItems = document.getElementById('cartItemsCount');
-
-                    if (totalProducts) totalProducts.textContent = data.data.total_products || '72';
-                    if (digitalProducts) digitalProducts.textContent = data.data.digital_products || '--';
-                    if (newProducts) newProducts.textContent = data.data.new_products || '--';
-                    if (usedProducts) usedProducts.textContent = data.data.used_products || '--';
-                    if (totalSuppliers) totalSuppliers.textContent = data.data.total_suppliers || '29';
-                    if (cartItems) cartItems.textContent = data.data.cart_items || '0';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading marketplace stats:', error);
-                // Fallback to current values
-            });
-    }
-
-    // Load cart count for authenticated users
-    function loadCartCount() {
-        @auth
-        fetch('/api/marketplace/cart/count')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const cartItems = document.getElementById('cartItemsCount');
-                    if (cartItems) {
-                        cartItems.textContent = data.count || '0';
-                        cartItems.style.display = data.count > 0 ? 'inline' : 'none';
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error loading cart count:', error);
-            });
-        @endauth
-    }
-
-    // Load stats when dropdown is shown
-    const marketplaceDropdown = document.getElementById('marketplaceDropdown');
-    if (marketplaceDropdown) {
-        marketplaceDropdown.addEventListener('show.bs.dropdown', function() {
-            loadMarketplaceStats();
-            loadCartCount();
-        });
-    }
-
-    // Initial load for cart count
-    loadCartCount();
-});
-</script>

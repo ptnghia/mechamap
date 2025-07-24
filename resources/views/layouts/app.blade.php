@@ -375,10 +375,7 @@
     <x-websocket-config :auto-init="true" />
     @endauth
 
-    <!-- Authentication Modal -->
-    @guest
-    <x-auth-modal id="authModal" size="md" />
-    @endguest
+
 </body>
 
 </html>

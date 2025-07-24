@@ -1,12 +1,19 @@
 <?php
 
+/**
+ * UI Language Lines
+ *
+ * The following language lines are used for various UI elements
+ * throughout the application interface.
+ */
+
 return [
     'actions' => [
         'apply_filters' => 'Áp dụng bộ lọc',
         'back' => 'Quay lại',
         'cancel' => 'Hủy',
         'clear_filters' => 'Xóa bộ lọc',
-        'close' => 'Close',
+        'close' => 'Đóng',
         'continue' => 'Tiếp tục',
         'copy' => 'Sao chép',
         'create' => 'Tạo',

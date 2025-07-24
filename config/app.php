@@ -167,6 +167,7 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\LanguageServiceProvider::class,
+        App\Providers\SettingsServiceProvider::class,
     ],
 
 ];

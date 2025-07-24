@@ -1,12 +1,17 @@
 <?php
 
 /**
- * Password Translation File - English (AUTO-GENERATED)
- * Auto-generated from Vietnamese file
- * Auto-updated: 2025-07-22 03:47:48
+ * Password Reset Language Lines
+ *
+ * The following language lines are the default lines which match reasons
+ * that are given by the password broker for a password update attempt
+ * has failed, such as for an invalid token or invalid new password.
  */
 
-return array (
-  'forgot_description' => 'Nhập email để nhận liên kết đặt lại mật khẩu.',
-  'send_reset_link' => 'Gửi liên kết đặt lại mật khẩu',
-);
+return [
+    'reset' => 'Your password has been reset.',
+    'sent' => 'We have emailed your password reset link.',
+    'throttled' => 'Please wait before retrying.',
+    'token' => 'This password reset token is invalid.',
+    'user' => "We can't find a user with that email address.",
+];

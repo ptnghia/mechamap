@@ -1,343 +1,278 @@
-{{-- Add Mega Menu Component --}}
-<div class="mega-menu add-mega-menu">
-    <div class="container-fluid">
-        <div class="row">
-            {{-- Column 1: Tạo Nội Dung Mới --}}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-plus-circle me-2 text-primary"></i>
-                        {{ t_navigation('add_menu.create_content.title') }}
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('threads.create') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-comments me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_thread') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_thread_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('showcase.create') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-trophy me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_showcase') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_showcase_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'gallery']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-camera me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.upload_photo') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.upload_photo_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'marketplace_products']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-box me-2"></i>
-                                <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.add_product') }}</span>
-                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.add_product_desc') }}</small>
+{{-- Add Mega Menu Component - Optimized Version --}}
+<div class="mega-menu-container">
+    <div class="row g-0">
+        {{-- Column 1: Tạo Nội Dung Mới --}}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-plus-circle me-2 text-primary"></i>
+                    {{ t_navigation('add_menu.create_content.title') }}
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('threads.create') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-comments me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_thread') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_thread_desc') }}</small>
                             </div>
-                            <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('coming-soon', ['feature' => 'seller_setup']) }}" class="mega-menu-item">
+                        <a href="{{ route('showcase.create') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-trophy me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_showcase') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_showcase_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('gallery.create') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-camera me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.upload_photo') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.upload_photo_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('marketplace.seller.setup') }}" class="mega-menu-item">
                             <i class="fa-solid fa-store me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.become_seller') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.become_seller_desc') }}</small>
                             </div>
-                            <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('coming-soon', ['feature' => 'documents']) }}" class="mega-menu-item">
-                            <i class="fa-solid fa-file-alt me-2"></i>
+                        <a href="{{ route('events.create') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-calendar-plus me-2"></i>
                             <div class="mega-menu-item-content">
-                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.create_document') }}</span>
-                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.create_document_desc') }}</small>
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.create_event') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.create_event_desc') }}</small>
                             </div>
-                            <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            {{-- Column 2: Tìm Kiếm & Khám Phá --}}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-search me-2 text-info"></i>
-                        {{ t_navigation('add_menu.discovery.title') }}
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-search-plus me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.advanced_search') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.advanced_search_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('forums.index') }}#tags" class="mega-menu-item">
-                                <i class="fa-solid fa-tags me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.browse_tags') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.browse_tags_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('members.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-chart-bar me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.community_stats') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.community_stats_desc') }}</small>
-                                </div>
-                                <span class="activity-indicator" id="totalMembersCount">{{ number_format(96) }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-trending-up me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.tech_trends') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.tech_trends_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('whats-new') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-bullseye me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.recommendations') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.recommendations_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            {{-- Column 3: Công Cụ & Tiện Ích --}}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-tools me-2 text-warning"></i>
-                        {{ t_navigation('add_menu.tools.title') }}
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'calculator']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-calculator me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.calculator') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.calculator_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'unit_converter']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-exchange-alt me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.unit_converter') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.unit_converter_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'material_lookup']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-table me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.material_lookup') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.material_lookup_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'design_tools']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-drafting-compass me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.design_tools') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.design_tools_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'mobile_app']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-mobile-alt me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.mobile_app') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.mobile_app_desc') }}</small>
-                                </div>
-                                <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'api_integration']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-code me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.api_integration') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.api_integration_desc') }}</small>
-                                </div>
-                                <span class="badge bg-success">{{ t_navigation('add_menu.status.new') }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            {{-- Column 4: Cộng Đồng & Hỗ Trợ --}}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="mega-menu-section">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-users me-2 text-success"></i>
-                        {{ t_navigation('add_menu.community.title') }}
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('members.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-user-tie me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.find_experts') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.find_experts_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'business_connect']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-building me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.business_connect') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.business_connect_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'mentorship']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-graduation-cap me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.mentorship') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.mentorship_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'jobs']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-briefcase me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.job_opportunities') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.job_opportunities_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('forums.index') }}" class="mega-menu-item">
-                                <i class="fa-solid fa-users-cog me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.professional_groups') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.professional_groups_desc') }}</small>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'events']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-calendar-alt me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.events') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.events_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                {{-- Support Section --}}
-                <div class="mega-menu-section mt-4">
-                    <h6 class="mega-menu-header">
-                        <i class="fa-solid fa-question-circle me-2 text-secondary"></i>
-                        {{ t_navigation('add_menu.support.title') }}
-                    </h6>
-                    <ul class="mega-menu-list">
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'faq']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-question me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.faq') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.faq_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'contact']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-headset me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.contact') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.contact_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('coming-soon', ['feature' => 'about']) }}" class="mega-menu-item">
-                                <i class="fa-solid fa-info-circle me-2"></i>
-                                <div class="mega-menu-item-content">
-                                    <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.about') }}</span>
-                                    <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.about_desc') }}</small>
-                                </div>
-                                <span class="badge bg-warning text-dark">{{ t_navigation('add_menu.status.coming_soon') }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                            <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('jobs.create') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-briefcase-plus me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.post_job') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.post_job_desc') }}</small>
+                            </div>
+                            <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        {{-- Bottom Action Bar --}}
-        <div class="mega-menu-footer">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <div class="d-flex align-items-center">
-                        <div class="me-4">
-                            <i class="fa-solid fa-lightbulb text-warning me-2"></i>
-                            <span class="small text-muted">{{ t_navigation('add_menu.footer.quick_tip') }}</span>
-                        </div>
-                        <div class="me-4">
-                            <i class="fa-solid fa-keyboard text-info me-2"></i>
-                            <span class="small text-muted">{{ t_navigation('add_menu.footer.keyboard_shortcut') }}: <kbd>Ctrl + N</kbd></span>
-                        </div>
+        {{-- Column 2: Khám Phá & Kết Nối --}}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-compass me-2 text-info"></i>
+                    {{ t_navigation('add_menu.discovery.title') }}
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-search-plus me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.advanced_search') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.advanced_search_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('members.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-user-tie me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.find_experts') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.find_experts_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('companies.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-building me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.company_directory') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.company_directory_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('events.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-calendar-days me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.events') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.events_desc') }}</small>
+                            </div>
+                            <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('jobs.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-briefcase me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.job_opportunities') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.job_opportunities_desc') }}</small>
+                            </div>
+                            <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-trending-up me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.tech_trends') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.tech_trends_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {{-- Column 3: Công Cụ & Hỗ Trợ --}}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="mega-menu-section">
+                <h6 class="mega-menu-header">
+                    <i class="fa-solid fa-tools me-2 text-warning"></i>
+                    {{ t_navigation('add_menu.tools_support.title') }}
+                </h6>
+                <ul class="mega-menu-list">
+                    <li>
+                        <a href="{{ route('materials.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-table me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.material_lookup') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.material_lookup_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('standards.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-certificate me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.standards_lookup') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.standards_lookup_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('cad.library.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-cube me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.cad_library') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.tools.cad_library_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('contact') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-headset me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.contact') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.contact_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('about.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-info-circle me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.about') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.about_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('terms.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-file-contract me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.terms') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.terms_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('privacy.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-shield-alt me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.privacy') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.privacy_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('rules') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-gavel me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.rules') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.rules_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('faq.index') }}" class="mega-menu-item">
+                            <i class="fa-solid fa-question me-2"></i>
+                            <div class="mega-menu-item-content">
+                                <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.faq') }}</span>
+                                <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.faq_desc') }}</small>
+                            </div>
+                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- Bottom Action Bar --}}
+    <div class="mega-menu-footer">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    <div class="me-4">
+                        <i class="fa-solid fa-lightbulb text-warning me-2"></i>
+                        <span class="small text-muted">{{ t_navigation('add_menu.footer.quick_tip') }}</span>
+                    </div>
+                    <div class="me-4">
+                        <i class="fa-solid fa-keyboard text-info me-2"></i>
+                        <span class="small text-muted">{{ t_navigation('add_menu.footer.keyboard_shortcut') }}: <kbd>Ctrl + N</kbd></span>
                     </div>
                 </div>
-                <div class="col-md-4 text-end">
-                    <div class="d-flex align-items-center justify-content-end">
-                        <div class="me-3">
-                            <i class="fa-solid fa-moon me-1"></i>
-                            <span class="small text-muted">{{ t_navigation('add_menu.footer.dark_mode') }}</span>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
-                            <label class="form-check-label" for="darkModeToggle"></label>
-                        </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="d-flex align-items-center justify-content-end">
+                    <div class="me-3">
+                        <i class="fa-solid fa-moon me-1"></i>
+                        <span class="small text-muted">{{ t_navigation('add_menu.footer.dark_mode') }}</span>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        <label class="form-check-label" for="darkModeToggle"></label>
                     </div>
                 </div>
             </div>
@@ -370,22 +305,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Load community stats
-    loadCommunityStats();
+    // Initialize badge animations
+    initializeBadgeAnimations();
 });
 
-function loadCommunityStats() {
-    // This would typically fetch from an API
-    // For now, we'll use static data
-    const stats = {
-        totalMembers: 96,
-        activeToday: 23,
-        newThisWeek: 12
-    };
-
-    const membersCountEl = document.getElementById('totalMembersCount');
-    if (membersCountEl) {
-        membersCountEl.textContent = stats.totalMembers;
-    }
+function initializeBadgeAnimations() {
+    // Add subtle animations to status badges
+    const badges = document.querySelectorAll('.mega-menu-item .badge');
+    badges.forEach(badge => {
+        badge.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        badge.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
 }
 </script>

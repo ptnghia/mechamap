@@ -1,34 +1,26 @@
 <?php
 
+/**
+ * UI Language Lines
+ *
+ * The following language lines are used for various UI elements
+ * throughout the application interface.
+ */
+
 return [
+    // Actions
     'actions' => [
         'close' => 'Close',
+        'apply_filters' => 'Apply Filters',
+        'cancel' => 'Cancel',
+        'clear_filters' => 'Clear Filters',
+        'search' => 'Search',
+        'sort' => 'Sort',
+        'view_details' => 'View Details',
+        'view_full_showcase' => 'View Full Showcase',
     ],
 
-    'actions.apply_filters' => [
-    ],
-
-    'actions.cancel' => [
-    ],
-
-    'actions.clear_filters' => [
-    ],
-
-    'actions.search' => [
-    ],
-
-    'actions.sort' => [
-    ],
-
-    'actions.view_details' => [
-    ],
-
-    'actions.view_full_showcase' => [
-    ],
-
-    'auth.login_to_view_notifications' => [
-    ],
-
+    // Buttons
     'buttons' => [
         'add' => 'Add',
         'back' => 'Back',
@@ -42,47 +34,27 @@ return [
         'reset' => 'Reset',
         'save' => 'Save',
         'submit' => 'Submit',
-        'view_all' => 'View all',
-        'view_details' => 'View details',
+        'view_all' => 'View All',
+        'view_details' => 'View Details',
     ],
 
-    'buttons.add' => [
-    ],
-
-    'buttons.cancel' => [
-    ],
-
-    'buttons.view_all' => [
-    ],
-
+    // Common UI elements
     'common' => [
         'loading' => 'Loading...',
+        'auto_saving' => 'Auto saving...',
+        'dark_mode' => 'Dark Mode',
+        'light_mode' => 'Light Mode',
+        'error_occurred' => 'An error occurred',
+        'no_results_found' => 'No results found',
+        'popular_searches' => 'Popular Searches',
     ],
 
-    'common.auto_saving' => [
+    // Community
+    'community' => [
+        'browse_categories' => 'Browse Categories',
     ],
 
-    'common.dark_mode' => [
-    ],
-
-    'common.error_occurred' => [
-    ],
-
-    'common.light_mode' => [
-    ],
-
-    'common.loading' => [
-    ],
-
-    'common.no_results_found' => [
-    ],
-
-    'common.popular_searches' => [
-    ],
-
-    'community.browse_categories' => [
-    ],
-
+    // Forms
     'forms' => [
         'enter_message_placeholder' => 'Enter message...',
         'search_conversations_placeholder' => 'Search conversations...',
@@ -90,129 +62,110 @@ return [
         'search_placeholder' => 'Search...',
     ],
 
-    'forms.enter_message_placeholder' => [
+    // Messages
+    'messages' => [
+        'success' => 'Success!',
+        'error' => 'Error!',
+        'warning' => 'Warning!',
+        'info' => 'Information',
+        'confirm_delete' => 'Are you sure you want to delete this item?',
+        'operation_successful' => 'Operation completed successfully',
+        'operation_failed' => 'Operation failed',
+        'please_try_again' => 'Please try again',
+        'something_went_wrong' => 'Something went wrong',
     ],
 
-    'forms.search_conversations_placeholder' => [
-    ],
-
-    'forms.search_members_placeholder' => [
-    ],
-
-    'get_started' => [
-    ],
-
-    'language.auto_detected' => [
-    ],
-
-    'language.switch_failed' => [
-    ],
-
-    'language.switched_successfully' => [
-    ],
-
+    // Navigation
     'navigation' => [
-        'admin' => 'Admin',
-        'brand' => 'Brand',
-        'discussions' => 'Discussions',
-        'members' => 'Members',
-        'products' => 'Products',
-        'supplier' => 'Supplier',
+        'home' => 'Home',
+        'back_to_top' => 'Back to Top',
+        'previous_page' => 'Previous Page',
+        'next_page' => 'Next Page',
+        'go_to_page' => 'Go to Page',
     ],
 
-    'no_information_provided' => [
+    // Status
+    'status' => [
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'pending' => 'Pending',
+        'approved' => 'Approved',
+        'rejected' => 'Rejected',
+        'draft' => 'Draft',
+        'published' => 'Published',
     ],
 
-    'no_media_to_display' => [
+    // Time
+    'time' => [
+        'just_now' => 'Just now',
+        'minutes_ago' => ':count minutes ago',
+        'hours_ago' => ':count hours ago',
+        'days_ago' => ':count days ago',
+        'weeks_ago' => ':count weeks ago',
+        'months_ago' => ':count months ago',
+        'years_ago' => ':count years ago',
     ],
 
-    'no_posts_found_matching_criteria' => [
+    // Auth related UI
+    'auth' => [
+        'login_to_view_notifications' => 'Login to view notifications',
+        'login_required' => 'Login required',
+        'access_denied' => 'Access denied',
     ],
 
-    'no_recent_activity' => [
-    ],
-
-    'notifications' => [
-        'checking_duplicate' => 'Checking for duplicate',
-        'hidden_duplicate' => 'Hidden duplicate',
-        'no_duplicate' => 'No duplicate',
-    ],
-
+    // Pagination
     'pagination' => [
-        'first' => 'First',
-        'go_to_page' => 'Go to page',
-        'last' => 'Last',
-        'load_more' => 'Load more',
-        'next' => 'Next',
-        'no_more_posts' => 'No more posts',
-        'of' => 'of',
-        'page' => 'Page',
-        'previous' => 'Previous',
-        'results' => 'results',
         'showing' => 'Showing',
         'to' => 'to',
-    ],
-
-
-
-    'pagination_navigation' => [
-    ],
-
-    'search' => [
-        'advanced' => 'Advanced Search',
-        'error_message' => 'Search failed. Please try again.',
-        'found' => 'Found',
-        'no_results_for' => 'No results found for',
-        'placeholder' => 'Search products, forums, members...',
+        'of' => 'of',
         'results' => 'results',
-        'title' => 'Search MechaMap',
-        'try_advanced' => 'TRY ADVANCED SEARCH',
-        'view_all_results' => 'View all results',
+        'no_data' => 'No data available',
     ],
 
-    'search.advanced_search' => [
+    // File upload
+    'upload' => [
+        'drag_drop' => 'Drag and drop files here',
+        'or' => 'or',
+        'browse_files' => 'Browse Files',
+        'max_file_size' => 'Maximum file size: :size',
+        'allowed_types' => 'Allowed types: :types',
+        'upload_success' => 'File uploaded successfully',
+        'upload_failed' => 'File upload failed',
     ],
 
-    'status' => [
-        'new' => 'New',
+    // Modals
+    'modals' => [
+        'confirm_title' => 'Confirm Action',
+        'warning_title' => 'Warning',
+        'error_title' => 'Error',
+        'success_title' => 'Success',
+        'info_title' => 'Information',
     ],
 
-    'status.locked' => [
+    // Tables
+    'tables' => [
+        'no_data' => 'No data available in table',
+        'search' => 'Search:',
+        'show' => 'Show',
+        'entries' => 'entries',
+        'showing' => 'Showing',
+        'to' => 'to',
+        'of' => 'of',
+        'entries_total' => 'entries',
+        'previous' => 'Previous',
+        'next' => 'Next',
     ],
 
-    'status.sticky' => [
+    // Filters
+    'filters' => [
+        'all' => 'All',
+        'filter_by' => 'Filter by',
+        'sort_by' => 'Sort by',
+        'date_range' => 'Date Range',
+        'from' => 'From',
+        'to' => 'To',
+        'apply' => 'Apply',
+        'clear' => 'Clear',
+        'reset' => 'Reset',
     ],
-
-    'theme' => [
-        'dark_mode' => 'Dark Mode',
-        'light_mode' => 'Light Mode',
-    ],
-
-    'ui.menu.close' => [
-    ],
-
-    'ui.menu.toggle' => [
-    ],
-
-    // Layout specific
-    'layout' => [
-        'meta_author' => 'MechaMap Team',
-        'fancybox' => [
-            'modal_esc_hint' => 'You can close this modal with ESC key',
-            'error_loading' => 'Error loading content. <br/> Please try again later.',
-            'image_error' => 'Unable to load image. <br/> Please try again later.',
-            'element_not_found' => 'HTML element not found.',
-            'ajax_not_found' => 'AJAX loading error: Not found',
-            'ajax_forbidden' => 'AJAX loading error: Forbidden',
-            'iframe_error' => 'Error loading page',
-            'toggle_zoom' => 'Zoom in/out',
-            'toggle_thumbs' => 'Show/hide thumbnails',
-            'toggle_slideshow' => 'Start/stop slideshow',
-            'toggle_fullscreen' => 'Toggle fullscreen',
-        ],
-        'console' => [
-            'theme_button_fallback' => 'Adding fallback click handler to theme button',
-        ],
-    ],
-
 ];

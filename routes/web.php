@@ -338,9 +338,7 @@ Route::get('/tags', function () {
     return view('coming-soon', ['title' => 'Browse by Tags', 'message' => 'Tag browser coming soon']);
 })->name('tags.index');
 
-Route::get('/faq', function () {
-    return view('coming-soon', ['title' => 'FAQ', 'message' => 'FAQ section coming soon']);
-})->name('faq.index');
+// FAQ route moved to line 649 with proper controller
 
 Route::get('/help', function () {
     return view('help.index');
@@ -669,6 +667,12 @@ Route::get('/gallery/{media}', [GalleryController::class, 'show'])->name('galler
 // Social Login Routes
 Route::get('/auth/{provider}', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirectToProvider'])->name('auth.socialite');
 Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'handleProviderCallback']);
+
+// Social Registration Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/social/account-type', [\App\Http\Controllers\Auth\SocialiteController::class, 'showAccountTypeSelection'])->name('auth.social.account-type');
+    Route::post('/auth/social/account-type', [\App\Http\Controllers\Auth\SocialiteController::class, 'processAccountTypeSelection']);
+});
 
 // Comment routes
 Route::post('/threads/{thread}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('threads.comments.store')->middleware('auth');

@@ -1,0 +1,94 @@
+/*
+ * MechaMap - Login Page Styles
+ * Extracted from resources/views/auth/login.blade.php
+ * Authentication page specific styles
+ */
+
+/* ========================================
+   LOGO STYLES
+   ======================================== */
+
+.auth-logo {
+    height: 60px;
+    filter: brightness(0) invert(1);
+}
+.login_page{
+}
+.login_page_left{padding: 10px 30px;width: 100%;}
+.login_page_right{font-size: 16px;font-weight: 500;}
+.login_page .br_img{background-image: url(../img/br-login.png);background-repeat: no-repeat;background-size: cover;background-position: center;}
+.login_page_left_logo{
+}
+.login_page_left_logo img{
+}
+.login_page_left_logo p{text-transform: uppercase;font-weight: 600;}
+.login_page_left_content{
+}
+.login_page_left_content p{font-size: 18px;margin-bottom: 20px !IMPORTANT;}
+.login_page_right_title{text-transform: uppercase;font-size: 28px !IMPORTANT;}
+.login_page_right_description{
+}
+.login_page_left_content p i{color: #ffffff9c;}
+.svg-google{background-image: url(../img/google.svg);}
+.svg-facebook{background-image: url(../img/facebook.svg);}
+.btn-social:hover .icon-svg, .btn-social:focus .icon-svg{filter: brightness(0) invert(1);}
+.registration-wizard-container{max-width:800px;margin:2rem auto;padding:0 1rem}
+.wizard-card{background:white;border-radius:16px;overflow:hidden;border:1px solid #e9ecef}
+.wizard-header{background: linear-gradient(135deg, #7e7657 0%, #8f814a 100%);color:white;padding: 15px;}
+.wizard-title{font-size:1.75rem;font-weight:700;margin-bottom:.5rem}
+.wizard-subtitle{font-size:1rem;opacity:.9}
+.step-indicator{text-align:right}
+.step-text{font-size:.875rem;opacity:.9;display:block}
+.step-label{font-size:1rem;font-weight:600;margin-top:.25rem}
+.progress-container{margin-top:1.5rem}
+.progress{height:8px;border-radius:4px;background-color:rgba(255,255,255,0.2);overflow:hidden}
+.progress-bar{background:linear-gradient(90deg,#28a745,#20c997);border-radius:4px;transition:width .6s ease-in-out}
+.progress-text{text-align:center}
+.wizard-body{padding: 15px;min-height:400px}
+.wizard-breadcrumb{background:none;padding:0;margin:0}
+.wizard-breadcrumb .breadcrumb-item{font-weight:500}
+.wizard-breadcrumb .breadcrumb-item.active{color:#007bff}
+.wizard-breadcrumb .breadcrumb-item.completed{color:#28a745}
+.wizard-content{margin-top:1rem}
+.wizard-footer{background-color:#f8f9fa;padding:1.5rem 2rem;border-top:1px solid #e9ecef}
+.btn-wizard-back,.btn-wizard-next{padding:.75rem 2rem;border-radius:8px;font-weight:500;transition:all .2s ease-out}
+.btn-wizard-next:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,123,255,0.3)}
+.wizard-login-link{padding:1rem 2rem;background-color:#ffffff;border-top:1px solid #f1f3f4}
+.auto-save-indicator{position:fixed;top:20px;right:20px;z-index:1050;background:#28a745;color:white;padding:.5rem 1rem;border-radius:6px;font-size:.875rem;box-shadow:0 2px 10px rgba(0,0,0,0.1);animation:slideInRight .3s ease-out}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .registration-wizard-container{margin:1rem auto;padding:0 .5rem}
+    .wizard-header{padding:1.5rem}
+    .wizard-title{font-size:1.5rem}
+    .wizard-body{padding:1.5rem}
+    .wizard-footer{padding:1rem 1.5rem}
+    .wizard-footer .row{flex-direction:column;gap:1rem}
+    .wizard-footer .col-md-6{text-align:center!important}
+    .btn-wizard-back,.btn-wizard-next{width:100%}
+    .step-indicator{text-align:left;margin-top:1rem}
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .registration-wizard-container{margin:1rem auto;padding:0 .5rem}
+    .wizard-header{padding:1.5rem}
+    .wizard-title{font-size:1.5rem}
+    .wizard-body{padding:1.5rem}
+    .wizard-footer{padding:1rem 1.5rem}
+    .wizard-footer .row{flex-direction:column;gap:1rem}
+    .wizard-footer .col-md-6{text-align:center!important}
+    .btn-wizard-back,.btn-wizard-next{width:100%}
+    .step-indicator{text-align:left;margin-top:1rem}
+}

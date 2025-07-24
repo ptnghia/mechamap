@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Messages Translation File - English (AUTO-GENERATED)
- * Auto-generated from Vietnamese file
- * Auto-updated: 2025-07-22 03:47:48
+ * Messages Language Lines
+ *
+ * The following language lines are used for various messages
+ * throughout the application.
  */
 
-return array (
-  'processing' => 'Đang xử lý...',
-);
+return [
+    'processing' => 'Processing...',
+];

@@ -47,7 +47,7 @@
                 </div>
 
                 <!-- Navigation Menu -->
-                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <div class="collapse navbar-collapse justify-content-between position-relative" id="navbarNav">
                     <!-- Search Bar - Using old header structure -->
                     <div class="search-container position-relative" style="min-width: 300px;">
                         <div class="input-group">
@@ -412,9 +412,11 @@ k
                         @endauth
 
                         <!-- Notifications - Enhanced with new system -->
+                        @auth
                         <li class="nav-item">
                             <x-notification-dropdown position="end" />
                         </li>
+                        @endauth
 
                         <!-- Language Switcher -->
                         <li class="nav-item">
@@ -614,9 +616,10 @@ k
                         @else
                         <!-- Login/Register -->
                         <li class="nav-item">
-                            <button type="button" class="nav-link btn btn-link" onclick="openLoginModal()">
+                            <a href="{{ route('login') }}" class="nav-link" aria-label="{{ t_auth('login.title') }}">
                                 <i class="fa-regular fa-user me-1"></i>
-                            </button>
+                                <span class="d-none d-md-inline">{{ t_auth('login.title') }}</span>
+                            </a>
                         </li>
                         <!--li class="nav-item">
                             <button type="button" class="btn btn-primary btn-sm ms-2" onclick="openRegisterModal()">

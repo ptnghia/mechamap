@@ -1,16 +1,20 @@
 <?php
 
 /**
- * Language Translation File - English (AUTO-GENERATED)
- * Auto-generated from Vietnamese file
- * Auto-updated: 2025-07-22 03:47:48
+ * Language Selection Language Lines
+ *
+ * The following language lines are used for language selection
+ * and switching functionality throughout the application.
  */
 
-return array (
-  'vietnamese' => 'Tiếng Việt',
-  'english' => 'English',
-  'select_language' => 'Chọn ngôn ngữ',
-  'auto_detect' => 'Tự động phát hiện',
-  'current_language' => 'Ngôn ngữ hiện tại',
-  'change_language' => 'Thay đổi ngôn ngữ',
-);
+return [
+    // Language names
+    'vietnamese' => 'Vietnamese',
+    'english' => 'English',
+
+    // Language selection
+    'select_language' => 'Select Language',
+    'auto_detect' => 'Auto Detect',
+    'current_language' => 'Current Language',
+    'change_language' => 'Change Language',
+];
