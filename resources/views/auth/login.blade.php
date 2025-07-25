@@ -3,7 +3,7 @@
 @section('title', __('auth.login.title'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/login.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/login.css') }}">
 @endpush
 
 @section('full-width-content')

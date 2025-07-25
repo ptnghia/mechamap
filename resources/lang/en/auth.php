@@ -75,6 +75,16 @@ return [
         'note_community' => 'You can upgrade your account after registration.',
         'business_partner_description' => 'For businesses looking to sell products or services',
         'note_business' => 'Business accounts require verification before full feature access.',
+
+        // Additional wizard keys
+        'step_indicator' => 'Step :current/:total',
+        'step1_label' => 'Personal Information',
+        'step2_label' => 'Verification',
+        'progress_complete' => ':percent% complete',
+        'security_note' => 'Your information is secure and encrypted',
+        'auto_saving' => 'Auto saving...',
+        'step_default' => 'Step :number',
+        'errors_occurred' => 'Errors occurred',
     ],
 
     // Password Reset

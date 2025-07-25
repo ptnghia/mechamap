@@ -93,6 +93,16 @@ return [
         'note_community' => 'Bạn có thể nâng cấp tài khoản sau khi đăng ký.',
         'business_partner_description' => 'Dành cho doanh nghiệp muốn bán sản phẩm hoặc dịch vụ',
         'note_business' => 'Tài khoản doanh nghiệp cần xác thực trước khi truy cập đầy đủ tính năng.',
+
+        // Additional wizard keys
+        'step_indicator' => 'Bước :current/:total',
+        'step1_label' => 'Thông tin cá nhân',
+        'step2_label' => 'Xác thực',
+        'progress_complete' => ':percent% hoàn thành',
+        'security_note' => 'Thông tin của bạn được bảo mật và mã hóa',
+        'auto_saving' => 'Tự động lưu...',
+        'step_default' => 'Bước :number',
+        'errors_occurred' => 'Có lỗi xảy ra',
     ],
 
     // Password Reset

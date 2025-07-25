@@ -86,7 +86,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
                                             @else
                                                 <i class="far fa-circle text-muted me-1"></i>
                                             @endif
-                                            {{ $stepLabels[$i] ?? "Bước $i" }}
+                                            {{ $stepLabels[$i] ?? __('auth.register.step_default', ['number' => $i]) }}
                                         </li>
                                     @endfor
                                 </ol>
@@ -96,7 +96,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
                             @if($errors->any())
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <i class="fas fa-exclamation-triangle me-2"></i>
-                                    <strong>Có lỗi xảy ra:</strong>
+                                    <strong>{{ __('auth.register.errors_occurred') }}:</strong>
                                     <ul class="mb-0 mt-2">
                                         @foreach($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const autoSaveIndicator = document.getElementById('autoSaveIndicator');
     const autoSaveText = document.getElementById('autoSaveText');
 
-    function showAutoSaveIndicator(message = {{ t_ui('common.auto_saving') }}) {
+    function showAutoSaveIndicator(message = '{{ __('auth.register.auto_saving') }}') {
         autoSaveText.textContent = message;
         autoSaveIndicator.style.display = 'block';
 
