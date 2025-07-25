@@ -243,7 +243,7 @@
                                 @forelse($stats['latest_posts'] as $post)
                                     <a href="{{ route('forums.show', $post->thread->forum) }}#post-{{ $post->id }}" class="list-group-item list-group-item-action" target="_blank">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1 text-truncate" style="max-width: 250px;">{{ __('Trả lời trong: ') }} {{ $post->thread->title }}</h6>
+                                            <h6 class="mb-1 text-truncate" style="max-width: 250px;">Trả lời trong: {{ $post->thread->title }}</h6>
                                             <small>{{ $post->created_at->diffForHumans() }}</small>
                                         </div>
                                         <small class="text-muted">

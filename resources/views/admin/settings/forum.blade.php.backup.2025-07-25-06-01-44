@@ -110,7 +110,7 @@
                                         {{ 'Yêu cầu xác thực email' }}
                                     </label>
                                 </div>
-                                <div class="form-text">'Người dùng phải xác thực email trước khi tham gia diễn đàn'</div>
+                                <div class="form-text">{{ __('Người dùng phải xác thực email trước khi tham gia diễn đàn') }}</div>
                             </div>
 
                             <div class="mb-3">

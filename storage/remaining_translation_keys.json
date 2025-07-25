@@ -1,55 +1,9 @@
 {
-    "timestamp": "2025-07-25 05:58:16",
+    "timestamp": "2025-07-25 06:02:58",
     "summary": {
-        "files_with_keys": 5,
-        "total_remaining_keys": 11
+        "files_with_keys": 0,
+        "total_remaining_keys": 0
     },
-    "keys": {
-        "Số thông báo tối đa\/người\n                                    dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo hành động quản\n                                    trị": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Người dùng phải xác thực email trước khi tham gia diễn\n                                    đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
-        ],
-        "Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\partials\\sidebar.blade.php"
-        ],
-        "Độ dài mật khẩu tối\n                                    thiểu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc\n                                    biệt": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Độ dài tên người dùng\n                                    tối thiểu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Người dùng có thể thay đổi tên người dùng sau khi đăng\n                                    ký": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Kích thước avatar tối đa\n                                    (KB)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Loại file avatar được\n                                    phép": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Trả lời trong: ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ]
-    },
-    "key_usage": {
-        "Số thông báo tối đa\/người\n                                    dùng": 1,
-        "Thông báo hành động quản\n                                    trị": 1,
-        "Người dùng phải xác thực email trước khi tham gia diễn\n                                    đàn": 1,
-        "Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.": 1,
-        "Độ dài mật khẩu tối\n                                    thiểu": 1,
-        "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc\n                                    biệt": 1,
-        "Độ dài tên người dùng\n                                    tối thiểu": 1,
-        "Người dùng có thể thay đổi tên người dùng sau khi đăng\n                                    ký": 1,
-        "Kích thước avatar tối đa\n                                    (KB)": 1,
-        "Loại file avatar được\n                                    phép": 1,
-        "Trả lời trong: ": 1
-    }
+    "keys": [],
+    "key_usage": []
 }

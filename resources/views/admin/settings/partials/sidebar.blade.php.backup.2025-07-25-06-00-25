@@ -58,7 +58,8 @@
     </div>
     <div class="card-body">
         <p class="card-text">
-            'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang web.'
+            {{ __('Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang
+            web.') }}
         </p>
         <p class="mb-0">
             {{ __('Sau khi thay đổi cài đặt, hãy nhấn nút "Lưu cấu hình" để lưu lại.') }}

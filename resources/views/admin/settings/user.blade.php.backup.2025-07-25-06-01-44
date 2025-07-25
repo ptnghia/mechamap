@@ -100,7 +100,7 @@
                             <h6 class="fw-bold mb-3">{{ 'Cấu hình mật khẩu' }}</h6>
 
                             <div class="mb-3">
-                                <label for="user_min_password_length" class="form-label">'Độ dài mật khẩu tối thiểu'</label>
+                                <label for="user_min_password_length" class="form-label">{{ __('Độ dài mật khẩu tối thiểu') }}</label>
                                 <input type="number"
                                     class="form-control @error('user_min_password_length') is-invalid @enderror"
                                     id="user_min_password_length" name="user_min_password_length"
@@ -121,7 +121,7 @@
                                         {{ 'Yêu cầu mật khẩu mạnh' }}
                                     </label>
                                 </div>
-                                <div class="form-text">'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt'</div>
+                                <div class="form-text">{{ __('Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt') }}</div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                             <h6 class="fw-bold mb-3">{{ 'Cấu hình tên người dùng' }}</h6>
 
                             <div class="mb-3">
-                                <label for="user_min_username_length" class="form-label">'Độ dài tên người dùng tối thiểu'</label>
+                                <label for="user_min_username_length" class="form-label">{{ __('Độ dài tên người dùng tối thiểu') }}</label>
                                 <input type="number"
                                     class="form-control @error('user_min_username_length') is-invalid @enderror"
                                     id="user_min_username_length" name="user_min_username_length"
@@ -155,7 +155,7 @@
                                         {{ 'Cho phép thay đổi tên người dùng' }}
                                     </label>
                                 </div>
-                                <div class="form-text">'Người dùng có thể thay đổi tên người dùng sau khi đăng ký'</div>
+                                <div class="form-text">{{ __('Người dùng có thể thay đổi tên người dùng sau khi đăng ký') }}</div>
                             </div>
                         </div>
 
@@ -164,7 +164,7 @@
                             <h6 class="fw-bold mb-3">{{ 'Cấu hình avatar' }}</h6>
 
                             <div class="mb-3">
-                                <label for="user_avatar_max_size" class="form-label">'Kích thước avatar tối đa (KB)'</label>
+                                <label for="user_avatar_max_size" class="form-label">{{ __('Kích thước avatar tối đa (KB)') }}</label>
                                 <input type="number"
                                     class="form-control @error('user_avatar_max_size') is-invalid @enderror"
                                     id="user_avatar_max_size" name="user_avatar_max_size"
@@ -177,7 +177,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="user_avatar_allowed_types" class="form-label">'Loại file avatar được phép'</label>
+                                <label for="user_avatar_allowed_types" class="form-label">{{ __('Loại file avatar được phép') }}</label>
                                 <input type="text"
                                     class="form-control @error('user_avatar_allowed_types') is-invalid @enderror"
                                     id="user_avatar_allowed_types" name="user_avatar_allowed_types"

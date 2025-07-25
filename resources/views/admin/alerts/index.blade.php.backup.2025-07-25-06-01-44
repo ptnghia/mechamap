@@ -129,7 +129,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="max_alerts_per_user" class="form-label">'Số thông báo tối đa/người dùng'</label>
+                                <label for="max_alerts_per_user" class="form-label">{{ __('Số thông báo tối đa/người dùng') }}</label>
                                 <input type="number"
                                     class="form-control @error('max_alerts_per_user') is-invalid @enderror"
                                     id="max_alerts_per_user" name="max_alerts_per_user"
@@ -195,7 +195,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="notify_admin_actions" class="form-label">'Thông báo hành động quản trị'</label>
+                                <label for="notify_admin_actions" class="form-label">{{ __('Thông báo hành động quản trị') }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notify_admin_actions"
                                         name="notify_admin_actions" value="1" {{ old('notify_admin_actions',
