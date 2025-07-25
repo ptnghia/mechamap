@@ -31,7 +31,7 @@
                 <div class="row mb-3">
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Tiêu đề') }} <span class="text-danger">*</span></label>
+                            <label for="title" class="form-label">{{ 'Tiêu đề' }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $page->title) }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="content" class="form-label">{{ __('Nội dung') }} <span class="text-danger">*</span></label>
+                            <label for="content" class="form-label">{{ 'Nội dung' }} <span class="text-danger">*</span></label>
                             <x-tinymce-editor
                                 name="content"
                                 id="content"
@@ -66,7 +66,7 @@
 
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label for="category_id" class="form-label">{{ __('Danh mục') }} <span class="text-danger">*</span></label>
+                            <label for="category_id" class="form-label">{{ 'Danh mục' }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
                                 <option value="">{{ __('Chọn danh mục') }}</option>
                                 @foreach($categories as $category)
@@ -79,10 +79,10 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="status" class="form-label">{{ __('Trạng thái') }}</label>
+                            <label for="status" class="form-label">{{ 'Trạng thái' }}</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                <option value="draft" {{ old('status', $page->status) == 'draft' ? 'selected' : '' }}>{{ __('Bản nháp') }}</option>
-                                <option value="published" {{ old('status', $page->status) == 'published' ? 'selected' : '' }}>{{ __('Xuất bản') }}</option>
+                                <option value="draft" {{ old('status', $page->status) == 'draft' ? 'selected' : '' }}>{{ 'Bản nháp' }}</option>
+                                <option value="published" {{ old('status', $page->status) == 'published' ? 'selected' : '' }}>{{ 'Xuất bản' }}</option>
                             </select>
                             @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -90,7 +90,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="order" class="form-label">{{ __('Thứ tự') }}</label>
+                            <label for="order" class="form-label">{{ 'Thứ tự' }}</label>
                             <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" value="{{ old('order', $page->order) }}" min="0">
                             @error('order')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="featured_image" class="form-label">{{ __('Ảnh đại diện') }}</label>
+                            <label for="featured_image" class="form-label">{{ 'Ảnh đại diện' }}</label>
                             @if($page->attachments->count() > 0)
                                 <div class="mb-2">
                                     <img src="{{ Storage::url($page->attachments->first()->file_path) }}" alt="{{ $page->title }}" class="img-thumbnail" style="max-height: 150px;">
@@ -125,7 +125,7 @@
                             <div class="card">
                                 <div class="card-body p-3">
                                     <div class="mb-2">
-                                        <label for="meta_title" class="form-label small">{{ __('Meta Title') }}</label>
+                                        <label for="meta_title" class="form-label small">{{ 'Meta Title' }}</label>
                                         <input type="text" class="form-control form-control-sm @error('meta_title') is-invalid @enderror" id="meta_title" name="meta_title" value="{{ old('meta_title', $page->meta_title) }}">
                                         @error('meta_title')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -133,7 +133,7 @@
                                     </div>
 
                                     <div class="mb-2">
-                                        <label for="meta_description" class="form-label small">{{ __('Meta Description') }}</label>
+                                        <label for="meta_description" class="form-label small">{{ 'Meta Description' }}</label>
                                         <textarea class="form-control form-control-sm @error('meta_description') is-invalid @enderror" id="meta_description" name="meta_description" rows="2">{{ old('meta_description', $page->meta_description) }}</textarea>
                                         @error('meta_description')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -141,7 +141,7 @@
                                     </div>
 
                                     <div>
-                                        <label for="meta_keywords" class="form-label small">{{ __('Meta Keywords') }}</label>
+                                        <label for="meta_keywords" class="form-label small">{{ 'Meta Keywords' }}</label>
                                         <input type="text" class="form-control form-control-sm @error('meta_keywords') is-invalid @enderror" id="meta_keywords" name="meta_keywords" value="{{ old('meta_keywords', $page->meta_keywords) }}">
                                         @error('meta_keywords')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -154,8 +154,8 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
                 </div>
             </form>
         </div>

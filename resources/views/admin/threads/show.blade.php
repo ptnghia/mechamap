@@ -20,14 +20,14 @@
 
 @section('actions')
     <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
     </a>
     @if($thread->status == 'pending')
         <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
-            <i class="fas fa-check me-1"></i> {{ __('Duyệt') }}
+            <i class="fas fa-check me-1"></i> {{ 'Duyệt' }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-            <i class="fas fa-times me-1"></i> {{ __('Từ chối') }}
+            <i class="fas fa-times me-1"></i> {{ 'Từ chối' }}
         </button>
     @endif
 @endsection
@@ -40,21 +40,21 @@
                     <h5 class="card-title mb-0">{{ $thread->title }}</h5>
                     <div>
                         @if($thread->status == 'draft')
-                            <span class="badge bg-secondary">{{ __('Bản nháp') }}</span>
+                            <span class="badge bg-secondary">{{ 'Bản nháp' }}</span>
                         @elseif($thread->status == 'pending')
-                            <span class="badge bg-warning">{{ __('Chờ duyệt') }}</span>
+                            <span class="badge bg-warning">{{ 'Chờ duyệt' }}</span>
                         @elseif($thread->status == 'published')
-                            <span class="badge bg-success">{{ __('Đã xuất bản') }}</span>
+                            <span class="badge bg-success">{{ 'Đã xuất bản' }}</span>
                         @elseif($thread->status == 'rejected')
-                            <span class="badge bg-danger">{{ __('Đã từ chối') }}</span>
+                            <span class="badge bg-danger">{{ 'Đã từ chối' }}</span>
                         @endif
 
                         @if($thread->is_sticky)
-                            <span class="badge bg-info">{{ __(__('forum.threads.pinned')) }}</span>
+                            <span class="badge bg-info">{{ __('Đã ghim') }}</span>
                         @endif
 
                         @if($thread->is_featured)
-                            <span class="badge bg-warning">{{ __('Nổi bật') }}</span>
+                            <span class="badge bg-warning">{{ 'Nổi bật' }}</span>
                         @endif
                     </div>
                 </div>
@@ -74,37 +74,37 @@
 
                     <hr>
 
-                    <h6 class="mb-3">{{ __('Thông tin chi tiết') }}</h6>
+                    <h6 class="mb-3">{{ 'Thông tin chi tiết' }}</h6>
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('ID') }}:</span>
+                                    <span>{{ 'ID' }}:</span>
                                     <span class="text-muted">{{ $thread->id }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Slug') }}:</span>
+                                    <span>{{ 'Slug' }}:</span>
                                     <span class="text-muted">{{ $thread->slug }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __(__('forum.forums.title')) }}:</span>
+                                    <span>{{ __('Diễn đàn') }}:</span>
                                     <span class="text-muted">{{ $thread->forum->name }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Chuyên mục') }}:</span>
+                                    <span>{{ 'Chuyên mục' }}:</span>
                                     <span class="text-muted">{{ $thread->category->name }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Trạng thái') }}:</span>
+                                    <span>{{ 'Trạng thái' }}:</span>
                                     <div>
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __(__('forum.threads.pinned')) }}</span>
+                                            <span class="badge bg-info me-1">{{ __('Đã ghim') }}</span>
                                         @endif
                                         @if($thread->is_locked)
-                                            <span class="badge bg-warning me-1">{{ __(__('forum.threads.locked')) }}</span>
+                                            <span class="badge bg-warning me-1">{{ __('Đã khóa') }}</span>
                                         @endif
                                         @if($thread->is_featured)
-                                            <span class="badge bg-success me-1">{{ __('Nổi bật') }}</span>
+                                            <span class="badge bg-success me-1">{{ 'Nổi bật' }}</span>
                                         @endif
                                         @if(!$thread->is_sticky && !$thread->is_locked && !$thread->is_featured)
                                             <span class="text-muted">{{ __('Bình thường') }}</span>
@@ -116,7 +116,7 @@
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __(__("common.views")) }}:</span>
+                                    <span>{{ 'Lượt xem' }}:</span>
                                     <span class="text-muted">{{ $thread->view_count }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
@@ -124,11 +124,11 @@
                                     <span class="text-muted">{{ $thread->comments->count() }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Ngày tạo') }}:</span>
+                                    <span>{{ 'Ngày tạo' }}:</span>
                                     <span class="text-muted">{{ $thread->created_at->format('d/m/Y H:i') }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Cập nhật lần cuối') }}:</span>
+                                    <span>{{ 'Cập nhật lần cuối' }}:</span>
                                     <span class="text-muted">{{ $thread->updated_at->format('d/m/Y H:i') }}</span>
                                 </li>
                             </ul>
@@ -139,7 +139,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Bình luận') }} ({{ $thread->comments->count() }})</h5>
+                    <h5 class="card-title mb-0">{{ 'Bình luận' }} ({{ $thread->comments->count() }})</h5>
                 </div>
                 <div class="card-body">
                     @forelse($thread->comments as $comment)
@@ -159,7 +159,7 @@
                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="commentActions{{ $comment->id }}">
                                                 <li>
                                                     <a class="dropdown-item" href="{{ route('admin.comments.edit', $comment) }}">
-                                                        <i class="fas fa-edit me-2"></i> {{ __('Chỉnh sửa') }}
+                                                        <i class="fas fa-edit me-2"></i> {{ 'Chỉnh sửa' }}
                                                     </a>
                                                 </li>
                                                 <li>
@@ -168,16 +168,16 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item">
                                                             @if($comment->is_hidden)
-                                                                <i class="fas fa-eye me-2"></i> {{ __('Hiện bình luận') }}
+                                                                <i class="fas fa-eye me-2"></i> {{ 'Hiện bình luận' }}
                                                             @else
-                                                                <i class="fas fa-eye-slash me-2"></i> {{ __('Ẩn bình luận') }}
+                                                                <i class="fas fa-eye-slash me-2"></i> {{ 'Ẩn bình luận' }}
                                                             @endif
                                                         </button>
                                                     </form>
                                                 </li>
                                                 <li>
                                                     <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteCommentModal{{ $comment->id }}">
-                                                        <i class="fas fa-trash me-2"></i> {{ __('Xóa') }}
+                                                        <i class="fas fa-trash me-2"></i> {{ 'Xóa' }}
                                                     </button>
                                                 </li>
                                             </ul>
@@ -186,12 +186,12 @@
                                     <div class="comment-content {{ $comment->is_hidden ? 'text-muted fst-italic' : '' }}">
                                         @if($comment->is_hidden)
                                             <div class="alert alert-warning py-1 px-2 mb-2">
-                                                <small><i class="fas fa-eye-slash me-1"></i> {{ __('Bình luận này đã bị ẩn') }}</small>
+                                                <small><i class="fas fa-eye-slash me-1"></i> {{ 'Bình luận này đã bị ẩn' }}</small>
                                             </div>
                                         @endif
                                         @if($comment->is_flagged)
                                             <div class="alert alert-danger py-1 px-2 mb-2">
-                                                <small><i class="fas fa-flag-fill me-1"></i> {{ __('Bình luận này đã bị đánh dấu') }}</small>
+                                                <small><i class="fas fa-flag-fill me-1"></i> {{ 'Bình luận này đã bị đánh dấu' }}</small>
                                             </div>
                                         @endif
                                         {!! $comment->content !!}
@@ -209,14 +209,14 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        {{ __('Bạn có chắc chắn muốn xóa bình luận này?') }}
+                                        {{ 'Bạn có chắc chắn muốn xóa bình luận này?' }}
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                         <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                            <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -239,12 +239,12 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thao tác') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thao tác' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-primary">
-                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
                         </a>
 
                         <!-- Moderation Actions -->
@@ -255,7 +255,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-outline-info w-100">
                                         <i class="fas fa-thumbtack me-1"></i>
-                                        {{ $thread->is_sticky ? __('Bỏ ghim') : __(__('forum.threads.pinned')) }}
+                                        {{ $thread->is_sticky ? 'Bỏ ghim' : __('Đã ghim') }}
                                     </button>
                                 </form>
                             </div>
@@ -265,7 +265,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-outline-warning w-100">
                                         <i class="fas fa-{{ $thread->is_locked ? 'unlock' : 'lock' }} me-1"></i>
-                                        {{ $thread->is_locked ? __('Mở khóa') : __(__('forum.threads.locked')) }}
+                                        {{ $thread->is_locked ? 'Mở khóa' : __('Đã khóa') }}
                                     </button>
                                 </form>
                             </div>
@@ -276,16 +276,16 @@
                             @method('PUT')
                             <button type="submit" class="btn btn-outline-success">
                                 <i class="fas fa-star me-1"></i>
-                                {{ $thread->is_featured ? __('Bỏ nổi bật') : __('Đánh dấu nổi bật') }}
+                                {{ $thread->is_featured ? 'Bỏ nổi bật' : 'Đánh dấu nổi bật' }}
                             </button>
                         </form>
 
                         @if($thread->status == 'pending')
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveModal">
-                                <i class="fas fa-check me-1"></i> {{ __('Duyệt bài đăng') }}
+                                <i class="fas fa-check me-1"></i> {{ 'Duyệt bài đăng' }}
                             </button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                                <i class="fas fa-times me-1"></i> {{ __('Từ chối bài đăng') }}
+                                <i class="fas fa-times me-1"></i> {{ 'Từ chối bài đăng' }}
                             </button>
                         @endif
 
@@ -298,7 +298,7 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin tác giả') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin tác giả' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
@@ -310,21 +310,21 @@
                     </div>
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mb-2">
-                            <span>{{ __('Bài đăng') }}:</span>
+                            <span>{{ 'Bài đăng' }}:</span>
                             <span class="badge bg-primary">{{ $thread->user->threads()->count() }}</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>{{ __('Bình luận') }}:</span>
+                            <span>{{ 'Bình luận' }}:</span>
                             <span class="badge bg-primary">{{ $thread->user->comments()->count() }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span>{{ __('Ngày tham gia') }}:</span>
+                            <span>{{ 'Ngày tham gia' }}:</span>
                             <span class="text-muted">{{ $thread->user->created_at->format('d/m/Y') }}</span>
                         </div>
                     </div>
                     <div class="d-grid">
                         <a href="{{ route('admin.users.show', $thread->user) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-user me-1"></i> {{ __('Xem hồ sơ') }}
+                            <i class="fas fa-user me-1"></i> {{ 'Xem hồ sơ' }}
                         </a>
                     </div>
                 </div>
@@ -344,11 +344,11 @@
                     {{ __('Bạn có chắc chắn muốn duyệt bài đăng này?') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                     <form action="{{ route('admin.threads.approve', $thread) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <button type="submit" class="btn btn-success">{{ __('Duyệt') }}</button>
+                        <button type="submit" class="btn btn-success">{{ 'Duyệt' }}</button>
                     </form>
                 </div>
             </div>
@@ -360,7 +360,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rejectModalLabel">{{ __('Từ chối bài đăng') }}</h5>
+                    <h5 class="modal-title" id="rejectModalLabel">{{ 'Từ chối bài đăng' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.threads.reject', $thread) }}" method="POST">
@@ -368,14 +368,14 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="reason" class="form-label">{{ __('Lý do từ chối') }}</label>
+                            <label for="reason" class="form-label">{{ 'Lý do từ chối' }}</label>
                             <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
                             <div class="form-text">{{ __('Lý do này sẽ được gửi cho tác giả.') }}</div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                        <button type="submit" class="btn btn-danger">{{ __('Từ chối') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Từ chối' }}</button>
                     </div>
                 </form>
             </div>
@@ -387,19 +387,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">{{ __('Xác nhận xóa') }}</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">{{ 'Xác nhận xóa' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ __('Bạn có chắc chắn muốn xóa bài đăng này?') }}
+                    {{ 'Bạn có chắc chắn muốn xóa bài đăng này?' }}
                     <p class="text-danger mt-2">{{ __('Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.') }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                     <form action="{{ route('admin.threads.destroy', $thread) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                     </form>
                 </div>
             </div>

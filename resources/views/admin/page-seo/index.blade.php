@@ -53,10 +53,10 @@
                         <thead class="table-light">
                             <tr>
                                 <th>{{ __('Trang') }}</th>
-                                <th>{{ __('Tiêu đề') }}</th>
-                                <th>{{ __('Trạng thái') }}</th>
-                                <th>{{ __('Cập nhật lần cuối') }}</th>
-                                <th width="120">{{ __('Thao tác') }}</th>
+                                <th>{{ 'Tiêu đề' }}</th>
+                                <th>{{ 'Trạng thái' }}</th>
+                                <th>{{ 'Cập nhật lần cuối' }}</th>
+                                <th width="120">{{ 'Thao tác' }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,9 +82,9 @@
                                     </td>
                                     <td>
                                         @if($page->is_active)
-                                            <span class="badge bg-success">{{ __('Hoạt động') }}</span>
+                                            <span class="badge bg-success">{{ 'Hoạt động' }}</span>
                                         @else
-                                            <span class="badge bg-secondary">{{ __('Không hoạt động') }}</span>
+                                            <span class="badge bg-secondary">{{ 'Không hoạt động' }}</span>
                                         @endif
 
                                         @if($page->no_index)
@@ -96,10 +96,10 @@
                                     <td>{{ $page->updated_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.page-seo.edit', $page) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Chỉnh sửa') }}">
+                                            <a href="{{ route('admin.page-seo.edit', $page) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ 'Chỉnh sửa' }}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $page->id }}" title="{{ __('Xóa') }}">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $page->id }}" title="{{ 'Xóa' }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -123,8 +123,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                                                            <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                                                            <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                         </div>
                                                     </form>
                                                 </div>

@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -28,24 +28,24 @@
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ 'Robots.txt' }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ 'Sitemap' }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ 'Social Media' }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ 'Cấu hình nâng cao' }}
                         </a>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -70,7 +70,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Cấu hình nâng cao') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Cấu hình nâng cao' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.seo.update-advanced') }}" method="POST">
@@ -105,7 +105,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="canonical_url" class="form-label">{{ __('Canonical URL') }}</label>
+                            <label for="canonical_url" class="form-label">{{ 'Canonical URL' }}</label>
                             <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" name="canonical_url" value="{{ old('canonical_url', $settings['canonical_url'] ?? '') }}">
                             <div class="form-text">{{ __('URL chính thức của trang web. Để trống để sử dụng URL hiện tại.') }}</div>
                             @error('canonical_url')
@@ -115,7 +115,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

@@ -21,17 +21,17 @@
 @section('actions')
     <div class="btn-group">
         <a href="{{ route('admin.statistics.users') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-users me-1"></i> {{ __('Người dùng') }}
+            <i class="fas fa-users me-1"></i> {{ 'Người dùng' }}
         </a>
         <a href="{{ route('admin.statistics.content') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-file-alt me-1"></i> {{ __('Nội dung') }}
+            <i class="fas fa-file-alt me-1"></i> {{ 'Nội dung' }}
         </a>
         <a href="{{ route('admin.statistics.interactions') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-chart-line me-1"></i> {{ __('Tương tác') }}
+            <i class="fas fa-chart-line me-1"></i> {{ 'Tương tác' }}
         </a>
     </div>
     <button type="button" class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#exportModal">
-        <i class="fas fa-download me-1"></i> {{ __('Xuất báo cáo') }}
+        <i class="fas fa-download me-1"></i> {{ 'Xuất báo cáo' }}
     </button>
 @endsection
 
@@ -41,7 +41,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-primary mb-2">{{ $overviewStats['users'] }}</div>
-                    <h5 class="card-title">{{ __('Người dùng') }}</h5>
+                    <h5 class="card-title">{{ 'Người dùng' }}</h5>
                     <p class="card-text text-muted">{{ __('Tổng số người dùng đã đăng ký') }}</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-success mb-2">{{ $overviewStats['threads'] }}</div>
-                    <h5 class="card-title">{{ __('Bài đăng') }}</h5>
+                    <h5 class="card-title">{{ 'Bài đăng' }}</h5>
                     <p class="card-text text-muted">{{ __('Tổng số bài đăng đã tạo') }}</p>
                 </div>
             </div>
@@ -59,7 +59,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-info mb-2">{{ $overviewStats['comments'] }}</div>
-                    <h5 class="card-title">{{ __('Bình luận') }}</h5>
+                    <h5 class="card-title">{{ 'Bình luận' }}</h5>
                     <p class="card-text text-muted">{{ __('Tổng số bình luận đã đăng') }}</p>
                 </div>
             </div>
@@ -68,7 +68,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-warning mb-2">{{ $overviewStats['forums'] }}</div>
-                    <h5 class="card-title">{{ __(__('forum.forums.title')) }}</h5>
+                    <h5 class="card-title">{{ __('Diễn đàn') }}</h5>
                     <p class="card-text text-muted">{{ __('Tổng số diễn đàn đã tạo') }}</p>
                 </div>
             </div>
@@ -102,7 +102,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hoạt động gần đây') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hoạt động gần đây' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -110,27 +110,27 @@
                             <thead>
                                 <tr>
                                     <th>{{ __('Loại') }}</th>
-                                    <th>{{ __('Nội dung') }}</th>
-                                    <th>{{ __('Người dùng') }}</th>
+                                    <th>{{ 'Nội dung' }}</th>
+                                    <th>{{ 'Người dùng' }}</th>
                                     <th>{{ __('Thời gian') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Dữ liệu mẫu - sẽ được thay thế bằng dữ liệu thực tế -->
                                 <tr>
-                                    <td><span class="badge bg-primary">{{ __('Bài đăng') }}</span></td>
+                                    <td><span class="badge bg-primary">{{ 'Bài đăng' }}</span></td>
                                     <td>{{ __('Bài đăng mới đã được tạo') }}</td>
                                     <td>{{ __('Người dùng A') }}</td>
                                     <td>{{ now()->subHours(2)->format('d/m/Y H:i') }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="badge bg-info">{{ __('Bình luận') }}</span></td>
+                                    <td><span class="badge bg-info">{{ 'Bình luận' }}</span></td>
                                     <td>{{ __('Bình luận mới đã được đăng') }}</td>
                                     <td>{{ __('Người dùng B') }}</td>
                                     <td>{{ now()->subHours(3)->format('d/m/Y H:i') }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="badge bg-success">{{ __(__('nav.auth.register')) }}</span></td>
+                                    <td><span class="badge bg-success">{{ __('Đăng ký') }}</span></td>
                                     <td>{{ __('Người dùng mới đã đăng ký') }}</td>
                                     <td>{{ __('Người dùng C') }}</td>
                                     <td>{{ now()->subHours(5)->format('d/m/Y H:i') }}</td>
@@ -148,23 +148,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exportModalLabel">{{ __('Xuất báo cáo thống kê') }}</h5>
+                    <h5 class="modal-title" id="exportModalLabel">{{ 'Xuất báo cáo thống kê' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.statistics.export') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="type" class="form-label">{{ __('Loại báo cáo') }}</label>
+                            <label for="type" class="form-label">{{ 'Loại báo cáo' }}</label>
                             <select class="form-select" id="type" name="type">
-                                <option value="overview">{{ __('Tổng quan') }}</option>
-                                <option value="users">{{ __('Người dùng') }}</option>
-                                <option value="content">{{ __('Nội dung') }}</option>
-                                <option value="interactions">{{ __('Tương tác') }}</option>
+                                <option value="overview">{{ 'Tổng quan' }}</option>
+                                <option value="users">{{ 'Người dùng' }}</option>
+                                <option value="content">{{ 'Nội dung' }}</option>
+                                <option value="interactions">{{ 'Tương tác' }}</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="format" class="form-label">{{ __('Định dạng') }}</label>
+                            <label for="format" class="form-label">{{ 'Định dạng' }}</label>
                             <select class="form-select" id="format" name="format">
                                 <option value="csv">CSV</option>
                                 <option value="excel">Excel</option>
@@ -173,8 +173,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ __('Xuất báo cáo') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-primary">{{ 'Xuất báo cáo' }}</button>
                     </div>
                 </form>
             </div>
@@ -243,7 +243,7 @@
         const contentDistributionChart = new Chart(contentDistributionChartCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Bài đăng', 'Bình luận', 'Người dùng', __('forum.forums.title')],
+                labels: ['Bài đăng', 'Bình luận', 'Người dùng', 'Diễn đàn'],
                 datasets: [{
                     data: [{{ $overviewStats['threads'] }}, {{ $overviewStats['comments'] }}, {{ $overviewStats['users'] }}, {{ $overviewStats['forums'] }}],
                     backgroundColor: [

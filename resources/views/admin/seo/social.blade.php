@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -28,24 +28,24 @@
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ 'Robots.txt' }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ 'Sitemap' }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ 'Social Media' }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ 'Cấu hình nâng cao' }}
                         </a>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -67,12 +67,12 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Xem trước') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Xem trước' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="social-preview facebook-preview mb-4">
                         <h6 class="text-muted mb-2">
-                            <i class="fab fa-facebook me-1"></i> {{ __('Facebook') }}
+                            <i class="fab fa-facebook me-1"></i> {{ 'Facebook' }}
                         </h6>
                         <div class="card">
                             <div class="card-img-top bg-light text-center py-3" style="height: 150px;" id="og-image-preview">
@@ -116,7 +116,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Cấu hình Open Graph (Facebook, LinkedIn, ...)') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Cấu hình Open Graph (Facebook, LinkedIn, ...)' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.seo.update-social') }}" method="POST" enctype="multipart/form-data">
@@ -124,7 +124,7 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="og_title" class="form-label">{{ __('Tiêu đề Open Graph') }}</label>
+                            <label for="og_title" class="form-label">{{ 'Tiêu đề Open Graph' }}</label>
                             <input type="text" class="form-control @error('og_title') is-invalid @enderror" id="og_title" name="og_title" value="{{ old('og_title', $settings['og_title'] ?? '') }}">
                             <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_title')
@@ -133,7 +133,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="og_description" class="form-label">{{ __('Mô tả Open Graph') }}</label>
+                            <label for="og_description" class="form-label">{{ 'Mô tả Open Graph' }}</label>
                             <textarea class="form-control @error('og_description') is-invalid @enderror" id="og_description" name="og_description" rows="3">{{ old('og_description', $settings['og_description'] ?? '') }}</textarea>
                             <div class="form-text">{{ __('Mô tả khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_description')
@@ -142,7 +142,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="og_image" class="form-label">{{ __('Hình ảnh Open Graph') }}</label>
+                            <label for="og_image" class="form-label">{{ 'Hình ảnh Open Graph' }}</label>
                             <input type="file" class="form-control @error('og_image') is-invalid @enderror" id="og_image" name="og_image">
                             <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.') }}</div>
                             @error('og_image')
@@ -173,7 +173,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="twitter_title" class="form-label">{{ __('Tiêu đề Twitter') }}</label>
+                            <label for="twitter_title" class="form-label">{{ 'Tiêu đề Twitter' }}</label>
                             <input type="text" class="form-control @error('twitter_title') is-invalid @enderror" id="twitter_title" name="twitter_title" value="{{ old('twitter_title', $settings['twitter_title'] ?? '') }}">
                             <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang web của bạn trên Twitter.') }}</div>
                             @error('twitter_title')
@@ -182,7 +182,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="twitter_description" class="form-label">{{ __('Mô tả Twitter') }}</label>
+                            <label for="twitter_description" class="form-label">{{ 'Mô tả Twitter' }}</label>
                             <textarea class="form-control @error('twitter_description') is-invalid @enderror" id="twitter_description" name="twitter_description" rows="3">{{ old('twitter_description', $settings['twitter_description'] ?? '') }}</textarea>
                             <div class="form-text">{{ __('Mô tả khi chia sẻ trang web của bạn trên Twitter.') }}</div>
                             @error('twitter_description')
@@ -191,7 +191,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="twitter_image" class="form-label">{{ __('Hình ảnh Twitter') }}</label>
+                            <label for="twitter_image" class="form-label">{{ 'Hình ảnh Twitter' }}</label>
                             <input type="file" class="form-control @error('twitter_image') is-invalid @enderror" id="twitter_image" name="twitter_image">
                             <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang web của bạn trên Twitter. Kích thước tối thiểu: 1200x600 pixels.') }}</div>
                             @error('twitter_image')
@@ -207,7 +207,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

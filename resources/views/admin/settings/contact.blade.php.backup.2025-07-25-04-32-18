@@ -1,0 +1,159 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Thông tin liên hệ')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Thông tin liên hệ</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Thông tin liên hệ</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            @include('admin.settings.partials.sidebar')
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ 'Thông tin liên hệ' }}</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.settings.update-contact') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="contact_email" class="form-label">{{ __('Email liên hệ') }}</label>
+                                <input type="email" class="form-control @error('contact_email') is-invalid @enderror" id="contact_email" name="contact_email" value="{{ old('contact_email', $settings['contact_email'] ?? '') }}">
+                                <div class="form-text">{{ __('Địa chỉ email hiển thị trên trang liên hệ.') }}</div>
+                                @error('contact_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="contact_phone" class="form-label">{{ __('Số điện thoại liên hệ') }}</label>
+                                <input type="text" class="form-control @error('contact_phone') is-invalid @enderror" id="contact_phone" name="contact_phone" value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}">
+                                <div class="form-text">{{ __('Số điện thoại hiển thị trên trang liên hệ.') }}</div>
+                                @error('contact_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="contact_address" class="form-label">{{ __('Địa chỉ liên hệ') }}</label>
+                            <textarea class="form-control @error('contact_address') is-invalid @enderror" id="contact_address" name="contact_address" rows="2">{{ old('contact_address', $settings['contact_address'] ?? '') }}</textarea>
+                            <div class="form-text">{{ __('Địa chỉ hiển thị trên trang liên hệ.') }}</div>
+                            @error('contact_address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="contact_working_hours" class="form-label">{{ __('Giờ làm việc') }}</label>
+                            <input type="text" class="form-control @error('contact_working_hours') is-invalid @enderror" id="contact_working_hours" name="contact_working_hours" value="{{ old('contact_working_hours', $settings['contact_working_hours'] ?? '') }}">
+                            <div class="form-text">{{ __('Giờ làm việc hiển thị trên trang liên hệ. Ví dụ: Thứ 2 - Thứ 6: 8:00 - 17:00') }}</div>
+                            @error('contact_working_hours')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="contact_map_embed" class="form-label">{{ __('Mã nhúng Google Maps') }}</label>
+                            <textarea class="form-control @error('contact_map_embed') is-invalid @enderror" id="contact_map_embed" name="contact_map_embed" rows="3">{{ old('contact_map_embed', $settings['contact_map_embed'] ?? '') }}</textarea>
+                            <div class="form-text">{{ __('Mã nhúng Google Maps hiển thị trên trang liên hệ.') }}</div>
+                            @error('contact_map_embed')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="contact_latitude" class="form-label">{{ __('Vĩ độ (Latitude)') }}</label>
+                                <input type="text" class="form-control @error('contact_latitude') is-invalid @enderror" id="contact_latitude" name="contact_latitude" value="{{ old('contact_latitude', $settings['contact_latitude'] ?? '') }}">
+                                <div class="form-text">{{ __('Vĩ độ của địa điểm trên bản đồ.') }}</div>
+                                @error('contact_latitude')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="contact_longitude" class="form-label">{{ __('Kinh độ (Longitude)') }}</label>
+                                <input type="text" class="form-control @error('contact_longitude') is-invalid @enderror" id="contact_longitude" name="contact_longitude" value="{{ old('contact_longitude', $settings['contact_longitude'] ?? '') }}">
+                                <div class="form-text">{{ __('Kinh độ của địa điểm trên bản đồ.') }}</div>
+                                @error('contact_longitude')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            @if(!empty($settings['contact_map_embed'] ?? ''))
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ __('Xem trước bản đồ') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="ratio ratio-16x9">
+                            {!! $settings['contact_map_embed'] !!}
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+<script>
+    // Preview map embed
+    document.getElementById('contact_map_embed').addEventListener('input', function() {
+        const mapEmbed = this.value;
+        const previewCard = document.querySelector('.card.mt-4');
+        
+        if (mapEmbed) {
+            if (previewCard) {
+                const mapContainer = previewCard.querySelector('.ratio');
+                mapContainer.innerHTML = mapEmbed;
+            } else {
+                const card = document.createElement('div');
+                card.className = 'card mt-4';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">${__('Xem trước bản đồ')}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="ratio ratio-16x9">
+                            ${mapEmbed}
+                        </div>
+                    </div>
+                `;
+                document.querySelector('.col-md-9').appendChild(card);
+            }
+        } else if (previewCard) {
+            previewCard.remove();
+        }
+    });
+</script>
+@endpush

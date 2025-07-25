@@ -20,10 +20,10 @@
 
 @section('actions')
     <a href="{{ route('admin.media.edit', $media) }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
     </a>
     <a href="{{ route('admin.media.download', $media) }}" class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
+        <i class="fas fa-download me-1"></i> {{ 'Tải xuống' }}
     </a>
 @endsection
 
@@ -32,7 +32,7 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Xem trước') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Xem trước' }}</h5>
                 </div>
                 <div class="card-body text-center">
                     @if(strpos($media->file_type, 'image') !== false)
@@ -40,12 +40,12 @@
                     @elseif(strpos($media->file_type, 'video') !== false)
                         <video controls class="w-100" style="max-height: 500px;">
                             <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->file_type }}">
-                            {{ __('Trình duyệt của bạn không hỗ trợ video.') }}
+                            {{ 'Trình duyệt của bạn không hỗ trợ video.' }}
                         </video>
                     @elseif(strpos($media->file_type, 'audio') !== false)
                         <audio controls class="w-100">
                             <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->mime_type }}">
-                            {{ __('Trình duyệt của bạn không hỗ trợ audio.') }}
+                            {{ 'Trình duyệt của bạn không hỗ trợ audio.' }}
                         </audio>
                     @elseif(strpos($media->mime_type, 'pdf') !== false)
                         <div class="ratio ratio-16x9" style="max-height: 500px;">
@@ -66,7 +66,7 @@
                             @endif
                             <p class="mt-3">{{ __('Không thể xem trước file này.') }}</p>
                             <a href="{{ route('admin.media.download', $media) }}" class="btn btn-primary">
-                                <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
+                                <i class="fas fa-download me-1"></i> {{ 'Tải xuống' }}
                             </a>
                         </div>
                     @endif
@@ -76,7 +76,7 @@
             @if($media->description)
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Mô tả') }}</h5>
+                        <h5 class="card-title mb-0">{{ 'Mô tả' }}</h5>
                     </div>
                     <div class="card-body">
                         {{ $media->description }}
@@ -93,35 +93,35 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('ID') }}:</span>
+                            <span>{{ 'ID' }}:</span>
                             <span class="text-muted">{{ $media->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Tiêu đề') }}:</span>
+                            <span>{{ 'Tiêu đề' }}:</span>
                             <span class="text-muted">{{ $media->title }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Tên file') }}:</span>
+                            <span>{{ 'Tên file' }}:</span>
                             <span class="text-muted text-truncate" style="max-width: 200px;">{{ $media->file_name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Loại file') }}:</span>
+                            <span>{{ 'Loại file' }}:</span>
                             <span class="text-muted">{{ $media->file_type }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Kích thước') }}:</span>
+                            <span>{{ 'Kích thước' }}:</span>
                             <span class="text-muted">{{ formatFileSize($media->file_size) }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Người tải lên') }}:</span>
+                            <span>{{ 'Người tải lên' }}:</span>
                             <span class="text-muted">{{ $media->user->name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Ngày tải lên') }}:</span>
+                            <span>{{ 'Ngày tải lên' }}:</span>
                             <span class="text-muted">{{ $media->created_at->format('d/m/Y H:i') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Cập nhật lần cuối') }}:</span>
+                            <span>{{ 'Cập nhật lần cuối' }}:</span>
                             <span class="text-muted">{{ $media->updated_at->format('d/m/Y H:i') }}</span>
                         </li>
                     </ul>
@@ -130,18 +130,18 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thao tác') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thao tác' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.media.edit', $media) }}" class="btn btn-primary">
-                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
                         </a>
                         <a href="{{ route('admin.media.download', $media) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-download me-1"></i> {{ __('Tải xuống') }}
+                            <i class="fas fa-download me-1"></i> {{ 'Tải xuống' }}
                         </a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="fas fa-trash me-1"></i> {{ __('Xóa') }}
+                            <i class="fas fa-trash me-1"></i> {{ 'Xóa' }}
                         </button>
                     </div>
                 </div>
@@ -171,18 +171,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">{{ __('Xác nhận xóa') }}</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">{{ 'Xác nhận xóa' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ __('Bạn có chắc chắn muốn xóa file này?') }}
+                    {{ 'Bạn có chắc chắn muốn xóa file này?' }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                     <form action="{{ route('admin.media.destroy', $media) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                     </form>
                 </div>
             </div>

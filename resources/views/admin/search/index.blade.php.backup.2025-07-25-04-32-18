@@ -1,0 +1,292 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Cấu hình tìm kiếm')
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Cấu hình tìm kiếm</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Cấu hình tìm kiếm</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('actions')
+<div class="btn-group">
+    <a href="{{ route('admin.search.reindex') }}" class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-sync-alt me-1"></i> {{ __('Đánh chỉ mục lại') }}
+    </a>
+    <a href="{{ route('admin.search.test') }}" class="btn btn-sm btn-outline-success">
+        <i class="fas fa-search me-1"></i> {{ __('Kiểm tra tìm kiếm') }}
+    </a>
+    <a href="{{ route('admin.search.analytics') }}" class="btn btn-sm btn-outline-info">
+        <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
+    </a>
+</div>
+@endsection
+
+@section('content')
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <a href="{{ route('admin.search.index') }}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
+                    </a>
+                    <a href="{{ route('admin.search.reindex') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-sync-alt me-2"></i> {{ __('Đánh chỉ mục lại') }}
+                    </a>
+                    <a href="{{ route('admin.search.test') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-search me-2"></i> {{ __('Kiểm tra tìm kiếm') }}
+                    </a>
+                    <a href="{{ route('admin.search.analytics') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-chart-bar me-2"></i> {{ __('Thống kê tìm kiếm') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{ __('Cấu hình hệ thống tìm kiếm để tối ưu hóa trải nghiệm người dùng.') }}
+                </p>
+                <ul class="mb-0">
+                    <li>{{ __('Kích hoạt tìm kiếm nâng cao cho kết quả chính xác hơn.') }}</li>
+                    <li>{{ __('Đánh chỉ mục định kỳ để cập nhật nội dung mới.') }}</li>
+                    <li>{{ __('Theo dõi thống kê để hiểu hành vi tìm kiếm.') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Cấu hình tìm kiếm') }}</h5>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.search.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="search_enabled" class="form-label">{{ __('Bật tìm kiếm') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="search_enabled"
+                                        name="search_enabled" value="1" {{ old('search_enabled',
+                                        $settings['search_enabled'] ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="search_enabled">
+                                        {{ __('Cho phép người dùng tìm kiếm trên trang web') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="search_type" class="form-label">{{ __('Loại tìm kiếm') }}</label>
+                                <select class="form-select @error('search_type') is-invalid @enderror" id="search_type"
+                                    name="search_type">
+                                    <option value="basic" {{ old('search_type', $settings['search_type'] ?? 'basic'
+                                        )=='basic' ? 'selected' : '' }}>{{ __('Cơ bản') }}</option>
+                                    <option value="advanced" {{ old('search_type', $settings['search_type'] ?? 'basic'
+                                        )=='advanced' ? 'selected' : '' }}>{{ __('Nâng cao') }}</option>
+                                    <option value="fulltext" {{ old('search_type', $settings['search_type'] ?? 'basic'
+                                        )=='fulltext' ? 'selected' : '' }}>{{ __('Full-text') }}</option>
+                                </select>
+                                @error('search_type')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="results_per_page" class="form-label">{{ __('Kết quả mỗi trang') }}</label>
+                                <input type="number"
+                                    class="form-control @error('results_per_page') is-invalid @enderror"
+                                    id="results_per_page" name="results_per_page"
+                                    value="{{ old('results_per_page', $settings['results_per_page'] ?? 20) }}" min="5"
+                                    max="100">
+                                @error('results_per_page')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="min_search_length" class="form-label">{{ __('Độ dài tối thiểu') }}</label>
+                                <input type="number"
+                                    class="form-control @error('min_search_length') is-invalid @enderror"
+                                    id="min_search_length" name="min_search_length"
+                                    value="{{ old('min_search_length', $settings['min_search_length'] ?? 3) }}" min="1"
+                                    max="10">
+                                <div class="form-text">{{ __('Số ký tự tối thiểu để thực hiện tìm kiếm') }}</div>
+                                @error('min_search_length')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="auto_suggest" class="form-label">{{ __('Gợi ý tự động') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="auto_suggest"
+                                        name="auto_suggest" value="1" {{ old('auto_suggest', $settings['auto_suggest']
+                                        ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="auto_suggest">
+                                        {{ __('Hiển thị gợi ý trong khi gõ') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="search_in_titles" class="form-label">{{ __('Tìm trong tiêu đề') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="search_in_titles"
+                                        name="search_in_titles" value="1" {{ old('search_in_titles',
+                                        $settings['search_in_titles'] ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="search_in_titles">
+                                        {{ __('Tìm kiếm trong tiêu đề bài viết') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="search_in_content" class="form-label">{{ __('Tìm trong nội dung') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="search_in_content"
+                                        name="search_in_content" value="1" {{ old('search_in_content',
+                                        $settings['search_in_content'] ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="search_in_content">
+                                        {{ __('Tìm kiếm trong nội dung bài viết') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="search_in_comments" class="form-label">{{ __('Tìm trong bình luận')
+                                    }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="search_in_comments"
+                                        name="search_in_comments" value="1" {{ old('search_in_comments',
+                                        $settings['search_in_comments'] ?? false) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="search_in_comments">
+                                        {{ __('Tìm kiếm trong bình luận') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="enable_highlighting" class="form-label">{{ __('Làm nổi bật từ khóa')
+                                    }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="enable_highlighting"
+                                        name="enable_highlighting" value="1" {{ old('enable_highlighting',
+                                        $settings['enable_highlighting'] ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="enable_highlighting">
+                                        {{ __('Làm nổi bật từ khóa tìm kiếm trong kết quả') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="cache_results" class="form-label">{{ __('Cache kết quả') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="cache_results"
+                                        name="cache_results" value="1" {{ old('cache_results',
+                                        $settings['cache_results'] ?? false) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="cache_results">
+                                        {{ __('Lưu cache kết quả tìm kiếm để tăng tốc độ') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="log_searches" class="form-label">{{ __('Ghi log tìm kiếm') }}</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="log_searches"
+                                        name="log_searches" value="1" {{ old('log_searches', $settings['log_searches']
+                                        ?? true) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="log_searches">
+                                        {{ __('Ghi log để theo dõi thống kê tìm kiếm') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-top pt-3 mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check me-1"></i> {{ 'Lưu cấu hình' }}
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-sync-alt me-1"></i> {{ __('Đặt lại') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if(isset($lastIndexed))
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{{ __('Thông tin chỉ mục') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="h4 text-primary">{{ $indexStats['total'] ?? 0 }}</div>
+                            <div class="text-muted">{{ __('Tổng số mục đã đánh chỉ mục') }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="h4 text-success">{{ $lastIndexed->format('d/m/Y H:i') }}</div>
+                            <div class="text-muted">{{ __('Lần đánh chỉ mục cuối') }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="h4 text-info">{{ $indexStats['pending'] ?? 0 }}</div>
+                            <div class="text-muted">{{ __('Đang chờ đánh chỉ mục') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Auto-save draft
+    const form = document.querySelector('form');
+    if (form) {
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('change', function() {
+                // You can add auto-save functionality here
+                console.log('Setting changed:', this.name, this.value);
+            });
+        });
+    }
+});
+</script>
+@endpush

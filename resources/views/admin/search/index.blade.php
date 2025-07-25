@@ -26,7 +26,7 @@
         <i class="fas fa-search me-1"></i> {{ __('Kiểm tra tìm kiếm') }}
     </a>
     <a href="{{ route('admin.search.analytics') }}" class="btn btn-sm btn-outline-info">
-        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
     </a>
 </div>
 @endsection
@@ -36,12 +36,12 @@
     <div class="col-md-3 mb-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
                     <a href="{{ route('admin.search.index') }}" class="list-group-item list-group-item-action active">
-                        <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                        <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                     </a>
                     <a href="{{ route('admin.search.reindex') }}" class="list-group-item list-group-item-action">
                         <i class="fas fa-sync-alt me-2"></i> {{ __('Đánh chỉ mục lại') }}
@@ -58,7 +58,7 @@
 
         <div class="card mt-4">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
             </div>
             <div class="card-body">
                 <p class="card-text">
@@ -230,10 +230,10 @@
 
                     <div class="border-top pt-3 mt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
+                            <i class="fas fa-check me-1"></i> {{ 'Lưu cấu hình' }}
                         </button>
                         <button type="reset" class="btn btn-outline-secondary ms-2">
-                            <i class="fas fa-sync-alt me-1"></i> {{ __('Đặt lại') }}
+                            <i class="fas fa-sync-alt me-1"></i> {{ 'Đặt lại' }}
                         </button>
                     </div>
                 </form>

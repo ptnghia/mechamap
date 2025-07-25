@@ -202,10 +202,10 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('admin.settings.general') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+                            <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
+                            <i class="fas fa-check me-1"></i> {{ 'Lưu cấu hình' }}
                         </button>
                     </div>
                 </form>

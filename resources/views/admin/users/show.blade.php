@@ -5,19 +5,19 @@
 
 @section('actions')
     <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary me-2">
-        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
     </a>
     <div class="btn-group me-2">
         <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal">
             <i class="{{ $user->banned_at ? 'person-check me-1' : 'person-x me-1' }}"></i>
-            {{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}
+            {{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}
         </button>
         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-            <i class="fas fa-trash me-1"></i> {{ __('Xóa') }}
+            <i class="fas fa-trash me-1"></i> {{ 'Xóa' }}
         </button>
     </div>
     <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -30,19 +30,19 @@
                     <h5 class="card-title">{{ $user->name }}</h5>
                     <p class="text-muted">
                         @if($user->isAdmin())
-                            <span class="badge bg-danger">{{ __('Admin') }}</span>
+                            <span class="badge bg-danger">{{ 'Admin' }}</span>
                         @elseif($user->isModerator())
-                            <span class="badge bg-primary">{{ __('Moderator') }}</span>
+                            <span class="badge bg-primary">{{ 'Moderator' }}</span>
                         @elseif($user->isSenior())
-                            <span class="badge bg-success">{{ __('Senior') }}</span>
+                            <span class="badge bg-success">{{ 'Senior' }}</span>
                         @else
-                            <span class="badge bg-secondary">{{ __('Member') }}</span>
+                            <span class="badge bg-secondary">{{ 'Thành viên' }}</span>
                         @endif
 
                         @if($user->banned_at)
-                            <span class="badge bg-danger ms-1">{{ __('Bị cấm') }}</span>
+                            <span class="badge bg-danger ms-1">{{ 'Bị cấm' }}</span>
                         @elseif($user->isOnline())
-                            <span class="badge bg-success ms-1">{{ __('Online') }}</span>
+                            <span class="badge bg-success ms-1">{{ 'Online' }}</span>
                         @endif
                     </p>
                     <p class="card-text">
@@ -85,12 +85,12 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label text-muted">{{ __('Ngày tham gia') }}</label>
+                        <label class="form-label text-muted">{{ 'Ngày tham gia' }}</label>
                         <p>{{ $user->created_at->format('d/m/Y H:i:s') }}</p>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-muted">{{ __('Hoạt động lần cuối') }}</label>
-                        <p>{{ $user->last_seen_at ? $user->last_seen_at->format('d/m/Y H:i:s') : __('Chưa có') }}</p>
+                        <label class="form-label text-muted">{{ 'Hoạt động lần cuối' }}</label>
+                        <p>{{ $user->last_seen_at ? $user->last_seen_at->format('d/m/Y H:i:s') : 'Chưa có' }}</p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-muted">{{ __('Email đã xác thực') }}</label>
@@ -270,7 +270,7 @@
             @if($user->about_me)
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Giới thiệu') }}</h5>
+                        <h5 class="card-title mb-0">{{ 'Giới thiệu' }}</h5>
                     </div>
                     <div class="card-body">
                         {{ $user->about_me }}
@@ -281,7 +281,7 @@
             @if($user->signature)
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Chữ ký') }}</h5>
+                        <h5 class="card-title mb-0">{{ 'Chữ ký' }}</h5>
                     </div>
                     <div class="card-body">
                         {{ $user->signature }}
@@ -297,7 +297,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="banModalLabel">
-                        {{ $user->banned_at ? __('Bỏ cấm thành viên') : __('Cấm thành viên') }}
+                        {{ $user->banned_at ? 'Bỏ cấm thành viên' : 'Cấm thành viên' }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -306,22 +306,22 @@
                     @method('PUT')
                     <div class="modal-body">
                         @if($user->banned_at)
-                            <p>{{ __('Bạn có chắc chắn muốn bỏ cấm thành viên này?') }}</p>
+                            <p>{{ 'Bạn có chắc chắn muốn bỏ cấm thành viên này?' }}</p>
                             <div class="alert alert-info">
-                                <strong>{{ __('Lý do cấm:') }}</strong> {{ $user->banned_reason }}
+                                <strong>{{ 'Lý do cấm:' }}</strong> {{ $user->banned_reason }}
                             </div>
                         @else
-                            <p>{{ __('Bạn có chắc chắn muốn cấm thành viên này?') }}</p>
+                            <p>{{ 'Bạn có chắc chắn muốn cấm thành viên này?' }}</p>
                             <div class="mb-3">
-                                <label for="reason" class="form-label">{{ __('Lý do cấm') }}</label>
+                                <label for="reason" class="form-label">{{ 'Lý do cấm' }}</label>
                                 <textarea class="form-control" id="reason" name="reason" rows="3" required>Vi phạm nội quy</textarea>
                             </div>
                         @endif
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                         <button type="submit" class="btn {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}">
-                            {{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}
+                            {{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}
                         </button>
                     </div>
                 </form>
@@ -341,15 +341,15 @@
                     @csrf
                     @method('DELETE')
                     <div class="modal-body">
-                        <p>{{ __('Bạn có chắc chắn muốn xóa thành viên này?') }}</p>
+                        <p>{{ 'Bạn có chắc chắn muốn xóa thành viên này?' }}</p>
                         <div class="alert alert-danger">
                             <i class="fas fa-exclamation-triangle-fill me-2"></i>
                             {{ __('Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.') }}
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                     </div>
                 </form>
             </div>

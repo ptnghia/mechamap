@@ -81,11 +81,11 @@
                                     id="user_default_role" name="user_default_role" required>
                                     <option value="member" {{ old('user_default_role', $settings['user_default_role']
                                         ?? 'member' )=='member' ? 'selected' : '' }}>
-                                        {{ __('Thành viên') }}
+                                        {{ 'Thành viên' }}
                                     </option>
                                     <option value="guest" {{ old('user_default_role', $settings['user_default_role']
                                         ?? 'member' )=='guest' ? 'selected' : '' }}>
-                                        {{ __('Khách') }}
+                                        {{ 'Khách' }}
                                     </option>
                                 </select>
                                 <div class="form-text">{{ __('Vai trò được gán cho người dùng mới đăng ký') }}</div>
@@ -251,10 +251,10 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('admin.settings.general') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+                            <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
+                            <i class="fas fa-check me-1"></i> {{ 'Lưu cấu hình' }}
                         </button>
                     </div>
                 </form>

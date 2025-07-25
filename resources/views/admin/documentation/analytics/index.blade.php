@@ -292,7 +292,7 @@
 // Views Chart
 var viewsOptions = {
     series: [{
-        name: __("common.views"),
+        name: 'Lượt xem',
         data: @json(array_values($viewsData['daily_views']->toArray()))
     }, {
         name: 'Lượt xem duy nhất',

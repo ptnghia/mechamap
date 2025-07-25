@@ -23,7 +23,7 @@
         <i class="fas fa-bell me-1"></i> {{ __('Kiểm tra thông báo') }}
     </a>
     <a href="{{ route('admin.alerts.statistics') }}" class="btn btn-sm btn-outline-info">
-        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
     </a>
 </div>
 @endsection
@@ -33,12 +33,12 @@
     <div class="col-md-3 mb-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
             </div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
                     <a href="{{ route('admin.alerts.index') }}" class="list-group-item list-group-item-action active">
-                        <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                        <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                     </a>
                     <a href="{{ route('admin.alerts.test') }}" class="list-group-item list-group-item-action">
                         <i class="fas fa-bell me-2"></i> {{ __('Kiểm tra thông báo') }}
@@ -52,7 +52,7 @@
 
         <div class="card mt-4">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
             </div>
             <div class="card-body">
                 <p class="card-text">
@@ -79,7 +79,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h6 class="text-primary mb-3">{{ __('Cấu hình chung') }}</h6>
+                            <h6 class="text-primary mb-3">{{ 'Cấu hình chung' }}</h6>
 
                             <div class="mb-3">
                                 <label for="alerts_enabled" class="form-label">{{ __('Bật hệ thống thông báo')
@@ -249,7 +249,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <h6 class="text-warning mb-3">{{ __('Cấu hình nâng cao') }}</h6>
+                            <h6 class="text-warning mb-3">{{ 'Cấu hình nâng cao' }}</h6>
 
                             <div class="mb-3">
                                 <label for="batch_processing" class="form-label">{{ __('Xử lý hàng loạt') }}</label>
@@ -279,10 +279,10 @@
 
                     <div class="border-top pt-3 mt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check me-1"></i> {{ __('Lưu cấu hình') }}
+                            <i class="fas fa-check me-1"></i> {{ 'Lưu cấu hình' }}
                         </button>
                         <button type="reset" class="btn btn-outline-secondary ms-2">
-                            <i class="fas fa-sync-alt me-1"></i> {{ __('Đặt lại') }}
+                            <i class="fas fa-sync-alt me-1"></i> {{ 'Đặt lại' }}
                         </button>
                     </div>
                 </form>

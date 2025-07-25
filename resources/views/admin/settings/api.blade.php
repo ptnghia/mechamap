@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('API Keys') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'API Keys' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
@@ -38,10 +38,10 @@
                         @csrf
                         @method('PUT')
                         
-                        <h6 class="mb-3">{{ __('Google Login') }}</h6>
+                        <h6 class="mb-3">{{ 'Google Login' }}</h6>
                         
                         <div class="mb-3">
-                            <label for="api_google_client_id" class="form-label">{{ __('Google Client ID') }}</label>
+                            <label for="api_google_client_id" class="form-label">{{ 'Google Client ID' }}</label>
                             <input type="text" class="form-control @error('api_google_client_id') is-invalid @enderror" id="api_google_client_id" name="api_google_client_id" value="{{ old('api_google_client_id', $settings['api_google_client_id'] ?? '') }}">
                             <div class="form-text">{{ __('Client ID từ Google Cloud Console.') }}</div>
                             @error('api_google_client_id')
@@ -50,7 +50,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="api_google_client_secret" class="form-label">{{ __('Google Client Secret') }}</label>
+                            <label for="api_google_client_secret" class="form-label">{{ 'Google Client Secret' }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_google_client_secret') is-invalid @enderror" id="api_google_client_secret" name="api_google_client_secret" value="{{ old('api_google_client_secret', $settings['api_google_client_secret'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_google_client_secret">
@@ -65,10 +65,10 @@
                         
                         <hr>
                         
-                        <h6 class="mb-3">{{ __('Facebook Login') }}</h6>
+                        <h6 class="mb-3">{{ 'Facebook Login' }}</h6>
                         
                         <div class="mb-3">
-                            <label for="api_facebook_app_id" class="form-label">{{ __('Facebook App ID') }}</label>
+                            <label for="api_facebook_app_id" class="form-label">{{ 'Facebook App ID' }}</label>
                             <input type="text" class="form-control @error('api_facebook_app_id') is-invalid @enderror" id="api_facebook_app_id" name="api_facebook_app_id" value="{{ old('api_facebook_app_id', $settings['api_facebook_app_id'] ?? '') }}">
                             <div class="form-text">{{ __('App ID từ Facebook Developer Console.') }}</div>
                             @error('api_facebook_app_id')
@@ -77,7 +77,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="api_facebook_app_secret" class="form-label">{{ __('Facebook App Secret') }}</label>
+                            <label for="api_facebook_app_secret" class="form-label">{{ 'Facebook App Secret' }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_facebook_app_secret') is-invalid @enderror" id="api_facebook_app_secret" name="api_facebook_app_secret" value="{{ old('api_facebook_app_secret', $settings['api_facebook_app_secret'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_facebook_app_secret">
@@ -92,10 +92,10 @@
                         
                         <hr>
                         
-                        <h6 class="mb-3">{{ __('Google reCAPTCHA') }}</h6>
+                        <h6 class="mb-3">{{ 'Google reCAPTCHA' }}</h6>
                         
                         <div class="mb-3">
-                            <label for="api_recaptcha_site_key" class="form-label">{{ __('reCAPTCHA Site Key') }}</label>
+                            <label for="api_recaptcha_site_key" class="form-label">{{ 'reCAPTCHA Site Key' }}</label>
                             <input type="text" class="form-control @error('api_recaptcha_site_key') is-invalid @enderror" id="api_recaptcha_site_key" name="api_recaptcha_site_key" value="{{ old('api_recaptcha_site_key', $settings['api_recaptcha_site_key'] ?? '') }}">
                             <div class="form-text">{{ __('Site Key từ Google reCAPTCHA Admin Console.') }}</div>
                             @error('api_recaptcha_site_key')
@@ -104,7 +104,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="api_recaptcha_secret_key" class="form-label">{{ __('reCAPTCHA Secret Key') }}</label>
+                            <label for="api_recaptcha_secret_key" class="form-label">{{ 'reCAPTCHA Secret Key' }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('api_recaptcha_secret_key') is-invalid @enderror" id="api_recaptcha_secret_key" name="api_recaptcha_secret_key" value="{{ old('api_recaptcha_secret_key', $settings['api_recaptcha_secret_key'] ?? '') }}">
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="api_recaptcha_secret_key">
@@ -119,7 +119,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.forums.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-plus"></i> {{ __('Tạo diễn đàn mới') }}
+        <i class="fas fa-plus"></i> {{ 'Tạo diễn đàn mới' }}
     </a>
 @endsection
 
@@ -31,7 +31,7 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách diễn đàn') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Danh sách diễn đàn' }}</h5>
             <span class="badge bg-primary">{{ $forums->count() }} {{ __('diễn đàn') }}</span>
         </div>
         <div class="card-body p-0">
@@ -39,13 +39,13 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col" width="60">{{ __('ID') }}</th>
-                            <th scope="col">{{ __('Tên diễn đàn') }}</th>
-                            <th scope="col" width="150">{{ __('Diễn đàn cha') }}</th>
-                            <th scope="col" width="100">{{ __('Thứ tự') }}</th>
-                            <th scope="col" width="100">{{ __('Bài đăng') }}</th>
-                            <th scope="col" width="100">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="120">{{ __('Thao tác') }}</th>
+                            <th scope="col" width="60">{{ 'ID' }}</th>
+                            <th scope="col">{{ 'Tên diễn đàn' }}</th>
+                            <th scope="col" width="150">{{ 'Diễn đàn cha' }}</th>
+                            <th scope="col" width="100">{{ 'Thứ tự' }}</th>
+                            <th scope="col" width="100">{{ 'Bài đăng' }}</th>
+                            <th scope="col" width="100">{{ 'Trạng thái' }}</th>
+                            <th scope="col" width="120">{{ 'Thao tác' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,20 +65,20 @@
                                 <td>{{ $forum->threads_count }}</td>
                                 <td>
                                     @if($forum->is_private)
-                                        <span class="badge bg-warning">{{ __('Riêng tư') }}</span>
+                                        <span class="badge bg-warning">{{ 'Riêng tư' }}</span>
                                     @else
-                                        <span class="badge bg-success">{{ __('Công khai') }}</span>
+                                        <span class="badge bg-success">{{ 'Công khai' }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.forums.show', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                        <a href="{{ route('admin.forums.show', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.forums.edit', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                        <a href="{{ route('admin.forums.edit', $forum) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $forum->id }}" title="{{ __('Xóa') }}">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $forum->id }}" title="{{ 'Xóa' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -88,18 +88,18 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $forum->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $forum->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa diễn đàn này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa diễn đàn này?' }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                     <form action="{{ route('admin.forums.destroy', $forum) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -127,20 +127,20 @@
                                     <td>{{ $subForum->threads_count }}</td>
                                     <td>
                                         @if($subForum->is_private)
-                                            <span class="badge bg-warning">{{ __('Riêng tư') }}</span>
+                                            <span class="badge bg-warning">{{ 'Riêng tư' }}</span>
                                         @else
-                                            <span class="badge bg-success">{{ __('Công khai') }}</span>
+                                            <span class="badge bg-success">{{ 'Công khai' }}</span>
                                         @endif
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.forums.show', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                            <a href="{{ route('admin.forums.show', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.forums.edit', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                            <a href="{{ route('admin.forums.edit', $subForum) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $subForum->id }}" title="{{ __('Xóa') }}">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $subForum->id }}" title="{{ 'Xóa' }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -150,18 +150,18 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $subForum->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $subForum->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{ __('Bạn có chắc chắn muốn xóa diễn đàn này?') }}
+                                                        {{ 'Bạn có chắc chắn muốn xóa diễn đàn này?' }}
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                         <form action="{{ route('admin.forums.destroy', $subForum) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                            <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                         </form>
                                                     </div>
                                                 </div>

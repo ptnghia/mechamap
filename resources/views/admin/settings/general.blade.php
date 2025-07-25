@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Cấu hình chung') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Cấu hình chung' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.settings.update-general') }}" method="POST" enctype="multipart/form-data">
@@ -34,7 +34,7 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="site_name" class="form-label">{{ __('Tên trang web') }} <span class="text-danger">*</span></label>
+                            <label for="site_name" class="form-label">{{ 'Tên trang web' }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('site_name') is-invalid @enderror" id="site_name" name="site_name" value="{{ old('site_name', $settings['site_name'] ?? config('app.name')) }}" required>
                             <div class="form-text">{{ __('Tên của trang web, hiển thị ở nhiều nơi trên trang web.') }}</div>
                             @error('site_name')
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_tagline" class="form-label">{{ __('Khẩu hiệu') }}</label>
+                            <label for="site_tagline" class="form-label">{{ 'Khẩu hiệu' }}</label>
                             <input type="text" class="form-control @error('site_tagline') is-invalid @enderror" id="site_tagline" name="site_tagline" value="{{ old('site_tagline', $settings['site_tagline'] ?? '') }}">
                             <div class="form-text">{{ __('Khẩu hiệu ngắn gọn mô tả trang web của bạn.') }}</div>
                             @error('site_tagline')
@@ -53,7 +53,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="site_logo" class="form-label">{{ __('Logo') }}</label>
+                                <label for="site_logo" class="form-label">{{ 'Logo' }}</label>
                                 <input type="file" class="form-control @error('site_logo') is-invalid @enderror" id="site_logo" name="site_logo">
                                 <div class="form-text">{{ __('Logo chính của trang web. Kích thước đề xuất: 200x50 pixels.') }}</div>
                                 @error('site_logo')
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="site_favicon" class="form-label">{{ __('Favicon') }}</label>
+                                <label for="site_favicon" class="form-label">{{ 'Favicon' }}</label>
                                 <input type="file" class="form-control @error('site_favicon') is-invalid @enderror" id="site_favicon" name="site_favicon">
                                 <div class="form-text">{{ __('Biểu tượng hiển thị trên tab trình duyệt. Kích thước đề xuất: 32x32 pixels.') }}</div>
                                 @error('site_favicon')
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_banner" class="form-label">{{ __('Banner đầu trang') }}</label>
+                            <label for="site_banner" class="form-label">{{ 'Banner đầu trang' }}</label>
                             <input type="file" class="form-control @error('site_banner') is-invalid @enderror" id="site_banner" name="site_banner">
                             <div class="form-text">{{ __('Banner hiển thị ở đầu trang web. Kích thước đề xuất: 1920x200 pixels.') }}</div>
                             @error('site_banner')
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_domain" class="form-label">{{ __('Tên miền') }}</label>
+                            <label for="site_domain" class="form-label">{{ 'Tên miền' }}</label>
                             <input type="text" class="form-control @error('site_domain') is-invalid @enderror" id="site_domain" name="site_domain" value="{{ old('site_domain', $settings['site_domain'] ?? request()->getHost()) }}">
                             <div class="form-text">{{ __('Tên miền chính của trang web, không bao gồm http:// hoặc https://.') }}</div>
                             @error('site_domain')
@@ -109,7 +109,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="site_language" class="form-label">{{ __('Ngôn ngữ') }}</label>
+                                <label for="site_language" class="form-label">{{ 'Ngôn ngữ' }}</label>
                                 <select class="form-select @error('site_language') is-invalid @enderror" id="site_language" name="site_language">
                                     <option value="vi" {{ (old('site_language', $settings['site_language'] ?? 'vi')) == 'vi' ? 'selected' : '' }}>{{ __('Tiếng Việt') }}</option>
                                     <option value="en" {{ (old('site_language', $settings['site_language'] ?? 'vi')) == 'en' ? 'selected' : '' }}>{{ __('Tiếng Anh') }}</option>
@@ -121,7 +121,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="site_timezone" class="form-label">{{ __('Múi giờ') }}</label>
+                                <label for="site_timezone" class="form-label">{{ 'Múi giờ' }}</label>
                                 <select class="form-select @error('site_timezone') is-invalid @enderror" id="site_timezone" name="site_timezone">
                                     <option value="Asia/Ho_Chi_Minh" {{ (old('site_timezone', $settings['site_timezone'] ?? 'Asia/Ho_Chi_Minh')) == 'Asia/Ho_Chi_Minh' ? 'selected' : '' }}>{{ __('Hồ Chí Minh (UTC+7)') }}</option>
                                     <option value="UTC" {{ (old('site_timezone', $settings['site_timezone'] ?? 'Asia/Ho_Chi_Minh')) == 'UTC' ? 'selected' : '' }}>{{ __('UTC') }}</option>
@@ -136,13 +136,13 @@
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="site_maintenance_mode" name="site_maintenance_mode" {{ old('site_maintenance_mode', $settings['site_maintenance_mode'] ?? '0') == '1' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="site_maintenance_mode">{{ __('Bật chế độ bảo trì') }}</label>
+                                <label class="form-check-label" for="site_maintenance_mode">{{ 'Bật chế độ bảo trì' }}</label>
                             </div>
                             <div class="form-text">{{ __('Khi bật chế độ bảo trì, người dùng không thể truy cập trang web.') }}</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_maintenance_message" class="form-label">{{ __('Thông báo bảo trì') }}</label>
+                            <label for="site_maintenance_message" class="form-label">{{ 'Thông báo bảo trì' }}</label>
                             <textarea class="form-control @error('site_maintenance_message') is-invalid @enderror" id="site_maintenance_message" name="site_maintenance_message" rows="3">{{ old('site_maintenance_message', $settings['site_maintenance_message'] ?? 'Trang web đang được bảo trì. Vui lòng quay lại sau.') }}</textarea>
                             <div class="form-text">{{ __('Thông báo hiển thị khi trang web đang trong chế độ bảo trì.') }}</div>
                             @error('site_maintenance_message')
@@ -152,7 +152,7 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

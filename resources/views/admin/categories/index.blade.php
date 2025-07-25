@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-plus me-1"></i> {{ __('Tạo chuyên mục mới') }}
+        <i class="fas fa-plus me-1"></i> {{ 'Tạo chuyên mục mới' }}
     </a>
 @endsection
 
@@ -31,7 +31,7 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách chuyên mục') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Danh sách chuyên mục' }}</h5>
             <span class="badge bg-primary">{{ $categories->count() }} {{ __('chuyên mục') }}</span>
         </div>
         <div class="card-body p-0">
@@ -39,13 +39,13 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col" width="60">{{ __('ID') }}</th>
-                            <th scope="col">{{ __('Tên chuyên mục') }}</th>
-                            <th scope="col" width="150">{{ __('Chuyên mục cha') }}</th>
-                            <th scope="col" width="100">{{ __('Thứ tự') }}</th>
-                            <th scope="col" width="100">{{ __('Bài đăng') }}</th>
-                            <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
-                            <th scope="col" width="120">{{ __('Thao tác') }}</th>
+                            <th scope="col" width="60">{{ 'ID' }}</th>
+                            <th scope="col">{{ 'Tên chuyên mục' }}</th>
+                            <th scope="col" width="150">{{ 'Chuyên mục cha' }}</th>
+                            <th scope="col" width="100">{{ 'Thứ tự' }}</th>
+                            <th scope="col" width="100">{{ 'Bài đăng' }}</th>
+                            <th scope="col" width="150">{{ 'Ngày tạo' }}</th>
+                            <th scope="col" width="120">{{ 'Thao tác' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,13 +66,13 @@
                                 <td>{{ $category->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.categories.show', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                        <a href="{{ route('admin.categories.show', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}" title="{{ __('Xóa') }}">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $category->id }}" title="{{ 'Xóa' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -82,18 +82,18 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $category->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $category->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa chuyên mục này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa chuyên mục này?' }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -122,13 +122,13 @@
                                     <td>{{ $childCategory->created_at->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.categories.show', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                            <a href="{{ route('admin.categories.show', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.categories.edit', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                            <a href="{{ route('admin.categories.edit', $childCategory) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $childCategory->id }}" title="{{ __('Xóa') }}">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $childCategory->id }}" title="{{ 'Xóa' }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </div>
@@ -138,18 +138,18 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $childCategory->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $childCategory->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{ __('Bạn có chắc chắn muốn xóa chuyên mục này?') }}
+                                                        {{ 'Bạn có chắc chắn muốn xóa chuyên mục này?' }}
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                         <form action="{{ route('admin.categories.destroy', $childCategory) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                            <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                         </form>
                                                     </div>
                                                 </div>

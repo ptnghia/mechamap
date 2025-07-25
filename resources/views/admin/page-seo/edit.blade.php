@@ -5,7 +5,7 @@
 
 @section('actions')
     <a href="{{ route('admin.page-seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -14,7 +14,7 @@
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -124,7 +124,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="keywords" class="form-label">{{ __('Từ khóa') }}</label>
+                            <label for="keywords" class="form-label">{{ 'Từ khóa' }}</label>
                             <input type="text" class="form-control @error('keywords') is-invalid @enderror" id="keywords" name="keywords" value="{{ old('keywords', $pageSeo->keywords) }}">
                             <div class="form-text">{{ __('Các từ khóa liên quan đến trang, phân cách bằng dấu phẩy.') }}</div>
                             @error('keywords')
@@ -133,7 +133,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="canonical_url" class="form-label">{{ __('Canonical URL') }}</label>
+                            <label for="canonical_url" class="form-label">{{ 'Canonical URL' }}</label>
                             <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" name="canonical_url" value="{{ old('canonical_url', $pageSeo->canonical_url) }}">
                             <div class="form-text">{{ __('URL chính thức của trang. Để trống để sử dụng URL hiện tại.') }}</div>
                             @error('canonical_url')
@@ -151,10 +151,10 @@
 
                         <hr>
 
-                        <h6 class="mb-3">{{ __('Cấu hình Open Graph (Facebook, LinkedIn, ...)') }}</h6>
+                        <h6 class="mb-3">{{ 'Cấu hình Open Graph (Facebook, LinkedIn, ...)' }}</h6>
 
                         <div class="mb-3">
-                            <label for="og_title" class="form-label">{{ __('Tiêu đề Open Graph') }}</label>
+                            <label for="og_title" class="form-label">{{ 'Tiêu đề Open Graph' }}</label>
                             <input type="text" class="form-control @error('og_title') is-invalid @enderror" id="og_title" name="og_title" value="{{ old('og_title', $pageSeo->og_title) }}">
                             <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_title')
@@ -163,7 +163,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="og_description" class="form-label">{{ __('Mô tả Open Graph') }}</label>
+                            <label for="og_description" class="form-label">{{ 'Mô tả Open Graph' }}</label>
                             <textarea class="form-control @error('og_description') is-invalid @enderror" id="og_description" name="og_description" rows="3">{{ old('og_description', $pageSeo->og_description) }}</textarea>
                             <div class="form-text">{{ __('Mô tả khi chia sẻ trang trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_description')
@@ -172,7 +172,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="og_image" class="form-label">{{ __('Hình ảnh Open Graph') }}</label>
+                            <label for="og_image" class="form-label">{{ 'Hình ảnh Open Graph' }}</label>
                             <input type="file" class="form-control @error('og_image') is-invalid @enderror" id="og_image" name="og_image">
                             <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.') }}</div>
                             @error('og_image')
@@ -191,7 +191,7 @@
                         <h6 class="mb-3">{{ __('Cấu hình Twitter Card') }}</h6>
 
                         <div class="mb-3">
-                            <label for="twitter_title" class="form-label">{{ __('Tiêu đề Twitter') }}</label>
+                            <label for="twitter_title" class="form-label">{{ 'Tiêu đề Twitter' }}</label>
                             <input type="text" class="form-control @error('twitter_title') is-invalid @enderror" id="twitter_title" name="twitter_title" value="{{ old('twitter_title', $pageSeo->twitter_title) }}">
                             <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang trên Twitter.') }}</div>
                             @error('twitter_title')
@@ -200,7 +200,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="twitter_description" class="form-label">{{ __('Mô tả Twitter') }}</label>
+                            <label for="twitter_description" class="form-label">{{ 'Mô tả Twitter' }}</label>
                             <textarea class="form-control @error('twitter_description') is-invalid @enderror" id="twitter_description" name="twitter_description" rows="3">{{ old('twitter_description', $pageSeo->twitter_description) }}</textarea>
                             <div class="form-text">{{ __('Mô tả khi chia sẻ trang trên Twitter.') }}</div>
                             @error('twitter_description')
@@ -209,7 +209,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="twitter_image" class="form-label">{{ __('Hình ảnh Twitter') }}</label>
+                            <label for="twitter_image" class="form-label">{{ 'Hình ảnh Twitter' }}</label>
                             <input type="file" class="form-control @error('twitter_image') is-invalid @enderror" id="twitter_image" name="twitter_image">
                             <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang trên Twitter. Kích thước tối thiểu: 1200x600 pixels.') }}</div>
                             @error('twitter_image')
@@ -225,7 +225,7 @@
 
                         <hr>
 
-                        <h6 class="mb-3">{{ __('Cấu hình nâng cao') }}</h6>
+                        <h6 class="mb-3">{{ 'Cấu hình nâng cao' }}</h6>
 
                         <div class="mb-3">
                             <label for="extra_meta" class="form-label">{{ __('Meta tags bổ sung') }}</label>
@@ -246,10 +246,10 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.page-seo.index') }}" class="btn btn-outline-secondary">
-                                {{ __('Hủy') }}
+                                {{ 'Hủy' }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu thay đổi' }}
                             </button>
                         </div>
                     </form>

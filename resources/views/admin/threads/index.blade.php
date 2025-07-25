@@ -20,10 +20,10 @@
 
 @section('actions')
     <a href="{{ route('admin.threads.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-plus me-1"></i> {{ __('Tạo bài đăng mới') }}
+        <i class="fas fa-plus me-1"></i> {{ 'Tạo bài đăng mới' }}
     </a>
     <a href="{{ route('admin.threads.statistics') }}" class="btn btn-sm btn-info">
-        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
     </a>
 @endsection
 
@@ -34,48 +34,48 @@
 @section('content')
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Bộ lọc') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Bộ lọc' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.threads.index') }}" method="GET" class="row g-3">
                 <div class="col-md-3">
-                    <label for="status" class="form-label">{{ __('Trạng thái') }}</label>
+                    <label for="status" class="form-label">{{ 'Trạng thái' }}</label>
                     <select class="form-select" id="status" name="status">
-                        <option value="">{{ __('Tất cả') }}</option>
-                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>{{ __('Bản nháp') }}</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('Chờ duyệt') }}</option>
-                        <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>{{ __('Đã xuất bản') }}</option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>{{ __('Đã từ chối') }}</option>
+                        <option value="">{{ 'Tất cả' }}</option>
+                        <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>{{ 'Bản nháp' }}</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ 'Chờ duyệt' }}</option>
+                        <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>{{ 'Đã xuất bản' }}</option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>{{ 'Đã từ chối' }}</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="forum_id" class="form-label">{{ __(__('forum.forums.title')) }}</label>
+                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
                     <select class="form-select" id="forum_id" name="forum_id">
-                        <option value="">{{ __('Tất cả') }}</option>
+                        <option value="">{{ 'Tất cả' }}</option>
                         @foreach($forums as $forum)
                             <option value="{{ $forum->id }}" {{ request('forum_id') == $forum->id ? 'selected' : '' }}>{{ $forum->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="category_id" class="form-label">{{ __('Chuyên mục') }}</label>
+                    <label for="category_id" class="form-label">{{ 'Chuyên mục' }}</label>
                     <select class="form-select" id="category_id" name="category_id">
-                        <option value="">{{ __('Tất cả') }}</option>
+                        <option value="">{{ 'Tất cả' }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
+                    <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tiêu đề, nội dung...') }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter me-1"></i> {{ 'Lọc' }}
                     </button>
                     <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ 'Xóa bộ lọc' }}
                     </a>
                 </div>
             </form>
@@ -84,22 +84,22 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách bài đăng') }}</h5>
-            <span class="badge bg-primary">{{ $threads->total() }} {{ __('bài đăng') }}</span>
+            <h5 class="card-title mb-0">{{ 'Danh sách bài đăng' }}</h5>
+            <span class="badge bg-primary">{{ $threads->total() }} {{ 'bài đăng' }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col" width="60">{{ __('ID') }}</th>
-                            <th scope="col">{{ __('Tiêu đề') }}</th>
-                            <th scope="col" width="150">{{ __('Tác giả') }}</th>
-                            <th scope="col" width="150">{{ __(__('forum.forums.title')) }}</th>
-                            <th scope="col" width="150">{{ __('Chuyên mục') }}</th>
-                            <th scope="col" width="120">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
-                            <th scope="col" width="120">{{ __('Thao tác') }}</th>
+                            <th scope="col" width="60">{{ 'ID' }}</th>
+                            <th scope="col">{{ 'Tiêu đề' }}</th>
+                            <th scope="col" width="150">{{ 'Tác giả' }}</th>
+                            <th scope="col" width="150">{{ __('Diễn đàn') }}</th>
+                            <th scope="col" width="150">{{ 'Chuyên mục' }}</th>
+                            <th scope="col" width="120">{{ 'Trạng thái' }}</th>
+                            <th scope="col" width="150">{{ 'Ngày tạo' }}</th>
+                            <th scope="col" width="120">{{ 'Thao tác' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,12 +112,12 @@
                                     </a>
                                     <div class="small text-muted">
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __(__('forum.threads.pinned')) }}</span>
+                                            <span class="badge bg-info me-1">{{ __('Đã ghim') }}</span>
                                         @endif
                                         @if($thread->is_featured)
-                                            <span class="badge bg-warning me-1">{{ __('Nổi bật') }}</span>
+                                            <span class="badge bg-warning me-1">{{ 'Nổi bật' }}</span>
                                         @endif
-                                        {{ __(__("common.views")) }}: {{ $thread->view_count }}
+                                        {{ 'Lượt xem' }}: {{ $thread->view_count }}
                                     </div>
                                 </td>
                                 <td>
@@ -129,28 +129,28 @@
                                 <td>{{ $thread->category->name }}</td>
                                 <td>
                                     @if($thread->status == 'draft')
-                                        <span class="badge bg-secondary">{{ __('Bản nháp') }}</span>
+                                        <span class="badge bg-secondary">{{ 'Bản nháp' }}</span>
                                     @elseif($thread->status == 'pending')
-                                        <span class="badge bg-warning">{{ __('Chờ duyệt') }}</span>
+                                        <span class="badge bg-warning">{{ 'Chờ duyệt' }}</span>
                                     @elseif($thread->status == 'published')
-                                        <span class="badge bg-success">{{ __('Đã xuất bản') }}</span>
+                                        <span class="badge bg-success">{{ 'Đã xuất bản' }}</span>
                                     @elseif($thread->status == 'rejected')
-                                        <span class="badge bg-danger">{{ __('Đã từ chối') }}</span>
+                                        <span class="badge bg-danger">{{ 'Đã từ chối' }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $thread->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.threads.show', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                        <a href="{{ route('admin.threads.show', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                        <a href="{{ route('admin.threads.edit', $thread) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
 
                                         <!-- Moderation Actions -->
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ __('Moderation') }}">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ 'Kiểm duyệt' }}">
                                                 <i class="fas fa-cog"></i>
                                             </button>
                                             <ul class="dropdown-menu">
@@ -161,7 +161,7 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-thumbtack me-2"></i>
-                                                            {{ $thread->is_sticky ? __('Bỏ ghim') : __('Ghim bài đăng') }}
+                                                            {{ $thread->is_sticky ? 'Bỏ ghim' : 'Ghim bài đăng' }}
                                                         </button>
                                                     </form>
                                                 </li>
@@ -173,7 +173,7 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-{{ $thread->is_locked ? 'unlock' : 'lock' }} me-2"></i>
-                                                            {{ $thread->is_locked ? __('Mở khóa') : __('Khóa bài đăng') }}
+                                                            {{ $thread->is_locked ? 'Mở khóa' : 'Khóa bài đăng' }}
                                                         </button>
                                                     </form>
                                                 </li>
@@ -185,7 +185,7 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item">
                                                             <i class="fas fa-star me-2"></i>
-                                                            {{ $thread->is_featured ? __('Bỏ nổi bật') : __('Đánh dấu nổi bật') }}
+                                                            {{ $thread->is_featured ? 'Bỏ nổi bật' : 'Đánh dấu nổi bật' }}
                                                         </button>
                                                     </form>
                                                 </li>
@@ -200,7 +200,7 @@
                                                         @method('PUT')
                                                         <button type="submit" class="dropdown-item text-success">
                                                             <i class="fas fa-check me-2"></i>
-                                                            {{ __('Duyệt bài đăng') }}
+                                                            {{ 'Duyệt bài đăng' }}
                                                         </button>
                                                     </form>
                                                 </li>
@@ -208,7 +208,7 @@
                                             </ul>
                                         </div>
 
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $thread->id }}" title="{{ __('Xóa') }}">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $thread->id }}" title="{{ 'Xóa' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -218,19 +218,19 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $thread->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $thread->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa bài đăng này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa bài đăng này?' }}
                                                     <p class="text-danger mt-2">{{ __('Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.') }}</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                     <form action="{{ route('admin.threads.destroy', $thread) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                     </form>
                                                 </div>
                                             </div>

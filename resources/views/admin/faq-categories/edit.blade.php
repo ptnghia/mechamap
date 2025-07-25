@@ -33,7 +33,7 @@
                 @method('PUT')
                 
                 <div class="mb-3">
-                    <label for="name" class="form-label">{{ __('Tên danh mục') }} <span class="text-danger">*</span></label>
+                    <label for="name" class="form-label">{{ 'Tên danh mục' }} <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $faqCategory->name) }}" required>
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -41,7 +41,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="description" class="form-label">{{ __('Mô tả') }}</label>
+                    <label for="description" class="form-label">{{ 'Mô tả' }}</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description', $faqCategory->description) }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -49,7 +49,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="order" class="form-label">{{ __('Thứ tự') }}</label>
+                    <label for="order" class="form-label">{{ 'Thứ tự' }}</label>
                     <input type="number" class="form-control @error('order') is-invalid @enderror" id="order" name="order" value="{{ old('order', $faqCategory->order) }}" min="0">
                     @error('order')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -60,14 +60,14 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {{ old('is_active', $faqCategory->is_active) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_active">
-                            {{ __('Kích hoạt') }}
+                            {{ 'Kích hoạt' }}
                         </label>
                     </div>
                 </div>
                 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.faq-categories.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    <a href="{{ route('admin.faq-categories.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
                 </div>
             </form>
         </div>

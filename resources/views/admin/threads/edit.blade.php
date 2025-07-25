@@ -29,7 +29,7 @@
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label for="title" class="form-label">{{ __('Tiêu đề') }}</label>
+                    <label for="title" class="form-label">{{ 'Tiêu đề' }}</label>
                     <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $thread->title) }}" required>
                     @error('title')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -37,9 +37,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="forum_id" class="form-label">{{ __(__('forum.forums.title')) }}</label>
+                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
                     <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
-                        <option value="">{{ __('Chọn diễn đàn') }}</option>
+                        <option value="">{{ 'Chọn diễn đàn' }}</option>
                         @foreach($forums as $forum)
                             <option value="{{ $forum->id }}" {{ old('forum_id', $thread->forum_id) == $forum->id ? 'selected' : '' }}>{{ $forum->name }}</option>
                         @endforeach
@@ -50,9 +50,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="category_id" class="form-label">{{ __('Chuyên mục') }}</label>
+                    <label for="category_id" class="form-label">{{ 'Chuyên mục' }}</label>
                     <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
-                        <option value="">{{ __('Chọn chuyên mục') }}</option>
+                        <option value="">{{ 'Chọn chuyên mục' }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id', $thread->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                         @endforeach
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="content" class="form-label">{{ __('Nội dung') }}</label>
+                    <label for="content" class="form-label">{{ 'Nội dung' }}</label>
                     <x-tinymce-editor
                         name="content"
                         id="content"
@@ -80,12 +80,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="status" class="form-label">{{ __('Trạng thái') }}</label>
+                    <label for="status" class="form-label">{{ 'Trạng thái' }}</label>
                     <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-                        <option value="draft" {{ old('status', $thread->status) == 'draft' ? 'selected' : '' }}>{{ __('Bản nháp') }}</option>
-                        <option value="pending" {{ old('status', $thread->status) == 'pending' ? 'selected' : '' }}>{{ __('Chờ duyệt') }}</option>
-                        <option value="published" {{ old('status', $thread->status) == 'published' ? 'selected' : '' }}>{{ __('Đã xuất bản') }}</option>
-                        <option value="rejected" {{ old('status', $thread->status) == 'rejected' ? 'selected' : '' }}>{{ __('Đã từ chối') }}</option>
+                        <option value="draft" {{ old('status', $thread->status) == 'draft' ? 'selected' : '' }}>{{ 'Bản nháp' }}</option>
+                        <option value="pending" {{ old('status', $thread->status) == 'pending' ? 'selected' : '' }}>{{ 'Chờ duyệt' }}</option>
+                        <option value="published" {{ old('status', $thread->status) == 'published' ? 'selected' : '' }}>{{ 'Đã xuất bản' }}</option>
+                        <option value="rejected" {{ old('status', $thread->status) == 'rejected' ? 'selected' : '' }}>{{ 'Đã từ chối' }}</option>
                     </select>
                     @error('status')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -96,7 +96,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_sticky" name="is_sticky" {{ old('is_sticky', $thread->is_sticky) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_sticky">
-                            {{ __('Ghim bài đăng') }}
+                            {{ 'Ghim bài đăng' }}
                         </label>
                     </div>
                 </div>
@@ -111,8 +111,8 @@
                 </div>
 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
                 </div>
             </form>
         </div>

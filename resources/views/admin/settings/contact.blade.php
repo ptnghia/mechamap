@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin liên hệ') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin liên hệ' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.settings.update-contact') }}" method="POST">
@@ -35,7 +35,7 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="contact_email" class="form-label">{{ __('Email liên hệ') }}</label>
+                                <label for="contact_email" class="form-label">{{ 'Email liên hệ' }}</label>
                                 <input type="email" class="form-control @error('contact_email') is-invalid @enderror" id="contact_email" name="contact_email" value="{{ old('contact_email', $settings['contact_email'] ?? '') }}">
                                 <div class="form-text">{{ __('Địa chỉ email hiển thị trên trang liên hệ.') }}</div>
                                 @error('contact_email')
@@ -44,7 +44,7 @@
                             </div>
                             
                             <div class="col-md-6">
-                                <label for="contact_phone" class="form-label">{{ __('Số điện thoại liên hệ') }}</label>
+                                <label for="contact_phone" class="form-label">{{ 'Số điện thoại liên hệ' }}</label>
                                 <input type="text" class="form-control @error('contact_phone') is-invalid @enderror" id="contact_phone" name="contact_phone" value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}">
                                 <div class="form-text">{{ __('Số điện thoại hiển thị trên trang liên hệ.') }}</div>
                                 @error('contact_phone')
@@ -54,7 +54,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="contact_address" class="form-label">{{ __('Địa chỉ liên hệ') }}</label>
+                            <label for="contact_address" class="form-label">{{ 'Địa chỉ liên hệ' }}</label>
                             <textarea class="form-control @error('contact_address') is-invalid @enderror" id="contact_address" name="contact_address" rows="2">{{ old('contact_address', $settings['contact_address'] ?? '') }}</textarea>
                             <div class="form-text">{{ __('Địa chỉ hiển thị trên trang liên hệ.') }}</div>
                             @error('contact_address')
@@ -63,7 +63,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="contact_working_hours" class="form-label">{{ __('Giờ làm việc') }}</label>
+                            <label for="contact_working_hours" class="form-label">{{ 'Giờ làm việc' }}</label>
                             <input type="text" class="form-control @error('contact_working_hours') is-invalid @enderror" id="contact_working_hours" name="contact_working_hours" value="{{ old('contact_working_hours', $settings['contact_working_hours'] ?? '') }}">
                             <div class="form-text">{{ __('Giờ làm việc hiển thị trên trang liên hệ. Ví dụ: Thứ 2 - Thứ 6: 8:00 - 17:00') }}</div>
                             @error('contact_working_hours')
@@ -72,7 +72,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="contact_map_embed" class="form-label">{{ __('Mã nhúng Google Maps') }}</label>
+                            <label for="contact_map_embed" class="form-label">{{ 'Mã nhúng Google Maps' }}</label>
                             <textarea class="form-control @error('contact_map_embed') is-invalid @enderror" id="contact_map_embed" name="contact_map_embed" rows="3">{{ old('contact_map_embed', $settings['contact_map_embed'] ?? '') }}</textarea>
                             <div class="form-text">{{ __('Mã nhúng Google Maps hiển thị trên trang liên hệ.') }}</div>
                             @error('contact_map_embed')
@@ -82,7 +82,7 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="contact_latitude" class="form-label">{{ __('Vĩ độ (Latitude)') }}</label>
+                                <label for="contact_latitude" class="form-label">{{ 'Vĩ độ (Latitude)' }}</label>
                                 <input type="text" class="form-control @error('contact_latitude') is-invalid @enderror" id="contact_latitude" name="contact_latitude" value="{{ old('contact_latitude', $settings['contact_latitude'] ?? '') }}">
                                 <div class="form-text">{{ __('Vĩ độ của địa điểm trên bản đồ.') }}</div>
                                 @error('contact_latitude')
@@ -91,7 +91,7 @@
                             </div>
                             
                             <div class="col-md-6">
-                                <label for="contact_longitude" class="form-label">{{ __('Kinh độ (Longitude)') }}</label>
+                                <label for="contact_longitude" class="form-label">{{ 'Kinh độ (Longitude)' }}</label>
                                 <input type="text" class="form-control @error('contact_longitude') is-invalid @enderror" id="contact_longitude" name="contact_longitude" value="{{ old('contact_longitude', $settings['contact_longitude'] ?? '') }}">
                                 <div class="form-text">{{ __('Kinh độ của địa điểm trên bản đồ.') }}</div>
                                 @error('contact_longitude')
@@ -102,7 +102,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

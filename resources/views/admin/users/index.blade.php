@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-user-plus me-1"></i> {{ __('Thêm thành viên') }}
+        <i class="fas fa-user-plus me-1"></i> {{ 'Thêm thành viên' }}
     </a>
 @endsection
 
@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Tổng thành viên') }}</h6>
+                            <h6 class="card-title text-muted mb-0">{{ 'Tổng thành viên' }}</h6>
                             <h2 class="mt-2 mb-0">{{ number_format($stats['total']) }}</h2>
                         </div>
                         <div class="bg-primary bg-opacity-10 p-3 rounded">
@@ -47,7 +47,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Đang hoạt động') }}</h6>
+                            <h6 class="card-title text-muted mb-0">{{ 'Đang hoạt động' }}</h6>
                             <h2 class="mt-2 mb-0">{{ number_format($stats['online']) }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 p-3 rounded">
@@ -63,7 +63,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Quản trị viên') }}</h6>
+                            <h6 class="card-title text-muted mb-0">{{ 'Quản trị viên' }}</h6>
                             <h2 class="mt-2 mb-0">{{ number_format($stats['admin'] + $stats['moderator']) }}</h2>
                         </div>
                         <div class="bg-info bg-opacity-10 p-3 rounded">
@@ -79,7 +79,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title text-muted mb-0">{{ __('Bị cấm') }}</h6>
+                            <h6 class="card-title text-muted mb-0">{{ 'Bị cấm' }}</h6>
                             <h2 class="mt-2 mb-0">{{ number_format($stats['banned']) }}</h2>
                         </div>
                         <div class="bg-danger bg-opacity-10 p-3 rounded">
@@ -98,42 +98,42 @@
                 <div class="col-md-4">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="{{ __('Tìm theo tên, username, email...') }}">
+                        <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="{{ 'Tìm theo tên, username, email...' }}">
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <select class="form-select" name="role">
-                        <option value="">{{ __('Tất cả vai trò') }}</option>
-                        <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
-                        <option value="moderator" {{ $role === 'moderator' ? 'selected' : '' }}>{{ __('Moderator') }}</option>
-                        <option value="senior" {{ $role === 'senior' ? 'selected' : '' }}>{{ __('Senior') }}</option>
-                        <option value="member" {{ $role === 'member' ? 'selected' : '' }}>{{ __('Member') }}</option>
+                        <option value="">{{ 'Tất cả vai trò' }}</option>
+                        <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>{{ 'Admin' }}</option>
+                        <option value="moderator" {{ $role === 'moderator' ? 'selected' : '' }}>{{ 'Moderator' }}</option>
+                        <option value="senior" {{ $role === 'senior' ? 'selected' : '' }}>{{ 'Senior' }}</option>
+                        <option value="member" {{ $role === 'member' ? 'selected' : '' }}>{{ 'Thành viên' }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <select class="form-select" name="status">
-                        <option value="">{{ __('Tất cả trạng thái') }}</option>
-                        <option value="active" {{ $status === 'active' ? 'selected' : '' }}>{{ __('Đang hoạt động') }}</option>
-                        <option value="banned" {{ $status === 'banned' ? 'selected' : '' }}>{{ __('Bị cấm') }}</option>
-                        <option value="online" {{ $status === 'online' ? 'selected' : '' }}>{{ __('Đang online') }}</option>
+                        <option value="">{{ 'Tất cả trạng thái' }}</option>
+                        <option value="active" {{ $status === 'active' ? 'selected' : '' }}>{{ 'Đang hoạt động' }}</option>
+                        <option value="banned" {{ $status === 'banned' ? 'selected' : '' }}>{{ 'Bị cấm' }}</option>
+                        <option value="online" {{ $status === 'online' ? 'selected' : '' }}>{{ 'Đang online' }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <select class="form-select" name="sort_by">
-                        <option value="created_at" {{ $sortBy === 'created_at' ? 'selected' : '' }}>{{ __('Ngày tham gia') }}</option>
-                        <option value="name" {{ $sortBy === 'name' ? 'selected' : '' }}>{{ __('Tên') }}</option>
-                        <option value="last_seen_at" {{ $sortBy === 'last_seen_at' ? 'selected' : '' }}>{{ __('Hoạt động gần đây') }}</option>
-                        <option value="posts_count" {{ $sortBy === 'posts_count' ? 'selected' : '' }}>{{ __('Số bài viết') }}</option>
+                        <option value="created_at" {{ $sortBy === 'created_at' ? 'selected' : '' }}>{{ 'Ngày tham gia' }}</option>
+                        <option value="name" {{ $sortBy === 'name' ? 'selected' : '' }}>{{ 'Tên' }}</option>
+                        <option value="last_seen_at" {{ $sortBy === 'last_seen_at' ? 'selected' : '' }}>{{ 'Hoạt động gần đây' }}</option>
+                        <option value="posts_count" {{ $sortBy === 'posts_count' ? 'selected' : '' }}>{{ 'Số bài viết' }}</option>
                     </select>
                 </div>
 
                 <div class="col-md-1">
                     <select class="form-select" name="sort_order">
-                        <option value="desc" {{ $sortOrder === 'desc' ? 'selected' : '' }}>{{ __('Giảm dần') }}</option>
-                        <option value="asc" {{ $sortOrder === 'asc' ? 'selected' : '' }}>{{ __('Tăng dần') }}</option>
+                        <option value="desc" {{ $sortOrder === 'desc' ? 'selected' : '' }}>{{ 'Giảm dần' }}</option>
+                        <option value="asc" {{ $sortOrder === 'asc' ? 'selected' : '' }}>{{ 'Tăng dần' }}</option>
                     </select>
                 </div>
 
@@ -149,8 +149,8 @@
     <!-- Danh sách thành viên -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách thành viên') }}</h5>
-            <span class="badge bg-secondary">{{ __('Tổng') }}: {{ $users->total() }}</span>
+            <h5 class="card-title mb-0">{{ 'Danh sách thành viên' }}</h5>
+            <span class="badge bg-secondary">{{ 'Tổng' }}: {{ $users->total() }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -158,13 +158,13 @@
                     <thead class="table-light">
                         <tr>
                             <th scope="col" width="50">#</th>
-                            <th scope="col">{{ __('Thành viên') }}</th>
-                            <th scope="col">{{ __('Vai trò') }}</th>
+                            <th scope="col">{{ 'Thành viên' }}</th>
+                            <th scope="col">{{ 'Vai trò' }}</th>
                             <th scope="col">{{ __('Bài viết') }}</th>
-                            <th scope="col">{{ __('Ngày tham gia') }}</th>
-                            <th scope="col">{{ __('Hoạt động gần đây') }}</th>
-                            <th scope="col">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="120">{{ __('Thao tác') }}</th>
+                            <th scope="col">{{ 'Ngày tham gia' }}</th>
+                            <th scope="col">{{ 'Hoạt động gần đây' }}</th>
+                            <th scope="col">{{ 'Trạng thái' }}</th>
+                            <th scope="col" width="120">{{ 'Thao tác' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -186,19 +186,19 @@
                                 </td>
                                 <td>
                                     @if($user->isAdmin())
-                                        <span class="badge bg-danger">{{ __('Admin') }}</span>
+                                        <span class="badge bg-danger">{{ 'Admin' }}</span>
                                     @elseif($user->isModerator())
-                                        <span class="badge bg-primary">{{ __('Moderator') }}</span>
+                                        <span class="badge bg-primary">{{ 'Moderator' }}</span>
                                     @elseif($user->isSenior())
-                                        <span class="badge bg-success">{{ __('Senior') }}</span>
+                                        <span class="badge bg-success">{{ 'Senior' }}</span>
                                     @else
-                                        <span class="badge bg-secondary">{{ __('Member') }}</span>
+                                        <span class="badge bg-secondary">{{ 'Thành viên' }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column">
-                                        <span>{{ __('Threads') }}: {{ $user->threads_count }}</span>
-                                        <span>{{ __('Posts') }}: {{ $user->posts_count }}</span>
+                                        <span>{{ 'Chủ đề' }}: {{ $user->threads_count }}</span>
+                                        <span>{{ 'Bài viết' }}: {{ $user->posts_count }}</span>
                                     </div>
                                 </td>
                                 <td>{{ $user->created_at->format('d/m/Y') }}</td>
@@ -208,29 +208,29 @@
                                             {{ $user->last_seen_at->diffForHumans() }}
                                         </span>
                                     @else
-                                        <span class="text-muted">{{ __('Chưa có') }}</span>
+                                        <span class="text-muted">{{ 'Chưa có' }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($user->banned_at)
                                         <span class="badge bg-danger" data-bs-toggle="tooltip" title="{{ $user->banned_reason }}">
-                                            {{ __('Bị cấm') }}
+                                            {{ 'Bị cấm' }}
                                         </span>
                                     @elseif($user->isOnline())
-                                        <span class="badge bg-success">{{ __('Online') }}</span>
+                                        <span class="badge bg-success">{{ 'Online' }}</span>
                                     @else
-                                        <span class="badge bg-secondary">{{ __('Offline') }}</span>
+                                        <span class="badge bg-secondary">{{ 'Offline' }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __(__('buttons.view_details')) }}">
+                                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ 'Xem chi tiết' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="{{ __('Chỉnh sửa') }}">
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="{{ 'Chỉnh sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-outline-success' : 'btn-outline-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal{{ $user->id }}" title="{{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}">
+                                        <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-outline-success' : 'btn-outline-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal{{ $user->id }}" title="{{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}">
                                             <i data-feather="{{ $user->banned_at ? 'user-check' : 'user-x' }}"></i>
                                         </button>
                                     </div>
@@ -241,7 +241,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="banModalLabel{{ $user->id }}">
-                                                        {{ $user->banned_at ? __('Bỏ cấm thành viên') : __('Cấm thành viên') }}
+                                                        {{ $user->banned_at ? 'Bỏ cấm thành viên' : 'Cấm thành viên' }}
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
@@ -250,22 +250,22 @@
                                                     @method('PUT')
                                                     <div class="modal-body">
                                                         @if($user->banned_at)
-                                                            <p>{{ __('Bạn có chắc chắn muốn bỏ cấm thành viên này?') }}</p>
+                                                            <p>{{ 'Bạn có chắc chắn muốn bỏ cấm thành viên này?' }}</p>
                                                             <div class="alert alert-info">
-                                                                <strong>{{ __('Lý do cấm:') }}</strong> {{ $user->banned_reason }}
+                                                                <strong>{{ 'Lý do cấm:' }}</strong> {{ $user->banned_reason }}
                                                             </div>
                                                         @else
-                                                            <p>{{ __('Bạn có chắc chắn muốn cấm thành viên này?') }}</p>
+                                                            <p>{{ 'Bạn có chắc chắn muốn cấm thành viên này?' }}</p>
                                                             <div class="mb-3">
-                                                                <label for="reason{{ $user->id }}" class="form-label">{{ __('Lý do cấm') }}</label>
+                                                                <label for="reason{{ $user->id }}" class="form-label">{{ 'Lý do cấm' }}</label>
                                                                 <textarea class="form-control" id="reason{{ $user->id }}" name="reason" rows="3" required>Vi phạm nội quy</textarea>
                                                             </div>
                                                         @endif
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                         <button type="submit" class="btn {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}">
-                                                            {{ $user->banned_at ? __('Bỏ cấm') : __('Cấm') }}
+                                                            {{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}
                                                         </button>
                                                     </div>
                                                 </form>
@@ -279,7 +279,7 @@
                                 <td colspan="8" class="text-center py-4">
                                     <div class="text-muted">
                                         <i class="fas fa-search fs-1 d-block mb-2"></i>
-                                        {{ __('Không tìm thấy thành viên nào') }}
+                                        {{ 'Không tìm thấy thành viên nào' }}
                                     </div>
                                 </td>
                             </tr>

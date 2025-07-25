@@ -29,7 +29,7 @@
                 @method('PUT')
                 
                 <div class="mb-3">
-                    <label for="content" class="form-label">{{ __('Nội dung') }}</label>
+                    <label for="content" class="form-label">{{ 'Nội dung' }}</label>
                     <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="5" required>{{ old('content', $comment->content) }}</textarea>
                     @error('content')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -50,15 +50,15 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_hidden" name="is_hidden" {{ old('is_hidden', $comment->is_hidden) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_hidden">
-                            {{ __('Ẩn bình luận') }}
+                            {{ 'Ẩn bình luận' }}
                         </label>
                         <div class="form-text">{{ __('Bình luận bị ẩn sẽ không hiển thị cho người dùng.') }}</div>
                     </div>
                 </div>
                 
                 <div class="d-flex justify-content-between">
-                    <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                    <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
+                    <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
                 </div>
             </form>
         </div>
@@ -73,17 +73,17 @@
                 <div class="col-md-6">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('ID') }}:</span>
+                            <span>{{ 'ID' }}:</span>
                             <span class="text-muted">{{ $comment->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Người dùng') }}:</span>
+                            <span>{{ 'Người dùng' }}:</span>
                             <span class="text-muted">
                                 <a href="{{ route('admin.users.show', $comment->user) }}">{{ $comment->user->name }}</a>
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Bài đăng') }}:</span>
+                            <span>{{ 'Bài đăng' }}:</span>
                             <span class="text-muted">
                                 <a href="{{ route('admin.threads.show', $comment->thread) }}">{{ Str::limit($comment->thread->title, 30) }}</a>
                             </span>
@@ -93,22 +93,22 @@
                 <div class="col-md-6">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Ngày tạo') }}:</span>
+                            <span>{{ 'Ngày tạo' }}:</span>
                             <span class="text-muted">{{ $comment->created_at->format('d/m/Y H:i') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Cập nhật lần cuối') }}:</span>
+                            <span>{{ 'Cập nhật lần cuối' }}:</span>
                             <span class="text-muted">{{ $comment->updated_at->format('d/m/Y H:i') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Trạng thái') }}:</span>
+                            <span>{{ 'Trạng thái' }}:</span>
                             <span>
                                 @if($comment->is_flagged)
-                                    <span class="badge bg-warning">{{ __('Đã đánh dấu') }}</span>
+                                    <span class="badge bg-warning">{{ 'Đã đánh dấu' }}</span>
                                 @endif
                                 
                                 @if($comment->is_hidden)
-                                    <span class="badge bg-danger">{{ __('Đã ẩn') }}</span>
+                                    <span class="badge bg-danger">{{ 'Đã ẩn' }}</span>
                                 @endif
                             </span>
                         </li>

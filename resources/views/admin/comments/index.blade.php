@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.comments.statistics') }}" class="btn btn-sm btn-info">
-        <i class="fas fa-chart-bar me-1"></i> {{ __('Thống kê') }}
+        <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
     </a>
 @endsection
 
@@ -31,16 +31,16 @@
 @section('content')
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Bộ lọc') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Bộ lọc' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.comments.index') }}" method="GET" class="row g-3">
                 <div class="col-md-3">
-                    <label for="status" class="form-label">{{ __('Trạng thái') }}</label>
+                    <label for="status" class="form-label">{{ 'Trạng thái' }}</label>
                     <select class="form-select" id="status" name="status">
-                        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>{{ __('Tất cả') }}</option>
-                        <option value="flagged" {{ request('status') == 'flagged' ? 'selected' : '' }}>{{ __('Đã đánh dấu') }}</option>
-                        <option value="hidden" {{ request('status') == 'hidden' ? 'selected' : '' }}>{{ __('Đã ẩn') }}</option>
+                        <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>{{ 'Tất cả' }}</option>
+                        <option value="flagged" {{ request('status') == 'flagged' ? 'selected' : '' }}>{{ 'Đã đánh dấu' }}</option>
+                        <option value="hidden" {{ request('status') == 'hidden' ? 'selected' : '' }}>{{ 'Đã ẩn' }}</option>
                         <option value="reported" {{ request('status') == 'reported' ? 'selected' : '' }}>{{ __('Bị báo cáo') }}</option>
                     </select>
                 </div>
@@ -53,15 +53,15 @@
                     <input type="number" class="form-control" id="user_id" name="user_id" value="{{ request('user_id') }}" placeholder="{{ __('Nhập ID người dùng') }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
+                    <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Nội dung bình luận...') }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-filter"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter"></i> {{ 'Lọc' }}
                     </button>
                     <a href="{{ route('admin.comments.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ 'Xóa bộ lọc' }}
                     </a>
                 </div>
             </form>
@@ -70,7 +70,7 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Danh sách bình luận') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Danh sách bình luận' }}</h5>
             <span class="badge bg-primary">{{ $comments->total() }} {{ __('bình luận') }}</span>
         </div>
         <div class="card-body p-0">
@@ -78,13 +78,13 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col" width="60">{{ __('ID') }}</th>
-                            <th scope="col">{{ __('Nội dung') }}</th>
-                            <th scope="col" width="150">{{ __('Người dùng') }}</th>
-                            <th scope="col" width="150">{{ __('Bài đăng') }}</th>
-                            <th scope="col" width="120">{{ __('Trạng thái') }}</th>
-                            <th scope="col" width="150">{{ __('Ngày tạo') }}</th>
-                            <th scope="col" width="120">{{ __('Thao tác') }}</th>
+                            <th scope="col" width="60">{{ 'ID' }}</th>
+                            <th scope="col">{{ 'Nội dung' }}</th>
+                            <th scope="col" width="150">{{ 'Người dùng' }}</th>
+                            <th scope="col" width="150">{{ 'Bài đăng' }}</th>
+                            <th scope="col" width="120">{{ 'Trạng thái' }}</th>
+                            <th scope="col" width="150">{{ 'Ngày tạo' }}</th>
+                            <th scope="col" width="120">{{ 'Thao tác' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,23 +113,23 @@
                                 </td>
                                 <td>
                                     @if($comment->is_flagged)
-                                        <span class="badge bg-warning">{{ __('Đã đánh dấu') }}</span>
+                                        <span class="badge bg-warning">{{ 'Đã đánh dấu' }}</span>
                                     @endif
                                     
                                     @if($comment->is_hidden)
-                                        <span class="badge bg-danger">{{ __('Đã ẩn') }}</span>
+                                        <span class="badge bg-danger">{{ 'Đã ẩn' }}</span>
                                     @endif
                                 </td>
                                 <td>{{ $comment->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                        <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                        <a href="{{ route('admin.comments.edit', $comment) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $comment->id }}" title="{{ __('Xóa') }}">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $comment->id }}" title="{{ 'Xóa' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -139,18 +139,18 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $comment->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $comment->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa bình luận này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa bình luận này?' }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                     <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                     </form>
                                                 </div>
                                             </div>

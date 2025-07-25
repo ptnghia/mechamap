@@ -33,7 +33,7 @@
 @if($errors->any())
     <div class="alert alert-danger alert-dismissible fade show admin-alert admin-alert-danger" role="alert">
         <i class="fas fa-exclamation-triangle-fill me-2"></i>
-        <strong>{{ __('Error!') }}</strong> {{ __('Please check the form for errors.') }}
+        <strong>{{ 'Lỗi!' }}</strong> {{ 'Vui lòng kiểm tra lỗi trong form.' }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif

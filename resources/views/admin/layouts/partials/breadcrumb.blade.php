@@ -3,7 +3,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-home"></i> {{ __('Dashboard') }}
+                <i class="fas fa-home"></i> {{ 'Bảng điều khiển' }}
             </a>
         </li>
 

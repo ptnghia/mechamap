@@ -23,16 +23,16 @@
             <i class="fas fa-file-text me-1"></i> {{ __('Cấu hình trang') }}
         </a>
         <a href="{{ route('admin.seo.robots') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-robot me-1"></i> {{ __('Robots.txt') }}
+            <i class="fas fa-robot me-1"></i> {{ 'Robots.txt' }}
         </a>
         <a href="{{ route('admin.seo.sitemap') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-sitemap me-1"></i> {{ __('Sitemap') }}
+            <i class="fas fa-sitemap me-1"></i> {{ 'Sitemap' }}
         </a>
         <a href="{{ route('admin.seo.social') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-share me-1"></i> {{ __('Social Media') }}
+            <i class="fas fa-share me-1"></i> {{ 'Social Media' }}
         </a>
         <a href="{{ route('admin.seo.advanced') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-cog me-1"></i> {{ __('Cấu hình nâng cao') }}
+            <i class="fas fa-cog me-1"></i> {{ 'Cấu hình nâng cao' }}
         </a>
     </div>
 @endsection
@@ -46,27 +46,27 @@
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                         </a>
                         <a href="{{ route('admin.page-seo.index') }}" class="list-group-item list-group-item-action">
                             <i class="fas fa-file-text me-2"></i> {{ __('Cấu hình trang') }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ 'Robots.txt' }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ 'Sitemap' }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ 'Social Media' }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ 'Cấu hình nâng cao' }}
                         </a>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
 
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="site_keywords" class="form-label">{{ __('Từ khóa') }}</label>
+                            <label for="site_keywords" class="form-label">{{ 'Từ khóa' }}</label>
                             <input type="text" class="form-control @error('site_keywords') is-invalid @enderror" id="site_keywords" name="site_keywords" value="{{ old('site_keywords', $settings['site_keywords'] ?? '') }}">
                             <div class="form-text">{{ __('Các từ khóa liên quan đến trang web của bạn, phân cách bằng dấu phẩy.') }}</div>
                             @error('site_keywords')
@@ -155,7 +155,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="facebook_app_id" class="form-label">{{ __('Facebook App ID') }}</label>
+                            <label for="facebook_app_id" class="form-label">{{ 'Facebook App ID' }}</label>
                             <input type="text" class="form-control @error('facebook_app_id') is-invalid @enderror" id="facebook_app_id" name="facebook_app_id" value="{{ old('facebook_app_id', $settings['facebook_app_id'] ?? '') }}">
                             <div class="form-text">{{ __('ID ứng dụng Facebook của bạn.') }}</div>
                             @error('facebook_app_id')
@@ -177,7 +177,7 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>

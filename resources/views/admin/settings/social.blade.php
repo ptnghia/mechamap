@@ -35,7 +35,7 @@
                         
                         <div class="mb-3">
                             <label for="social_facebook" class="form-label">
-                                <i class="fab fa-facebook me-1 text-primary"></i> {{ __('Facebook') }}
+                                <i class="fab fa-facebook me-1 text-primary"></i> {{ 'Facebook' }}
                             </label>
                             <input type="url" class="form-control @error('social_facebook') is-invalid @enderror" id="social_facebook" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/yourpage">
                             <div class="form-text">{{ __('Liên kết đến trang Facebook của bạn.') }}</div>
@@ -46,7 +46,7 @@
                         
                         <div class="mb-3">
                             <label for="social_twitter" class="form-label">
-                                <i class="fab fa-twitter me-1 text-info"></i> {{ __('Twitter / X') }}
+                                <i class="fab fa-twitter me-1 text-info"></i> {{ 'Twitter / X' }}
                             </label>
                             <input type="url" class="form-control @error('social_twitter') is-invalid @enderror" id="social_twitter" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://twitter.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Twitter/X của bạn.') }}</div>
@@ -57,7 +57,7 @@
                         
                         <div class="mb-3">
                             <label for="social_instagram" class="form-label">
-                                <i class="fab fa-instagram me-1 text-danger"></i> {{ __('Instagram') }}
+                                <i class="fab fa-instagram me-1 text-danger"></i> {{ 'Instagram' }}
                             </label>
                             <input type="url" class="form-control @error('social_instagram') is-invalid @enderror" id="social_instagram" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Instagram của bạn.') }}</div>
@@ -68,7 +68,7 @@
                         
                         <div class="mb-3">
                             <label for="social_linkedin" class="form-label">
-                                <i class="fab fa-linkedin me-1 text-primary"></i> {{ __('LinkedIn') }}
+                                <i class="fab fa-linkedin me-1 text-primary"></i> {{ 'LinkedIn' }}
                             </label>
                             <input type="url" class="form-control @error('social_linkedin') is-invalid @enderror" id="social_linkedin" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? '') }}" placeholder="https://linkedin.com/company/yourcompany">
                             <div class="form-text">{{ __('Liên kết đến trang LinkedIn của bạn.') }}</div>
@@ -79,7 +79,7 @@
                         
                         <div class="mb-3">
                             <label for="social_youtube" class="form-label">
-                                <i class="fab fa-youtube me-1 text-danger"></i> {{ __('YouTube') }}
+                                <i class="fab fa-youtube me-1 text-danger"></i> {{ 'YouTube' }}
                             </label>
                             <input type="url" class="form-control @error('social_youtube') is-invalid @enderror" id="social_youtube" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? '') }}" placeholder="https://youtube.com/c/yourchannel">
                             <div class="form-text">{{ __('Liên kết đến kênh YouTube của bạn.') }}</div>
@@ -90,7 +90,7 @@
                         
                         <div class="mb-3">
                             <label for="social_tiktok" class="form-label">
-                                <i class="fab fa-tiktok me-1"></i> {{ __('TikTok') }}
+                                <i class="fab fa-tiktok me-1"></i> {{ 'TikTok' }}
                             </label>
                             <input type="url" class="form-control @error('social_tiktok') is-invalid @enderror" id="social_tiktok" name="social_tiktok" value="{{ old('social_tiktok', $settings['social_tiktok'] ?? '') }}" placeholder="https://tiktok.com/@yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang TikTok của bạn.') }}</div>
@@ -101,7 +101,7 @@
                         
                         <div class="mb-3">
                             <label for="social_pinterest" class="form-label">
-                                <i class="fab fa-pinterest me-1 text-danger"></i> {{ __('Pinterest') }}
+                                <i class="fab fa-pinterest me-1 text-danger"></i> {{ 'Pinterest' }}
                             </label>
                             <input type="url" class="form-control @error('social_pinterest') is-invalid @enderror" id="social_pinterest" name="social_pinterest" value="{{ old('social_pinterest', $settings['social_pinterest'] ?? '') }}" placeholder="https://pinterest.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang Pinterest của bạn.') }}</div>
@@ -112,7 +112,7 @@
                         
                         <div class="mb-3">
                             <label for="social_github" class="form-label">
-                                <i class="fab fa-github me-1"></i> {{ __('GitHub') }}
+                                <i class="fab fa-github me-1"></i> {{ 'GitHub' }}
                             </label>
                             <input type="url" class="form-control @error('social_github') is-invalid @enderror" id="social_github" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? '') }}" placeholder="https://github.com/yourusername">
                             <div class="form-text">{{ __('Liên kết đến trang GitHub của bạn.') }}</div>
@@ -123,7 +123,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>
@@ -132,7 +132,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Xem trước') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Xem trước' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-flex flex-wrap gap-2 justify-content-center">

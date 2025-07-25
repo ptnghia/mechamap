@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
     </a>
 @endsection
 
@@ -64,19 +64,19 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label fw-bold">{{ __('Meta Title') }}</label>
+                                <label class="form-label fw-bold">{{ 'Meta Title' }}</label>
                                 <p>{{ $page->meta_title ?? $page->title }}</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label fw-bold">{{ __('Meta Description') }}</label>
+                                <label class="form-label fw-bold">{{ 'Meta Description' }}</label>
                                 <p>{{ $page->meta_description ?? Str::limit(strip_tags($page->content), 160) }}</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label fw-bold">{{ __('Meta Keywords') }}</label>
+                                <label class="form-label fw-bold">{{ 'Meta Keywords' }}</label>
                                 <p>{{ $page->meta_keywords }}</p>
                             </div>
                         </div>
@@ -93,33 +93,33 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('ID') }}:</span>
+                            <span>{{ 'ID' }}:</span>
                             <span class="text-muted">{{ $page->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Slug') }}:</span>
+                            <span>{{ 'Slug' }}:</span>
                             <span class="text-muted">{{ $page->slug }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Danh mục') }}:</span>
+                            <span>{{ 'Danh mục' }}:</span>
                             <span class="text-muted">{{ $page->category->name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Tác giả') }}:</span>
+                            <span>{{ 'Tác giả' }}:</span>
                             <span class="text-muted">{{ $page->user->name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Trạng thái') }}:</span>
+                            <span>{{ 'Trạng thái' }}:</span>
                             <span>
                                 @if($page->status == 'draft')
-                                    <span class="badge bg-secondary">{{ __('Bản nháp') }}</span>
+                                    <span class="badge bg-secondary">{{ 'Bản nháp' }}</span>
                                 @elseif($page->status == 'published')
-                                    <span class="badge bg-success">{{ __('Đã xuất bản') }}</span>
+                                    <span class="badge bg-success">{{ 'Đã xuất bản' }}</span>
                                 @endif
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Nổi bật') }}:</span>
+                            <span>{{ 'Nổi bật' }}:</span>
                             <span>
                                 @if($page->is_featured)
                                     <span class="badge bg-warning">{{ __('Có') }}</span>
@@ -129,19 +129,19 @@
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Thứ tự') }}:</span>
+                            <span>{{ 'Thứ tự' }}:</span>
                             <span class="text-muted">{{ $page->order }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __(__("common.views")) }}:</span>
+                            <span>{{ 'Lượt xem' }}:</span>
                             <span class="text-muted">{{ $page->view_count }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Ngày tạo') }}:</span>
+                            <span>{{ 'Ngày tạo' }}:</span>
                             <span class="text-muted">{{ $page->created_at->format('d/m/Y H:i') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Cập nhật lần cuối') }}:</span>
+                            <span>{{ 'Cập nhật lần cuối' }}:</span>
                             <span class="text-muted">{{ $page->updated_at->format('d/m/Y H:i') }}</span>
                         </li>
                     </ul>
@@ -150,12 +150,12 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thao tác') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thao tác' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-primary">
-                            <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+                            <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
                         </a>
 
                         @if($page->status == 'draft')
@@ -173,7 +173,7 @@
                                 <input type="hidden" name="meta_description" value="{{ $page->meta_description }}">
                                 <input type="hidden" name="meta_keywords" value="{{ $page->meta_keywords }}">
                                 <button type="submit" class="btn btn-success w-100">
-                                    <i class="fas fa-check-circle me-1"></i> {{ __('Xuất bản') }}
+                                    <i class="fas fa-check-circle me-1"></i> {{ 'Xuất bản' }}
                                 </button>
                             </form>
                         @endif
@@ -192,18 +192,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">{{ __('Xác nhận xóa') }}</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">{{ 'Xác nhận xóa' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     {{ __('Bạn có chắc chắn muốn xóa bài viết này?') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                     <form action="{{ route('admin.pages.destroy', $page) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                     </form>
                 </div>
             </div>

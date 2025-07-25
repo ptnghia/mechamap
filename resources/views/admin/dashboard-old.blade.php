@@ -566,23 +566,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exportModalLabel">{{ __('Xuất báo cáo thống kê') }}</h5>
+                    <h5 class="modal-title" id="exportModalLabel">{{ 'Xuất báo cáo thống kê' }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.statistics.export') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="type" class="form-label">{{ __('Loại báo cáo') }}</label>
+                            <label for="type" class="form-label">{{ 'Loại báo cáo' }}</label>
                             <select class="form-select" id="type" name="type">
-                                <option value="overview">{{ __('Tổng quan') }}</option>
-                                <option value="users">{{ __('Người dùng') }}</option>
-                                <option value="content">{{ __('Nội dung') }}</option>
-                                <option value="interactions">{{ __('Tương tác') }}</option>
+                                <option value="overview">{{ 'Tổng quan' }}</option>
+                                <option value="users">{{ 'Người dùng' }}</option>
+                                <option value="content">{{ 'Nội dung' }}</option>
+                                <option value="interactions">{{ 'Tương tác' }}</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="format" class="form-label">{{ __('Định dạng') }}</label>
+                            <label for="format" class="form-label">{{ 'Định dạng' }}</label>
                             <select class="form-select" id="format" name="format">
                                 <option value="csv">CSV</option>
                             </select>
@@ -590,8 +590,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ __('Xuất báo cáo') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-primary">{{ 'Xuất báo cáo' }}</button>
                     </div>
                 </form>
             </div>

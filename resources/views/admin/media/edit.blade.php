@@ -31,7 +31,7 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Tiêu đề') }} <span class="text-danger">*</span></label>
+                            <label for="title" class="form-label">{{ 'Tiêu đề' }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $media->title) }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">{{ __('Mô tả') }}</label>
+                            <label for="description" class="form-label">{{ 'Mô tả' }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5">{{ old('description', $media->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -47,8 +47,8 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('admin.media.show', $media) }}" class="btn btn-secondary">{{ __('Hủy') }}</a>
-                            <button type="submit" class="btn btn-primary">{{ __('Cập nhật') }}</button>
+                            <a href="{{ route('admin.media.show', $media) }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
+                            <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
                         </div>
                     </form>
                 </div>
@@ -58,7 +58,7 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Xem trước') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Xem trước' }}</h5>
                 </div>
                 <div class="card-body text-center">
                     @if(strpos($media->mime_type, 'image') !== false)
@@ -66,12 +66,12 @@
                     @elseif(strpos($media->mime_type, 'video') !== false)
                         <video controls class="w-100" style="max-height: 300px;">
                             <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->mime_type }}">
-                            {{ __('Trình duyệt của bạn không hỗ trợ video.') }}
+                            {{ 'Trình duyệt của bạn không hỗ trợ video.' }}
                         </video>
                     @elseif(strpos($media->mime_type, 'audio') !== false)
                         <audio controls class="w-100">
                             <source src="{{ Storage::url($media->file_path) }}" type="{{ $media->mime_type }}">
-                            {{ __('Trình duyệt của bạn không hỗ trợ audio.') }}
+                            {{ 'Trình duyệt của bạn không hỗ trợ audio.' }}
                         </audio>
                     @else
                         <div class="p-4 text-center">
@@ -100,19 +100,19 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Tên file') }}:</span>
+                            <span>{{ 'Tên file' }}:</span>
                             <span class="text-muted text-truncate" style="max-width: 200px;">{{ $media->file_name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Loại file') }}:</span>
+                            <span>{{ 'Loại file' }}:</span>
                             <span class="text-muted">{{ $media->file_type }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Kích thước') }}:</span>
+                            <span>{{ 'Kích thước' }}:</span>
                             <span class="text-muted">{{ formatFileSize($media->file_size) }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Ngày tải lên') }}:</span>
+                            <span>{{ 'Ngày tải lên' }}:</span>
                             <span class="text-muted">{{ $media->created_at->format('d/m/Y H:i') }}</span>
                         </li>
                     </ul>

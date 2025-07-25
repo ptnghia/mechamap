@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.forums.edit', $forum) }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-edit me-1"></i> {{ __('Chỉnh sửa') }}
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
     </a>
 @endsection
 
@@ -38,51 +38,51 @@
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('ID') }}:</span>
+                            <span>{{ 'ID' }}:</span>
                             <span class="text-muted">{{ $forum->id }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Tên') }}:</span>
+                            <span>{{ 'Tên' }}:</span>
                             <span class="text-muted">{{ $forum->name }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Slug') }}:</span>
+                            <span>{{ 'Slug' }}:</span>
                             <span class="text-muted">{{ $forum->slug }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Diễn đàn cha') }}:</span>
+                            <span>{{ 'Diễn đàn cha' }}:</span>
                             <span class="text-muted">
                                 @if($forum->parent)
                                     <a href="{{ route('admin.forums.show', $forum->parent) }}">{{ $forum->parent->name }}</a>
                                 @else
-                                    {{ __('Không có') }}
+                                    {{ 'Không có' }}
                                 @endif
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Thứ tự') }}:</span>
+                            <span>{{ 'Thứ tự' }}:</span>
                             <span class="text-muted">{{ $forum->order }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Trạng thái') }}:</span>
+                            <span>{{ 'Trạng thái' }}:</span>
                             <span>
                                 @if($forum->is_private)
-                                    <span class="badge bg-warning">{{ __('Riêng tư') }}</span>
+                                    <span class="badge bg-warning">{{ 'Riêng tư' }}</span>
                                 @else
-                                    <span class="badge bg-success">{{ __('Công khai') }}</span>
+                                    <span class="badge bg-success">{{ 'Công khai' }}</span>
                                 @endif
                             </span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Số bài đăng') }}:</span>
+                            <span>{{ 'Số bài đăng' }}:</span>
                             <span class="text-muted">{{ $threads->total() }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Ngày tạo') }}:</span>
+                            <span>{{ 'Ngày tạo' }}:</span>
                             <span class="text-muted">{{ $forum->created_at->format('d/m/Y H:i') }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
-                            <span>{{ __('Cập nhật lần cuối') }}:</span>
+                            <span>{{ 'Cập nhật lần cuối' }}:</span>
                             <span class="text-muted">{{ $forum->updated_at->format('d/m/Y H:i') }}</span>
                         </li>
                     </ul>
@@ -92,7 +92,7 @@
             @if($forum->description)
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Mô tả') }}</h5>
+                        <h5 class="card-title mb-0">{{ 'Mô tả' }}</h5>
                     </div>
                     <div class="card-body">
                         {{ $forum->description }}
@@ -123,19 +123,19 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">{{ __('Bài đăng trong diễn đàn này') }}</h5>
-                    <span class="badge bg-primary">{{ $threads->total() }} {{ __('bài đăng') }}</span>
+                    <span class="badge bg-primary">{{ $threads->total() }} {{ 'bài đăng' }}</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
-                                    <th>{{ __('Tiêu đề') }}</th>
-                                    <th>{{ __('Tác giả') }}</th>
-                                    <th>{{ __('Chuyên mục') }}</th>
-                                    <th>{{ __('Trạng thái') }}</th>
-                                    <th>{{ __('Ngày tạo') }}</th>
-                                    <th>{{ __('Thao tác') }}</th>
+                                    <th>{{ 'Tiêu đề' }}</th>
+                                    <th>{{ 'Tác giả' }}</th>
+                                    <th>{{ 'Chuyên mục' }}</th>
+                                    <th>{{ 'Trạng thái' }}</th>
+                                    <th>{{ 'Ngày tạo' }}</th>
+                                    <th>{{ 'Thao tác' }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,13 +154,13 @@
                                         <td>{{ $thread->category->name }}</td>
                                         <td>
                                             @if($thread->status == 'draft')
-                                                <span class="badge bg-secondary">{{ __('Bản nháp') }}</span>
+                                                <span class="badge bg-secondary">{{ 'Bản nháp' }}</span>
                                             @elseif($thread->status == 'pending')
-                                                <span class="badge bg-warning">{{ __('Chờ duyệt') }}</span>
+                                                <span class="badge bg-warning">{{ 'Chờ duyệt' }}</span>
                                             @elseif($thread->status == 'published')
-                                                <span class="badge bg-success">{{ __('Đã xuất bản') }}</span>
+                                                <span class="badge bg-success">{{ 'Đã xuất bản' }}</span>
                                             @elseif($thread->status == 'rejected')
-                                                <span class="badge bg-danger">{{ __('Đã từ chối') }}</span>
+                                                <span class="badge bg-danger">{{ 'Đã từ chối' }}</span>
                                             @endif
                                         </td>
                                         <td>{{ $thread->created_at->format('d/m/Y') }}</td>

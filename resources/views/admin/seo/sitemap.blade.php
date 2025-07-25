@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.seo.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -28,24 +28,24 @@
         <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Điều hướng') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Điều hướng' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         <a href="{{ route('admin.seo.index') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog me-2"></i> {{ __('Cấu hình chung') }}
+                            <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                         </a>
                         <a href="{{ route('admin.seo.robots') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-robot me-2"></i> {{ __('Robots.txt') }}
+                            <i class="fas fa-robot me-2"></i> {{ 'Robots.txt' }}
                         </a>
                         <a href="{{ route('admin.seo.sitemap') }}" class="list-group-item list-group-item-action active">
-                            <i class="fas fa-sitemap me-2"></i> {{ __('Sitemap') }}
+                            <i class="fas fa-sitemap me-2"></i> {{ 'Sitemap' }}
                         </a>
                         <a href="{{ route('admin.seo.social') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-share me-2"></i> {{ __('Social Media') }}
+                            <i class="fas fa-share me-2"></i> {{ 'Social Media' }}
                         </a>
                         <a href="{{ route('admin.seo.advanced') }}" class="list-group-item list-group-item-action">
-                            <i class="fas fa-cog-wide-connected me-2"></i> {{ __('Cấu hình nâng cao') }}
+                            <i class="fas fa-cog-wide-connected me-2"></i> {{ 'Cấu hình nâng cao' }}
                         </a>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Hướng dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Hướng dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
@@ -92,10 +92,10 @@
                             <table class="table table-hover align-middle">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>{{ __('Tên file') }}</th>
-                                        <th>{{ __('Kích thước') }}</th>
-                                        <th>{{ __('Cập nhật lần cuối') }}</th>
-                                        <th>{{ __('Thao tác') }}</th>
+                                        <th>{{ 'Tên file' }}</th>
+                                        <th>{{ 'Kích thước' }}</th>
+                                        <th>{{ 'Cập nhật lần cuối' }}</th>
+                                        <th>{{ 'Thao tác' }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,10 +110,10 @@
                                             <td>{{ date('d/m/Y H:i:s', $file['modified']) }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{ $file['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('Xem') }}">
+                                                    <a href="{{ $file['url'] }}" target="_blank" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ 'Xem' }}">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-filename="{{ $file['name'] }}" title="{{ __('Xóa') }}">
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-filename="{{ $file['name'] }}" title="{{ 'Xóa' }}">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -195,8 +195,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                     </div>
                 </form>
             </div>

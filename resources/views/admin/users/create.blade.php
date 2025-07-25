@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> {{ __('Quay lại') }}
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
     </a>
 @endsection
 
@@ -36,14 +36,14 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="name" class="form-label">{{ __('Họ tên') }} <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ 'Họ tên' }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="username" class="form-label">{{ __('Tên đăng nhập') }} <span class="text-danger">*</span></label>
+                                <label for="username" class="form-label">{{ 'Tên đăng nhập' }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username') }}" required>
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -53,20 +53,20 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="email" class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
+                                <label for="email" class="form-label">{{ 'Email' }} <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="role" class="form-label">{{ __('Vai trò') }} <span class="text-danger">*</span></label>
+                                <label for="role" class="form-label">{{ 'Vai trò' }} <span class="text-danger">*</span></label>
                                 <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
-                                    <option value="">{{ __('Chọn vai trò') }}</option>
-                                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
-                                    <option value="moderator" {{ old('role') === 'moderator' ? 'selected' : '' }}>{{ __('Moderator') }}</option>
-                                    <option value="senior" {{ old('role') === 'senior' ? 'selected' : '' }}>{{ __('Senior') }}</option>
-                                    <option value="member" {{ old('role') === 'member' ? 'selected' : '' }}>{{ __('Member') }}</option>
+                                    <option value="">{{ 'Chọn vai trò' }}</option>
+                                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>{{ 'Admin' }}</option>
+                                    <option value="moderator" {{ old('role') === 'moderator' ? 'selected' : '' }}>{{ 'Moderator' }}</option>
+                                    <option value="senior" {{ old('role') === 'senior' ? 'selected' : '' }}>{{ 'Senior' }}</option>
+                                    <option value="member" {{ old('role') === 'member' ? 'selected' : '' }}>{{ 'Thành viên' }}</option>
                                 </select>
                                 @error('role')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -80,7 +80,7 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="password" class="form-label">{{ __('Mật khẩu') }} <span class="text-danger">*</span></label>
+                                <label for="password" class="form-label">{{ 'Mật khẩu' }} <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                                     <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
@@ -93,7 +93,7 @@
                                 <div class="form-text">{{ __('Mật khẩu phải có ít nhất 8 ký tự.') }}</div>
                             </div>
                             <div class="col-md-6">
-                                <label for="password_confirmation" class="form-label">{{ __('Xác nhận mật khẩu') }} <span class="text-danger">*</span></label>
+                                <label for="password_confirmation" class="form-label">{{ 'Xác nhận mật khẩu' }} <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                     <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
@@ -104,9 +104,9 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="avatar" class="form-label">{{ __('Ảnh đại diện') }}</label>
+                            <label for="avatar" class="form-label">{{ 'Ảnh đại diện' }}</label>
                             <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
-                            <div class="form-text">{{ __('Chấp nhận các định dạng: JPG, PNG, GIF. Kích thước tối đa: 2MB.') }}</div>
+                            <div class="form-text">{{ 'Chấp nhận các định dạng: JPG, PNG, GIF. Kích thước tối đa: 2MB.' }}</div>
                             @error('avatar')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -114,10 +114,10 @@
                         
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">
-                                {{ __('Hủy') }}
+                                {{ 'Hủy' }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-user-plus me-1"></i> {{ __('Tạo thành viên') }}
+                                <i class="fas fa-user-plus me-1"></i> {{ 'Tạo thành viên' }}
                             </button>
                         </div>
                     </form>

@@ -1,0 +1,173 @@
+@extends('admin.layouts.dason')
+
+@section('title', 'Quản lý Media')
+
+@section('page-title')
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Quản lý Media</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">MechaMap</a></li>
+                    <li class="breadcrumb-item active">Quản lý Media</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('actions')
+    <a href="{{ route('admin.media.create') }}" class="btn btn-sm btn-primary">
+        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
+    </a>
+@endsection
+
+@push('styles')
+<!-- Page specific CSS -->
+@endpush
+
+@section('content')
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title mb-0">{{ __('Bộ lọc') }}</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.media.index') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="type" class="form-label">{{ __('Loại file') }}</label>
+                    <select class="form-select" id="type" name="type">
+                        <option value="">{{ __('Tất cả') }}</option>
+                        <option value="image" {{ request('type') == 'image' ? 'selected' : '' }}>{{ __('Hình ảnh') }}</option>
+                        <option value="video" {{ request('type') == 'video' ? 'selected' : '' }}>{{ __('Video') }}</option>
+                        <option value="audio" {{ request('type') == 'audio' ? 'selected' : '' }}>{{ __('Âm thanh') }}</option>
+                        <option value="application" {{ request('type') == 'application' ? 'selected' : '' }}>{{ __('Tài liệu') }}</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tên file, tiêu đề, mô tả...') }}">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
+                    </button>
+                    <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">{{ __('Thư viện Media') }}</h5>
+            <span class="badge bg-primary">{{ $media->total() }} {{ __('files') }}</span>
+        </div>
+        <div class="card-body">
+            @if($media->count() > 0)
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+                    @foreach($media as $item)
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-img-top position-relative" style="height: 160px; overflow: hidden;">
+                                    @if(strpos($item->file_type, 'image') !== false)
+                                        <img src="{{ Storage::url($item->file_path) }}" class="img-fluid" alt="{{ $item->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    @elseif(strpos($item->file_type, 'video') !== false)
+                                        <div class="d-flex justify-content-center align-items-center bg-dark h-100">
+                                            <i class="fas fa-film text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @elseif(strpos($item->file_type, 'audio') !== false)
+                                        <div class="d-flex justify-content-center align-items-center bg-info h-100">
+                                            <i class="fas fa-music text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @elseif(strpos($item->file_type, 'pdf') !== false)
+                                        <div class="d-flex justify-content-center align-items-center bg-danger h-100">
+                                            <i class="fas fa-file-pdf text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @elseif(strpos($item->file_type, 'word') !== false || strpos($item->file_type, 'document') !== false)
+                                        <div class="d-flex justify-content-center align-items-center bg-primary h-100">
+                                            <i class="fas fa-file-word text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @elseif(strpos($item->file_type, 'excel') !== false || strpos($item->file_type, 'spreadsheet') !== false)
+                                        <div class="d-flex justify-content-center align-items-center bg-success h-100">
+                                            <i class="fas fa-file-excel text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @else
+                                        <div class="d-flex justify-content-center align-items-center bg-secondary h-100">
+                                            <i class="fas fa-file text-light" style="font-size: 3rem;"></i>
+                                        </div>
+                                    @endif
+                                    <div class="position-absolute bottom-0 end-0 p-2">
+                                        <span class="badge bg-dark">{{ strtoupper(pathinfo($item->file_name, PATHINFO_EXTENSION)) }}</span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title text-truncate" title="{{ $item->title }}">{{ $item->title }}</h6>
+                                    <p class="card-text small text-muted mb-0">{{ $item->user->name }}</p>
+                                    <p class="card-text small text-muted">{{ $item->created_at->format('d/m/Y H:i') }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group w-100">
+                                        <a href="{{ route('admin.media.show', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('admin.media.download', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Tải xuống') }}">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $item->id }}" title="{{ __('Xóa') }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Modal xóa -->
+                                    <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $item->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {{ __('Bạn có chắc chắn muốn xóa file này?') }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <form action="{{ route('admin.media.destroy', $item) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+                    <p class="mt-3">{{ __('Không có file nào.') }}</p>
+                    <a href="{{ route('admin.media.create') }}" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
+                    </a>
+                </div>
+            @endif
+        </div>
+        <div class="card-footer">
+            {{ $media->withQueryString()->links() }}
+        </div>
+    </div>
+
+@push('scripts')
+<!-- Page specific JS -->
+@endpush
+@endsection

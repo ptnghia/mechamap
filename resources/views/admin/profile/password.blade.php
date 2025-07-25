@@ -79,7 +79,7 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{{ route('admin.profile.index') }}" class="btn btn-outline-secondary me-md-2">
-                                {{ __('Hủy') }}
+                                {{ 'Hủy' }}
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-check me-1"></i> {{ __('Đổi mật khẩu') }}

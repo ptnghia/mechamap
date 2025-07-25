@@ -34,7 +34,7 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="copyright_text" class="form-label">{{ __('Nội dung bản quyền') }}</label>
+                            <label for="copyright_text" class="form-label">{{ 'Nội dung bản quyền' }}</label>
                             <input type="text" class="form-control @error('copyright_text') is-invalid @enderror" id="copyright_text" name="copyright_text" value="{{ old('copyright_text', $settings['copyright_text'] ?? '© ' . date('Y') . ' ' . config('app.name') . '. All rights reserved.') }}">
                             <div class="form-text">{{ __('Nội dung bản quyền hiển thị ở footer của trang web.') }}</div>
                             @error('copyright_text')
@@ -44,7 +44,7 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="copyright_owner" class="form-label">{{ __('Chủ sở hữu bản quyền') }}</label>
+                                <label for="copyright_owner" class="form-label">{{ 'Chủ sở hữu bản quyền' }}</label>
                                 <input type="text" class="form-control @error('copyright_owner') is-invalid @enderror" id="copyright_owner" name="copyright_owner" value="{{ old('copyright_owner', $settings['copyright_owner'] ?? config('app.name')) }}">
                                 <div class="form-text">{{ __('Tên của chủ sở hữu bản quyền.') }}</div>
                                 @error('copyright_owner')
@@ -53,7 +53,7 @@
                             </div>
                             
                             <div class="col-md-6">
-                                <label for="copyright_year" class="form-label">{{ __('Năm bản quyền') }}</label>
+                                <label for="copyright_year" class="form-label">{{ 'Năm bản quyền' }}</label>
                                 <input type="text" class="form-control @error('copyright_year') is-invalid @enderror" id="copyright_year" name="copyright_year" value="{{ old('copyright_year', $settings['copyright_year'] ?? date('Y')) }}">
                                 <div class="form-text">{{ __('Năm bản quyền. Có thể là một năm cụ thể hoặc một khoảng thời gian (ví dụ: 2020-2023).') }}</div>
                                 @error('copyright_year')
@@ -64,7 +64,7 @@
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu cấu hình') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu cấu hình' }}
                             </button>
                         </div>
                     </form>
@@ -73,7 +73,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Xem trước') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Xem trước' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="border p-3 rounded bg-light text-center">

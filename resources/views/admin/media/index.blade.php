@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.media.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
+        <i class="fas fa-upload me-1"></i> {{ 'Tải lên' }}
     </a>
 @endsection
 
@@ -31,30 +31,30 @@
 @section('content')
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Bộ lọc') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Bộ lọc' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.media.index') }}" method="GET" class="row g-3">
                 <div class="col-md-4">
-                    <label for="type" class="form-label">{{ __('Loại file') }}</label>
+                    <label for="type" class="form-label">{{ 'Loại file' }}</label>
                     <select class="form-select" id="type" name="type">
-                        <option value="">{{ __('Tất cả') }}</option>
-                        <option value="image" {{ request('type') == 'image' ? 'selected' : '' }}>{{ __('Hình ảnh') }}</option>
-                        <option value="video" {{ request('type') == 'video' ? 'selected' : '' }}>{{ __('Video') }}</option>
-                        <option value="audio" {{ request('type') == 'audio' ? 'selected' : '' }}>{{ __('Âm thanh') }}</option>
-                        <option value="application" {{ request('type') == 'application' ? 'selected' : '' }}>{{ __('Tài liệu') }}</option>
+                        <option value="">{{ 'Tất cả' }}</option>
+                        <option value="image" {{ request('type') == 'image' ? 'selected' : '' }}>{{ 'Hình ảnh' }}</option>
+                        <option value="video" {{ request('type') == 'video' ? 'selected' : '' }}>{{ 'Video' }}</option>
+                        <option value="audio" {{ request('type') == 'audio' ? 'selected' : '' }}>{{ 'Âm thanh' }}</option>
+                        <option value="application" {{ request('type') == 'application' ? 'selected' : '' }}>{{ 'Tài liệu' }}</option>
                     </select>
                 </div>
                 <div class="col-md-8">
-                    <label for="search" class="form-label">{{ __(__('ui.actions.search')) }}</label>
+                    <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
                     <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tên file, tiêu đề, mô tả...') }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-filter me-1"></i> {{ __('Lọc') }}
+                        <i class="fas fa-filter me-1"></i> {{ 'Lọc' }}
                     </button>
                     <a href="{{ route('admin.media.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times-circle me-1"></i> {{ __('Xóa bộ lọc') }}
+                        <i class="fas fa-times-circle me-1"></i> {{ 'Xóa bộ lọc' }}
                     </a>
                 </div>
             </form>
@@ -63,8 +63,8 @@
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">{{ __('Thư viện Media') }}</h5>
-            <span class="badge bg-primary">{{ $media->total() }} {{ __('files') }}</span>
+            <h5 class="card-title mb-0">{{ 'Thư viện Media' }}</h5>
+            <span class="badge bg-primary">{{ $media->total() }} {{ 'files' }}</span>
         </div>
         <div class="card-body">
             @if($media->count() > 0)
@@ -111,16 +111,16 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="btn-group w-100">
-                                        <a href="{{ route('admin.media.show', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Xem') }}">
+                                        <a href="{{ route('admin.media.show', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Xem' }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Sửa') }}">
+                                        <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Sửa' }}">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="{{ route('admin.media.download', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Tải xuống') }}">
+                                        <a href="{{ route('admin.media.download', $item) }}" class="btn btn-sm btn-outline-primary" title="{{ 'Tải xuống' }}">
                                             <i class="fas fa-download"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $item->id }}" title="{{ __('Xóa') }}">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $item->id }}" title="{{ 'Xóa' }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -130,18 +130,18 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">{{ __('Xác nhận xóa') }}</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel{{ $item->id }}">{{ 'Xác nhận xóa' }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa file này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa file này?' }}
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Hủy') }}</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
                                                     <form action="{{ route('admin.media.destroy', $item) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">{{ __('Xóa') }}</button>
+                                                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
                     <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
                     <p class="mt-3">{{ __('Không có file nào.') }}</p>
                     <a href="{{ route('admin.media.create') }}" class="btn btn-primary">
-                        <i class="fas fa-upload me-1"></i> {{ __('Tải lên') }}
+                        <i class="fas fa-upload me-1"></i> {{ 'Tải lên' }}
                     </a>
                 </div>
             @endif

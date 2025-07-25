@@ -32,9 +32,9 @@
                     <h5 class="card-title">{{ $user->name }}</h5>
                     <p class="text-muted">
                         @if($user->isAdmin())
-                            <span class="badge bg-danger">{{ __('Admin') }}</span>
+                            <span class="badge bg-danger">{{ 'Admin' }}</span>
                         @elseif($user->isModerator())
-                            <span class="badge bg-primary">{{ __('Moderator') }}</span>
+                            <span class="badge bg-primary">{{ 'Moderator' }}</span>
                         @endif
                     </p>
                     <p class="card-text">
@@ -72,20 +72,20 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label text-muted">{{ __('Ngày tham gia') }}</label>
+                        <label class="form-label text-muted">{{ 'Ngày tham gia' }}</label>
                         <p>{{ $user->created_at->format('d/m/Y') }}</p>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-muted">{{ __('Hoạt động lần cuối') }}</label>
-                        <p>{{ $user->last_seen_at ? $user->last_seen_at->diffForHumans() : __('Chưa có') }}</p>
+                        <label class="form-label text-muted">{{ 'Hoạt động lần cuối' }}</label>
+                        <p>{{ $user->last_seen_at ? $user->last_seen_at->diffForHumans() : 'Chưa có' }}</p>
                     </div>
                     <div class="mb-0">
-                        <label class="form-label text-muted">{{ __('Trạng thái') }}</label>
+                        <label class="form-label text-muted">{{ 'Trạng thái' }}</label>
                         <p>
                             @if($user->isOnline())
-                                <span class="badge bg-success">{{ __('Đang hoạt động') }}</span>
+                                <span class="badge bg-success">{{ 'Đang hoạt động' }}</span>
                             @else
-                                <span class="badge bg-secondary">{{ __('Không hoạt động') }}</span>
+                                <span class="badge bg-secondary">{{ 'Không hoạt động' }}</span>
                             @endif
                         </p>
                     </div>
@@ -105,14 +105,14 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="name" class="form-label">{{ __('Họ tên') }} <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">{{ 'Họ tên' }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $user->name) }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="username" class="form-label">{{ __('Tên đăng nhập') }} <span class="text-danger">*</span></label>
+                                <label for="username" class="form-label">{{ 'Tên đăng nhập' }} <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username', $user->username) }}" required>
                                 @error('username')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
+                            <label for="email" class="form-label">{{ 'Email' }} <span class="text-danger">*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $user->email) }}" required>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -129,16 +129,16 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="avatar" class="form-label">{{ __('Ảnh đại diện') }}</label>
+                            <label for="avatar" class="form-label">{{ 'Ảnh đại diện' }}</label>
                             <input type="file" class="form-control @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
-                            <div class="form-text">{{ __('Chấp nhận các định dạng: JPG, PNG, GIF. Kích thước tối đa: 2MB.') }}</div>
+                            <div class="form-text">{{ 'Chấp nhận các định dạng: JPG, PNG, GIF. Kích thước tối đa: 2MB.' }}</div>
                             @error('avatar')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="about_me" class="form-label">{{ __('Giới thiệu') }}</label>
+                            <label for="about_me" class="form-label">{{ 'Giới thiệu' }}</label>
                             <textarea class="form-control @error('about_me') is-invalid @enderror" id="about_me" name="about_me" rows="3">{{ old('about_me', $user->about_me) }}</textarea>
                             @error('about_me')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -163,7 +163,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="signature" class="form-label">{{ __('Chữ ký') }}</label>
+                            <label for="signature" class="form-label">{{ 'Chữ ký' }}</label>
                             <textarea class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" rows="2">{{ old('signature', $user->signature) }}</textarea>
                             @error('signature')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -172,7 +172,7 @@
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> {{ __('Lưu thay đổi') }}
+                                <i class="fas fa-save me-1"></i> {{ 'Lưu thay đổi' }}
                             </button>
                         </div>
                     </form>
