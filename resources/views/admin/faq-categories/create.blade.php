@@ -25,7 +25,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Tạo danh mục hỏi đáp mới') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Tạo danh mục hỏi đáp mới' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.faq-categories.store') }}" method="POST">

@@ -19,7 +19,7 @@
 
 @section('actions')
     <a href="{{ route('admin.profile.password') }}" class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-key me-1"></i> {{ __('Đổi mật khẩu') }}
+        <i class="fas fa-key me-1"></i> {{ 'Đổi mật khẩu' }}
     </a>
 @endsection
 
@@ -60,7 +60,7 @@
                     </p>
                     <div class="d-grid gap-2">
                         <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                            <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
+                            <i class="fas fa-eye me-1"></i> {{ 'Xem hồ sơ công khai' }}
                         </a>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
 
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin tài khoản') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin tài khoản' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -147,14 +147,14 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="website" class="form-label">{{ __('Website') }}</label>
+                                <label for="website" class="form-label">{{ 'Website' }}</label>
                                 <input type="url" class="form-control @error('website') is-invalid @enderror" id="website" name="website" value="{{ old('website', $user->website) }}">
                                 @error('website')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="location" class="form-label">{{ __('Địa điểm') }}</label>
+                                <label for="location" class="form-label">{{ 'Địa điểm' }}</label>
                                 <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location', $user->location) }}">
                                 @error('location')
                                     <div class="invalid-feedback">{{ $message }}</div>

@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Chỉnh sửa bình luận') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Chỉnh sửa bình luận' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.comments.update', $comment) }}" method="POST">
@@ -40,9 +40,9 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_flagged" name="is_flagged" {{ old('is_flagged', $comment->is_flagged) ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_flagged">
-                            {{ __('Đánh dấu bình luận') }}
+                            {{ 'Đánh dấu bình luận' }}
                         </label>
-                        <div class="form-text">{{ __('Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.') }}</div>
+                        <div class="form-text">{{ 'Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.' }}</div>
                     </div>
                 </div>
                 
@@ -52,7 +52,7 @@
                         <label class="form-check-label" for="is_hidden">
                             {{ 'Ẩn bình luận' }}
                         </label>
-                        <div class="form-text">{{ __('Bình luận bị ẩn sẽ không hiển thị cho người dùng.') }}</div>
+                        <div class="form-text">{{ 'Bình luận bị ẩn sẽ không hiển thị cho người dùng.' }}</div>
                     </div>
                 </div>
                 
@@ -66,7 +66,7 @@
     
     <div class="card mt-4">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Thông tin bình luận') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Thông tin bình luận' }}</h5>
         </div>
         <div class="card-body">
             <div class="row">

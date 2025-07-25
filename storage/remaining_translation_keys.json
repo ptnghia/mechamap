@@ -1,162 +1,15 @@
 {
-    "timestamp": "2025-07-25 04:32:30",
+    "timestamp": "2025-07-25 04:43:48",
     "summary": {
-        "files_with_keys": 53,
-        "total_remaining_keys": 474
+        "files_with_keys": 36,
+        "total_remaining_keys": 326
     },
     "keys": {
-        "Kiểm tra thông báo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thống kê thông báo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Cấu hình hệ thống thông báo để giữ người dùng được cập nhật.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Bật thông báo real-time để tương tác tức thì.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Cấu hình email để gửi thông báo quan trọng.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Theo dõi thống kê để hiểu hiệu quả thông báo.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Cấu hình thông báo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Bật hệ thống thông báo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Cho phép gửi thông báo đến người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo thời gian thực": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Gửi thông báo tức thì khi có sự kiện": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thời gian lưu trữ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "ngày": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "năm": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thời gian lưu trữ thông báo trước khi tự động xóa": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
         "Số thông báo tối đa\/người\n                                    dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Giới hạn số thông báo tối đa cho mỗi người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Loại thông báo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo trả lời mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo khi có trả lời mới trong bài đăng đã theo dõi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo nhắc đến": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo khi được nhắc đến trong bài viết hoặc bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo lượt thích": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo khi bài viết được thích": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo theo dõi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo khi có người theo dõi mới": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
         ],
         "Thông báo hành động quản\n                                    trị": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Thông báo về các hành động của quản trị viên": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Cấu hình Email": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Bật thông báo email": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Gửi thông báo qua email cho các sự kiện quan trọng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Tần suất gửi email": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Ngay lập tức": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Mỗi giờ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Hàng ngày": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Hàng tuần": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Xử lý hàng loạt": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Nhóm các thông báo cùng loại để gửi hàng loạt": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Sử dụng hàng đợi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Xử lý thông báo trong hàng đợi để tăng hiệu suất": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Tổng đã gửi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Đã nhận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Đã xem": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Đang chờ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
-        ],
-        "Tạo chuyên mục": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\create.blade.php"
-        ],
-        "Chỉnh sửa chuyên mục": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\edit.blade.php"
-        ],
-        "chuyên mục": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\index.blade.php"
-        ],
-        "Không có chuyên mục nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\index.blade.php"
-        ],
-        "Thông tin chuyên mục": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php"
-        ],
-        "Chuyên mục con": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php"
-        ],
-        "Bài đăng trong chuyên mục này": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php"
         ],
         "Diễn đàn": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php",
@@ -167,268 +20,11 @@
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php",
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
         ],
-        "Không có bài đăng nào trong chuyên mục này.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php"
-        ],
-        "Chỉnh sửa bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\edit.blade.php"
-        ],
-        "Đánh dấu bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\edit.blade.php"
-        ],
-        "Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\edit.blade.php"
-        ],
-        "Bình luận bị ẩn sẽ không hiển thị cho người dùng.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\edit.blade.php"
-        ],
-        "Thông tin bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\edit.blade.php"
-        ],
-        "Bị báo cáo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "ID bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Nhập ID bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "ID người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Nhập ID người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Nội dung bình luận...": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Trả lời cho bình luận #": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Không có bình luận nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\index.blade.php"
-        ],
-        "Nội dung bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Bình luận cha": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Số lượt thích": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Phản hồi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Xóa bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Bài đăng liên quan": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Đăng bởi": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "vào": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Xem bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Lưu ý: Hành động này sẽ xóa cả": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "phản hồi của bình luận này.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\comments\\show.blade.php"
-        ],
-        "Hiện tại chỉ hỗ trợ định dạng CSV": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\dashboard-old.blade.php"
-        ],
-        "Tạo danh mục hỏi đáp mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\faq-categories\\create.blade.php"
-        ],
-        "Chỉnh sửa danh mục hỏi đáp": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\faq-categories\\edit.blade.php"
-        ],
-        "Tạo diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\create.blade.php"
-        ],
-        "Chỉnh sửa diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\edit.blade.php"
-        ],
-        "diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\index.blade.php"
-        ],
-        "Không có diễn đàn nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\index.blade.php"
-        ],
-        "Thông tin diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\show.blade.php"
-        ],
-        "Diễn đàn con": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\show.blade.php"
-        ],
-        "Bài đăng trong diễn đàn này": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\show.blade.php"
-        ],
-        "Không có bài đăng nào trong diễn đàn này.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\forums\\show.blade.php"
-        ],
-        "Chỉnh sửa thông tin": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\edit.blade.php"
-        ],
-        "Thông tin file": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\edit.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\show.blade.php"
-        ],
-        "Tên file, tiêu đề, mô tả...": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\index.blade.php"
-        ],
-        "Không có file nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\index.blade.php"
-        ],
-        "Không thể xem trước file này.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\show.blade.php"
-        ],
-        "Đường dẫn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\show.blade.php"
-        ],
-        "URL": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\media\\show.blade.php"
-        ],
         "Tạo danh mục bài viết mới": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-categories\\create.blade.php"
         ],
         "Chỉnh sửa danh mục bài viết": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-categories\\edit.blade.php"
-        ],
-        "Cấu hình SEO cho trang cụ thể sẽ ghi đè lên cấu hình SEO chung.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Bạn có thể cấu hình SEO cho trang bằng cách sử dụng:": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Route name: Áp dụng cho một route cụ thể.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "URL pattern: Áp dụng cho các URL khớp với mẫu regex.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Thông tin cấu hình SEO": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Route name": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "-- Chọn route --": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Chọn route name để áp dụng cấu hình SEO cho trang cụ thể.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "URL pattern (Regex)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Nhập mẫu regex để áp dụng cấu hình SEO cho các URL khớp với mẫu.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Bạn phải cung cấp Route name hoặc URL pattern.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Cấu hình SEO cơ bản": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Tiêu đề trang": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Tiêu đề hiển thị trên thanh tiêu đề trình duyệt và kết quả tìm kiếm.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Mô tả trang": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Mô tả ngắn gọn về trang. Hiển thị trong kết quả tìm kiếm.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Các từ khóa liên quan đến trang, phân cách bằng dấu phẩy.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "URL chính thức của trang. Để trống để sử dụng URL hiện tại.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Không cho phép công cụ tìm kiếm lập chỉ mục trang này": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Nếu bật, trang sẽ không xuất hiện trong kết quả tìm kiếm.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Tiêu đề khi chia sẻ trang trên Facebook và các nền tảng khác.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Mô tả khi chia sẻ trang trên Facebook và các nền tảng khác.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Hình ảnh khi chia sẻ trang trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Cấu hình Twitter Card": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Tiêu đề khi chia sẻ trang trên Twitter.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Mô tả khi chia sẻ trang trên Twitter.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Hình ảnh khi chia sẻ trang trên Twitter. Kích thước tối thiểu: 1200x600 pixels.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Meta tags bổ sung": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Các meta tags bổ sung sẽ được thêm vào thẻ <head> của trang.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Kích hoạt cấu hình SEO này": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
-        ],
-        "Nếu tắt, cấu hình SEO này sẽ không được áp dụng.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
         ],
         "Thông tin route": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\edit.blade.php"
@@ -469,22 +65,6 @@
         "Thêm cấu hình mới": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\page-seo\\index.blade.php"
         ],
-        "Tạo bài viết mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php"
-        ],
-        "Tóm tắt": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\edit.blade.php"
-        ],
-        "Chọn danh mục": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\edit.blade.php"
-        ],
-        "Đánh dấu là bài viết nổi bật": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\edit.blade.php"
-        ],
         "Tạo bài viết": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\create.blade.php"
         ],
@@ -497,19 +77,11 @@
         "Quản lý danh mục": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php"
         ],
-        "Tiêu đề, nội dung...": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php"
-        ],
         "Danh sách bài viết": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php"
         ],
         "bài viết": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php"
-        ],
-        "Bạn có chắc chắn muốn xóa bài viết này?": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\show.blade.php"
         ],
         "Không có bài viết nào.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\index.blade.php"
@@ -529,45 +101,14 @@
         "Xóa bài viết": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\pages\\show.blade.php"
         ],
-        "Đổi mật khẩu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php"
-        ],
-        "Xem hồ sơ công khai": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Thông tin tài khoản": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
         "Cập nhật thông tin": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php"
-        ],
-        "Website": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\edit.blade.php"
-        ],
-        "Địa điểm": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\edit.blade.php"
         ],
         "Quay lại hồ sơ": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php"
         ],
-        "Mật khẩu hiện tại": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php"
-        ],
-        "Mật khẩu mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
         "Mật khẩu phải có ít nhất 8 ký tự và khác với mật khẩu hiện tại.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php"
-        ],
-        "Xác nhận mật khẩu mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
         ],
         "Sau khi đổi mật khẩu, bạn sẽ cần đăng nhập lại bằng mật khẩu mới.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\profile\\password.blade.php"
@@ -710,10 +251,6 @@
         "Google Analytics (GA4)": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\advanced.blade.php"
         ],
-        "Sao chép": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\advanced.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\robots.blade.php"
-        ],
         "Facebook Pixel": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\advanced.blade.php"
         ],
@@ -722,10 +259,6 @@
         ],
         "Google Tag Manager (Body)": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\advanced.blade.php"
-        ],
-        "Đã sao chép": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\advanced.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\robots.blade.php"
         ],
         "Cấu hình trang": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\seo\\index.blade.php"
@@ -1072,9 +605,6 @@
         "Năm bản quyền. Có thể là một năm cụ thể hoặc một khoảng thời gian (ví dụ: 2020-2023).": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\copyright.blade.php"
         ],
-        "Cấu hình diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
-        ],
         "Cấu hình hiển thị": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
         ],
@@ -1101,10 +631,6 @@
         ],
         "Khách không đăng nhập có thể xem nội dung diễn đàn": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
-        ],
-        "Yêu cầu xác thực email": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
         "Người dùng phải xác thực email trước khi tham gia diễn\n                                    đàn": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
@@ -1219,9 +745,6 @@
         ],
         "Liên kết đến trang GitHub của bạn.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\social.blade.php"
-        ],
-        "Cấu hình người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
         "Cấu hình đăng ký": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
@@ -1358,23 +881,11 @@
         "Người dùng C": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
         ],
-        "Đánh dấu là bài nổi bật": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\edit.blade.php"
-        ],
         "Tạo bài đăng": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\create.blade.php"
         ],
         "Chỉnh sửa bài đăng": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\edit.blade.php"
-        ],
-        "Đã ghim": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
         ],
         "Không có bài đăng nào.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php"
@@ -1409,10 +920,6 @@
         "Thông tin thành viên mới": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\create.blade.php"
         ],
-        "Admin và Moderator có quyền truy cập trang quản trị.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\edit.blade.php"
-        ],
         "Mật khẩu phải có ít nhất 8 ký tự.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\create.blade.php"
         ],
@@ -1444,9 +951,6 @@
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
         ],
         "Đặt lại mật khẩu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Thống kê hoạt động": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
         ],
         "Tổng số chủ đề": [
@@ -1488,152 +992,8 @@
     },
     "key_usage": {
         "Diễn đàn": 7,
-        "Thông tin file": 2,
-        "Cấu hình SEO cho trang cụ thể sẽ ghi đè lên cấu hình SEO chung.": 2,
-        "Bạn có thể cấu hình SEO cho trang bằng cách sử dụng:": 2,
-        "Route name: Áp dụng cho một route cụ thể.": 2,
-        "URL pattern: Áp dụng cho các URL khớp với mẫu regex.": 2,
-        "Thông tin cấu hình SEO": 2,
-        "Route name": 2,
-        "-- Chọn route --": 2,
-        "Chọn route name để áp dụng cấu hình SEO cho trang cụ thể.": 2,
-        "URL pattern (Regex)": 2,
-        "Nhập mẫu regex để áp dụng cấu hình SEO cho các URL khớp với mẫu.": 2,
-        "Bạn phải cung cấp Route name hoặc URL pattern.": 2,
-        "Cấu hình SEO cơ bản": 2,
-        "Tiêu đề trang": 2,
-        "Tiêu đề hiển thị trên thanh tiêu đề trình duyệt và kết quả tìm kiếm.": 2,
-        "Mô tả trang": 2,
-        "Mô tả ngắn gọn về trang. Hiển thị trong kết quả tìm kiếm.": 2,
-        "Các từ khóa liên quan đến trang, phân cách bằng dấu phẩy.": 2,
-        "URL chính thức của trang. Để trống để sử dụng URL hiện tại.": 2,
-        "Không cho phép công cụ tìm kiếm lập chỉ mục trang này": 2,
-        "Nếu bật, trang sẽ không xuất hiện trong kết quả tìm kiếm.": 2,
-        "Tiêu đề khi chia sẻ trang trên Facebook và các nền tảng khác.": 2,
-        "Mô tả khi chia sẻ trang trên Facebook và các nền tảng khác.": 2,
-        "Hình ảnh khi chia sẻ trang trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.": 2,
-        "Cấu hình Twitter Card": 2,
-        "Tiêu đề khi chia sẻ trang trên Twitter.": 2,
-        "Mô tả khi chia sẻ trang trên Twitter.": 2,
-        "Hình ảnh khi chia sẻ trang trên Twitter. Kích thước tối thiểu: 1200x600 pixels.": 2,
-        "Meta tags bổ sung": 2,
-        "Các meta tags bổ sung sẽ được thêm vào thẻ <head> của trang.": 2,
-        "Kích hoạt cấu hình SEO này": 2,
-        "Nếu tắt, cấu hình SEO này sẽ không được áp dụng.": 2,
-        "Tạo bài viết mới": 2,
-        "Tóm tắt": 2,
-        "Chọn danh mục": 2,
-        "Đánh dấu là bài viết nổi bật": 2,
-        "Tiêu đề, nội dung...": 2,
-        "Bạn có chắc chắn muốn xóa bài viết này?": 2,
-        "Đổi mật khẩu": 2,
-        "Xem hồ sơ công khai": 2,
-        "Thông tin tài khoản": 2,
-        "Website": 2,
-        "Địa điểm": 2,
-        "Mật khẩu mới": 2,
-        "Xác nhận mật khẩu mới": 2,
-        "Sao chép": 2,
-        "Đã sao chép": 2,
-        "Yêu cầu xác thực email": 2,
-        "Đánh dấu là bài nổi bật": 2,
-        "Đã ghim": 2,
-        "Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.": 2,
-        "Admin và Moderator có quyền truy cập trang quản trị.": 2,
-        "Kiểm tra thông báo": 1,
-        "Thống kê thông báo": 1,
-        "Cấu hình hệ thống thông báo để giữ người dùng được cập nhật.": 1,
-        "Bật thông báo real-time để tương tác tức thì.": 1,
-        "Cấu hình email để gửi thông báo quan trọng.": 1,
-        "Theo dõi thống kê để hiểu hiệu quả thông báo.": 1,
-        "Cấu hình thông báo": 1,
-        "Bật hệ thống thông báo": 1,
-        "Cho phép gửi thông báo đến người dùng": 1,
-        "Thông báo thời gian thực": 1,
-        "Gửi thông báo tức thì khi có sự kiện": 1,
-        "Thời gian lưu trữ": 1,
-        "ngày": 1,
-        "năm": 1,
-        "Thời gian lưu trữ thông báo trước khi tự động xóa": 1,
         "Số thông báo tối đa\/người\n                                    dùng": 1,
-        "Giới hạn số thông báo tối đa cho mỗi người dùng": 1,
-        "Loại thông báo": 1,
-        "Thông báo trả lời mới": 1,
-        "Thông báo khi có trả lời mới trong bài đăng đã theo dõi": 1,
-        "Thông báo nhắc đến": 1,
-        "Thông báo khi được nhắc đến trong bài viết hoặc bình luận": 1,
-        "Thông báo lượt thích": 1,
-        "Thông báo khi bài viết được thích": 1,
-        "Thông báo theo dõi": 1,
-        "Thông báo khi có người theo dõi mới": 1,
         "Thông báo hành động quản\n                                    trị": 1,
-        "Thông báo về các hành động của quản trị viên": 1,
-        "Cấu hình Email": 1,
-        "Bật thông báo email": 1,
-        "Gửi thông báo qua email cho các sự kiện quan trọng": 1,
-        "Tần suất gửi email": 1,
-        "Ngay lập tức": 1,
-        "Mỗi giờ": 1,
-        "Hàng ngày": 1,
-        "Hàng tuần": 1,
-        "Xử lý hàng loạt": 1,
-        "Nhóm các thông báo cùng loại để gửi hàng loạt": 1,
-        "Sử dụng hàng đợi": 1,
-        "Xử lý thông báo trong hàng đợi để tăng hiệu suất": 1,
-        "Tổng đã gửi": 1,
-        "Đã nhận": 1,
-        "Đã xem": 1,
-        "Đang chờ": 1,
-        "Tạo chuyên mục": 1,
-        "Chỉnh sửa chuyên mục": 1,
-        "chuyên mục": 1,
-        "Không có chuyên mục nào.": 1,
-        "Thông tin chuyên mục": 1,
-        "Chuyên mục con": 1,
-        "Bài đăng trong chuyên mục này": 1,
-        "Không có bài đăng nào trong chuyên mục này.": 1,
-        "Chỉnh sửa bình luận": 1,
-        "Đánh dấu bình luận": 1,
-        "Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.": 1,
-        "Bình luận bị ẩn sẽ không hiển thị cho người dùng.": 1,
-        "Thông tin bình luận": 1,
-        "Bị báo cáo": 1,
-        "ID bài đăng": 1,
-        "Nhập ID bài đăng": 1,
-        "ID người dùng": 1,
-        "Nhập ID người dùng": 1,
-        "Nội dung bình luận...": 1,
-        "bình luận": 1,
-        "Trả lời cho bình luận #": 1,
-        "Không có bình luận nào.": 1,
-        "Nội dung bình luận": 1,
-        "Bình luận cha": 1,
-        "Số lượt thích": 1,
-        "Phản hồi": 1,
-        "Xóa bình luận": 1,
-        "Bài đăng liên quan": 1,
-        "Đăng bởi": 1,
-        "vào": 1,
-        "Xem bài đăng": 1,
-        "Lưu ý: Hành động này sẽ xóa cả": 1,
-        "phản hồi của bình luận này.": 1,
-        "Hiện tại chỉ hỗ trợ định dạng CSV": 1,
-        "Tạo danh mục hỏi đáp mới": 1,
-        "Chỉnh sửa danh mục hỏi đáp": 1,
-        "Tạo diễn đàn": 1,
-        "Chỉnh sửa diễn đàn": 1,
-        "diễn đàn": 1,
-        "Không có diễn đàn nào.": 1,
-        "Thông tin diễn đàn": 1,
-        "Diễn đàn con": 1,
-        "Bài đăng trong diễn đàn này": 1,
-        "Không có bài đăng nào trong diễn đàn này.": 1,
-        "Chỉnh sửa thông tin": 1,
-        "Tên file, tiêu đề, mô tả...": 1,
-        "Không có file nào.": 1,
-        "Không thể xem trước file này.": 1,
-        "Đường dẫn": 1,
-        "URL": 1,
         "Tạo danh mục bài viết mới": 1,
         "Chỉnh sửa danh mục bài viết": 1,
         "Thông tin route": 1,
@@ -1663,7 +1023,6 @@
         "Xóa bài viết": 1,
         "Cập nhật thông tin": 1,
         "Quay lại hồ sơ": 1,
-        "Mật khẩu hiện tại": 1,
         "Mật khẩu phải có ít nhất 8 ký tự và khác với mật khẩu hiện tại.": 1,
         "Sau khi đổi mật khẩu, bạn sẽ cần đăng nhập lại bằng mật khẩu mới.": 1,
         "Đánh chỉ mục lại": 1,
@@ -1830,7 +1189,6 @@
         "Nội dung bản quyền hiển thị ở footer của trang web.": 1,
         "Tên của chủ sở hữu bản quyền.": 1,
         "Năm bản quyền. Có thể là một năm cụ thể hoặc một khoảng thời gian (ví dụ: 2020-2023).": 1,
-        "Cấu hình diễn đàn": 1,
         "Cấu hình hiển thị": 1,
         "Số chủ đề trên mỗi trang": 1,
         "Số lượng chủ đề hiển thị trên mỗi trang (5-100)": 1,
@@ -1878,7 +1236,6 @@
         "Liên kết đến trang TikTok của bạn.": 1,
         "Liên kết đến trang Pinterest của bạn.": 1,
         "Liên kết đến trang GitHub của bạn.": 1,
-        "Cấu hình người dùng": 1,
         "Cấu hình đăng ký": 1,
         "Cho phép đăng ký tài khoản": 1,
         "Người dùng có thể tự tạo tài khoản mới": 1,
@@ -1948,7 +1305,6 @@
         "Thời gian:": 1,
         "Lý do:": 1,
         "Đặt lại mật khẩu": 1,
-        "Thống kê hoạt động": 1,
         "Tổng số chủ đề": 1,
         "Tổng số bài viết": 1,
         "Chủ đề gần đây": 1,

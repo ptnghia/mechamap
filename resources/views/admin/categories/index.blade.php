@@ -32,7 +32,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">{{ 'Danh sách chuyên mục' }}</h5>
-            <span class="badge bg-primary">{{ $categories->count() }} {{ __('chuyên mục') }}</span>
+            <span class="badge bg-primary">{{ $categories->count() }} {{ 'chuyên mục' }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -162,7 +162,7 @@
 
                         @if($categories->count() == 0)
                             <tr>
-                                <td colspan="7" class="text-center py-4">{{ __('Không có chuyên mục nào.') }}</td>
+                                <td colspan="7" class="text-center py-4">{{ 'Không có chuyên mục nào.' }}</td>
                             </tr>
                         @endif
                     </tbody>

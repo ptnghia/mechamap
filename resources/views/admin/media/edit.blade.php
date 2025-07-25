@@ -23,7 +23,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Chỉnh sửa thông tin') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Chỉnh sửa thông tin' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.media.update', $media) }}" method="POST">
@@ -95,7 +95,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin file') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin file' }}</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">

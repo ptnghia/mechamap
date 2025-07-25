@@ -40,7 +40,7 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">{{ __('Nội dung bình luận') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Nội dung bình luận' }}</h5>
                     <div>
                         @if($comment->is_flagged)
                             <span class="badge bg-warning">{{ 'Đã đánh dấu' }}</span>
@@ -82,7 +82,7 @@
                                     </span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Bình luận cha') }}:</span>
+                                    <span>{{ 'Bình luận cha' }}:</span>
                                     <span class="text-muted">
                                         @if($comment->parent)
                                             <a href="{{ route('admin.comments.show', $comment->parent) }}">#{{ $comment->parent->id }}</a>
@@ -96,7 +96,7 @@
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ __('Số lượt thích') }}:</span>
+                                    <span>{{ 'Số lượt thích' }}:</span>
                                     <span class="text-muted">{{ $comment->likes()->count() }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
@@ -116,7 +116,7 @@
             @if($comment->replies->count() > 0)
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Phản hồi') }} ({{ $comment->replies->count() }})</h5>
+                        <h5 class="card-title mb-0">{{ 'Phản hồi' }} ({{ $comment->replies->count() }})</h5>
                     </div>
                     <div class="card-body">
                         @foreach($comment->replies as $reply)
@@ -222,7 +222,7 @@
                         </form>
                         
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="fas fa-trash me-1"></i> {{ __('Xóa bình luận') }}
+                            <i class="fas fa-trash me-1"></i> {{ 'Xóa bình luận' }}
                         </button>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
             
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Bài đăng liên quan') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Bài đăng liên quan' }}</h5>
                 </div>
                 <div class="card-body">
                     <h6 class="mb-2">
@@ -273,12 +273,12 @@
                         </a>
                     </h6>
                     <div class="small text-muted mb-3">
-                        {{ __('Đăng bởi') }} <a href="{{ route('admin.users.show', $comment->thread->user) }}">{{ $comment->thread->user->name }}</a>
-                        {{ __('vào') }} {{ $comment->thread->created_at->format('d/m/Y H:i') }}
+                        {{ 'Đăng bởi' }} <a href="{{ route('admin.users.show', $comment->thread->user) }}">{{ $comment->thread->user->name }}</a>
+                        {{ 'vào' }} {{ $comment->thread->created_at->format('d/m/Y H:i') }}
                     </div>
                     <div class="d-grid">
                         <a href="{{ route('admin.threads.show', $comment->thread) }}" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-eye me-1"></i> {{ __('Xem bài đăng') }}
+                            <i class="fas fa-eye me-1"></i> {{ 'Xem bài đăng' }}
                         </a>
                     </div>
                 </div>
@@ -297,7 +297,7 @@
                 <div class="modal-body">
                     {{ 'Bạn có chắc chắn muốn xóa bình luận này?' }}
                     @if($comment->replies->count() > 0)
-                        <p class="text-danger mt-2">{{ __('Lưu ý: Hành động này sẽ xóa cả') }} {{ $comment->replies->count() }} {{ __('phản hồi của bình luận này.') }}</p>
+                        <p class="text-danger mt-2">{{ 'Lưu ý: Hành động này sẽ xóa cả' }} {{ $comment->replies->count() }} {{ 'phản hồi của bình luận này.' }}</p>
                     @endif
                 </div>
                 <div class="modal-footer">

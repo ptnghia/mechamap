@@ -103,7 +103,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {{ old('is_featured') ? 'checked' : '' }}>
                         <label class="form-check-label" for="is_featured">
-                            {{ __('Đánh dấu là bài nổi bật') }}
+                            {{ 'Đánh dấu là bài nổi bật' }}
                         </label>
                     </div>
                 </div>

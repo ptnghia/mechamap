@@ -32,7 +32,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">{{ 'Danh sách diễn đàn' }}</h5>
-            <span class="badge bg-primary">{{ $forums->count() }} {{ __('diễn đàn') }}</span>
+            <span class="badge bg-primary">{{ $forums->count() }} {{ 'diễn đàn' }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -174,7 +174,7 @@
                         
                         @if($forums->count() == 0)
                             <tr>
-                                <td colspan="7" class="text-center py-4">{{ __('Không có diễn đàn nào.') }}</td>
+                                <td colspan="7" class="text-center py-4">{{ 'Không có diễn đàn nào.' }}</td>
                             </tr>
                         @endif
                     </tbody>

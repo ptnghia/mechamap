@@ -20,7 +20,7 @@
 
 @section('actions')
     <a href="{{ route('admin.pages.create') }}" class="btn btn-sm btn-primary">
-        <i class="fas fa-plus me-1"></i> {{ __('Tạo bài viết mới') }}
+        <i class="fas fa-plus me-1"></i> {{ 'Tạo bài viết mới' }}
     </a>
     <a href="{{ route('admin.page-categories.index') }}" class="btn btn-sm btn-outline-primary">
         <i class="fas fa-folder me-1"></i> {{ __('Quản lý danh mục') }}
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
-                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tiêu đề, nội dung...') }}">
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ 'Tiêu đề, nội dung...' }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
@@ -134,7 +134,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    {{ __('Bạn có chắc chắn muốn xóa bài viết này?') }}
+                                                    {{ 'Bạn có chắc chắn muốn xóa bài viết này?' }}
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>

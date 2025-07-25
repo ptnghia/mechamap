@@ -20,7 +20,7 @@
 @section('actions')
 <div class="btn-group">
     <a href="{{ route('admin.alerts.test') }}" class="btn btn-sm btn-outline-success">
-        <i class="fas fa-bell me-1"></i> {{ __('Kiểm tra thông báo') }}
+        <i class="fas fa-bell me-1"></i> {{ 'Kiểm tra thông báo' }}
     </a>
     <a href="{{ route('admin.alerts.statistics') }}" class="btn btn-sm btn-outline-info">
         <i class="fas fa-chart-bar me-1"></i> {{ 'Thống kê' }}
@@ -41,10 +41,10 @@
                         <i class="fas fa-cog me-2"></i> {{ 'Cấu hình chung' }}
                     </a>
                     <a href="{{ route('admin.alerts.test') }}" class="list-group-item list-group-item-action">
-                        <i class="fas fa-bell me-2"></i> {{ __('Kiểm tra thông báo') }}
+                        <i class="fas fa-bell me-2"></i> {{ 'Kiểm tra thông báo' }}
                     </a>
                     <a href="{{ route('admin.alerts.statistics') }}" class="list-group-item list-group-item-action">
-                        <i class="fas fa-chart-bar me-2"></i> {{ __('Thống kê thông báo') }}
+                        <i class="fas fa-chart-bar me-2"></i> {{ 'Thống kê thông báo' }}
                     </a>
                 </div>
             </div>
@@ -56,12 +56,12 @@
             </div>
             <div class="card-body">
                 <p class="card-text">
-                    {{ __('Cấu hình hệ thống thông báo để giữ người dùng được cập nhật.') }}
+                    {{ 'Cấu hình hệ thống thông báo để giữ người dùng được cập nhật.' }}
                 </p>
                 <ul class="mb-0">
-                    <li>{{ __('Bật thông báo real-time để tương tác tức thì.') }}</li>
-                    <li>{{ __('Cấu hình email để gửi thông báo quan trọng.') }}</li>
-                    <li>{{ __('Theo dõi thống kê để hiểu hiệu quả thông báo.') }}</li>
+                    <li>{{ 'Bật thông báo real-time để tương tác tức thì.' }}</li>
+                    <li>{{ 'Cấu hình email để gửi thông báo quan trọng.' }}</li>
+                    <li>{{ 'Theo dõi thống kê để hiểu hiệu quả thông báo.' }}</li>
                 </ul>
             </div>
         </div>
@@ -70,7 +70,7 @@
     <div class="col-md-9">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Cấu hình thông báo') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Cấu hình thông báo' }}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.alerts.update') }}" method="POST">
@@ -82,46 +82,46 @@
                             <h6 class="text-primary mb-3">{{ 'Cấu hình chung' }}</h6>
 
                             <div class="mb-3">
-                                <label for="alerts_enabled" class="form-label">{{ __('Bật hệ thống thông báo')
+                                <label for="alerts_enabled" class="form-label">{{ 'Bật hệ thống thông báo'
                                     }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="alerts_enabled"
                                         name="alerts_enabled" value="1" {{ old('alerts_enabled',
                                         $settings['alerts_enabled'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="alerts_enabled">
-                                        {{ __('Cho phép gửi thông báo đến người dùng') }}
+                                        {{ 'Cho phép gửi thông báo đến người dùng' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="realtime_alerts" class="form-label">{{ __('Thông báo thời gian thực')
+                                <label for="realtime_alerts" class="form-label">{{ 'Thông báo thời gian thực'
                                     }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="realtime_alerts"
                                         name="realtime_alerts" value="1" {{ old('realtime_alerts',
                                         $settings['realtime_alerts'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="realtime_alerts">
-                                        {{ __('Gửi thông báo tức thì khi có sự kiện') }}
+                                        {{ 'Gửi thông báo tức thì khi có sự kiện' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="alert_retention_days" class="form-label">{{ __('Thời gian lưu trữ')
+                                <label for="alert_retention_days" class="form-label">{{ 'Thời gian lưu trữ'
                                     }}</label>
                                 <select class="form-select @error('alert_retention_days') is-invalid @enderror"
                                     id="alert_retention_days" name="alert_retention_days">
                                     <option value="7" {{ old('alert_retention_days', $settings['alert_retention_days']
-                                        ?? 30)==7 ? 'selected' : '' }}>7 {{ __('ngày') }}</option>
+                                        ?? 30)==7 ? 'selected' : '' }}>7 {{ 'ngày' }}</option>
                                     <option value="30" {{ old('alert_retention_days', $settings['alert_retention_days']
-                                        ?? 30)==30 ? 'selected' : '' }}>30 {{ __('ngày') }}</option>
+                                        ?? 30)==30 ? 'selected' : '' }}>30 {{ 'ngày' }}</option>
                                     <option value="90" {{ old('alert_retention_days', $settings['alert_retention_days']
-                                        ?? 30)==90 ? 'selected' : '' }}>90 {{ __('ngày') }}</option>
+                                        ?? 30)==90 ? 'selected' : '' }}>90 {{ 'ngày' }}</option>
                                     <option value="365" {{ old('alert_retention_days', $settings['alert_retention_days']
-                                        ?? 30)==365 ? 'selected' : '' }}>1 {{ __('năm') }}</option>
+                                        ?? 30)==365 ? 'selected' : '' }}>1 {{ 'năm' }}</option>
                                 </select>
-                                <div class="form-text">{{ __('Thời gian lưu trữ thông báo trước khi tự động xóa') }}
+                                <div class="form-text">{{ 'Thời gian lưu trữ thông báo trước khi tự động xóa' }}
                                 </div>
                                 @error('alert_retention_days')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -136,7 +136,7 @@
                                     id="max_alerts_per_user" name="max_alerts_per_user"
                                     value="{{ old('max_alerts_per_user', $settings['max_alerts_per_user'] ?? 100) }}"
                                     min="10" max="1000">
-                                <div class="form-text">{{ __('Giới hạn số thông báo tối đa cho mỗi người dùng') }}</div>
+                                <div class="form-text">{{ 'Giới hạn số thông báo tối đa cho mỗi người dùng' }}</div>
                                 @error('max_alerts_per_user')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -144,53 +144,53 @@
                         </div>
 
                         <div class="col-md-6">
-                            <h6 class="text-success mb-3">{{ __('Loại thông báo') }}</h6>
+                            <h6 class="text-success mb-3">{{ 'Loại thông báo' }}</h6>
 
                             <div class="mb-3">
-                                <label for="notify_new_replies" class="form-label">{{ __('Thông báo trả lời mới')
+                                <label for="notify_new_replies" class="form-label">{{ 'Thông báo trả lời mới'
                                     }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notify_new_replies"
                                         name="notify_new_replies" value="1" {{ old('notify_new_replies',
                                         $settings['notify_new_replies'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="notify_new_replies">
-                                        {{ __('Thông báo khi có trả lời mới trong bài đăng đã theo dõi') }}
+                                        {{ 'Thông báo khi có trả lời mới trong bài đăng đã theo dõi' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="notify_mentions" class="form-label">{{ __('Thông báo nhắc đến') }}</label>
+                                <label for="notify_mentions" class="form-label">{{ 'Thông báo nhắc đến' }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notify_mentions"
                                         name="notify_mentions" value="1" {{ old('notify_mentions',
                                         $settings['notify_mentions'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="notify_mentions">
-                                        {{ __('Thông báo khi được nhắc đến trong bài viết hoặc bình luận') }}
+                                        {{ 'Thông báo khi được nhắc đến trong bài viết hoặc bình luận' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="notify_likes" class="form-label">{{ __('Thông báo lượt thích') }}</label>
+                                <label for="notify_likes" class="form-label">{{ 'Thông báo lượt thích' }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notify_likes"
                                         name="notify_likes" value="1" {{ old('notify_likes', $settings['notify_likes']
                                         ?? false) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="notify_likes">
-                                        {{ __('Thông báo khi bài viết được thích') }}
+                                        {{ 'Thông báo khi bài viết được thích' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="notify_follows" class="form-label">{{ __('Thông báo theo dõi') }}</label>
+                                <label for="notify_follows" class="form-label">{{ 'Thông báo theo dõi' }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notify_follows"
                                         name="notify_follows" value="1" {{ old('notify_follows',
                                         $settings['notify_follows'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="notify_follows">
-                                        {{ __('Thông báo khi có người theo dõi mới') }}
+                                        {{ 'Thông báo khi có người theo dõi mới' }}
                                     </label>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                                         name="notify_admin_actions" value="1" {{ old('notify_admin_actions',
                                         $settings['notify_admin_actions'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="notify_admin_actions">
-                                        {{ __('Thông báo về các hành động của quản trị viên') }}
+                                        {{ 'Thông báo về các hành động của quản trị viên' }}
                                     </label>
                                 </div>
                             </div>
@@ -214,33 +214,33 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h6 class="text-info mb-3">{{ __('Cấu hình Email') }}</h6>
+                            <h6 class="text-info mb-3">{{ 'Cấu hình Email' }}</h6>
 
                             <div class="mb-3">
-                                <label for="email_alerts_enabled" class="form-label">{{ __('Bật thông báo email')
+                                <label for="email_alerts_enabled" class="form-label">{{ 'Bật thông báo email'
                                     }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="email_alerts_enabled"
                                         name="email_alerts_enabled" value="1" {{ old('email_alerts_enabled',
                                         $settings['email_alerts_enabled'] ?? false) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="email_alerts_enabled">
-                                        {{ __('Gửi thông báo qua email cho các sự kiện quan trọng') }}
+                                        {{ 'Gửi thông báo qua email cho các sự kiện quan trọng' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="email_frequency" class="form-label">{{ __('Tần suất gửi email') }}</label>
+                                <label for="email_frequency" class="form-label">{{ 'Tần suất gửi email' }}</label>
                                 <select class="form-select @error('email_frequency') is-invalid @enderror"
                                     id="email_frequency" name="email_frequency">
                                     <option value="immediate" {{ old('email_frequency', $settings['email_frequency']
-                                        ?? 'daily' )=='immediate' ? 'selected' : '' }}>{{ __('Ngay lập tức') }}</option>
+                                        ?? 'daily' )=='immediate' ? 'selected' : '' }}>{{ 'Ngay lập tức' }}</option>
                                     <option value="hourly" {{ old('email_frequency', $settings['email_frequency']
-                                        ?? 'daily' )=='hourly' ? 'selected' : '' }}>{{ __('Mỗi giờ') }}</option>
+                                        ?? 'daily' )=='hourly' ? 'selected' : '' }}>{{ 'Mỗi giờ' }}</option>
                                     <option value="daily" {{ old('email_frequency', $settings['email_frequency']
-                                        ?? 'daily' )=='daily' ? 'selected' : '' }}>{{ __('Hàng ngày') }}</option>
+                                        ?? 'daily' )=='daily' ? 'selected' : '' }}>{{ 'Hàng ngày' }}</option>
                                     <option value="weekly" {{ old('email_frequency', $settings['email_frequency']
-                                        ?? 'daily' )=='weekly' ? 'selected' : '' }}>{{ __('Hàng tuần') }}</option>
+                                        ?? 'daily' )=='weekly' ? 'selected' : '' }}>{{ 'Hàng tuần' }}</option>
                                 </select>
                                 @error('email_frequency')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -252,25 +252,25 @@
                             <h6 class="text-warning mb-3">{{ 'Cấu hình nâng cao' }}</h6>
 
                             <div class="mb-3">
-                                <label for="batch_processing" class="form-label">{{ __('Xử lý hàng loạt') }}</label>
+                                <label for="batch_processing" class="form-label">{{ 'Xử lý hàng loạt' }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="batch_processing"
                                         name="batch_processing" value="1" {{ old('batch_processing',
                                         $settings['batch_processing'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="batch_processing">
-                                        {{ __('Nhóm các thông báo cùng loại để gửi hàng loạt') }}
+                                        {{ 'Nhóm các thông báo cùng loại để gửi hàng loạt' }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="queue_alerts" class="form-label">{{ __('Sử dụng hàng đợi') }}</label>
+                                <label for="queue_alerts" class="form-label">{{ 'Sử dụng hàng đợi' }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="queue_alerts"
                                         name="queue_alerts" value="1" {{ old('queue_alerts', $settings['queue_alerts']
                                         ?? false) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="queue_alerts">
-                                        {{ __('Xử lý thông báo trong hàng đợi để tăng hiệu suất') }}
+                                        {{ 'Xử lý thông báo trong hàng đợi để tăng hiệu suất' }}
                                     </label>
                                 </div>
                             </div>
@@ -292,32 +292,32 @@
         @if(isset($alertStats))
         <div class="card mt-4">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Thống kê thông báo') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Thống kê thông báo' }}</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-center">
                             <div class="h4 text-primary">{{ number_format($alertStats['total_sent'] ?? 0) }}</div>
-                            <div class="text-muted">{{ __('Tổng đã gửi') }}</div>
+                            <div class="text-muted">{{ 'Tổng đã gửi' }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="text-center">
                             <div class="h4 text-success">{{ number_format($alertStats['total_delivered'] ?? 0) }}</div>
-                            <div class="text-muted">{{ __('Đã nhận') }}</div>
+                            <div class="text-muted">{{ 'Đã nhận' }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="text-center">
                             <div class="h4 text-info">{{ number_format($alertStats['total_clicked'] ?? 0) }}</div>
-                            <div class="text-muted">{{ __('Đã xem') }}</div>
+                            <div class="text-muted">{{ 'Đã xem' }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="text-center">
                             <div class="h4 text-warning">{{ number_format($alertStats['pending'] ?? 0) }}</div>
-                            <div class="text-muted">{{ __('Đang chờ') }}</div>
+                            <div class="text-muted">{{ 'Đang chờ' }}</div>
                         </div>
                     </div>
                 </div>

@@ -25,7 +25,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Chỉnh sửa diễn đàn') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Chỉnh sửa diễn đàn' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.forums.update', $forum) }}" method="POST">

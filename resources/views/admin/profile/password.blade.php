@@ -28,7 +28,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Đổi mật khẩu') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Đổi mật khẩu' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.profile.password.update') }}" method="POST">
@@ -36,7 +36,7 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="current_password" class="form-label">{{ __('Mật khẩu hiện tại') }} <span class="text-danger">*</span></label>
+                            <label for="current_password" class="form-label">{{ 'Mật khẩu hiện tại' }} <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="current_password">
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">{{ __('Mật khẩu mới') }} <span class="text-danger">*</span></label>
+                            <label for="password" class="form-label">{{ 'Mật khẩu mới' }} <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="password_confirmation" class="form-label">{{ __('Xác nhận mật khẩu mới') }} <span class="text-danger">*</span></label>
+                            <label for="password_confirmation" class="form-label">{{ 'Xác nhận mật khẩu mới' }} <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
@@ -82,7 +82,7 @@
                                 {{ 'Hủy' }}
                             </a>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-check me-1"></i> {{ __('Đổi mật khẩu') }}
+                                <i class="fas fa-check me-1"></i> {{ 'Đổi mật khẩu' }}
                             </button>
                         </div>
                     </form>

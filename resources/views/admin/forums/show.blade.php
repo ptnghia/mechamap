@@ -33,7 +33,7 @@
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin diễn đàn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin diễn đàn' }}</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -103,7 +103,7 @@
             @if($forum->subForums->count() > 0)
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ __('Diễn đàn con') }}</h5>
+                        <h5 class="card-title mb-0">{{ 'Diễn đàn con' }}</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="list-group list-group-flush">
@@ -122,7 +122,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">{{ __('Bài đăng trong diễn đàn này') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Bài đăng trong diễn đàn này' }}</h5>
                     <span class="badge bg-primary">{{ $threads->total() }} {{ 'bài đăng' }}</span>
                 </div>
                 <div class="card-body p-0">
@@ -172,7 +172,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">{{ __('Không có bài đăng nào trong diễn đàn này.') }}</td>
+                                        <td colspan="6" class="text-center py-4">{{ 'Không có bài đăng nào trong diễn đàn này.' }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>

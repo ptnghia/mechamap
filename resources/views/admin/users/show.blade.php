@@ -68,7 +68,7 @@
                     </p>
                     <div class="d-grid gap-2">
                         <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-                            <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
+                            <i class="fas fa-eye me-1"></i> {{ 'Xem hồ sơ công khai' }}
                         </a>
                         @adminCan('manage_roles')
                         <a href="{{ route('admin.users.roles', $user) }}" class="btn btn-sm btn-primary">
@@ -81,7 +81,7 @@
 
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin tài khoản') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin tài khoản' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -125,7 +125,7 @@
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">{{ __('Mật khẩu mới') }}</label>
+                            <label for="password" class="form-label">{{ 'Mật khẩu mới' }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
@@ -138,7 +138,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">{{ __('Xác nhận mật khẩu mới') }}</label>
+                            <label for="password_confirmation" class="form-label">{{ 'Xác nhận mật khẩu mới' }}</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                                 <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
@@ -160,7 +160,7 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thống kê hoạt động') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thống kê hoạt động' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">

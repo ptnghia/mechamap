@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-8">
                     <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
-                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tên file, tiêu đề, mô tả...') }}">
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ 'Tên file, tiêu đề, mô tả...' }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
@@ -155,7 +155,7 @@
             @else
                 <div class="text-center py-5">
                     <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
-                    <p class="mt-3">{{ __('Không có file nào.') }}</p>
+                    <p class="mt-3">{{ 'Không có file nào.' }}</p>
                     <a href="{{ route('admin.media.create') }}" class="btn btn-primary">
                         <i class="fas fa-upload me-1"></i> {{ 'Tải lên' }}
                     </a>

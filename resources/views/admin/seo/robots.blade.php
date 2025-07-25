@@ -117,7 +117,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="allow-all">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-admin">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@ Disallow: /</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-all">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-template="block-agents">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@ Sitemap: {{ url('sitemap.xml') }}`
                 
                 // Show success message
                 const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check me-1"></i> {{ __('Đã sao chép') }}';
+                this.innerHTML = '<i class="fas fa-check me-1"></i> {{ 'Đã sao chép' }}';
                 this.classList.remove('btn-outline-primary');
                 this.classList.add('btn-success');
                 

@@ -80,7 +80,7 @@
                 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.forums.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Tạo diễn đàn') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'Tạo diễn đàn' }}</button>
                 </div>
             </form>
         </div>

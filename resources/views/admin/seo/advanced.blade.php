@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-target="header_scripts" data-template="ga4">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-target="header_scripts" data-template="facebook-pixel">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-target="header_scripts" data-template="gtm-header">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -214,7 +214,7 @@ height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;&l
                                 </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-sm btn-outline-primary copy-template" data-target="footer_scripts" data-template="gtm-body">
-                                        <i class="fas fa-clipboard me-1"></i> {{ __('Sao chép') }}
+                                        <i class="fas fa-clipboard me-1"></i> {{ 'Sao chép' }}
                                     </button>
                                 </div>
                             </div>
@@ -282,7 +282,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 
                 // Show success message
                 const originalText = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-check me-1"></i> {{ __('Đã sao chép') }}';
+                this.innerHTML = '<i class="fas fa-check me-1"></i> {{ 'Đã sao chép' }}';
                 this.classList.remove('btn-outline-primary');
                 this.classList.add('btn-success');
                 

@@ -26,7 +26,7 @@
     <div class="col-md-9">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Cấu hình diễn đàn') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Cấu hình diễn đàn' }}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.settings.update-forum') }}" method="POST">
@@ -107,7 +107,7 @@
                                         old('forum_require_email_verification',
                                         $settings['forum_require_email_verification'] ?? '1' )=='1' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="forum_require_email_verification">
-                                        {{ __('Yêu cầu xác thực email') }}
+                                        {{ 'Yêu cầu xác thực email' }}
                                     </label>
                                 </div>
                                 <div class="form-text">{{ __('Người dùng phải xác thực email trước khi tham gia diễn

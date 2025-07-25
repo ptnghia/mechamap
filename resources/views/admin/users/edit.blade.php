@@ -102,7 +102,7 @@
                                 @enderror
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    {{ __('Admin và Moderator có quyền truy cập trang quản trị.') }}
+                                    {{ 'Admin và Moderator có quyền truy cập trang quản trị.' }}
                                 </div>
                             </div>
                         </div>
@@ -126,14 +126,14 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="website" class="form-label">{{ __('Website') }}</label>
+                                <label for="website" class="form-label">{{ 'Website' }}</label>
                                 <input type="url" class="form-control @error('website') is-invalid @enderror" id="website" name="website" value="{{ old('website', $user->website) }}">
                                 @error('website')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="location" class="form-label">{{ __('Địa điểm') }}</label>
+                                <label for="location" class="form-label">{{ 'Địa điểm' }}</label>
                                 <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location', $user->location) }}">
                                 @error('location')
                                     <div class="invalid-feedback">{{ $message }}</div>

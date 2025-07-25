@@ -41,20 +41,20 @@
                         <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>{{ 'Tất cả' }}</option>
                         <option value="flagged" {{ request('status') == 'flagged' ? 'selected' : '' }}>{{ 'Đã đánh dấu' }}</option>
                         <option value="hidden" {{ request('status') == 'hidden' ? 'selected' : '' }}>{{ 'Đã ẩn' }}</option>
-                        <option value="reported" {{ request('status') == 'reported' ? 'selected' : '' }}>{{ __('Bị báo cáo') }}</option>
+                        <option value="reported" {{ request('status') == 'reported' ? 'selected' : '' }}>{{ 'Bị báo cáo' }}</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="thread_id" class="form-label">{{ __('ID bài đăng') }}</label>
-                    <input type="number" class="form-control" id="thread_id" name="thread_id" value="{{ request('thread_id') }}" placeholder="{{ __('Nhập ID bài đăng') }}">
+                    <label for="thread_id" class="form-label">{{ 'ID bài đăng' }}</label>
+                    <input type="number" class="form-control" id="thread_id" name="thread_id" value="{{ request('thread_id') }}" placeholder="{{ 'Nhập ID bài đăng' }}">
                 </div>
                 <div class="col-md-3">
-                    <label for="user_id" class="form-label">{{ __('ID người dùng') }}</label>
-                    <input type="number" class="form-control" id="user_id" name="user_id" value="{{ request('user_id') }}" placeholder="{{ __('Nhập ID người dùng') }}">
+                    <label for="user_id" class="form-label">{{ 'ID người dùng' }}</label>
+                    <input type="number" class="form-control" id="user_id" name="user_id" value="{{ request('user_id') }}" placeholder="{{ 'Nhập ID người dùng' }}">
                 </div>
                 <div class="col-md-3">
                     <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
-                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Nội dung bình luận...') }}">
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ 'Nội dung bình luận...' }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
@@ -71,7 +71,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">{{ 'Danh sách bình luận' }}</h5>
-            <span class="badge bg-primary">{{ $comments->total() }} {{ __('bình luận') }}</span>
+            <span class="badge bg-primary">{{ $comments->total() }} {{ 'bình luận' }}</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -97,7 +97,7 @@
                                     </div>
                                     @if($comment->parent_id)
                                         <div class="small text-muted mt-1">
-                                            <i class="fas fa-reply me-1"></i> {{ __('Trả lời cho bình luận #') . $comment->parent_id }}
+                                            <i class="fas fa-reply me-1"></i> {{ 'Trả lời cho bình luận #' . $comment->parent_id }}
                                         </div>
                                     @endif
                                 </td>
@@ -160,7 +160,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4">{{ __('Không có bình luận nào.') }}</td>
+                                <td colspan="7" class="text-center py-4">{{ 'Không có bình luận nào.' }}</td>
                             </tr>
                         @endforelse
                     </tbody>

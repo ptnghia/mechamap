@@ -39,7 +39,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="excerpt" class="form-label">{{ __('Tóm tắt') }}</label>
+                            <label for="excerpt" class="form-label">{{ 'Tóm tắt' }}</label>
                             <textarea class="form-control @error('excerpt') is-invalid @enderror" id="excerpt" name="excerpt" rows="3">{{ old('excerpt', $page->excerpt) }}</textarea>
                             @error('excerpt')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -68,7 +68,7 @@
                         <div class="mb-3">
                             <label for="category_id" class="form-label">{{ 'Danh mục' }} <span class="text-danger">*</span></label>
                             <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
-                                <option value="">{{ __('Chọn danh mục') }}</option>
+                                <option value="">{{ 'Chọn danh mục' }}</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('category_id', $page->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
@@ -101,7 +101,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {{ old('is_featured', $page->is_featured) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="is_featured">
-                                    {{ __('Đánh dấu là bài viết nổi bật') }}
+                                    {{ 'Đánh dấu là bài viết nổi bật' }}
                                 </label>
                             </div>
                         </div>

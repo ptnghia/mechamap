@@ -1,0 +1,381 @@
+@extends('admin.layouts.dason')
+
+@section('title', $user->name)
+@section('header', $user->name)
+
+@section('actions')
+    <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-primary me-2">
+        <i class="fas fa-edit me-1"></i> {{ 'Chỉnh sửa' }}
+    </a>
+    <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}" data-bs-toggle="modal" data-bs-target="#banModal">
+            <i class="{{ $user->banned_at ? 'person-check me-1' : 'person-x me-1' }}"></i>
+            {{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <i class="fas fa-trash me-1"></i> {{ 'Xóa' }}
+        </button>
+    </div>
+    <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i> {{ 'Quay lại' }}
+    </a>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle img-thumbnail mb-3" width="150" height="150">
+                    <h5 class="card-title">{{ $user->name }}</h5>
+                    <p class="text-muted">
+                        @if($user->isAdmin())
+                            <span class="badge bg-danger">{{ 'Admin' }}</span>
+                        @elseif($user->isModerator())
+                            <span class="badge bg-primary">{{ 'Moderator' }}</span>
+                        @elseif($user->isSenior())
+                            <span class="badge bg-success">{{ 'Senior' }}</span>
+                        @else
+                            <span class="badge bg-secondary">{{ 'Thành viên' }}</span>
+                        @endif
+
+                        @if($user->banned_at)
+                            <span class="badge bg-danger ms-1">{{ 'Bị cấm' }}</span>
+                        @elseif($user->isOnline())
+                            <span class="badge bg-success ms-1">{{ 'Online' }}</span>
+                        @endif
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <i class="fas fa-user"></i> {{ $user->username }}
+                        </small>
+                        <br>
+                        <small class="text-muted">
+                            <i class="fas fa-envelope"></i> {{ $user->email }}
+                        </small>
+                        @if($user->location)
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
+                            </small>
+                        @endif
+                        @if($user->website)
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-globe"></i> <a href="{{ $user->website }}" target="_blank">{{ $user->website }}</a>
+                            </small>
+                        @endif
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url('/users/' . $user->username) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-eye me-1"></i> {{ __('Xem hồ sơ công khai') }}
+                        </a>
+                        @adminCan('manage_roles')
+                        <a href="{{ route('admin.users.roles', $user) }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-users-cog me-1"></i> {{ __('Quản lý Multiple Roles') }}
+                        </a>
+                        @endadminCan
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Thông tin tài khoản') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">{{ 'Ngày tham gia' }}</label>
+                        <p>{{ $user->created_at->format('d/m/Y H:i:s') }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">{{ 'Hoạt động lần cuối' }}</label>
+                        <p>{{ $user->last_seen_at ? $user->last_seen_at->format('d/m/Y H:i:s') : 'Chưa có' }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">{{ __('Email đã xác thực') }}</label>
+                        <p>
+                            @if($user->email_verified_at)
+                                <span class="badge bg-success">{{ __('Đã xác thực') }}</span>
+                                <small class="text-muted ms-2">{{ $user->email_verified_at->format('d/m/Y') }}</small>
+                            @else
+                                <span class="badge bg-warning">{{ __('Chưa xác thực') }}</span>
+                            @endif
+                        </p>
+                    </div>
+                    @if($user->banned_at)
+                        <div class="mb-0">
+                            <label class="form-label text-muted">{{ __('Thông tin cấm') }}</label>
+                            <div class="alert alert-danger mb-0">
+                                <p class="mb-1"><strong>{{ __('Thời gian:') }}</strong> {{ $user->banned_at->format('d/m/Y H:i:s') }}</p>
+                                <p class="mb-0"><strong>{{ __('Lý do:') }}</strong> {{ $user->banned_reason }}</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Đặt lại mật khẩu') }}</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.users.reset-password', $user) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">{{ __('Mật khẩu mới') }}</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">{{ __('Xác nhận mật khẩu mới') }}</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password_confirmation">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-key me-1"></i> {{ __('Đặt lại mật khẩu') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ __('Thống kê hoạt động') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-primary h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title text-muted mb-0">{{ __('Tổng số chủ đề') }}</h6>
+                                            <h2 class="mt-2 mb-0">{{ number_format($stats['threads_count']) }}</h2>
+                                        </div>
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                            <i class="fas fa-comment fs-1 text-primary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-success h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="card-title text-muted mb-0">{{ __('Tổng số bài viết') }}</h6>
+                                            <h2 class="mt-2 mb-0">{{ number_format($stats['posts_count']) }}</h2>
+                                        </div>
+                                        <div class="bg-success bg-opacity-10 p-3 rounded">
+                                            <i class="fas fa-comment fs-1 text-success"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ __('Chủ đề gần đây') }}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                @forelse($stats['latest_threads'] as $thread)
+                                    <a href="{{ route('forums.show', $thread->forum) }}#thread-{{ $thread->id }}" class="list-group-item list-group-item-action" target="_blank">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1 text-truncate" style="max-width: 250px;">{{ $thread->title }}</h6>
+                                            <small>{{ $thread->created_at->diffForHumans() }}</small>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-comment"></i> {{ $thread->forum ? $thread->forum->name : __('Unknown Forum') }}
+                                        </small>
+                                    </a>
+                                @empty
+                                    <div class="list-group-item text-center py-4">
+                                        <i class="fas fa-comment text-muted fs-1 d-block mb-2"></i>
+                                        <p class="text-muted mb-0">{{ __('Chưa có chủ đề nào') }}</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                        @if(count($stats['latest_threads']) > 0)
+                            <div class="card-footer text-end">
+                                <a href="#" class="btn btn-sm btn-outline-primary">{{ __('Xem tất cả chủ đề') }}</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ __('Bài viết gần đây') }}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                @forelse($stats['latest_posts'] as $post)
+                                    <a href="{{ route('forums.show', $post->thread->forum) }}#post-{{ $post->id }}" class="list-group-item list-group-item-action" target="_blank">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1 text-truncate" style="max-width: 250px;">{{ __('Trả lời trong: ') }} {{ $post->thread->title }}</h6>
+                                            <small>{{ $post->created_at->diffForHumans() }}</small>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-comment"></i> {{ Str::limit(strip_tags($post->content), 50) }}
+                                        </small>
+                                    </a>
+                                @empty
+                                    <div class="list-group-item text-center py-4">
+                                        <i class="fas fa-comment text-muted fs-1 d-block mb-2"></i>
+                                        <p class="text-muted mb-0">{{ __('Chưa có bài viết nào') }}</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                        @if(count($stats['latest_posts']) > 0)
+                            <div class="card-footer text-end">
+                                <a href="#" class="btn btn-sm btn-outline-primary">{{ __('Xem tất cả bài viết') }}</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            @if($user->about_me)
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ 'Giới thiệu' }}</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ $user->about_me }}
+                    </div>
+                </div>
+            @endif
+
+            @if($user->signature)
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ 'Chữ ký' }}</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ $user->signature }}
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Ban Modal -->
+    <div class="modal fade" id="banModal" tabindex="-1" aria-labelledby="banModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="banModalLabel">
+                        {{ $user->banned_at ? 'Bỏ cấm thành viên' : 'Cấm thành viên' }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.users.toggle-ban', $user) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        @if($user->banned_at)
+                            <p>{{ 'Bạn có chắc chắn muốn bỏ cấm thành viên này?' }}</p>
+                            <div class="alert alert-info">
+                                <strong>{{ 'Lý do cấm:' }}</strong> {{ $user->banned_reason }}
+                            </div>
+                        @else
+                            <p>{{ 'Bạn có chắc chắn muốn cấm thành viên này?' }}</p>
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">{{ 'Lý do cấm' }}</label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3" required>Vi phạm nội quy</textarea>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn {{ $user->banned_at ? 'btn-success' : 'btn-warning' }}">
+                            {{ $user->banned_at ? 'Bỏ cấm' : 'Cấm' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">{{ __('Xóa thành viên') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-body">
+                        <p>{{ 'Bạn có chắc chắn muốn xóa thành viên này?' }}</p>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle-fill me-2"></i>
+                            {{ __('Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.') }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
+                        <button type="submit" class="btn btn-danger">{{ 'Xóa' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const passwordInput = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fas fa-eye');
+                icon.classList.add('fas fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fas fa-eye-slash');
+                icon.classList.add('fas fa-eye');
+            }
+        });
+    });
+</script>
+@endpush

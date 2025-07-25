@@ -64,7 +64,7 @@
                             @else
                                 <i class="fas fa-file text-secondary" style="font-size: 5rem;"></i>
                             @endif
-                            <p class="mt-3">{{ __('Không thể xem trước file này.') }}</p>
+                            <p class="mt-3">{{ 'Không thể xem trước file này.' }}</p>
                             <a href="{{ route('admin.media.download', $media) }}" class="btn btn-primary">
                                 <i class="fas fa-download me-1"></i> {{ 'Tải xuống' }}
                             </a>
@@ -88,7 +88,7 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin file') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin file' }}</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -149,11 +149,11 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Đường dẫn') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Đường dẫn' }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label for="url" class="form-label">{{ __('URL') }}</label>
+                        <label for="url" class="form-label">{{ 'URL' }}</label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="url" value="{{ Storage::url($media->file_path) }}" readonly>
                             <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('url')">

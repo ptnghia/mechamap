@@ -50,7 +50,7 @@
                         @endif
 
                         @if($thread->is_sticky)
-                            <span class="badge bg-info">{{ __('Đã ghim') }}</span>
+                            <span class="badge bg-info">{{ 'Đã ghim' }}</span>
                         @endif
 
                         @if($thread->is_featured)
@@ -98,7 +98,7 @@
                                     <span>{{ 'Trạng thái' }}:</span>
                                     <div>
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __('Đã ghim') }}</span>
+                                            <span class="badge bg-info me-1">{{ 'Đã ghim' }}</span>
                                         @endif
                                         @if($thread->is_locked)
                                             <span class="badge bg-warning me-1">{{ __('Đã khóa') }}</span>
@@ -255,7 +255,7 @@
                                     @method('PUT')
                                     <button type="submit" class="btn btn-outline-info w-100">
                                         <i class="fas fa-thumbtack me-1"></i>
-                                        {{ $thread->is_sticky ? 'Bỏ ghim' : __('Đã ghim') }}
+                                        {{ $thread->is_sticky ? 'Bỏ ghim' : 'Đã ghim' }}
                                     </button>
                                 </form>
                             </div>
@@ -392,7 +392,7 @@
                 </div>
                 <div class="modal-body">
                     {{ 'Bạn có chắc chắn muốn xóa bài đăng này?' }}
-                    <p class="text-danger mt-2">{{ __('Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.') }}</p>
+                    <p class="text-danger mt-2">{{ 'Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.' }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>

@@ -70,7 +70,7 @@
                 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Tạo chuyên mục') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'Tạo chuyên mục' }}</button>
                 </div>
             </form>
         </div>

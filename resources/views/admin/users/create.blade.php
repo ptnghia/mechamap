@@ -73,7 +73,7 @@
                                 @enderror
                                 <div class="form-text">
                                     <i class="fas fa-info-circle me-1"></i>
-                                    {{ __('Admin và Moderator có quyền truy cập trang quản trị.') }}
+                                    {{ 'Admin và Moderator có quyền truy cập trang quản trị.' }}
                                 </div>
                             </div>
                         </div>

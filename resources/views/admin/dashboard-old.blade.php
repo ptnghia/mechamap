@@ -586,7 +586,7 @@
                             <select class="form-select" id="format" name="format">
                                 <option value="csv">CSV</option>
                             </select>
-                            <small class="form-text">{{ __('Hiện tại chỉ hỗ trợ định dạng CSV') }}</small>
+                            <small class="form-text">{{ 'Hiện tại chỉ hỗ trợ định dạng CSV' }}</small>
                         </div>
                     </div>
                     <div class="modal-footer">

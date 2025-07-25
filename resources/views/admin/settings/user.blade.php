@@ -26,7 +26,7 @@
     <div class="col-md-9">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ __('Cấu hình người dùng') }}</h5>
+                <h5 class="card-title mb-0">{{ 'Cấu hình người dùng' }}</h5>
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.settings.update-user') }}" method="POST">
@@ -56,7 +56,7 @@
                                         name="user_require_email_verification" {{ old('user_require_email_verification',
                                         $settings['user_require_email_verification'] ?? '1' )=='1' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="user_require_email_verification">
-                                        {{ __('Yêu cầu xác thực email') }}
+                                        {{ 'Yêu cầu xác thực email' }}
                                     </label>
                                 </div>
                                 <div class="form-text">{{ __('Người dùng phải xác thực email sau khi đăng ký') }}</div>

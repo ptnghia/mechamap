@@ -18,14 +18,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{ __('Cấu hình SEO cho trang cụ thể sẽ ghi đè lên cấu hình SEO chung.') }}
+                        {{ 'Cấu hình SEO cho trang cụ thể sẽ ghi đè lên cấu hình SEO chung.' }}
                     </p>
                     <p class="mb-0">
-                        {{ __('Bạn có thể cấu hình SEO cho trang bằng cách sử dụng:') }}
+                        {{ 'Bạn có thể cấu hình SEO cho trang bằng cách sử dụng:' }}
                     </p>
                     <ul class="mb-0">
-                        <li>{{ __('Route name: Áp dụng cho một route cụ thể.') }}</li>
-                        <li>{{ __('URL pattern: Áp dụng cho các URL khớp với mẫu regex.') }}</li>
+                        <li>{{ 'Route name: Áp dụng cho một route cụ thể.' }}</li>
+                        <li>{{ 'URL pattern: Áp dụng cho các URL khớp với mẫu regex.' }}</li>
                     </ul>
                 </div>
             </div>
@@ -34,7 +34,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ __('Thông tin cấu hình SEO') }}</h5>
+                    <h5 class="card-title mb-0">{{ 'Thông tin cấu hình SEO' }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.page-seo.store') }}" method="POST" enctype="multipart/form-data">
@@ -42,24 +42,24 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="route_name" class="form-label">{{ __('Route name') }}</label>
+                                <label for="route_name" class="form-label">{{ 'Route name' }}</label>
                                 <select class="form-select @error('route_name') is-invalid @enderror" id="route_name" name="route_name">
-                                    <option value="">{{ __('-- Chọn route --') }}</option>
+                                    <option value="">{{ '-- Chọn route --' }}</option>
                                     @foreach($routes as $route)
                                         <option value="{{ $route['name'] }}" {{ old('route_name') == $route['name'] ? 'selected' : '' }}>
                                             {{ $route['name'] }} ({{ $route['uri'] }})
                                         </option>
                                     @endforeach
                                 </select>
-                                <div class="form-text">{{ __('Chọn route name để áp dụng cấu hình SEO cho trang cụ thể.') }}</div>
+                                <div class="form-text">{{ 'Chọn route name để áp dụng cấu hình SEO cho trang cụ thể.' }}</div>
                                 @error('route_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="url_pattern" class="form-label">{{ __('URL pattern (Regex)') }}</label>
+                                <label for="url_pattern" class="form-label">{{ 'URL pattern (Regex)' }}</label>
                                 <input type="text" class="form-control @error('url_pattern') is-invalid @enderror" id="url_pattern" name="url_pattern" value="{{ old('url_pattern') }}" placeholder="Ví dụ: ^blog/.*">
-                                <div class="form-text">{{ __('Nhập mẫu regex để áp dụng cấu hình SEO cho các URL khớp với mẫu.') }}</div>
+                                <div class="form-text">{{ 'Nhập mẫu regex để áp dụng cấu hình SEO cho các URL khớp với mẫu.' }}</div>
                                 @error('url_pattern')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -68,26 +68,26 @@
 
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle-fill me-2"></i>
-                            {{ __('Bạn phải cung cấp Route name hoặc URL pattern.') }}
+                            {{ 'Bạn phải cung cấp Route name hoặc URL pattern.' }}
                         </div>
 
                         <hr>
 
-                        <h6 class="mb-3">{{ __('Cấu hình SEO cơ bản') }}</h6>
+                        <h6 class="mb-3">{{ 'Cấu hình SEO cơ bản' }}</h6>
 
                         <div class="mb-3">
-                            <label for="title" class="form-label">{{ __('Tiêu đề trang') }} <span class="text-danger">*</span></label>
+                            <label for="title" class="form-label">{{ 'Tiêu đề trang' }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
-                            <div class="form-text">{{ __('Tiêu đề hiển thị trên thanh tiêu đề trình duyệt và kết quả tìm kiếm.') }}</div>
+                            <div class="form-text">{{ 'Tiêu đề hiển thị trên thanh tiêu đề trình duyệt và kết quả tìm kiếm.' }}</div>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">{{ __('Mô tả trang') }}</label>
+                            <label for="description" class="form-label">{{ 'Mô tả trang' }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description') }}</textarea>
-                            <div class="form-text">{{ __('Mô tả ngắn gọn về trang. Hiển thị trong kết quả tìm kiếm.') }}</div>
+                            <div class="form-text">{{ 'Mô tả ngắn gọn về trang. Hiển thị trong kết quả tìm kiếm.' }}</div>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -96,7 +96,7 @@
                         <div class="mb-3">
                             <label for="keywords" class="form-label">{{ 'Từ khóa' }}</label>
                             <input type="text" class="form-control @error('keywords') is-invalid @enderror" id="keywords" name="keywords" value="{{ old('keywords') }}">
-                            <div class="form-text">{{ __('Các từ khóa liên quan đến trang, phân cách bằng dấu phẩy.') }}</div>
+                            <div class="form-text">{{ 'Các từ khóa liên quan đến trang, phân cách bằng dấu phẩy.' }}</div>
                             @error('keywords')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -105,7 +105,7 @@
                         <div class="mb-3">
                             <label for="canonical_url" class="form-label">{{ 'Canonical URL' }}</label>
                             <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" name="canonical_url" value="{{ old('canonical_url') }}">
-                            <div class="form-text">{{ __('URL chính thức của trang. Để trống để sử dụng URL hiện tại.') }}</div>
+                            <div class="form-text">{{ 'URL chính thức của trang. Để trống để sử dụng URL hiện tại.' }}</div>
                             @error('canonical_url')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -114,9 +114,9 @@
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="no_index" name="no_index" {{ old('no_index') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="no_index">{{ __('Không cho phép công cụ tìm kiếm lập chỉ mục trang này') }}</label>
+                                <label class="form-check-label" for="no_index">{{ 'Không cho phép công cụ tìm kiếm lập chỉ mục trang này' }}</label>
                             </div>
-                            <div class="form-text">{{ __('Nếu bật, trang sẽ không xuất hiện trong kết quả tìm kiếm.') }}</div>
+                            <div class="form-text">{{ 'Nếu bật, trang sẽ không xuất hiện trong kết quả tìm kiếm.' }}</div>
                         </div>
 
                         <hr>
@@ -126,7 +126,7 @@
                         <div class="mb-3">
                             <label for="og_title" class="form-label">{{ 'Tiêu đề Open Graph' }}</label>
                             <input type="text" class="form-control @error('og_title') is-invalid @enderror" id="og_title" name="og_title" value="{{ old('og_title') }}">
-                            <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang trên Facebook và các nền tảng khác.') }}</div>
+                            <div class="form-text">{{ 'Tiêu đề khi chia sẻ trang trên Facebook và các nền tảng khác.' }}</div>
                             @error('og_title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -135,7 +135,7 @@
                         <div class="mb-3">
                             <label for="og_description" class="form-label">{{ 'Mô tả Open Graph' }}</label>
                             <textarea class="form-control @error('og_description') is-invalid @enderror" id="og_description" name="og_description" rows="3">{{ old('og_description') }}</textarea>
-                            <div class="form-text">{{ __('Mô tả khi chia sẻ trang trên Facebook và các nền tảng khác.') }}</div>
+                            <div class="form-text">{{ 'Mô tả khi chia sẻ trang trên Facebook và các nền tảng khác.' }}</div>
                             @error('og_description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -144,7 +144,7 @@
                         <div class="mb-3">
                             <label for="og_image" class="form-label">{{ 'Hình ảnh Open Graph' }}</label>
                             <input type="file" class="form-control @error('og_image') is-invalid @enderror" id="og_image" name="og_image">
-                            <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.') }}</div>
+                            <div class="form-text">{{ 'Hình ảnh khi chia sẻ trang trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.' }}</div>
                             @error('og_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -152,12 +152,12 @@
 
                         <hr>
 
-                        <h6 class="mb-3">{{ __('Cấu hình Twitter Card') }}</h6>
+                        <h6 class="mb-3">{{ 'Cấu hình Twitter Card' }}</h6>
 
                         <div class="mb-3">
                             <label for="twitter_title" class="form-label">{{ 'Tiêu đề Twitter' }}</label>
                             <input type="text" class="form-control @error('twitter_title') is-invalid @enderror" id="twitter_title" name="twitter_title" value="{{ old('twitter_title') }}">
-                            <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang trên Twitter.') }}</div>
+                            <div class="form-text">{{ 'Tiêu đề khi chia sẻ trang trên Twitter.' }}</div>
                             @error('twitter_title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -166,7 +166,7 @@
                         <div class="mb-3">
                             <label for="twitter_description" class="form-label">{{ 'Mô tả Twitter' }}</label>
                             <textarea class="form-control @error('twitter_description') is-invalid @enderror" id="twitter_description" name="twitter_description" rows="3">{{ old('twitter_description') }}</textarea>
-                            <div class="form-text">{{ __('Mô tả khi chia sẻ trang trên Twitter.') }}</div>
+                            <div class="form-text">{{ 'Mô tả khi chia sẻ trang trên Twitter.' }}</div>
                             @error('twitter_description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -175,7 +175,7 @@
                         <div class="mb-3">
                             <label for="twitter_image" class="form-label">{{ 'Hình ảnh Twitter' }}</label>
                             <input type="file" class="form-control @error('twitter_image') is-invalid @enderror" id="twitter_image" name="twitter_image">
-                            <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang trên Twitter. Kích thước tối thiểu: 1200x600 pixels.') }}</div>
+                            <div class="form-text">{{ 'Hình ảnh khi chia sẻ trang trên Twitter. Kích thước tối thiểu: 1200x600 pixels.' }}</div>
                             @error('twitter_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -186,9 +186,9 @@
                         <h6 class="mb-3">{{ 'Cấu hình nâng cao' }}</h6>
 
                         <div class="mb-3">
-                            <label for="extra_meta" class="form-label">{{ __('Meta tags bổ sung') }}</label>
+                            <label for="extra_meta" class="form-label">{{ 'Meta tags bổ sung' }}</label>
                             <textarea class="form-control font-monospace @error('extra_meta') is-invalid @enderror" id="extra_meta" name="extra_meta" rows="5">{{ old('extra_meta') }}</textarea>
-                            <div class="form-text">{{ __('Các meta tags bổ sung sẽ được thêm vào thẻ <head> của trang.') }}</div>
+                            <div class="form-text">{{ 'Các meta tags bổ sung sẽ được thêm vào thẻ <head> của trang.' }}</div>
                             @error('extra_meta')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -197,9 +197,9 @@
                         <div class="mb-3">
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {{ old('is_active', true) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="is_active">{{ __('Kích hoạt cấu hình SEO này') }}</label>
+                                <label class="form-check-label" for="is_active">{{ 'Kích hoạt cấu hình SEO này' }}</label>
                             </div>
-                            <div class="form-text">{{ __('Nếu tắt, cấu hình SEO này sẽ không được áp dụng.') }}</div>
+                            <div class="form-text">{{ 'Nếu tắt, cấu hình SEO này sẽ không được áp dụng.' }}</div>
                         </div>
 
                         <div class="d-flex justify-content-between">

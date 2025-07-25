@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-md-3">
                     <label for="search" class="form-label">{{ 'Tìm kiếm' }}</label>
-                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ __('Tiêu đề, nội dung...') }}">
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="{{ 'Tiêu đề, nội dung...' }}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">
@@ -112,7 +112,7 @@
                                     </a>
                                     <div class="small text-muted">
                                         @if($thread->is_sticky)
-                                            <span class="badge bg-info me-1">{{ __('Đã ghim') }}</span>
+                                            <span class="badge bg-info me-1">{{ 'Đã ghim' }}</span>
                                         @endif
                                         @if($thread->is_featured)
                                             <span class="badge bg-warning me-1">{{ 'Nổi bật' }}</span>
@@ -223,7 +223,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     {{ 'Bạn có chắc chắn muốn xóa bài đăng này?' }}
-                                                    <p class="text-danger mt-2">{{ __('Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.') }}</p>
+                                                    <p class="text-danger mt-2">{{ 'Lưu ý: Hành động này không thể hoàn tác và sẽ xóa tất cả bình luận, phản hồi liên quan.' }}</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
