@@ -169,7 +169,7 @@
                                 <span class="input-group-text">@</span>
                                 <input type="text" class="form-control @error('twitter_username') is-invalid @enderror" id="twitter_username" name="twitter_username" value="{{ old('twitter_username', $settings['twitter_username'] ?? '') }}">
                             </div>
-                            <div class="form-text">{{ 'Tên người dùng Twitter của bạn, không bao gồm ký tự @.' }}</div>
+                            <div class="form-text">{{ __('Tên người dùng Twitter của bạn, không bao gồm ký tự @.') }}</div>
                             @error('twitter_username')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

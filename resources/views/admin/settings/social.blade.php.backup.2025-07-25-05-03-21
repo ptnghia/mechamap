@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Liên kết mạng xã hội' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Liên kết mạng xã hội') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.settings.update-social') }}" method="POST">
@@ -38,7 +38,7 @@
                                 <i class="fab fa-facebook me-1 text-primary"></i> {{ 'Facebook' }}
                             </label>
                             <input type="url" class="form-control @error('social_facebook') is-invalid @enderror" id="social_facebook" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/yourpage">
-                            <div class="form-text">{{ 'Liên kết đến trang Facebook của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang Facebook của bạn.') }}</div>
                             @error('social_facebook')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -49,7 +49,7 @@
                                 <i class="fab fa-twitter me-1 text-info"></i> {{ 'Twitter / X' }}
                             </label>
                             <input type="url" class="form-control @error('social_twitter') is-invalid @enderror" id="social_twitter" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://twitter.com/yourusername">
-                            <div class="form-text">{{ 'Liên kết đến trang Twitter/X của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang Twitter/X của bạn.') }}</div>
                             @error('social_twitter')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -60,7 +60,7 @@
                                 <i class="fab fa-instagram me-1 text-danger"></i> {{ 'Instagram' }}
                             </label>
                             <input type="url" class="form-control @error('social_instagram') is-invalid @enderror" id="social_instagram" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/yourusername">
-                            <div class="form-text">{{ 'Liên kết đến trang Instagram của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang Instagram của bạn.') }}</div>
                             @error('social_instagram')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -71,7 +71,7 @@
                                 <i class="fab fa-linkedin me-1 text-primary"></i> {{ 'LinkedIn' }}
                             </label>
                             <input type="url" class="form-control @error('social_linkedin') is-invalid @enderror" id="social_linkedin" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? '') }}" placeholder="https://linkedin.com/company/yourcompany">
-                            <div class="form-text">{{ 'Liên kết đến trang LinkedIn của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang LinkedIn của bạn.') }}</div>
                             @error('social_linkedin')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -82,7 +82,7 @@
                                 <i class="fab fa-youtube me-1 text-danger"></i> {{ 'YouTube' }}
                             </label>
                             <input type="url" class="form-control @error('social_youtube') is-invalid @enderror" id="social_youtube" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? '') }}" placeholder="https://youtube.com/c/yourchannel">
-                            <div class="form-text">{{ 'Liên kết đến kênh YouTube của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến kênh YouTube của bạn.') }}</div>
                             @error('social_youtube')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -93,7 +93,7 @@
                                 <i class="fab fa-tiktok me-1"></i> {{ 'TikTok' }}
                             </label>
                             <input type="url" class="form-control @error('social_tiktok') is-invalid @enderror" id="social_tiktok" name="social_tiktok" value="{{ old('social_tiktok', $settings['social_tiktok'] ?? '') }}" placeholder="https://tiktok.com/@yourusername">
-                            <div class="form-text">{{ 'Liên kết đến trang TikTok của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang TikTok của bạn.') }}</div>
                             @error('social_tiktok')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -104,7 +104,7 @@
                                 <i class="fab fa-pinterest me-1 text-danger"></i> {{ 'Pinterest' }}
                             </label>
                             <input type="url" class="form-control @error('social_pinterest') is-invalid @enderror" id="social_pinterest" name="social_pinterest" value="{{ old('social_pinterest', $settings['social_pinterest'] ?? '') }}" placeholder="https://pinterest.com/yourusername">
-                            <div class="form-text">{{ 'Liên kết đến trang Pinterest của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang Pinterest của bạn.') }}</div>
                             @error('social_pinterest')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -115,7 +115,7 @@
                                 <i class="fab fa-github me-1"></i> {{ 'GitHub' }}
                             </label>
                             <input type="url" class="form-control @error('social_github') is-invalid @enderror" id="social_github" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? '') }}" placeholder="https://github.com/yourusername">
-                            <div class="form-text">{{ 'Liên kết đến trang GitHub của bạn.' }}</div>
+                            <div class="form-text">{{ __('Liên kết đến trang GitHub của bạn.') }}</div>
                             @error('social_github')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

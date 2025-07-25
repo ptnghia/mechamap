@@ -57,10 +57,10 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{ 'Cấu hình Social Media giúp tối ưu hóa cách trang web của bạn hiển thị khi được chia sẻ trên các mạng xã hội.' }}
+                        {{ __('Cấu hình Social Media giúp tối ưu hóa cách trang web của bạn hiển thị khi được chia sẻ trên các mạng xã hội.') }}
                     </p>
                     <p class="mb-0">
-                        {{ 'Các thẻ Open Graph (og:) được sử dụng bởi Facebook và nhiều nền tảng khác, trong khi các thẻ Twitter Card được sử dụng bởi Twitter.' }}
+                        {{ __('Các thẻ Open Graph (og:) được sử dụng bởi Facebook và nhiều nền tảng khác, trong khi các thẻ Twitter Card được sử dụng bởi Twitter.') }}
                     </p>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                     
                     <div class="social-preview twitter-preview">
                         <h6 class="text-muted mb-2">
-                            <i class="fab fa-twitter me-1"></i> {{ 'Twitter' }}
+                            <i class="fab fa-twitter me-1"></i> {{ __('Twitter') }}
                         </h6>
                         <div class="card">
                             <div class="card-img-top bg-light text-center py-3" style="height: 150px;" id="twitter-image-preview">
@@ -126,7 +126,7 @@
                         <div class="mb-3">
                             <label for="og_title" class="form-label">{{ 'Tiêu đề Open Graph' }}</label>
                             <input type="text" class="form-control @error('og_title') is-invalid @enderror" id="og_title" name="og_title" value="{{ old('og_title', $settings['og_title'] ?? '') }}">
-                            <div class="form-text">{{ 'Tiêu đề khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.' }}</div>
+                            <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -135,7 +135,7 @@
                         <div class="mb-3">
                             <label for="og_description" class="form-label">{{ 'Mô tả Open Graph' }}</label>
                             <textarea class="form-control @error('og_description') is-invalid @enderror" id="og_description" name="og_description" rows="3">{{ old('og_description', $settings['og_description'] ?? '') }}</textarea>
-                            <div class="form-text">{{ 'Mô tả khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.' }}</div>
+                            <div class="form-text">{{ __('Mô tả khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác.') }}</div>
                             @error('og_description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -144,7 +144,7 @@
                         <div class="mb-3">
                             <label for="og_image" class="form-label">{{ 'Hình ảnh Open Graph' }}</label>
                             <input type="file" class="form-control @error('og_image') is-invalid @enderror" id="og_image" name="og_image">
-                            <div class="form-text">{{ 'Hình ảnh khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.' }}</div>
+                            <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang web của bạn trên Facebook và các nền tảng khác. Kích thước tối thiểu: 1200x630 pixels.') }}</div>
                             @error('og_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -159,14 +159,14 @@
                         <hr>
                         
                         <div class="mb-3">
-                            <label for="twitter_card" class="form-label">{{ 'Loại Twitter Card' }}</label>
+                            <label for="twitter_card" class="form-label">{{ __('Loại Twitter Card') }}</label>
                             <select class="form-select @error('twitter_card') is-invalid @enderror" id="twitter_card" name="twitter_card">
-                                <option value="summary" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'summary' ? 'selected' : '' }}>{{ 'Summary' }}</option>
-                                <option value="summary_large_image" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'summary_large_image' ? 'selected' : '' }}>{{ 'Summary with Large Image' }}</option>
-                                <option value="app" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'app' ? 'selected' : '' }}>{{ 'App' }}</option>
-                                <option value="player" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'player' ? 'selected' : '' }}>{{ 'Player' }}</option>
+                                <option value="summary" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'summary' ? 'selected' : '' }}>{{ __('Summary') }}</option>
+                                <option value="summary_large_image" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'summary_large_image' ? 'selected' : '' }}>{{ __('Summary with Large Image') }}</option>
+                                <option value="app" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'app' ? 'selected' : '' }}>{{ __('App') }}</option>
+                                <option value="player" {{ (old('twitter_card', $settings['twitter_card'] ?? '')) == 'player' ? 'selected' : '' }}>{{ __('Player') }}</option>
                             </select>
-                            <div class="form-text">{{ 'Loại thẻ Twitter Card để sử dụng khi chia sẻ trang web của bạn trên Twitter.' }}</div>
+                            <div class="form-text">{{ __('Loại thẻ Twitter Card để sử dụng khi chia sẻ trang web của bạn trên Twitter.') }}</div>
                             @error('twitter_card')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -175,7 +175,7 @@
                         <div class="mb-3">
                             <label for="twitter_title" class="form-label">{{ 'Tiêu đề Twitter' }}</label>
                             <input type="text" class="form-control @error('twitter_title') is-invalid @enderror" id="twitter_title" name="twitter_title" value="{{ old('twitter_title', $settings['twitter_title'] ?? '') }}">
-                            <div class="form-text">{{ 'Tiêu đề khi chia sẻ trang web của bạn trên Twitter.' }}</div>
+                            <div class="form-text">{{ __('Tiêu đề khi chia sẻ trang web của bạn trên Twitter.') }}</div>
                             @error('twitter_title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -184,7 +184,7 @@
                         <div class="mb-3">
                             <label for="twitter_description" class="form-label">{{ 'Mô tả Twitter' }}</label>
                             <textarea class="form-control @error('twitter_description') is-invalid @enderror" id="twitter_description" name="twitter_description" rows="3">{{ old('twitter_description', $settings['twitter_description'] ?? '') }}</textarea>
-                            <div class="form-text">{{ 'Mô tả khi chia sẻ trang web của bạn trên Twitter.' }}</div>
+                            <div class="form-text">{{ __('Mô tả khi chia sẻ trang web của bạn trên Twitter.') }}</div>
                             @error('twitter_description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -193,7 +193,7 @@
                         <div class="mb-3">
                             <label for="twitter_image" class="form-label">{{ 'Hình ảnh Twitter' }}</label>
                             <input type="file" class="form-control @error('twitter_image') is-invalid @enderror" id="twitter_image" name="twitter_image">
-                            <div class="form-text">{{ 'Hình ảnh khi chia sẻ trang web của bạn trên Twitter. Kích thước tối thiểu: 1200x600 pixels.' }}</div>
+                            <div class="form-text">{{ __('Hình ảnh khi chia sẻ trang web của bạn trên Twitter. Kích thước tối thiểu: 1200x600 pixels.') }}</div>
                             @error('twitter_image')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -216,7 +216,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Kiểm tra công cụ chia sẻ xã hội' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Kiểm tra công cụ chia sẻ xã hội') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -224,13 +224,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-facebook me-2"></i>{{ 'Facebook Sharing Debugger' }}
+                                        <i class="fab fa-facebook me-2"></i>{{ __('Facebook Sharing Debugger') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Facebook.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Facebook.') }}
                                     </p>
                                     <a href="https://developers.facebook.com/tools/debug/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Facebook Debugger' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Facebook Debugger') }}
                                     </a>
                                 </div>
                             </div>
@@ -240,13 +240,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-twitter me-2"></i>{{ 'Twitter Card Validator' }}
+                                        <i class="fab fa-twitter me-2"></i>{{ __('Twitter Card Validator') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Twitter.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Twitter.') }}
                                     </p>
                                     <a href="https://cards-dev.twitter.com/validator" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Twitter Card Validator' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Twitter Card Validator') }}
                                     </a>
                                 </div>
                             </div>
@@ -256,13 +256,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-linkedin me-2"></i>{{ 'LinkedIn Post Inspector' }}
+                                        <i class="fab fa-linkedin me-2"></i>{{ __('LinkedIn Post Inspector') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên LinkedIn.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên LinkedIn.') }}
                                     </p>
                                     <a href="https://www.linkedin.com/post-inspector/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở LinkedIn Post Inspector' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở LinkedIn Post Inspector') }}
                                     </a>
                                 </div>
                             </div>
@@ -272,13 +272,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-pinterest me-2"></i>{{ 'Pinterest Rich Pins Validator' }}
+                                        <i class="fab fa-pinterest me-2"></i>{{ __('Pinterest Rich Pins Validator') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Pinterest.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Pinterest.') }}
                                     </p>
                                     <a href="https://developers.pinterest.com/tools/url-debugger/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Pinterest Validator' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Pinterest Validator') }}
                                     </a>
                                 </div>
                             </div>

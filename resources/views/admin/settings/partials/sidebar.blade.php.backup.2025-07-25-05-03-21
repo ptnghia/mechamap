@@ -46,7 +46,7 @@
             </a>
             <a href="{{ route('admin.settings.wiki') }}"
                 class="list-group-item list-group-item-action {{ request()->routeIs('admin.settings.wiki') ? 'active' : '' }}">
-                <i class="fas fa-book me-2"></i> {{ 'Wiki' }}
+                <i class="fas fa-book me-2"></i> {{ __('Wiki') }}
             </a>
         </div>
     </div>

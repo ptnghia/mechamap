@@ -26,7 +26,7 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Thông tin bản quyền' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Thông tin bản quyền') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.settings.update-copyright') }}" method="POST">
@@ -36,7 +36,7 @@
                         <div class="mb-3">
                             <label for="copyright_text" class="form-label">{{ 'Nội dung bản quyền' }}</label>
                             <input type="text" class="form-control @error('copyright_text') is-invalid @enderror" id="copyright_text" name="copyright_text" value="{{ old('copyright_text', $settings['copyright_text'] ?? '© ' . date('Y') . ' ' . config('app.name') . '. All rights reserved.') }}">
-                            <div class="form-text">{{ 'Nội dung bản quyền hiển thị ở footer của trang web.' }}</div>
+                            <div class="form-text">{{ __('Nội dung bản quyền hiển thị ở footer của trang web.') }}</div>
                             @error('copyright_text')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -46,7 +46,7 @@
                             <div class="col-md-6">
                                 <label for="copyright_owner" class="form-label">{{ 'Chủ sở hữu bản quyền' }}</label>
                                 <input type="text" class="form-control @error('copyright_owner') is-invalid @enderror" id="copyright_owner" name="copyright_owner" value="{{ old('copyright_owner', $settings['copyright_owner'] ?? config('app.name')) }}">
-                                <div class="form-text">{{ 'Tên của chủ sở hữu bản quyền.' }}</div>
+                                <div class="form-text">{{ __('Tên của chủ sở hữu bản quyền.') }}</div>
                                 @error('copyright_owner')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -55,7 +55,7 @@
                             <div class="col-md-6">
                                 <label for="copyright_year" class="form-label">{{ 'Năm bản quyền' }}</label>
                                 <input type="text" class="form-control @error('copyright_year') is-invalid @enderror" id="copyright_year" name="copyright_year" value="{{ old('copyright_year', $settings['copyright_year'] ?? date('Y')) }}">
-                                <div class="form-text">{{ 'Năm bản quyền. Có thể là một năm cụ thể hoặc một khoảng thời gian (ví dụ: 2020-2023).' }}</div>
+                                <div class="form-text">{{ __('Năm bản quyền. Có thể là một năm cụ thể hoặc một khoảng thời gian (ví dụ: 2020-2023).') }}</div>
                                 @error('copyright_year')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

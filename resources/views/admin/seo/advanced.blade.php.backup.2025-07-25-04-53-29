@@ -57,11 +57,11 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{ 'Cấu hình nâng cao cho phép bạn thêm các script tùy chỉnh vào trang web của bạn.' }}
+                        {{ __('Cấu hình nâng cao cho phép bạn thêm các script tùy chỉnh vào trang web của bạn.') }}
                     </p>
                     <div class="alert alert-warning">
                         <i class="fas fa-exclamation-triangle-fill me-2"></i>
-                        {{ 'Cẩn thận khi thêm các script tùy chỉnh. Script không hợp lệ có thể làm hỏng trang web của bạn.' }}
+                        {{ __('Cẩn thận khi thêm các script tùy chỉnh. Script không hợp lệ có thể làm hỏng trang web của bạn.') }}
                     </div>
                 </div>
             </div>
@@ -78,27 +78,27 @@
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="header_scripts" class="form-label">{{ 'Header Scripts' }}</label>
+                            <label for="header_scripts" class="form-label">{{ __('Header Scripts') }}</label>
                             <textarea class="form-control font-monospace @error('header_scripts') is-invalid @enderror" id="header_scripts" name="header_scripts" rows="6" style="resize: vertical;">{{ old('header_scripts', $settings['header_scripts'] ?? '') }}</textarea>
-                            <div class="form-text">{{ 'Các script này sẽ được thêm vào thẻ <head> của trang web. Ví dụ: Google Analytics, Facebook Pixel, v.v.' }}</div>
+                            <div class="form-text">{{ __('Các script này sẽ được thêm vào thẻ <head> của trang web. Ví dụ: Google Analytics, Facebook Pixel, v.v.') }}</div>
                             @error('header_scripts')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         
                         <div class="mb-3">
-                            <label for="footer_scripts" class="form-label">{{ 'Footer Scripts' }}</label>
+                            <label for="footer_scripts" class="form-label">{{ __('Footer Scripts') }}</label>
                             <textarea class="form-control font-monospace @error('footer_scripts') is-invalid @enderror" id="footer_scripts" name="footer_scripts" rows="6" style="resize: vertical;">{{ old('footer_scripts', $settings['footer_scripts'] ?? '') }}</textarea>
-                            <div class="form-text">{{ 'Các script này sẽ được thêm vào cuối thẻ <body> của trang web.' }}</div>
+                            <div class="form-text">{{ __('Các script này sẽ được thêm vào cuối thẻ <body> của trang web.') }}</div>
                             @error('footer_scripts')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         
                         <div class="mb-3">
-                            <label for="custom_css" class="form-label">{{ 'Custom CSS' }}</label>
+                            <label for="custom_css" class="form-label">{{ __('Custom CSS') }}</label>
                             <textarea class="form-control font-monospace @error('custom_css') is-invalid @enderror" id="custom_css" name="custom_css" rows="6" style="resize: vertical;">{{ old('custom_css', $settings['custom_css'] ?? '') }}</textarea>
-                            <div class="form-text">{{ 'CSS tùy chỉnh sẽ được thêm vào trang web.' }}</div>
+                            <div class="form-text">{{ __('CSS tùy chỉnh sẽ được thêm vào trang web.') }}</div>
                             @error('custom_css')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -107,7 +107,7 @@
                         <div class="mb-3">
                             <label for="canonical_url" class="form-label">{{ 'Canonical URL' }}</label>
                             <input type="url" class="form-control @error('canonical_url') is-invalid @enderror" id="canonical_url" name="canonical_url" value="{{ old('canonical_url', $settings['canonical_url'] ?? '') }}">
-                            <div class="form-text">{{ 'URL chính thức của trang web. Để trống để sử dụng URL hiện tại.' }}</div>
+                            <div class="form-text">{{ __('URL chính thức của trang web. Để trống để sử dụng URL hiện tại.') }}</div>
                             @error('canonical_url')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -124,14 +124,14 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Mẫu script phổ biến' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Mẫu script phổ biến') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Google Analytics (GA4)' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Google Analytics (GA4)') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>&lt;!-- Google Analytics --&gt;
@@ -154,7 +154,7 @@
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Facebook Pixel' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Facebook Pixel') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>&lt;!-- Facebook Pixel --&gt;
@@ -182,7 +182,7 @@
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Google Tag Manager' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Google Tag Manager') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>&lt;!-- Google Tag Manager --&gt;
@@ -204,7 +204,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Google Tag Manager (Body)' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Google Tag Manager (Body)') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>&lt;!-- Google Tag Manager (noscript) --&gt;

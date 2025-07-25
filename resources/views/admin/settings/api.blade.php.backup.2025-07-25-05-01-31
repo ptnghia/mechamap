@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle-fill me-2"></i>
-                        {{ 'Các API key được sử dụng để kết nối với các dịch vụ bên thứ ba. Hãy đảm bảo rằng bạn giữ các key này an toàn.' }}
+                        {{ __('Các API key được sử dụng để kết nối với các dịch vụ bên thứ ba. Hãy đảm bảo rằng bạn giữ các key này an toàn.') }}
                     </div>
                     
                     <form action="{{ route('admin.settings.update-api') }}" method="POST">
@@ -43,7 +43,7 @@
                         <div class="mb-3">
                             <label for="api_google_client_id" class="form-label">{{ 'Google Client ID' }}</label>
                             <input type="text" class="form-control @error('api_google_client_id') is-invalid @enderror" id="api_google_client_id" name="api_google_client_id" value="{{ old('api_google_client_id', $settings['api_google_client_id'] ?? '') }}">
-                            <div class="form-text">{{ 'Client ID từ Google Cloud Console.' }}</div>
+                            <div class="form-text">{{ __('Client ID từ Google Cloud Console.') }}</div>
                             @error('api_google_client_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -57,7 +57,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">{{ 'Client Secret từ Google Cloud Console.' }}</div>
+                            <div class="form-text">{{ __('Client Secret từ Google Cloud Console.') }}</div>
                             @error('api_google_client_secret')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -70,7 +70,7 @@
                         <div class="mb-3">
                             <label for="api_facebook_app_id" class="form-label">{{ 'Facebook App ID' }}</label>
                             <input type="text" class="form-control @error('api_facebook_app_id') is-invalid @enderror" id="api_facebook_app_id" name="api_facebook_app_id" value="{{ old('api_facebook_app_id', $settings['api_facebook_app_id'] ?? '') }}">
-                            <div class="form-text">{{ 'App ID từ Facebook Developer Console.' }}</div>
+                            <div class="form-text">{{ __('App ID từ Facebook Developer Console.') }}</div>
                             @error('api_facebook_app_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -84,7 +84,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">{{ 'App Secret từ Facebook Developer Console.' }}</div>
+                            <div class="form-text">{{ __('App Secret từ Facebook Developer Console.') }}</div>
                             @error('api_facebook_app_secret')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -97,7 +97,7 @@
                         <div class="mb-3">
                             <label for="api_recaptcha_site_key" class="form-label">{{ 'reCAPTCHA Site Key' }}</label>
                             <input type="text" class="form-control @error('api_recaptcha_site_key') is-invalid @enderror" id="api_recaptcha_site_key" name="api_recaptcha_site_key" value="{{ old('api_recaptcha_site_key', $settings['api_recaptcha_site_key'] ?? '') }}">
-                            <div class="form-text">{{ 'Site Key từ Google reCAPTCHA Admin Console.' }}</div>
+                            <div class="form-text">{{ __('Site Key từ Google reCAPTCHA Admin Console.') }}</div>
                             @error('api_recaptcha_site_key')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -111,7 +111,7 @@
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <div class="form-text">{{ 'Secret Key từ Google reCAPTCHA Admin Console.' }}</div>
+                            <div class="form-text">{{ __('Secret Key từ Google reCAPTCHA Admin Console.') }}</div>
                             @error('api_recaptcha_secret_key')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -128,26 +128,26 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Hướng dẫn cấu hình' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Hướng dẫn cấu hình') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="accordion" id="accordionApiGuides">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingGoogle">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGoogle" aria-expanded="false" aria-controls="collapseGoogle">
-                                    <i class="fab fa-google me-2"></i> {{ 'Cấu hình Google Login' }}
+                                    <i class="fab fa-google me-2"></i> {{ __('Cấu hình Google Login') }}
                                 </button>
                             </h2>
                             <div id="collapseGoogle" class="accordion-collapse collapse" aria-labelledby="headingGoogle" data-bs-parent="#accordionApiGuides">
                                 <div class="accordion-body">
                                     <ol class="mb-0">
-                                        <li>{{ 'Truy cập' }} <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
-                                        <li>{{ 'Tạo một dự án mới hoặc chọn dự án hiện có' }}</li>
+                                        <li>{{ __('Truy cập') }} <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+                                        <li>{{ __('Tạo một dự án mới hoặc chọn dự án hiện có') }}</li>
                                         <li>{{ __('Đi đến "APIs & Services" > "Credentials"') }}</li>
                                         <li>{{ __('Nhấp vào "Create Credentials" và chọn "OAuth client ID"') }}</li>
                                         <li>{{ __('Chọn "Web application" làm loại ứng dụng') }}</li>
-                                        <li>{{ 'Thêm URI chuyển hướng:' }} <code>{{ url('/auth/google/callback') }}</code></li>
-                                        <li>{{ 'Sao chép Client ID và Client Secret vào các trường tương ứng ở trên' }}</li>
+                                        <li>{{ __('Thêm URI chuyển hướng:') }} <code>{{ url('/auth/google/callback') }}</code></li>
+                                        <li>{{ __('Sao chép Client ID và Client Secret vào các trường tương ứng ở trên') }}</li>
                                     </ol>
                                 </div>
                             </div>
@@ -156,18 +156,18 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingFacebook">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFacebook" aria-expanded="false" aria-controls="collapseFacebook">
-                                    <i class="fab fa-facebook me-2"></i> {{ 'Cấu hình Facebook Login' }}
+                                    <i class="fab fa-facebook me-2"></i> {{ __('Cấu hình Facebook Login') }}
                                 </button>
                             </h2>
                             <div id="collapseFacebook" class="accordion-collapse collapse" aria-labelledby="headingFacebook" data-bs-parent="#accordionApiGuides">
                                 <div class="accordion-body">
                                     <ol class="mb-0">
-                                        <li>{{ 'Truy cập' }} <a href="https://developers.facebook.com/" target="_blank">Facebook for Developers</a></li>
-                                        <li>{{ 'Tạo một ứng dụng mới hoặc chọn ứng dụng hiện có' }}</li>
+                                        <li>{{ __('Truy cập') }} <a href="https://developers.facebook.com/" target="_blank">Facebook for Developers</a></li>
+                                        <li>{{ __('Tạo một ứng dụng mới hoặc chọn ứng dụng hiện có') }}</li>
                                         <li>{{ __('Đi đến "Settings" > "Basic"') }}</li>
-                                        <li>{{ 'Sao chép App ID và App Secret vào các trường tương ứng ở trên' }}</li>
+                                        <li>{{ __('Sao chép App ID và App Secret vào các trường tương ứng ở trên') }}</li>
                                         <li>{{ __('Đi đến "Facebook Login" > "Settings"') }}</li>
-                                        <li>{{ 'Thêm URI chuyển hướng:' }} <code>{{ url('/auth/facebook/callback') }}</code></li>
+                                        <li>{{ __('Thêm URI chuyển hướng:') }} <code>{{ url('/auth/facebook/callback') }}</code></li>
                                     </ol>
                                 </div>
                             </div>
@@ -176,17 +176,17 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingRecaptcha">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecaptcha" aria-expanded="false" aria-controls="collapseRecaptcha">
-                                    <i class="fas fa-shield-alt me-2"></i> {{ 'Cấu hình Google reCAPTCHA' }}
+                                    <i class="fas fa-shield-alt me-2"></i> {{ __('Cấu hình Google reCAPTCHA') }}
                                 </button>
                             </h2>
                             <div id="collapseRecaptcha" class="accordion-collapse collapse" aria-labelledby="headingRecaptcha" data-bs-parent="#accordionApiGuides">
                                 <div class="accordion-body">
                                     <ol class="mb-0">
-                                        <li>{{ 'Truy cập' }} <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a></li>
+                                        <li>{{ __('Truy cập') }} <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a></li>
                                         <li>{{ __('Nhấp vào "Create" để tạo một site mới') }}</li>
                                         <li>{{ __('Chọn reCAPTCHA v2 "I\'m not a robot" Checkbox') }}</li>
-                                        <li>{{ 'Thêm tên miền của bạn vào danh sách tên miền' }}</li>
-                                        <li>{{ 'Sao chép Site Key và Secret Key vào các trường tương ứng ở trên' }}</li>
+                                        <li>{{ __('Thêm tên miền của bạn vào danh sách tên miền') }}</li>
+                                        <li>{{ __('Sao chép Site Key và Secret Key vào các trường tương ứng ở trên') }}</li>
                                     </ol>
                                 </div>
                             </div>

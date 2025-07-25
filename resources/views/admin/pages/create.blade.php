@@ -148,7 +148,7 @@
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.pages.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
-                    <button type="submit" class="btn btn-primary">{{ __('Tạo bài viết') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ 'Tạo bài viết' }}</button>
                 </div>
             </form>
         </div>

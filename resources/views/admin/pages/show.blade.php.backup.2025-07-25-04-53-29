@@ -33,7 +33,7 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Nội dung bài viết' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Nội dung bài viết') }}</h5>
                 </div>
                 <div class="card-body">
                     @if($page->attachments->count() > 0)
@@ -88,7 +88,7 @@
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Thông tin bài viết' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Thông tin bài viết') }}</h5>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -122,9 +122,9 @@
                             <span>{{ 'Nổi bật' }}:</span>
                             <span>
                                 @if($page->is_featured)
-                                    <span class="badge bg-warning">{{ 'Có' }}</span>
+                                    <span class="badge bg-warning">{{ __('Có') }}</span>
                                 @else
-                                    <span class="text-muted">{{ 'Không' }}</span>
+                                    <span class="text-muted">{{ __('Không') }}</span>
                                 @endif
                             </span>
                         </li>
@@ -179,7 +179,7 @@
                         @endif
 
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="fas fa-trash me-1"></i> {{ 'Xóa bài viết' }}
+                            <i class="fas fa-trash me-1"></i> {{ __('Xóa bài viết') }}
                         </button>
                     </div>
                 </div>

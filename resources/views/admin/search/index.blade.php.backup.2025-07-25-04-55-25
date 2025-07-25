@@ -132,20 +132,20 @@
                                     id="min_search_length" name="min_search_length"
                                     value="{{ old('min_search_length', $settings['min_search_length'] ?? 3) }}" min="1"
                                     max="10">
-                                <div class="form-text">{{ 'Số ký tự tối thiểu để thực hiện tìm kiếm' }}</div>
+                                <div class="form-text">{{ __('Số ký tự tối thiểu để thực hiện tìm kiếm') }}</div>
                                 @error('min_search_length')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="auto_suggest" class="form-label">{{ 'Gợi ý tự động' }}</label>
+                                <label for="auto_suggest" class="form-label">{{ __('Gợi ý tự động') }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="auto_suggest"
                                         name="auto_suggest" value="1" {{ old('auto_suggest', $settings['auto_suggest']
                                         ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="auto_suggest">
-                                        {{ 'Hiển thị gợi ý trong khi gõ' }}
+                                        {{ __('Hiển thị gợi ý trong khi gõ') }}
                                     </label>
                                 </div>
                             </div>
@@ -159,7 +159,7 @@
                                         name="search_in_titles" value="1" {{ old('search_in_titles',
                                         $settings['search_in_titles'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="search_in_titles">
-                                        {{ 'Tìm kiếm trong tiêu đề bài viết' }}
+                                        {{ __('Tìm kiếm trong tiêu đề bài viết') }}
                                     </label>
                                 </div>
                             </div>
@@ -171,7 +171,7 @@
                                         name="search_in_content" value="1" {{ old('search_in_content',
                                         $settings['search_in_content'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="search_in_content">
-                                        {{ 'Tìm kiếm trong nội dung bài viết' }}
+                                        {{ __('Tìm kiếm trong nội dung bài viết') }}
                                     </label>
                                 </div>
                             </div>
@@ -184,44 +184,44 @@
                                         name="search_in_comments" value="1" {{ old('search_in_comments',
                                         $settings['search_in_comments'] ?? false) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="search_in_comments">
-                                        {{ 'Tìm kiếm trong bình luận' }}
+                                        {{ __('Tìm kiếm trong bình luận') }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="enable_highlighting" class="form-label">{{ 'Làm nổi bật từ khóa'
+                                <label for="enable_highlighting" class="form-label">{{ __('Làm nổi bật từ khóa')
                                     }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="enable_highlighting"
                                         name="enable_highlighting" value="1" {{ old('enable_highlighting',
                                         $settings['enable_highlighting'] ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="enable_highlighting">
-                                        {{ 'Làm nổi bật từ khóa tìm kiếm trong kết quả' }}
+                                        {{ __('Làm nổi bật từ khóa tìm kiếm trong kết quả') }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="cache_results" class="form-label">{{ 'Cache kết quả' }}</label>
+                                <label for="cache_results" class="form-label">{{ __('Cache kết quả') }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="cache_results"
                                         name="cache_results" value="1" {{ old('cache_results',
                                         $settings['cache_results'] ?? false) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="cache_results">
-                                        {{ 'Lưu cache kết quả tìm kiếm để tăng tốc độ' }}
+                                        {{ __('Lưu cache kết quả tìm kiếm để tăng tốc độ') }}
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="log_searches" class="form-label">{{ 'Ghi log tìm kiếm' }}</label>
+                                <label for="log_searches" class="form-label">{{ __('Ghi log tìm kiếm') }}</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="log_searches"
                                         name="log_searches" value="1" {{ old('log_searches', $settings['log_searches']
                                         ?? true) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="log_searches">
-                                        {{ 'Ghi log để theo dõi thống kê tìm kiếm' }}
+                                        {{ __('Ghi log để theo dõi thống kê tìm kiếm') }}
                                     </label>
                                 </div>
                             </div>
@@ -243,26 +243,26 @@
         @if(isset($lastIndexed))
         <div class="card mt-4">
             <div class="card-header">
-                <h5 class="card-title mb-0">{{ 'Thông tin chỉ mục' }}</h5>
+                <h5 class="card-title mb-0">{{ __('Thông tin chỉ mục') }}</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="text-center">
                             <div class="h4 text-primary">{{ $indexStats['total'] ?? 0 }}</div>
-                            <div class="text-muted">{{ 'Tổng số mục đã đánh chỉ mục' }}</div>
+                            <div class="text-muted">{{ __('Tổng số mục đã đánh chỉ mục') }}</div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="text-center">
                             <div class="h4 text-success">{{ $lastIndexed->format('d/m/Y H:i') }}</div>
-                            <div class="text-muted">{{ 'Lần đánh chỉ mục cuối' }}</div>
+                            <div class="text-muted">{{ __('Lần đánh chỉ mục cuối') }}</div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="text-center">
                             <div class="h4 text-info">{{ $indexStats['pending'] ?? 0 }}</div>
-                            <div class="text-muted">{{ 'Đang chờ đánh chỉ mục' }}</div>
+                            <div class="text-muted">{{ __('Đang chờ đánh chỉ mục') }}</div>
                         </div>
                     </div>
                 </div>

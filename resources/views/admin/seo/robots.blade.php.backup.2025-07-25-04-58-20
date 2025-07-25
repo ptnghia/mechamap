@@ -57,9 +57,9 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{ 'File robots.txt cho phép bạn kiểm soát cách các công cụ tìm kiếm truy cập và lập chỉ mục trang web của bạn.' }}
+                        {{ __('File robots.txt cho phép bạn kiểm soát cách các công cụ tìm kiếm truy cập và lập chỉ mục trang web của bạn.') }}
                     </p>
-                    <p class="mb-0">{{ 'Ví dụ cơ bản:' }}</p>
+                    <p class="mb-0">{{ __('Ví dụ cơ bản:') }}</p>
                     <pre class="bg-light p-2 mt-2 rounded"><code>User-agent: *
 Allow: /
 Disallow: /admin/
@@ -72,7 +72,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Chỉnh sửa file Robots.txt' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Chỉnh sửa file Robots.txt') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.seo.update-robots') }}" method="POST">
@@ -80,7 +80,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                         @method('PUT')
                         
                         <div class="mb-3">
-                            <label for="robots_content" class="form-label">{{ 'Nội dung file Robots.txt' }}</label>
+                            <label for="robots_content" class="form-label">{{ __('Nội dung file Robots.txt') }}</label>
                             <textarea class="form-control font-monospace @error('robots_content') is-invalid @enderror" id="robots_content" name="robots_content" rows="15" style="resize: vertical;">{{ old('robots_content', $robotsContent) }}</textarea>
                             @error('robots_content')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -89,7 +89,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                         
                         <div class="d-flex justify-content-between">
                             <a href="{{ url('robots.txt') }}" target="_blank" class="btn btn-outline-secondary">
-                                <i class="fas fa-eye me-1"></i> {{ 'Xem file hiện tại' }}
+                                <i class="fas fa-eye me-1"></i> {{ __('Xem file hiện tại') }}
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-1"></i> {{ 'Lưu thay đổi' }}
@@ -101,14 +101,14 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Mẫu robots.txt phổ biến' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Mẫu robots.txt phổ biến') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Cho phép tất cả' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Cho phép tất cả') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>User-agent: *
@@ -126,7 +126,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Chặn trang admin' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Chặn trang admin') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>User-agent: *
@@ -147,7 +147,7 @@ Sitemap: {{ url('sitemap.xml') }}</code></pre>
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Chặn tất cả' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Chặn tất cả') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>User-agent: *
@@ -164,7 +164,7 @@ Disallow: /</code></pre>
                         <div class="col-md-6 mb-3">
                             <div class="card h-100">
                                 <div class="card-header">
-                                    <h6 class="card-title mb-0">{{ 'Chặn một số User-agent' }}</h6>
+                                    <h6 class="card-title mb-0">{{ __('Chặn một số User-agent') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <pre class="bg-light p-2 rounded mb-0"><code>User-agent: *

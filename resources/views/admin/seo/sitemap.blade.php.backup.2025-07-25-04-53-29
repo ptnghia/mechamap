@@ -57,14 +57,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{ 'Sitemap là file XML chứa danh sách các URL trên trang web của bạn. Nó giúp các công cụ tìm kiếm tìm thấy và lập chỉ mục trang web của bạn hiệu quả hơn.' }}
+                        {{ __('Sitemap là file XML chứa danh sách các URL trên trang web của bạn. Nó giúp các công cụ tìm kiếm tìm thấy và lập chỉ mục trang web của bạn hiệu quả hơn.') }}
                     </p>
                     <p class="mb-0">
-                        {{ 'Sau khi tạo sitemap, bạn nên:' }}
+                        {{ __('Sau khi tạo sitemap, bạn nên:') }}
                     </p>
                     <ul class="mb-0">
-                        <li>{{ 'Thêm URL sitemap vào file robots.txt' }}</li>
-                        <li>{{ 'Gửi sitemap đến Google Search Console' }}</li>
+                        <li>{{ __('Thêm URL sitemap vào file robots.txt') }}</li>
+                        <li>{{ __('Gửi sitemap đến Google Search Console') }}</li>
                     </ul>
                 </div>
             </div>
@@ -73,18 +73,18 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">{{ 'Quản lý Sitemap' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Quản lý Sitemap') }}</h5>
                     <form action="{{ route('admin.seo.generate-sitemap') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-plus-circle me-1"></i> {{ 'Tạo Sitemap mới' }}
+                            <i class="fas fa-plus-circle me-1"></i> {{ __('Tạo Sitemap mới') }}
                         </button>
                     </form>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle-fill me-2"></i>
-                        {{ 'Sitemap sẽ bao gồm: trang chủ, các trang chính, diễn đàn, chủ đề, và hồ sơ người dùng.' }}
+                        {{ __('Sitemap sẽ bao gồm: trang chủ, các trang chính, diễn đàn, chủ đề, và hồ sơ người dùng.') }}
                     </div>
                     
                     @if(count($sitemapFiles) > 0)
@@ -126,7 +126,7 @@
                     @else
                         <div class="text-center py-5">
                             <i class="fas fa-exclamation-circle text-muted fs-1 d-block mb-3"></i>
-                            <p class="text-muted mb-0">{{ 'Chưa có file sitemap nào. Hãy tạo sitemap mới.' }}</p>
+                            <p class="text-muted mb-0">{{ __('Chưa có file sitemap nào. Hãy tạo sitemap mới.') }}</p>
                         </div>
                     @endif
                 </div>
@@ -134,7 +134,7 @@
             
             <div class="card mt-4">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Gửi Sitemap đến công cụ tìm kiếm' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Gửi Sitemap đến công cụ tìm kiếm') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -142,13 +142,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-google me-2"></i>{{ 'Google Search Console' }}
+                                        <i class="fab fa-google me-2"></i>{{ __('Google Search Console') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Gửi sitemap của bạn đến Google Search Console để giúp Google lập chỉ mục trang web của bạn hiệu quả hơn.' }}
+                                        {{ __('Gửi sitemap của bạn đến Google Search Console để giúp Google lập chỉ mục trang web của bạn hiệu quả hơn.') }}
                                     </p>
                                     <a href="https://search.google.com/search-console" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Google Search Console' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Google Search Console') }}
                                     </a>
                                 </div>
                             </div>
@@ -158,13 +158,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fas fa-search me-2"></i>{{ 'Bing Webmaster Tools' }}
+                                        <i class="fas fa-search me-2"></i>{{ __('Bing Webmaster Tools') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Gửi sitemap của bạn đến Bing Webmaster Tools để giúp Bing lập chỉ mục trang web của bạn hiệu quả hơn.' }}
+                                        {{ __('Gửi sitemap của bạn đến Bing Webmaster Tools để giúp Bing lập chỉ mục trang web của bạn hiệu quả hơn.') }}
                                     </p>
                                     <a href="https://www.bing.com/webmasters/about" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Bing Webmaster Tools' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Bing Webmaster Tools') }}
                                     </a>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">{{ 'Xóa Sitemap' }}</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">{{ __('Xóa Sitemap') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.seo.delete-sitemap') }}" method="POST">
@@ -188,10 +188,10 @@
                     @method('DELETE')
                     <input type="hidden" name="filename" id="delete-filename">
                     <div class="modal-body">
-                        <p>{{ 'Bạn có chắc chắn muốn xóa file sitemap này?' }}</p>
+                        <p>{{ __('Bạn có chắc chắn muốn xóa file sitemap này?') }}</p>
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle-fill me-2"></i>
-                            {{ 'Lưu ý: Việc xóa sitemap có thể ảnh hưởng đến khả năng lập chỉ mục của các công cụ tìm kiếm.' }}
+                            {{ __('Lưu ý: Việc xóa sitemap có thể ảnh hưởng đến khả năng lập chỉ mục của các công cụ tìm kiếm.') }}
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -44,7 +44,7 @@
         <div class="card-body">
             <div class="alert alert-info">
                 <i class="fas fa-info-circle-fill me-2"></i>
-                {{ 'Cấu hình SEO cho các trang cụ thể sẽ ghi đè lên cấu hình SEO chung.' }}
+                {{ __('Cấu hình SEO cho các trang cụ thể sẽ ghi đè lên cấu hình SEO chung.') }}
             </div>
 
             @if(count($pages) > 0)
@@ -52,7 +52,7 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>{{ 'Trang' }}</th>
+                                <th>{{ __('Trang') }}</th>
                                 <th>{{ 'Tiêu đề' }}</th>
                                 <th>{{ 'Trạng thái' }}</th>
                                 <th>{{ 'Cập nhật lần cuối' }}</th>
@@ -88,8 +88,8 @@
                                         @endif
 
                                         @if($page->no_index)
-                                            <span class="badge bg-warning ms-1" data-bs-toggle="tooltip" title="{{ 'Không cho phép công cụ tìm kiếm lập chỉ mục' }}">
-                                                {{ 'No Index' }}
+                                            <span class="badge bg-warning ms-1" data-bs-toggle="tooltip" title="{{ __('Không cho phép công cụ tìm kiếm lập chỉ mục') }}">
+                                                {{ __('No Index') }}
                                             </span>
                                         @endif
                                     </td>
@@ -109,17 +109,17 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $page->id }}">{{ 'Xóa cấu hình SEO' }}</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $page->id }}">{{ __('Xóa cấu hình SEO') }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('admin.page-seo.destroy', $page) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <div class="modal-body">
-                                                            <p>{{ 'Bạn có chắc chắn muốn xóa cấu hình SEO này?' }}</p>
+                                                            <p>{{ __('Bạn có chắc chắn muốn xóa cấu hình SEO này?') }}</p>
                                                             <div class="alert alert-warning">
                                                                 <i class="fas fa-exclamation-triangle-fill me-2"></i>
-                                                                {{ 'Hành động này không thể hoàn tác.' }}
+                                                                {{ __('Hành động này không thể hoàn tác.') }}
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -146,7 +146,7 @@
                     <p class="text-muted mb-0">Chưa có cấu hình SEO nào cho các trang.</p>
                     <div class="mt-3">
                         <a href="{{ route('admin.page-seo.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus-circle me-1"></i> {{ 'Thêm cấu hình mới' }}
+                            <i class="fas fa-plus-circle me-1"></i> {{ __('Thêm cấu hình mới') }}
                         </a>
                     </div>
                 </div>

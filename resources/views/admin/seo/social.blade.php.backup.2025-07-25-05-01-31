@@ -246,7 +246,7 @@
                                         {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Twitter.' }}
                                     </p>
                                     <a href="https://cards-dev.twitter.com/validator" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Twitter Card Validator' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Twitter Card Validator') }}
                                     </a>
                                 </div>
                             </div>
@@ -256,13 +256,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-linkedin me-2"></i>{{ 'LinkedIn Post Inspector' }}
+                                        <i class="fab fa-linkedin me-2"></i>{{ __('LinkedIn Post Inspector') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên LinkedIn.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên LinkedIn.') }}
                                     </p>
                                     <a href="https://www.linkedin.com/post-inspector/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở LinkedIn Post Inspector' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở LinkedIn Post Inspector') }}
                                     </a>
                                 </div>
                             </div>
@@ -272,13 +272,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <i class="fab fa-pinterest me-2"></i>{{ 'Pinterest Rich Pins Validator' }}
+                                        <i class="fab fa-pinterest me-2"></i>{{ __('Pinterest Rich Pins Validator') }}
                                     </h5>
                                     <p class="card-text">
-                                        {{ 'Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Pinterest.' }}
+                                        {{ __('Kiểm tra cách trang web của bạn hiển thị khi được chia sẻ trên Pinterest.') }}
                                     </p>
                                     <a href="https://developers.pinterest.com/tools/url-debugger/" target="_blank" class="btn btn-outline-primary">
-                                        <i class="fas fa-external-link-alt me-1"></i> {{ 'Mở Pinterest Validator' }}
+                                        <i class="fas fa-external-link-alt me-1"></i> {{ __('Mở Pinterest Validator') }}
                                     </a>
                                 </div>
                             </div>

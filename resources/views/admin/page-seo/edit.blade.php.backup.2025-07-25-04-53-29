@@ -33,14 +33,14 @@
             @if($pageSeo->route_name)
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ 'Thông tin route' }}</h5>
+                        <h5 class="card-title mb-0">{{ __('Thông tin route') }}</h5>
                     </div>
                     <div class="card-body">
-                        <p class="mb-1"><strong>{{ 'Route name:' }}</strong></p>
+                        <p class="mb-1"><strong>{{ __('Route name:') }}</strong></p>
                         <p class="mb-3">{{ $pageSeo->route_name }}</p>
 
                         @if(isset($routes[$pageSeo->route_name]))
-                            <p class="mb-1"><strong>{{ 'URI:' }}</strong></p>
+                            <p class="mb-1"><strong>{{ __('URI:') }}</strong></p>
                             <p class="mb-0">{{ $routes[$pageSeo->route_name]['uri'] }}</p>
                         @endif
                     </div>
@@ -50,10 +50,10 @@
             @if($pageSeo->url_pattern)
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">{{ 'Thông tin URL pattern' }}</h5>
+                        <h5 class="card-title mb-0">{{ __('Thông tin URL pattern') }}</h5>
                     </div>
                     <div class="card-body">
-                        <p class="mb-1"><strong>{{ 'URL pattern:' }}</strong></p>
+                        <p class="mb-1"><strong>{{ __('URL pattern:') }}</strong></p>
                         <p class="mb-0"><code>{{ $pageSeo->url_pattern }}</code></p>
                     </div>
                 </div>
