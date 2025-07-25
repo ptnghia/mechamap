@@ -87,7 +87,7 @@
                                     <span class="text-muted">{{ $thread->slug }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
-                                    <span>{{ 'Diễn đàn' }}:</span>
+                                    <span>{{ __('Diễn đàn') }}:</span>
                                     <span class="text-muted">{{ $thread->forum->name }}</span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between px-0">
@@ -205,7 +205,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteCommentModalLabel{{ $comment->id }}">{{ 'Xác nhận xóa bình luận' }}</h5>
+                                        <h5 class="modal-title" id="deleteCommentModalLabel{{ $comment->id }}">{{ __('Xác nhận xóa bình luận') }}</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -229,7 +229,7 @@
                     @empty
                         <div class="text-center py-4">
                             <i class="fas fa-comment fs-1 text-muted mb-3"></i>
-                            <p class="mb-0">{{ 'Chưa có bình luận nào.' }}</p>
+                            <p class="mb-0">{{ __('Chưa có bình luận nào.') }}</p>
                         </div>
                     @endforelse
                 </div>
@@ -290,7 +290,7 @@
                         @endif
 
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            <i class="fas fa-trash me-1"></i> {{ 'Xóa bài đăng' }}
+                            <i class="fas fa-trash me-1"></i> {{ __('Xóa bài đăng') }}
                         </button>
                     </div>
                 </div>
@@ -337,11 +337,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="approveModalLabel">{{ 'Xác nhận duyệt bài đăng' }}</h5>
+                    <h5 class="modal-title" id="approveModalLabel">{{ __('Xác nhận duyệt bài đăng') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ 'Bạn có chắc chắn muốn duyệt bài đăng này?' }}
+                    {{ __('Bạn có chắc chắn muốn duyệt bài đăng này?') }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Hủy' }}</button>
@@ -370,7 +370,7 @@
                         <div class="mb-3">
                             <label for="reason" class="form-label">{{ 'Lý do từ chối' }}</label>
                             <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
-                            <div class="form-text">{{ 'Lý do này sẽ được gửi cho tác giả.' }}</div>
+                            <div class="form-text">{{ __('Lý do này sẽ được gửi cho tác giả.') }}</div>
                         </div>
                     </div>
                     <div class="modal-footer">

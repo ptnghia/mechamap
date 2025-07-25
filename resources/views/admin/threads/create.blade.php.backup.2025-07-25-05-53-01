@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="forum_id" class="form-label">{{ 'Diễn đàn' }}</label>
+                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
                     <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
                         <option value="">{{ 'Chọn diễn đàn' }}</option>
                         @foreach($forums as $forum)
@@ -110,7 +110,7 @@
 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.threads.index') }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
-                    <button type="submit" class="btn btn-primary">{{ 'Tạo bài đăng' }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Tạo bài đăng') }}</button>
                 </div>
             </form>
         </div>

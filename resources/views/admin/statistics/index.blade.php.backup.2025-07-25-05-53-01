@@ -42,7 +42,7 @@
                 <div class="card-body text-center">
                     <div class="display-4 text-primary mb-2">{{ $overviewStats['users'] }}</div>
                     <h5 class="card-title">{{ 'Người dùng' }}</h5>
-                    <p class="card-text text-muted">{{ 'Tổng số người dùng đã đăng ký' }}</p>
+                    <p class="card-text text-muted">{{ __('Tổng số người dùng đã đăng ký') }}</p>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                 <div class="card-body text-center">
                     <div class="display-4 text-success mb-2">{{ $overviewStats['threads'] }}</div>
                     <h5 class="card-title">{{ 'Bài đăng' }}</h5>
-                    <p class="card-text text-muted">{{ 'Tổng số bài đăng đã tạo' }}</p>
+                    <p class="card-text text-muted">{{ __('Tổng số bài đăng đã tạo') }}</p>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                 <div class="card-body text-center">
                     <div class="display-4 text-info mb-2">{{ $overviewStats['comments'] }}</div>
                     <h5 class="card-title">{{ 'Bình luận' }}</h5>
-                    <p class="card-text text-muted">{{ 'Tổng số bình luận đã đăng' }}</p>
+                    <p class="card-text text-muted">{{ __('Tổng số bình luận đã đăng') }}</p>
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-warning mb-2">{{ $overviewStats['forums'] }}</div>
-                    <h5 class="card-title">{{ 'Diễn đàn' }}</h5>
-                    <p class="card-text text-muted">{{ 'Tổng số diễn đàn đã tạo' }}</p>
+                    <h5 class="card-title">{{ __('Diễn đàn') }}</h5>
+                    <p class="card-text text-muted">{{ __('Tổng số diễn đàn đã tạo') }}</p>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="col-md-8 mb-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Thống kê theo thời gian (12 tháng gần nhất)' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Thống kê theo thời gian (12 tháng gần nhất)') }}</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="timeChart" height="300"></canvas>
@@ -89,7 +89,7 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Phân bố nội dung' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Phân bố nội dung') }}</h5>
                 </div>
                 <div class="card-body">
                     <canvas id="contentDistributionChart" height="300"></canvas>
@@ -109,30 +109,30 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
-                                    <th>{{ 'Loại' }}</th>
+                                    <th>{{ __('Loại') }}</th>
                                     <th>{{ 'Nội dung' }}</th>
                                     <th>{{ 'Người dùng' }}</th>
-                                    <th>{{ 'Thời gian' }}</th>
+                                    <th>{{ __('Thời gian') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Dữ liệu mẫu - sẽ được thay thế bằng dữ liệu thực tế -->
                                 <tr>
                                     <td><span class="badge bg-primary">{{ 'Bài đăng' }}</span></td>
-                                    <td>{{ 'Bài đăng mới đã được tạo' }}</td>
-                                    <td>{{ 'Người dùng A' }}</td>
+                                    <td>{{ __('Bài đăng mới đã được tạo') }}</td>
+                                    <td>{{ __('Người dùng A') }}</td>
                                     <td>{{ now()->subHours(2)->format('d/m/Y H:i') }}</td>
                                 </tr>
                                 <tr>
                                     <td><span class="badge bg-info">{{ 'Bình luận' }}</span></td>
-                                    <td>{{ 'Bình luận mới đã được đăng' }}</td>
-                                    <td>{{ 'Người dùng B' }}</td>
+                                    <td>{{ __('Bình luận mới đã được đăng') }}</td>
+                                    <td>{{ __('Người dùng B') }}</td>
                                     <td>{{ now()->subHours(3)->format('d/m/Y H:i') }}</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="badge bg-success">{{ 'Đăng ký' }}</span></td>
-                                    <td>{{ 'Người dùng mới đã đăng ký' }}</td>
-                                    <td>{{ 'Người dùng C' }}</td>
+                                    <td><span class="badge bg-success">{{ __('Đăng ký') }}</span></td>
+                                    <td>{{ __('Người dùng mới đã đăng ký') }}</td>
+                                    <td>{{ __('Người dùng C') }}</td>
                                     <td>{{ now()->subHours(5)->format('d/m/Y H:i') }}</td>
                                 </tr>
                             </tbody>

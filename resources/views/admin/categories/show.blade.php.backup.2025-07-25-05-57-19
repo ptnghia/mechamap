@@ -122,7 +122,7 @@
                                 <tr>
                                     <th>{{ 'Tiêu đề' }}</th>
                                     <th>{{ 'Tác giả' }}</th>
-                                    <th>{{ 'Diễn đàn' }}</th>
+                                    <th>{{ __('Diễn đàn') }}</th>
                                     <th>{{ 'Trạng thái' }}</th>
                                     <th>{{ 'Ngày tạo' }}</th>
                                     <th>{{ 'Thao tác' }}</th>

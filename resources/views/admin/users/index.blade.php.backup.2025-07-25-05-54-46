@@ -160,7 +160,7 @@
                             <th scope="col" width="50">#</th>
                             <th scope="col">{{ 'Thành viên' }}</th>
                             <th scope="col">{{ 'Vai trò' }}</th>
-                            <th scope="col">{{ 'Bài viết' }}</th>
+                            <th scope="col">{{ __('Bài viết') }}</th>
                             <th scope="col">{{ 'Ngày tham gia' }}</th>
                             <th scope="col">{{ 'Hoạt động gần đây' }}</th>
                             <th scope="col">{{ 'Trạng thái' }}</th>

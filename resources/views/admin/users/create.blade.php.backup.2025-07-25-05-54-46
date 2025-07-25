@@ -28,7 +28,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">{{ 'Thông tin thành viên mới' }}</h5>
+                    <h5 class="card-title mb-0">{{ __('Thông tin thành viên mới') }}</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
@@ -90,7 +90,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-text">{{ 'Mật khẩu phải có ít nhất 8 ký tự.' }}</div>
+                                <div class="form-text">{{ __('Mật khẩu phải có ít nhất 8 ký tự.') }}</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="password_confirmation" class="form-label">{{ 'Xác nhận mật khẩu' }} <span class="text-danger">*</span></label>

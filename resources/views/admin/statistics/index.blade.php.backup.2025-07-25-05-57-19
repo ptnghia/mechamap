@@ -68,7 +68,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <div class="display-4 text-warning mb-2">{{ $overviewStats['forums'] }}</div>
-                    <h5 class="card-title">{{ 'Diễn đàn' }}</h5>
+                    <h5 class="card-title">{{ __('Diễn đàn') }}</h5>
                     <p class="card-text text-muted">{{ 'Tổng số diễn đàn đã tạo' }}</p>
                 </div>
             </div>

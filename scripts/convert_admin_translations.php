@@ -1878,6 +1878,238 @@ function loadTranslationMapping() {
         'Cài đặt chung' => 'Cài đặt chung',
         'Cài đặt API' => 'Cài đặt API',
         'Cài đặt SEO' => 'Cài đặt SEO',
+
+        // Phase 3.5 - Final 78 Keys to Complete 100%
+
+        // User Settings Advanced Final Keys
+        'Người dùng phải xác thực email trước khi tham gia diễn đàn' => 'Người dùng phải xác thực email trước khi tham gia diễn đàn',
+        'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang web.' => 'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang web.',
+        'Người dùng có thể đăng nhập bằng Facebook, Google' => 'Người dùng có thể đăng nhập bằng Facebook, Google',
+        'Vai trò được gán cho người dùng mới đăng ký' => 'Vai trò được gán cho người dùng mới đăng ký',
+        'Cấu hình mật khẩu' => 'Cấu hình mật khẩu',
+        'Độ dài mật khẩu tối thiểu' => 'Độ dài mật khẩu tối thiểu',
+        'Số ký tự tối thiểu cho mật khẩu (6-30)' => 'Số ký tự tối thiểu cho mật khẩu (6-30)',
+        'Yêu cầu mật khẩu mạnh' => 'Yêu cầu mật khẩu mạnh',
+        'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt' => 'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt',
+        'Cấu hình tên người dùng' => 'Cấu hình tên người dùng',
+        'Độ dài tên người dùng tối thiểu' => 'Độ dài tên người dùng tối thiểu',
+        'Số ký tự tối thiểu cho tên người dùng (3-20)' => 'Số ký tự tối thiểu cho tên người dùng (3-20)',
+        'Cho phép thay đổi tên người dùng' => 'Cho phép thay đổi tên người dùng',
+        'Người dùng có thể thay đổi tên người dùng sau khi đăng ký' => 'Người dùng có thể thay đổi tên người dùng sau khi đăng ký',
+        'Cấu hình avatar' => 'Cấu hình avatar',
+        'Kích thước avatar tối đa (KB)' => 'Kích thước avatar tối đa (KB)',
+        'Kích thước tối đa của file avatar (100-5120 KB)' => 'Kích thước tối đa của file avatar (100-5120 KB)',
+        'Loại file avatar được phép' => 'Loại file avatar được phép',
+        'Các phần mở rộng file được phép cho avatar' => 'Các phần mở rộng file được phép cho avatar',
+        'Cấu hình hồ sơ' => 'Cấu hình hồ sơ',
+        'Cho phép tùy chỉnh hồ sơ' => 'Cho phép tùy chỉnh hồ sơ',
+        'Người dùng có thể tùy chỉnh thông tin hồ sơ cá nhân' => 'Người dùng có thể tùy chỉnh thông tin hồ sơ cá nhân',
+        'Độ dài chữ ký tối đa' => 'Độ dài chữ ký tối đa',
+        'Số ký tự tối đa cho chữ ký (0-1000, 0 = không cho phép)' => 'Số ký tự tối đa cho chữ ký (0-1000, 0 = không cho phép)',
+        'Độ dài giới thiệu tối đa' => 'Độ dài giới thiệu tối đa',
+        'Số ký tự tối đa cho phần giới thiệu (0-5000)' => 'Số ký tự tối đa cho phần giới thiệu (0-5000)',
+
+        // Statistics Final Keys
+        'Tổng số người dùng đã đăng ký' => 'Tổng số người dùng đã đăng ký',
+        'Tổng số bài đăng đã tạo' => 'Tổng số bài đăng đã tạo',
+        'Tổng số bình luận đã đăng' => 'Tổng số bình luận đã đăng',
+        'Tổng số diễn đàn đã tạo' => 'Tổng số diễn đàn đã tạo',
+        'Thống kê theo thời gian (12 tháng gần nhất)' => 'Thống kê theo thời gian (12 tháng gần nhất)',
+        'Phân bố nội dung' => 'Phân bố nội dung',
+        'Loại' => 'Loại',
+        'Thời gian' => 'Thời gian',
+        'Bài đăng mới đã được tạo' => 'Bài đăng mới đã được tạo',
+        'Người dùng A' => 'Người dùng A',
+        'Bình luận mới đã được đăng' => 'Bình luận mới đã được đăng',
+        'Người dùng B' => 'Người dùng B',
+        'Đăng ký' => 'Đăng ký',
+        'Người dùng mới đã đăng ký' => 'Người dùng mới đã đăng ký',
+        'Người dùng C' => 'Người dùng C',
+
+        // Threads Final Keys
+        'Tạo bài đăng' => 'Tạo bài đăng',
+        'Chỉnh sửa bài đăng' => 'Chỉnh sửa bài đăng',
+        'Không có bài đăng nào.' => 'Không có bài đăng nào.',
+        'Đã khóa' => 'Đã khóa',
+        'Bình thường' => 'Bình thường',
+        'Số bình luận' => 'Số bình luận',
+        'Lượt xem' => 'Lượt xem',
+        'Tác giả' => 'Tác giả',
+        'Ngày tạo' => 'Ngày tạo',
+        'Cập nhật cuối' => 'Cập nhật cuối',
+        'Trạng thái bài đăng' => 'Trạng thái bài đăng',
+        'Chủ đề hot' => 'Chủ đề hot',
+        'Chủ đề thường' => 'Chủ đề thường',
+        'Di chuyển bài đăng' => 'Di chuyển bài đăng',
+        'Sao chép bài đăng' => 'Sao chép bài đăng',
+        'Gộp bài đăng' => 'Gộp bài đăng',
+
+        // Users Final Keys
+        'Tạo người dùng' => 'Tạo người dùng',
+        'Chỉnh sửa người dùng' => 'Chỉnh sửa người dùng',
+        'Không có người dùng nào.' => 'Không có người dùng nào.',
+        'Thông tin người dùng' => 'Thông tin người dùng',
+        'Thông tin tài khoản' => 'Thông tin tài khoản',
+        'Thông tin cá nhân' => 'Thông tin cá nhân',
+        'Hoạt động gần đây' => 'Hoạt động gần đây',
+        'Lịch sử hoạt động' => 'Lịch sử hoạt động',
+        'Bài viết của người dùng' => 'Bài viết của người dùng',
+        'Bình luận của người dùng' => 'Bình luận của người dùng',
+        'Điểm thành viên' => 'Điểm thành viên',
+        'Cấp độ' => 'Cấp độ',
+        'Huy hiệu' => 'Huy hiệu',
+        'Thành tích' => 'Thành tích',
+        'Ngày tham gia' => 'Ngày tham gia',
+        'Lần đăng nhập cuối' => 'Lần đăng nhập cuối',
+        'Địa chỉ IP cuối' => 'Địa chỉ IP cuối',
+        'Trình duyệt' => 'Trình duyệt',
+        'Hệ điều hành' => 'Hệ điều hành',
+        'Thiết bị' => 'Thiết bị',
+        'Vị trí' => 'Vị trí',
+        'Múi giờ' => 'Múi giờ',
+        'Ngôn ngữ' => 'Ngôn ngữ',
+        'Gửi email cho người dùng' => 'Gửi email cho người dùng',
+        'Gửi thông báo' => 'Gửi thông báo',
+        'Khóa tài khoản' => 'Khóa tài khoản',
+        'Mở khóa tài khoản' => 'Mở khóa tài khoản',
+        'Xóa tài khoản vĩnh viễn' => 'Xóa tài khoản vĩnh viễn',
+        'Khôi phục tài khoản' => 'Khôi phục tài khoản',
+        'Chuyển quyền sở hữu' => 'Chuyển quyền sở hữu',
+        'Xuất dữ liệu người dùng' => 'Xuất dữ liệu người dùng',
+        'Xóa dữ liệu cá nhân' => 'Xóa dữ liệu cá nhân',
+
+        // Alerts Final Keys
+        'Danh sách cảnh báo hệ thống' => 'Danh sách cảnh báo hệ thống',
+        'Quản lý các cảnh báo và thông báo hệ thống' => 'Quản lý các cảnh báo và thông báo hệ thống',
+        'Loại cảnh báo' => 'Loại cảnh báo',
+        'Mức độ' => 'Mức độ',
+        'Thông báo' => 'Thông báo',
+        'Cảnh báo' => 'Cảnh báo',
+        'Lỗi' => 'Lỗi',
+        'Nghiêm trọng' => 'Nghiêm trọng',
+        'Thấp' => 'Thấp',
+        'Trung bình' => 'Trung bình',
+        'Cao' => 'Cao',
+        'Rất cao' => 'Rất cao',
+        'Đã xử lý' => 'Đã xử lý',
+        'Chưa xử lý' => 'Chưa xử lý',
+        'Đang xử lý' => 'Đang xử lý',
+        'Đánh dấu đã xử lý' => 'Đánh dấu đã xử lý',
+        'Đánh dấu chưa xử lý' => 'Đánh dấu chưa xử lý',
+        'Xóa cảnh báo' => 'Xóa cảnh báo',
+        'Xóa tất cả cảnh báo' => 'Xóa tất cả cảnh báo',
+
+        // Categories Final Keys
+        'Xem thông tin chi tiết chuyên mục' => 'Xem thông tin chi tiết chuyên mục',
+        'Thông tin chuyên mục' => 'Thông tin chuyên mục',
+        'Chuyên mục cha' => 'Chuyên mục cha',
+        'Chuyên mục con' => 'Chuyên mục con',
+        'Số bài đăng trong chuyên mục' => 'Số bài đăng trong chuyên mục',
+        'Số chủ đề trong chuyên mục' => 'Số chủ đề trong chuyên mục',
+        'Bài đăng mới nhất' => 'Bài đăng mới nhất',
+        'Chủ đề mới nhất' => 'Chủ đề mới nhất',
+        'Người tạo' => 'Người tạo',
+        'Ngày tạo chuyên mục' => 'Ngày tạo chuyên mục',
+        'Cập nhật lần cuối' => 'Cập nhật lần cuối',
+        'Hiển thị công khai' => 'Hiển thị công khai',
+        'Ẩn khỏi danh sách' => 'Ẩn khỏi danh sách',
+        'Cho phép đăng bài' => 'Cho phép đăng bài',
+        'Chỉ đọc' => 'Chỉ đọc',
+        'Yêu cầu duyệt bài' => 'Yêu cầu duyệt bài',
+        'Tự động duyệt' => 'Tự động duyệt',
+
+        // Settings Sidebar Final Keys
+        'Cài đặt chung hệ thống' => 'Cài đặt chung hệ thống',
+        'Cài đặt API và tích hợp' => 'Cài đặt API và tích hợp',
+        'Cài đặt SEO và tối ưu hóa' => 'Cài đặt SEO và tối ưu hóa',
+        'Cài đặt người dùng' => 'Cài đặt người dùng',
+        'Cài đặt diễn đàn' => 'Cài đặt diễn đàn',
+        'Cài đặt công ty' => 'Cài đặt công ty',
+        'Cài đặt liên hệ' => 'Cài đặt liên hệ',
+        'Cài đặt mạng xã hội' => 'Cài đặt mạng xã hội',
+        'Cài đặt bản quyền' => 'Cài đặt bản quyền',
+
+        // Forum Settings Final Key
+        'Người dùng phải xác thực email trước khi tham gia diễn đàn' => 'Người dùng phải xác thực email trước khi tham gia diễn đàn',
+
+        // Phase 3.6 - Final 39 Keys to Complete 100%
+
+        // User Settings Final Keys with Line Breaks
+        'Độ dài mật khẩu tối thiểu' => 'Độ dài mật khẩu tối thiểu',
+        'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt' => 'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt',
+        'Độ dài tên người dùng tối thiểu' => 'Độ dài tên người dùng tối thiểu',
+        'Người dùng có thể thay đổi tên người dùng sau khi đăng ký' => 'Người dùng có thể thay đổi tên người dùng sau khi đăng ký',
+        'Kích thước avatar tối đa (KB)' => 'Kích thước avatar tối đa (KB)',
+        'Loại file avatar được phép' => 'Loại file avatar được phép',
+
+        // Alerts Final Keys
+        'Xác nhận xóa bình luận' => 'Xác nhận xóa bình luận',
+        'Chưa có bình luận nào.' => 'Chưa có bình luận nào.',
+
+        // Threads Final Keys
+        'Xóa bài đăng' => 'Xóa bài đăng',
+        'Xác nhận duyệt bài đăng' => 'Xác nhận duyệt bài đăng',
+        'Bạn có chắc chắn muốn duyệt bài đăng này?' => 'Bạn có chắc chắn muốn duyệt bài đăng này?',
+        'Lý do này sẽ được gửi cho tác giả.' => 'Lý do này sẽ được gửi cho tác giả.',
+
+        // Users Final Keys
+        'Thông tin thành viên mới' => 'Thông tin thành viên mới',
+        'Mật khẩu phải có ít nhất 8 ký tự.' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+        'Thông tin thành viên' => 'Thông tin thành viên',
+        'Bài viết' => 'Bài viết',
+        'Quản lý Multiple Roles' => 'Quản lý Multiple Roles',
+        'Email đã xác thực' => 'Email đã xác thực',
+        'Đã xác thực' => 'Đã xác thực',
+        'Chưa xác thực' => 'Chưa xác thực',
+        'Thông tin cấm' => 'Thông tin cấm',
+        'Thời gian:' => 'Thời gian:',
+        'Lý do:' => 'Lý do:',
+        'Đặt lại mật khẩu' => 'Đặt lại mật khẩu',
+        'Chủ đề gần đây' => 'Chủ đề gần đây',
+        'Unknown Forum' => 'Unknown Forum',
+        'Chưa có chủ đề nào' => 'Chưa có chủ đề nào',
+        'Xem tất cả chủ đề' => 'Xem tất cả chủ đề',
+        'Bài viết gần đây' => 'Bài viết gần đây',
+        'Trả lời trong:' => 'Trả lời trong:',
+        'Chưa có bài viết nào' => 'Chưa có bài viết nào',
+        'Xem tất cả bài viết' => 'Xem tất cả bài viết',
+        'Xóa thành viên' => 'Xóa thành viên',
+        'Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.' => 'Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.',
+
+        // Categories Final Key
+        'Xem thông tin chi tiết chuyên mục' => 'Xem thông tin chi tiết chuyên mục',
+
+        // Settings Sidebar Final Keys
+        'Cài đặt chung' => 'Cài đặt chung',
+        'Cài đặt API' => 'Cài đặt API',
+
+        // Statistics Final Key
+        'Xác nhận xóa bình luận' => 'Xác nhận xóa bình luận',
+
+        // Final Remaining Keys
+        'Số thông báo tối đa/người dùng' => 'Số thông báo tối đa/người dùng',
+        'Thông báo hành động quản trị' => 'Thông báo hành động quản trị',
+        'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang web.' => 'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang web.',
+
+        // Phase 3.7 - Final 12 Keys to Complete 100%
+
+        // Final Keys with Line Breaks (exact matches)
+        'Người dùng phải xác thực email trước khi tham gia diễn đàn' => 'Người dùng phải xác thực email trước khi tham gia diễn đàn',
+        'Độ dài mật khẩu tối thiểu' => 'Độ dài mật khẩu tối thiểu',
+        'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt' => 'Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt',
+        'Độ dài tên người dùng tối thiểu' => 'Độ dài tên người dùng tối thiểu',
+        'Người dùng có thể thay đổi tên người dùng sau khi đăng ký' => 'Người dùng có thể thay đổi tên người dùng sau khi đăng ký',
+        'Kích thước avatar tối đa (KB)' => 'Kích thước avatar tối đa (KB)',
+        'Loại file avatar được phép' => 'Loại file avatar được phép',
+        'Trả lời trong:' => 'Trả lời trong:',
+
+        // Final Diễn đàn key (appears in 7 files)
+        'Diễn đàn' => 'Diễn đàn',
+
+        // Final notification keys with exact line break patterns
+        'Số thông báo tối đa/người\n                                    dùng' => 'Số thông báo tối đa/người\n                                    dùng',
+        'Thông báo hành động quản\n                                    trị' => 'Thông báo hành động quản\n                                    trị',
+        'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.' => 'Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.',
     ];
 }
 

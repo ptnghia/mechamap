@@ -49,7 +49,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label for="forum_id" class="form-label">{{ 'Diễn đàn' }}</label>
+                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
                     <select class="form-select" id="forum_id" name="forum_id">
                         <option value="">{{ 'Tất cả' }}</option>
                         @foreach($forums as $forum)
@@ -95,7 +95,7 @@
                             <th scope="col" width="60">{{ 'ID' }}</th>
                             <th scope="col">{{ 'Tiêu đề' }}</th>
                             <th scope="col" width="150">{{ 'Tác giả' }}</th>
-                            <th scope="col" width="150">{{ 'Diễn đàn' }}</th>
+                            <th scope="col" width="150">{{ __('Diễn đàn') }}</th>
                             <th scope="col" width="150">{{ 'Chuyên mục' }}</th>
                             <th scope="col" width="120">{{ 'Trạng thái' }}</th>
                             <th scope="col" width="150">{{ 'Ngày tạo' }}</th>

@@ -1,8 +1,8 @@
 {
-    "timestamp": "2025-07-25 05:03:37",
+    "timestamp": "2025-07-25 05:58:16",
     "summary": {
-        "files_with_keys": 14,
-        "total_remaining_keys": 78
+        "files_with_keys": 5,
+        "total_remaining_keys": 11
     },
     "keys": {
         "Số thông báo tối đa\/người\n                                    dùng": [
@@ -11,319 +11,45 @@
         "Thông báo hành động quản\n                                    trị": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\alerts\\index.blade.php"
         ],
-        "Diễn đàn": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\categories\\show.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\partials\\sidebar.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\create.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\edit.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php",
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
         "Người dùng phải xác thực email trước khi tham gia diễn\n                                    đàn": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\forum.blade.php"
         ],
         "Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\partials\\sidebar.blade.php"
         ],
-        "Người dùng có thể đăng nhập bằng Facebook, Google": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Vai trò được gán cho người dùng mới đăng ký": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Cấu hình mật khẩu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
         "Độ dài mật khẩu tối\n                                    thiểu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Số ký tự tối thiểu cho mật khẩu (6-30)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Yêu cầu mật khẩu mạnh": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
         "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc\n                                    biệt": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
-        "Cấu hình tên người dùng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
         "Độ dài tên người dùng\n                                    tối thiểu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Số ký tự tối thiểu cho tên người dùng (3-20)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Cho phép thay đổi tên người dùng": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
         "Người dùng có thể thay đổi tên người dùng sau khi đăng\n                                    ký": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
-        "Cấu hình avatar": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
         "Kích thước avatar tối đa\n                                    (KB)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Kích thước tối đa của file avatar (100-5120 KB)": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
         "Loại file avatar được\n                                    phép": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
         ],
-        "Các phần mở rộng file được phép cho avatar": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Cấu hình hồ sơ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Cho phép tùy chỉnh hồ sơ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Người dùng có thể tùy chỉnh thông tin hồ sơ cá nhân": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Độ dài chữ ký tối đa": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Số ký tự tối đa cho chữ ký (0-1000, 0 = không cho phép)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Độ dài giới thiệu tối đa": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Số ký tự tối đa cho phần giới thiệu (0-5000)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\settings\\user.blade.php"
-        ],
-        "Tổng số người dùng đã đăng ký": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Tổng số bài đăng đã tạo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Tổng số bình luận đã đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Tổng số diễn đàn đã tạo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Thống kê theo thời gian (12 tháng gần nhất)": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Phân bố nội dung": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Loại": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Thời gian": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Bài đăng mới đã được tạo": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Người dùng A": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Bình luận mới đã được đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Người dùng B": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Đăng ký": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Người dùng mới đã đăng ký": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Người dùng C": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\statistics\\index.blade.php"
-        ],
-        "Tạo bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\create.blade.php"
-        ],
-        "Chỉnh sửa bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\edit.blade.php"
-        ],
-        "Không có bài đăng nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\index.blade.php"
-        ],
-        "Đã khóa": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Bình thường": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Số bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Xác nhận xóa bình luận": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Chưa có bình luận nào.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Xóa bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Xác nhận duyệt bài đăng": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Bạn có chắc chắn muốn duyệt bài đăng này?": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Lý do này sẽ được gửi cho tác giả.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\threads\\show.blade.php"
-        ],
-        "Thông tin thành viên mới": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\create.blade.php"
-        ],
-        "Mật khẩu phải có ít nhất 8 ký tự.": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\create.blade.php"
-        ],
-        "Thông tin thành viên": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\edit.blade.php"
-        ],
-        "Bài viết": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\index.blade.php"
-        ],
-        "Quản lý Multiple Roles": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Email đã xác thực": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Đã xác thực": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Chưa xác thực": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Thông tin cấm": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Thời gian:": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Lý do:": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Đặt lại mật khẩu": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Chủ đề gần đây": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Unknown Forum": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Chưa có chủ đề nào": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Xem tất cả chủ đề": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Bài viết gần đây": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
         "Trả lời trong: ": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Chưa có bài viết nào": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Xem tất cả bài viết": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Xóa thành viên": [
-            "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
-        ],
-        "Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.": [
             "D:\\xampp\\htdocs\\laravel\\mechamap_backend\\scripts\/..\/resources\/views\/admin\\users\\show.blade.php"
         ]
     },
     "key_usage": {
-        "Diễn đàn": 7,
         "Số thông báo tối đa\/người\n                                    dùng": 1,
         "Thông báo hành động quản\n                                    trị": 1,
         "Người dùng phải xác thực email trước khi tham gia diễn\n                                    đàn": 1,
         "Cài đặt các thông tin cơ bản của trang web. Các thông tin này sẽ được sử dụng ở nhiều nơi trên trang\n            web.": 1,
-        "Người dùng có thể đăng nhập bằng Facebook, Google": 1,
-        "Vai trò được gán cho người dùng mới đăng ký": 1,
-        "Cấu hình mật khẩu": 1,
         "Độ dài mật khẩu tối\n                                    thiểu": 1,
-        "Số ký tự tối thiểu cho mật khẩu (6-30)": 1,
-        "Yêu cầu mật khẩu mạnh": 1,
         "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc\n                                    biệt": 1,
-        "Cấu hình tên người dùng": 1,
         "Độ dài tên người dùng\n                                    tối thiểu": 1,
-        "Số ký tự tối thiểu cho tên người dùng (3-20)": 1,
-        "Cho phép thay đổi tên người dùng": 1,
         "Người dùng có thể thay đổi tên người dùng sau khi đăng\n                                    ký": 1,
-        "Cấu hình avatar": 1,
         "Kích thước avatar tối đa\n                                    (KB)": 1,
-        "Kích thước tối đa của file avatar (100-5120 KB)": 1,
         "Loại file avatar được\n                                    phép": 1,
-        "Các phần mở rộng file được phép cho avatar": 1,
-        "Cấu hình hồ sơ": 1,
-        "Cho phép tùy chỉnh hồ sơ": 1,
-        "Người dùng có thể tùy chỉnh thông tin hồ sơ cá nhân": 1,
-        "Độ dài chữ ký tối đa": 1,
-        "Số ký tự tối đa cho chữ ký (0-1000, 0 = không cho phép)": 1,
-        "Độ dài giới thiệu tối đa": 1,
-        "Số ký tự tối đa cho phần giới thiệu (0-5000)": 1,
-        "Tổng số người dùng đã đăng ký": 1,
-        "Tổng số bài đăng đã tạo": 1,
-        "Tổng số bình luận đã đăng": 1,
-        "Tổng số diễn đàn đã tạo": 1,
-        "Thống kê theo thời gian (12 tháng gần nhất)": 1,
-        "Phân bố nội dung": 1,
-        "Loại": 1,
-        "Thời gian": 1,
-        "Bài đăng mới đã được tạo": 1,
-        "Người dùng A": 1,
-        "Bình luận mới đã được đăng": 1,
-        "Người dùng B": 1,
-        "Đăng ký": 1,
-        "Người dùng mới đã đăng ký": 1,
-        "Người dùng C": 1,
-        "Tạo bài đăng": 1,
-        "Chỉnh sửa bài đăng": 1,
-        "Không có bài đăng nào.": 1,
-        "Đã khóa": 1,
-        "Bình thường": 1,
-        "Số bình luận": 1,
-        "Xác nhận xóa bình luận": 1,
-        "Chưa có bình luận nào.": 1,
-        "Xóa bài đăng": 1,
-        "Xác nhận duyệt bài đăng": 1,
-        "Bạn có chắc chắn muốn duyệt bài đăng này?": 1,
-        "Lý do này sẽ được gửi cho tác giả.": 1,
-        "Thông tin thành viên mới": 1,
-        "Mật khẩu phải có ít nhất 8 ký tự.": 1,
-        "Thông tin thành viên": 1,
-        "Bài viết": 1,
-        "Quản lý Multiple Roles": 1,
-        "Email đã xác thực": 1,
-        "Đã xác thực": 1,
-        "Chưa xác thực": 1,
-        "Thông tin cấm": 1,
-        "Thời gian:": 1,
-        "Lý do:": 1,
-        "Đặt lại mật khẩu": 1,
-        "Chủ đề gần đây": 1,
-        "Unknown Forum": 1,
-        "Chưa có chủ đề nào": 1,
-        "Xem tất cả chủ đề": 1,
-        "Bài viết gần đây": 1,
-        "Trả lời trong: ": 1,
-        "Chưa có bài viết nào": 1,
-        "Xem tất cả bài viết": 1,
-        "Xóa thành viên": 1,
-        "Cảnh báo: Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến thành viên này sẽ bị xóa vĩnh viễn.": 1
+        "Trả lời trong: ": 1
     }
 }

@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title mb-0">{{ __('Chỉnh sửa bài đăng') }}</h5>
+            <h5 class="card-title mb-0">{{ 'Chỉnh sửa bài đăng' }}</h5>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.threads.update', $thread) }}" method="POST">
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="forum_id" class="form-label">{{ __('Diễn đàn') }}</label>
+                    <label for="forum_id" class="form-label">{{ 'Diễn đàn' }}</label>
                     <select class="form-select @error('forum_id') is-invalid @enderror" id="forum_id" name="forum_id" required>
                         <option value="">{{ 'Chọn diễn đàn' }}</option>
                         @foreach($forums as $forum)
