@@ -31,7 +31,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
     <div class="container">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-8 col-xl-8">
-                <div class="wizard-card shadow-lg">
+                <div class="wizard-card shadow-lg wizard_auth">
                     {{-- Wizard Header --}}
                     <div class="wizard-header">
                         <div class="container-fluid">
@@ -54,7 +54,7 @@ Reusable wizard component với progress indicator, step navigation, và respons
                             </div>
 
                             {{-- Progress Bar --}}
-                            <div class="progress-container mt-3">
+                            <div class="progress-container">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
                                         role="progressbar"
@@ -150,8 +150,14 @@ Reusable wizard component với progress indicator, step navigation, và respons
                                                 class="btn btn-primary btn-wizard-next"
                                                 id="wizardNextBtn"
                                                 {{ $nextButtonDisabled ? 'disabled' : '' }}>
-                                            {{ $nextButtonText }}
-                                            <i class="fas fa-arrow-right ms-2"></i>
+                                            <span class="btn-text">
+                                                {{ $nextButtonText }}
+                                                <i class="fas fa-arrow-right ms-2"></i>
+                                            </span>
+                                            <span class="btn-loading d-none">
+                                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                {{ __('ui.common.processing') }}...
+                                            </span>
                                         </button>
                                     @endif
                                 </div>
@@ -236,6 +242,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initial check
         updateNextButtonState();
+
+        // Handle form submission with loading state
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                return;
+            }
+
+            // Show loading state
+            const btnText = nextBtn.querySelector('.btn-text');
+            const btnLoading = nextBtn.querySelector('.btn-loading');
+
+            if (btnText && btnLoading) {
+                btnText.classList.add('d-none');
+                btnLoading.classList.remove('d-none');
+                nextBtn.disabled = true;
+            }
+
+            // Prevent double submission
+            nextBtn.style.pointerEvents = 'none';
+        });
     }
 });
 </script>

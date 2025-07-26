@@ -1,6 +1,14 @@
 /**
  * 🧙‍♂️ Registration Wizard JavaScript
  * Handles multi-step registration form interactions, validation, and auto-save
+ *
+ * Dependencies:
+ * - Requires app.js for global utilities (window.http, window.validation)
+ * - Uses Bootstrap 5 for UI components
+ * - Integrates with Laravel CSRF protection
+ *
+ * Note: This script takes precedence over global form validation
+ * for registration wizard forms to provide specialized functionality.
  */
 
 class RegistrationWizard {
@@ -81,39 +89,56 @@ class RegistrationWizard {
         let score = 0;
         let feedback = [];
 
+        // Get translations for password strength
+        const translations = window.passwordStrengthTranslations || {
+            // English fallback
+            requirements: {
+                length: 'at least 8 characters',
+                uppercase: 'uppercase letter',
+                lowercase: 'lowercase letter',
+                number: 'number',
+                special: 'special character'
+            },
+            levels: {
+                weak: 'Weak - Need',
+                medium: 'Medium - Need',
+                strong: 'Strong - Good password'
+            }
+        };
+
         // Length check
         if (password.length >= 8) score += 25;
-        else feedback.push('ít nhất 8 ký tự');
+        else feedback.push(translations.requirements.length);
 
         // Uppercase check
         if (/[A-Z]/.test(password)) score += 25;
-        else feedback.push('chữ hoa');
+        else feedback.push(translations.requirements.uppercase);
 
         // Lowercase check
         if (/[a-z]/.test(password)) score += 25;
-        else feedback.push('chữ thường');
+        else feedback.push(translations.requirements.lowercase);
 
         // Number check
         if (/\d/.test(password)) score += 25;
-        else feedback.push('số');
+        else feedback.push(translations.requirements.number);
 
         // Special character check
         if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) score += 25;
-        else feedback.push('ký tự đặc biệt');
+        else feedback.push(translations.requirements.special);
 
         // Determine strength level
         let level, text, color;
         if (score < 50) {
             level = 'weak';
-            text = `Yếu - Cần: ${feedback.join(', ')}`;
+            text = `${translations.levels.weak}: ${feedback.join(', ')}`;
             color = 'danger';
-        } else if (score < 75) {
+        } else if (score < 100) {  // Changed from 75 to 100 - only perfect score is "strong"
             level = 'medium';
-            text = `Trung bình - Cần: ${feedback.join(', ')}`;
+            text = `${translations.levels.medium}: ${feedback.join(', ')}`;
             color = 'warning';
         } else {
             level = 'strong';
-            text = 'Mạnh - Mật khẩu tốt';
+            text = translations.levels.strong;
             color = 'success';
         }
 
@@ -217,6 +242,81 @@ class RegistrationWizard {
         businessNotice.style.display = isBusinessAccount ? 'block' : 'none';
     }
 
+    /**
+     * Enhanced email validation with domain checking
+     * Uses global validation utility as base, adds domain validation
+     * Supports both personal and business email domains
+     */
+    validateEmail(email) {
+        // Use global email validation first
+        if (window.validation && !window.validation.isEmail(email)) {
+            return {
+                valid: false,
+                message: 'Địa chỉ email không đúng định dạng.'
+            };
+        }
+
+        // Additional domain validation for registration
+        const domain = email.split('@')[1]?.toLowerCase();
+
+        // Check for suspicious patterns (but allow business domains)
+        const suspiciousPatterns = [
+            /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/, // IP addresses
+            /\.test$/, /\.local$/, /\.localhost$/, // Test domains
+            /example\.(com|org|net)$/, // Example domains
+            /^[a-z]\.com$/, // Single letter domains
+            /\.(tk|ml|ga|cf)$/ // Free domains often used for spam
+        ];
+
+        const isSuspicious = suspiciousPatterns.some(pattern => pattern.test(domain));
+
+        if (isSuspicious) {
+            return {
+                valid: false,
+                message: 'Vui lòng sử dụng địa chỉ email hợp lệ. Tránh sử dụng email tạm thời hoặc không uy tín.'
+            };
+        }
+
+        // Check if domain has proper format
+        const hasValidFormat = domain && domain.includes('.') && domain.length > 3;
+
+        if (!hasValidFormat) {
+            return {
+                valid: false,
+                message: 'Tên miền email không hợp lệ.'
+            };
+        }
+
+        // Check account type to provide appropriate guidance
+        const accountType = this.getSelectedAccountType();
+        const isBusinessAccount = ['manufacturer', 'supplier', 'brand'].includes(accountType);
+
+        // For business accounts, provide helpful guidance
+        if (isBusinessAccount) {
+            const commonPersonalDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'];
+            if (commonPersonalDomains.includes(domain)) {
+                return {
+                    valid: true,
+                    message: 'Email hợp lệ. Lưu ý: Bạn có thể sử dụng email công ty để tăng độ tin cậy.',
+                    warning: true
+                };
+            }
+        }
+
+        return {
+            valid: true,
+            message: 'Email hợp lệ'
+        };
+    }
+
+    /**
+     * Get currently selected account type
+     */
+    getSelectedAccountType() {
+        const selectedInput = document.querySelector('input[name="account_type"]:checked');
+        return selectedInput ? selectedInput.value : 'member';
+    }
+
     initializeAutoSave() {
         if (!this.options.autoSave) return;
 
@@ -241,6 +341,9 @@ class RegistrationWizard {
 
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
+
+        // Remove password_confirmation from auto-save data to prevent server-side validation conflicts
+        delete data.password_confirmation;
 
         try {
             const response = await fetch('/register/wizard/save-progress', {
@@ -305,6 +408,24 @@ class RegistrationWizard {
 
         if (!fieldName || !fieldValue) return;
 
+        // Skip server-side validation for password_confirmation - handle it client-side only
+        if (fieldName === 'password_confirmation') {
+            this.validatePasswordConfirmation();
+            return;
+        }
+
+        // Handle client-side email validation first
+        if (fieldName === 'email') {
+            const emailValidation = this.validateEmail(fieldValue);
+            if (!emailValidation.valid) {
+                this.updateFieldValidation(field, false, emailValidation.message);
+                return;
+            } else if (emailValidation.warning) {
+                this.updateFieldValidation(field, true, emailValidation.message, true);
+                // Continue to server-side validation for uniqueness check
+            }
+        }
+
         // Clear previous timer
         if (this.validationTimers[fieldName]) {
             clearTimeout(this.validationTimers[fieldName]);
@@ -334,28 +455,58 @@ class RegistrationWizard {
         }, this.options.validationDelay);
     }
 
-    updateFieldValidation(field, isValid, message) {
-        const errorDiv = document.getElementById(`${field.name}-error`);
-        const successDiv = document.getElementById(`${field.name}-success`);
+    updateFieldValidation(field, isValid, message, isWarning = false) {
+        // Handle special naming for password_confirmation field
+        let fieldName = field.name;
+        if (fieldName === 'password_confirmation') {
+            fieldName = 'password-confirmation';
+        }
+
+        const errorDiv = document.getElementById(`${fieldName}-error`);
+        const successDiv = document.getElementById(`${fieldName}-success`);
 
         if (isValid) {
             field.classList.remove('is-invalid');
             field.classList.add('is-valid');
+
+            // Hide error message
             if (errorDiv) {
                 errorDiv.textContent = '';
                 errorDiv.style.display = 'none';
+                errorDiv.classList.remove('text-warning');
             }
+
+            // Handle success/warning messages
             if (successDiv) {
-                successDiv.textContent = message;
-                successDiv.style.display = 'block';
+                if (field.name === 'password_confirmation' || isWarning) {
+                    successDiv.textContent = message;
+                    successDiv.style.display = 'block';
+
+                    // Apply warning styling if needed
+                    if (isWarning) {
+                        successDiv.classList.remove('text-success');
+                        successDiv.classList.add('text-warning');
+                    } else {
+                        successDiv.classList.remove('text-warning');
+                        successDiv.classList.add('text-success');
+                    }
+                } else {
+                    // For other fields, hide success message - only show visual validation via is-valid class
+                    successDiv.textContent = '';
+                    successDiv.style.display = 'none';
+                    successDiv.classList.remove('text-warning', 'text-success');
+                }
             }
         } else {
             field.classList.remove('is-valid');
             field.classList.add('is-invalid');
+
+            // Show error message
             if (errorDiv) {
                 errorDiv.textContent = message;
                 errorDiv.style.display = 'block';
             }
+            // Hide success message
             if (successDiv) {
                 successDiv.textContent = '';
                 successDiv.style.display = 'none';
@@ -366,38 +517,71 @@ class RegistrationWizard {
     handleFieldInput(e) {
         const field = e.target;
 
-        // Remove validation classes on input to allow re-validation
+        // Special handling for password confirmation - don't clear validation classes immediately
+        if (field.name === 'password_confirmation') {
+            // Delay validation to allow smooth typing
+            setTimeout(() => this.validatePasswordConfirmation(), 300);
+            return;
+        }
+
+        // Special handling for password field - also validate confirmation
+        if (field.name === 'password') {
+            const confirmationField = document.getElementById('password_confirmation');
+            if (confirmationField) {
+                // Always validate confirmation when password changes, even if confirmation is empty
+                setTimeout(() => this.validatePasswordConfirmation(), 300);
+            }
+        }
+
+        // For other fields, remove validation classes on input to allow re-validation
         field.classList.remove('is-valid', 'is-invalid');
 
         // Hide validation messages when user starts typing
-        const errorDiv = document.getElementById(`${field.name}-error`);
-        const successDiv = document.getElementById(`${field.name}-success`);
+        // Handle special naming for password_confirmation field
+        let fieldName = field.name;
+        if (fieldName === 'password_confirmation') {
+            fieldName = 'password-confirmation';
+        }
+
+        const errorDiv = document.getElementById(`${fieldName}-error`);
+        const successDiv = document.getElementById(`${fieldName}-success`);
 
         if (errorDiv) errorDiv.style.display = 'none';
         if (successDiv) successDiv.style.display = 'none';
-
-        // Special handling for password confirmation
-        if (field.name === 'password_confirmation') {
-            this.validatePasswordConfirmation();
-        }
-
-        // Special handling for password field - also clear confirmation validation
-        if (field.name === 'password') {
-            const confirmationField = document.getElementById('password_confirmation');
-            if (confirmationField && confirmationField.value) {
-                setTimeout(() => this.validatePasswordConfirmation(), 100);
-            }
-        }
     }
 
     validatePasswordConfirmation() {
         const password = document.getElementById('password');
         const confirmation = document.getElementById('password_confirmation');
 
-        if (!password || !confirmation || !confirmation.value) return;
+        if (!password || !confirmation) return;
+
+        // Only validate if confirmation field has content
+        if (!confirmation.value) {
+            // Clear validation when field is empty
+            confirmation.classList.remove('is-valid', 'is-invalid');
+            const errorDiv = document.getElementById('password-confirmation-error');
+            const successDiv = document.getElementById('password-confirmation-success');
+            if (errorDiv) {
+                errorDiv.textContent = '';
+                errorDiv.style.display = 'none';
+            }
+            if (successDiv) {
+                successDiv.textContent = '';
+                successDiv.style.display = 'none';
+            }
+            return;
+        }
 
         const isMatch = password.value === confirmation.value && confirmation.value.length > 0;
-        const message = isMatch ? 'Mật khẩu khớp' : 'Mật khẩu không khớp';
+
+        // Use translations if available, fallback to English
+        const translations = window.authTranslations || {
+            passwordMatch: 'Passwords match',
+            passwordMismatch: 'Passwords do not match'
+        };
+
+        const message = isMatch ? translations.passwordMatch : translations.passwordMismatch;
 
         this.updateFieldValidation(confirmation, isMatch, message);
     }
@@ -441,13 +625,27 @@ class RegistrationWizard {
 // Initialize wizard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on a wizard page
-    if (document.querySelector('.registration-wizard-container')) {
+    if (document.querySelector('.wizard-card')) {
+        // Avoid conflicts with other form validation systems
+        if (window.registrationWizard) {
+            console.warn('Registration wizard already initialized');
+            return;
+        }
+
+        // Disable global form validation for wizard forms
+        const wizardForms = document.querySelectorAll('.wizard-card form');
+        wizardForms.forEach(form => {
+            form.removeAttribute('data-validate');
+        });
+
         window.registrationWizard = new RegistrationWizard({
             autoSave: true,
             autoSaveInterval: 30000,
             validationDelay: 500,
             sessionTimeout: 1800000
         });
+
+        console.log('Registration wizard initialized');
     }
 });
 

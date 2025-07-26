@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 /**
@@ -63,9 +64,16 @@ class RegisterWizardController extends Controller
      */
     public function processStep1(BasicRegistrationRequest $request): RedirectResponse|JsonResponse
     {
+        \Log::info('Processing step 1', [
+            'request_data' => $request->all(),
+            'session_id' => Session::getId(),
+            'wizard_session' => Session::get('registration_wizard_session')
+        ]);
+
         $sessionId = Session::get('registration_wizard_session');
 
         if (!$sessionId) {
+            \Log::warning('No wizard session found, handling session error');
             return $this->handleSessionError($request);
         }
 
@@ -283,32 +291,45 @@ class RegisterWizardController extends Controller
      */
     public function validateField(Request $request): JsonResponse
     {
-        $field = $request->input('field');
-        $value = $request->input('value');
-        $step = $request->input('step', 1);
+        try {
+            $field = $request->input('field');
+            $value = $request->input('value');
+            $step = $request->input('step', 1);
 
-        $rules = $this->getFieldValidationRules($field, $step);
+            $rules = $this->getFieldValidationRules($field, $step);
 
-        if (!$rules) {
+            if (!$rules) {
+                return response()->json([
+                    'valid' => false,
+                    'message' => 'Trường không hợp lệ.'
+                ]);
+            }
+
+            $validator = \Validator::make([$field => $value], [$field => $rules]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'valid' => false,
+                    'message' => $validator->errors()->first($field)
+                ]);
+            }
+
+            return response()->json([
+                'valid' => true,
+                'message' => 'Hợp lệ'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Field validation error', [
+                'field' => $request->input('field'),
+                'value' => $request->input('value'),
+                'error' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'valid' => false,
-                'message' => 'Trường không hợp lệ.'
-            ]);
+                'message' => 'Lỗi xác thực trường.'
+            ], 500);
         }
-
-        $validator = \Validator::make([$field => $value], [$field => $rules]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'valid' => false,
-                'message' => $validator->errors()->first($field)
-            ]);
-        }
-
-        return response()->json([
-            'valid' => true,
-            'message' => 'Hợp lệ'
-        ]);
     }
 
     /**
@@ -423,9 +444,9 @@ class RegisterWizardController extends Controller
     protected function getFieldValidationRules(string $field, int $step): array|null
     {
         $step1Rules = [
-            'name' => ['required', 'string', 'max:255', 'min:2'],
-            'username' => ['required', 'string', 'max:255', 'min:3', 'unique:users,username', 'alpha_dash'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'name' => ['required', 'string', 'max:255', 'min:2', 'regex:/^[\p{L}\s\-\.\']+$/u'],
+            'username' => ['required', 'string', 'max:255', 'min:3', 'unique:users,username', 'alpha_dash', 'not_in:admin,root,api,www,test,null,undefined,system,support,help,info,contact,about,home,index,main,default'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8'],
             'account_type' => ['required', 'string', 'in:member,guest,manufacturer,supplier,brand']
         ];

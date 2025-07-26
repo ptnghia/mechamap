@@ -140,22 +140,23 @@
                 </label>
                 <div class="business-categories">
                     @php
-                        $categories = __('auth.register.business_categories');
+                        $categories = \App\Models\BusinessCategory::active()->ordered()->get();
                         $selectedCategories = old('business_categories', $sessionData['business_categories'] ?? []);
                     @endphp
 
                     <div class="row">
-                        @foreach($categories as $value => $label)
+                        @foreach($categories as $category)
                             <div class="col-md-4 col-sm-6 mb-2">
                                 <div class="form-check">
                                     <input class="form-check-input"
                                            type="checkbox"
                                            name="business_categories[]"
-                                           id="category_{{ $value }}"
-                                           value="{{ $value }}"
-                                           {{ in_array($value, $selectedCategories) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="category_{{ $value }}">
-                                        {{ $label }}
+                                           id="category_{{ $category->key }}"
+                                           value="{{ $category->key }}"
+                                           {{ in_array($category->key, $selectedCategories) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="category_{{ $category->key }}">
+                                        <i class="{{ $category->icon }}" style="color: {{ $category->color }}"></i>
+                                        {{ $category->name }}
                                     </label>
                                 </div>
                             </div>

@@ -207,4 +207,16 @@ return [
     'confirm_password_placeholder' => 'Re-enter your password',
     'account_type_label' => 'Account Type',
 
+    // Password strength
+    'password_strength' => [
+        'length' => 'at least 8 characters',
+        'uppercase' => 'uppercase letter',
+        'lowercase' => 'lowercase letter',
+        'number' => 'number',
+        'special' => 'special character',
+        'weak' => 'Weak - Need',
+        'medium' => 'Medium - Need',
+        'strong' => 'Strong - Good password',
+    ],
+
 ];

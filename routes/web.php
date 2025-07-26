@@ -27,6 +27,11 @@ use App\Http\Controllers\Frontend\BusinessRegistrationController;
 use App\Http\Controllers\AvatarController;
 use Illuminate\Support\Facades\Route;
 
+// Include test email routes (development only)
+if (app()->environment(['local', 'development'])) {
+    require __DIR__.'/test-email.php';
+}
+
 // Test route để debug - REMOVED (should only be in development)
 
 

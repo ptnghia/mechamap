@@ -349,9 +349,6 @@
         });
     </script>
 
-    <!-- Auth Modal Script -->
-    <script src="{{ asset_versioned('js/auth-modal.js') }}"></script>
-
     <!-- Search Script - Disabled, using unified header search -->
     {{-- <script src="{{ asset('js/search.js') }}"></script> --}}
 

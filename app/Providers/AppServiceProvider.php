@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Verified;
+use App\Listeners\SendWelcomeEmail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,6 +49,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Register localization Blade directives
         $this->registerLocalizationBladeDirectives();
+
+        // Register event listeners
+        $this->registerEventListeners();
     }
 
     /**
@@ -156,5 +162,14 @@ class AppServiceProvider extends ServiceProvider
                 \Illuminate\Http\Request::HEADER_X_FORWARDED_AWS_ELB
             );
         }
+    }
+
+    /**
+     * Register event listeners
+     */
+    private function registerEventListeners(): void
+    {
+        // Send welcome email after email verification
+        Event::listen(Verified::class, SendWelcomeEmail::class);
     }
 }

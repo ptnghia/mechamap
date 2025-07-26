@@ -37,39 +37,9 @@ return [
         'view_full_showcase' => 'Xem showcase đầy đủ',
     ],
 
-    'actions.apply_filters' => [
-    ],
-
-    'actions.cancel' => [
-    ],
-
-    'actions.clear_filters' => [
-    ],
-
-    'actions.search' => [
-    ],
-
-    'actions.sort' => [
-    ],
-
-    'actions.view_details' => [
-    ],
-
-    'actions.view_full_showcase' => [
-    ],
-
     'auth' => [
         'login_to_view_notifications' => 'Đăng nhập để xem thông báo',
         'register_mechamap_account' => 'Đăng ký tài khoản MechaMap',
-    ],
-
-    'auth.login_to_view_notifications' => [
-    ],
-
-    'auth/login_to_view_notifications' => [
-    ],
-
-    'auth/register_mechamap_account' => [
     ],
 
     'buttons' => [
@@ -179,6 +149,7 @@ return [
         'popular' => 'Phổ biến',
         'previous' => 'Trước',
         'print' => 'In',
+        'processing' => 'Đang xử lý',
         'publish' => 'Xuất bản',
         'quote' => 'Trích dẫn',
         'rate' => 'Đánh giá',
@@ -230,34 +201,6 @@ return [
         'yes' => 'Có',
     ],
 
-    'common.auto_saving' => [
-    ],
-
-    'common.dark_mode' => [
-    ],
-
-    'common.error_occurred' => [
-    ],
-
-    'common.light_mode' => [
-    ],
-
-    'common.loading' => [
-    ],
-
-    'common.no_results_found' => [
-    ],
-
-    'common.popular_searches' => [
-    ],
-
-    'community' => [
-        'browse_categories' => 'Duyệt danh mục',
-    ],
-
-    'community.browse_categories' => [
-    ],
-
     'forms' => [
         'enter_message_placeholder' => 'Nhập tin nhắn...',
         'search_conversations_placeholder' => 'Tìm kiếm cuộc trò chuyện...',
@@ -265,43 +208,10 @@ return [
         'search_placeholder' => 'Tìm kiếm...',
     ],
 
-    'forms.enter_message_placeholder' => [
-    ],
-
-    'forms.search_conversations_placeholder' => [
-    ],
-
-    'forms.search_members_placeholder' => [
-    ],
-
-    'get_started' => [
-    ],
-
-    'language.auto_detected' => [
-    ],
-
-    'language.switch_failed' => [
-    ],
-
-    'language.switched_successfully' => [
-    ],
-
     'navigation' => [
         'discussions' => 'Thảo luận',
         'members' => 'Thành viên',
         'products' => 'Sản phẩm',
-    ],
-
-    'no_information_provided' => [
-    ],
-
-    'no_media_to_display' => [
-    ],
-
-    'no_posts_found_matching_criteria' => [
-    ],
-
-    'no_recent_activity' => [
     ],
 
     'pagination' => [
@@ -316,22 +226,12 @@ return [
         'showing' => 'Hiển thị',
         'to' => 'đến',
     ],
-
-
-
-    'pagination_navigation' => [
-    ],
-
     'search' => [
         'advanced_search' => 'Tìm kiếm nâng cao',
         'error_message' => 'Search failed. Please try again.',
         'placeholder' => 'Search products, forums, members...',
         'view_all_results' => 'View all results',
     ],
-
-    'search.advanced_search' => [
-    ],
-
     'status' => [
         'active' => 'Hoạt động',
         'inactive' => 'Không hoạt động',
@@ -342,23 +242,10 @@ return [
         'sticky' => 'Ghim',
     ],
 
-    'status.locked' => [
-    ],
-
-    'status.sticky' => [
-    ],
-
     'theme' => [
         'dark_mode' => 'Dark Mode',
         'light_mode' => 'Light Mode',
     ],
-
-    'ui.menu.close' => [
-    ],
-
-    'ui.menu.toggle' => [
-    ],
-
     // Layout specific
     'layout' => [
         'meta_author' => 'MechaMap Team',

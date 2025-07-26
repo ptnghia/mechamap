@@ -458,7 +458,8 @@
     color: #333333;
     background-color: #fff;
     outline: 0;
-    box-shadow: 0 0 0 .25rem rgb(126 119 87 / 22%)
+    box-shadow: 0 0 0 .25rem rgb(126 119 87 / 22%);
+    border: 1px solid var(--bs-primary) !important;
 }
 
 .form-control::placeholder {
@@ -504,7 +505,7 @@
 
 .form-label {
     margin-bottom: .3rem;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: #333333;
     font-family: "Roboto Condensed",sans-serif
@@ -545,14 +546,14 @@
 }
 
 .form-check-input:checked {
-    background-color: #3366CC;
-    border-color: #3366CC
+    border-color: var(--bs-primary);
+    background-color: var(--bs-primary) !IMPORTANT;
 }
 
 .form-check-input:focus {
-    border-color: #3366CC;
+    border-color: var(--bs-primary) !important;
     outline: 0;
-    box-shadow: 0 0 0 .2rem rgba(51,102,204,0.25)
+    /* box-shadow: 0 0 0 .2rem rgba(51,102,204,0.25) !important; */
 }
 
 .form-check-label {
@@ -903,7 +904,6 @@
     box-shadow: var(--shadow-medium);
     overflow: hidden
 }
-
 .form-step {
     display: none;
     opacity: 0;
@@ -1024,7 +1024,6 @@
     color: #6c757d;
     text-align: center;
     font-weight: 500;
-    transition: var(--transition);
     max-width: 120px
 }
 
@@ -1045,7 +1044,6 @@
     margin-bottom: 2rem;
     box-shadow: var(--shadow-medium)
 }
-
 .card {
     position: relative;
     display: flex;
@@ -1822,7 +1820,6 @@
 
 .progress-container {
     background: white;
-    border-radius: var(--border-radius);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: var(--shadow-light)
@@ -5802,7 +5799,7 @@ a {
 
 .bg-primary{background-color: var(--bs-primary) !important;}
 .btn-atc-input{border: none;width: 60px;background-color: transparent !important;box-shadow: none !important;outline: none !important;bottom: 0;}
-.form-group-icon{position: relative;}
+.form-group-icon{position: relative;margin-bottom: 3px;}
 .form-group-icon .input_icon{position: absolute;left: 15px;top: 50% !important;transform: translateY(-50%) !important;color: #999999;font-size: 16px;}
 .form-group-icon .form-control {padding-left: 40px;}
 .form-group-icon .btn-atc-input{

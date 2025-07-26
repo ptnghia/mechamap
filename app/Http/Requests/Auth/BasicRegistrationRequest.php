@@ -47,8 +47,7 @@ class BasicRegistrationRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                'lowercase',
-                'email:rfc,dns',
+                'email',
                 'max:255',
                 'unique:users,email'
             ],
@@ -60,13 +59,11 @@ class BasicRegistrationRequest extends FormRequest
                     ->letters()
                     ->mixedCase()
                     ->numbers()
-                    ->symbols()
-                    ->uncompromised()
             ],
             'account_type' => [
                 'required',
                 'string',
-                'in:member,verified_partner,manufacturer,supplier,brand'
+                'in:member,guest,manufacturer,supplier,brand'
             ],
             'terms' => [
                 'required',
@@ -91,23 +88,21 @@ class BasicRegistrationRequest extends FormRequest
             'username.required' => 'Vui lòng nhập tên đăng nhập.',
             'username.min' => 'Tên đăng nhập phải có ít nhất 3 ký tự.',
             'username.max' => 'Tên đăng nhập không được vượt quá 255 ký tự.',
-            'username.unique' => 'Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.',
-            'username.alpha_dash' => 'Tên đăng nhập chỉ được chứa chữ cái, số, dấu gạch ngang và dấu gạch dưới.',
-            'username.not_in' => 'Tên đăng nhập này không được phép sử dụng.',
+            'username.unique' => 'Tên đăng nhập đã được sử dụng. Vui lòng chọn tên khác.',
+            'username.alpha_dash' => 'Tên đăng nhập chỉ được chứa chữ cái, số, dấu gạch ngang (-) và gạch dưới (_).',
+            'username.not_in' => 'Tên đăng nhập này không được phép sử dụng. Vui lòng chọn tên khác.',
 
             'email.required' => 'Vui lòng nhập địa chỉ email.',
-            'email.email' => 'Địa chỉ email không hợp lệ.',
-            'email.unique' => 'Email đã được sử dụng. Vui lòng sử dụng email khác.',
-            'email.max' => 'Email không được vượt quá 255 ký tự.',
+            'email.email' => 'Địa chỉ email không đúng định dạng. Vui lòng kiểm tra lại (ví dụ: user@example.com).',
+            'email.unique' => 'Địa chỉ email này đã được đăng ký. Vui lòng sử dụng email khác hoặc đăng nhập.',
+            'email.max' => 'Địa chỉ email không được vượt quá 255 ký tự.',
 
             'password.required' => 'Vui lòng nhập mật khẩu.',
-            'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp. Vui lòng nhập lại.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
             'password.mixed' => 'Mật khẩu phải chứa cả chữ hoa và chữ thường.',
             'password.letters' => 'Mật khẩu phải chứa ít nhất một chữ cái.',
             'password.numbers' => 'Mật khẩu phải chứa ít nhất một số.',
-            'password.symbols' => 'Mật khẩu phải chứa ít nhất một ký tự đặc biệt.',
-            'password.uncompromised' => 'Mật khẩu này đã bị rò rỉ trong các vụ hack. Vui lòng chọn mật khẩu khác.',
 
             'account_type.required' => 'Vui lòng chọn loại tài khoản.',
             'account_type.in' => 'Loại tài khoản không hợp lệ.',

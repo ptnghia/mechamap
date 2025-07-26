@@ -41,6 +41,7 @@ return [
     // Common UI elements
     'common' => [
         'loading' => 'Loading...',
+        'processing' => 'Processing',
         'auto_saving' => 'Auto saving...',
         'dark_mode' => 'Dark Mode',
         'light_mode' => 'Light Mode',

@@ -14,13 +14,12 @@
     form-id="step1Form"
     :session-data="$sessionData">
 
-    <form id="step1Form" method="POST" action="{{ route('register.wizard.step1') }}" novalidate>
+    <form id="step1Form" method="POST" action="{{ route('register.wizard.step1') }}">
         @csrf
-
         {{-- Section: Personal Information --}}
         <div class="form-section mb-4">
             <h3 class="section-title">
-                <i class="fas fa-user text-primary me-2"></i>
+                <i class="fa-regular fa-address-card text-primary"></i>
                 {{ __('auth.register.personal_info_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
@@ -31,17 +30,14 @@
                 {{-- Full Name --}}
                 <div class="col-md-6 mb-3">
                     <label for="name" class="form-label required">
-                        <i class="fas fa-user me-1"></i>
+
                         {{ __('auth.full_name_label') }}
                     </label>
-                    <input type="text"
-                           class="form-control @error('name') is-invalid @enderror"
-                           id="name"
-                           name="name"
-                           value="{{ old('name', $sessionData['name'] ?? '') }}"
-                           placeholder="{{ __('auth.full_name_placeholder') }}"
-                           required
-                           autocomplete="name">
+                    <div class="position-relative form-group-icon">
+                        <i class="fas fa-user input_icon"></i>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $sessionData['name'] ?? '') }}" placeholder="{{ __('auth.full_name_placeholder') }}" required  autocomplete="name">
+                    </div>
+
                     <div class="invalid-feedback" id="name-error">
                         @error('name'){{ $message }}@enderror
                     </div>
@@ -53,17 +49,12 @@
                 {{-- Username --}}
                 <div class="col-md-6 mb-3">
                     <label for="username" class="form-label required">
-                        <i class="fas fa-at me-1"></i>
                         {{ __('auth.username_label') }}
                     </label>
-                    <input type="text"
-                           class="form-control @error('username') is-invalid @enderror"
-                           id="username"
-                           name="username"
-                           value="{{ old('username', $sessionData['username'] ?? '') }}"
-                           placeholder="{{ __('auth.username_placeholder') }}"
-                           required
-                           autocomplete="username">
+                    <div class="position-relative form-group-icon">
+                        <i class="fas fa-at input_icon"></i>
+                        <input type="text" class="form-control @error('username') is-invalid @enderror" d="username" name="username" value="{{ old('username', $sessionData['username'] ?? '') }}" placeholder="{{ __('auth.username_placeholder') }}" required  autocomplete="username">
+                    </div>
                     <div class="invalid-feedback" id="username-error">
                         @error('username'){{ $message }}@enderror
                     </div>
@@ -79,17 +70,12 @@
             {{-- Email --}}
             <div class="mb-3">
                 <label for="email" class="form-label required">
-                    <i class="fas fa-envelope me-1"></i>
                     {{ __('auth.email_label') }}
                 </label>
-                <input type="email"
-                       class="form-control @error('email') is-invalid @enderror"
-                       id="email"
-                       name="email"
-                       value="{{ old('email', $sessionData['email'] ?? '') }}"
-                       placeholder="{{ __('auth.email_placeholder') }}"
-                       required
-                       autocomplete="email">
+                <div class="position-relative form-group-icon">
+                    <i class="fas fa-envelope input_icon"></i>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $sessionData['email'] ?? '') }}" placeholder="{{ __('auth.email_placeholder') }}"  required autocomplete="email">
+                </div>
                 <div class="invalid-feedback" id="email-error">
                     @error('email'){{ $message }}@enderror
                 </div>
@@ -105,25 +91,18 @@
                 {{-- Password --}}
                 <div class="col-md-6 mb-3">
                     <label for="password" class="form-label required">
-                        <i class="fas fa-lock me-1"></i>
                         {{ __('auth.password_label') }}
                     </label>
-                    <div class="input-group">
-                        <input type="password"
-                               class="form-control @error('password') is-invalid @enderror"
-                               id="password"
-                               name="password"
-                               placeholder="{{ __('auth.password_placeholder') }}"
-                               required
-                               autocomplete="new-password">
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <div class="position-relative form-group-icon">
+                        <i class="fas fa-lock input_icon"></i>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password"  placeholder="{{ __('auth.password_placeholder') }}" required autocomplete="new-password">
+                        <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted btn-atc-input" type="button" id="togglePassword">
                             <i class="fas fa-eye" id="togglePasswordIcon"></i>
                         </button>
+                    </div>
                         <div class="invalid-feedback" id="password-error">
                             @error('password'){{ $message }}@enderror
                         </div>
-                    </div>
-
                     {{-- Password Strength Indicator --}}
                     <div class="password-strength mt-2" id="passwordStrength" style="display: none;">
                         <div class="strength-bar">
@@ -140,16 +119,15 @@
                 {{-- Confirm Password --}}
                 <div class="col-md-6 mb-3">
                     <label for="password_confirmation" class="form-label required">
-                        <i class="fas fa-lock me-1"></i>
                         {{ __('auth.confirm_password_label') }}
                     </label>
-                    <input type="password"
-                           class="form-control @error('password_confirmation') is-invalid @enderror"
-                           id="password_confirmation"
-                           name="password_confirmation"
-                           placeholder="{{ __('auth.confirm_password_placeholder') }}"
-                           required
-                           autocomplete="new-password">
+                    <div class="position-relative form-group-icon">
+                        <i class="fas fa-lock input_icon"></i>
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation" placeholder="{{ __('auth.confirm_password_placeholder') }}" required autocomplete="new-password">
+                        <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted btn-atc-input" type="button" id="togglePasswordConfirmation">
+                            <i class="fas fa-eye" id="togglePasswordConfirmationIcon"></i>
+                        </button>
+                    </div>
                     <div class="invalid-feedback" id="password-confirmation-error">
                         @error('password_confirmation'){{ $message }}@enderror
                     </div>
@@ -163,7 +141,7 @@
         {{-- Section: Account Type --}}
         <div class="form-section mb-4">
             <h3 class="section-title">
-                <i class="fas fa-user-tag text-primary me-2"></i>
+                <i class="fas fa-user-tag text-primary"></i>
                 {{ __('auth.register.account_type_title') }}
             </h3>
             <p class="section-description text-muted mb-4">
@@ -174,7 +152,7 @@
             <div class="account-type-group mb-3" data-group="community">
                 <div class="account-type-header">
                     <h4 class="account-group-title">
-                        <i class="fas fa-users text-warning me-2"></i>
+                        <i class="fas fa-users text-warning"></i>
                         {{ __('auth.register.community_member_title') }}
                     </h4>
                     <p class="account-group-description">
@@ -183,18 +161,12 @@
                 </div>
 
                 <div class="account-options">
-                    <div class="account-option recommended">
+                    <div class="account-option">
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="account_type"
-                                   id="member"
-                                   value="member"
-                                   {{ old('account_type', $sessionData['account_type'] ?? '') == 'member' ? 'checked' : '' }}
-                                   required>
+                            <input class="form-check-input" type="radio" name="account_type" id="member"  value="member" {{ old('account_type', $sessionData['account_type'] ?? 'member') == 'member' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="member">
-                                <strong>{{ __('auth.register.member_role') }}</strong>
-                                <span class="badge bg-primary ms-2">{{ __('auth.register.recommended') }}</span>
+                                <strong>{{ __('auth.register.member_role') }}  <span class="badge bg-primary ms-2">{{ __('auth.register.recommended') }}</span></strong>
+
                                 <span class="account-description">
                                     {{ __('auth.register.member_role_desc') }}
                                 </span>
@@ -204,13 +176,7 @@
 
                     <div class="account-option">
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="account_type"
-                                   id="guest"
-                                   value="guest"
-                                   {{ old('account_type', $sessionData['account_type'] ?? '') == 'guest' ? 'checked' : '' }}
-                                   required>
+                            <input class="form-check-input" type="radio" name="account_type" id="guest"  value="guest" {{ old('account_type', $sessionData['account_type'] ?? '') == 'guest' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="guest">
                                 <strong>{{ __('auth.register.guest_role') }}</strong>
                                 <span class="account-description">
@@ -233,7 +199,7 @@
             <div class="account-type-group mb-3" data-group="business">
                 <div class="account-type-header">
                     <h4 class="account-group-title">
-                        <i class="fas fa-building text-primary me-2"></i>
+                        <i class="fas fa-building text-primary"></i>
                         {{ __('auth.register.business_partner_title') }}
                     </h4>
                     <p class="account-group-description">
@@ -244,13 +210,7 @@
                 <div class="account-options">
                     <div class="account-option">
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="account_type"
-                                   id="manufacturer"
-                                   value="manufacturer"
-                                   {{ old('account_type', $sessionData['account_type'] ?? '') == 'manufacturer' ? 'checked' : '' }}
-                                   required>
+                            <input class="form-check-input" type="radio"  name="account_type" id="manufacturer" value="manufacturer" {{ old('account_type', $sessionData['account_type'] ?? '') == 'manufacturer' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="manufacturer">
                                 <strong>{{ __('auth.register.manufacturer_role') }}</strong>
                                 <span class="account-description">
@@ -262,13 +222,7 @@
 
                     <div class="account-option">
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="account_type"
-                                   id="supplier"
-                                   value="supplier"
-                                   {{ old('account_type', $sessionData['account_type'] ?? '') == 'supplier' ? 'checked' : '' }}
-                                   required>
+                            <input class="form-check-input" type="radio" name="account_type" id="supplier" value="supplier" {{ old('account_type', $sessionData['account_type'] ?? '') == 'supplier' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="supplier">
                                 <strong>{{ __('auth.register.supplier_role') }}</strong>
                                 <span class="account-description">
@@ -280,13 +234,7 @@
 
                     <div class="account-option">
                         <div class="form-check">
-                            <input class="form-check-input"
-                                   type="radio"
-                                   name="account_type"
-                                   id="brand"
-                                   value="brand"
-                                   {{ old('account_type', $sessionData['account_type'] ?? '') == 'brand' ? 'checked' : '' }}
-                                   required>
+                            <input class="form-check-input" type="radio"  name="account_type" id="brand"  value="brand" {{ old('account_type', $sessionData['account_type'] ?? '') == 'brand' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="brand">
                                 <strong>{{ __('auth.register.brand_role') }}</strong>
                                 <span class="account-description">
@@ -337,47 +285,84 @@
 
 </x-registration-wizard>
 
-{{-- Terms Modal --}}
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">Điều khoản sử dụng</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Điều khoản sử dụng MechaMap sẽ được hiển thị ở đây...</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Privacy Modal --}}
-<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="privacyModalLabel">Chính sách bảo mật</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Chính sách bảo mật MechaMap sẽ được hiển thị ở đây...</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
-@push('styles')
-<link href="{{ asset('css/frontend/registration-wizard.css') }}" rel="stylesheet">
-@endpush
-
 @push('scripts')
-<script src="{{ asset('js/frontend/registration-wizard.js') }}"></script>
+<script src="{{ asset_versioned('js/frontend/registration-wizard.js') }}"></script>
+<script>
+// Pass translations to JavaScript
+window.authTranslations = {
+    passwordMatch: @json(__('auth.reset_password.password_match')),
+    passwordMismatch: @json(__('auth.reset_password.password_mismatch'))
+};
+
+// Pass password strength translations to JavaScript
+window.passwordStrengthTranslations = {
+    requirements: {
+        length: @json(__('auth.password_strength.length')),
+        uppercase: @json(__('auth.password_strength.uppercase')),
+        lowercase: @json(__('auth.password_strength.lowercase')),
+        number: @json(__('auth.password_strength.number')),
+        special: @json(__('auth.password_strength.special'))
+    },
+    levels: {
+        weak: @json(__('auth.password_strength.weak')),
+        medium: @json(__('auth.password_strength.medium')),
+        strong: @json(__('auth.password_strength.strong'))
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle account option selection styling
+    const accountTypeRadios = document.querySelectorAll('input[name="account_type"]');
+
+    function updateAccountOptionStyles() {
+        // Remove recommended class from all account-options
+        document.querySelectorAll('.account-option').forEach(option => {
+            option.classList.remove('recommended');
+        });
+
+        // Add recommended class to the selected account-option
+        accountTypeRadios.forEach(radio => {
+            if (radio.checked) {
+                const accountOption = radio.closest('.account-option');
+                if (accountOption) {
+                    accountOption.classList.add('recommended');
+                }
+            }
+        });
+    }
+
+    // Initialize on page load
+    updateAccountOptionStyles();
+
+    // Add event listeners to all radio buttons
+    accountTypeRadios.forEach(radio => {
+        radio.addEventListener('change', updateAccountOptionStyles);
+    });
+
+    // Handle password confirmation toggle
+    const togglePasswordConfirmation = document.getElementById('togglePasswordConfirmation');
+    if (togglePasswordConfirmation) {
+        togglePasswordConfirmation.addEventListener('click', function() {
+            const passwordConfirmationInput = document.getElementById('password_confirmation');
+            const toggleIcon = document.getElementById('togglePasswordConfirmationIcon');
+
+            if (!passwordConfirmationInput || !toggleIcon) return;
+
+            if (passwordConfirmationInput.type === 'password') {
+                passwordConfirmationInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordConfirmationInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        });
+    }
+
+
+});
+</script>
 @endpush

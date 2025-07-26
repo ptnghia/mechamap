@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\CustomVerifyEmail;
 use App\Models\Showcase;
 use App\Models\Country;
 use App\Models\Region;
@@ -1510,5 +1511,15 @@ class User extends Authenticatable implements MustVerifyEmail
             ->groupBy('rarity')
             ->pluck('count', 'rarity')
             ->toArray();
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail);
     }
 }
