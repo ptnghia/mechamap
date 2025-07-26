@@ -162,6 +162,7 @@
             'verification.send',
             'password.confirm',
 
+
             // Registration wizard
             'register.wizard.step1',
             'register.wizard.step2',

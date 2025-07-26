@@ -192,8 +192,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ $user->avatar_url ?? '/images/default-avatar.png' }}"
-                             alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24">
+                        <img src="{{ $user->getAvatarUrl() }}"
+                             alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24"
+                             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1))]) }}'">
                         <span class="user-name">{{ $user->name }}</span>
                         <span class="badge bg-{{ $user->role_color ?? 'primary' }} ms-1">{{ $user->role_display_name }}</span>
                     </a>

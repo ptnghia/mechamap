@@ -5,23 +5,7 @@
 
 @php
     $user = auth()->user();
-
-    // Fix avatar URL to avoid double slash
-    if ($user && $user->avatar) {
-        if (strpos($user->avatar, 'http') === 0) {
-            // Full URL
-            $avatar = $user->avatar;
-        } elseif (strpos($user->avatar, '/images/') === 0) {
-            // Already has /images/ prefix
-            $avatar = asset($user->avatar);
-        } else {
-            // Storage path
-            $avatar = asset('storage/' . ltrim($user->avatar, '/'));
-        }
-    } else {
-        $avatar = asset('assets/images/users/avatar-1.jpg');
-    }
-
+    $avatar = $user ? $user->getAvatarUrl() : route('avatar.generate', ['initial' => 'A']);
     $userName = $user ? $user->name : 'Admin';
     $userEmail = $user ? $user->email : '';
     $userRole = $user ? (is_string($user->role) ? $user->role : ($user->role ? $user->role->name : 'Administrator')) : 'Administrator';
@@ -272,7 +256,8 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="{{ $avatar }}" alt="{{ $userName }}" style="width: 32px; height: 32px;">
+                    <img class="rounded-circle header-profile-user" src="{{ $avatar }}" alt="{{ $userName }}" style="width: 32px; height: 32px;"
+                         onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ $userName }}</span>
                     <i class="fas fa-chevron-down d-none d-xl-inline-block ms-1"></i>
                 </button>

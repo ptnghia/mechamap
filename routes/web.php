@@ -60,6 +60,7 @@ Route::get('/threads/load-more', [\App\Http\Controllers\HomeController::class, '
 Route::prefix('avatar')->name('avatar.')->group(function () {
     Route::get('/{initial}', [AvatarController::class, 'generate'])->name('generate');
     Route::delete('/cache/{initial?}', [AvatarController::class, 'clearCache'])->name('clear-cache');
+    Route::get('/storage/info', [AvatarController::class, 'getStorageInfo'])->name('storage-info');
 });
 
 // Test route đơn giản - REMOVED (should only be in development)
@@ -70,6 +71,19 @@ Route::prefix('language')->name('language.')->group(function () {
     Route::get('/current', [LanguageController::class, 'current'])->name('current');
     Route::get('/supported', [LanguageController::class, 'supported'])->name('supported');
     Route::post('/auto-detect', [LanguageController::class, 'autoDetect'])->name('auto-detect');
+});
+
+// Debug translation route (temporary)
+Route::get('/debug-translation', function() {
+    return [
+        'current_locale' => app()->getLocale(),
+        'session_locale' => session('locale'),
+        'config_locale' => config('app.locale'),
+        'wizard_title' => __('auth.register.wizard_title'),
+        'personal_info_title' => __('auth.register.personal_info_title'),
+        'account_type_title' => __('auth.register.account_type_title'),
+        'all_auth_register' => __('auth.register'),
+    ];
 });
 
 // What's New route - REMOVED (duplicate, using WhatsNewController in web-whats-new.php)

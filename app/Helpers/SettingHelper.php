@@ -228,25 +228,20 @@ if (!function_exists('avatar_placeholder')) {
      * @param int $size
      * @return string
      */
-    function avatar_placeholder(string $name = '', int $size = 150)
+    function avatar_placeholder(string $name = '')
     {
         if (empty($name)) {
             $name = 'User';
         }
 
-        // Lấy chữ cái đầu
+        // Lấy chữ cái đầu (tối đa 2 ký tự)
         $initials = strtoupper(substr($name, 0, 1));
         if (strpos($name, ' ') !== false) {
             $nameParts = explode(' ', $name);
             $initials = strtoupper(substr($nameParts[0], 0, 1) . substr(end($nameParts), 0, 1));
         }
 
-        // Sử dụng service tạo avatar từ initials
-        $alternatives = [
-            route('avatar.generate', ['initial' => $initials, 'size' => $size]),
-            placeholder_image($size, $size, $initials),
-        ];
-
-        return $alternatives[0];
+        // Sử dụng avatar generator mới (kích thước cố định 150px)
+        return route('avatar.generate', ['initial' => $initials]);
     }
 }

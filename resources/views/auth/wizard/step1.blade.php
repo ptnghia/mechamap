@@ -53,7 +53,7 @@
                     </label>
                     <div class="position-relative form-group-icon">
                         <i class="fas fa-at input_icon"></i>
-                        <input type="text" class="form-control @error('username') is-invalid @enderror" d="username" name="username" value="{{ old('username', $sessionData['username'] ?? '') }}" placeholder="{{ __('auth.username_placeholder') }}" required  autocomplete="username">
+                        <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username', $sessionData['username'] ?? '') }}" placeholder="{{ __('auth.username_placeholder') }}" required  autocomplete="username">
                     </div>
                     <div class="invalid-feedback" id="username-error">
                         @error('username'){{ $message }}@enderror
@@ -132,7 +132,7 @@
                         @error('password_confirmation'){{ $message }}@enderror
                     </div>
                     <div class="valid-feedback" id="password-confirmation-success" style="display: none;">
-                        <i class="fas fa-check"></i> Mật khẩu khớp
+                        <i class="fas fa-check"></i> {{ __('auth.reset_password.password_match') }}
                     </div>
                 </div>
             </div>

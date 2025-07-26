@@ -112,6 +112,7 @@ return [
         'login_to_view_notifications' => 'Login to view notifications',
         'login_required' => 'Login required',
         'access_denied' => 'Access denied',
+        'register_mechamap_account' => 'Register MechaMap Account',
     ],
 
     // Pagination

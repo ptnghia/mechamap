@@ -34,7 +34,7 @@
                         </a>
                         <img src="{{ $otherUser->getAvatarUrl() }}"
                              class="rounded-circle me-3" width="40" height="40" alt=""
-                             onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($otherUser->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
+                             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($otherUser->name, 0, 1))]) }}'">
                         <div>
                             <h5 class="mb-0">{{ $otherUser->name ?? 'Unknown User' }}</h5>
                             <small class="text-muted">
@@ -59,7 +59,7 @@
                                         <div class="d-flex align-items-start">
                                             <img src="{{ $message->user->getAvatarUrl() }}"
                                                  class="rounded-circle me-2" width="30" height="30" alt=""
-                                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($message->user->name, 0, 1))) }}&background=6366f1&color=fff&size=30'">
+                                                 onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($message->user->name, 0, 1))]) }}'">
                                             <div>
                                                 <div class="fw-medium text-muted small">{{ $message->user->name }}</div>
                                                 <div class="bg-light p-3 rounded">

@@ -44,7 +44,7 @@ return [
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
+            'timeout' => 30, // 30 seconds timeout for SMTP
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
@@ -98,6 +98,23 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email Queue Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure which email types should be queued vs sent immediately
+    |
+    */
+
+    'queue' => [
+        'critical' => env('MAIL_QUEUE_CRITICAL_EMAILS', false),
+        'welcome' => env('MAIL_QUEUE_WELCOME_EMAILS', true),
+        'notification' => env('MAIL_QUEUE_NOTIFICATIONS', true),
+        'newsletter' => env('MAIL_QUEUE_NEWSLETTERS', true),
+        'marketing' => env('MAIL_QUEUE_MARKETING', true),
     ],
 
 ];

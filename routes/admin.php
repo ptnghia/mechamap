@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\DasonDashboardController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DynamicDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\QueueMonitorController;
 use App\Http\Controllers\Admin\NotificationAnalyticsController;
 use App\Http\Controllers\Admin\BusinessVerificationController;
 use App\Http\Controllers\Admin\UserStandardizationController;
@@ -995,6 +996,14 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
         // Analytics
         Route::get('/analytics', [BusinessVerificationController::class, 'analytics'])->name('analytics');
+    });
+
+    // Queue Monitor Routes
+    Route::prefix('queue')->name('queue.')->group(function () {
+        Route::get('/monitor', [QueueMonitorController::class, 'index'])->name('monitor');
+        Route::get('/api/stats', [QueueMonitorController::class, 'apiStats'])->name('api-stats');
+        Route::post('/retry', [QueueMonitorController::class, 'retryJob'])->name('retry');
+        Route::post('/clear-failed', [QueueMonitorController::class, 'clearFailedJobs'])->name('clear-failed');
     });
 
     // Duplicate moderation routes removed - using the one with middleware above (lines 125-151)

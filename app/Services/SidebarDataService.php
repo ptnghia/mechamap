@@ -646,7 +646,7 @@ class SidebarDataService
 
         // Fallback to internal avatar generator
         $firstLetter = strtoupper(substr($user->name, 0, 1));
-        return route('avatar.generate', ['initial' => $firstLetter, 'size' => 40]);
+        return route('avatar.generate', ['initial' => $firstLetter]);
     }
 
     /**
@@ -697,6 +697,6 @@ class SidebarDataService
 
         // Fallback to internal avatar generator
         $forumInitials = strtoupper(substr($forum->name, 0, 2));
-        return route('avatar.generate', ['initial' => $forumInitials, 'size' => 40]);
+        return route('avatar.generate', ['initial' => $forumInitials]);
     }
 }

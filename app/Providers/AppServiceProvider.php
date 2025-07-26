@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendWelcomeEmail;
 
 class AppServiceProvider extends ServiceProvider
@@ -169,6 +170,13 @@ class AppServiceProvider extends ServiceProvider
      */
     private function registerEventListeners(): void
     {
+        // Send email verification notification when user registers
+        Event::listen(Registered::class, function (Registered $event) {
+            if ($event->user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$event->user->hasVerifiedEmail()) {
+                $event->user->sendEmailVerificationNotification();
+            }
+        });
+
         // Send welcome email after email verification
         Event::listen(Verified::class, SendWelcomeEmail::class);
     }

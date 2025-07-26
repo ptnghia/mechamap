@@ -15,7 +15,7 @@
                 <div class="d-flex align-items-center thread_user">
                     <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
                         class="rounded-circle me-2" width="40" height="40"
-                        onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+                        onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1))]) }}'">
                     <div>
                         <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
                             class="fw-bold text-decoration-none">{{
@@ -900,7 +900,7 @@ function createCommentHtml(comment) {
                 <div class="d-flex align-items-center">
                     <img src="${comment.user.avatar_url}" alt="${comment.user.name}"
                          class="rounded-circle me-2" width="32" height="32"
-                         onerror="this.src='{{ asset('images/placeholders/50x50.png') }}'">
+                         onerror="this.src='{{ route('avatar.generate', ['initial' => 'U']) }}'">
                     <div>
                         <a href="/users/${comment.user.username || comment.user.id}" class="fw-bold text-decoration-none">
                             ${comment.user.name}

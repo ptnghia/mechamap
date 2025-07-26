@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AvatarController extends Controller
 {
@@ -16,122 +18,168 @@ class AvatarController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function generate(string $initial, Request $request): Response
+    public function generate(string $initial): BinaryFileResponse|Response
     {
         // Validate input
-        $initial = strtoupper(substr($initial, 0, 1));
-        if (!preg_match('/[A-Z0-9]/', $initial)) {
+        $initial = strtoupper(substr($initial, 0, 2)); // Support up to 2 characters
+        if (!preg_match('/[A-Z0-9]+/', $initial)) {
             $initial = 'U'; // Default to 'U' for User
         }
 
-        // Lấy size từ request, mặc định 100px
-        $size = (int) $request->get('size', 100);
-        $size = max(32, min(400, $size)); // Giới hạn từ 32px đến 400px
+        // Tạo filename và path (sử dụng lowercase cho filename)
+        $filename = strtolower($initial) . '.svg';
+        $avatarDir = public_path('images/avatars');
+        $filepath = $avatarDir . '/' . $filename;
 
-        // Tạo cache key
-        $cacheKey = "avatar_{$initial}_{$size}";
+        // Tạo thư mục nếu chưa tồn tại
+        if (!is_dir($avatarDir)) {
+            mkdir($avatarDir, 0755, true);
+        }
 
-        // Kiểm tra cache
-        if (Cache::has($cacheKey)) {
-            $imageData = Cache::get($cacheKey);
-            return response($imageData, 200, [
-                'Content-Type' => 'image/png',
+        // Kiểm tra file đã tồn tại
+        if (file_exists($filepath)) {
+            return response()->file($filepath, [
+                'Content-Type' => 'image/svg+xml',
                 'Cache-Control' => 'public, max-age=2592000', // 30 days
             ]);
         }
 
-        // Tạo avatar mới
-        $imageData = $this->createAvatar($initial, $size);
+        // Tải avatar từ DiceBear API
+        try {
+            $svgData = $this->downloadFromDiceBear($initial);
 
-        // Lưu vào cache trong 30 ngày
-        Cache::put($cacheKey, $imageData, now()->addDays(30));
+            // Lưu file vào disk
+            file_put_contents($filepath, $svgData);
 
-        return response($imageData, 200, [
-            'Content-Type' => 'image/png',
-            'Cache-Control' => 'public, max-age=2592000', // 30 days
-        ]);
+            return response()->file($filepath, [
+                'Content-Type' => 'image/svg+xml',
+                'Cache-Control' => 'public, max-age=2592000', // 30 days
+            ]);
+        } catch (\Exception $e) {
+            // Fallback về method tạo avatar cũ nếu DiceBear API fail
+            $pngFilename = strtolower($initial) . '.png';
+            $pngFilepath = $avatarDir . '/' . $pngFilename;
+
+            if (!file_exists($pngFilepath)) {
+                $imageData = $this->createModernAvatar($initial, 150);
+                file_put_contents($pngFilepath, $imageData);
+            }
+
+            return response()->file($pngFilepath, [
+                'Content-Type' => 'image/png',
+                'Cache-Control' => 'public, max-age=2592000', // 30 days
+            ]);
+        }
     }
 
     /**
-     * Tạo avatar image với GD library
+     * Tải avatar từ DiceBear API
+     *
+     * @param string $initial
+     * @return string
+     * @throws \Exception
+     */
+    private function downloadFromDiceBear(string $initial): string
+    {
+        // Tạo URL cho DiceBear API
+        $apiUrl = "https://api.dicebear.com/9.x/initials/svg";
+        $params = [
+            'seed' => $initial,
+            'backgroundColor' => $this->getRandomBackgroundColor(),
+            'fontSize' => 50,
+            'fontWeight' => 600,
+        ];
+
+        // Gọi API với timeout
+        $response = Http::timeout(10)->get($apiUrl, $params);
+
+        if (!$response->successful()) {
+            throw new \Exception('Failed to download avatar from DiceBear API');
+        }
+
+        $svgContent = $response->body();
+
+        // Validate SVG content
+        if (empty($svgContent) || strpos($svgContent, '<svg') === false) {
+            throw new \Exception('Invalid SVG content received from DiceBear API');
+        }
+
+        return $svgContent;
+    }
+
+    /**
+     * Lấy màu nền ngẫu nhiên cho DiceBear
+     *
+     * @return string
+     */
+    private function getRandomBackgroundColor(): string
+    {
+        $colors = [
+            '7cb342', // Green
+            '2196f3', // Blue
+            'ff9800', // Orange
+            '9c27b0', // Purple
+            'f44336', // Red
+            '607d8b', // Blue Grey
+            '795548', // Brown
+            '009688', // Teal
+            '3f51b5', // Indigo
+            'e91e63', // Pink
+        ];
+
+        return $colors[array_rand($colors)];
+    }
+
+    /**
+     * Tạo avatar fallback đơn giản khi DiceBear API fail
      *
      * @param string $initial
      * @param int $size
      * @return string
      */
-    private function createAvatar(string $initial, int $size): string
+    private function createModernAvatar(string $initial, int $size): string
     {
-        // Tạo màu nền ngẫu nhiên dựa trên chữ cái
-        $backgroundColor = $this->generateColorFromString($initial);
-
-        // Màu chữ (trắng hoặc đen tùy thuộc vào độ sáng của màu nền)
-        $textColor = $this->getContrastColor($backgroundColor);
-
-        // Tạo image
+        // Tạo simple avatar với màu nền và chữ
         $image = imagecreatetruecolor($size, $size);
 
-        // Chuyển đổi màu hex sang RGB
-        $bgRgb = $this->hexToRgb($backgroundColor);
-        $textRgb = $this->hexToRgb($textColor);
-
-        // Tạo màu
+        // Tạo màu nền từ chữ cái
+        $baseColor = $this->generateColorFromString($initial);
+        $bgRgb = $this->hexToRgb($baseColor);
         $bgColor = imagecolorallocate($image, $bgRgb['r'], $bgRgb['g'], $bgRgb['b']);
-        $txtColor = imagecolorallocate($image, $textRgb['r'], $textRgb['g'], $textRgb['b']);
 
         // Fill background
         imagefill($image, 0, 0, $bgColor);
 
-        // Tính toán font size và vị trí - tỷ lệ thuận với kích thước avatar
-        $fontSize = max(12, $size * 0.5); // Tối thiểu 12px, tối đa 50% kích thước avatar
-        $fontPath = $this->getFontPath();
+        // Màu chữ tương phản
+        $textColor = $this->getOptimalTextColor($baseColor);
+        $textRgb = $this->hexToRgb($textColor);
+        $txtColor = imagecolorallocate($image, $textRgb['r'], $textRgb['g'], $textRgb['b']);
 
-        if ($fontPath && file_exists($fontPath)) {
-            // Sử dụng TTF font nếu có
-            $textBox = imagettfbbox($fontSize, 0, $fontPath, $initial);
-            $textWidth = $textBox[4] - $textBox[0];
-            $textHeight = $textBox[1] - $textBox[7];
+        // Font size đơn giản
+        $fontSize = $size * 0.4; // 40% kích thước avatar
 
-            $x = ($size - $textWidth) / 2;
-            $y = ($size - $textHeight) / 2 + $textHeight;
+        // Vẽ text (fallback với built-in font)
+        $font = 5;
+        $textWidth = imagefontwidth($font) * strlen($initial);
+        $textHeight = imagefontheight($font);
 
-            imagettftext($image, $fontSize, 0, $x, $y, $txtColor, $fontPath, $initial);
-        } else {
-            // Fallback sử dụng built-in font với scaling tỷ lệ thuận
-            $font = 5; // Largest built-in font
-            $baseTextWidth = imagefontwidth($font) * strlen($initial);
-            $baseTextHeight = imagefontheight($font);
+        $x = ($size - $textWidth) / 2;
+        $y = ($size - $textHeight) / 2;
 
-            // Scale factor tỷ lệ thuận với kích thước avatar
-            $scale = max(1, $size / 32); // Tỷ lệ dựa trên kích thước cơ bản 32px
+        imagestring($image, $font, $x, $y, $initial, $txtColor);
 
-            // Tạo text với kích thước phù hợp
-            $scaledTextWidth = $baseTextWidth * $scale;
-            $scaledTextHeight = $baseTextHeight * $scale;
-
-            // Vị trí căn giữa
-            $x = ($size - $scaledTextWidth) / 2;
-            $y = ($size - $scaledTextHeight) / 2;
-
-            // Vẽ text với hiệu ứng bold bằng cách vẽ nhiều lần
-            $thickness = max(1, intval($scale / 2));
-            for ($i = 0; $i < $thickness; $i++) {
-                for ($j = 0; $j < $thickness; $j++) {
-                    imagestring($image, $font, $x + $i, $y + $j, $initial, $txtColor);
-                }
-            }
-        }
-
-        // Tạo output buffer
+        // Convert to PNG
         ob_start();
-        imagepng($image);
+        imagepng($image, null, 9);
         $imageData = ob_get_contents();
         ob_end_clean();
 
-        // Cleanup
         imagedestroy($image);
 
         return $imageData;
     }
+
+
 
     /**
      * Tạo màu từ chuỗi
@@ -159,21 +207,7 @@ class AvatarController extends Controller
         return $colors[$index];
     }
 
-    /**
-     * Lấy màu tương phản (trắng hoặc đen)
-     *
-     * @param string $hexColor
-     * @return string
-     */
-    private function getContrastColor(string $hexColor): string
-    {
-        $rgb = $this->hexToRgb($hexColor);
 
-        // Tính độ sáng
-        $brightness = ($rgb['r'] * 299 + $rgb['g'] * 587 + $rgb['b'] * 114) / 1000;
-
-        return $brightness > 128 ? '#000000' : '#FFFFFF';
-    }
 
     /**
      * Chuyển đổi hex sang RGB
@@ -196,59 +230,156 @@ class AvatarController extends Controller
         ];
     }
 
-    /**
-     * Lấy đường dẫn font TTF
-     *
-     * @return string|null
-     */
-    private function getFontPath(): ?string
-    {
-        $fontPaths = [
-            storage_path('fonts/Roboto-Medium.ttf'),
-            storage_path('fonts/arial.ttf'),
-            public_path('fonts/Roboto-Medium.ttf'),
-            public_path('fonts/arial.ttf'),
-        ];
 
-        foreach ($fontPaths as $path) {
-            if (file_exists($path)) {
-                return $path;
-            }
-        }
-
-        return null;
-    }
 
     /**
-     * Xóa cache avatar
+     * Clear avatar files
      *
-     * @param string $initial
+     * @param string|null $initial
      * @return \Illuminate\Http\JsonResponse
      */
     public function clearCache(string $initial = null)
     {
+        $avatarDir = public_path('images/avatars');
+
+        if (!is_dir($avatarDir)) {
+            return response()->json(['message' => 'Avatar directory does not exist']);
+        }
+
         if ($initial) {
-            $initial = strtoupper(substr($initial, 0, 1));
-            $sizes = [32, 40, 50, 80, 100, 150, 200, 400];
+            $initial = strtolower(substr($initial, 0, 2));
+            $svgPattern = $avatarDir . '/' . $initial . '.svg';
+            $pngPattern = $avatarDir . '/' . $initial . '.png';
 
-            foreach ($sizes as $size) {
-                Cache::forget("avatar_{$initial}_{$size}");
+            $files = [];
+            if (file_exists($svgPattern)) $files[] = $svgPattern;
+            if (file_exists($pngPattern)) $files[] = $pngPattern;
+
+            foreach ($files as $file) {
+                unlink($file);
             }
 
-            return response()->json(['message' => "Cache cleared for initial: {$initial}"]);
+            return response()->json([
+                'message' => "Avatar files cleared for '{$initial}'",
+                'files_deleted' => count($files)
+            ]);
         }
 
-        // Xóa tất cả cache avatar
-        $initials = range('A', 'Z');
-        $initials = array_merge($initials, range('0', '9'));
-        $sizes = [32, 40, 50, 80, 100, 150, 200, 400];
+        // Clear all avatar files (SVG and PNG)
+        $svgFiles = glob($avatarDir . '/*.svg');
+        $pngFiles = glob($avatarDir . '/*.png');
+        $allFiles = array_merge($svgFiles, $pngFiles);
+        $deletedCount = 0;
 
-        foreach ($initials as $initial) {
-            foreach ($sizes as $size) {
-                Cache::forget("avatar_{$initial}_{$size}");
+        foreach ($allFiles as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+                $deletedCount++;
             }
         }
 
-        return response()->json(['message' => 'All avatar cache cleared']);
+        return response()->json([
+            'message' => 'All avatar files cleared',
+            'files_deleted' => $deletedCount
+        ]);
+    }
+
+    /**
+     * Get avatar storage info
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getStorageInfo()
+    {
+        $avatarDir = public_path('images/avatars');
+
+        if (!is_dir($avatarDir)) {
+            return response()->json([
+                'directory_exists' => false,
+                'total_files' => 0,
+                'total_size' => 0
+            ]);
+        }
+
+        $svgFiles = glob($avatarDir . '/*.svg');
+        $pngFiles = glob($avatarDir . '/*.png');
+        $allFiles = array_merge($svgFiles, $pngFiles);
+        $totalSize = 0;
+
+        foreach ($allFiles as $file) {
+            $totalSize += filesize($file);
+        }
+
+        return response()->json([
+            'directory_exists' => true,
+            'directory_path' => $avatarDir,
+            'total_files' => count($allFiles),
+            'svg_files' => count($svgFiles),
+            'png_files' => count($pngFiles),
+            'total_size' => $totalSize,
+            'total_size_human' => $this->formatBytes($totalSize),
+            'files' => array_map('basename', $allFiles)
+        ]);
+    }
+
+    /**
+     * Format bytes to human readable format
+     *
+     * @param int $bytes
+     * @return string
+     */
+    private function formatBytes(int $bytes): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, 2) . ' ' . $units[$pow];
+    }
+
+    /**
+     * Điều chỉnh độ sáng của màu
+     *
+     * @param string $hex
+     * @param int $percent
+     * @return string
+     */
+    private function adjustBrightness(string $hex, int $percent): string
+    {
+        $hex = ltrim($hex, '#');
+
+        if (strlen($hex) == 3) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+
+        $r = max(0, min(255, $r + ($r * $percent / 100)));
+        $g = max(0, min(255, $g + ($g * $percent / 100)));
+        $b = max(0, min(255, $b + ($b * $percent / 100)));
+
+        return sprintf('#%02x%02x%02x', $r, $g, $b);
+    }
+
+    /**
+     * Lấy màu chữ tối ưu với độ tương phản cao
+     *
+     * @param string $backgroundColor
+     * @return string
+     */
+    private function getOptimalTextColor(string $backgroundColor): string
+    {
+        $rgb = $this->hexToRgb($backgroundColor);
+
+        // Tính luminance
+        $luminance = (0.299 * $rgb['r'] + 0.587 * $rgb['g'] + 0.114 * $rgb['b']) / 255;
+
+        // Trả về màu có độ tương phản cao nhất
+        return $luminance > 0.5 ? '#000000' : '#FFFFFF';
     }
 }

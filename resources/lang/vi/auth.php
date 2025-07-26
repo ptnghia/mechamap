@@ -103,6 +103,109 @@ return [
         'auto_saving' => 'Tự động lưu...',
         'step_default' => 'Bước :number',
         'errors_occurred' => 'Có lỗi xảy ra',
+        'account_type_label' => 'Loại tài khoản',
+
+        // Step 2 - Business Information
+        'step2_title' => 'Thông tin doanh nghiệp',
+        'step2_subtitle' => 'Hoàn thành thông tin doanh nghiệp để xác minh tài khoản',
+
+        // Company Information
+        'company_info_title' => 'Thông tin công ty',
+        'company_info_description' => 'Vui lòng cung cấp thông tin chi tiết về công ty của bạn',
+        'company_name_label' => 'Tên công ty',
+        'company_name_placeholder' => 'Nhập tên đầy đủ của công ty',
+        'company_name_help' => 'Tên đầy đủ của công ty như trong giấy phép kinh doanh',
+        'business_license_label' => 'Số giấy phép kinh doanh',
+        'business_license_placeholder' => 'Nhập số giấy phép kinh doanh',
+        'tax_code_label' => 'Mã số thuế',
+        'tax_code_placeholder' => 'Nhập mã số thuế (10-13 chữ số)',
+        'tax_code_help' => 'Mã số thuế của công ty (10-13 chữ số)',
+        'company_description_label' => 'Mô tả công ty',
+        'company_description_help' => 'Mô tả ngắn gọn về hoạt động kinh doanh của công ty',
+        'business_field_label' => 'Lĩnh vực kinh doanh',
+        'business_field_help' => 'Chọn các lĩnh vực kinh doanh chính của công ty (có thể chọn nhiều)',
+
+        // Contact Information
+        'contact_info_title' => 'Thông tin liên hệ',
+        'contact_info_description' => 'Thông tin liên hệ chính thức của công ty',
+        'company_phone' => 'Số điện thoại công ty',
+        'company_email_label' => 'Email công ty',
+        'company_email_help' => 'Email chính thức của công ty (khác với email cá nhân)',
+        'company_address' => 'Địa chỉ công ty',
+
+        // Verification Documents
+        'verification_docs_title' => 'Tài liệu xác minh',
+        'verification_docs_description' => 'Tải lên các tài liệu cần thiết để xác minh doanh nghiệp',
+        'file_upload_title' => 'Tải lên tài liệu',
+        'file_upload_support' => 'Hỗ trợ: PDF, JPG, PNG. ',
+        'file_upload_size' => 'Tối đa 5MB mỗi file.',
+        'choose_documents' => 'Chọn tài liệu',
+        'document_suggestions' => 'Gợi ý: Giấy phép kinh doanh, Giấy chứng nhận đăng ký thuế, Hợp đồng thuê văn phòng',
+
+        // Important Notes
+        'important_notes_title' => 'Lưu ý quan trọng',
+        'note_verification_required' => 'Tài khoản cần được xác minh trước khi có thể sử dụng đầy đủ tính năng',
+        'note_verification_time' => 'Quá trình xác minh có thể mất 1-3 ngày làm việc',
+        'note_email_notification' => 'Bạn sẽ nhận được email thông báo khi xác minh hoàn tất',
+        'note_pending_access' => 'Trong thời gian chờ xác minh, bạn có thể sử dụng các tính năng cơ bản',
+
+        // Buttons
+        'back_button' => 'Quay lại',
+        'complete_button' => 'Hoàn thành đăng ký',
+
+        // Success Messages
+        'step1_completed' => 'Thông tin cơ bản đã được lưu. Vui lòng hoàn thành thông tin doanh nghiệp.',
+
+        // Business categories
+        'business_categories' => [
+            'manufacturing' => 'Sản xuất & Chế tạo',
+            'automotive' => 'Ô tô & Xe máy',
+            'aerospace' => 'Hàng không & Vũ trụ',
+            'energy' => 'Năng lượng & Điện lực',
+            'construction' => 'Xây dựng & Hạ tầng',
+            'electronics' => 'Điện tử & Viễn thông',
+            'medical' => 'Y tế & Thiết bị y tế',
+            'food_beverage' => 'Thực phẩm & Đồ uống',
+            'textile' => 'Dệt may & Thời trang',
+            'chemical' => 'Hóa chất & Dược phẩm',
+            'mining' => 'Khai thác & Khoáng sản',
+            'marine' => 'Hàng hải & Đóng tàu',
+            'agriculture' => 'Nông nghiệp & Thủy sản',
+            'packaging' => 'Bao bì & In ấn',
+            'consulting' => 'Tư vấn & Dịch vụ kỹ thuật',
+            'education' => 'Giáo dục & Đào tạo',
+            'research' => 'Nghiên cứu & Phát triển',
+            'other' => 'Khác',
+        ],
+    ],
+
+    // Email verification
+    'verify_email' => [
+        'title' => 'Xác minh email',
+        'subtitle' => 'Hoàn tất quá trình đăng ký tài khoản',
+        'check_email_title' => 'Kiểm tra email của bạn',
+        'check_email_subtitle' => 'Chúng tôi đã gửi link xác minh đến email của bạn',
+        'verification_sent' => 'Link xác minh mới đã được gửi đến địa chỉ email bạn đã đăng ký.',
+        'instructions_title' => 'Hướng dẫn xác minh',
+        'instruction_1' => 'Mở ứng dụng email trên thiết bị của bạn',
+        'instruction_2' => 'Tìm email từ <strong>MechaMap</strong> với tiêu đề "Xác minh địa chỉ email"',
+        'instruction_3' => 'Nhấp vào nút <strong>"Xác minh Email"</strong> trong email',
+        'instruction_4' => 'Quay lại trang này để tiếp tục',
+        'resend_button' => 'Gửi lại email xác minh',
+        'logout_button' => 'Đăng xuất',
+        'help_title' => 'Cần hỗ trợ?',
+        'help_not_found_title' => 'Không tìm thấy email?',
+        'help_not_found_desc' => 'Kiểm tra thư mục spam/junk mail hoặc thư mục quảng cáo',
+        'help_not_received_title' => 'Email chưa đến?',
+        'help_not_received_desc' => 'Đợi 2-3 phút rồi kiểm tra lại, hoặc nhấn "Gửi lại email xác minh"',
+        'help_wrong_email_title' => 'Email sai?',
+        'help_wrong_email_desc' => 'Đăng xuất và <a href=":register_url" class="text-primary">đăng ký lại</a> với email đúng',
+        'help_support_title' => 'Vẫn gặp vấn đề?',
+        'help_support_desc' => 'Liên hệ hỗ trợ: <a href="mailto:support@mechamap.com" class="text-primary">support@mechamap.com</a>',
+        'auto_refresh_notice' => 'Trang này sẽ tự động làm mới sau khi bạn xác minh email',
+        'sending_button' => 'Đang gửi...',
+        'verified_title' => 'Email đã được xác minh!',
+        'redirecting' => 'Đang chuyển hướng...',
     ],
 
     // Password Reset
@@ -223,7 +326,6 @@ return [
     'password_help' => 'Mật khẩu phải có ít nhất 8 ký tự với chữ hoa, chữ thường và số',
     'confirm_password_label' => 'Xác nhận mật khẩu',
     'confirm_password_placeholder' => 'Nhập lại mật khẩu của bạn',
-    'account_type_label' => 'Loại tài khoản',
 
     // Password strength
     'password_strength' => [
@@ -237,77 +339,6 @@ return [
         'strong' => 'Mạnh - Mật khẩu tốt',
     ],
 
-    // Registration wizard
-    'register' => [
-        // Step 2 - Business Information
-        'step2_title' => 'Thông tin doanh nghiệp',
-        'step2_subtitle' => 'Hoàn thành thông tin doanh nghiệp để xác minh tài khoản',
 
-        // Company Information
-        'company_info_title' => 'Thông tin công ty',
-        'company_info_description' => 'Vui lòng cung cấp thông tin chi tiết về công ty của bạn',
-        'company_name_label' => 'Tên công ty',
-        'company_name_help' => 'Tên đầy đủ của công ty như trong giấy phép kinh doanh',
-        'business_license_label' => 'Số giấy phép kinh doanh',
-        'tax_code_label' => 'Mã số thuế',
-        'tax_code_help' => 'Mã số thuế của công ty (10-13 chữ số)',
-        'company_description_label' => 'Mô tả công ty',
-        'company_description_help' => 'Mô tả ngắn gọn về hoạt động kinh doanh của công ty',
-        'business_field_label' => 'Lĩnh vực kinh doanh',
-        'business_field_help' => 'Chọn các lĩnh vực kinh doanh chính của công ty (có thể chọn nhiều)',
-
-        // Contact Information
-        'contact_info_title' => 'Thông tin liên hệ',
-        'contact_info_description' => 'Thông tin liên hệ chính thức của công ty',
-        'company_phone' => 'Số điện thoại công ty',
-        'company_email_label' => 'Email công ty',
-        'company_email_help' => 'Email chính thức của công ty (khác với email cá nhân)',
-        'company_address' => 'Địa chỉ công ty',
-
-        // Verification Documents
-        'verification_docs_title' => 'Tài liệu xác minh',
-        'verification_docs_description' => 'Tải lên các tài liệu cần thiết để xác minh doanh nghiệp',
-        'file_upload_title' => 'Tải lên tài liệu',
-        'file_upload_support' => 'Hỗ trợ: PDF, JPG, PNG. ',
-        'file_upload_size' => 'Tối đa 5MB mỗi file.',
-        'choose_documents' => 'Chọn tài liệu',
-        'document_suggestions' => 'Gợi ý: Giấy phép kinh doanh, Giấy chứng nhận đăng ký thuế, Hợp đồng thuê văn phòng',
-
-        // Important Notes
-        'important_notes_title' => 'Lưu ý quan trọng',
-        'note_verification_required' => 'Tài khoản cần được xác minh trước khi có thể sử dụng đầy đủ tính năng',
-        'note_verification_time' => 'Quá trình xác minh có thể mất 1-3 ngày làm việc',
-        'note_email_notification' => 'Bạn sẽ nhận được email thông báo khi xác minh hoàn tất',
-        'note_pending_access' => 'Trong thời gian chờ xác minh, bạn có thể sử dụng các tính năng cơ bản',
-
-        // Buttons
-        'back_button' => 'Quay lại',
-        'complete_button' => 'Hoàn thành đăng ký',
-
-        // Success Messages
-        'step1_completed' => 'Thông tin cơ bản đã được lưu. Vui lòng hoàn thành thông tin doanh nghiệp.',
-
-        // Business categories (kept for backward compatibility)
-        'business_categories' => [
-            'manufacturing' => 'Sản xuất & Chế tạo',
-            'automotive' => 'Ô tô & Xe máy',
-            'aerospace' => 'Hàng không & Vũ trụ',
-            'energy' => 'Năng lượng & Điện lực',
-            'construction' => 'Xây dựng & Hạ tầng',
-            'electronics' => 'Điện tử & Viễn thông',
-            'medical' => 'Y tế & Thiết bị y tế',
-            'food_beverage' => 'Thực phẩm & Đồ uống',
-            'textile' => 'Dệt may & Thời trang',
-            'chemical' => 'Hóa chất & Dược phẩm',
-            'mining' => 'Khai thác & Khoáng sản',
-            'marine' => 'Hàng hải & Đóng tàu',
-            'agriculture' => 'Nông nghiệp & Thủy sản',
-            'packaging' => 'Bao bì & In ấn',
-            'consulting' => 'Tư vấn & Dịch vụ kỹ thuật',
-            'education' => 'Giáo dục & Đào tạo',
-            'research' => 'Nghiên cứu & Phát triển',
-            'other' => 'Khác',
-        ],
-    ],
 
 ];

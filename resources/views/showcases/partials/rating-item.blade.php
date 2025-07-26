@@ -2,16 +2,16 @@
 <div class="rating-item mb-3" id="rating-{{ $rating->id }}">
     <div class="d-flex gap-3">
         <a href="{{ route('profile.show', $rating->user->username) }}">
-            <img src="{{ $rating->user->getAvatarUrl() }}" class="rounded-circle" width="40" height="40" 
+            <img src="{{ $rating->user->getAvatarUrl() }}" class="rounded-circle" width="40" height="40"
                 alt="Avatar của {{ $rating->user->display_name }}"
-                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr($rating->user->name, 0, 1))) }}&background=6366f1&color=fff&size=40'">
+                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($rating->user->name, 0, 1))]) }}'">
         </a>
         <div class="flex-grow-1">
             <div class="rating-content bg-light p-3 rounded">
                 <div class="rating-header mb-2">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <a href="{{ route('profile.show', $rating->user->username) }}" 
+                            <a href="{{ route('profile.show', $rating->user->username) }}"
                                 class="fw-semibold text-decoration-none">
                                 {{ $rating->user->display_name }}
                             </a>
@@ -22,7 +22,7 @@
                         {{-- Nút xóa rating (chỉ hiện với chủ sở hữu) --}}
                         @auth
                         @if($rating->user_id === auth()->id() || $showcase->user_id === auth()->id())
-                        <form action="{{ route('showcase.rating.delete', $rating) }}" method="POST" 
+                        <form action="{{ route('showcase.rating.delete', $rating) }}" method="POST"
                             onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này?')">
                             @csrf
                             @method('DELETE')

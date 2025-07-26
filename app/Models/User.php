@@ -231,6 +231,21 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Tự động gán avatar khi tạo user mới
+        static::creating(function ($user) {
+            if (empty($user->avatar)) {
+                $user->assignDefaultAvatar();
+            }
+        });
+    }
+
+    /**
      * Check if user has a specific role
      *
      * @param string|array $role
@@ -517,9 +532,44 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        // Fallback: Sử dụng avatar generator nội bộ
-        $firstLetter = strtoupper(substr($this->username ?: $this->name, 0, 1));
-        return route('avatar.generate', ['initial' => $firstLetter, 'size' => 200]);
+        // Fallback: Sử dụng avatar generator mới với initials
+        $name = $this->name ?: $this->username ?: $this->email;
+        $initials = strtoupper(substr($name, 0, 1));
+
+        // Nếu có khoảng trắng, lấy chữ cái đầu của từ đầu và cuối
+        if (strpos($name, ' ') !== false) {
+            $nameParts = array_filter(explode(' ', trim($name))); // Loại bỏ khoảng trắng thừa
+            if (count($nameParts) >= 2) {
+                $firstInitial = strtoupper(substr($nameParts[0], 0, 1));
+                $lastInitial = strtoupper(substr(end($nameParts), 0, 1));
+                $initials = $firstInitial . $lastInitial;
+            }
+        }
+
+        return route('avatar.generate', ['initial' => $initials]);
+    }
+
+    /**
+     * Gán avatar mặc định cho user
+     */
+    public function assignDefaultAvatar(): void
+    {
+        // Tạo initials từ tên
+        $name = $this->name ?: $this->username ?: $this->email;
+        $initials = strtoupper(substr($name, 0, 1));
+
+        // Nếu có khoảng trắng, lấy chữ cái đầu của từ đầu và cuối
+        if (strpos($name, ' ') !== false) {
+            $nameParts = array_filter(explode(' ', trim($name))); // Loại bỏ khoảng trắng thừa
+            if (count($nameParts) >= 2) {
+                $firstInitial = strtoupper(substr($nameParts[0], 0, 1));
+                $lastInitial = strtoupper(substr(end($nameParts), 0, 1));
+                $initials = $firstInitial . $lastInitial;
+            }
+        }
+
+        // Gán avatar URL (sẽ được tạo khi cần)
+        $this->avatar = route('avatar.generate', ['initial' => $initials]);
     }
 
     /**
@@ -1521,5 +1571,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\CustomResetPassword($token));
     }
 }

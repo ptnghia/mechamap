@@ -13,6 +13,14 @@ class SendWelcomeEmail implements ShouldQueue
     use InteractsWithQueue;
 
     /**
+     * Queue configuration for welcome emails
+     */
+    public $queue = 'emails-welcome';
+    public $delay = 10; // 10 seconds delay to batch emails
+    public $tries = 3;
+    public $timeout = 60;
+
+    /**
      * Create the event listener.
      */
     public function __construct()

@@ -121,6 +121,10 @@
     .file-info{width:100%}
     .file-remove{align-self:flex-end}
 }
+.xacminh_page_right{
+}
+.xacminh_page_right_title {text-transform: uppercase;font-size: 26px ! IMPORTANT;font-weight: 600;}
+.xacminh_page_right_box{font-size: 14px;}
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .registration-wizard-container{margin:1rem auto;padding:0 .5rem}

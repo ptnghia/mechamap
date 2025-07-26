@@ -25,6 +25,12 @@ class Kernel extends ConsoleKernel
         // Cache maintenance
         $schedule->command('cache:prune-stale-tags')->hourly();
 
+        // Email queue maintenance
+        $schedule->command('email:retry-failed --batch-size=5')->everyFiveMinutes();
+        $schedule->command('email:retry-failed --cleanup')->daily();
+        $schedule->command('queue:health-check --fix')->everyTenMinutes();
+        $schedule->command('queue:health-check --alert')->hourly();
+
         // Backup database (if backup package is installed)
         // $schedule->command('backup:clean')->daily()->at('01:00');
         // $schedule->command('backup:run')->daily()->at('02:00');

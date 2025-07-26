@@ -8,13 +8,13 @@ Reusable wizard component với progress indicator, step navigation, và respons
 @props([
     'currentStep' => 1,
     'totalSteps' => 2,
-    'title' => t_ui('auth/register_mechamap_account'),
+    'title' => t_ui('auth.register_mechamap_account'),
     'subtitle' => null,
     'progress' => null,
     'showBackButton' => true,
     'showNextButton' => true,
-    'nextButtonText' => 'Tiếp tục',
-    'backButtonText' => 'Quay lại',
+    'nextButtonText' => __('ui.buttons.next'),
+    'backButtonText' => __('ui.buttons.back'),
     'nextButtonDisabled' => false,
     'formId' => 'wizardForm',
     'sessionData' => []

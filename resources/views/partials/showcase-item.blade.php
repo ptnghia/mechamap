@@ -2,15 +2,8 @@
 // Thiết lập các biến cần thiết cho showcase item với error handling
 $showcaseUrl = route('showcase.show', $showcase);
 $userName = $showcase->user->name ?? 'Người dùng';
-$userAvatar = 'https://ui-avatars.com/api/?name=' . urlencode($userName) . '&color=7F9CF5&background=EBF4FF';
-
-// Safe avatar handling - consistent với thread-item
-if (isset($showcase->user)) {
-    $userAvatar = $showcase->user->profile_photo_url ?? (
-        $showcase->user->avatar ??
-        $userAvatar
-    );
-}
+// Sử dụng method getAvatarUrl() để đảm bảo logic nhất quán
+$userAvatar = isset($showcase->user) ? $showcase->user->getAvatarUrl() : route('avatar.generate', ['initial' => 'U']);
 
 $showcaseTitle = $showcase->title ?? 'Untitled Showcase';
 $showcaseDescription = isset($showcase->description) ? Str::limit($showcase->description, 100) : '';
@@ -87,7 +80,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
         <div class="showcase-meta">
             <img src="{{ $userAvatar }}" alt="{{ $userName }}" class="author-avatar rounded-circle"
                  width="40" height="40" style="object-fit: cover;"
-                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($userName) }}&color=7F9CF5&background=EBF4FF'">
+                 onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
             <div class="author-info">
                 <h6 class="author-name">{{ $userName }}</h6>
                 <small class="text-muted">{{ $createdAt }}</small>

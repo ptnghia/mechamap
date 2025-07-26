@@ -3,18 +3,25 @@
 namespace App\Notifications;
 
 use App\Mail\Auth\VerifyEmailMail;
+use App\Notifications\CriticalEmailNotification;
 use Illuminate\Auth\Notifications\VerifyEmail as BaseVerifyEmail;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Mail;
 
-class CustomVerifyEmail extends BaseVerifyEmail implements ShouldQueue
+class CustomVerifyEmail extends BaseVerifyEmail
 {
-    use Queueable;
+    // Critical email - always sent immediately (no queue)
+
+    /**
+     * Determine if this email should be queued
+     * Email verification is critical and should never be queued
+     */
+    public function shouldQueue(): bool
+    {
+        return false;
+    }
 
     /**
      * Get the verification URL for the given notifiable.
@@ -43,15 +50,13 @@ class CustomVerifyEmail extends BaseVerifyEmail implements ShouldQueue
     public function toMail($notifiable)
     {
         $verificationUrl = $this->verificationUrl($notifiable);
-        
+
         // Get community stats for email
         $stats = $this->getCommunityStats();
 
-        // Send using our custom mail class
-        Mail::to($notifiable->email)->send(new VerifyEmailMail($notifiable, $verificationUrl, $stats));
-
-        // Return empty MailMessage to satisfy interface
-        return new MailMessage();
+        // Return our custom mail class with to() method
+        return (new VerifyEmailMail($notifiable, $verificationUrl, $stats))
+            ->to($notifiable->email);
     }
 
     /**

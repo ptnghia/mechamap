@@ -85,6 +85,109 @@ return [
         'auto_saving' => 'Auto saving...',
         'step_default' => 'Step :number',
         'errors_occurred' => 'Errors occurred',
+        'account_type_label' => 'Account Type',
+
+        // Step 2 - Business Information
+        'step2_title' => 'Business Information',
+        'step2_subtitle' => 'Complete business information to verify your account',
+
+        // Company Information
+        'company_info_title' => 'Company Information',
+        'company_info_description' => 'Please provide detailed information about your company',
+        'company_name_label' => 'Company Name',
+        'company_name_placeholder' => 'Enter full company name',
+        'company_name_help' => 'Full company name as in business license',
+        'business_license_label' => 'Business License Number',
+        'business_license_placeholder' => 'Enter business license number',
+        'tax_code_label' => 'Tax Code',
+        'tax_code_placeholder' => 'Enter tax code (10-13 digits)',
+        'tax_code_help' => 'Company tax code (10-13 digits)',
+        'company_description_label' => 'Company Description',
+        'company_description_help' => 'Brief description of company business activities',
+        'business_field_label' => 'Business Field',
+        'business_field_help' => 'Select main business fields of the company (multiple selection allowed)',
+
+        // Contact Information
+        'contact_info_title' => 'Contact Information',
+        'contact_info_description' => 'Official company contact information',
+        'company_phone' => 'Company Phone',
+        'company_email_label' => 'Company Email',
+        'company_email_help' => 'Official company email (different from personal email)',
+        'company_address' => 'Company Address',
+
+        // Verification Documents
+        'verification_docs_title' => 'Verification Documents',
+        'verification_docs_description' => 'Upload necessary documents to verify business',
+        'file_upload_title' => 'Upload Documents',
+        'file_upload_support' => 'Supported: PDF, JPG, PNG. ',
+        'file_upload_size' => 'Maximum 5MB per file.',
+        'choose_documents' => 'Choose Documents',
+        'document_suggestions' => 'Suggestions: Business License, Tax Registration Certificate, Office Lease Agreement',
+
+        // Important Notes
+        'important_notes_title' => 'Important Notes',
+        'note_verification_required' => 'Account needs verification before full feature access',
+        'note_verification_time' => 'Verification process may take 1-3 business days',
+        'note_email_notification' => 'You will receive email notification when verification is complete',
+        'note_pending_access' => 'During verification period, you can use basic features',
+
+        // Buttons
+        'back_button' => 'Back',
+        'complete_button' => 'Complete Registration',
+
+        // Success Messages
+        'step1_completed' => 'Basic information saved. Please complete business information.',
+
+        // Business categories
+        'business_categories' => [
+            'manufacturing' => 'Manufacturing & Production',
+            'automotive' => 'Automotive & Motorcycles',
+            'aerospace' => 'Aerospace & Space',
+            'energy' => 'Energy & Power',
+            'construction' => 'Construction & Infrastructure',
+            'electronics' => 'Electronics & Telecommunications',
+            'medical' => 'Medical & Healthcare Equipment',
+            'food_beverage' => 'Food & Beverage',
+            'textile' => 'Textile & Fashion',
+            'chemical' => 'Chemical & Pharmaceutical',
+            'mining' => 'Mining & Minerals',
+            'marine' => 'Marine & Shipbuilding',
+            'agriculture' => 'Agriculture & Aquaculture',
+            'packaging' => 'Packaging & Printing',
+            'consulting' => 'Consulting & Technical Services',
+            'education' => 'Education & Training',
+            'research' => 'Research & Development',
+            'other' => 'Other',
+        ],
+    ],
+
+    // Email verification
+    'verify_email' => [
+        'title' => 'Verify Email',
+        'subtitle' => 'Complete your account registration process',
+        'check_email_title' => 'Check your email',
+        'check_email_subtitle' => 'We have sent a verification link to your email',
+        'verification_sent' => 'A new verification link has been sent to your registered email address.',
+        'instructions_title' => 'Verification Instructions',
+        'instruction_1' => 'Open your email application on your device',
+        'instruction_2' => 'Find the email from <strong>MechaMap</strong> with subject "Verify Email Address"',
+        'instruction_3' => 'Click the <strong>"Verify Email"</strong> button in the email',
+        'instruction_4' => 'Return to this page to continue',
+        'resend_button' => 'Resend verification email',
+        'logout_button' => 'Logout',
+        'help_title' => 'Need help?',
+        'help_not_found_title' => 'Can\'t find the email?',
+        'help_not_found_desc' => 'Check your spam/junk mail folder or promotions folder',
+        'help_not_received_title' => 'Email not received?',
+        'help_not_received_desc' => 'Wait 2-3 minutes and check again, or click "Resend verification email"',
+        'help_wrong_email_title' => 'Wrong email?',
+        'help_wrong_email_desc' => 'Logout and <a href=":register_url" class="text-primary">register again</a> with the correct email',
+        'help_support_title' => 'Still having issues?',
+        'help_support_desc' => 'Contact support: <a href="mailto:support@mechamap.com" class="text-primary">support@mechamap.com</a>',
+        'auto_refresh_notice' => 'This page will automatically refresh after you verify your email',
+        'sending_button' => 'Sending...',
+        'verified_title' => 'Email verified!',
+        'redirecting' => 'Redirecting...',
     ],
 
     // Password Reset
