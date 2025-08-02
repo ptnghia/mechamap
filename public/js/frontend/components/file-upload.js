@@ -140,7 +140,14 @@ class FileUploadComponent {
         if (this.config.multiple) {
             const totalFiles = this.selectedFiles.length + files.length;
             if (totalFiles > this.config.maxFiles) {
-                this.showError(`Chỉ được phép tải lên tối đa ${this.config.maxFiles} file.`);
+                const currentCount = this.selectedFiles.length;
+                const remainingSlots = this.config.maxFiles - currentCount;
+
+                if (remainingSlots <= 0) {
+                    this.showError(`Đã đạt giới hạn tối đa ${this.config.maxFiles} tệp. Vui lòng xóa bớt tệp hiện có trước khi thêm mới.`);
+                } else {
+                    this.showError(`Chỉ có thể thêm ${remainingSlots} tệp nữa (tối đa ${this.config.maxFiles} tệp). Bạn đang chọn ${files.length} tệp.`);
+                }
                 return;
             }
         } else {
@@ -216,6 +223,7 @@ class FileUploadComponent {
         if (this.previewsContainer) {
             if (this.selectedFiles.length > 0) {
                 this.previewsContainer.classList.remove('d-none');
+                this.updateFileCounter();
             } else {
                 this.previewsContainer.classList.add('d-none');
             }
@@ -238,6 +246,41 @@ class FileUploadComponent {
         } else if (this.selectedFiles.length === 0) {
             this.uploadZone.style.display = 'block';
         }
+    }
+
+    updateFileCounter() {
+        if (!this.config.multiple) return;
+
+        // Find or create file counter element
+        let counterElement = this.previewsContainer.querySelector('.file-counter');
+        if (!counterElement) {
+            counterElement = document.createElement('div');
+            counterElement.className = 'file-counter alert alert-info py-2 px-3 mb-2';
+            this.previewsContainer.insertBefore(counterElement, this.previewsContainer.firstChild);
+        }
+
+        const currentCount = this.selectedFiles.length;
+        const maxFiles = this.config.maxFiles;
+        const remaining = maxFiles - currentCount;
+
+        let counterClass = 'alert-info';
+        let icon = 'fas fa-info-circle';
+
+        if (remaining <= 1) {
+            counterClass = 'alert-warning';
+            icon = 'fas fa-exclamation-triangle';
+        }
+        if (remaining === 0) {
+            counterClass = 'alert-danger';
+            icon = 'fas fa-exclamation-circle';
+        }
+
+        counterElement.className = `file-counter alert ${counterClass} py-2 px-3 mb-2`;
+        counterElement.innerHTML = `
+            <i class="${icon} me-2"></i>
+            <strong>${currentCount}/${maxFiles}</strong> tệp đã chọn
+            ${remaining > 0 ? `(còn lại ${remaining} tệp)` : '(đã đạt giới hạn)'}
+        `;
     }
 
     isImageFile(file) {

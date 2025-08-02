@@ -141,6 +141,7 @@ return [
         'file_upload_size' => 'Tối đa 5MB mỗi file.',
         'choose_documents' => 'Chọn tài liệu',
         'document_suggestions' => 'Gợi ý: Giấy phép kinh doanh, Giấy chứng nhận đăng ký thuế, Hợp đồng thuê văn phòng',
+        'file_upload_limits' => 'Tối đa 5 tệp, mỗi tệp không quá 10MB. Chỉ cần các tài liệu chính để xác minh.',
         'max_categories_error' => 'Chỉ được chọn tối đa 5 lĩnh vực kinh doanh',
         'business_description_required' => 'Vui lòng nhập mô tả về công ty',
 

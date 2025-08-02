@@ -257,7 +257,7 @@
                 :file-types="['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx']"
                 max-size="10MB"
                 :multiple="true"
-                :max-files="10"
+                :max-files="5"
                 :required="false"
                 label="{{ __('auth.register.verification_docs_title') }}"
                 help-text="{{ __('auth.register.verification_docs_description') }}"
@@ -272,9 +272,16 @@
                 </div>
             @enderror
 
-            <small class="form-text text-muted mt-2">
-                {{ __('auth.register.document_suggestions') }}
-            </small>
+            <div class="mt-2">
+                <small class="form-text text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    {{ __('auth.register.document_suggestions') }}
+                </small>
+                <small class="form-text text-primary d-block mt-1">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    {{ __('auth.register.file_upload_limits') }}
+                </small>
+            </div>
         </div>
 
         {{-- Verification Notice --}}
