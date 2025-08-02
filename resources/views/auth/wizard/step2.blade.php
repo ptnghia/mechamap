@@ -2,7 +2,7 @@
 
 @section('title', __('auth.register.step2_title'))
 
-@section('content')
+@section('full-width-content')
 <x-registration-wizard
     :current-step="$step"
     :total-steps="$totalSteps"
@@ -118,15 +118,17 @@
                     <i class="fas fa-align-left me-1"></i>
                     {{ __('auth.register.company_description_label') }}
                 </label>
-                <textarea class="form-control @error('business_description') is-invalid @enderror"
-                          id="business_description"
-                          name="business_description"
-                          rows="4"
-                          placeholder="Mô tả chi tiết về hoạt động kinh doanh, sản phẩm/dịch vụ chính của công ty..."
-                          required>{{ old('business_description', $sessionData['business_description'] ?? '') }}</textarea>
-                <div class="invalid-feedback">
-                    @error('business_description'){{ $message }}@enderror
-                </div>
+
+                <x-tinymce-editor
+                    name="business_description"
+                    id="business_description"
+                    :value="old('business_description', $sessionData['business_description'] ?? '')"
+                    placeholder="Mô tả chi tiết về hoạt động kinh doanh, sản phẩm/dịch vụ chính của công ty..."
+                    context="minimal"
+                    :height="150"
+                    :required="true"
+                    class="@error('business_description') is-invalid @enderror" />
+
                 <small class="form-text text-muted">
                     {{ __('auth.register.company_description_help') }}
                 </small>
@@ -146,7 +148,7 @@
 
                     <div class="row">
                         @foreach($categories as $category)
-                            <div class="col-md-4 col-sm-6 mb-2">
+                            <div class="col-md-4 col-sm-6">
                                 <div class="form-check">
                                     <input class="form-check-input"
                                            type="checkbox"
@@ -250,43 +252,29 @@
                 {{ __('auth.register.verification_docs_description') }}
             </p>
 
-            <div class="document-upload">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-content">
-                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <h5>{{ __('auth.register.file_upload_title') }}</h5>
-                        <p class="text-muted">
-                            {{ __('auth.register.file_upload_support') }}<br>
-                            {{ __('auth.register.file_upload_size') }}
-                        </p>
-                        <input type="file"
-                               id="verification_documents"
-                               name="verification_documents[]"
-                               multiple
-                               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                               class="d-none">
-                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('verification_documents').click()">
-                            <i class="fas fa-plus me-2"></i>
-                            {{ __('auth.register.choose_documents') }}
-                        </button>
-                    </div>
+            <x-file-upload
+                name="verification_documents"
+                :file-types="['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx']"
+                max-size="10MB"
+                :multiple="true"
+                :max-files="10"
+                :required="false"
+                label="{{ __('auth.register.verification_docs_title') }}"
+                help-text="{{ __('auth.register.verification_docs_description') }}"
+                :show-progress="true"
+                :show-preview="true"
+                :drag-drop="true"
+                id="verification-docs-upload" />
+
+            @error('verification_documents')
+                <div class="invalid-feedback d-block mt-2">
+                    {{ $message }}
                 </div>
+            @enderror
 
-                <div class="uploaded-files mt-3" id="uploadedFiles" style="display: none;">
-                    <h6>Tài liệu đã chọn:</h6>
-                    <div class="file-list" id="fileList"></div>
-                </div>
-
-                @error('verification_documents')
-                    <div class="invalid-feedback d-block">
-                        {{ $message }}
-                    </div>
-                @enderror
-
-                <small class="form-text text-muted">
-                    {{ __('auth.register.document_suggestions') }}
-                </small>
-            </div>
+            <small class="form-text text-muted mt-2">
+                {{ __('auth.register.document_suggestions') }}
+            </small>
         </div>
 
         {{-- Verification Notice --}}
@@ -307,163 +295,10 @@
 </x-registration-wizard>
 @endsection
 
-@push('styles')
-<link href="{{ asset('css/frontend/registration-wizard.css') }}" rel="stylesheet">
-<style>
-.account-type-display .alert {
-    border-left: 4px solid #007bff;
-}
-
-.business-categories .form-check {
-    margin-bottom: 0.5rem;
-}
-
-.upload-area {
-    border: 2px dashed #dee2e6;
-    border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.upload-area:hover {
-    border-color: #007bff;
-    background-color: #f8f9fa;
-}
-
-.upload-area.dragover {
-    border-color: #007bff;
-    background-color: #e3f2fd;
-}
-
-.upload-icon {
-    font-size: 3rem;
-    color: #6c757d;
-    margin-bottom: 1rem;
-}
-
-.file-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-}
-
-.file-info {
-    display: flex;
-    align-items: center;
-}
-
-.file-icon {
-    margin-right: 0.5rem;
-    color: #007bff;
-}
-
-.file-remove {
-    color: #dc3545;
-    cursor: pointer;
-}
-
-.verification-notice {
-    margin-top: 2rem;
-}
-</style>
-@endpush
-
 @push('scripts')
 <script src="{{ asset('js/frontend/registration-wizard.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // File upload handling
-    const uploadArea = document.getElementById('uploadArea');
-    const fileInput = document.getElementById('verification_documents');
-    const uploadedFiles = document.getElementById('uploadedFiles');
-    const fileList = document.getElementById('fileList');
-    let selectedFiles = [];
-
-    // Drag and drop functionality
-    uploadArea.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        uploadArea.classList.add('dragover');
-    });
-
-    uploadArea.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-    });
-
-    uploadArea.addEventListener('drop', function(e) {
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        handleFiles(e.dataTransfer.files);
-    });
-
-    fileInput.addEventListener('change', function(e) {
-        handleFiles(e.target.files);
-    });
-
-    function handleFiles(files) {
-        for (let file of files) {
-            if (selectedFiles.length >= 5) {
-                alert('Chỉ được tải lên tối đa 5 tài liệu');
-                break;
-            }
-
-            if (file.size > 5 * 1024 * 1024) {
-                alert(`File ${file.name} quá lớn. Kích thước tối đa là 5MB.`);
-                continue;
-            }
-
-            selectedFiles.push(file);
-        }
-
-        updateFileList();
-    }
-
-    function updateFileList() {
-        if (selectedFiles.length === 0) {
-            uploadedFiles.style.display = 'none';
-            return;
-        }
-
-        uploadedFiles.style.display = 'block';
-        fileList.innerHTML = '';
-
-        selectedFiles.forEach((file, index) => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.innerHTML = `
-                <div class="file-info">
-                    <i class="fas fa-file file-icon"></i>
-                    <span>${file.name} (${formatFileSize(file.size)})</span>
-                </div>
-                <i class="fas fa-times file-remove" onclick="removeFile(${index})"></i>
-            `;
-            fileList.appendChild(fileItem);
-        });
-
-        // Update file input
-        const dt = new DataTransfer();
-        selectedFiles.forEach(file => dt.items.add(file));
-        fileInput.files = dt.files;
-    }
-
-    window.removeFile = function(index) {
-        selectedFiles.splice(index, 1);
-        updateFileList();
-    };
-
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
 
     // Business categories validation
     const categoryCheckboxes = document.querySelectorAll('input[name="business_categories[]"]');
@@ -472,10 +307,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const checkedCount = document.querySelectorAll('input[name="business_categories[]"]:checked').length;
             if (checkedCount > 5) {
                 this.checked = false;
-                alert('Chỉ được chọn tối đa 5 lĩnh vực kinh doanh');
+                alert('{{ __("auth.register.max_categories_error") }}');
             }
         });
     });
+
+    // Form validation enhancement
+    const form = document.getElementById('step2Form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            // Validate TinyMCE content
+            const businessDescEditor = tinymce.get('business_description');
+            if (businessDescEditor) {
+                const content = businessDescEditor.getContent().trim();
+                if (!content) {
+                    e.preventDefault();
+                    alert('{{ __("auth.register.business_description_required") }}');
+                    businessDescEditor.focus();
+                    return false;
+                }
+            }
+        });
+    }
 });
 </script>
 @endpush

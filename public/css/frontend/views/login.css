@@ -94,9 +94,9 @@
 .account-option .account-description{font-size:.875rem;color:#6c757d;font-weight:400;line-height:1.4}
 .business-notice{margin-top:1rem}
 .business-categories .row{margin:0}
-.business-categories .form-check{padding:.5rem;border-radius:6px;transition:background-color .2s ease-out}
+.business-categories .form-check{padding: 5px 10px;border-radius:6px;transition:background-color .2s ease-out}
 .business-categories .form-check:hover{background-color:#f8f9fa}
-.business-categories .form-check-input:checked + .form-check-label{color:#007bff;font-weight:500}
+.business-categories .form-check-input:checked + .form-check-label{color: var(--bs-primary);font-weight:500}
 .upload-area{border:2px dashed #dee2e6;border-radius:12px;padding:2rem;text-align:center;transition:all .3s ease-out;cursor:pointer;background:#fafbfc}
 .upload-area:hover{border-color:#007bff;background-color:#f8f9fa}
 .upload-area.dragover{border-color:#007bff;background-color:#e3f2fd;transform:scale(1.02)}
