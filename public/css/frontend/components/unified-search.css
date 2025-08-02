@@ -13,6 +13,7 @@
     max-height: 500px;
     overflow-y: auto;
     z-index: 1050;
+    margin-top: 16px;
 }
 
 /* Search Categories */
@@ -28,8 +29,8 @@
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    padding: 0.5rem 1rem 0;
-    color: #495057;
+    padding: 10px 15px;
+    color: #495057 !important;
     background-color: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
     margin: 0;
@@ -217,7 +218,7 @@
 }
 
 /* Category color coding */
-.search-category-title.text-primary { color: #007bff !important; }
+.search-category-title.text-primary {}
 .search-category-title.text-success { color: #28a745 !important; }
 .search-category-title.text-warning { color: #ffc107 !important; }
 .search-category-title.text-info { color: #17a2b8 !important; }

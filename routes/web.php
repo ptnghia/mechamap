@@ -640,7 +640,7 @@ Route::prefix('search')->name('search.')->group(function () {
 
     // Search API endpoints
     Route::get('/api', [AdvancedSearchController::class, 'search'])->name('api');
-    Route::get('/ajax', [AdvancedSearchController::class, 'ajaxSearch'])->name('ajax');
+    // Legacy /ajax route removed - now using /api/v1/search/unified
     Route::get('/autocomplete', [AdvancedSearchController::class, 'autocomplete'])->name('autocomplete');
     Route::get('/suggestions', [AdvancedSearchController::class, 'suggestions'])->name('suggestions');
     Route::get('/facets', [AdvancedSearchController::class, 'facets'])->name('facets');
@@ -653,10 +653,7 @@ Route::prefix('search')->name('search.')->group(function () {
     });
 });
 
-// Unified AJAX search for header
-Route::get('/ajax-search', function (Request $request) {
-    return app(App\Http\Controllers\UnifiedSearchController::class)->ajaxSearch($request);
-})->name('search.ajax.unified');
+// Legacy AJAX search route removed - now using /api/v1/search/unified
 
 // Real-time routes removed - now handled by Node.js WebSocket server
 Route::get('/members', [MemberController::class, 'index'])->name('members.index');

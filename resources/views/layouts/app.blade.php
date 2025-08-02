@@ -359,8 +359,7 @@
     <!-- Mobile Navigation Script -->
     <script src="{{ asset_versioned('js/mobile-nav.js') }}"></script>
 
-    <!-- Header System - Consolidated search, menu, and navigation -->
-    <script src="{{ asset_versioned('js/header.js') }}"></script>
+    <!-- Header System - Legacy header.js removed, using unified search in header component -->
 
     <!-- Components Script -->
     <script src="{{ asset_versioned('js/components.js') }}"></script>
