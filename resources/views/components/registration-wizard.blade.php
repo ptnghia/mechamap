@@ -4,6 +4,44 @@ Reusable wizard component với progress indicator, step navigation, và respons
 --}}
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/login.css') }}">
+<style>
+/* Fix for double loading icons in wizard button */
+.btn-wizard-next .btn-text,
+.btn-wizard-next .btn-loading {
+    transition: all 0.2s ease;
+}
+
+.btn-wizard-next .btn-loading {
+    display: none !important;
+}
+
+.btn-wizard-next .btn-loading:not(.d-none) {
+    display: inline-flex !important;
+}
+
+.btn-wizard-next .btn-text.d-none {
+    display: none !important;
+}
+
+/* Only show loading state when explicitly submitting */
+.btn-wizard-next[data-submitting] .btn-text {
+    display: none !important;
+}
+
+.btn-wizard-next[data-submitting] .btn-loading {
+    display: inline-flex !important;
+}
+
+/* When disabled due to validation, keep normal text visible */
+.btn-wizard-next[disabled]:not([data-submitting]) .btn-text {
+    display: inline-flex !important;
+    opacity: 0.6;
+}
+
+.btn-wizard-next[disabled]:not([data-submitting]) .btn-loading {
+    display: none !important;
+}
+</style>
 @endpush
 @props([
     'currentStep' => 1,
@@ -243,26 +281,48 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initial check
         updateNextButtonState();
 
-        // Handle form submission with loading state
-        form.addEventListener('submit', function(e) {
-            if (!form.checkValidity()) {
-                e.preventDefault();
-                return;
-            }
+        // Handle form submission with loading state (prevent multiple listeners)
+        if (!form.hasAttribute('data-submit-handler-attached')) {
+            form.setAttribute('data-submit-handler-attached', 'true');
 
-            // Show loading state
-            const btnText = nextBtn.querySelector('.btn-text');
-            const btnLoading = nextBtn.querySelector('.btn-loading');
+            form.addEventListener('submit', function(e) {
+                // Prevent multiple submissions
+                if (nextBtn.hasAttribute('data-submitting')) {
+                    e.preventDefault();
+                    return false;
+                }
 
-            if (btnText && btnLoading) {
-                btnText.classList.add('d-none');
-                btnLoading.classList.remove('d-none');
-                nextBtn.disabled = true;
-            }
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    return false;
+                }
 
-            // Prevent double submission
-            nextBtn.style.pointerEvents = 'none';
-        });
+                // Mark as submitting
+                nextBtn.setAttribute('data-submitting', 'true');
+
+                // Show loading state
+                const btnText = nextBtn.querySelector('.btn-text');
+                const btnLoading = nextBtn.querySelector('.btn-loading');
+
+                if (btnText && btnLoading) {
+                    // Force hide text and show loading
+                    btnText.style.display = 'none';
+                    btnLoading.style.display = 'inline-flex';
+                    btnText.classList.add('d-none');
+                    btnLoading.classList.remove('d-none');
+                    nextBtn.disabled = true;
+
+                    // Debug log
+                    console.log('🔄 Loading state applied - hiding duplicate icons');
+                }
+
+                // Prevent double submission
+                nextBtn.style.pointerEvents = 'none';
+
+                // Allow form to submit
+                return true;
+            });
+        }
     }
 });
 </script>
