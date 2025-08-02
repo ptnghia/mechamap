@@ -31,7 +31,16 @@ class FileUploadComponent {
         this.fileInput = document.getElementById(`${componentId}-input`);
         this.browseBtn = document.getElementById(`${componentId}-browse`);
         this.previewsContainer = document.getElementById(`${componentId}-previews`);
+
+        // Separate containers for images and files
+        this.imagePreviewsSection = document.getElementById(`${componentId}-image-previews-section`);
+        this.imagePreviewContainer = document.getElementById(`${componentId}-image-preview-container`);
+        this.filePreviewsSection = document.getElementById(`${componentId}-file-previews-section`);
+        this.filePreviewContainer = document.getElementById(`${componentId}-file-preview-container`);
+
+        // Legacy container for backward compatibility
         this.previewContainer = document.getElementById(`${componentId}-preview-container`);
+
         this.progressContainer = document.getElementById(`${componentId}-progress`);
         this.errorsContainer = document.getElementById(`${componentId}-errors`);
 
@@ -189,20 +198,34 @@ class FileUploadComponent {
     }
 
     updatePreviews() {
-        if (!this.config.showPreview || !this.previewContainer) return;
+        if (!this.config.showPreview) return;
 
-        // Show previews container
-        if (this.previewsContainer && this.selectedFiles.length > 0) {
-            this.previewsContainer.classList.remove('d-none');
+        // Separate files by type
+        const imageFiles = [];
+        const regularFiles = [];
+
+        this.selectedFiles.forEach((file, index) => {
+            if (this.isImageFile(file)) {
+                imageFiles.push({ file, index });
+            } else {
+                regularFiles.push({ file, index });
+            }
+        });
+
+        // Show/hide main previews container
+        if (this.previewsContainer) {
+            if (this.selectedFiles.length > 0) {
+                this.previewsContainer.classList.remove('d-none');
+            } else {
+                this.previewsContainer.classList.add('d-none');
+            }
         }
 
-        // Clear existing previews
-        this.previewContainer.innerHTML = '';
+        // Handle image previews
+        this.updateImagePreviews(imageFiles);
 
-        // Add preview for each file
-        this.selectedFiles.forEach((file, index) => {
-            this.addFilePreview(file, index);
-        });
+        // Handle file previews
+        this.updateFilePreviews(regularFiles);
 
         // Add "add more" button for multiple uploads
         if (this.config.multiple && this.selectedFiles.length < this.config.maxFiles) {
@@ -214,77 +237,129 @@ class FileUploadComponent {
             this.uploadZone.style.display = 'none';
         } else if (this.selectedFiles.length === 0) {
             this.uploadZone.style.display = 'block';
-            if (this.previewsContainer) {
-                this.previewsContainer.classList.add('d-none');
-            }
         }
     }
 
+    isImageFile(file) {
+        return file.type.startsWith('image/') ||
+               /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
+    }
+
+    updateImagePreviews(imageFiles) {
+        if (!this.imagePreviewsSection || !this.imagePreviewContainer) return;
+
+        if (imageFiles.length > 0) {
+            this.imagePreviewsSection.classList.remove('d-none');
+            this.imagePreviewContainer.innerHTML = '';
+
+            imageFiles.forEach(({ file, index }) => {
+                this.addImagePreview(file, index);
+            });
+        } else {
+            this.imagePreviewsSection.classList.add('d-none');
+        }
+    }
+
+    updateFilePreviews(regularFiles) {
+        if (!this.filePreviewsSection || !this.filePreviewContainer) return;
+
+        if (regularFiles.length > 0) {
+            this.filePreviewsSection.classList.remove('d-none');
+            this.filePreviewContainer.innerHTML = '';
+
+            regularFiles.forEach(({ file, index }) => {
+                this.addFilePreview(file, index);
+            });
+        } else {
+            this.filePreviewsSection.classList.add('d-none');
+        }
+    }
+
+    addImagePreview(file, index) {
+        const fileSize = this.formatFileSize(file.size);
+        const fileExtension = file.name.split('.').pop().toUpperCase();
+
+        const previewCol = document.createElement('div');
+        previewCol.className = 'col-6 col-md-3 mb-2'; // 2 per row on mobile, 4 per row on desktop
+
+        const previewItem = document.createElement('div');
+        previewItem.className = 'image-preview-item';
+        previewItem.innerHTML = `
+            <button type="button" class="remove-file" onclick="fileUploadComponents['${this.componentId}'].removeFile(${index})">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="${URL.createObjectURL(file)}" alt="${file.name}" class="image-thumbnail">
+            <div class="image-info">
+                <div class="image-format">${fileExtension}</div>
+                <div class="image-size">${fileSize}</div>
+            </div>
+        `;
+
+        // Add click to preview for images
+        previewItem.addEventListener('click', (e) => {
+            if (!e.target.closest('.remove-file')) {
+                this.showImageModal(URL.createObjectURL(file), file.name);
+            }
+        });
+
+        previewCol.appendChild(previewItem);
+        this.imagePreviewContainer.appendChild(previewCol);
+    }
+
     addFilePreview(file, index) {
-        const isImage = file.type.startsWith('image/');
         const fileSize = this.formatFileSize(file.size);
         const fileIcon = this.getFileIcon(file);
 
         const previewCol = document.createElement('div');
-        previewCol.className = 'col-md-6 col-lg-4 mb-2';
+        previewCol.className = 'col-md-6 mb-2'; // 2 per row on desktop, 1 per row on mobile
 
         const previewItem = document.createElement('div');
-        previewItem.className = `file-preview-item ${isImage ? 'image-preview' : ''}`;
+        previewItem.className = 'file-preview-item';
         previewItem.innerHTML = `
             <button type="button" class="remove-file" onclick="fileUploadComponents['${this.componentId}'].removeFile(${index})">
                 <i class="fas fa-times"></i>
             </button>
             <div class="d-flex align-items-center">
                 <div class="file-icon">
-                    ${isImage ?
-                        `<img src="${URL.createObjectURL(file)}" alt="${file.name}">` :
-                        `<i class="${fileIcon}"></i>`
-                    }
+                    <i class="${fileIcon}"></i>
                 </div>
                 <div class="file-info">
                     <div class="file-name" title="${file.name}">
-                        ${this.truncateFileName(file.name, 20)}
+                        ${this.truncateFileName(file.name, 30)}
                     </div>
                     <div class="file-size">${fileSize}</div>
                 </div>
             </div>
         `;
 
-        // Add click to preview for images
-        if (isImage) {
-            previewItem.addEventListener('click', (e) => {
-                if (!e.target.closest('.remove-file')) {
-                    this.showImageModal(URL.createObjectURL(file), file.name);
-                }
-            });
-            previewItem.style.cursor = 'pointer';
-        }
-
         previewCol.appendChild(previewItem);
-        this.previewContainer.appendChild(previewCol);
+        this.filePreviewContainer.appendChild(previewCol);
     }
 
     addMoreButton() {
-        const addMoreCol = document.createElement('div');
-        addMoreCol.className = 'col-md-6 col-lg-4 mb-2';
+        // Add to file preview container (for non-images)
+        if (this.filePreviewContainer) {
+            const addMoreCol = document.createElement('div');
+            addMoreCol.className = 'col-md-6 mb-2';
 
-        const addMoreBtn = document.createElement('div');
-        addMoreBtn.className = 'file-preview-item add-more-btn';
-        addMoreBtn.innerHTML = `
-            <div class="add-more-content">
-                <i class="fas fa-plus"></i>
-                <span>Thêm file</span>
-            </div>
-        `;
+            const addMoreBtn = document.createElement('div');
+            addMoreBtn.className = 'file-preview-item add-more-btn';
+            addMoreBtn.innerHTML = `
+                <div class="add-more-content">
+                    <i class="fas fa-plus"></i>
+                    <span>Thêm file</span>
+                </div>
+            `;
 
-        addMoreBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // Prevent event bubbling
-            this.fileInput.click();
-        });
+            addMoreBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+                this.fileInput.click();
+            });
 
-        addMoreCol.appendChild(addMoreBtn);
-        this.previewContainer.appendChild(addMoreCol);
+            addMoreCol.appendChild(addMoreBtn);
+            this.filePreviewContainer.appendChild(addMoreCol);
+        }
     }
 
     removeFile(index) {

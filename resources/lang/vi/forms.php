@@ -11,7 +11,8 @@ return [
         'or' => 'hoặc',
         'select_from_computer' => 'Chọn từ máy tính',
         'select_files' => 'Chọn tệp',
-        'files_selected' => 'tệp đã chọn',
+        'files_selected' => 'Tệp đã chọn',
+        'images_selected' => 'Hình ảnh đã chọn',
         'uploading' => 'Đang tải lên...'
     ],
 

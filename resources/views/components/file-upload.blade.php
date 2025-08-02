@@ -172,11 +172,23 @@
         <!-- File Previews Container -->
         @if($showPreview)
         <div class="file-previews mt-3 d-none" id="{{ $componentId }}-previews">
-            <h6 class="mb-2">
-                <i class="fas fa-files me-1"></i>
-                {{ __('forms.upload.files_selected') }}
-            </h6>
-            <div class="row g-2" id="{{ $componentId }}-preview-container"></div>
+            <!-- Image Previews -->
+            <div class="image-previews-section d-none" id="{{ $componentId }}-image-previews-section">
+                <h6 class="mb-2">
+                    <i class="fas fa-images me-1"></i>
+                    {{ __('forms.upload.images_selected') }}
+                </h6>
+                <div class="row g-2" id="{{ $componentId }}-image-preview-container"></div>
+            </div>
+
+            <!-- File Previews -->
+            <div class="file-previews-section d-none" id="{{ $componentId }}-file-previews-section">
+                <h6 class="mb-2">
+                    <i class="fas fa-files me-1"></i>
+                    {{ __('forms.upload.files_selected') }}
+                </h6>
+                <div class="row g-2" id="{{ $componentId }}-file-preview-container"></div>
+            </div>
         </div>
         @endif
 
