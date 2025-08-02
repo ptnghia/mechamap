@@ -206,4 +206,4 @@
 </script>
 @endpush
 
-<!-- Authentication Modal will be created dynamically by auth-modal.js -->
+
