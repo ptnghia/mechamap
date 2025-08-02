@@ -630,13 +630,6 @@
 }
 
 .image-preview {
-    margin-top: .5rem;
-    position: relative;
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: .25rem;
-    overflow: hidden
 }
 
 .image-preview img {
@@ -1145,10 +1138,6 @@
 }
 
 .image-preview {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: all .2s ease
 }
 
 .image-preview:hover {
@@ -5338,7 +5327,8 @@ body.user-frontend {
 .upload-text .text-primary {
     color: var(--bs-primary) !important;
     cursor: pointer;
-    text-decoration: underline
+    text-decoration: underline;
+    border: none;
 }
 
 .image-previews-grid {
@@ -5351,14 +5341,6 @@ body.user-frontend {
 }
 
 .image-preview {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
-    border: 2px solid #f3f4f6;
-    transition: all .3s ease;
-    aspect-ratio: 1;
-    cursor: pointer
 }
 
 .image-preview:hover {
@@ -5409,11 +5391,6 @@ body.user-frontend {
 }
 
 .file-name {
-    color: white;
-    font-size: .75rem;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    margin-bottom: 2px
 }
 
 .file-size {
@@ -5748,13 +5725,6 @@ body.user-frontend {
 }
 
 .image-preview {
-    margin-right: .5rem;
-    margin-bottom: .5rem;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-    display: flex
 }
 
 .image-preview img {

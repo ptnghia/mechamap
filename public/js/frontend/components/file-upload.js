@@ -7,12 +7,12 @@ class FileUploadComponent {
     constructor(componentId) {
         this.componentId = componentId;
         this.component = document.getElementById(componentId);
-        
+
         if (!this.component) {
             console.error(`FileUploadComponent: Component with ID ${componentId} not found`);
             return;
         }
-        
+
         // Get component configuration from data attributes
         this.config = {
             name: this.component.dataset.name,
@@ -24,7 +24,7 @@ class FileUploadComponent {
             showPreview: this.component.dataset.showPreview === 'true',
             dragDrop: this.component.dataset.dragDrop === 'true'
         };
-        
+
         // Get DOM elements
         this.uploadArea = document.getElementById(`${componentId}-area`);
         this.uploadZone = document.getElementById(`${componentId}-zone`);
@@ -34,82 +34,99 @@ class FileUploadComponent {
         this.previewContainer = document.getElementById(`${componentId}-preview-container`);
         this.progressContainer = document.getElementById(`${componentId}-progress`);
         this.errorsContainer = document.getElementById(`${componentId}-errors`);
-        
+
         // State
         this.selectedFiles = [];
         this.isUploading = false;
-        
+
         // Initialize
         this.init();
     }
-    
+
     init() {
+        // Check if already initialized
+        if (this.component.hasAttribute('data-file-upload-initialized')) {
+            console.warn(`FileUploadComponent ${this.componentId} is already initialized`);
+            return;
+        }
+
         this.setupEventListeners();
         this.clearErrors();
+
+        // Mark as initialized
+        this.component.setAttribute('data-file-upload-initialized', 'true');
     }
-    
+
     setupEventListeners() {
         // Browse button click
         if (this.browseBtn) {
             this.browseBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling to upload zone
                 this.fileInput.click();
             });
         }
-        
+
         // File input change
         this.fileInput.addEventListener('change', (e) => {
             this.handleFileSelection(Array.from(e.target.files));
         });
-        
+
         // Drag & drop events
         if (this.config.dragDrop) {
             this.setupDragDrop();
         }
-        
-        // Click on upload zone
+
+        // Click on upload zone (but not on browse button)
         if (this.config.dragDrop && this.uploadZone) {
-            this.uploadZone.addEventListener('click', () => {
-                this.fileInput.click();
+            this.uploadZone.addEventListener('click', (e) => {
+                // Only trigger if click is not on browse button or its children
+                if (!this.browseBtn || (!this.browseBtn.contains(e.target) && e.target !== this.browseBtn)) {
+                    // Additional check: make sure we're not clicking on any button or link
+                    if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' &&
+                        !e.target.closest('button') && !e.target.closest('a')) {
+                        this.fileInput.click();
+                    }
+                }
             });
         }
     }
-    
+
     setupDragDrop() {
         // Prevent default drag behaviors
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             this.uploadArea.addEventListener(eventName, this.preventDefaults, false);
             document.body.addEventListener(eventName, this.preventDefaults, false);
         });
-        
+
         // Highlight drop area when item is dragged over it
         ['dragenter', 'dragover'].forEach(eventName => {
             this.uploadArea.addEventListener(eventName, () => {
                 this.uploadArea.classList.add('drag-over');
             }, false);
         });
-        
+
         ['dragleave', 'drop'].forEach(eventName => {
             this.uploadArea.addEventListener(eventName, () => {
                 this.uploadArea.classList.remove('drag-over');
             }, false);
         });
-        
+
         // Handle dropped files
         this.uploadArea.addEventListener('drop', (e) => {
             const files = Array.from(e.dataTransfer.files);
             this.handleFileSelection(files);
         }, false);
     }
-    
+
     preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
     }
-    
+
     handleFileSelection(files) {
         this.clearErrors();
-        
+
         // Validate file count for multiple uploads
         if (this.config.multiple) {
             const totalFiles = this.selectedFiles.length + files.length;
@@ -124,7 +141,7 @@ class FileUploadComponent {
                 this.previewContainer.innerHTML = '';
             }
         }
-        
+
         // Validate and add files
         const validFiles = [];
         for (const file of files) {
@@ -132,7 +149,7 @@ class FileUploadComponent {
                 validFiles.push(file);
             }
         }
-        
+
         if (validFiles.length > 0) {
             this.selectedFiles.push(...validFiles);
             this.updateFileInput();
@@ -140,7 +157,7 @@ class FileUploadComponent {
             this.emitEvent('filesAdded', { files: validFiles });
         }
     }
-    
+
     validateFile(file) {
         // Check file size
         if (file.size > this.config.maxSize) {
@@ -148,50 +165,50 @@ class FileUploadComponent {
             this.showError(`File "${file.name}" quá lớn. Kích thước tối đa: ${maxSizeMB}MB`);
             return false;
         }
-        
+
         // Check file type
         const fileExtension = file.name.split('.').pop().toLowerCase();
-        const isValidType = this.config.fileTypes.some(type => 
+        const isValidType = this.config.fileTypes.some(type =>
             type.toLowerCase() === fileExtension
         );
-        
+
         if (!isValidType) {
             const allowedTypes = this.config.fileTypes.map(t => t.toUpperCase()).join(', ');
             this.showError(`File "${file.name}" không được hỗ trợ. Các định dạng được phép: ${allowedTypes}`);
             return false;
         }
-        
+
         return true;
     }
-    
+
     updateFileInput() {
         // Update the actual file input with selected files
         const dt = new DataTransfer();
         this.selectedFiles.forEach(file => dt.items.add(file));
         this.fileInput.files = dt.files;
     }
-    
+
     updatePreviews() {
         if (!this.config.showPreview || !this.previewContainer) return;
-        
+
         // Show previews container
         if (this.previewsContainer && this.selectedFiles.length > 0) {
             this.previewsContainer.classList.remove('d-none');
         }
-        
+
         // Clear existing previews
         this.previewContainer.innerHTML = '';
-        
+
         // Add preview for each file
         this.selectedFiles.forEach((file, index) => {
             this.addFilePreview(file, index);
         });
-        
+
         // Add "add more" button for multiple uploads
         if (this.config.multiple && this.selectedFiles.length < this.config.maxFiles) {
             this.addMoreButton();
         }
-        
+
         // Hide upload zone if files are selected and not multiple
         if (!this.config.multiple && this.selectedFiles.length > 0) {
             this.uploadZone.style.display = 'none';
@@ -202,15 +219,15 @@ class FileUploadComponent {
             }
         }
     }
-    
+
     addFilePreview(file, index) {
         const isImage = file.type.startsWith('image/');
         const fileSize = this.formatFileSize(file.size);
         const fileIcon = this.getFileIcon(file);
-        
+
         const previewCol = document.createElement('div');
         previewCol.className = 'col-md-6 col-lg-4 mb-2';
-        
+
         const previewItem = document.createElement('div');
         previewItem.className = `file-preview-item ${isImage ? 'image-preview' : ''}`;
         previewItem.innerHTML = `
@@ -219,7 +236,7 @@ class FileUploadComponent {
             </button>
             <div class="d-flex align-items-center">
                 <div class="file-icon">
-                    ${isImage ? 
+                    ${isImage ?
                         `<img src="${URL.createObjectURL(file)}" alt="${file.name}">` :
                         `<i class="${fileIcon}"></i>`
                     }
@@ -232,7 +249,7 @@ class FileUploadComponent {
                 </div>
             </div>
         `;
-        
+
         // Add click to preview for images
         if (isImage) {
             previewItem.addEventListener('click', (e) => {
@@ -242,15 +259,15 @@ class FileUploadComponent {
             });
             previewItem.style.cursor = 'pointer';
         }
-        
+
         previewCol.appendChild(previewItem);
         this.previewContainer.appendChild(previewCol);
     }
-    
+
     addMoreButton() {
         const addMoreCol = document.createElement('div');
         addMoreCol.className = 'col-md-6 col-lg-4 mb-2';
-        
+
         const addMoreBtn = document.createElement('div');
         addMoreBtn.className = 'file-preview-item add-more-btn';
         addMoreBtn.innerHTML = `
@@ -259,15 +276,17 @@ class FileUploadComponent {
                 <span>Thêm file</span>
             </div>
         `;
-        
-        addMoreBtn.addEventListener('click', () => {
+
+        addMoreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent event bubbling
             this.fileInput.click();
         });
-        
+
         addMoreCol.appendChild(addMoreBtn);
         this.previewContainer.appendChild(addMoreCol);
     }
-    
+
     removeFile(index) {
         if (index >= 0 && index < this.selectedFiles.length) {
             const removedFile = this.selectedFiles.splice(index, 1)[0];
@@ -276,29 +295,29 @@ class FileUploadComponent {
             this.emitEvent('fileRemoved', { file: removedFile, index });
         }
     }
-    
+
     showProgress(progress = 0) {
         if (!this.config.showProgress || !this.progressContainer) return;
-        
+
         this.progressContainer.classList.remove('d-none');
         const progressBar = this.progressContainer.querySelector('.progress-bar');
         if (progressBar) {
             progressBar.style.width = `${progress}%`;
         }
-        
+
         this.component.classList.add('loading');
         this.isUploading = true;
     }
-    
+
     hideProgress() {
         if (this.progressContainer) {
             this.progressContainer.classList.add('d-none');
         }
-        
+
         this.component.classList.remove('loading');
         this.isUploading = false;
     }
-    
+
     showError(message) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'upload-error';
@@ -309,18 +328,18 @@ class FileUploadComponent {
                 <i class="fas fa-times"></i>
             </button>
         `;
-        
+
         this.errorsContainer.appendChild(errorDiv);
         this.uploadArea.classList.add('has-error');
-        
+
         this.emitEvent('validationError', { message });
     }
-    
+
     clearErrors() {
         this.errorsContainer.innerHTML = '';
         this.uploadArea.classList.remove('has-error');
     }
-    
+
     // Utility methods
     formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
@@ -329,10 +348,10 @@ class FileUploadComponent {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-    
+
     getFileIcon(file) {
         const extension = file.name.split('.').pop().toLowerCase();
-        
+
         const iconMap = {
             // Images
             'jpg': 'fas fa-image text-success',
@@ -340,12 +359,12 @@ class FileUploadComponent {
             'png': 'fas fa-image text-success',
             'gif': 'fas fa-image text-success',
             'webp': 'fas fa-image text-success',
-            
+
             // Documents
             'pdf': 'fas fa-file-pdf text-danger',
             'doc': 'fas fa-file-word text-primary',
             'docx': 'fas fa-file-word text-primary',
-            
+
             // CAD files
             'dwg': 'fas fa-cube text-info',
             'dxf': 'fas fa-cube text-info',
@@ -356,20 +375,20 @@ class FileUploadComponent {
             'iges': 'fas fa-cube text-info',
             'igs': 'fas fa-cube text-info'
         };
-        
+
         return iconMap[extension] || 'fas fa-file text-secondary';
     }
-    
+
     truncateFileName(name, maxLength) {
         if (name.length <= maxLength) return name;
-        
+
         const extension = name.split('.').pop();
         const nameWithoutExt = name.substring(0, name.lastIndexOf('.'));
         const truncatedName = nameWithoutExt.substring(0, maxLength - extension.length - 4) + '...';
-        
+
         return truncatedName + '.' + extension;
     }
-    
+
     showImageModal(src, title) {
         const modal = document.createElement('div');
         modal.className = 'image-modal';
@@ -386,21 +405,21 @@ class FileUploadComponent {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(modal);
         modal.style.display = 'flex';
-        
+
         // Close modal events
         const closeBtn = modal.querySelector('.btn-close-modal');
         const closeModal = () => {
             document.body.removeChild(modal);
         };
-        
+
         closeBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
-        
+
         // ESC key to close
         const escHandler = (e) => {
             if (e.key === 'Escape') {
@@ -410,34 +429,34 @@ class FileUploadComponent {
         };
         document.addEventListener('keydown', escHandler);
     }
-    
+
     emitEvent(eventName, detail = {}) {
         const event = new CustomEvent(`fileUpload:${eventName}`, {
             detail: { componentId: this.componentId, ...detail }
         });
         this.component.dispatchEvent(event);
     }
-    
+
     // Public API methods
     getFiles() {
         return this.selectedFiles;
     }
-    
+
     clearFiles() {
         this.selectedFiles = [];
         this.updateFileInput();
         this.updatePreviews();
         this.clearErrors();
     }
-    
+
     addFiles(files) {
         this.handleFileSelection(Array.isArray(files) ? files : [files]);
     }
-    
+
     setProgress(progress) {
         this.showProgress(progress);
     }
-    
+
     reset() {
         this.clearFiles();
         this.hideProgress();
