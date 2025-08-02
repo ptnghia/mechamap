@@ -58,23 +58,27 @@
                             </button>
                         </div>
 
-                        <!-- Search Results Dropdown - Exact structure from old header -->
+                        <!-- Search Results Dropdown - Enhanced with Content Type Filters -->
                         <div class="search-results-dropdown" id="search-results-dropdown">
-                            <div class="search-scope-options">
-                                <div class="search-scope-option active" data-scope="site">{{ __('search.scope.all_content') }}</div>
-                                <div class="search-scope-option" data-scope="thread" style="display: none;">{{ __('search.scope.in_thread') }}</div>
-                                <div class="search-scope-option" data-scope="forum" style="display: none;">{{ __('search.scope.in_forum') }}</div>
-                                @if($isMarketplace)
-                                <div class="search-scope-option" data-scope="marketplace">{{ __('nav.main.marketplace') }}</div>
-                                @endif
+                            <div class="search-content-filters">
+                                <div class="search-filter-option active" data-filter="all">
+                                    <i class="fas fa-th-large"></i> Tất cả
+                                </div>
+                                <div class="search-filter-option" data-filter="threads">
+                                    <i class="fas fa-comments"></i> Thảo luận
+                                </div>
+                                <div class="search-filter-option" data-filter="showcases">
+                                    <i class="fas fa-star"></i> Dự án
+                                </div>
+                                <div class="search-filter-option" data-filter="products">
+                                    <i class="fas fa-shopping-cart"></i> Sản phẩm
+                                </div>
+                                <div class="search-filter-option" data-filter="users">
+                                    <i class="fas fa-users"></i> Thành viên
+                                </div>
                             </div>
                             <div class="search-results-content" id="search-results-content">
                                 <!-- Results will be loaded here via AJAX -->
-                            </div>
-                            <div class="search-results-footer">
-                                <a href="{{ route('forums.search.advanced') }}" class="advanced-search-link">
-                                    🔍 {{ __('search.actions.advanced') }}
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -427,14 +431,14 @@ k
                         <!-- User Menu -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="24" height="24">
+                                <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="24" height="24" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded-circle me-2 d-inline-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 24px; height: 24px;'; fallback.innerHTML = '<i class=\\'fas fa-user text-muted\\' style=\\'font-size: 10px;\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">
                                 <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <!-- User Info Header -->
                                 <li class="dropdown-header">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="32" height="32">
+                                        <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="32" height="32" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded-circle me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 32px; height: 32px;'; fallback.innerHTML = '<i class=\\'fas fa-user text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">
                                         <div>
                                             <h6 class="mb-0">{{ Auth::user()->name }}</h6>
                                             <small class="text-muted">{{ Auth::user()->getRoleDisplayName() }}</small>
@@ -716,10 +720,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchButton = document.getElementById('unified-search-btn');
     const searchResultsDropdown = document.getElementById('search-results-dropdown');
     const searchResultsContent = document.getElementById('search-results-content');
-    const searchScopeOptions = document.querySelectorAll('.search-scope-option');
+    const searchFilterOptions = document.querySelectorAll('.search-filter-option');
 
     // Variables from old search
-    let currentSearchScope = 'site';
+    let currentSearchFilter = 'all';
     let searchTimeout;
     let currentThreadId = null;
     let currentForumId = null;
@@ -825,24 +829,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle search scope selection
-    searchScopeOptions.forEach(option => {
+    // Handle search content filter selection
+    searchFilterOptions.forEach(option => {
         option.addEventListener('click', function() {
             if (this.classList.contains('disabled')) {
                 return;
             }
 
-            // Update active scope
-            searchScopeOptions.forEach(opt => opt.classList.remove('active'));
+            // Update active filter
+            searchFilterOptions.forEach(opt => opt.classList.remove('active'));
             this.classList.add('active');
 
-            // Update current scope
-            currentSearchScope = this.dataset.scope;
+            // Update current filter
+            currentSearchFilter = this.dataset.filter;
 
-            // Perform search with new scope
+            // Filter current results instead of new search
             const query = searchInput.value.trim();
             if (query.length >= 2) {
-                performSearch(query);
+                filterCurrentResults(currentSearchFilter);
             }
         });
     });
@@ -865,29 +869,16 @@ document.addEventListener('DOMContentLoaded', function() {
         searchResultsDropdown.classList.remove('show');
     }
 
+    // Store current search results for filtering
+    let currentSearchResults = null;
+
     function performSearch(query) {
-        // Prepare request parameters
-        let params = {
-            query: query,
-            scope: currentSearchScope
-        };
-
-        // Add thread or forum ID if needed
-        if (currentSearchScope === 'thread' && currentThreadId) {
-            params.thread_id = currentThreadId;
-        } else if (currentSearchScope === 'forum' && currentForumId) {
-            params.forum_id = currentForumId;
-        }
-
-        // Build query string
-        const queryString = Object.keys(params)
-            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-            .join('&');
-
         // Make AJAX request to unified search API
         fetch(`/api/v1/search/unified?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
+                // Store results for filtering
+                currentSearchResults = data;
                 displayUnifiedSearchResults(data);
             })
             .catch(error => {
@@ -896,16 +887,67 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    function filterCurrentResults(filter) {
+        if (!currentSearchResults) return;
+
+        // Apply filter to current results
+        const filteredData = {
+            ...currentSearchResults,
+            data: {
+                ...currentSearchResults.data,
+                results: applyContentFilter(currentSearchResults.data.results, filter)
+            }
+        };
+
+        displayUnifiedSearchResults(filteredData);
+    }
+
+    function applyContentFilter(results, filter) {
+        if (filter === 'all') {
+            return results; // Show all content
+        }
+
+        // Create filtered results object
+        const filtered = {
+            threads: filter === 'threads' ? results.threads : [],
+            showcases: filter === 'showcases' ? results.showcases : [],
+            products: filter === 'products' ? results.products : [],
+            users: filter === 'users' ? results.users : [],
+            meta: {
+                ...results.meta,
+                total: 0,
+                categories: {}
+            }
+        };
+
+        // Update total count
+        filtered.meta.total = filtered.threads.length + filtered.showcases.length +
+                             filtered.products.length + filtered.users.length;
+
+        // Update categories count
+        filtered.meta.categories = {
+            threads: filtered.threads.length,
+            showcases: filtered.showcases.length,
+            products: filtered.products.length,
+            users: filtered.users.length
+        };
+
+        return filtered;
+    }
+
     function displayUnifiedSearchResults(data) {
         // Clear previous results
         searchResultsContent.innerHTML = '';
 
-        if (!data.success || !data.results) {
+        // Check if data structure is valid
+        if (!data || !data.data || !data.data.results) {
             searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
             return;
         }
 
-        const results = data.results;
+        // Extract results from nested structure
+        const results = data.data.results;
+
         const totalResults = results.meta.total;
 
         if (totalResults === 0) {
@@ -913,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>{{ t_search("no_results_for") }} "${results.meta.query}".
                     <p class="mt-2 mb-0">
-                        <a href="${data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                        <a href="${data.data.advanced_search_url || data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
                             <i class="fas fa-sliders-h me-1"></i>{{ t_search("try_advanced") }}
                         </a>
                     </p>
@@ -932,7 +974,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
                         <div class="d-flex">
-                            <img src="${thread.author.avatar}" class="rounded-circle me-2" width="32" height="32" alt="${thread.author.name}">
+                            ${thread.image && thread.image.trim() !== '' ? `<img src="${thread.image}" class="rounded me-2 search-result-image" width="40" height="40" alt="${thread.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 40px; height: 40px;'; fallback.innerHTML = '<i class=\\'fas fa-comments text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-comments text-muted"></i></div>'}
                             <div class="flex-grow-1">
                                 <h6 class="mb-1"><a href="${thread.url}" class="text-decoration-none">${thread.title}</a></h6>
                                 <p class="mb-1 text-muted small">${thread.excerpt}</p>
@@ -961,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
                         <div class="d-flex">
-                            ${showcase.image ? `<img src="${showcase.image}" class="rounded me-2" width="40" height="40" alt="${showcase.title}" style="object-fit: cover;">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-image text-muted"></i></div>'}
+                            ${showcase.image && showcase.image.trim() !== '' ? `<img src="${showcase.image}" class="rounded me-2 search-result-image" width="40" height="40" alt="${showcase.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 40px; height: 40px;'; fallback.innerHTML = '<i class=\\'fas fa-star text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-star text-muted"></i></div>'}
                             <div class="flex-grow-1">
                                 <h6 class="mb-1"><a href="${showcase.url}" class="text-decoration-none">${showcase.title}</a></h6>
                                 <p class="mb-1 text-muted small">${showcase.excerpt}</p>
@@ -990,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
                         <div class="d-flex">
-                            ${product.image ? `<img src="${product.image}" class="rounded me-2" width="40" height="40" alt="${product.title}" style="object-fit: cover;">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-box text-muted"></i></div>'}
+                            ${product.image && product.image.trim() !== '' ? `<img src="${product.image}" class="rounded me-2 search-result-image" width="40" height="40" alt="${product.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 40px; height: 40px;'; fallback.innerHTML = '<i class=\\'fas fa-shopping-cart text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fas fa-shopping-cart text-muted"></i></div>'}
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">
                                     <a href="${product.url}" class="text-decoration-none">${product.title}</a>
@@ -1021,7 +1063,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
                         <div class="d-flex align-items-center">
-                            <img src="${user.avatar}" class="rounded-circle me-2" width="32" height="32" alt="${user.name}">
+                            ${user.avatar && user.avatar.trim() !== '' ? `<img src="${user.avatar}" class="rounded-circle me-2 search-result-image" width="32" height="32" alt="${user.name}" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded-circle me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 32px; height: 32px;'; fallback.innerHTML = '<i class=\\'fas fa-user text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;"><i class="fas fa-user text-muted"></i></div>'}
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">
                                     <a href="${user.url}" class="text-decoration-none">${user.name}</a>

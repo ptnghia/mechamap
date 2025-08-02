@@ -9,6 +9,7 @@ use App\Models\MarketplaceProduct;
 use App\Models\TechnicalProduct;
 use App\Models\User;
 use App\Models\Forum;
+use App\Services\UnifiedImageDisplayService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -19,6 +20,13 @@ use Illuminate\Support\Str;
  */
 class UnifiedSearchController extends Controller
 {
+    protected $imageService;
+
+    public function __construct(UnifiedImageDisplayService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     /**
      * Unified AJAX search for header input
      */
@@ -47,25 +55,45 @@ class UnifiedSearchController extends Controller
 
         try {
             // 1. Search Threads (Forum discussions)
-            $threads = $this->searchThreads($query, $perCategory);
-            $results['threads'] = $threads;
-            $results['meta']['categories']['threads'] = count($threads);
+            try {
+                $threads = $this->searchThreads($query, $perCategory);
+                $results['threads'] = $threads;
+                $results['meta']['categories']['threads'] = count($threads);
+            } catch (\Exception $e) {
+                \Log::error('Thread search error: ' . $e->getMessage());
+                $results['meta']['categories']['threads'] = 0;
+            }
 
             // 2. Search Showcases (Project showcases)
-            $showcases = $this->searchShowcases($query, $perCategory);
-            $results['showcases'] = $showcases;
-            $results['meta']['categories']['showcases'] = count($showcases);
+            try {
+                $showcases = $this->searchShowcases($query, $perCategory);
+                $results['showcases'] = $showcases;
+                $results['meta']['categories']['showcases'] = count($showcases);
+            } catch (\Exception $e) {
+                \Log::error('Showcase search error: ' . $e->getMessage());
+                $results['meta']['categories']['showcases'] = 0;
+            }
 
             // 3. Search Products (Marketplace & Technical products)
-            $products = $this->searchProducts($query, $perCategory);
-            $results['products'] = $products;
-            $results['meta']['categories']['products'] = count($products);
+            try {
+                $products = $this->searchProducts($query, $perCategory);
+                $results['products'] = $products;
+                $results['meta']['categories']['products'] = count($products);
+            } catch (\Exception $e) {
+                \Log::error('Product search error: ' . $e->getMessage());
+                $results['meta']['categories']['products'] = 0;
+            }
 
             // 4. Search Users (if query looks like username/name)
             if ($this->shouldSearchUsers($query)) {
-                $users = $this->searchUsers($query, 2);
-                $results['users'] = $users;
-                $results['meta']['categories']['users'] = count($users);
+                try {
+                    $users = $this->searchUsers($query, 2);
+                    $results['users'] = $users;
+                    $results['meta']['categories']['users'] = count($users);
+                } catch (\Exception $e) {
+                    \Log::error('User search error: ' . $e->getMessage());
+                    $results['meta']['categories']['users'] = 0;
+                }
             }
 
             $results['meta']['total'] = array_sum($results['meta']['categories']);
@@ -103,7 +131,7 @@ class UnifiedSearchController extends Controller
             ->where('moderation_status', 'approved')
             ->where('is_spam', false)
             ->whereNull('hidden_at')
-            ->with(['user', 'forum', 'category'])
+            ->with(['user', 'forum', 'category', 'media'])
             ->withCount('allComments as comments_count')
             ->orderByRaw("
                 CASE
@@ -131,6 +159,7 @@ class UnifiedSearchController extends Controller
                     'name' => $thread->forum->name,
                     'url' => route('forums.show', $thread->forum)
                 ],
+                'image' => $this->imageService->getThreadDisplayImage($thread),
                 'stats' => [
                     'comments' => $thread->comments_count,
                     'views' => $thread->view_count ?? 0
@@ -176,14 +205,14 @@ class UnifiedSearchController extends Controller
                 'type' => 'showcase',
                 'title' => $showcase->title,
                 'excerpt' => Str::limit(strip_tags($showcase->description), 80),
-                'url' => route('showcases.show', $showcase),
+                'url' => route('showcase.show', $showcase),
                 'author' => [
                     'name' => $showcase->user->name,
                     'avatar' => $showcase->user->getAvatarUrl()
                 ],
                 'project_type' => $showcase->project_type,
                 'complexity' => $showcase->complexity_level,
-                'image' => $showcase->cover_image ? asset('storage/' . $showcase->cover_image) : null,
+                'image' => $showcase->cover_image ? asset(ltrim($showcase->cover_image, '/')) : null,
                 'stats' => [
                     'views' => $showcase->view_count ?? 0,
                     'likes' => $showcase->like_count ?? 0,
@@ -210,33 +239,38 @@ class UnifiedSearchController extends Controller
                 })
                 ->where('status', 'approved')
                 ->where('is_active', true)
-                ->with(['seller'])
+                ->with(['seller.user'])
                 ->limit($limit)
                 ->get()
                 ->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'type' => 'marketplace_product',
-                    'title' => $product->name,
-                    'excerpt' => Str::limit(strip_tags($product->description), 80),
-                    'url' => route('marketplace.products.show', $product),
-                    'seller' => [
-                        'name' => $product->seller->business_name ?? $product->seller->name,
-                        'avatar' => $product->seller->getAvatarUrl()
-                    ],
-                    'price' => [
-                        'amount' => $product->price,
-                        'currency' => 'USD',
-                        'formatted' => '$' . number_format($product->price, 2)
-                    ],
-                    'image' => $product->featured_image ? asset('storage/' . $product->featured_image) : null,
-                    'stats' => [
-                        'views' => $product->view_count ?? 0,
-                        'purchases' => $product->purchase_count ?? 0
-                    ],
-                    'created_at' => $product->created_at->diffForHumans()
-                ];
-            });
+                try {
+                    return [
+                        'id' => $product->id,
+                        'type' => 'marketplace_product',
+                        'title' => $product->name,
+                        'excerpt' => Str::limit(strip_tags($product->description), 80),
+                        'url' => route('marketplace.products.show', $product),
+                        'seller' => [
+                            'name' => $product->seller->business_name ?? $product->seller->user->name,
+                            'avatar' => $product->seller->user->getAvatarUrl()
+                        ],
+                        'price' => [
+                            'amount' => $product->price,
+                            'currency' => 'USD',
+                            'formatted' => '$' . number_format($product->price, 2)
+                        ],
+                        'image' => $product->featured_image ? asset($product->featured_image) : null,
+                        'stats' => [
+                            'views' => $product->view_count ?? 0,
+                            'purchases' => $product->purchase_count ?? 0
+                        ],
+                        'created_at' => $product->created_at->diffForHumans()
+                    ];
+                } catch (\Exception $e) {
+                    \Log::error('Marketplace product mapping error for ID ' . $product->id . ': ' . $e->getMessage());
+                    return null;
+                }
+            })->filter();
 
             // Search Technical Products
             $technicalProducts = TechnicalProduct::where(function ($q) use ($query) {
@@ -249,30 +283,35 @@ class UnifiedSearchController extends Controller
                 ->limit($limit)
                 ->get()
                 ->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'type' => 'technical_product',
-                    'title' => $product->title,
-                    'excerpt' => Str::limit(strip_tags($product->description), 80),
-                    'url' => route('marketplace.technical-products.show', $product),
-                    'seller' => [
-                        'name' => $product->seller->business_name ?? $product->seller->name,
-                        'avatar' => $product->seller->getAvatarUrl()
-                    ],
-                    'price' => [
-                        'amount' => $product->price,
-                        'currency' => $product->currency,
-                        'formatted' => '$' . number_format($product->price, 2)
-                    ],
-                    'complexity' => $product->complexity_level,
-                    'stats' => [
-                        'views' => $product->view_count ?? 0,
-                        'downloads' => $product->download_count ?? 0,
-                        'rating' => round($product->rating_average ?? 0, 1)
-                    ],
-                    'created_at' => $product->created_at->diffForHumans()
-                ];
-            });
+                try {
+                    return [
+                        'id' => $product->id,
+                        'type' => 'technical_product',
+                        'title' => $product->title,
+                        'excerpt' => Str::limit(strip_tags($product->description), 80),
+                        'url' => '#', // Temporary placeholder since route doesn't exist
+                        'seller' => [
+                            'name' => $product->seller->business_name ?? $product->seller->name,
+                            'avatar' => $product->seller->getAvatarUrl()
+                        ],
+                        'price' => [
+                            'amount' => $product->price,
+                            'currency' => $product->currency,
+                            'formatted' => '$' . number_format($product->price, 2)
+                        ],
+                        'complexity' => $product->complexity_level,
+                        'stats' => [
+                            'views' => $product->view_count ?? 0,
+                            'downloads' => $product->download_count ?? 0,
+                            'rating' => round($product->rating_average ?? 0, 1)
+                        ],
+                        'created_at' => $product->created_at->diffForHumans()
+                    ];
+                } catch (\Exception $e) {
+                    \Log::error('Technical product mapping error for ID ' . $product->id . ': ' . $e->getMessage());
+                    return null;
+                }
+            })->filter();
 
             // Merge and sort by relevance
             $allProducts = $products->concat($marketplaceProducts)->concat($technicalProducts);
@@ -289,10 +328,20 @@ class UnifiedSearchController extends Controller
      */
     private function searchUsers(string $query, int $limit): array
     {
-        $users = User::where(function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('username', 'like', "%{$query}%")
-                  ->orWhere('business_name', 'like', "%{$query}%");
+        // Clean query - remove @ prefix if present
+        $cleanQuery = str_starts_with($query, '@') ? substr($query, 1) : $query;
+
+        // Escape special characters for LIKE query
+        $cleanQuery = str_replace(['%', '_'], ['\%', '\_'], $cleanQuery);
+
+        if (empty($cleanQuery)) {
+            return [];
+        }
+
+        $users = User::where(function ($q) use ($cleanQuery) {
+                $q->where('name', 'like', "%{$cleanQuery}%")
+                  ->orWhere('username', 'like', "%{$cleanQuery}%")
+                  ->orWhere('company_name', 'like', "%{$cleanQuery}%");
             })
             ->where('status', 'active')
             ->whereNull('banned_at')
@@ -300,10 +349,10 @@ class UnifiedSearchController extends Controller
                 CASE
                     WHEN username LIKE ? THEN 1
                     WHEN name LIKE ? THEN 2
-                    WHEN business_name LIKE ? THEN 3
+                    WHEN company_name LIKE ? THEN 3
                     ELSE 4
                 END
-            ", ["{$query}%", "{$query}%", "{$query}%"])
+            ", ["{$cleanQuery}%", "{$cleanQuery}%", "{$cleanQuery}%"])
             ->limit($limit)
             ->get();
 
@@ -313,10 +362,10 @@ class UnifiedSearchController extends Controller
                 'type' => 'user',
                 'name' => $user->name,
                 'username' => $user->username,
-                'business_name' => $user->business_name,
+                'company_name' => $user->company_name,
                 'role' => $user->role,
                 'avatar' => $user->getAvatarUrl(),
-                'url' => route('users.profile', $user),
+                'url' => route('profile.show', $user),
                 'stats' => [
                     'threads' => $user->threads_count ?? 0,
                     'posts' => $user->posts_count ?? 0
@@ -330,9 +379,17 @@ class UnifiedSearchController extends Controller
      */
     private function shouldSearchUsers(string $query): bool
     {
-        // Search users if query starts with @ or looks like a username
-        return str_starts_with($query, '@') ||
-               preg_match('/^[a-zA-Z0-9_]+$/', $query) ||
-               strlen($query) <= 15; // Short queries might be usernames
+        // Search users if query starts with @
+        if (str_starts_with($query, '@')) {
+            return true;
+        }
+
+        // Search users if query looks like a username (alphanumeric + underscore only)
+        // and is reasonably short (3-15 characters)
+        if (preg_match('/^[a-zA-Z0-9_]+$/', $query) && strlen($query) >= 3 && strlen($query) <= 15) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -162,6 +162,14 @@ class MarketplaceProduct extends Model
     }
 
     /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
      * Update seller statistics
      */
     protected static function updateSellerStats($sellerId)
