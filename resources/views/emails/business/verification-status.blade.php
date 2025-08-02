@@ -108,12 +108,12 @@
         <strong>Tên công ty:</strong> {{ $businessInfo['company_name'] }}<br>
         <strong>Mã số thuế:</strong> {{ $businessInfo['tax_code'] }}<br>
         <strong>Loại hình:</strong> {{ ucfirst($user->role) }}<br>
-        <strong>Ngày đăng ký:</strong> {{ $user->created_at->format('d/m/Y') }}
+        <strong>Ngày đăng ký:</strong> {{ $user->created_at ? $user->created_at->format('d/m/Y') : 'N/A' }}
     </p>
 </div>
 
 <div class="message" style="font-size: 14px; color: #666; margin-top: 30px;">
-    Nếu bạn có câu hỏi về quá trình xác minh, vui lòng liên hệ với chúng tôi qua email 
+    Nếu bạn có câu hỏi về quá trình xác minh, vui lòng liên hệ với chúng tôi qua email
     <a href="mailto:business@mechamap.com" style="color: #3498db;">business@mechamap.com</a>
 </div>
 @endsection
