@@ -119,8 +119,8 @@ function initializeTinyMCEEditor(editorId, context, options = {}) {
                 loadingDiv.style.display = 'none';
             }
 
-            // Show the editor
-            textarea.style.display = 'block';
+            // Hide the original textarea (TinyMCE replaces it)
+            textarea.style.display = 'none';
 
             console.log(`TinyMCE initialized for: ${editorId} (context: ${context})`);
 
