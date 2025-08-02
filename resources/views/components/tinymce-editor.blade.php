@@ -228,7 +228,6 @@ function focusTinyMCEEditor(editorId) {
 
 {{-- Push TinyMCE styles --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/tinymce-mechamap.css') }}">
 <style>
 .tinymce-editor-wrapper {
     position: relative;
