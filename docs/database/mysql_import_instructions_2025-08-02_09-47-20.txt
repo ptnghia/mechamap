@@ -1,0 +1,21 @@
+MYSQL IMPORT INSTRUCTIONS FOR MECHAMAP DATABASE
+==============================================
+
+1. CREATE DATABASE:
+   CREATE DATABASE mechamap_backend CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+2. IMPORT DUMP:
+   mysql -u [username] -p mechamap_backend < mechamap_mysql_compatible_2025-08-02_09-47-20.sql
+
+3. VERIFY IMPORT:
+   mysql -u [username] -p -e "USE mechamap_backend; SHOW TABLES; SELECT COUNT(*) FROM users;"
+
+4. CHECK CHARSET:
+   mysql -u [username] -p -e "SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='mechamap_backend';"
+
+NOTES:
+- Database is fully compatible with MySQL 5.7+ and MySQL 8.0+
+- All UUID columns use CHAR(36) format
+- All JSON columns are MySQL-compatible
+- File size: 3.32 MB
+- Generated: 2025-08-02 09:47:21
