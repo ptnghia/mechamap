@@ -436,7 +436,9 @@
 
 .btn:disabled,.btn.disabled {
     opacity: .65;
-    pointer-events: none
+    pointer-events: none;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
 }
 
 .form-control {
@@ -5448,9 +5450,8 @@ body.user-frontend {
 }
 
 .add-more-btn:hover {
-    border-color: #6366f1;
+    border-color: var(--bs-primary);
     background: #f0f4ff;
-    transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(99,102,241,0.15)
 }
 
@@ -5471,7 +5472,7 @@ body.user-frontend {
 }
 
 .add-more-btn:hover .add-more-content {
-    color: #6366f1
+    color: var(--bs-primary);
 }
 
 .file-preview {
@@ -5487,7 +5488,6 @@ body.user-frontend {
 .file-icon {
     font-size: 2rem;
     color: #6b7280;
-    margin-bottom: .5rem
 }
 
 .file-preview .file-info {

@@ -121,7 +121,7 @@
 }
 
 .file-preview-item:hover {
-    border-color: #007bff;
+    border-color: var(--bs-primary);
     box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
 }
 
@@ -137,9 +137,7 @@
 }
 
 .image-preview-item:hover {
-    border-color: #007bff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+    border-color: var(--bs-primary);
 }
 
 .image-preview-item .remove-file {
@@ -181,11 +179,14 @@
     padding: 8px 12px;
     background: white;
     border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .image-preview-item .image-format {
     font-weight: 600;
-    color: #007bff;
+    color: #747474;
     font-size: 12px;
     text-transform: uppercase;
     margin: 0;
@@ -212,6 +213,7 @@
     border-radius: 0.25rem;
     margin-right: 0.75rem;
     flex-shrink: 0;
+    background-color: #ebe0b59e;
 }
 
 .file-icon img {
@@ -232,7 +234,7 @@
     color: #495057;
     font-size: 0.875rem;
     line-height: 1.2;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
     word-break: break-word;
 }
 
@@ -273,28 +275,31 @@
 
 /* Add more button */
 .add-more-btn {
-    border: 2px dashed #007bff;
-    background-color: transparent;
+    border: 1px dashed var(--bs-primary);
+    background-color: #f8f9fa;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    min-height: 80px;
+    min-height: 62px;
 }
 
 .add-more-btn:hover {
     background-color: #e3f2fd;
-    border-color: #0056b3;
+    border-color: var(--bs-primary);
 }
 
 .add-more-content {
     text-align: center;
-    color: #007bff;
+    color: var(--bs-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .add-more-content i {
-    font-size: 1.5rem;
+    font-size: 20px;
     margin-bottom: 0.25rem;
     display: block;
 }
