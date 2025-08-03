@@ -62,19 +62,19 @@
                         <div class="search-results-dropdown" id="search-results-dropdown">
                             <div class="search-content-filters">
                                 <div class="search-filter-option active" data-filter="all">
-                                    <i class="fas fa-th-large"></i> Tất cả
+                                    <i class="fas fa-th-large"></i> {{ __('ui.search.filters.all') }}
                                 </div>
                                 <div class="search-filter-option" data-filter="threads">
-                                    <i class="fas fa-comments"></i> Thảo luận
+                                    <i class="fas fa-comments"></i> {{ __('ui.search.filters.threads') }}
                                 </div>
                                 <div class="search-filter-option" data-filter="showcases">
-                                    <i class="fas fa-star"></i> Dự án
+                                    <i class="fas fa-star"></i> {{ __('ui.search.filters.showcases') }}
                                 </div>
                                 <div class="search-filter-option" data-filter="products">
-                                    <i class="fas fa-shopping-cart"></i> Sản phẩm
+                                    <i class="fas fa-shopping-cart"></i> {{ __('ui.search.filters.products') }}
                                 </div>
                                 <div class="search-filter-option" data-filter="users">
-                                    <i class="fas fa-users"></i> Thành viên
+                                    <i class="fas fa-users"></i> {{ __('ui.search.filters.users') }}
                                 </div>
                             </div>
                             <div class="search-results-content" id="search-results-content">
@@ -663,19 +663,19 @@ k
                             <div class="mobile-search-content-filters p-2 border-bottom">
                                 <div class="d-flex flex-wrap gap-1">
                                     <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option active" data-filter="all">
-                                        <i class="fas fa-th-large me-1"></i>Tất cả
+                                        <i class="fas fa-th-large me-1"></i>{{ __('ui.search.filters.all') }}
                                     </button>
                                     <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="threads">
-                                        <i class="fas fa-comments me-1"></i>Thảo luận
+                                        <i class="fas fa-comments me-1"></i>{{ __('ui.search.filters.threads') }}
                                     </button>
                                     <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="showcases">
-                                        <i class="fas fa-star me-1"></i>Dự án
+                                        <i class="fas fa-star me-1"></i>{{ __('ui.search.filters.showcases') }}
                                     </button>
                                     <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="products">
-                                        <i class="fas fa-shopping-cart me-1"></i>Sản phẩm
+                                        <i class="fas fa-shopping-cart me-1"></i>{{ __('ui.search.filters.products') }}
                                     </button>
                                     <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="users">
-                                        <i class="fas fa-users me-1"></i>Thành viên
+                                        <i class="fas fa-users me-1"></i>{{ __('ui.search.filters.users') }}
                                     </button>
                                 </div>
                             </div>
@@ -685,49 +685,7 @@ k
                         </div>
                     </div>
 
-                    <!-- Quick Search Categories -->
-                    <div class="row g-2 mb-3" id="mobileQuickCategories">
-                        <div class="col-6">
-                            <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="marketplace">
-                                <i class="fa-solid fa-store me-1"></i>{{ __('messages.search.mobile.categories.products') }}
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="forum">
-                                <i class="fa-solid fa-comments me-1"></i>{{ __('messages.search.mobile.categories.forums') }}
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="members">
-                                <i class="fa-solid fa-users me-1"></i>{{ __('messages.search.mobile.categories.members') }}
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="technical">
-                                <i class="fa-solid fa-screwdriver-wrench me-1"></i>{{ __('messages.search.mobile.categories.technical') }}
-                            </button>
-                        </div>
-                    </div>
 
-                    <!-- Recent Searches -->
-                    <div class="mb-3" id="mobileRecentSection">
-                        <h6 class="text-muted mb-2">{{ __('search.history.recent') }}</h6>
-                        <div id="mobileRecentSearches">
-                            <small class="text-muted">{{ __('search.history.empty') }}</small>
-                        </div>
-                    </div>
-
-                    <!-- Popular Searches -->
-                    <div id="mobilePopularSection">
-                        <h6 class="text-muted mb-2">{{ __('search.suggestions.popular') }}</h6>
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.bearings') }}">{{ __('messages.search.popular_terms.bearings') }}</span>
-                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.steel_materials') }}">{{ __('messages.search.popular_terms.steel_materials') }}</span>
-                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('forum.search.cad_files') }}">{{ __('forum.search.cad_files') }}</span>
-                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.manufacturing') }}">{{ __('messages.search.popular_terms.manufacturing') }}</span>
-                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('forum.search.iso_standards') }}">{{ __('forum.search.iso_standards') }}</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -914,20 +872,17 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Search error:', error);
-                searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">An error occurred while searching. Please try again.</div>';
+                searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">{{ __("ui.search.errors.search_failed") }}</div>';
             });
     }
 
     function filterCurrentResults(filter) {
-        if (!currentSearchResults) return;
+        if (!currentSearchResults || !currentSearchResults.results) return;
 
         // Apply filter to current results
         const filteredData = {
             ...currentSearchResults,
-            data: {
-                ...currentSearchResults.data,
-                results: applyContentFilter(currentSearchResults.data.results, filter)
-            }
+            results: applyContentFilter(currentSearchResults.results, filter)
         };
 
         displayUnifiedSearchResults(filteredData);
@@ -972,7 +927,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Check if data structure is valid
         if (!data || !data.results) {
-            searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
+            searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">{{ __("ui.search.errors.search_failed") }}</div>';
             return;
         }
 
@@ -1000,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Threads
         if (results.threads && results.threads.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-primary mb-2"><i class="fas fa-comments me-1"></i>Thảo luận</h6>';
+            html += '<h6 class="search-category-title text-primary mb-2"><i class="fas fa-comments me-1"></i>{{ __("ui.search.results.threads") }}</h6>';
             results.threads.forEach(thread => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1058,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Products
         if (results.products && results.products.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-warning mb-2"><i class="fas fa-shopping-cart me-1"></i>{{ __("messages.search.results.products") }}</h6>';
+            html += '<h6 class="search-category-title text-warning mb-2"><i class="fas fa-shopping-cart me-1"></i>{{ __("ui.search.results.products") }}</h6>';
             results.products.forEach(product => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1089,7 +1044,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Users
         if (results.users && results.users.length > 0) {
             html += '<div class="search-category mb-3">';
-            html += '<h6 class="search-category-title text-info mb-2"><i class="fas fa-users me-1"></i>{{ __("messages.search.results.members") }}</h6>';
+            html += '<h6 class="search-category-title text-info mb-2"><i class="fas fa-users me-1"></i>{{ __("ui.search.results.users") }}</h6>';
             results.users.forEach(user => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1161,7 +1116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasThread) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">Chủ đề</div>
+                    <div class="search-result-section-title">{{ __("ui.search.results.thread") }}</div>
                     <div class="search-result-item">
                         <div class="search-result-item-title">
                             <a href="${results.thread.url}">${results.thread.title}</a>
@@ -1214,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasPosts) {
             resultsHTML += `
                 <div class="search-result-section">
-                    <div class="search-result-section-title">Posts</div>
+                    <div class="search-result-section-title">{{ __("ui.search.results.posts") }}</div>
             `;
 
             results.posts.forEach(post => {
@@ -1646,16 +1601,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Set appropriate search query based on scope
                 switch(scope) {
                     case 'marketplace':
-                        searchQuery = 'sản phẩm';
+                        searchQuery = '{{ __("ui.search.filters.products") }}';
                         break;
                     case 'forum':
-                        searchQuery = 'thảo luận';
+                        searchQuery = '{{ __("ui.search.filters.threads") }}';
                         break;
                     case 'members':
                         searchQuery = '@';
                         break;
                     case 'technical':
-                        searchQuery = 'kỹ thuật';
+                        searchQuery = '{{ __("content.technical.title") }}';
                         break;
                 }
 
@@ -1711,7 +1666,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Mobile search error:', error);
-                mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">An error occurred while searching. Please try again.</div>';
+                mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">{{ __("ui.search.errors.search_failed") }}</div>';
             });
     }
 
@@ -1739,7 +1694,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Check if data structure is valid
         if (!data || !data.results) {
-            mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
+            mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">{{ __("ui.search.errors.search_failed") }}</div>';
             return;
         }
 
@@ -1771,7 +1726,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Threads
         if (results.threads && results.threads.length > 0) {
             html += '<div class="search-category mb-2">';
-            html += '<h6 class="search-category-title text-primary mb-2 small"><i class="fas fa-comments me-1"></i>Thảo luận</h6>';
+            html += '<h6 class="search-category-title text-primary mb-2 small"><i class="fas fa-comments me-1"></i>{{ __("ui.search.results.threads") }}</h6>';
             results.threads.forEach(thread => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1799,7 +1754,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Showcases
         if (results.showcases && results.showcases.length > 0) {
             html += '<div class="search-category mb-2">';
-            html += '<h6 class="search-category-title text-success mb-2 small"><i class="fas fa-star me-1"></i>Dự án</h6>';
+            html += '<h6 class="search-category-title text-success mb-2 small"><i class="fas fa-star me-1"></i>{{ __("ui.search.results.showcases") }}</h6>';
             results.showcases.forEach(showcase => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1827,7 +1782,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Products
         if (results.products && results.products.length > 0) {
             html += '<div class="search-category mb-2">';
-            html += '<h6 class="search-category-title text-warning mb-2 small"><i class="fas fa-shopping-cart me-1"></i>Sản phẩm</h6>';
+            html += '<h6 class="search-category-title text-warning mb-2 small"><i class="fas fa-shopping-cart me-1"></i>{{ __("ui.search.results.products") }}</h6>';
             results.products.forEach(product => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1858,7 +1813,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display Users
         if (results.users && results.users.length > 0) {
             html += '<div class="search-category mb-2">';
-            html += '<h6 class="search-category-title text-info mb-2 small"><i class="fas fa-users me-1"></i>Thành viên</h6>';
+            html += '<h6 class="search-category-title text-info mb-2 small"><i class="fas fa-users me-1"></i>{{ __("ui.search.results.users") }}</h6>';
             results.users.forEach(user => {
                 html += `
                     <div class="search-result-item p-2 border-bottom">
@@ -1886,7 +1841,7 @@ document.addEventListener('DOMContentLoaded', function() {
         html += `
             <div class="search-results-footer p-2 border-top">
                 <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">Tìm thấy ${totalResults} kết quả</small>
+                    <small class="text-muted">${'{{ __("ui.search.results_found") }}'.replace(':count', totalResults)}</small>
                     <a href="/search/advanced?q=${encodeURIComponent(query)}" class="btn btn-sm btn-outline-primary">
                         <i class="fas fa-search-plus me-1"></i>{{ __('messages.search.advanced_search') }}
                     </a>
@@ -1914,7 +1869,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Wait a bit for all content to load
     setTimeout(function() {
-        console.log('🔍 Checking for duplicate "Thêm" menus...');
+        console.log('🔍 Checking for duplicate "{{ __("nav.create.title") }}" menus...');
 
         // Find all nav items with "Thêm" text
         const navItems = document.querySelectorAll('.navbar-nav .nav-item');
@@ -1922,7 +1877,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         navItems.forEach(function(item, index) {
             const link = item.querySelector('.nav-link');
-            if (link && link.textContent.includes('Thêm')) {
+            if (link && link.textContent.includes('{{ __("nav.create.title") }}')) {
                 const hasPlus = link.querySelector('.fa-plus');
                 addMenus.push({
                     element: item,
@@ -1947,11 +1902,11 @@ document.addEventListener('DOMContentLoaded', function() {
             addMenus.forEach(function(menu, idx) {
                 if (!menu.hasPlus) {
                     menu.element.style.display = 'none';
-                    console.log(`✅ Hidden duplicate "Thêm" menu: ${menu.text}`);
+                    console.log(`✅ Hidden duplicate "{{ __("nav.create.title") }}" menu: ${menu.text}`);
                 }
             });
         } else {
-            console.log('✅ No duplicate "Thêm" menus found');
+            console.log('✅ No duplicate "{{ __("nav.create.title") }}" menus found');
         }
     }, 100);
 });

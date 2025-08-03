@@ -7,6 +7,9 @@
  */
 
 return array (
+  'technical' => array (
+    'title' => 'Kỹ thuật',
+  ),
   'new_message' => 'Tin nhắn mới',
   'minimize' => 'Thu nhỏ',
   'list' => 'Danh sách',

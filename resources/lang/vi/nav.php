@@ -22,6 +22,10 @@ return array (
     'showcases' => 'Giới thiệu',
     'docs' => 'Tài liệu',
   ),
+  'create' =>
+  array (
+    'title' => 'Thêm',
+  ),
   'user' =>
   array (
     'profile' => 'Hồ sơ',

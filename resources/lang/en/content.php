@@ -7,7 +7,10 @@
  */
 
 return array (
-  'new_message' => 'Tin nhắn mới',
+  'technical' => array (
+    'title' => 'Technical',
+  ),
+  'new_message' => 'New message',
   'minimize' => 'Minimize',
   'list' => 'Danh sách',
   'chat' => 'Trò chuyện',

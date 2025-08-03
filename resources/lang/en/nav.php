@@ -26,6 +26,11 @@ return [
         'docs' => 'Documentation',
     ],
 
+    // Create menu
+    'create' => [
+        'title' => 'Add',
+    ],
+
     // User menu
     'user' => [
         'profile' => 'Profile',

@@ -228,9 +228,31 @@ return [
     ],
     'search' => [
         'advanced_search' => 'Tìm kiếm nâng cao',
-        'error_message' => 'Search failed. Please try again.',
-        'placeholder' => 'Search products, forums, members...',
-        'view_all_results' => 'View all results',
+        'placeholder' => 'Tìm kiếm sản phẩm, diễn đàn, thành viên...',
+        'view_all_results' => 'Xem tất cả kết quả',
+
+        'filters' => [
+            'all' => 'Tất cả',
+            'threads' => 'Thảo luận',
+            'showcases' => 'Dự án',
+            'products' => 'Sản phẩm',
+            'users' => 'Thành viên',
+        ],
+
+        'results' => [
+            'thread' => 'Chủ đề',
+            'threads' => 'Thảo luận',
+            'posts' => 'Bài viết',
+            'showcases' => 'Dự án',
+            'products' => 'Sản phẩm',
+            'users' => 'Thành viên',
+        ],
+
+        'errors' => [
+            'search_failed' => 'Tìm kiếm thất bại. Vui lòng thử lại.',
+        ],
+
+        'results_found' => 'Tìm thấy :count kết quả',
     ],
     'status' => [
         'active' => 'Hoạt động',

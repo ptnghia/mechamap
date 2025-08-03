@@ -144,6 +144,36 @@ return [
         'info_title' => 'Information',
     ],
 
+    // Search
+    'search' => [
+        'advanced_search' => 'Advanced Search',
+        'placeholder' => 'Search products, forums, members...',
+        'view_all_results' => 'View all results',
+
+        'filters' => [
+            'all' => 'All',
+            'threads' => 'Discussions',
+            'showcases' => 'Projects',
+            'products' => 'Products',
+            'users' => 'Members',
+        ],
+
+        'results' => [
+            'thread' => 'Topic',
+            'threads' => 'Discussions',
+            'posts' => 'Posts',
+            'showcases' => 'Projects',
+            'products' => 'Products',
+            'users' => 'Members',
+        ],
+
+        'errors' => [
+            'search_failed' => 'Search failed. Please try again.',
+        ],
+
+        'results_found' => 'Found :count results',
+    ],
+
     // Tables
     'tables' => [
         'no_data' => 'No data available in table',
