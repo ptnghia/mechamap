@@ -184,6 +184,46 @@ class Showcase extends Model
     ];
 
     /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($showcase) {
+            if (empty($showcase->slug) && !empty($showcase->title)) {
+                $baseSlug = \Illuminate\Support\Str::slug($showcase->title);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                // Ensure slug is unique
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $showcase->slug = $slug;
+            }
+        });
+
+        static::updating(function ($showcase) {
+            if ($showcase->isDirty('title') && empty($showcase->slug)) {
+                $baseSlug = \Illuminate\Support\Str::slug($showcase->title);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                // Ensure slug is unique
+                while (static::where('slug', $slug)->where('id', '!=', $showcase->id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $showcase->slug = $slug;
+            }
+        });
+    }
+
+    /**
      * Get the user that owns the showcase item.
      */
     public function user(): BelongsTo

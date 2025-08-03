@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 
 // Authentication API routes
 Route::middleware('web')->group(function () {
+    // Showcase API routes
+    Route::post('/threads/{thread}/create-showcase', [App\Http\Controllers\ThreadController::class, 'createShowcaseAjax'])
+        ->name('api.threads.create-showcase');
     Route::get('/auth/token', function (Request $request) {
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthenticated'], 401);

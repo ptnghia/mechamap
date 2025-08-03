@@ -26,14 +26,14 @@
                 <!-- Mobile Quick Actions -->
                 <div class="d-flex d-lg-none align-items-center">
                     <!-- Mobile Search Button -->
-                    <button class="btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="modal" data-bs-target="#mobileSearchModal">
+                    <button class="btn-nav_mobile btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="modal" data-bs-target="#mobileSearchModal">
                         <i class="fa-solid fa-search"></i>
                     </button>
 
                     <!-- Mobile Cart - Only show if user can buy products -->
                     @auth
                         @if(auth()->user()->canBuyAnyProduct())
-                            <a class="btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
+                            <a class="btn-nav_mobile btn btn-outline-primary btn-sm me-2 position-relative" href="{{ route('marketplace.cart.index') }}">
                                 <i class="fas fa-shopping-cart"></i>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="mobileCartCount" style="display: none;">0</span>
                             </a>
@@ -41,7 +41,7 @@
                     @endauth
 
                     <!-- Mobile Menu Button - HC-MobileNav -->
-                    <button class="hc-mobile-nav-toggle border-0 bg-transparent" type="button" aria-label="{{ __('messages.header.mobile_nav_toggle') }}">
+                    <button class="btn-nav_mobile hc-mobile-nav-toggle border-0 bg-transparent" type="button" aria-label="{{ __('messages.header.mobile_nav_toggle') }}">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
@@ -432,7 +432,7 @@ k
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ Auth::user()->getAvatarUrl() }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" width="24" height="24" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded-circle me-2 d-inline-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 24px; height: 24px;'; fallback.innerHTML = '<i class=\\'fas fa-user text-muted\\' style=\\'font-size: 10px;\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">
-                                <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                                <span class="d-none d-md-none">{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <!-- User Info Header -->
@@ -647,15 +647,46 @@ k
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-2">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg" id="mobileSearchInput" placeholder="{{ __('messages.search.mobile.placeholder') }}" aria-label="Search">
-                        <button class="btn btn-primary" type="button" id="mobileSearchButton">
-                            <i class="fa-solid fa-search"></i>
-                        </button>
+                    <!-- Mobile Search Input with Dropdown -->
+                    <div class="position-relative mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-lg" id="mobileSearchInput"
+                                   placeholder="{{ __('messages.search.mobile.placeholder') }}" aria-label="Search" autocomplete="off">
+                            <button class="btn btn-primary" type="button" id="mobileSearchButton">
+                                <i class="fa-solid fa-search"></i>
+                            </button>
+                        </div>
+
+                        <!-- Mobile Search Results Dropdown -->
+                        <div class="mobile-search-results-dropdown" id="mobileSearchResultsDropdown" style="display: none;">
+                            <!-- Content Type Filters for Mobile -->
+                            <div class="mobile-search-content-filters p-2 border-bottom">
+                                <div class="d-flex flex-wrap gap-1">
+                                    <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option active" data-filter="all">
+                                        <i class="fas fa-th-large me-1"></i>Tất cả
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="threads">
+                                        <i class="fas fa-comments me-1"></i>Thảo luận
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="showcases">
+                                        <i class="fas fa-star me-1"></i>Dự án
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="products">
+                                        <i class="fas fa-shopping-cart me-1"></i>Sản phẩm
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary mobile-search-filter-option" data-filter="users">
+                                        <i class="fas fa-users me-1"></i>Thành viên
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mobile-search-results-content" id="mobileSearchResultsContent">
+                                <!-- Results will be loaded here via AJAX -->
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Quick Search Categories -->
-                    <div class="row g-2 mb-3">
+                    <div class="row g-2 mb-3" id="mobileQuickCategories">
                         <div class="col-6">
                             <button class="btn btn-outline-primary btn-sm w-100 mobile-search-scope" data-scope="marketplace">
                                 <i class="fa-solid fa-store me-1"></i>{{ __('messages.search.mobile.categories.products') }}
@@ -679,7 +710,7 @@ k
                     </div>
 
                     <!-- Recent Searches -->
-                    <div class="mb-3">
+                    <div class="mb-3" id="mobileRecentSection">
                         <h6 class="text-muted mb-2">{{ __('search.history.recent') }}</h6>
                         <div id="mobileRecentSearches">
                             <small class="text-muted">{{ __('search.history.empty') }}</small>
@@ -687,14 +718,14 @@ k
                     </div>
 
                     <!-- Popular Searches -->
-                    <div>
+                    <div id="mobilePopularSection">
                         <h6 class="text-muted mb-2">{{ __('search.suggestions.popular') }}</h6>
                         <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.bearings') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.steel_materials') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('forum.search.cad_files') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('messages.search.popular_terms.manufacturing') }}</span>
-                            <span class="badge bg-light text-dark">{{ __('forum.search.iso_standards') }}</span>
+                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.bearings') }}">{{ __('messages.search.popular_terms.bearings') }}</span>
+                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.steel_materials') }}">{{ __('messages.search.popular_terms.steel_materials') }}</span>
+                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('forum.search.cad_files') }}">{{ __('forum.search.cad_files') }}</span>
+                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('messages.search.popular_terms.manufacturing') }}">{{ __('messages.search.popular_terms.manufacturing') }}</span>
+                            <span class="badge bg-light text-dark mobile-popular-term" data-term="{{ __('forum.search.iso_standards') }}">{{ __('forum.search.iso_standards') }}</span>
                         </div>
                     </div>
                 </div>
@@ -1487,6 +1518,384 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 30000);
     @endauth
+
+    // Mobile Search Functionality - Sync with Desktop
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    const mobileSearchButton = document.getElementById('mobileSearchButton');
+    const mobileSearchResultsDropdown = document.getElementById('mobileSearchResultsDropdown');
+    const mobileSearchResultsContent = document.getElementById('mobileSearchResultsContent');
+    const mobileSearchFilterOptions = document.querySelectorAll('.mobile-search-filter-option');
+    const mobileQuickCategories = document.getElementById('mobileQuickCategories');
+    const mobileRecentSection = document.getElementById('mobileRecentSection');
+    const mobilePopularSection = document.getElementById('mobilePopularSection');
+
+    // Mobile search variables
+    let mobileCurrentSearchFilter = 'all';
+    let mobileSearchTimeout;
+    let mobileCurrentSearchResults = null;
+
+    if (mobileSearchInput && mobileSearchButton && mobileSearchResultsDropdown && mobileSearchResultsContent) {
+        // Mobile search input events
+        mobileSearchInput.addEventListener('focus', function() {
+            if (this.value.length >= 2) {
+                showMobileSearchResults();
+                performMobileSearch(this.value);
+            }
+        });
+
+        mobileSearchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+
+            // Clear previous timeout
+            clearTimeout(mobileSearchTimeout);
+
+            if (query.length >= 2) {
+                // Show loading state
+                showMobileSearchResults();
+                mobileSearchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="fas fa-hourglass-half me-2"></i>{{ __("messages.search.searching") }}</div>';
+
+                // Hide quick categories and suggestions when searching
+                mobileQuickCategories.style.display = 'none';
+                mobileRecentSection.style.display = 'none';
+                mobilePopularSection.style.display = 'none';
+
+                // Set a timeout to avoid too many requests
+                mobileSearchTimeout = setTimeout(function() {
+                    performMobileSearch(query);
+                }, 300);
+            } else {
+                hideMobileSearchResults();
+                // Show quick categories and suggestions when not searching
+                mobileQuickCategories.style.display = 'block';
+                mobileRecentSection.style.display = 'block';
+                mobilePopularSection.style.display = 'block';
+            }
+        });
+
+        mobileSearchButton.addEventListener('click', function() {
+            const query = mobileSearchInput.value.trim();
+
+            if (query.length >= 2) {
+                // Close modal and redirect to search page
+                const modal = bootstrap.Modal.getInstance(document.getElementById('mobileSearchModal'));
+                if (modal) modal.hide();
+                window.location.href = `/search?query=${encodeURIComponent(query)}&type=all`;
+            }
+        });
+
+        // Handle Enter key in mobile search input
+        mobileSearchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = this.value.trim();
+
+                if (query.length >= 2) {
+                    // Close modal and redirect to search page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('mobileSearchModal'));
+                    if (modal) modal.hide();
+                    window.location.href = `/search?query=${encodeURIComponent(query)}&type=all`;
+                }
+            }
+        });
+
+        // Handle mobile search content filter selection
+        mobileSearchFilterOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.classList.contains('disabled')) {
+                    return;
+                }
+
+                // Update active filter
+                mobileSearchFilterOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update current filter
+                mobileCurrentSearchFilter = this.dataset.filter;
+
+                // Filter current results instead of new search
+                const query = mobileSearchInput.value.trim();
+                if (query.length >= 2) {
+                    filterMobileCurrentResults(mobileCurrentSearchFilter);
+                }
+            });
+        });
+
+        // Handle popular terms click
+        const mobilePopularTerms = document.querySelectorAll('.mobile-popular-term');
+        mobilePopularTerms.forEach(term => {
+            term.addEventListener('click', function() {
+                const searchTerm = this.dataset.term;
+                mobileSearchInput.value = searchTerm;
+                performMobileSearch(searchTerm);
+                showMobileSearchResults();
+
+                // Hide quick categories and suggestions
+                mobileQuickCategories.style.display = 'none';
+                mobileRecentSection.style.display = 'none';
+                mobilePopularSection.style.display = 'none';
+            });
+        });
+
+        // Handle quick category buttons
+        const mobileSearchScopeButtons = document.querySelectorAll('.mobile-search-scope');
+        mobileSearchScopeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const scope = this.dataset.scope;
+                let searchQuery = '';
+
+                // Set appropriate search query based on scope
+                switch(scope) {
+                    case 'marketplace':
+                        searchQuery = 'sản phẩm';
+                        break;
+                    case 'forum':
+                        searchQuery = 'thảo luận';
+                        break;
+                    case 'members':
+                        searchQuery = '@';
+                        break;
+                    case 'technical':
+                        searchQuery = 'kỹ thuật';
+                        break;
+                }
+
+                mobileSearchInput.value = searchQuery;
+                performMobileSearch(searchQuery);
+                showMobileSearchResults();
+
+                // Hide quick categories and suggestions
+                mobileQuickCategories.style.display = 'none';
+                mobileRecentSection.style.display = 'none';
+                mobilePopularSection.style.display = 'none';
+            });
+        });
+
+        // Reset mobile search when modal is hidden
+        document.getElementById('mobileSearchModal').addEventListener('hidden.bs.modal', function() {
+            mobileSearchInput.value = '';
+            hideMobileSearchResults();
+            mobileQuickCategories.style.display = 'block';
+            mobileRecentSection.style.display = 'block';
+            mobilePopularSection.style.display = 'block';
+
+            // Reset filter to 'all'
+            mobileSearchFilterOptions.forEach(opt => opt.classList.remove('active'));
+            document.querySelector('.mobile-search-filter-option[data-filter="all"]').classList.add('active');
+            mobileCurrentSearchFilter = 'all';
+        });
+    }
+
+    // Mobile search functions
+    function showMobileSearchResults() {
+        if (mobileSearchResultsDropdown) {
+            mobileSearchResultsDropdown.style.display = 'block';
+            mobileSearchResultsDropdown.classList.add('show');
+        }
+    }
+
+    function hideMobileSearchResults() {
+        if (mobileSearchResultsDropdown) {
+            mobileSearchResultsDropdown.style.display = 'none';
+            mobileSearchResultsDropdown.classList.remove('show');
+        }
+    }
+
+    function performMobileSearch(query) {
+        // Make AJAX request to unified search API (same as desktop)
+        fetch(`/api/v1/search/unified?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Store results for filtering
+                mobileCurrentSearchResults = data;
+                displayMobileUnifiedSearchResults(data);
+            })
+            .catch(error => {
+                console.error('Mobile search error:', error);
+                mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">An error occurred while searching. Please try again.</div>';
+            });
+    }
+
+    function filterMobileCurrentResults(filter) {
+        if (!mobileCurrentSearchResults) return;
+
+        // Apply filter to current results (same logic as desktop)
+        const filteredData = {
+            ...mobileCurrentSearchResults,
+            results: {
+                ...mobileCurrentSearchResults.results,
+                threads: filter === 'all' || filter === 'threads' ? mobileCurrentSearchResults.results.threads : [],
+                showcases: filter === 'all' || filter === 'showcases' ? mobileCurrentSearchResults.results.showcases : [],
+                products: filter === 'all' || filter === 'products' ? mobileCurrentSearchResults.results.products : [],
+                users: filter === 'all' || filter === 'users' ? mobileCurrentSearchResults.results.users : []
+            }
+        };
+
+        displayMobileUnifiedSearchResults(filteredData);
+    }
+
+    function displayMobileUnifiedSearchResults(data) {
+        // Clear previous results
+        mobileSearchResultsContent.innerHTML = '';
+
+        // Check if data structure is valid
+        if (!data || !data.results) {
+            mobileSearchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
+            return;
+        }
+
+        // Extract results from correct structure
+        const results = data.results;
+        const totalResults = (results.threads ? results.threads.length : 0) +
+                           (results.showcases ? results.showcases.length : 0) +
+                           (results.products ? results.products.length : 0) +
+                           (results.users ? results.users.length : 0);
+
+        if (totalResults === 0) {
+            const query = mobileSearchInput.value.trim();
+            mobileSearchResultsContent.innerHTML = `
+                <div class="search-no-results p-3 text-center">
+                    <i class="fas fa-search me-2"></i>Không tìm thấy kết quả cho "${query}".
+                    <p class="mt-2 mb-0">
+                        <a href="/search/advanced?q=${encodeURIComponent(query)}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                            <i class="fas fa-sliders-h me-1"></i>{{ __('messages.search.advanced_search') }}
+                        </a>
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        // Use the same display logic as desktop but with mobile-optimized styling
+        let html = '';
+
+        // Display Threads
+        if (results.threads && results.threads.length > 0) {
+            html += '<div class="search-category mb-2">';
+            html += '<h6 class="search-category-title text-primary mb-2 small"><i class="fas fa-comments me-1"></i>Thảo luận</h6>';
+            results.threads.forEach(thread => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            ${thread.image && thread.image.trim() !== '' ? `<img src="${thread.image}" class="rounded me-2" width="30" height="30" alt="${thread.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 30px; height: 30px;'; fallback.innerHTML = '<i class=\\'fas fa-comments text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;"><i class="fas fa-comments text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 small"><a href="${thread.url}" class="text-decoration-none">${thread.title}</a></h6>
+                                <p class="mb-1 text-muted" style="font-size: 0.7rem;">${thread.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-user me-1"></i>${thread.author.name}
+                                    </small>
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-comments me-1"></i>${thread.stats.comments}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Showcases
+        if (results.showcases && results.showcases.length > 0) {
+            html += '<div class="search-category mb-2">';
+            html += '<h6 class="search-category-title text-success mb-2 small"><i class="fas fa-star me-1"></i>Dự án</h6>';
+            results.showcases.forEach(showcase => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            ${showcase.image && showcase.image.trim() !== '' ? `<img src="${showcase.image}" class="rounded me-2" width="30" height="30" alt="${showcase.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 30px; height: 30px;'; fallback.innerHTML = '<i class=\\'fas fa-star text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;"><i class="fas fa-star text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 small"><a href="${showcase.url}" class="text-decoration-none">${showcase.title}</a></h6>
+                                <p class="mb-1 text-muted" style="font-size: 0.7rem;">${showcase.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-user me-1"></i>${showcase.author.name}
+                                    </small>
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-eye me-1"></i>${showcase.stats.views}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Products
+        if (results.products && results.products.length > 0) {
+            html += '<div class="search-category mb-2">';
+            html += '<h6 class="search-category-title text-warning mb-2 small"><i class="fas fa-shopping-cart me-1"></i>Sản phẩm</h6>';
+            results.products.forEach(product => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex">
+                            ${product.image && product.image.trim() !== '' ? `<img src="${product.image}" class="rounded me-2" width="30" height="30" alt="${product.title}" style="object-fit: cover;" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 30px; height: 30px;'; fallback.innerHTML = '<i class=\\'fas fa-shopping-cart text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;"><i class="fas fa-shopping-cart text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 small">
+                                    <a href="${product.url}" class="text-decoration-none">${product.title}</a>
+                                    <span class="badge bg-success ms-1" style="font-size: 0.6rem;">${product.price.formatted}</span>
+                                </h6>
+                                <p class="mb-1 text-muted" style="font-size: 0.7rem;">${product.excerpt}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-store me-1"></i>${product.seller.name}
+                                    </small>
+                                    <small class="text-muted" style="font-size: 0.65rem;">
+                                        <i class="fas fa-eye me-1"></i>${product.stats.views}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Display Users
+        if (results.users && results.users.length > 0) {
+            html += '<div class="search-category mb-2">';
+            html += '<h6 class="search-category-title text-info mb-2 small"><i class="fas fa-users me-1"></i>Thành viên</h6>';
+            results.users.forEach(user => {
+                html += `
+                    <div class="search-result-item p-2 border-bottom">
+                        <div class="d-flex align-items-center">
+                            ${user.avatar && user.avatar.trim() !== '' ? `<img src="${user.avatar}" class="rounded-circle me-2" width="24" height="24" alt="${user.name}" onerror="this.style.display='none'; const fallback = document.createElement('div'); fallback.className = 'bg-light rounded-circle me-2 d-flex align-items-center justify-content-center'; fallback.style.cssText = 'width: 24px; height: 24px;'; fallback.innerHTML = '<i class=\\'fas fa-user text-muted\\'></i>'; this.parentNode.insertBefore(fallback, this.nextSibling);">` : '<div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;"><i class="fas fa-user text-muted"></i></div>'}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 small">
+                                    <a href="${user.url}" class="text-decoration-none">${user.name}</a>
+                                    <small class="text-muted">@${user.username}</small>
+                                </h6>
+                                <small class="text-muted" style="font-size: 0.65rem;">
+                                    <span class="badge bg-secondary" style="font-size: 0.6rem;">${user.role}</span>
+                                    ${user.business_name ? `• ${user.business_name}` : ''}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+
+        // Add footer with advanced search link
+        const query = mobileSearchInput.value.trim();
+        html += `
+            <div class="search-results-footer p-2 border-top">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Tìm thấy ${totalResults} kết quả</small>
+                    <a href="/search/advanced?q=${encodeURIComponent(query)}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-search-plus me-1"></i>{{ __('messages.search.advanced_search') }}
+                    </a>
+                </div>
+            </div>
+        `;
+
+        mobileSearchResultsContent.innerHTML = html;
+    }
 });
 </script>
 

@@ -16,7 +16,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_thread') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_thread_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -26,7 +25,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.new_showcase') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.new_showcase_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -36,7 +34,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.upload_photo') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.upload_photo_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -46,9 +43,9 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.become_seller') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.become_seller_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
+                    <!--
                     <li>
                         <a href="{{ route('events.create') }}" class="mega-menu-item">
                             <i class="fa-solid fa-calendar-plus me-2"></i>
@@ -56,7 +53,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.create_content.create_event') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.create_content.create_event_desc') }}</small>
                             </div>
-                            <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
                         </a>
                     </li>
                     <li>
@@ -68,7 +64,7 @@
                             </div>
                             <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -88,7 +84,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.advanced_search') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.advanced_search_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -98,7 +93,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.community.find_experts') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.community.find_experts_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -108,9 +102,9 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.company_directory') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.discovery.company_directory_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
+                    <!--
                     <li>
                         <a href="{{ route('events.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-calendar-days me-2"></i>
@@ -130,7 +124,7 @@
                             </div>
                             <span class="badge bg-info">{{ t_navigation('add_menu.status.beta') }}</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="{{ route('whats-new.popular') }}" class="mega-menu-item">
                             <i class="fa-solid fa-trending-up me-2"></i>
@@ -153,6 +147,7 @@
                     {{ t_navigation('add_menu.tools_support.title') }}
                 </h6>
                 <ul class="mega-menu-list">
+                    <!--
                     <li>
                         <a href="{{ route('materials.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-table me-2"></i>
@@ -182,7 +177,7 @@
                             </div>
                             <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="{{ route('contact') }}" class="mega-menu-item">
                             <i class="fa-solid fa-headset me-2"></i>
@@ -190,7 +185,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.contact') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.contact_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -200,7 +194,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.about') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.about_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -210,7 +203,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.terms') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.terms_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -220,7 +212,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.privacy') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.privacy_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -230,7 +221,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.rules') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.rules_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                     <li>
@@ -240,7 +230,6 @@
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.support.faq') }}</span>
                                 <small class="mega-menu-item-desc">{{ t_navigation('add_menu.support.faq_desc') }}</small>
                             </div>
-                            <span class="badge bg-success">{{ t_navigation('add_menu.status.ready') }}</span>
                         </a>
                     </li>
                 </ul>
@@ -251,21 +240,9 @@
 
     {{-- Bottom Action Bar --}}
     <div class="mega-menu-footer">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <div class="d-flex align-items-center">
-                    <div class="me-4">
-                        <i class="fa-solid fa-lightbulb text-warning me-2"></i>
-                        <span class="small text-muted">{{ t_navigation('add_menu.footer.quick_tip') }}</span>
-                    </div>
-                    <div class="me-4">
-                        <i class="fa-solid fa-keyboard text-info me-2"></i>
-                        <span class="small text-muted">{{ t_navigation('add_menu.footer.keyboard_shortcut') }}: <kbd>Ctrl + N</kbd></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 text-end">
-                <div class="d-flex align-items-center justify-content-end">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-4 text-center">
+                <div class="d-flex align-items-center justify-content-center">
                     <div class="me-3">
                         <i class="fa-solid fa-moon me-1"></i>
                         <span class="small text-muted">{{ t_navigation('add_menu.footer.dark_mode') }}</span>

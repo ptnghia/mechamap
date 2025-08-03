@@ -518,7 +518,7 @@ class ThreadController extends Controller
                 'industry_application' => $validated['industry_application'] ?? null,
                 'cover_image' => $coverImagePath,
                 'user_id' => Auth::id(),
-                'status' => 'published',
+                'status' => 'approved',
                 'showcaseable_type' => Thread::class,
                 'showcaseable_id' => $thread->id,
                 'view_count' => 0,
@@ -535,11 +535,17 @@ class ThreadController extends Controller
             if ($thread->media && $thread->media->count() > 0) {
                 foreach ($thread->media->take(5) as $media) { // Limit to 5 images
                     $showcase->media()->create([
+                        'user_id' => Auth::id(),
                         'file_path' => $media->file_path,
                         'file_name' => $media->file_name,
-                        'file_type' => $media->file_type,
+                        'file_extension' => $media->file_extension ?? pathinfo($media->file_name, PATHINFO_EXTENSION),
+                        'mime_type' => $media->mime_type ?? 'image/jpeg',
                         'file_size' => $media->file_size,
-                        'is_featured' => false
+                        'file_category' => $media->file_category ?? 'image',
+                        'disk' => $media->disk ?? 'public',
+                        'processing_status' => 'completed',
+                        'is_public' => true,
+                        'is_approved' => true,
                     ]);
                 }
             }
@@ -589,7 +595,7 @@ class ThreadController extends Controller
 
             DB::commit();
 
-            return redirect()->route('showcases.show', $showcase)
+            return redirect()->route('showcase.show', $showcase)
                 ->with('success', 'Showcase đã được tạo thành công từ thread!');
 
         } catch (\Exception $e) {
@@ -603,6 +609,206 @@ class ThreadController extends Controller
             return redirect()->back()
                 ->with('error', 'Có lỗi xảy ra khi tạo showcase: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    /**
+     * Create showcase from thread via AJAX
+     */
+    public function createShowcaseAjax(Request $request, Thread $thread)
+    {
+        try {
+            // Authorization check
+            if (Auth::user()->id !== $thread->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền tạo showcase cho thread này.'
+                ], 403);
+            }
+
+            // Validation: Check if thread already has showcase
+            if ($thread->showcase) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thread này đã có showcase. Mỗi thread chỉ có thể có một showcase.'
+                ], 422);
+            }
+
+            // Validate request
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string|min:50',
+                'showcase_category_id' => 'required|exists:showcase_categories,id',
+                'showcase_type_id' => 'nullable|exists:showcase_types,id',
+                'complexity_level' => 'nullable|string|in:Beginner,Intermediate,Advanced,Expert',
+                'industry_application' => 'nullable|string|max:255',
+                'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
+                'attachments' => 'nullable|array|max:10',
+                'attachments.*' => 'file|max:51200', // 50MB per file
+                'agree_terms' => 'required|accepted'
+            ], [
+                'title.required' => 'Tiêu đề showcase là bắt buộc.',
+                'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+                'description.required' => 'Mô tả dự án là bắt buộc.',
+                'description.min' => 'Mô tả phải có ít nhất 50 ký tự.',
+                'showcase_category_id.required' => 'Danh mục là bắt buộc.',
+                'showcase_category_id.exists' => 'Danh mục không hợp lệ.',
+                'showcase_type_id.exists' => 'Loại dự án không hợp lệ.',
+                'cover_image.image' => 'File phải là hình ảnh.',
+                'cover_image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif, webp.',
+                'cover_image.max' => 'Kích thước ảnh không được vượt quá 5MB.',
+                'attachments.max' => 'Chỉ được upload tối đa 10 file đính kèm.',
+                'attachments.*.file' => 'File đính kèm không hợp lệ.',
+                'attachments.*.max' => 'Mỗi file đính kèm không được vượt quá 50MB.',
+                'agree_terms.required' => 'Bạn phải đồng ý với điều khoản.',
+                'agree_terms.accepted' => 'Bạn phải đồng ý với điều khoản.'
+            ]);
+
+            DB::beginTransaction();
+
+            // Handle cover image upload
+            $coverImagePath = null;
+            if ($request->hasFile('cover_image')) {
+                $coverImagePath = $request->file('cover_image')->store('showcases/covers', 'public');
+            }
+
+            // Generate unique slug
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+            $counter = 1;
+
+            // Ensure slug is unique
+            while (\App\Models\Showcase::where('slug', $slug)->exists()) {
+                $slug = $baseSlug . '-' . $counter;
+                $counter++;
+            }
+
+            // Create showcase
+            $showcase = new \App\Models\Showcase([
+                'title' => $validated['title'],
+                'slug' => $slug,
+                'description' => $validated['description'],
+                'showcase_category_id' => $validated['showcase_category_id'],
+                'showcase_type_id' => $validated['showcase_type_id'] ?? null,
+                'complexity_level' => $validated['complexity_level'] ?? 'Intermediate',
+                'industry_application' => $validated['industry_application'] ?? null,
+                'cover_image' => $coverImagePath,
+                'user_id' => Auth::id(),
+                'status' => 'approved',
+                'showcaseable_type' => Thread::class,
+                'showcaseable_id' => $thread->id,
+                'view_count' => 0,
+                'like_count' => 0,
+                'download_count' => 0,
+                'share_count' => 0,
+                'rating_average' => 0.0,
+                'rating_count' => 0
+            ]);
+
+            $showcase->save();
+
+            // Copy thread images to showcase media if any
+            if ($thread->media && $thread->media->count() > 0) {
+                foreach ($thread->media->take(5) as $media) { // Limit to 5 images
+                    $showcase->media()->create([
+                        'user_id' => Auth::id(),
+                        'file_path' => $media->file_path,
+                        'file_name' => $media->file_name,
+                        'file_extension' => $media->file_extension ?? pathinfo($media->file_name, PATHINFO_EXTENSION),
+                        'mime_type' => $media->mime_type ?? 'image/jpeg',
+                        'file_size' => $media->file_size,
+                        'file_category' => $media->file_category ?? 'image',
+                        'disk' => $media->disk ?? 'public',
+                        'processing_status' => 'completed',
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]);
+                }
+            }
+
+            // Handle file attachments if any
+            if ($request->hasFile('attachments')) {
+                $attachmentPaths = [];
+
+                foreach ($request->file('attachments') as $attachment) {
+                    // Generate unique filename
+                    $fileName = time() . '_' . uniqid() . '_' . $attachment->getClientOriginalName();
+
+                    // Store file in public/images/showcases/attachments/
+                    $path = $attachment->storeAs('images/showcases/attachments', $fileName, 'public');
+
+                    // Create media record
+                    $showcase->media()->create([
+                        'user_id' => Auth::id(),
+                        'file_name' => $attachment->getClientOriginalName(),
+                        'file_path' => $path,
+                        'file_extension' => $attachment->getClientOriginalExtension(),
+                        'mime_type' => $attachment->getMimeType(),
+                        'file_size' => $attachment->getSize(),
+                        'file_category' => $this->getFileCategory($attachment),
+                        'disk' => 'public',
+                        'processing_status' => 'completed',
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]);
+
+                    $attachmentPaths[] = $path;
+                }
+
+                // Update showcase with file_attachments JSON
+                $showcase->update([
+                    'file_attachments' => $attachmentPaths
+                ]);
+            }
+
+            // Log activity
+            $this->activityService->logActivity(
+                Auth::user(),
+                'showcase_created_from_thread',
+                'Đã tạo showcase từ thread: ' . $thread->title,
+                $showcase
+            );
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Showcase đã được tạo thành công từ thread!',
+                'data' => [
+                    'showcase_id' => $showcase->id,
+                    'showcase_url' => route('showcases.show', $showcase),
+                    'thread_id' => $thread->id
+                ]
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ.',
+                'errors' => $e->errors()
+            ], 422);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Delete uploaded image if exists
+            if (isset($coverImagePath) && $coverImagePath) {
+                Storage::disk('public')->delete($coverImagePath);
+            }
+
+            // Log error for monitoring
+            \Log::error('Showcase creation failed', [
+                'user_id' => Auth::id(),
+                'thread_id' => $thread->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi tạo showcase: ' . $e->getMessage()
+            ], 500);
         }
     }
 

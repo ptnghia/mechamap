@@ -106,4 +106,28 @@ class UserActivityService
             'activity_id' => $thread->id,
         ]);
     }
+
+    /**
+     * Ghi lại hoạt động chung với mô tả tùy chỉnh
+     *
+     * @param User $user
+     * @param string $activityType
+     * @param string $description (ignored - for compatibility)
+     * @param mixed $relatedModel
+     * @return UserActivity
+     */
+    public function logActivity(User $user, string $activityType, string $description, $relatedModel = null): UserActivity
+    {
+        $activityData = [
+            'user_id' => $user->id,
+            'activity_type' => $activityType,
+        ];
+
+        // Nếu có model liên quan, lưu ID của nó
+        if ($relatedModel && method_exists($relatedModel, 'getKey')) {
+            $activityData['activity_id'] = $relatedModel->getKey();
+        }
+
+        return UserActivity::create($activityData);
+    }
 }

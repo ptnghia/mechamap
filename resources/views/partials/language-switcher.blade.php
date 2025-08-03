@@ -16,11 +16,10 @@
     </button>
 
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-        <li class="dropdown-header">
+        <!--li class="dropdown-header">
             <i class="fas fa-globe me-2"></i>
             {{ __('common.language.select') }}
-        </li>
-        <li><hr class="dropdown-divider"></li>
+        </li-->
 
         @foreach($otherLanguages as $locale => $language)
             <li>
@@ -36,8 +35,6 @@
                 </a>
             </li>
         @endforeach
-
-        <li><hr class="dropdown-divider"></li>
         <li>
             <a class="dropdown-item text-muted small"
                href="#"

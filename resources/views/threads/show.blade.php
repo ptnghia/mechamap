@@ -248,7 +248,9 @@
          @include('threads.partials.poll')
 
         <!-- Showcase Section -->
+        <div id="showcase-section">
         @include('threads.partials.showcase')
+        </div>
 
         <div class="comments-section mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
