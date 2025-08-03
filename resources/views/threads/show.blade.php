@@ -543,11 +543,28 @@
                 </div>
                 @enderror
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <div id="reply-to-info" class="text-muted" style="display: none;">
-                        Trả lời: <span id="reply-to-name"></span>
-                        <button type="button" class="btn btn-sm btn-link p-0 ms-2" id="cancel-reply">Hủy</button>
+                <!-- Reply to info section -->
+                <div id="reply-to-info" class="mb-3" style="display: none;">
+                    <div class="card border-start border-primary border-3 bg-light">
+                        <div class="card-body py-2 px-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <small class="text-muted">
+                                        <i class="fas fa-reply me-1"></i>{{ __('thread.replying_to') }}: <strong id="reply-to-name"></strong>
+                                    </small>
+                                    <div id="reply-to-content" class="mt-1 text-muted small" style="max-height: 100px; overflow-y: auto;">
+                                        <!-- Original comment content will be inserted here -->
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="cancel-reply">
+                                    <i class="fas fa-times"></i> {{ __('thread.cancel') }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
 
                     <button type="submit" class="btn btn-primary" id="submit-reply-btn">
                         <i class="fas fa-paper-plane"></i> {{ __('thread.send_reply') }}
@@ -743,23 +760,36 @@ function initializeEventHandlers() {
         button.addEventListener('click', function() {
             const parentId = this.getAttribute('data-parent-id');
 
-            // Find the parent user name - look for .fw-bold in the comment structure
+            // Find the parent user name and content - look for .fw-bold in the comment structure
             const commentItem = this.closest('.comment_item');
             let parentUser = 'Người dùng';
+            let parentContent = '';
 
             if (commentItem) {
                 const userLink = commentItem.querySelector('.comment_item_user .fw-bold');
                 if (userLink) {
                     parentUser = userLink.textContent.trim();
                 }
+
+                // Get comment content - look for the content div
+                const contentDiv = commentItem.querySelector('.comment_item_content');
+                if (contentDiv) {
+                    // Get text content and limit to reasonable length
+                    parentContent = contentDiv.textContent.trim();
+                    if (parentContent.length > 200) {
+                        parentContent = parentContent.substring(0, 200) + '...';
+                    }
+                }
             }
 
             const parentIdInput = document.getElementById('parent_id');
             const replyToName = document.getElementById('reply-to-name');
+            const replyToContent = document.getElementById('reply-to-content');
             const replyToInfo = document.getElementById('reply-to-info');
 
             if (parentIdInput) parentIdInput.value = parentId;
             if (replyToName) replyToName.textContent = parentUser;
+            if (replyToContent) replyToContent.textContent = parentContent;
             if (replyToInfo) replyToInfo.style.display = 'block';
 
             // Scroll to reply form

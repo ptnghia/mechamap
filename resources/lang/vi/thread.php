@@ -156,6 +156,7 @@ return array (
   'loading_comments' => 'Đang tải bình luận...',
   'comments_sorted' => 'Bình luận đã được sắp xếp',
   'sorting_comments' => 'Đang sắp xếp bình luận...',
+  'replying_to' => 'Đang trả lời',
 
   // CKEditor Configuration
   'editor' => [

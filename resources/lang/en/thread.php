@@ -81,6 +81,7 @@ return array (
   'loading_comments' => 'Loading comments...',
   'comments_sorted' => 'Comments sorted',
   'sorting_comments' => 'Sorting comments...',
+  'replying_to' => 'Replying to',
 
   // CKEditor Configuration
   'editor' => [
