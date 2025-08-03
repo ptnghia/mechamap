@@ -3382,7 +3382,8 @@ body.user-frontend {
 .nav-item .btn-link {
     border: none
 }
-
+.notification-bell i{
+}
 .nav-icon .nav-link i {
     font-size: 18px;
     margin-right: 5px

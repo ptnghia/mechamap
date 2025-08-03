@@ -167,7 +167,11 @@ class UserThreadController extends Controller
 
         // Load relationships với filtering cho comments
         $thread->load([
-            'user',
+            'user' => function ($q) {
+                $q->withCount(['threads' => function ($threadQuery) {
+                    $threadQuery->where('moderation_status', 'approved');
+                }]);
+            },
             'forum',
             'tags',
             'ratings' => function ($q) {
@@ -223,7 +227,15 @@ class UserThreadController extends Controller
      */
     private function showThreadWithModerationNotice(Thread $thread, string $statusMessage)
     {
-        $thread->load(['user', 'forum', 'tags']);
+        $thread->load([
+            'user' => function ($q) {
+                $q->withCount(['threads' => function ($threadQuery) {
+                    $threadQuery->where('moderation_status', 'approved');
+                }]);
+            },
+            'forum',
+            'tags'
+        ]);
 
         // Không load comments cho thread chưa được approved
         $userInteractions = [

@@ -263,7 +263,11 @@ class ThreadController extends Controller
     {
         // Load relationships and counts
         $thread->load([
-            'user',
+            'user' => function ($q) {
+                $q->withCount(['threads' => function ($threadQuery) {
+                    $threadQuery->where('moderation_status', 'approved');
+                }]);
+            },
             'category',
             'forum',
             'media',
