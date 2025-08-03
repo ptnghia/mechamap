@@ -1,5 +1,30 @@
 @props(['categories' => [], 'currentFilters' => []])
 
+<style>
+.price-range-btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.price-range-btn:hover {
+    background-color: var(--bs-secondary);
+    color: white;
+    border-color: var(--bs-secondary);
+}
+
+.price-range-btn.active {
+    background-color: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+}
+
+.price-input {
+    font-family: 'Courier New', monospace;
+}
+</style>
+
 <div class="card mb-4" id="advancedSearchPanel" style="display: none;">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">{{ __("common.marketplace.advanced_search") }}</h5>
@@ -59,25 +84,36 @@
 
                 <!-- Price Range -->
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">{{ __("common.marketplace.price_range_usd") }}</label>
+                    <label class="form-label fw-semibold">Khoảng giá (VNĐ)</label>
                     <div class="row g-2">
                         <div class="col-6">
-                            <input type="number"
+                            <input type="text"
                                    name="min_price"
                                    value="{{ request('min_price') }}"
-                                   class="form-control"
-                                   placeholder="{{ __("common.marketplace.min_price") }}"
-                                   min="0"
-                                   step="0.01">
+                                   class="form-control price-input"
+                                   placeholder="VD: 10,000"
+                                   data-original-value="{{ request('min_price') }}">
                         </div>
                         <div class="col-6">
-                            <input type="number"
+                            <input type="text"
                                    name="max_price"
                                    value="{{ request('max_price') }}"
-                                   class="form-control"
-                                   placeholder="{{ __("common.marketplace.max_price") }}"
-                                   min="0"
-                                   step="0.01">
+                                   class="form-control price-input"
+                                   placeholder="VD: 100,000"
+                                   data-original-value="{{ request('max_price') }}">
+                        </div>
+                    </div>
+                    <!-- Quick Price Range Buttons -->
+                    <div class="mt-2">
+                        <div class="btn-group-sm d-flex flex-wrap gap-1" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm price-range-btn"
+                                    data-min="0" data-max="10000">< 10K</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm price-range-btn"
+                                    data-min="10000" data-max="50000">10K-50K</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm price-range-btn"
+                                    data-min="50000" data-max="200000">50K-200K</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm price-range-btn"
+                                    data-min="200000" data-max="">200K+</button>
                         </div>
                     </div>
                 </div>
@@ -248,6 +284,80 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             document.getElementById('filterCount').textContent = count;
+        });
+    }
+
+    // Price input formatting
+    const priceInputs = document.querySelectorAll('.price-input');
+    priceInputs.forEach(input => {
+        // Format on input
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, ''); // Remove non-digits
+            if (value) {
+                e.target.value = formatNumber(parseInt(value));
+            }
+        });
+
+        // Format existing values on page load
+        if (input.value) {
+            const numValue = input.value.replace(/[^\d]/g, '');
+            if (numValue) {
+                input.value = formatNumber(parseInt(numValue));
+            }
+        }
+
+        // Store original numeric value for form submission
+        input.addEventListener('blur', function(e) {
+            const numValue = e.target.value.replace(/[^\d]/g, '');
+            e.target.setAttribute('data-numeric-value', numValue);
+        });
+    });
+
+    // Quick price range buttons
+    const priceRangeButtons = document.querySelectorAll('.price-range-btn');
+    priceRangeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const minPrice = this.getAttribute('data-min');
+            const maxPrice = this.getAttribute('data-max');
+
+            const minInput = document.querySelector('input[name="min_price"]');
+            const maxInput = document.querySelector('input[name="max_price"]');
+
+            if (minInput && minPrice) {
+                minInput.value = minPrice === '0' ? '' : formatNumber(parseInt(minPrice));
+                minInput.setAttribute('data-numeric-value', minPrice);
+            }
+
+            if (maxInput && maxPrice) {
+                maxInput.value = maxPrice ? formatNumber(parseInt(maxPrice)) : '';
+                maxInput.setAttribute('data-numeric-value', maxPrice || '');
+            }
+
+            // Update active button state
+            priceRangeButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            // Trigger change event to update filter count
+            if (form) {
+                form.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+
+    // Format number with commas
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Before form submission, convert formatted prices back to numeric values
+    if (form) {
+        form.addEventListener('submit', function() {
+            priceInputs.forEach(input => {
+                const numValue = input.value.replace(/[^\d]/g, '');
+                if (numValue) {
+                    input.value = numValue;
+                }
+            });
         });
     }
 });
