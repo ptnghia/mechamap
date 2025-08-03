@@ -57,6 +57,7 @@ return array (
   'sending' => 'Sending...',
   'login' => 'login',
   'register' => 'register',
+  'login_required' => 'Please :login or :register to post a reply.',
   'attach_images_optional' => 'Attach images (optional)',
   'related_topics' => 'Related topics',
   'form_submission_error' => 'An error occurred while submitting the form. Please try again.',

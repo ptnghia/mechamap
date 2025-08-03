@@ -999,6 +999,8 @@ return [
   'marketplace_actions.quick_view' => 'Quick View',
   'marketplace_actions.added_to_wishlist' => 'Added to wishlist',
   'marketplace_actions.added_to_cart' => 'Added to cart',
+  'marketplace_actions.wishlist' => 'Wishlist',
+  'marketplace_actions.cart' => 'Cart',
   'cancel' => 'Cancel',
   'save' => 'Save',
   'saved' => 'Saved.',

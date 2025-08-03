@@ -58,6 +58,7 @@ return array (
   'sending' => 'Đang gửi...',
   'login' => 'đăng nhập',
   'register' => 'đăng ký',
+  'login_required' => 'Vui lòng :login hoặc :register để đăng phản hồi.',
   'attach_images_optional' => 'Đính kèm hình ảnh (tùy chọn)',
   'related_topics' => 'Chủ đề liên quan',
   'form_submission_error' => 'Có lỗi xảy ra khi gửi form. Vui lòng thử lại.',

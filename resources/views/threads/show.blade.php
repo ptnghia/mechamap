@@ -523,18 +523,10 @@
     <!-- Related Threads -->
     @if(count($relatedThreads) > 0)
     <div class="related-threads mt-4">
-        <h3>{{ __('thread.related_topics') }}</h3>
+        <h3 class="title_page_sub">{{ __('thread.related_topics') }}</h3>
         <div class="list-group">
             @foreach($relatedThreads as $relatedThread)
-            <a href="{{ route('threads.show', $relatedThread) }}" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{ $relatedThread->title }}</h5>
-                    <small>{{ $relatedThread->created_at->diffForHumans() }}</small>
-                </div>
-                <p class="mb-1">{{ Str::limit(strip_tags($relatedThread->content), 100) }}</p>
-                <small>Bởi {{ $relatedThread->user->name }} · {{ $relatedThread->view_count }} lượt xem · {{
-                    $relatedThread->comments_count ?? 0 }} {{ __('thread.replies') }}</small>
-            </a>
+                @include('partials.thread-item', ['thread' => $relatedThread])
             @endforeach
         </div>
     </div>

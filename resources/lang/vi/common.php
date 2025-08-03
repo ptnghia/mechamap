@@ -1351,6 +1351,8 @@ return [
   'marketplace_actions.quick_view' => 'Xem nhanh',
   'marketplace_actions.added_to_wishlist' => 'Đã thêm vào danh sách yêu thích',
   'marketplace_actions.added_to_cart' => 'Đã thêm vào giỏ hàng',
+  'marketplace_actions.wishlist' => 'Yêu thích',
+  'marketplace_actions.cart' => 'Giỏ hàng',
   'cancel' => 'Hủy',
   'save' => 'Lưu',
   'saved' => 'Đã lưu.',

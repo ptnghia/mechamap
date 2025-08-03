@@ -14,6 +14,12 @@ return [
     ],
 
     'advanced_search' => 'Advanced Search',
+    'discover_products' => 'Discover Products',
+    'sort' => 'Sort',
+    'view' => 'View',
+    'no_products_found' => 'No products found',
+    'try_adjusting_filters' => 'Try adjusting your filters',
+    'view_all_products' => 'View All Products',
 
     'analytics' => [
     ],
@@ -500,8 +506,6 @@ return [
     'marketplace.grid_view' => [
     ],
 
-    'marketplace.highest_rated' => 'Highest Rated',
-
     'highest_rated' => 'Highest Rated',
 
     'marketplace.home' => [
@@ -512,8 +516,6 @@ return [
 
     'marketplace.items' => [
     ],
-
-    'marketplace.latest' => 'Latest',
 
     'latest' => 'Latest',
 
@@ -535,11 +537,7 @@ return [
     'marketplace.more' => [
     ],
 
-    'marketplace.most_popular' => 'Most Popular',
-
     'most_popular' => 'Most Popular',
-
-    'marketplace.name_a_z' => 'Name A-Z',
 
     'name_a_z' => 'Name A-Z',
 
@@ -565,11 +563,7 @@ return [
     'marketplace.precision' => [
     ],
 
-    'marketplace.price_high_to_low' => 'Price: High to Low',
-
     'price_high_to_low' => 'Price: High to Low',
-
-    'marketplace.price_low_to_high' => 'Price: Low to High',
 
     'price_low_to_high' => 'Price: Low to High',
 
@@ -587,8 +581,6 @@ return [
 
     'marketplace.related_products' => [
     ],
-
-    'marketplace.relevance' => 'Relevance',
 
     'relevance' => 'Relevance',
 

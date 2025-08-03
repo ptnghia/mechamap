@@ -7,25 +7,25 @@
  */
 
 return array (
-  'previous' => '&laquo; Trước',
-  'next' => 'Tiếp &raquo;',
-  'Pagination Navigation' => 'Điều hướng phân trang',
-  'Showing' => 'Show',
-  'to' => 'đến',
-  'of' => 'trên',
-  'results' => 'kết quả',
-  'Go to page :page' => 'Đi đến trang :page',
-  'simple' => 
+  'previous' => '&laquo; Previous',
+  'next' => 'Next &raquo;',
+  'Pagination Navigation' => 'Pagination Navigation',
+  'Showing' => 'Showing',
+  'to' => 'to',
+  'of' => 'of',
+  'results' => 'results',
+  'Go to page :page' => 'Go to page :page',
+  'simple' =>
   array (
     'previous' => 'Previous',
-    'next' => 'Tiếp',
+    'next' => 'Next',
   ),
-  'current_page' => 'Trang hiện tại',
-  'total_pages' => 'Tổng số trang',
-  'per_page' => 'Mỗi trang',
-  'total_items' => 'Tổng số mục',
-  'first' => 'Đầu',
-  'last' => 'Cuối',
-  'no_results' => 'Không có kết quả nào',
-  'empty_page' => 'Trang này không có nội dung',
+  'current_page' => 'Current page',
+  'total_pages' => 'Total pages',
+  'per_page' => 'Per page',
+  'total_items' => 'Total items',
+  'first' => 'First',
+  'last' => 'Last',
+  'no_results' => 'No results found',
+  'empty_page' => 'This page has no content',
 );

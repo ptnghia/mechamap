@@ -89,17 +89,27 @@
                         @endif
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-primary btn-sm"
-                                onclick="addToWishlist({{ $product->id }})"
-                                title="{{ t_common("marketplace_actions.add_to_wishlist") }}">
-                            <i class="heart"></i>
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2">
+                        <!-- Add to Wishlist -->
+                        <button type="button"
+                                class="btn btn-outline-secondary btn-sm flex-fill wishlist-btn"
+                                data-product-id="{{ $product->id }}"
+                                title="{{ t_common('marketplace_actions.add_to_wishlist') }}">
+                            <i class="fa-regular fa-heart"></i>
+                            <span class="d-none d-md-inline ms-1">{{ t_common('marketplace_actions.wishlist') }}</span>
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm"
-                                onclick="addToCart({{ $product->id }})"
-                                title="{{ t_common("marketplace_actions.add_to_cart") }}">
-                            <i class="fas fa-shopping-cart-plus"></i>
+
+                        <!-- Add to Cart -->
+                        <button type="button"
+                                class="btn btn-primary btn-sm flex-fill add-to-cart-btn"
+                                data-product-id="{{ $product->id }}"
+                                data-product-name="{{ $product->name }}"
+                                data-product-price="{{ $product->sale_price ?? $product->price }}"
+                                data-product-image="{{ get_product_image_url($product->featured_image) }}"
+                                title="{{ t_common('marketplace_actions.add_to_cart') }}">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="d-none d-md-inline ms-1">{{ t_common('marketplace_actions.cart') }}</span>
                         </button>
                     </div>
                 </div>

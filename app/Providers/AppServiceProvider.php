@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendWelcomeEmail;
@@ -53,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Register event listeners
         $this->registerEventListeners();
+
+        // Set default pagination view
+        Paginator::defaultView('pagination::bootstrap-5');
+        Paginator::defaultSimpleView('pagination::simple-bootstrap-5');
     }
 
     /**
