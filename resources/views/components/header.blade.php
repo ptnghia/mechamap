@@ -940,13 +940,13 @@ document.addEventListener('DOMContentLoaded', function() {
         searchResultsContent.innerHTML = '';
 
         // Check if data structure is valid
-        if (!data || !data.data || !data.data.results) {
+        if (!data || !data.results) {
             searchResultsContent.innerHTML = '<div class="search-no-results p-3 text-center text-danger">Search failed. Please try again.</div>';
             return;
         }
 
-        // Extract results from nested structure
-        const results = data.data.results;
+        // Extract results from correct structure
+        const results = data.results;
 
         const totalResults = results.meta.total;
 
@@ -955,7 +955,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>{{ t_search("no_results_for") }} "${results.meta.query}".
                     <p class="mt-2 mb-0">
-                        <a href="${data.data.advanced_search_url || data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                        <a href="${data.advanced_search_url}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
                             <i class="fas fa-sliders-h me-1"></i>{{ t_search("try_advanced") }}
                         </a>
                     </p>

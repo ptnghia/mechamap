@@ -99,15 +99,15 @@
                     <form action="{{ route('marketplace.search.results') }}" method="GET" id="filterForm">
                         <!-- Preserve existing search -->
                         <input type="hidden" name="q" value="{{ request('q') }}">
-                        
+
                         <!-- Categories -->
                         <div class="mb-3">
                             <h6 class="small text-muted mb-2">CATEGORIES</h6>
                             @foreach($categories->take(8) as $category)
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="checkbox" 
-                                       id="cat_{{ $category->id }}" 
-                                       name="categories[]" 
+                                <input class="form-check-input" type="checkbox"
+                                       id="cat_{{ $category->id }}"
+                                       name="categories[]"
                                        value="{{ $category->id }}"
                                        {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -124,13 +124,13 @@
                             <h6 class="small text-muted mb-2">PRICE RANGE</h6>
                             <div class="row">
                                 <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" 
-                                           name="price_min" value="{{ request('price_min') }}" 
+                                    <input type="number" class="form-control form-control-sm"
+                                           name="price_min" value="{{ request('price_min') }}"
                                            placeholder="Min" min="0" step="0.01">
                                 </div>
                                 <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" 
-                                           name="price_max" value="{{ request('price_max') }}" 
+                                    <input type="number" class="form-control form-control-sm"
+                                           name="price_max" value="{{ request('price_max') }}"
                                            placeholder="Max" min="0" step="0.01">
                                 </div>
                             </div>
@@ -143,7 +143,7 @@
                         <div class="mb-3">
                             <h6 class="small text-muted mb-2">SELLER TYPE</h6>
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="checkbox" id="seller_supplier" 
+                                <input class="form-check-input" type="checkbox" id="seller_supplier"
                                        name="seller_types[]" value="supplier"
                                        {{ in_array('supplier', request('seller_types', [])) ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -152,7 +152,7 @@
                                 </label>
                             </div>
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="checkbox" id="seller_manufacturer" 
+                                <input class="form-check-input" type="checkbox" id="seller_manufacturer"
                                        name="seller_types[]" value="manufacturer"
                                        {{ in_array('manufacturer', request('seller_types', [])) ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -167,7 +167,7 @@
                             <h6 class="small text-muted mb-2">RATING</h6>
                             @for($i = 4; $i >= 1; $i--)
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="radio" 
+                                <input class="form-check-input" type="radio"
                                        id="rating_{{ $i }}" name="min_rating" value="{{ $i }}"
                                        {{ request('min_rating') == $i ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -185,7 +185,7 @@
                         <div class="mb-3">
                             <h6 class="small text-muted mb-2">AVAILABILITY</h6>
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="checkbox" id="in_stock" 
+                                <input class="form-check-input" type="checkbox" id="in_stock"
                                        name="in_stock" value="1"
                                        {{ request('in_stock') ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -194,7 +194,7 @@
                                 </label>
                             </div>
                             <div class="form-check form-check-sm">
-                                <input class="form-check-input" type="checkbox" id="on_sale" 
+                                <input class="form-check-input" type="checkbox" id="on_sale"
                                        name="on_sale" value="1"
                                        {{ request('on_sale') ? 'checked' : '' }}
                                        onchange="this.form.submit()">
@@ -217,8 +217,11 @@
                         <div class="col-md-6">
                             <div class="d-flex align-items-center">
                                 <span class="me-3">
-                                    Showing {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} 
-                                    of {{ $products->total() }} results
+                                    {{ __('ui.marketplace.showing_results', [
+                                        'start' => $products->firstItem() ?? 0,
+                                        'end' => $products->lastItem() ?? 0,
+                                        'total' => $products->total()
+                                    ]) }}
                                 </span>
                                 @if(request('q'))
                                 <span class="badge bg-primary">{{ request('q') }}</span>
@@ -242,11 +245,11 @@
 
                                 <!-- View Toggle -->
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
                                             onclick="changeView('grid')" id="gridView">
                                         <i class="bx bx-grid-alt"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
                                             onclick="changeView('list')" id="listView">
                                         <i class="bx bx-list-ul"></i>
                                     </button>
@@ -256,6 +259,172 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Active Search Filters Display -->
+            @php
+                $hasActiveFilters = request()->hasAny(['search', 'q', 'category', 'product_type', 'seller_type', 'min_price', 'max_price', 'material', 'file_format', 'min_rating', 'in_stock', 'featured', 'on_sale', 'sort']);
+                $activeFilters = [];
+
+                // Collect active filters
+                if (request('search') || request('q')) {
+                    $searchTerm = request('search', request('q'));
+                    $activeFilters[] = [
+                        'type' => 'search',
+                        'label' => 'Từ khóa: "' . $searchTerm . '"',
+                        'remove_url' => request()->fullUrlWithQuery(['search' => null, 'q' => null])
+                    ];
+                }
+
+                if (request('category')) {
+                    $category = $categories->where('slug', request('category'))->first();
+                    if ($category) {
+                        $activeFilters[] = [
+                            'type' => 'category',
+                            'label' => 'Danh mục: ' . $category->name,
+                            'remove_url' => request()->fullUrlWithQuery(['category' => null])
+                        ];
+                    }
+                }
+
+                if (request('product_type')) {
+                    $productTypes = [
+                        'physical' => 'Sản phẩm vật lý',
+                        'digital' => 'Sản phẩm số',
+                        'service' => 'Dịch vụ'
+                    ];
+                    $activeFilters[] = [
+                        'type' => 'product_type',
+                        'label' => 'Loại sản phẩm: ' . ($productTypes[request('product_type')] ?? request('product_type')),
+                        'remove_url' => request()->fullUrlWithQuery(['product_type' => null])
+                    ];
+                }
+
+                if (request('seller_type')) {
+                    $sellerTypes = [
+                        'supplier' => 'Nhà cung cấp',
+                        'manufacturer' => 'Nhà sản xuất',
+                        'brand' => 'Thương hiệu'
+                    ];
+                    $activeFilters[] = [
+                        'type' => 'seller_type',
+                        'label' => 'Loại người bán: ' . ($sellerTypes[request('seller_type')] ?? request('seller_type')),
+                        'remove_url' => request()->fullUrlWithQuery(['seller_type' => null])
+                    ];
+                }
+
+                if (request('min_price') || request('max_price')) {
+                    $priceLabel = 'Giá: ';
+                    if (request('min_price') && request('max_price')) {
+                        $priceLabel .= number_format(request('min_price')) . ' - ' . number_format(request('max_price')) . ' VND';
+                    } elseif (request('min_price')) {
+                        $priceLabel .= 'Từ ' . number_format(request('min_price')) . ' VND';
+                    } else {
+                        $priceLabel .= 'Đến ' . number_format(request('max_price')) . ' VND';
+                    }
+                    $activeFilters[] = [
+                        'type' => 'price',
+                        'label' => $priceLabel,
+                        'remove_url' => request()->fullUrlWithQuery(['min_price' => null, 'max_price' => null])
+                    ];
+                }
+
+                if (request('material')) {
+                    $activeFilters[] = [
+                        'type' => 'material',
+                        'label' => 'Vật liệu: ' . request('material'),
+                        'remove_url' => request()->fullUrlWithQuery(['material' => null])
+                    ];
+                }
+
+                if (request('file_format')) {
+                    $activeFilters[] = [
+                        'type' => 'file_format',
+                        'label' => 'Định dạng file: ' . request('file_format'),
+                        'remove_url' => request()->fullUrlWithQuery(['file_format' => null])
+                    ];
+                }
+
+                if (request('min_rating')) {
+                    $activeFilters[] = [
+                        'type' => 'min_rating',
+                        'label' => 'Đánh giá tối thiểu: ' . request('min_rating') . '+ sao',
+                        'remove_url' => request()->fullUrlWithQuery(['min_rating' => null])
+                    ];
+                }
+
+                // Status filters
+                if (request('in_stock')) {
+                    $activeFilters[] = [
+                        'type' => 'in_stock',
+                        'label' => 'Còn hàng',
+                        'remove_url' => request()->fullUrlWithQuery(['in_stock' => null])
+                    ];
+                }
+
+                if (request('featured')) {
+                    $activeFilters[] = [
+                        'type' => 'featured',
+                        'label' => 'Sản phẩm nổi bật',
+                        'remove_url' => request()->fullUrlWithQuery(['featured' => null])
+                    ];
+                }
+
+                if (request('on_sale')) {
+                    $activeFilters[] = [
+                        'type' => 'on_sale',
+                        'label' => 'Đang giảm giá',
+                        'remove_url' => request()->fullUrlWithQuery(['on_sale' => null])
+                    ];
+                }
+
+                if (request('sort') && request('sort') !== 'relevance') {
+                    $sortOptions = [
+                        'newest' => 'Mới nhất',
+                        'price_low' => 'Giá thấp đến cao',
+                        'price_high' => 'Giá cao đến thấp',
+                        'rating' => 'Đánh giá cao nhất',
+                        'popular' => 'Phổ biến nhất',
+                        'name_az' => 'Tên A-Z'
+                    ];
+                    $activeFilters[] = [
+                        'type' => 'sort',
+                        'label' => 'Sắp xếp: ' . ($sortOptions[request('sort')] ?? request('sort')),
+                        'remove_url' => request()->fullUrlWithQuery(['sort' => null])
+                    ];
+                }
+            @endphp
+
+            @if(count($activeFilters) > 0)
+            <div class="card mb-4">
+                <div class="card-body py-3">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="text-muted small me-2">
+                            <i class="fas fa-filter me-1"></i>
+                            Bộ lọc đang áp dụng:
+                        </span>
+
+                        @foreach($activeFilters as $filter)
+                            <span class="badge bg-primary d-flex align-items-center">
+                                {{ $filter['label'] }}
+                                <a href="{{ $filter['remove_url'] }}"
+                                   class="text-white ms-2 text-decoration-none"
+                                   title="Xóa bộ lọc này"
+                                   style="font-size: 1.1em; line-height: 1;">
+                                    ×
+                                </a>
+                            </span>
+                        @endforeach
+
+                        <a href="{{ route('marketplace.search.results') }}"
+                           class="btn btn-outline-secondary btn-sm ms-2"
+                           title="Xóa tất cả bộ lọc">
+                            <i class="fas fa-times me-1"></i>
+                            Xóa tất cả
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!-- Products Grid/List -->
             @if($products->count() > 0)
@@ -278,7 +447,7 @@
                         <i class="bx bx-search-alt-2 display-1 text-muted"></i>
                         <h4 class="mt-3">No Products Found</h4>
                         <p class="text-muted">Try adjusting your search criteria or browse our categories.</p>
-                        
+
                         <div class="mt-4">
                             <a href="{{ route('marketplace.index') }}" class="btn btn-primary me-2">
                                 Browse All Products
@@ -353,14 +522,14 @@ function changeView(viewType) {
     const container = document.getElementById('productsContainer');
     const gridBtn = document.getElementById('gridView');
     const listBtn = document.getElementById('listView');
-    
+
     // Update container class
     container.className = `products-${viewType}`;
-    
+
     // Update button states
     gridBtn.classList.toggle('active', viewType === 'grid');
     listBtn.classList.toggle('active', viewType === 'list');
-    
+
     // Save preference
     localStorage.setItem('productViewType', viewType);
 }
@@ -369,10 +538,10 @@ function removeFilter(filterName, value) {
     const url = new URL(window.location);
     const currentValues = url.searchParams.getAll(filterName + '[]');
     const newValues = currentValues.filter(v => v !== value);
-    
+
     url.searchParams.delete(filterName + '[]');
     newValues.forEach(v => url.searchParams.append(filterName + '[]', v));
-    
+
     window.location.href = url.toString();
 }
 

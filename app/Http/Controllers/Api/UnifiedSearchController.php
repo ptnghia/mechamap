@@ -100,8 +100,14 @@ class UnifiedSearchController extends Controller
 
             return response()->json([
                 'success' => true,
+                'message' => 'Yêu cầu thành công',
                 'results' => $results,
-                'advanced_search_url' => route('forums.search.advanced', ['q' => $query])
+                'advanced_search_url' => route('search.advanced', ['q' => $query]),
+                'meta' => [
+                    'timestamp' => now()->toISOString(),
+                    'api_version' => 'v1',
+                    'status_code' => 200
+                ]
             ]);
 
         } catch (\Exception $e) {
@@ -114,7 +120,12 @@ class UnifiedSearchController extends Controller
                 'success' => $results['meta']['total'] > 0, // Success if we have any results
                 'message' => $results['meta']['total'] > 0 ? 'Partial results available' : 'Search temporarily unavailable',
                 'results' => $results,
-                'advanced_search_url' => route('forums.search.advanced', ['q' => $query])
+                'advanced_search_url' => route('search.advanced', ['q' => $query]),
+                'meta' => [
+                    'timestamp' => now()->toISOString(),
+                    'api_version' => 'v1',
+                    'status_code' => $results['meta']['total'] > 0 ? 200 : 500
+                ]
             ], $results['meta']['total'] > 0 ? 200 : 500);
         }
     }
@@ -256,8 +267,8 @@ class UnifiedSearchController extends Controller
                         ],
                         'price' => [
                             'amount' => $product->price,
-                            'currency' => 'USD',
-                            'formatted' => '$' . number_format($product->price, 2)
+                            'currency' => 'VND',
+                            'formatted' => number_format($product->price, 0, ',', '.') . ' VNĐ'
                         ],
                         'image' => $product->featured_image ? asset($product->featured_image) : null,
                         'stats' => [
@@ -296,8 +307,8 @@ class UnifiedSearchController extends Controller
                         ],
                         'price' => [
                             'amount' => $product->price,
-                            'currency' => $product->currency,
-                            'formatted' => '$' . number_format($product->price, 2)
+                            'currency' => 'VND',
+                            'formatted' => number_format($product->price, 0, ',', '.') . ' VNĐ'
                         ],
                         'complexity' => $product->complexity_level,
                         'stats' => [

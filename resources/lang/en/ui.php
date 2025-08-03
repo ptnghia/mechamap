@@ -170,4 +170,9 @@ return [
         'clear' => 'Clear',
         'reset' => 'Reset',
     ],
+
+    // Marketplace
+    'marketplace' => [
+        'showing_results' => 'Showing :start-:end of :total products',
+    ],
 ];

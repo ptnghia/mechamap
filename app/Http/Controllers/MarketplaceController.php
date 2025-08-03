@@ -228,6 +228,91 @@ class MarketplaceController extends Controller
     }
 
     /**
+     * Display search results page
+     */
+    public function searchResults(Request $request): View
+    {
+        // Use the same logic as products() method but with search-specific view
+        $query = MarketplaceProduct::with(['seller.user', 'category'])
+            ->where('status', 'approved')
+            ->where('is_active', true);
+
+        // Apply search filters (same logic as products method)
+        if ($request->filled('search') || $request->filled('q')) {
+            $search = $request->input('search', $request->input('q'));
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('short_description', 'like', "%{$search}%")
+                  ->orWhere('technical_specs', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply other filters (category, product_type, etc.)
+        $this->applyProductFilters($query, $request);
+
+        // Apply sorting
+        $this->applyProductSorting($query, $request);
+
+        // Pagination
+        $perPage = min($request->get('per_page', 20), 50);
+        $products = $query->paginate($perPage)->withQueryString();
+
+        // Get filter options
+        $categories = ProductCategory::whereHas('marketplaceProducts', function($query) {
+            $query->where('status', 'approved')->where('is_active', true);
+        })->orderBy('name')->get();
+
+        $priceRanges = [
+            ['label' => 'Under $25', 'min' => 0, 'max' => 25],
+            ['label' => '$25 - $100', 'min' => 25, 'max' => 100],
+            ['label' => '$100 - $500', 'min' => 100, 'max' => 500],
+            ['label' => '$500 - $1000', 'min' => 500, 'max' => 1000],
+            ['label' => 'Over $1000', 'min' => 1000, 'max' => null],
+        ];
+
+        return view('marketplace.search.results', compact(
+            'products',
+            'categories',
+            'priceRanges'
+        ));
+    }
+
+    /**
+     * Display advanced search page
+     */
+    public function advancedSearch(Request $request): View
+    {
+        // Get filter options
+        $categories = ProductCategory::whereHas('marketplaceProducts', function($query) {
+            $query->where('status', 'approved')->where('is_active', true);
+        })->orderBy('name')->get();
+
+        $materials = MarketplaceProduct::where('status', 'approved')
+            ->where('is_active', true)
+            ->whereNotNull('material')
+            ->distinct()
+            ->pluck('material')
+            ->filter()
+            ->sort()
+            ->values();
+
+        $priceRanges = [
+            ['label' => 'Under $25', 'min' => 0, 'max' => 25],
+            ['label' => '$25 - $100', 'min' => 25, 'max' => 100],
+            ['label' => '$100 - $500', 'min' => 100, 'max' => 500],
+            ['label' => '$500 - $1000', 'min' => 500, 'max' => 1000],
+            ['label' => 'Over $1000', 'min' => 1000, 'max' => null],
+        ];
+
+        return view('marketplace.search.advanced', compact(
+            'categories',
+            'materials',
+            'priceRanges'
+        ));
+    }
+
+    /**
      * Display single product details
      */
     public function show(string $slug): View
@@ -374,5 +459,107 @@ class MarketplaceController extends Controller
             ->paginate(20);
 
         return view('marketplace.categories.show', compact('category', 'products'));
+    }
+
+    /**
+     * Apply product filters to query
+     */
+    private function applyProductFilters($query, Request $request)
+    {
+        // Category filter
+        if ($request->filled('category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+
+        // Product type filter
+        if ($request->filled('product_type')) {
+            $query->where('product_type', $request->product_type);
+        }
+
+        // Seller type filter
+        if ($request->filled('seller_type')) {
+            $query->whereHas('seller', function($q) use ($request) {
+                $q->where('seller_type', $request->seller_type);
+            });
+        }
+
+        // Price range filter
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Material filter
+        if ($request->filled('material')) {
+            $query->where('material', $request->material);
+        }
+
+        // File format filter
+        if ($request->filled('file_format')) {
+            $query->where('file_format', $request->file_format);
+        }
+
+        // Rating filter
+        if ($request->filled('min_rating')) {
+            $query->where('average_rating', '>=', $request->min_rating);
+        }
+
+        // Status filters (checkboxes)
+        if ($request->filled('in_stock')) {
+            $query->where('stock_quantity', '>', 0);
+        }
+        if ($request->filled('featured')) {
+            $query->where('is_featured', true);
+        }
+        if ($request->filled('on_sale')) {
+            $query->whereColumn('sale_price', '<', 'price');
+        }
+    }
+
+    /**
+     * Apply sorting to query
+     */
+    private function applyProductSorting($query, Request $request)
+    {
+        $sort = $request->get('sort', 'relevance');
+
+        switch ($sort) {
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'price_low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'rating':
+                $query->orderBy('average_rating', 'desc');
+                break;
+            case 'popular':
+                $query->orderBy('view_count', 'desc');
+                break;
+            case 'name_az':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'relevance':
+            default:
+                // For search queries, order by relevance (name match first, then description)
+                if ($request->filled('search') || $request->filled('q')) {
+                    $search = $request->input('search', $request->input('q'));
+                    $query->orderByRaw("CASE
+                        WHEN name LIKE ? THEN 1
+                        WHEN description LIKE ? THEN 2
+                        ELSE 3
+                    END", ["%{$search}%", "%{$search}%"]);
+                } else {
+                    $query->orderBy('created_at', 'desc');
+                }
+                break;
+        }
     }
 }
