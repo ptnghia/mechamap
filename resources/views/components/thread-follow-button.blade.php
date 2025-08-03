@@ -12,13 +12,14 @@
     };
 @endphp
 
-<div class="thread-follow-wrapper" data-thread-id="{{ $thread->id }}">
+<div class="thread-follow-wrapper" data-thread-id="{{ $thread->id }}" data-thread-slug="{{ $thread->slug }}">
     @auth
         <button type="button"
                 class="btn {{ $isFollowing ? 'btn-success' : 'btn-outline-primary' }} thread-follow-btn {{ $buttonClass }}"
                 data-thread-id="{{ $thread->id }}"
+                data-thread-slug="{{ $thread->slug }}"
                 data-following="{{ $isFollowing ? 'true' : 'false' }}"
-                title="{{ $isFollowing ? __('forum.actions.unfollow_thread') : __('forum.actions.follow_thread') }}">
+                title="{{ $isFollowing ? __('thread.unfollow') : __('thread.follow') }}">
             <i class="fas {{ $isFollowing ? 'fa-bell' : 'fa-bell-slash' }} me-1"></i>
             <span class="follow-text">{{ $isFollowing ? __('thread.following') : __('thread.follow') }}</span>
             <span class="follower-count badge bg-light text-dark ms-1">{{ $followerCount }}</span>
@@ -27,7 +28,7 @@
         <button type="button"
                 class="btn btn-outline-primary {{ $buttonClass }}"
                 onclick="showLoginModal()"
-                title="{{ __('forum.actions.login_to_follow') }}">
+                title="{{ __('thread.login_to_follow') }}">
             <i class="fas fa-bell-slash me-1"></i>
             <span>{{ __('thread.follow') }}</span>
             <span class="follower-count badge bg-light text-dark ms-1">{{ $followerCount }}</span>
@@ -37,20 +38,43 @@
 
 @push('scripts')
 <script>
+// Toast notification function (if not already defined)
+if (typeof showToast === 'undefined') {
+    function showToast(message, type = 'info') {
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+        toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        toast.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 5000);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Thread follow functionality
     document.querySelectorAll('.thread-follow-btn').forEach(button => {
         button.addEventListener('click', function() {
-            const threadId = this.dataset.threadId;
+            const threadSlug = this.dataset.threadSlug;
             const isFollowing = this.dataset.following === 'true';
             const action = isFollowing ? 'unfollow' : 'follow';
 
             // Disable button during request
             this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Processing...';
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>{{ __('thread.processing') }}';
 
             // Make AJAX request
-            const url = `/ajax/threads/${threadId}/follow`;
+            const url = `/ajax/threads/${threadSlug}/follow`;
             const method = isFollowing ? 'DELETE' : 'POST';
 
             fetch(url, {
@@ -71,44 +95,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update button appearance
                     if (newFollowing) {
                         this.className = this.className.replace('btn-outline-primary', 'btn-success');
-                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
-                        this.title = '{{ __('forum.actions.unfollow_thread') }}';
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('thread.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = '{{ __('thread.unfollow') }}';
                     } else {
                         this.className = this.className.replace('btn-success', 'btn-outline-primary');
-                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
-                        this.title = '{{ __('forum.actions.follow_thread') }}';
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('thread.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = '{{ __('thread.follow') }}';
                     }
 
                     // Show success message
                     showToast(data.message, 'success');
 
                     // Update all follower counts on page
+                    const threadId = this.dataset.threadId;
                     document.querySelectorAll(`[data-thread-id="${threadId}"] .follower-count`).forEach(el => {
                         el.textContent = data.follower_count;
                     });
 
                 } else {
-                    showToast(data.message || '{{ __('forum.actions.error_occurred') }}', 'error');
+                    showToast(data.message || '{{ __('thread.error_occurred') }}', 'error');
 
                     // Reset button state
                     const originalFollowing = this.dataset.following === 'true';
                     if (originalFollowing) {
-                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('thread.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + (data.follower_count || 0) + '</span>';
                     } else {
-                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('thread.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + (data.follower_count || 0) + '</span>';
                     }
                 }
             })
             .catch(error => {
                 console.error('Thread follow error:', error);
-                showToast('{{ __('forum.actions.request_error') }}', 'error');
+                showToast('{{ __('thread.request_error') }}', 'error');
 
                 // Reset button state
                 const originalFollowing = this.dataset.following === 'true';
+                const followerCount = this.querySelector('.follower-count')?.textContent || '0';
                 if (originalFollowing) {
-                    this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('forum.actions.following') }}</span>';
+                    this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">{{ __('thread.following') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + followerCount + '</span>';
                 } else {
-                    this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('forum.actions.follow') }}</span>';
+                    this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">{{ __('thread.follow') }}</span><span class="follower-count badge bg-light text-dark ms-1">' + followerCount + '</span>';
                 }
             })
             .finally(() => {
