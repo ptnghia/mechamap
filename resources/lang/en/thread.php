@@ -29,6 +29,7 @@ return array (
   'featured' => 'Featured',
   'unfeatured' => 'Unfeatured',
   'like' => 'Like',
+  'unlike' => 'Unlike',
   'posts' => 'posts',
   'joined' => 'Joined',
   'go_to_end' => 'Go to end',

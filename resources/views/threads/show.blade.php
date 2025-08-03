@@ -1776,7 +1776,12 @@ function handleThreadStatsUpdate(data) {
 
 
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/frontend/components/file-upload.css') }}?v={{ config('app.version', '1.0') }}">
+@endpush
+
 @push('scripts')
+<script src="{{ asset('js/frontend/components/file-upload.js') }}?v={{ config('app.version', '1.0') }}"></script>
 <script>
     // Additional Fancybox configuration for threads if needed
     document.addEventListener('DOMContentLoaded', function() {

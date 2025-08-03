@@ -127,14 +127,10 @@ class TinyMCEConfig {
             height: options.height || 200,
             placeholder: options.placeholder || 'Nhập nội dung của bạn...',
             plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                'insertdatetime', 'table', 'wordcount', 'emoticons', 'autosave'
+                'autolink', 'lists', 'link', 'emoticons', 'autosave'
             ],
-            toolbar: [
-                'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright',
-                'bullist numlist | outdent indent | blockquote | link image | emoticons | code fullscreen'
-            ],
+            toolbar: 'bold italic underline | bullist numlist | blockquote | link emoticons',
+            toolbar_mode: 'wrap',
             ...options
         };
     }

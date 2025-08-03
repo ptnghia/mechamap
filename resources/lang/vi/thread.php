@@ -29,6 +29,7 @@ return array (
   'featured' => 'Nổi bật',
   'unfeatured' => 'Bỏ nổi bật',
   'like' => 'Thích',
+  'unlike' => 'Bỏ thích',
   'posts' => 'bài viết',
   'joined' => 'Tham gia',
   'go_to_end' => 'Cuối trang',
