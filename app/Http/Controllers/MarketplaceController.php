@@ -227,90 +227,11 @@ class MarketplaceController extends Controller
         ));
     }
 
-    /**
-     * Display search results page
-     */
-    public function searchResults(Request $request): View
-    {
-        // Use the same logic as products() method but with search-specific view
-        $query = MarketplaceProduct::with(['seller.user', 'category'])
-            ->where('status', 'approved')
-            ->where('is_active', true);
+    // REMOVED: searchResults() method - functionality consolidated in products() method
+    // Old /marketplace/search route now redirects to /marketplace/products
 
-        // Apply search filters (same logic as products method)
-        if ($request->filled('search') || $request->filled('q')) {
-            $search = $request->input('search', $request->input('q'));
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('short_description', 'like', "%{$search}%")
-                  ->orWhere('technical_specs', 'like', "%{$search}%");
-            });
-        }
-
-        // Apply other filters (category, product_type, etc.)
-        $this->applyProductFilters($query, $request);
-
-        // Apply sorting
-        $this->applyProductSorting($query, $request);
-
-        // Pagination
-        $perPage = min($request->get('per_page', 20), 50);
-        $products = $query->paginate($perPage)->withQueryString();
-
-        // Get filter options
-        $categories = ProductCategory::whereHas('marketplaceProducts', function($query) {
-            $query->where('status', 'approved')->where('is_active', true);
-        })->orderBy('name')->get();
-
-        $priceRanges = [
-            ['label' => 'Under $25', 'min' => 0, 'max' => 25],
-            ['label' => '$25 - $100', 'min' => 25, 'max' => 100],
-            ['label' => '$100 - $500', 'min' => 100, 'max' => 500],
-            ['label' => '$500 - $1000', 'min' => 500, 'max' => 1000],
-            ['label' => 'Over $1000', 'min' => 1000, 'max' => null],
-        ];
-
-        return view('marketplace.search.results', compact(
-            'products',
-            'categories',
-            'priceRanges'
-        ));
-    }
-
-    /**
-     * Display advanced search page
-     */
-    public function advancedSearch(Request $request): View
-    {
-        // Get filter options
-        $categories = ProductCategory::whereHas('marketplaceProducts', function($query) {
-            $query->where('status', 'approved')->where('is_active', true);
-        })->orderBy('name')->get();
-
-        $materials = MarketplaceProduct::where('status', 'approved')
-            ->where('is_active', true)
-            ->whereNotNull('material')
-            ->distinct()
-            ->pluck('material')
-            ->filter()
-            ->sort()
-            ->values();
-
-        $priceRanges = [
-            ['label' => 'Under $25', 'min' => 0, 'max' => 25],
-            ['label' => '$25 - $100', 'min' => 25, 'max' => 100],
-            ['label' => '$100 - $500', 'min' => 100, 'max' => 500],
-            ['label' => '$500 - $1000', 'min' => 500, 'max' => 1000],
-            ['label' => 'Over $1000', 'min' => 1000, 'max' => null],
-        ];
-
-        return view('marketplace.search.advanced', compact(
-            'categories',
-            'materials',
-            'priceRanges'
-        ));
-    }
+    // REMOVED: advancedSearch() method - functionality consolidated in products() method
+    // Old /marketplace/search/advanced route now redirects to /marketplace/products?advanced=1
 
     /**
      * Display single product details

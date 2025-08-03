@@ -96,9 +96,14 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     Route::get('/products/popular', [App\Http\Controllers\MarketplaceController::class, 'popularProducts'])->name('products.popular');
     Route::get('/products/{slug}', [App\Http\Controllers\MarketplaceController::class, 'show'])->name('products.show');
 
-    // Search routes
-    Route::get('/search', [App\Http\Controllers\MarketplaceController::class, 'searchResults'])->name('search.results');
-    Route::get('/search/advanced', [App\Http\Controllers\MarketplaceController::class, 'advancedSearch'])->name('search.advanced');
+    // Search routes - CONSOLIDATED: Redirect to products page with search parameters
+    Route::get('/search', function (Request $request) {
+        return redirect()->route('marketplace.products.index', $request->query());
+    })->name('search.results');
+
+    Route::get('/search/advanced', function (Request $request) {
+        return redirect()->route('marketplace.products.index', array_merge($request->query(), ['advanced' => '1']));
+    })->name('search.advanced');
 
     Route::get('/suppliers', [App\Http\Controllers\MarketplaceController::class, 'suppliers'])->name('suppliers.index');
     Route::get('/suppliers/{slug}', [App\Http\Controllers\MarketplaceController::class, 'seller'])->name('sellers.show');

@@ -387,6 +387,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update cart count on page load
     updateCartCount();
+
+    // Auto-open advanced search if advanced=1 parameter is present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('advanced') === '1') {
+        const advancedSearchPanel = document.getElementById('advancedSearchPanel');
+        if (advancedSearchPanel) {
+            advancedSearchPanel.classList.add('show');
+            // Update button text
+            const toggleButton = document.getElementById('advancedSearchToggle');
+            if (toggleButton) {
+                toggleButton.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.hide_advanced_search") }}';
+            }
+        }
+    }
 });
 </script>
 
