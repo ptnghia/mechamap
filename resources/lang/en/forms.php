@@ -9,16 +9,19 @@
 return array (
   'upload' =>
   array (
-    'attach_files' => 'Đính kèm tệp',
-    'attach_file' => 'Đính kèm tệp',
-    'optional' => 'Tùy chọn',
-    'supported_formats_with_size' => 'Định dạng hỗ trợ và kích thước',
-    'drag_drop_here' => 'Kéo thả tệp vào đây',
-    'or' => 'hoặc',
-    'select_from_computer' => 'Chọn từ máy tính',
-    'select_files' => 'Chọn tệp',
-    'files_selected' => 'tệp đã chọn',
-    'uploading' => 'Đang tải lên...',
+    'attach_files' => 'Attach Files',
+    'attach_file' => 'Attach File',
+    'attach_images' => 'Attach Images',
+    'optional' => 'optional',
+    'supported_formats_with_size' => 'Formats: :formats | Max: :size per file',
+    'drag_drop_here' => 'Drag and drop files here',
+    'or' => 'or',
+    'select_from_computer' => 'Select from computer',
+    'select_files' => 'Select files',
+    'files_selected' => 'Files selected',
+    'images_selected' => 'Images selected',
+    'uploading' => 'Uploading...',
+    'max_files_info' => 'Maximum :count files',
   ),
   'labels' =>
   array (

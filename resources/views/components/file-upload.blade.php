@@ -89,7 +89,15 @@
 
     // Generate label nếu không được cung cấp
     if (!$label) {
-        $label = $multiple ? __('forms.upload.attach_files') : __('forms.upload.attach_file');
+        // Kiểm tra nếu chỉ upload images
+        $isImageOnly = !empty($fileTypes) && count(array_intersect($fileTypes, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'])) === count($fileTypes);
+
+        if ($isImageOnly) {
+            $label = '<i class="fas fa-image me-2"></i>' . __('forms.upload.attach_images');
+        } else {
+            $label = $multiple ? __('forms.upload.attach_files') : __('forms.upload.attach_file');
+        }
+
         if ($required) {
             $label .= ' <span class="text-danger">*</span>';
         } else {
@@ -100,10 +108,17 @@
     // Generate help text nếu không được cung cấp
     if (!$helpText) {
         $typesList = implode(', ', array_map('strtoupper', $fileTypes));
+        $sizeText = is_string($maxSize) ? $maxSize : number_format($maxSizeBytes / (1024 * 1024), 1) . 'MB';
+
         $helpText = __('forms.upload.supported_formats_with_size', [
             'formats' => $typesList,
-            'size' => is_string($maxSize) ? $maxSize : number_format($maxSizeBytes / (1024 * 1024), 1) . 'MB'
+            'size' => $sizeText
         ]);
+
+        // Thêm thông tin số file tối đa nếu multiple
+        if ($multiple && $maxFiles > 1) {
+            $helpText .= ' | ' . __('forms.upload.max_files_info', ['count' => $maxFiles]);
+        }
     }
 @endphp
 

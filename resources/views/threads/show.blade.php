@@ -533,7 +533,6 @@
                     max-size="5MB"
                     :multiple="true"
                     :max-files="10"
-                    label="Đính kèm hình ảnh (tùy chọn)"
                     id="thread-reply-images"
                 />
 
@@ -1773,15 +1772,7 @@ function handleThreadStatsUpdate(data) {
 </script>
 @endpush
 
-
-
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/components/file-upload.css') }}?v={{ config('app.version', '1.0') }}">
-@endpush
-
 @push('scripts')
-<script src="{{ asset('js/frontend/components/file-upload.js') }}?v={{ config('app.version', '1.0') }}"></script>
 <script>
     // Additional Fancybox configuration for threads if needed
     document.addEventListener('DOMContentLoaded', function() {

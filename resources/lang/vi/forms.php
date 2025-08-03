@@ -5,15 +5,17 @@ return [
     'upload' => [
         'attach_files' => 'Đính kèm tệp',
         'attach_file' => 'Đính kèm tệp',
-        'optional' => 'Tùy chọn',
-        'supported_formats_with_size' => 'Định dạng hỗ trợ và kích thước',
-        'drag_drop_here' => 'Kéo thả tệp vào đây',
+        'attach_images' => 'Đính kèm hình ảnh',
+        'optional' => 'tùy chọn',
+        'supported_formats_with_size' => 'Định dạng: :formats | Tối đa: :size mỗi file',
+        'drag_drop_here' => 'Kéo và thả tệp vào đây',
         'or' => 'hoặc',
         'select_from_computer' => 'Chọn từ máy tính',
         'select_files' => 'Chọn tệp',
         'files_selected' => 'Tệp đã chọn',
         'images_selected' => 'Hình ảnh đã chọn',
-        'uploading' => 'Đang tải lên...'
+        'uploading' => 'Đang tải lên...',
+        'max_files_info' => 'Tối đa :count tệp'
     ],
 
     // Form labels
