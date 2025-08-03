@@ -13,8 +13,7 @@ return [
     'add_product' => [
     ],
 
-    'advanced_search' => [
-    ],
+    'advanced_search' => 'Advanced Search',
 
     'analytics' => [
     ],
@@ -485,8 +484,9 @@ return [
     'marketplace.delivery' => [
     ],
 
-    'marketplace.discover_products' => [
-    ],
+    'marketplace.discover_products' => 'Discover Products',
+
+    'discover_products' => 'Discover Products',
 
     'marketplace.featured' => [
     ],
@@ -500,8 +500,9 @@ return [
     'marketplace.grid_view' => [
     ],
 
-    'marketplace.highest_rated' => [
-    ],
+    'marketplace.highest_rated' => 'Highest Rated',
+
+    'highest_rated' => 'Highest Rated',
 
     'marketplace.home' => [
     ],
@@ -512,8 +513,9 @@ return [
     'marketplace.items' => [
     ],
 
-    'marketplace.latest' => [
-    ],
+    'marketplace.latest' => 'Latest',
+
+    'latest' => 'Latest',
 
     'marketplace.lead_time' => [
     ],
@@ -533,11 +535,13 @@ return [
     'marketplace.more' => [
     ],
 
-    'marketplace.most_popular' => [
-    ],
+    'marketplace.most_popular' => 'Most Popular',
 
-    'marketplace.name_a_z' => [
-    ],
+    'most_popular' => 'Most Popular',
+
+    'marketplace.name_a_z' => 'Name A-Z',
+
+    'name_a_z' => 'Name A-Z',
 
     'marketplace.new_arrivals' => [
     ],
@@ -551,8 +555,9 @@ return [
     'marketplace.no_featured_products_available' => [
     ],
 
-    'marketplace.no_products_found' => [
-    ],
+    'marketplace.no_products_found' => 'No products found',
+
+    'no_products_found' => 'No products found',
 
     'marketplace.out_of_stock' => [
     ],
@@ -560,11 +565,13 @@ return [
     'marketplace.precision' => [
     ],
 
-    'marketplace.price_high_to_low' => [
-    ],
+    'marketplace.price_high_to_low' => 'Price: High to Low',
 
-    'marketplace.price_low_to_high' => [
-    ],
+    'price_high_to_low' => 'Price: High to Low',
+
+    'marketplace.price_low_to_high' => 'Price: Low to High',
+
+    'price_low_to_high' => 'Price: Low to High',
 
     'marketplace.product_categories' => [
     ],
@@ -581,8 +588,9 @@ return [
     'marketplace.related_products' => [
     ],
 
-    'marketplace.relevance' => [
-    ],
+    'marketplace.relevance' => 'Relevance',
+
+    'relevance' => 'Relevance',
 
     'marketplace.reviews' => [
     ],
@@ -596,8 +604,9 @@ return [
     'marketplace.sold_by' => [
     ],
 
-    'marketplace.sort' => [
-    ],
+    'marketplace.sort' => 'Sort',
+
+    'sort' => 'Sort',
 
     'marketplace.sort_by_name' => [
     ],
@@ -626,8 +635,9 @@ return [
     'marketplace.trending' => [
     ],
 
-    'marketplace.try_adjusting_filters' => [
-    ],
+    'marketplace.try_adjusting_filters' => 'Try adjusting your filters',
+
+    'try_adjusting_filters' => 'Try adjusting your filters',
 
     'marketplace.updated' => [
     ],
@@ -635,14 +645,15 @@ return [
     'marketplace.verified_sellers' => [
     ],
 
-    'marketplace.view' => [
-    ],
+    'marketplace.view' => 'View',
 
-    'marketplace.view_all' => [
-    ],
+    'view' => 'View',
 
-    'marketplace.view_all_products' => [
-    ],
+    'marketplace.view_all' => 'View All',
+
+    'marketplace.view_all_products' => 'View All Products',
+
+    'view_all_products' => 'View All Products',
 
     'marketplace.view_options' => [
     ],
@@ -937,8 +948,7 @@ return [
     'products.testing_validation' => [
     ],
 
-    'products.title' => [
-    ],
+    'products.title' => 'Products',
 
     'products.tools_equipment' => [
     ],
@@ -1100,6 +1110,14 @@ return [
         'complete_setup' => 'Complete Setup',
         'store_desc_placeholder' => 'Tell us about your store...',
         'website_placeholder' => 'https://example.com',
+    ],
+
+    // Product types
+    'product_types' => [
+        'digital' => 'Digital Product',
+        'new_product' => 'New Product',
+        'used_product' => 'Used Product',
+        'service' => 'Service',
     ],
 
 ];

@@ -668,6 +668,15 @@ return array (
   'order_status.shipped' => 'Đã gửi',
   'no_orders_yet' => 'Chưa có đơn hàng nào.',
   'products.title' => 'Sản phẩm',
+
+  // Product types
+  'product_types' => [
+    'digital' => 'Sản phẩm số',
+    'new_product' => 'Sản phẩm mới',
+    'used_product' => 'Sản phẩm đã qua sử dụng',
+    'service' => 'Dịch vụ',
+  ],
+
   'marketplace.discover_products' => 'Khám phá sản phẩm',
   'marketplace.advanced_search' => 'Tìm kiếm nâng cao',
   'marketplace.sort' => 'Sắp xếp',

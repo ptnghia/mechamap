@@ -27,24 +27,24 @@
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
                 <div>
                     <h1 class="h2 fw-bold text-dark">{{ __('marketplace.products.title') }}</h1>
-                    <p class="text-muted mb-0">{{ __('marketplace.marketplace.discover_products') }}</p>
+                    <p class="text-muted mb-0">{{ __('marketplace.discover_products') }}</p>
                 </div>
                 <div class="mt-3 mt-sm-0 d-flex gap-2">
                     <button class="btn btn-outline-secondary btn-sm" id="advancedSearchToggle" onclick="toggleAdvancedSearch()">
-                        <i class="fas fa-search me-2"></i> {{ __('marketplace.marketplace.advanced_search') }}
+                        <i class="fas fa-search me-2"></i> {{ __('marketplace.advanced_search') }}
                     </button>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-sort-down me-2"></i> {{ __('marketplace.marketplace.sort') }}
+                            <i class="fas fa-sort-down me-2"></i> {{ __('marketplace.sort') }}
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}">{{ __('marketplace.marketplace.relevance') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'created_at']) }}">{{ __('marketplace.marketplace.latest') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}">{{ __('marketplace.marketplace.price_low_to_high') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}">{{ __('marketplace.marketplace.price_high_to_low') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}">{{ __('marketplace.marketplace.highest_rated') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">{{ __('marketplace.marketplace.most_popular') }}</a></li>
-                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'name']) }}">{{ __('marketplace.marketplace.name_a_z') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}">{{ __('marketplace.relevance') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'created_at']) }}">{{ __('marketplace.latest') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_low']) }}">{{ __('marketplace.price_low_to_high') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'price_high']) }}">{{ __('marketplace.price_high_to_low') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'rating']) }}">{{ __('marketplace.highest_rated') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'popular']) }}">{{ __('marketplace.most_popular') }}</a></li>
+                            <li><a class="dropdown-item" href="{{ request()->fullUrlWithQuery(['sort' => 'name']) }}">{{ __('marketplace.name_a_z') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
                         </p>
                     </div>
                     <div class="mt-3 mt-sm-0 d-flex align-items-center gap-3">
-                        <span class="text-muted small">{{ __('marketplace.marketplace.view') }}:</span>
+                        <span class="text-muted small">{{ __('marketplace.view') }}:</span>
                         <div class="btn-group btn-group-sm" role="group">
                             <button type="button" class="btn btn-outline-secondary active" id="gridView">
                                 <i class="fas fa-th"></i>
@@ -188,10 +188,10 @@
                         <div class="col-12">
                             <div class="text-center py-5">
                                 <i class="fas fa-search text-muted" style="font-size: 4rem;"></i>
-                                <h4 class="mt-3">{{ __('marketplace.marketplace.no_products_found') }}</h4>
-                                <p class="text-muted">{{ __('marketplace.marketplace.try_adjusting_filters') }}</p>
+                                <h4 class="mt-3">{{ __('marketplace.no_products_found') }}</h4>
+                                <p class="text-muted">{{ __('marketplace.try_adjusting_filters') }}</p>
                                 <a href="{{ route('marketplace.products.index') }}" class="btn btn-primary mt-3">
-                                    {{ __('marketplace.marketplace.view_all_products') }}
+                                    {{ __('marketplace.view_all_products') }}
                                 </a>
                             </div>
                         </div>
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Hide panel
                 advancedSearchPanel.style.display = 'none';
                 advancedSearchPanel.classList.remove('show');
-                toggleButton.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.marketplace.advanced_search") }}';
+                toggleButton.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.advanced_search") }}';
 
                 // Remove advanced parameter from URL
                 const url = new URL(window.location);
