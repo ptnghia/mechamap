@@ -1480,6 +1480,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileSearchResultsDropdown = document.getElementById('mobileSearchResultsDropdown');
     const mobileSearchResultsContent = document.getElementById('mobileSearchResultsContent');
     const mobileSearchFilterOptions = document.querySelectorAll('.mobile-search-filter-option');
+
+    // Optional elements that may not exist in mobile modal
     const mobileQuickCategories = document.getElementById('mobileQuickCategories');
     const mobileRecentSection = document.getElementById('mobileRecentSection');
     const mobilePopularSection = document.getElementById('mobilePopularSection');
@@ -1509,10 +1511,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 showMobileSearchResults();
                 mobileSearchResultsContent.innerHTML = '<div class="search-loading p-3 text-center"><i class="fas fa-hourglass-half me-2"></i>{{ __("messages.search.searching") }}</div>';
 
-                // Hide quick categories and suggestions when searching
-                mobileQuickCategories.style.display = 'none';
-                mobileRecentSection.style.display = 'none';
-                mobilePopularSection.style.display = 'none';
+                // Hide quick categories and suggestions when searching (only if they exist)
+                if (mobileQuickCategories) mobileQuickCategories.style.display = 'none';
+                if (mobileRecentSection) mobileRecentSection.style.display = 'none';
+                if (mobilePopularSection) mobilePopularSection.style.display = 'none';
 
                 // Set a timeout to avoid too many requests
                 mobileSearchTimeout = setTimeout(function() {
@@ -1520,10 +1522,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 300);
             } else {
                 hideMobileSearchResults();
-                // Show quick categories and suggestions when not searching
-                mobileQuickCategories.style.display = 'block';
-                mobileRecentSection.style.display = 'block';
-                mobilePopularSection.style.display = 'block';
+                // Show quick categories and suggestions when not searching (only if they exist)
+                if (mobileQuickCategories) mobileQuickCategories.style.display = 'block';
+                if (mobileRecentSection) mobileRecentSection.style.display = 'block';
+                if (mobilePopularSection) mobilePopularSection.style.display = 'block';
             }
         });
 
@@ -1584,10 +1586,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 performMobileSearch(searchTerm);
                 showMobileSearchResults();
 
-                // Hide quick categories and suggestions
-                mobileQuickCategories.style.display = 'none';
-                mobileRecentSection.style.display = 'none';
-                mobilePopularSection.style.display = 'none';
+                // Hide quick categories and suggestions (only if they exist)
+                if (mobileQuickCategories) mobileQuickCategories.style.display = 'none';
+                if (mobileRecentSection) mobileRecentSection.style.display = 'none';
+                if (mobilePopularSection) mobilePopularSection.style.display = 'none';
             });
         });
 
@@ -1618,10 +1620,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 performMobileSearch(searchQuery);
                 showMobileSearchResults();
 
-                // Hide quick categories and suggestions
-                mobileQuickCategories.style.display = 'none';
-                mobileRecentSection.style.display = 'none';
-                mobilePopularSection.style.display = 'none';
+                // Hide quick categories and suggestions (only if they exist)
+                if (mobileQuickCategories) mobileQuickCategories.style.display = 'none';
+                if (mobileRecentSection) mobileRecentSection.style.display = 'none';
+                if (mobilePopularSection) mobilePopularSection.style.display = 'none';
             });
         });
 
@@ -1629,13 +1631,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('mobileSearchModal').addEventListener('hidden.bs.modal', function() {
             mobileSearchInput.value = '';
             hideMobileSearchResults();
-            mobileQuickCategories.style.display = 'block';
-            mobileRecentSection.style.display = 'block';
-            mobilePopularSection.style.display = 'block';
+
+            // Show quick categories and suggestions when modal is hidden (only if they exist)
+            if (mobileQuickCategories) mobileQuickCategories.style.display = 'block';
+            if (mobileRecentSection) mobileRecentSection.style.display = 'block';
+            if (mobilePopularSection) mobilePopularSection.style.display = 'block';
 
             // Reset filter to 'all'
             mobileSearchFilterOptions.forEach(opt => opt.classList.remove('active'));
-            document.querySelector('.mobile-search-filter-option[data-filter="all"]').classList.add('active');
+            const allFilterOption = document.querySelector('.mobile-search-filter-option[data-filter="all"]');
+            if (allFilterOption) allFilterOption.classList.add('active');
             mobileCurrentSearchFilter = 'all';
         });
     }
