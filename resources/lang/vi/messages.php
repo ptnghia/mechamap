@@ -37,7 +37,10 @@ return [
     // Header component
     'header' => [
         'banner_alt' => 'Banner',
-        'mobile_nav_toggle' => 'Chuyển đổi điều hướng di động',
+        'mobile_nav_toggle' => 'Mở menu điều hướng',
+        'close_menu' => 'Đóng menu',
+        'back' => 'Quay lại',
+        'submenu' => 'Menu con',
         'roles' => [
             'supplier' => 'Nhà cung cấp',
             'brand' => 'Thương hiệu',

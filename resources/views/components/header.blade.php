@@ -7,6 +7,9 @@
 <!-- Unified Search CSS -->
 <link rel="stylesheet" href="{{ asset('css/frontend/components/unified-search.css') }}">
 
+<!-- Mobile Navigation CSS -->
+<link rel="stylesheet" href="{{ asset('css/frontend/components/mobile-nav.css') }}">
+
 <header class="site-header">
     <!-- Banner (optional) -->
     @if($showBanner && get_setting('show_banner', true))
@@ -866,6 +869,9 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/api/v1/search/unified?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
+                // Add advanced search URL to data
+                data.advanced_search_url = generateAdvancedSearchUrl(query, currentSearchFilter);
+
                 // Store results for filtering
                 currentSearchResults = data;
                 displayUnifiedSearchResults(data);
@@ -876,13 +882,34 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    // Generate advanced search URL based on current filter and query
+    function generateAdvancedSearchUrl(query, filter = 'all') {
+        const encodedQuery = encodeURIComponent(query);
+
+        switch(filter) {
+            case 'threads':
+                return `/forums/search/advanced?q=${encodedQuery}`;
+            case 'showcases':
+                return `/showcase?search=${encodedQuery}`;
+            case 'products':
+                return `/marketplace/products?search=${encodedQuery}`;
+            case 'users':
+                return `/members?filter=${encodedQuery}`;
+            case 'all':
+            default:
+                return `/search?query=${encodedQuery}`;
+        }
+    }
+
     function filterCurrentResults(filter) {
         if (!currentSearchResults || !currentSearchResults.results) return;
 
         // Apply filter to current results
+        const query = searchInput.value.trim();
         const filteredData = {
             ...currentSearchResults,
-            results: applyContentFilter(currentSearchResults.results, filter)
+            results: applyContentFilter(currentSearchResults.results, filter),
+            advanced_search_url: generateAdvancedSearchUrl(query, filter)
         };
 
         displayUnifiedSearchResults(filteredData);
@@ -1665,6 +1692,9 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/api/v1/search/unified?q=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
+                // Add advanced search URL to data
+                data.advanced_search_url = generateAdvancedSearchUrl(query, mobileCurrentSearchFilter);
+
                 // Store results for filtering
                 mobileCurrentSearchResults = data;
                 displayMobileUnifiedSearchResults(data);
@@ -1679,6 +1709,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!mobileCurrentSearchResults) return;
 
         // Apply filter to current results (same logic as desktop)
+        const query = mobileSearchInput.value.trim();
         const filteredData = {
             ...mobileCurrentSearchResults,
             results: {
@@ -1687,7 +1718,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 showcases: filter === 'all' || filter === 'showcases' ? mobileCurrentSearchResults.results.showcases : [],
                 products: filter === 'all' || filter === 'products' ? mobileCurrentSearchResults.results.products : [],
                 users: filter === 'all' || filter === 'users' ? mobileCurrentSearchResults.results.users : []
-            }
+            },
+            advanced_search_url: generateAdvancedSearchUrl(query, filter)
         };
 
         displayMobileUnifiedSearchResults(filteredData);
@@ -1712,11 +1744,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (totalResults === 0) {
             const query = mobileSearchInput.value.trim();
+            const advancedUrl = data.advanced_search_url || generateAdvancedSearchUrl(query, mobileCurrentSearchFilter);
             mobileSearchResultsContent.innerHTML = `
                 <div class="search-no-results p-3 text-center">
                     <i class="fas fa-search me-2"></i>Không tìm thấy kết quả cho "${query}".
                     <p class="mt-2 mb-0">
-                        <a href="/search/advanced?q=${encodeURIComponent(query)}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
+                        <a href="${advancedUrl}" class="btn btn-sm btn-primary" style="background: #8B7355; border-color: #8B7355;">
                             <i class="fas fa-sliders-h me-1"></i>{{ __('messages.search.advanced_search') }}
                         </a>
                     </p>
@@ -1843,11 +1876,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add footer with advanced search link
         const query = mobileSearchInput.value.trim();
+        const advancedUrl = data.advanced_search_url || generateAdvancedSearchUrl(query, mobileCurrentSearchFilter);
         html += `
             <div class="search-results-footer p-2 border-top">
                 <div class="d-flex justify-content-between align-items-center">
                     <small class="text-muted">${'{{ __("ui.search.results_found") }}'.replace(':count', totalResults)}</small>
-                    <a href="/search/advanced?q=${encodeURIComponent(query)}" class="btn btn-sm btn-outline-primary">
+                    <a href="${advancedUrl}" class="btn btn-sm btn-outline-primary">
                         <i class="fas fa-search-plus me-1"></i>{{ __('messages.search.advanced_search') }}
                     </a>
                 </div>
@@ -1874,7 +1908,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Wait a bit for all content to load
     setTimeout(function() {
-        console.log('🔍 Checking for duplicate "{{ __("nav.create.title") }}" menus...');
+        //console.log('🔍 Checking for duplicate "{{ __("nav.create.title") }}" menus...');
 
         // Find all nav items with "Thêm" text
         const navItems = document.querySelectorAll('.navbar-nav .nav-item');

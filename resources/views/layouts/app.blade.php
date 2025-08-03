@@ -361,8 +361,7 @@
     <!-- HC-MobileNav JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.js"></script>
 
-    <!-- Mobile Navigation Script -->
-    <script src="{{ asset_versioned('js/mobile-nav.js') }}"></script>
+    <!-- Mobile Navigation Script - Now handled in mobile-nav.blade.php component -->
 
     <!-- Header System - Legacy header.js removed, using unified search in header component -->
 

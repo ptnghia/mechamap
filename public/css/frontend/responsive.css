@@ -3,24 +3,6 @@
  * File này chứa tất cả các media queries để đảm bảo giao diện thích ứng
  */
 
-/* Small devices (sm) */
-@media (min-width: 640px) {
-  .list_post_threads_footer .sm\:flex {
-    display: flex !important;
-  }
-
-  .list_post_threads_footer .sm\:hidden {
-    display: none !important;
-  }
-
-  .list_post_threads_footer .sm\:items-center {
-    align-items: center !important;
-  }
-
-  .list_post_threads_footer .sm\:justify-between {
-    justify-content: space-between !important;
-  }
-}
 
 /* Màn hình nhỏ (mobile) */
 @media (max-width: 480px) {
@@ -98,6 +80,26 @@
 
   .step-text{
     font-size: .8rem;
+  }
+.thread-content{overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
+.thread-title{font-size: 16px;line-height: 24px;}
+}
+/* Small devices (sm) */
+@media (min-width: 640px) {
+  .list_post_threads_footer .sm\:flex {
+    display: flex !important;
+  }
+
+  .list_post_threads_footer .sm\:hidden {
+    display: none !important;
+  }
+
+  .list_post_threads_footer .sm\:items-center {
+    align-items: center !important;
+  }
+
+  .list_post_threads_footer .sm\:justify-between {
+    justify-content: space-between !important;
   }
 }
 

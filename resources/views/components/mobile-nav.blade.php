@@ -653,9 +653,275 @@
 </form>
 @endauth
 
-{{-- JavaScript to sync badges between desktop and mobile --}}
+{{-- JavaScript for Mobile Navigation with Custom Header --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if HC-MobileNav library is loaded
+    if (typeof hcOffcanvasNav === 'undefined') {
+        console.warn('HC-MobileNav library not loaded');
+        return;
+    }
+
+    // Initialize HC-MobileNav only on mobile devices
+    const mobileNav = document.getElementById('mobile-nav');
+    const toggleButton = document.querySelector('.hc-mobile-nav-toggle');
+
+    if (!mobileNav || !toggleButton) {
+        console.warn('Mobile navigation elements not found');
+        return;
+    }
+
+    /**
+     * Customize navigation header with logo and user/notification icons
+     */
+    function customizeNavigationHeader(navInstance) {
+        // Wait for navigation to be fully initialized
+        setTimeout(() => {
+            const navWrapper = document.querySelector('.hc-offcanvas-nav');
+            if (!navWrapper) return;
+
+            const navContent = navWrapper.querySelector('.nav-content');
+            if (!navContent) return;
+
+            // Find or create the header title element
+            let titleElement = navContent.querySelector('#hc-nav-1-nav-title');
+            if (!titleElement) {
+                // Create title element if it doesn't exist
+                titleElement = document.createElement('div');
+                titleElement.id = 'hc-nav-1-nav-title';
+                titleElement.className = 'nav-title';
+                navContent.insertBefore(titleElement, navContent.firstChild);
+            }
+
+            // Clear existing content
+            titleElement.innerHTML = '';
+
+            // Create 2-column layout
+            titleElement.style.cssText = `
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px;
+                border-bottom: 1px solid #e9ecef;
+                background-color: #fff;
+            `;
+
+            // Left column: Logo with home link
+            const leftColumn = document.createElement('div');
+            leftColumn.style.cssText = 'flex: 1;';
+
+            const logoLink = document.createElement('a');
+            logoLink.href = '{{ url('/') }}';
+            logoLink.style.cssText = `
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+                font-size: 18px;
+            `;
+
+            // Add logo image or text - using Laravel helper
+            const logoImg = document.createElement('img');
+            logoImg.src = '{{ get_logo_url() }}';
+            logoImg.alt = '{{ get_site_name() }}';
+            logoImg.style.cssText = `
+                height: 32px;
+                width: auto;
+                margin-right: 8px;
+            `;
+            logoImg.onerror = function() {
+                // Fallback to text if image not found
+                this.style.display = 'none';
+                logoLink.innerHTML = '<span style="color: #007bff; font-weight: bold;">{{ get_site_name() }}</span>';
+            };
+
+            logoLink.appendChild(logoImg);
+            leftColumn.appendChild(logoLink);
+
+            // Right column: User/Notification icons
+            const rightColumn = document.createElement('div');
+            rightColumn.style.cssText = `
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            `;
+
+            @auth
+            // Show notification icon for authenticated users
+            const notificationLink = document.createElement('a');
+            notificationLink.href = '{{ route('notifications.index') }}';
+            notificationLink.style.cssText = `
+                position: relative;
+                color: #6c757d;
+                font-size: 18px;
+                text-decoration: none;
+            `;
+            notificationLink.innerHTML = '<i class="fas fa-bell"></i>';
+
+            // Add notification badge if there are unread notifications
+            const notificationCounter = document.querySelector('.notification-counter');
+            if (notificationCounter && notificationCounter.style.display !== 'none' && notificationCounter.textContent.trim() !== '0') {
+                const badge = document.createElement('span');
+                badge.id = 'mobileHeaderNotificationBadge';
+                badge.style.cssText = `
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background-color: #dc3545;
+                    color: white;
+                    border-radius: 50%;
+                    width: 18px;
+                    height: 18px;
+                    font-size: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                `;
+                badge.textContent = notificationCounter.textContent.trim();
+                notificationLink.appendChild(badge);
+            }
+
+            rightColumn.appendChild(notificationLink);
+            @else
+            // Show login icon for non-authenticated users
+            const loginLink = document.createElement('a');
+            loginLink.href = '{{ route('login') }}';
+            loginLink.style.cssText = `
+                color: #6c757d;
+                font-size: 18px;
+                text-decoration: none;
+            `;
+            loginLink.innerHTML = '<i class="fas fa-user"></i>';
+            rightColumn.appendChild(loginLink);
+            @endauth
+
+            // Add close button to the right column
+            const closeButton = document.createElement('button');
+            closeButton.type = 'button';
+            closeButton.className = 'hc-nav-close';
+            closeButton.style.cssText = `
+                background: none;
+                border: none;
+                color: #6c757d;
+                font-size: 20px;
+                cursor: pointer;
+                padding: 0;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            closeButton.innerHTML = '<i class="fas fa-times"></i>';
+            closeButton.setAttribute('aria-label', '{{ __('messages.header.close_menu') }}');
+
+            // Add click handler to close navigation
+            closeButton.addEventListener('click', () => {
+                navInstance.close();
+            });
+
+            rightColumn.appendChild(closeButton);
+
+            // Append columns to title element
+            titleElement.appendChild(leftColumn);
+            titleElement.appendChild(rightColumn);
+
+        }, 100); // Small delay to ensure navigation is fully rendered
+    }
+
+    // Initialize HC-MobileNav
+    const nav = new hcOffcanvasNav('#mobile-nav', {
+        // Basic settings
+        disableAt: 992, // Disable on desktop (Bootstrap lg breakpoint)
+        customToggle: '.hc-mobile-nav-toggle',
+
+        // Navigation appearance
+        navTitle: null, // We'll customize this manually
+        levelTitles: true,
+        levelTitleAsBack: true,
+
+        // Position and behavior
+        position: 'left',
+        width: 280,
+        swipeGestures: true,
+
+        // Level behavior
+        levelOpen: 'overlap',
+        levelSpacing: 40,
+
+        // Body interaction
+        disableBody: true,
+        closeOnClick: true,
+        closeOnEsc: true,
+
+        // Buttons
+        insertClose: false, // We'll add custom close button
+        insertBack: true,
+        labelClose: '{{ __('messages.header.close_menu') }}',
+        labelBack: '{{ __('messages.header.back') }}',
+
+        // Classes and styling
+        navClass: 'mechamap-mobile-nav',
+        activeToggleClass: 'active',
+
+        // Content management
+        closeOpenLevels: true,
+        closeActiveLevel: false,
+        keepClasses: true,
+        removeOriginalNav: false,
+
+        // Accessibility
+        ariaLabels: {
+            open: '{{ __('messages.header.mobile_nav_toggle') }}',
+            close: '{{ __('messages.header.close_menu') }}',
+            submenu: '{{ __('messages.header.submenu') }}'
+        }
+    });
+
+    // Customize navigation header after initialization
+    customizeNavigationHeader(nav);
+
+    // Add event listeners for enhanced functionality
+    nav.on('open', function() {
+        console.log('Mobile navigation opened');
+        document.body.classList.add('mobile-nav-open');
+
+        // Track analytics if available
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'mobile_nav_open', {
+                'event_category': 'navigation',
+                'event_label': 'mobile_menu'
+            });
+        }
+    });
+
+    nav.on('close', function() {
+        console.log('Mobile navigation closed');
+        document.body.classList.remove('mobile-nav-open');
+
+        // Track analytics if available
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'mobile_nav_close', {
+                'event_category': 'navigation',
+                'event_label': 'mobile_menu'
+            });
+        }
+    });
+
+    nav.on('open.level', function(e) {
+        console.log('Mobile navigation level opened:', e.data);
+
+        // Track submenu usage
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'mobile_nav_submenu', {
+                'event_category': 'navigation',
+                'event_label': 'level_' + e.data.currentLevel
+            });
+        }
+    });
+
     // Sync cart badge
     function syncCartBadge() {
         const desktopCartCount = document.getElementById('cartCount');
@@ -674,16 +940,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sync notification badge
     function syncNotificationBadge() {
-        const desktopNotificationBadge = document.querySelector('#notificationDropdown .badge');
+        const desktopNotificationCounter = document.querySelector('.notification-counter');
         const mobileNotificationBadge = document.getElementById('mobileNotificationBadge');
+        const mobileHeaderNotificationBadge = document.getElementById('mobileHeaderNotificationBadge');
 
-        if (desktopNotificationBadge && mobileNotificationBadge) {
-            const count = desktopNotificationBadge.textContent.trim();
-            if (count && count !== '0') {
-                mobileNotificationBadge.textContent = count;
-                mobileNotificationBadge.style.display = 'inline-block';
-            } else {
-                mobileNotificationBadge.style.display = 'none';
+        if (desktopNotificationCounter) {
+            const count = desktopNotificationCounter.textContent.trim();
+            const isVisible = desktopNotificationCounter.style.display !== 'none';
+
+            // Sync menu notification badge
+            if (mobileNotificationBadge) {
+                if (isVisible && count && count !== '0') {
+                    mobileNotificationBadge.textContent = count;
+                    mobileNotificationBadge.style.display = 'inline-block';
+                } else {
+                    mobileNotificationBadge.style.display = 'none';
+                }
+            }
+
+            // Sync header notification badge
+            if (mobileHeaderNotificationBadge) {
+                if (isVisible && count && count !== '0') {
+                    mobileHeaderNotificationBadge.textContent = count;
+                    mobileHeaderNotificationBadge.style.display = 'flex';
+                } else {
+                    mobileHeaderNotificationBadge.style.display = 'none';
+                }
             }
         }
     }
@@ -704,14 +986,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start observing
     const desktopCartCount = document.getElementById('cartCount');
-    const desktopNotificationBadge = document.querySelector('#notificationDropdown .badge');
+    const desktopNotificationCounter = document.querySelector('.notification-counter');
 
     if (desktopCartCount) {
         observer.observe(desktopCartCount, { childList: true, characterData: true, subtree: true });
     }
 
-    if (desktopNotificationBadge) {
-        observer.observe(desktopNotificationBadge, { childList: true, characterData: true, subtree: true });
+    if (desktopNotificationCounter) {
+        observer.observe(desktopNotificationCounter, {
+            childList: true,
+            characterData: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style']
+        });
     }
 
     // Also sync when cart is updated via AJAX
@@ -723,5 +1011,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('notificationsUpdated', function() {
         setTimeout(syncNotificationBadge, 100);
     });
+
+    // Expose nav instance globally for debugging
+    window.MechaMapMobileNav = nav;
+
+    console.log('MechaMap Mobile Navigation initialized successfully');
 });
 </script>

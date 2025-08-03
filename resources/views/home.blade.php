@@ -13,33 +13,27 @@
 <!-- Featured Showcases Section -->
 @if(isset($featuredShowcases) && $featuredShowcases->count() > 0)
 <section class="featured-showcases mb-5">
-    <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
-                        <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
-                    </div>
-                    <a href="{{ route('showcase.index') }}" class="btn btn-outline-primary">
-                        {{ t_ui('buttons.view_all') }}
-                    </a>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
+            <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
         </div>
+        <a href="{{ route('showcase.index') }}" class="btn btn-outline-primary">
+            {{ t_ui('buttons.view_all') }}
+        </a>
+    </div>
 
-        <!-- Swiper Container -->
-        <div class="swiper showcases-swiper">
-            <div class="swiper-wrapper pb-5">
-                @foreach($featuredShowcases as $showcase)
-                <div class="swiper-slide">
-                    @include('partials.showcase-item', ['showcase' => $showcase])
-                </div>
-                @endforeach
+    <!-- Swiper Container -->
+    <div class="swiper showcases-swiper">
+        <div class="swiper-wrapper pb-5">
+            @foreach($featuredShowcases as $showcase)
+            <div class="swiper-slide">
+                @include('partials.showcase-item', ['showcase' => $showcase])
             </div>
-            <!-- Pagination -->
-            <div class="swiper-pagination"></div>
+            @endforeach
         </div>
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
     </div>
 </section>
 @endif

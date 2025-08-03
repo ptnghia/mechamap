@@ -118,7 +118,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
     <div class="row align-items-center">
         <!-- Nội dung chính -->
-        <div class="{{ $hasImage ? 'col-md-8' : 'col-12' }}">
+        <div class="{{ $hasImage ? 'col-md-8 col-sm-8 col-9' : 'col-12' }}">
             <div class="thread-title-section">
                 <div class="thread-title">
                     <a href="{{ $threadUrl }}">
@@ -146,7 +146,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
         <!-- Hình ảnh - chỉ hiển thị khi có hình ảnh thực tế -->
         @if($hasImage)
-        <div class="col-md-4 d-none d-md-block">
+        <div class="col-md-4 col-sm-4 col-3">
             <div class="thread-image-container">
                 <img src="{{ $threadImage }}" alt="{{ $thread->title }}" class="img-fluid rounded"
                     onerror="this.style.display='none'">
