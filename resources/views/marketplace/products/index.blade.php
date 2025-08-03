@@ -388,12 +388,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update cart count on page load
     updateCartCount();
 
+    // Define toggleAdvancedSearch function globally
+    window.toggleAdvancedSearch = function() {
+        const advancedSearchPanel = document.getElementById('advancedSearchPanel');
+        const toggleButton = document.getElementById('advancedSearchToggle');
+
+        if (advancedSearchPanel && toggleButton) {
+            const isVisible = advancedSearchPanel.style.display !== 'none';
+
+            if (isVisible) {
+                // Hide panel
+                advancedSearchPanel.style.display = 'none';
+                advancedSearchPanel.classList.remove('show');
+                toggleButton.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.marketplace.advanced_search") }}';
+
+                // Remove advanced parameter from URL
+                const url = new URL(window.location);
+                url.searchParams.delete('advanced');
+                window.history.replaceState({}, '', url);
+            } else {
+                // Show panel
+                advancedSearchPanel.style.display = 'block';
+                advancedSearchPanel.classList.add('show');
+                toggleButton.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.hide_advanced_search") }}';
+
+                // Add advanced parameter to URL
+                const url = new URL(window.location);
+                url.searchParams.set('advanced', '1');
+                window.history.replaceState({}, '', url);
+            }
+        }
+    };
+
     // Auto-open advanced search if advanced=1 parameter is present
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('advanced') === '1') {
         const advancedSearchPanel = document.getElementById('advancedSearchPanel');
         if (advancedSearchPanel) {
+            // Show the panel by removing display: none and adding show class
+            advancedSearchPanel.style.display = 'block';
             advancedSearchPanel.classList.add('show');
+
             // Update button text
             const toggleButton = document.getElementById('advancedSearchToggle');
             if (toggleButton) {
