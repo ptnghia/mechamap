@@ -278,6 +278,7 @@ return array (
   'in_stock' => 'Còn hàng',
   'out_of_stock' => 'Hết hàng',
   'advanced_search' => 'Tìm kiếm nâng cao',
+  'hide_advanced_search' => 'Ẩn tìm kiếm nâng cao',
   'close' => 'Đóng',
   'keywords' => 'Từ khóa',
   'search_descriptions' => 'Tìm trong mô tả',

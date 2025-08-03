@@ -106,7 +106,7 @@
                             class="btn btn-outline-secondary btn-sm flex-fill wishlist-btn"
                             data-product-id="{{ $product->id }}"
                             title="Thêm vào danh sách yêu thích">
-                        <i class="fas fa-heart"></i>
+                        <i class="fa-regular fa-heart"></i>
                         <span class="d-none d-md-inline ms-1">Yêu thích</span>
                     </button>
 
@@ -118,7 +118,7 @@
                             data-product-price="{{ $product->sale_price ?? $product->price }}"
                             data-product-image="{{ get_product_image_url($product->featured_image) }}"
                             title="Thêm vào giỏ hàng">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fa-solid fa-cart-shopping"></i>
                         <span class="d-none d-md-inline ms-1">Giỏ hàng</span>
                     </button>
                 </div>

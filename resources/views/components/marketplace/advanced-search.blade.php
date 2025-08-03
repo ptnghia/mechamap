@@ -228,10 +228,10 @@ function toggleAdvancedSearch() {
 
     if (panel.style.display === 'none') {
         panel.style.display = 'block';
-        if (button) button.innerHTML = '<i class="fas fa-search mr-2"></i> Hide Advanced Search';
+        if (button) button.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.hide_advanced_search") }}';
     } else {
         panel.style.display = 'none';
-        if (button) button.innerHTML = '<i class="fas fa-search mr-2"></i> Advanced Search';
+        if (button) button.innerHTML = '<i class="fas fa-search me-2"></i> {{ __("marketplace.advanced_search") }}';
     }
 }
 

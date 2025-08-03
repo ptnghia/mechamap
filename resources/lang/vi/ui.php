@@ -268,7 +268,7 @@ return [
     ],
 
     'marketplace' => [
-        'showing_results' => 'Hiển thị :start-:end trong tổng số :total sản phẩm',
+        'showing_results' => 'Hiển thị :start-:end của :total sản phẩm',
     ],
 
 ];

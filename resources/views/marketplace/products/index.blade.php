@@ -57,6 +57,102 @@
         <!-- Advanced Search Panel -->
         <x-marketplace.advanced-search :categories="$categories" />
 
+        <!-- Active Search Filters Display -->
+        @php
+            $hasActiveFilters = request()->hasAny(['search', 'category', 'product_type', 'seller_type', 'min_price', 'max_price', 'material', 'file_format', 'min_rating', 'in_stock', 'featured', 'on_sale', 'sort']);
+            $activeFilters = [];
+
+            // Collect active filters
+            if (request('search')) {
+                $searchTerm = request('search');
+                $activeFilters[] = [
+                    'type' => 'search',
+                    'label' => 'Từ khóa: "' . $searchTerm . '"',
+                    'remove_url' => request()->fullUrlWithQuery(['search' => null])
+                ];
+            }
+
+            if (request('category')) {
+                $categoryName = request('category');
+                // Convert slug to readable name
+                $categoryName = str_replace('-', ' ', $categoryName);
+                $categoryName = ucwords($categoryName);
+                $activeFilters[] = [
+                    'type' => 'category',
+                    'label' => 'Danh mục: ' . $categoryName,
+                    'remove_url' => request()->fullUrlWithQuery(['category' => null])
+                ];
+            }
+
+            if (request('min_price') || request('max_price')) {
+                $priceLabel = 'Giá: ';
+                if (request('min_price') && request('max_price')) {
+                    $priceLabel .= number_format(request('min_price')) . ' - ' . number_format(request('max_price')) . ' VND';
+                } elseif (request('min_price')) {
+                    $priceLabel .= 'Từ ' . number_format(request('min_price')) . ' VND';
+                } else {
+                    $priceLabel .= 'Đến ' . number_format(request('max_price')) . ' VND';
+                }
+                $activeFilters[] = [
+                    'type' => 'price',
+                    'label' => $priceLabel,
+                    'remove_url' => request()->fullUrlWithQuery(['min_price' => null, 'max_price' => null])
+                ];
+            }
+
+            if (request('sort') && request('sort') !== 'relevance') {
+                $sortLabels = [
+                    'newest' => 'Mới nhất',
+                    'price_low' => 'Giá thấp đến cao',
+                    'price_high' => 'Giá cao đến thấp',
+                    'rating' => 'Đánh giá cao nhất',
+                    'popular' => 'Phổ biến nhất'
+                ];
+                $sortLabel = $sortLabels[request('sort')] ?? request('sort');
+                $activeFilters[] = [
+                    'type' => 'sort',
+                    'label' => 'Sắp xếp: ' . $sortLabel,
+                    'remove_url' => request()->fullUrlWithQuery(['sort' => null])
+                ];
+            }
+        @endphp
+
+        @if(count($activeFilters) > 0)
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body py-3">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="text-muted small me-2">
+                                <i class="fas fa-filter me-1"></i>
+                                Bộ lọc đang áp dụng:
+                            </span>
+
+                            @foreach($activeFilters as $filter)
+                                <span class="badge bg-primary d-flex align-items-center">
+                                    {{ $filter['label'] }}
+                                    <a href="{{ $filter['remove_url'] }}"
+                                       class="text-white ms-2 text-decoration-none"
+                                       title="Xóa bộ lọc này"
+                                       style="font-size: 1.1em; line-height: 1;">
+                                        ×
+                                    </a>
+                                </span>
+                            @endforeach
+
+                            <a href="{{ route('marketplace.products.index') }}"
+                               class="btn btn-outline-secondary btn-sm ms-2"
+                               title="Xóa tất cả bộ lọc">
+                                <i class="fas fa-times me-1"></i>
+                                Xóa tất cả
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Products Grid -->
         <div class="row">
             <div class="col-12">
@@ -65,8 +161,8 @@
                     <div>
                         <p class="text-muted mb-0">
                             {{ __('ui.marketplace.showing_results', [
-                                'first' => $products->firstItem() ?? 0,
-                                'last' => $products->lastItem() ?? 0,
+                                'start' => $products->firstItem() ?? 0,
+                                'end' => $products->lastItem() ?? 0,
                                 'total' => $products->total()
                             ]) }}
                         </p>

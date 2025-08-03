@@ -975,6 +975,9 @@ return [
         'advanced_desc' => 'Detailed product filtering',
     ],
 
+    'advanced_search' => 'Advanced Search',
+    'hide_advanced_search' => 'Hide Advanced Search',
+
     'search.advanced' => [
     ],
 
