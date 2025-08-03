@@ -287,7 +287,14 @@ class ThreadController extends Controller
 
         // Get comments with pagination
         $sort = request('sort', 'oldest');
-        $commentsQuery = $thread->comments()->with(['user', 'replies.user']);
+        $commentsQuery = $thread->comments()->with([
+            'user' => function ($q) {
+                $q->withCount('comments');
+            },
+            'replies.user' => function ($q) {
+                $q->withCount('comments');
+            }
+        ]);
 
         switch ($sort) {
             case 'newest':
@@ -316,7 +323,11 @@ class ThreadController extends Controller
             ->get();
 
         // Get last commenter and last comment time
-        $lastComment = $thread->comments()->with('user')->latest()->first();
+        $lastComment = $thread->comments()->with([
+            'user' => function ($q) {
+                $q->withCount('comments');
+            }
+        ])->latest()->first();
         $thread->lastCommenter = $lastComment ? $lastComment->user : $thread->user;
         $thread->lastCommentAt = $lastComment ? $lastComment->created_at : null;
 

@@ -178,16 +178,13 @@ class UserThreadController extends Controller
                 $q->with('user')->latest();
             },
             'comments' => function ($q) {
-                $q->with(['user', 'likes'])
+                $q->with([
+                    'user' => function ($userQ) {
+                        $userQ->withCount('comments');
+                    },
+                    'likes'
+                ])
                     ->whereNull('parent_id')
-                    ->where(function ($query) {
-                        $query->where('moderation_status', 'approved')
-                            ->orWhere(function ($subQ) {
-                                if (Auth::check()) {
-                                    $subQ->where('user_id', Auth::id());
-                                }
-                            });
-                    })
                     ->orderBy('created_at', 'asc');
             },
         ]);
