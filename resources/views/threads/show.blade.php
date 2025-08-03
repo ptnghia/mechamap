@@ -742,7 +742,17 @@ function initializeEventHandlers() {
     document.querySelectorAll('.reply-button').forEach(button => {
         button.addEventListener('click', function() {
             const parentId = this.getAttribute('data-parent-id');
-            const parentUser = this.closest('.card').querySelector('.fw-bold').textContent;
+
+            // Find the parent user name - look for .fw-bold in the comment structure
+            const commentItem = this.closest('.comment_item');
+            let parentUser = 'Người dùng';
+
+            if (commentItem) {
+                const userLink = commentItem.querySelector('.comment_item_user .fw-bold');
+                if (userLink) {
+                    parentUser = userLink.textContent.trim();
+                }
+            }
 
             const parentIdInput = document.getElementById('parent_id');
             const replyToName = document.getElementById('reply-to-name');
