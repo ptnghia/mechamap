@@ -97,6 +97,24 @@ class CommentController extends Controller
             // Fire real-time event
             event(new \App\Events\CommentCreated($comment));
 
+            // Fire thread stats update event
+            $stats = [
+                'comments_count' => $thread->comments()->count(),
+                'participants_count' => $thread->comments()->distinct('user_id')->count('user_id') + 1, // +1 for thread author
+                'last_activity' => now()->toISOString(),
+            ];
+            event(new \App\Events\ThreadStatsUpdated($thread, $stats));
+
+            // Handle AJAX request
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Bình luận đã được đăng thành công.',
+                    'comment' => $comment->load(['user', 'attachments']),
+                    'redirect' => route('threads.show', $thread) . '#comment-' . $comment->id
+                ]);
+            }
+
             return back()->with('success', 'Bình luận đã được đăng thành công.');
         });
     }
@@ -180,6 +198,15 @@ class CommentController extends Controller
             // Fire real-time event
             event(new \App\Events\CommentDeleted($commentId, $threadId, $userId, $userName));
 
+            // Handle AJAX request
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Bình luận đã được xóa.',
+                    'comment_id' => $commentId
+                ]);
+            }
+
             return back()->with('success', 'Bình luận đã được xóa.');
         });
     }
@@ -199,10 +226,12 @@ class CommentController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
+        $isLiked = false;
         if ($like) {
             $like->delete();
             $comment->decrement('like_count');
             $message = 'Đã bỏ thích bình luận.';
+            $isLiked = false;
         } else {
             CommentLike::create([
                 'comment_id' => $comment->id,
@@ -210,13 +239,18 @@ class CommentController extends Controller
             ]);
             $comment->increment('like_count');
             $message = 'Đã thích bình luận.';
+            $isLiked = true;
         }
+
+        // Fire real-time event
+        event(new \App\Events\CommentLikeUpdated($comment, $user, $isLiked, $comment->like_count));
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'like_count' => $comment->like_count
+                'like_count' => $comment->like_count,
+                'is_liked' => $isLiked
             ]);
         }
 

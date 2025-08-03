@@ -385,11 +385,60 @@ class NotificationService
     private static function sendRealtime(User $user, Notification $notification): void
     {
         try {
-            // TODO: Implement WebSocket/Pusher notification
-            // broadcast(new NotificationEvent($user, $notification));
-            Log::info("Real-time notification sent to user {$user->id}: {$notification->title}");
+            // Send to WebSocket server via HTTP API
+            $websocketUrl = config('websocket.server.url');
+            $apiKey = config('websocket.api_key');
+
+            if (!$websocketUrl || !$apiKey) {
+                Log::warning('WebSocket server URL or API key not configured');
+                return;
+            }
+
+            $payload = [
+                'event' => 'notification.sent',
+                'user_id' => $user->id,
+                'channel' => 'user.' . $user->id,
+                'priority' => $notification->data['priority'] ?? 'normal',
+                'data' => [
+                    'notification_id' => $notification->id,
+                    'type' => $notification->type,
+                    'title' => $notification->title,
+                    'message' => $notification->message,
+                    'action_url' => $notification->data['action_url'] ?? null,
+                    'created_at' => $notification->created_at->toISOString(),
+                    'is_read' => $notification->is_read,
+                ],
+                'metadata' => [
+                    'version' => '1.0',
+                    'source' => 'laravel_api',
+                    'request_id' => request()->header('X-Request-ID', uniqid()),
+                ]
+            ];
+
+            // Send HTTP request to WebSocket server
+            $response = \Http::timeout(5)->withHeaders([
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ])->post($websocketUrl . '/api/broadcast', $payload);
+
+            if ($response->successful()) {
+                Log::info("Real-time notification sent to user {$user->id}: {$notification->title}");
+            } else {
+                Log::error("Failed to send real-time notification to WebSocket server", [
+                    'user_id' => $user->id,
+                    'notification_id' => $notification->id,
+                    'status' => $response->status(),
+                    'response' => $response->body(),
+                ]);
+            }
+
         } catch (\Exception $e) {
-            Log::error("Failed to send real-time notification: " . $e->getMessage());
+            Log::error("Failed to send real-time notification: " . $e->getMessage(), [
+                'user_id' => $user->id,
+                'notification_id' => $notification->id,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -536,14 +585,27 @@ class NotificationService
     {
         try {
             $thread = $comment->thread;
+            $usersToNotify = collect();
 
-            // Get users following this thread (excluding comment author)
+            // Add thread owner if not the comment author
+            if ($thread->user_id !== $comment->user_id) {
+                $threadOwner = $thread->user;
+                if ($threadOwner) {
+                    $usersToNotify->push($threadOwner);
+                }
+            }
+
+            // Get users following this thread (excluding comment author and thread owner)
             $followers = $thread->followers()
                 ->where('users.id', '!=', $comment->user_id)
+                ->where('users.id', '!=', $thread->user_id)
                 ->get();
 
-            if ($followers->isEmpty()) {
-                return true; // No followers to notify
+            // Merge followers with thread owner
+            $usersToNotify = $usersToNotify->merge($followers)->unique('id');
+
+            if ($usersToNotify->isEmpty()) {
+                return true; // No users to notify
             }
 
             $title = 'Reply mới trong thread bạn theo dõi';
@@ -555,10 +617,18 @@ class NotificationService
                 'thread_id' => $thread->id,
                 'comment_id' => $comment->id,
                 'author_id' => $comment->user_id,
+                'thread_owner_id' => $thread->user_id,
             ];
 
-            foreach ($followers as $user) {
-                self::send($user, 'thread_replied', $title, $message, $data, false);
+            foreach ($usersToNotify as $user) {
+                // Customize message for thread owner
+                if ($user->id === $thread->user_id) {
+                    $ownerTitle = 'Reply mới trong thread của bạn';
+                    $ownerMessage = "{$comment->user->name} đã reply trong thread '{$thread->title}' của bạn";
+                    self::send($user, 'thread_replied', $ownerTitle, $ownerMessage, $data, false);
+                } else {
+                    self::send($user, 'thread_replied', $title, $message, $data, false);
+                }
             }
 
             return true;

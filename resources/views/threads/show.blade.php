@@ -101,24 +101,46 @@
             <div class="threads-footer d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <!-- Like Button -->
-                    <form action="{{ route('threads.like', $thread) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn_meta {{ Auth::check() && $isLiked ? 'active' : '' }} btn-like">
-                            <i class="fas fa-thumbs-up"></i>
-                            {{ __('thread.like') }}
-                            <span class="badge bg-secondary">{{ $thread->likes_count ?? 0 }}</span>
-
-                        </button>
-                    </form>
+                    @auth
+                    <button type="button"
+                            class="btn btn-sm btn_meta {{ $isLiked ? 'active' : '' }} btn-like"
+                            data-thread-id="{{ $thread->id }}"
+                            data-liked="{{ $isLiked ? 'true' : 'false' }}"
+                            title="{{ $isLiked ? __('thread.unlike') : __('thread.like') }}">
+                        <i class="fas fa-thumbs-up"></i>
+                        {{ __('thread.like') }}
+                        <span class="badge bg-secondary like-count">{{ $thread->likes_count ?? 0 }}</span>
+                    </button>
+                    @else
+                    <button type="button"
+                            class="btn btn-sm btn_meta btn-like"
+                            onclick="showLoginModal()"
+                            title="{{ __('thread.login_to_like') }}">
+                        <i class="fas fa-thumbs-up"></i>
+                        {{ __('thread.like') }}
+                        <span class="badge bg-secondary like-count">{{ $thread->likes_count ?? 0 }}</span>
+                    </button>
+                    @endauth
 
                     <!-- Save Button -->
-                    <form action="{{ route('threads.save', $thread) }}" method="POST" class="d-inline ms-2">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn_meta {{ Auth::check() && $isSaved ? 'active' : '' }} btn-save">
-                            <i class="{{ Auth::check() && $isSaved ? 'far fa-bookmark-fill' : 'far fa-bookmark' }}"></i>
-                            {{ Auth::check() && $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}
-                        </button>
-                    </form>
+                    @auth
+                    <button type="button"
+                            class="btn btn-sm btn_meta {{ $isSaved ? 'active' : '' }} btn-save ms-2"
+                            data-thread-id="{{ $thread->id }}"
+                            data-saved="{{ $isSaved ? 'true' : 'false' }}"
+                            title="{{ $isSaved ? __('thread.unsave') : __('thread.save') }}">
+                        <i class="{{ $isSaved ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
+                        <span class="save-text">{{ $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}</span>
+                    </button>
+                    @else
+                    <button type="button"
+                            class="btn btn-sm btn_meta btn-save ms-2"
+                            onclick="showLoginModal()"
+                            title="{{ __('thread.login_to_save') }}">
+                        <i class="far fa-bookmark"></i>
+                        <span class="save-text">{{ __('thread.bookmark') }}</span>
+                    </button>
+                    @endauth
 
                     <!-- Follow Button -->
                     @php
@@ -242,23 +264,30 @@
                     </div>
                 </div>
                 <!-- Sort Options -->
-                <div class="btn-group">
-                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'oldest']) }}"
-                        class="btn btn-sm {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                <div class="btn-group" id="comments-sort-options">
+                    <button type="button"
+                            class="btn btn-sm sort-btn {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}"
+                            data-sort="oldest"
+                            data-thread-id="{{ $thread->id }}">
                         {{ __('thread.sort_oldest') }}
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}"
-                        class="btn btn-sm {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm sort-btn {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}"
+                            data-sort="newest"
+                            data-thread-id="{{ $thread->id }}">
                         {{ __('thread.sort_newest') }}
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'reactions']) }}"
-                        class="btn btn-sm {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}">
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm sort-btn {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}"
+                            data-sort="reactions"
+                            data-thread-id="{{ $thread->id }}">
                         {{ __('thread.sort_reactions') }}
-                    </a>
+                    </button>
                 </div>
             </div>
 
             <!-- Comments List -->
+            <div id="comments-container">
             @forelse($comments as $comment)
             <div class="comment_item mb-3" id="comment-{{ $comment->id }}">
                 <div class="d-flex">
@@ -300,13 +329,22 @@
                             <div class="d-flex align-items-center">
                                 <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
                                 <!-- Like Button -->
-                                <form action="{{ route('comments.like', $comment) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit"
-                                        class="btn btn-sm btn_meta {{ Auth::check() && $comment->isLikedBy(auth()->user()) ? 'active' : '' }}">
-                                        <i class="fas fa-thumbs-up"></i> {{ $comment->like_count }} {{ __('thread.like') }}
-                                    </button>
-                                </form>
+                                @auth
+                                <button type="button"
+                                        class="btn btn-sm btn_meta comment-like-btn {{ $comment->isLikedBy(auth()->user()) ? 'active' : '' }}"
+                                        data-comment-id="{{ $comment->id }}"
+                                        data-liked="{{ $comment->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
+                                        title="{{ $comment->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
+                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $comment->like_count }}</span> {{ __('thread.like') }}
+                                </button>
+                                @else
+                                <button type="button"
+                                        class="btn btn-sm btn_meta comment-like-btn"
+                                        onclick="showLoginModal()"
+                                        title="{{ __('thread.login_to_like') }}">
+                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $comment->like_count }}</span> {{ __('thread.like') }}
+                                </button>
+                                @endauth
                             </div>
                             <div>
                                 <!-- Quote Button -->
@@ -328,14 +366,13 @@
                                         data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline"
-                                        onsubmit="return confirm('{{ __('thread.delete_comment_message') }}');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger delete-comment-btn"
+                                            data-comment-id="{{ $comment->id }}"
+                                            data-comment-type="comment"
+                                            title="{{ __('thread.delete_comment') }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                                 @endcan
                             </div>
@@ -381,13 +418,22 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $reply->created_at->diffForHumans() }}</span>
                                                 <!-- Like Button -->
-                                                <form action="{{ route('comments.like', $reply) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn_meta {{ Auth::check() && $reply->isLikedBy(auth()->user()) ? 'active' : '' }}">
-                                                        <i class="fas fa-thumbs-up"></i> {{ $reply->like_count }}  {{ __('thread.like') }}
-                                                    </button>
-                                                </form>
+                                                @auth
+                                                <button type="button"
+                                                        class="btn btn-sm btn_meta comment-like-btn {{ $reply->isLikedBy(auth()->user()) ? 'active' : '' }}"
+                                                        data-comment-id="{{ $reply->id }}"
+                                                        data-liked="{{ $reply->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
+                                                        title="{{ $reply->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
+                                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $reply->like_count }}</span> {{ __('thread.like') }}
+                                                </button>
+                                                @else
+                                                <button type="button"
+                                                        class="btn btn-sm btn_meta comment-like-btn"
+                                                        onclick="showLoginModal()"
+                                                        title="{{ __('thread.login_to_like') }}">
+                                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $reply->like_count }}</span> {{ __('thread.like') }}
+                                                </button>
+                                                @endauth
                                             </div>
                                             <div>
                                                 <!-- Reply Button -->
@@ -403,15 +449,13 @@
                                                         data-comment-id="{{ $reply->id }}" data-comment-content="{{ $reply->content }}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <form action="{{ route('comments.destroy', $reply) }}" method="POST"
-                                                        class="d-inline"
-                                                        onsubmit="return confirm('{{ __('thread.delete_reply_message') }}');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-danger delete-comment-btn"
+                                                            data-comment-id="{{ $reply->id }}"
+                                                            data-comment-type="reply"
+                                                            title="{{ __('thread.delete_reply') }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
                                                 </div>
                                                 @endcan
                                             </div>
@@ -431,9 +475,10 @@
             </div>
             @endforelse
             <!-- Pagination -->
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center" id="comments-pagination">
                 {{ $comments->links() }}
             </div>
+            </div> <!-- End comments-container -->
         </div>
     </div>
 
@@ -601,18 +646,55 @@ function initializeFormSubmission() {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>{{ __('thread.sending') }}';
 
-        // Submit form
-        try {
-            form.submit();
-        } catch (error) {
+        // Prepare form data
+        const formData = new FormData(form);
+
+        // Submit form via AJAX
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                showToast(data.message, 'success');
+
+                // Clear form
+                if (tinymce.get('content')) {
+                    tinymce.get('content').setContent('');
+                } else {
+                    contentTextarea.value = '';
+                }
+
+                // Reset parent_id if it was a reply
+                const parentIdInput = document.getElementById('parent_id');
+                const replyToInfo = document.getElementById('reply-to-info');
+                if (parentIdInput) parentIdInput.value = '';
+                if (replyToInfo) replyToInfo.style.display = 'none';
+
+                // Reload page to show new comment (for now, can be improved later)
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                throw new Error(data.message || 'Server error');
+            }
+        })
+        .catch(error => {
             console.error('Form submission error:', error);
 
             // Reset button state
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> {{ __('thread.send_reply') }}';
 
-            alert('{{ __('thread.form_submission_error') }}');
-        }
+            // Show error message
+            showToast(error.message || '{{ __('thread.form_submission_error') }}', 'error');
+        });
     });
 
     // Handle TinyMCE content change to remove error
@@ -652,6 +734,9 @@ function initializeEventHandlers() {
 
     // Initialize Form Submission Handler
     initializeFormSubmission();
+
+    // Initialize Thread Actions (Like, Save)
+    initializeThreadActions();
 
     // Handle reply buttons
     document.querySelectorAll('.reply-button').forEach(button => {
@@ -783,6 +868,488 @@ function initializeEventHandlers() {
     });
 }
 
+// Initialize Thread Actions (Like, Save)
+function initializeThreadActions() {
+    // Handle like button clicks
+    document.querySelectorAll('.btn-like').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
+
+            const threadId = this.dataset.threadId;
+            const isLiked = this.dataset.liked === 'true';
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+
+            // Make AJAX request
+            fetch(`/threads/${threadId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle like state
+                    const newLiked = !isLiked;
+                    this.dataset.liked = newLiked ? 'true' : 'false';
+
+                    // Update button appearance
+                    if (newLiked) {
+                        this.classList.add('active');
+                        this.title = '{{ __("thread.unlike") }}';
+                    } else {
+                        this.classList.remove('active');
+                        this.title = '{{ __("thread.like") }}';
+                    }
+
+                    // Update like count
+                    const likeCountElement = this.querySelector('.like-count');
+                    if (likeCountElement) {
+                        likeCountElement.textContent = data.like_count;
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || '{{ __("thread.error_occurred") }}', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Like error:', error);
+                showToast('{{ __("thread.request_error") }}', 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Handle save button clicks
+    document.querySelectorAll('.btn-save').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
+
+            const threadId = this.dataset.threadId;
+            const isSaved = this.dataset.saved === 'true';
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+
+            // Make AJAX request
+            fetch(`/threads/${threadId}/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle save state
+                    const newSaved = !isSaved;
+                    this.dataset.saved = newSaved ? 'true' : 'false';
+
+                    // Update button appearance
+                    const icon = this.querySelector('i');
+                    const text = this.querySelector('.save-text');
+
+                    if (newSaved) {
+                        this.classList.add('active');
+                        icon.className = 'fas fa-bookmark';
+                        text.textContent = '{{ __("thread.bookmarked") }}';
+                        this.title = '{{ __("thread.unsave") }}';
+                    } else {
+                        this.classList.remove('active');
+                        icon.className = 'far fa-bookmark';
+                        text.textContent = '{{ __("thread.bookmark") }}';
+                        this.title = '{{ __("thread.save") }}';
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || '{{ __("thread.error_occurred") }}', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Save error:', error);
+                showToast('{{ __("thread.request_error") }}', 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Handle comment like button clicks
+    document.querySelectorAll('.comment-like-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
+
+            const commentId = this.dataset.commentId;
+            const isLiked = this.dataset.liked === 'true';
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+
+            // Make AJAX request
+            fetch(`/comments/${commentId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle like state
+                    const newLiked = !isLiked;
+                    this.dataset.liked = newLiked ? 'true' : 'false';
+
+                    // Update button appearance
+                    if (newLiked) {
+                        this.classList.add('active');
+                        this.title = '{{ __("thread.unlike") }}';
+                    } else {
+                        this.classList.remove('active');
+                        this.title = '{{ __("thread.like") }}';
+                    }
+
+                    // Update like count
+                    const likeCountElement = this.querySelector('.comment-like-count');
+                    if (likeCountElement) {
+                        likeCountElement.textContent = data.like_count;
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || '{{ __("thread.error_occurred") }}', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Comment like error:', error);
+                showToast('{{ __("thread.request_error") }}', 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Handle delete comment button clicks
+    document.querySelectorAll('.delete-comment-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const commentId = this.dataset.commentId;
+            const commentType = this.dataset.commentType;
+            const confirmMessage = commentType === 'reply' ?
+                '{{ __("thread.delete_reply_message") }}' :
+                '{{ __("thread.delete_comment_message") }}';
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // Make AJAX request
+            fetch(`/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove comment element from DOM
+                    const commentElement = document.querySelector(`#comment-${commentId}`);
+                    if (commentElement) {
+                        commentElement.style.transition = 'opacity 0.3s ease';
+                        commentElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            commentElement.remove();
+                        }, 300);
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    throw new Error(data.message || 'Server error');
+                }
+            })
+            .catch(error => {
+                console.error('Delete comment error:', error);
+                showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+
+                // Reset button state
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Handle sort button clicks
+    document.querySelectorAll('.sort-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const sortType = this.dataset.sort;
+            const threadId = this.dataset.threadId;
+
+            // Update button states
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-primary');
+            });
+            this.classList.remove('btn-outline-primary');
+            this.classList.add('btn-primary');
+
+            // Show loading state
+            const commentsContainer = document.getElementById('comments-container');
+            if (commentsContainer) {
+                commentsContainer.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x"></i><br>{{ __("thread.loading_comments") }}</div>';
+            }
+
+            // Make AJAX request to get sorted comments
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', sortType);
+
+            fetch(url.toString(), {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Server error');
+                }
+            })
+            .then(html => {
+                // Parse the response HTML to extract comments
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newCommentsContainer = doc.getElementById('comments-container');
+
+                if (newCommentsContainer && commentsContainer) {
+                    commentsContainer.innerHTML = newCommentsContainer.innerHTML;
+
+                    // Re-initialize event handlers for new content
+                    initializeCommentInteractions();
+
+                    // Update URL without page reload
+                    window.history.pushState({}, '', url.toString());
+
+                    // Show success message
+                    showToast('{{ __("thread.comments_sorted") }}', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Sort comments error:', error);
+                showToast('{{ __("thread.request_error") }}', 'error');
+
+                // Reload page as fallback
+                window.location.href = url.toString();
+            });
+        });
+    });
+}
+
+// Initialize comment interactions (likes, delete, etc.) for dynamically loaded content
+function initializeCommentInteractions() {
+    // Re-initialize comment like buttons
+    document.querySelectorAll('.comment-like-btn').forEach(button => {
+        // Remove existing event listeners by cloning the element
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+
+        newButton.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
+
+            const commentId = this.dataset.commentId;
+            const isLiked = this.dataset.liked === 'true';
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+
+            // Make AJAX request
+            fetch(`/comments/${commentId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle like state
+                    const newLiked = !isLiked;
+                    this.dataset.liked = newLiked ? 'true' : 'false';
+
+                    // Update button appearance
+                    if (newLiked) {
+                        this.classList.add('active');
+                        this.title = '{{ __("thread.unlike") }}';
+                    } else {
+                        this.classList.remove('active');
+                        this.title = '{{ __("thread.like") }}';
+                    }
+
+                    // Update like count
+                    const likeCountElement = this.querySelector('.comment-like-count');
+                    if (likeCountElement) {
+                        likeCountElement.textContent = data.like_count;
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || '{{ __("thread.error_occurred") }}', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Comment like error:', error);
+                showToast('{{ __("thread.request_error") }}', 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Re-initialize delete comment buttons
+    document.querySelectorAll('.delete-comment-btn').forEach(button => {
+        // Remove existing event listeners by cloning the element
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+
+        newButton.addEventListener('click', function() {
+            const commentId = this.dataset.commentId;
+            const commentType = this.dataset.commentType;
+            const confirmMessage = commentType === 'reply' ?
+                '{{ __("thread.delete_reply_message") }}' :
+                '{{ __("thread.delete_comment_message") }}';
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // Make AJAX request
+            fetch(`/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove comment element from DOM
+                    const commentElement = document.querySelector(`#comment-${commentId}`);
+                    if (commentElement) {
+                        commentElement.style.transition = 'opacity 0.3s ease';
+                        commentElement.style.opacity = '0';
+
+                        setTimeout(() => {
+                            commentElement.remove();
+                        }, 300);
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    throw new Error(data.message || 'Server error');
+                }
+            })
+            .catch(error => {
+                console.error('Delete comment error:', error);
+                showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+
+                // Reset button state
+                this.disabled = false;
+                this.innerHTML = originalContent;
+            });
+        });
+    });
+}
+
+// Toast notification function (if not already defined)
+function showToast(message, type = 'info') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 5000);
+}
+
+// Login modal function (if not already defined)
+function showLoginModal() {
+    // Check if login modal exists
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        const modal = new bootstrap.Modal(loginModal);
+        modal.show();
+    } else {
+        // Redirect to login page
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.href);
+    }
+}
+
 // Real-time comments functionality
 function initializeRealTimeComments() {
     const threadId = {{ $thread->id }};
@@ -813,6 +1380,24 @@ function initializeRealTimeComments() {
             handleCommentDeletion(data);
         });
 
+        // Listen for thread like updates
+        socket.on('thread.like.updated', function(data) {
+            console.log('Thread like updated:', data);
+            handleThreadLikeUpdate(data);
+        });
+
+        // Listen for comment like updates
+        socket.on('comment.like.updated', function(data) {
+            console.log('Comment like updated:', data);
+            handleCommentLikeUpdate(data);
+        });
+
+        // Listen for thread stats updates
+        socket.on('thread.stats.updated', function(data) {
+            console.log('Thread stats updated:', data);
+            handleThreadStatsUpdate(data);
+        });
+
         console.log(`Real-time comments initialized for thread ${threadId}`);
     } else {
         console.warn('NotificationService not available for real-time comments');
@@ -832,12 +1417,45 @@ function handleNewComment(data) {
     const commentHtml = createCommentHtml(comment);
 
     // Add to comments section
-    const commentsContainer = document.querySelector('.comments-section .comments-container');
+    const commentsContainer = document.getElementById('comments-container');
     if (commentsContainer) {
-        commentsContainer.insertAdjacentHTML('beforeend', commentHtml);
+        // Check if it's a reply to an existing comment
+        if (comment.parent_id) {
+            // Find parent comment and add as reply
+            const parentComment = document.querySelector(`#comment-${comment.parent_id}`);
+            if (parentComment) {
+                const repliesContainer = parentComment.querySelector('.comment_sub');
+                if (repliesContainer) {
+                    repliesContainer.insertAdjacentHTML('beforeend', commentHtml);
+                } else {
+                    // Create replies container if it doesn't exist
+                    const commentBody = parentComment.querySelector('.comment_item_body');
+                    if (commentBody) {
+                        commentBody.insertAdjacentHTML('beforeend', `<div class="comment_sub">${commentHtml}</div>`);
+                    }
+                }
+            }
+        } else {
+            // Add as new top-level comment
+            const noCommentsAlert = commentsContainer.querySelector('.alert-info');
+            if (noCommentsAlert) {
+                noCommentsAlert.remove();
+            }
+
+            // Insert before pagination
+            const pagination = document.getElementById('comments-pagination');
+            if (pagination) {
+                pagination.insertAdjacentHTML('beforebegin', commentHtml);
+            } else {
+                commentsContainer.insertAdjacentHTML('beforeend', commentHtml);
+            }
+        }
 
         // Update comment count
         updateCommentCount(1);
+
+        // Re-initialize event handlers for new comment
+        initializeCommentInteractions();
 
         // Show notification
         showCommentNotification(comment.user.name + ' đã bình luận mới', 'success');
@@ -885,35 +1503,64 @@ function handleCommentDeletion(data) {
 
 function createCommentHtml(comment) {
     const timeAgo = formatTimeAgo(new Date(comment.created_at));
+    const isReply = comment.parent_id ? true : false;
+    const avatarSize = isReply ? 30 : 40;
+    const currentUserId = {{ Auth::id() ?? 'null' }};
+    const isAuthenticated = currentUserId !== null;
 
     return `
-        <div class="comment_item" id="comment-${comment.id}">
-            <div class="comment_item_header">
-                <div class="d-flex align-items-center">
+        <div class="comment_item mb-3" id="comment-${comment.id}">
+            <div class="d-flex">
+                <div class="comment_item_avatar">
                     <img src="${comment.user.avatar_url}" alt="${comment.user.name}"
-                         class="rounded-circle me-2" width="32" height="32"
+                         class="rounded-circle me-2" width="${avatarSize}" height="${avatarSize}"
                          onerror="this.src='{{ route('avatar.generate', ['initial' => 'U']) }}'">
-                    <div>
+                </div>
+                <div class="comment_item_body ${isReply ? 'sub' : ''}">
+                    <div class="comment_item_user">
                         <a href="/users/${comment.user.username || comment.user.id}" class="fw-bold text-decoration-none">
                             ${comment.user.name}
                         </a>
                         <div class="text-muted small">
-                            <span>${timeAgo}</span>
+                            <span>0 {{ __('thread.comments') }}</span> ·
+                            <span>{{ __('thread.joined') }} ${new Date(comment.user.created_at || Date.now()).toLocaleDateString('vi-VN', {month: 'short', year: 'numeric'})}</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="comment_item_content">
-                ${comment.content}
-            </div>
-            <div class="comment_item_actions">
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-sm btn-outline-secondary like-button" data-comment-id="${comment.id}">
-                        <i class="fas fa-thumbs-up"></i> <span class="like-count">0</span>
-                    </button>
-                    <button class="btn btn-sm btn-outline-secondary reply-button" data-comment-id="${comment.id}">
-                        <i class="fas fa-reply"></i> Trả lời
-                    </button>
+                    <div class="comment_item_content">
+                        ${comment.content}
+                    </div>
+                    <div class="comment_item_meta d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> ${timeAgo}</span>
+                            ${isAuthenticated ? `
+                            <button type="button"
+                                    class="btn btn-sm btn_meta comment-like-btn"
+                                    data-comment-id="${comment.id}"
+                                    data-liked="false"
+                                    title="{{ __('thread.like') }}">
+                                <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">0</span> {{ __('thread.like') }}
+                            </button>
+                            ` : `
+                            <button type="button"
+                                    class="btn btn-sm btn_meta comment-like-btn"
+                                    onclick="showLoginModal()"
+                                    title="{{ __('thread.login_to_like') }}">
+                                <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">0</span> {{ __('thread.like') }}
+                            </button>
+                            `}
+                        </div>
+                        <div>
+                            <button class="btn btn-main no-border quote-button" data-comment-id="${comment.id}"
+                                data-comment-content="${comment.content}" data-user-name="${comment.user.name}">
+                                <i class="fa-solid fa-quote-left"></i> {{ __('thread.quote') }}
+                            </button>
+                            <button class="btn btn-main no-border reply-button ms-2"
+                                data-parent-id="${comment.parent_id || comment.id}">
+                                <i class="fas fa-reply"></i> {{ __('thread.reply') }}
+                            </button>
+                        </div>
+                    </div>
+                    ${!isReply ? '<div class="comment_sub"></div>' : ''}
                 </div>
             </div>
         </div>
@@ -921,12 +1568,25 @@ function createCommentHtml(comment) {
 }
 
 function updateCommentCount(delta) {
-    const countElements = document.querySelectorAll('.comments-count, [data-comments-count]');
-    countElements.forEach(element => {
+    // Update comment count in thread meta
+    const commentCountElements = document.querySelectorAll('.comments-count, [data-comments-count]');
+    commentCountElements.forEach(element => {
         const currentCount = parseInt(element.textContent) || 0;
         const newCount = Math.max(0, currentCount + delta);
         element.textContent = newCount;
     });
+
+    // Update comment count in section header
+    const sectionHeader = document.querySelector('.title_page_sub');
+    if (sectionHeader) {
+        const text = sectionHeader.textContent;
+        const match = text.match(/(\d+)/);
+        if (match) {
+            const currentCount = parseInt(match[1]);
+            const newCount = Math.max(0, currentCount + delta);
+            sectionHeader.innerHTML = sectionHeader.innerHTML.replace(/\d+/, newCount);
+        }
+    }
 }
 
 function showCommentNotification(message, type = 'info') {
@@ -973,6 +1633,102 @@ function formatTimeAgo(date) {
     if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' phút trước';
     if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' giờ trước';
     return Math.floor(diffInSeconds / 86400) + ' ngày trước';
+}
+
+// Handle real-time thread like updates
+function handleThreadLikeUpdate(data) {
+    const currentUserId = {{ Auth::id() ?? 'null' }};
+
+    // Don't update if it's our own action (already updated by AJAX)
+    if (data.user_id === currentUserId) {
+        return;
+    }
+
+    // Update all thread like count displays
+    document.querySelectorAll('.like-count').forEach(element => {
+        element.textContent = data.like_count;
+    });
+
+    // Show notification if someone else liked the thread
+    if (data.is_liked) {
+        showCommentNotification(`${data.user_name} đã thích thread này`, 'info');
+    }
+}
+
+// Handle real-time comment like updates
+function handleCommentLikeUpdate(data) {
+    const currentUserId = {{ Auth::id() ?? 'null' }};
+
+    // Don't update if it's our own action (already updated by AJAX)
+    if (data.user_id === currentUserId) {
+        return;
+    }
+
+    // Update comment like count
+    const commentElement = document.querySelector(`#comment-${data.comment_id}`);
+    if (commentElement) {
+        const likeCountElement = commentElement.querySelector('.comment-like-count');
+        if (likeCountElement) {
+            likeCountElement.textContent = data.like_count;
+        }
+    }
+
+    // Show notification if someone else liked the comment
+    if (data.is_liked) {
+        showCommentNotification(`${data.user_name} đã thích một bình luận`, 'info');
+    }
+}
+
+// Handle real-time thread stats updates
+function handleThreadStatsUpdate(data) {
+    const stats = data.stats;
+
+    // Update comments count
+    if (stats.comments_count !== undefined) {
+        // Update in thread meta
+        const commentMetaElements = document.querySelectorAll('.thread-meta-item');
+        commentMetaElements.forEach(element => {
+            const text = element.textContent;
+            if (text.includes('{{ __("thread.replies") }}')) {
+                const icon = element.querySelector('i');
+                const iconHtml = icon ? icon.outerHTML : '<i class="fas fa-comment"></i>';
+                element.innerHTML = `${iconHtml} ${stats.comments_count.toLocaleString()} {{ __('thread.replies') }}`;
+            }
+        });
+
+        // Update in comments section header
+        const sectionHeader = document.querySelector('.title_page_sub');
+        if (sectionHeader && sectionHeader.textContent.includes('{{ __("thread.replies") }}')) {
+            const icon = sectionHeader.querySelector('i');
+            const iconHtml = icon ? icon.outerHTML : '<i class="fa-regular fa-comment-dots me-1"></i>';
+            sectionHeader.innerHTML = `${iconHtml}${stats.comments_count} {{ __('thread.replies') }}`;
+        }
+    }
+
+    // Update participants count
+    if (stats.participants_count !== undefined) {
+        const participantElements = document.querySelectorAll('.thread-meta-item');
+        participantElements.forEach(element => {
+            const text = element.textContent;
+            if (text.includes('{{ __("thread.participants") }}')) {
+                const icon = element.querySelector('i');
+                const iconHtml = icon ? icon.outerHTML : '<i class="fas fa-users"></i>';
+                element.innerHTML = `${iconHtml} ${stats.participants_count.toLocaleString()} {{ __('thread.participants') }}`;
+            }
+        });
+    }
+
+    // Update last activity time
+    if (stats.last_activity) {
+        const lastActivityElements = document.querySelectorAll('.thread-meta-item');
+        lastActivityElements.forEach(element => {
+            const text = element.textContent;
+            if (text.includes('{{ __("thread.joined") }}') || text.includes('trước')) {
+                // This might be the last activity element, but we need to be more specific
+                // For now, we'll skip updating this as it's complex to identify correctly
+            }
+        });
+    }
 }
 </script>
 @endpush

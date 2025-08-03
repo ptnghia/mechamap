@@ -41,9 +41,11 @@ class ThreadLikeController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
+        $isLiked = false;
         if ($like) {
             $like->delete();
             $message = 'Đã bỏ thích bài viết.';
+            $isLiked = false;
         } else {
             ThreadLike::create([
                 'thread_id' => $thread->id,
@@ -54,13 +56,20 @@ class ThreadLikeController extends Controller
             $this->activityService->logThreadLiked($user, $thread);
 
             $message = 'Đã thích bài viết.';
+            $isLiked = true;
         }
+
+        $likeCount = $thread->likes()->count();
+
+        // Fire real-time event
+        event(new \App\Events\ThreadLikeUpdated($thread, $user, $isLiked, $likeCount));
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'like_count' => $thread->likes()->count()
+                'like_count' => $likeCount,
+                'is_liked' => $isLiked
             ]);
         }
 
