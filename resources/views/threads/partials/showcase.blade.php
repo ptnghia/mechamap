@@ -162,24 +162,24 @@
 
                             <div class="mb-3">
                                 <label for="showcase_category" class="form-label">{{ __('showcase.category') }} <span class="text-danger">*</span></label>
-                                <select class="form-select" id="showcase_category" name="category" required>
+                                <select class="form-select" id="showcase_category" name="showcase_category_id" required>
                                     <option value="">{{ __('showcase.select_category') }}</option>
-                                    <option value="Thiết kế Cơ khí" {{ $thread->category && $thread->category->name == 'Thiết kế Cơ khí' ? 'selected' : '' }}>Thiết kế Cơ khí</option>
-                                    <option value="Công nghệ Chế tạo" {{ $thread->category && $thread->category->name == 'Công nghệ Chế tạo' ? 'selected' : '' }}>Công nghệ Chế tạo</option>
-                                    <option value="Vật liệu Kỹ thuật" {{ $thread->category && $thread->category->name == 'Vật liệu Kỹ thuật' ? 'selected' : '' }}>Vật liệu Kỹ thuật</option>
-                                    <option value="Tự động hóa & Robotics" {{ $thread->category && $thread->category->name == 'Tự động hóa & Robotics' ? 'selected' : '' }}>Tự động hóa & Robotics</option>
+                                    @foreach($showcaseCategories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $thread->category && $thread->category->name == $category->name ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="project_type" class="form-label">{{ __('showcase.project_type') }}</label>
-                                <select class="form-select" id="project_type" name="project_type">
+                                <select class="form-select" id="project_type" name="showcase_type_id">
                                     <option value="">{{ __('showcase.select_project_type') }}</option>
-                                    <option value="Design Project">{{ __('showcase.project_types.design_project') }}</option>
-                                    <option value="Manufacturing">{{ __('showcase.project_types.manufacturing') }}</option>
-                                    <option value="Analysis & Simulation">{{ __('showcase.project_types.analysis_simulation') }}</option>
-                                    <option value="Research & Development">{{ __('showcase.project_types.research_development') }}</option>
-                                    <option value="Case Study">{{ __('showcase.project_types.case_study') }}</option>
+                                    @foreach($showcaseTypes as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -194,22 +194,51 @@
                                 <div class="form-text">{{ __('showcase.project_description_help') }}</div>
                             </div>
 
-                            <!-- Cover Image Upload Component -->
-                            <x-file-upload
-                                name="cover_image"
-                                :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
-                                max-size="5MB"
-                                :required="true"
-                                label="{{ __('showcase.cover_image') }} <span class='text-danger'>*</span>"
-                                help-text="{{ __('showcase.cover_image_help') }}"
-                                id="showcase-cover-image"
-                            />
-                            @if($thread->featured_image)
-                            <div class="mt-2">
-                                <small class="text-muted">{{ __('showcase.current_thread_image') }}</small><br>
-                                <img src="{{ asset('' . $thread->featured_image) }}" alt="{{ __('thread.image_alt.thread_image') }}" class="img-thumbnail" style="max-width: 200px;">
+                            <!-- Cover Image Upload -->
+                            <div class="mb-3">
+                                <label for="cover_image" class="form-label">{{ __('showcase.cover_image') }}</label>
+                                <div class="cover-image-upload">
+                                    <!-- Current Thread Image Preview -->
+                                    @if($thread->featured_image)
+                                    <div class="current-image-preview mb-3">
+                                        <small class="text-muted d-block mb-2">{{ __('showcase.current_thread_image') }}</small>
+                                        <div class="position-relative d-inline-block">
+                                            <img src="{{ asset($thread->featured_image) }}"
+                                                 alt="{{ __('thread.image_alt.thread_image') }}"
+                                                 class="img-thumbnail current-preview-image"
+                                                 style="max-width: 200px; max-height: 150px; cursor: pointer;"
+                                                 onclick="document.getElementById('cover_image').click()">
+                                            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 opacity-0 hover-overlay rounded" style="transition: opacity 0.3s;">
+                                                <i class="fas fa-camera text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small class="text-muted">{{ __('showcase.click_to_change_image') }}</small>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <!-- File Input -->
+                                    <input type="file"
+                                           class="form-control"
+                                           id="cover_image"
+                                           name="cover_image"
+                                           accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                                           style="{{ $thread->featured_image ? 'display: none;' : '' }}">
+
+                                    <!-- New Image Preview -->
+                                    <div id="new-image-preview" class="mt-3" style="display: none;">
+                                        <small class="text-muted d-block mb-2">{{ __('showcase.new_image_preview') }}</small>
+                                        <img id="new-preview-image" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearNewImage()">
+                                                <i class="fas fa-times me-1"></i>{{ __('showcase.remove_new_image') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-text">{{ __('showcase.cover_image_help') }}</div>
                             </div>
-                            @endif
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -347,6 +376,24 @@
     border-bottom-color: #dc3545;
 }
 
+/* Cover Image Upload Styling */
+.cover-image-upload .current-preview-image {
+    transition: all 0.3s ease;
+}
+
+.cover-image-upload .current-preview-image:hover {
+    opacity: 0.8;
+}
+
+.cover-image-upload .hover-overlay {
+    transition: opacity 0.3s ease;
+    border-radius: 0.375rem;
+}
+
+.cover-image-upload .position-relative:hover .hover-overlay {
+    opacity: 1 !important;
+}
+
 /* File Upload Styling */
 .file-upload-area {
     background-color: #f8f9fa;
@@ -434,6 +481,7 @@
         if (document.getElementById('createShowcaseModal')) {
             initShowcaseWizard();
             initShowcaseTinyMCE();
+            initCoverImageUpload();
         }
     });
 
@@ -551,6 +599,77 @@
         });
     }
 
+    function initCoverImageUpload() {
+        const coverImageInput = document.getElementById('cover_image');
+        const newImagePreview = document.getElementById('new-image-preview');
+        const newPreviewImage = document.getElementById('new-preview-image');
+        const currentPreviewImage = document.querySelector('.current-preview-image');
+
+        if (!coverImageInput) return;
+
+        // Handle file selection
+        coverImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('{{ __('showcase.invalid_file_type') }}');
+                    this.value = '';
+                    return;
+                }
+
+                // Validate file size (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('{{ __('showcase.file_size_error') }}');
+                    this.value = '';
+                    return;
+                }
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newPreviewImage.src = e.target.result;
+                    newImagePreview.style.display = 'block';
+
+                    // Hide current image if exists
+                    if (currentPreviewImage) {
+                        currentPreviewImage.parentElement.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Add hover effect to current image
+        if (currentPreviewImage) {
+            const overlay = currentPreviewImage.parentElement.querySelector('.hover-overlay');
+            currentPreviewImage.parentElement.addEventListener('mouseenter', function() {
+                if (overlay) overlay.style.opacity = '1';
+            });
+            currentPreviewImage.parentElement.addEventListener('mouseleave', function() {
+                if (overlay) overlay.style.opacity = '0';
+            });
+        }
+    }
+
+    // Global function to clear new image
+    function clearNewImage() {
+        const coverImageInput = document.getElementById('cover_image');
+        const newImagePreview = document.getElementById('new-image-preview');
+        const currentPreviewImage = document.querySelector('.current-preview-image');
+
+        if (coverImageInput) {
+            coverImageInput.value = '';
+        }
+        if (newImagePreview) {
+            newImagePreview.style.display = 'none';
+        }
+        if (currentPreviewImage) {
+            currentPreviewImage.parentElement.style.display = 'block';
+        }
+    }
+
     function initShowcaseWizard() {
         let currentStep = 1;
         const totalSteps = 3;
@@ -662,13 +781,18 @@
                     isValid = false;
                 }
 
-                if (!coverImage) {
-                    showError('cover_image', '{{ __('showcase.cover_image_required') }}');
-                    isValid = false;
-                } else {
+                // Cover image is optional (can use thread image)
+                if (coverImage) {
                     // Validate file size (5MB)
                     if (coverImage.size > 5 * 1024 * 1024) {
                         showError('cover_image', '{{ __('showcase.file_size_error') }}');
+                        isValid = false;
+                    }
+
+                    // Validate file type
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!allowedTypes.includes(coverImage.type)) {
+                        showError('cover_image', '{{ __('showcase.invalid_file_type') }}');
                         isValid = false;
                     }
                 }

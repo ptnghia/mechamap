@@ -157,6 +157,9 @@ class Showcase extends Model
         'featured_at',
         'approved_at',
         'approved_by',
+        // New foreign keys
+        'showcase_category_id',
+        'showcase_type_id',
     ];
 
     /**
@@ -186,6 +189,22 @@ class Showcase extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the showcase category.
+     */
+    public function showcaseCategory(): BelongsTo
+    {
+        return $this->belongsTo(ShowcaseCategory::class, 'showcase_category_id');
+    }
+
+    /**
+     * Get the showcase type.
+     */
+    public function showcaseType(): BelongsTo
+    {
+        return $this->belongsTo(ShowcaseType::class, 'showcase_type_id');
     }
 
     /**

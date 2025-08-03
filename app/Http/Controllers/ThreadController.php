@@ -8,6 +8,8 @@ use App\Models\Forum;
 use App\Models\Poll;
 use App\Models\PollOption;
 use App\Models\Showcase;
+use App\Models\ShowcaseCategory;
+use App\Models\ShowcaseType;
 use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -342,7 +344,11 @@ class ThreadController extends Controller
             ]);
         }
 
-        return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'isFollowed', 'relatedThreads', 'sort'));
+        // Get showcase categories and types for modal
+        $showcaseCategories = ShowcaseCategory::active()->orderBy('name')->get();
+        $showcaseTypes = ShowcaseType::active()->orderBy('name')->get();
+
+        return view('threads.show', compact('thread', 'comments', 'isLiked', 'isSaved', 'isFollowed', 'relatedThreads', 'sort', 'showcaseCategories', 'showcaseTypes'));
     }
 
     /**
@@ -467,11 +473,11 @@ class ThreadController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|min:50',
-            'category' => 'required|string|max:100',
-            'project_type' => 'nullable|string|max:100',
+            'showcase_category_id' => 'required|exists:showcase_categories,id',
+            'showcase_type_id' => 'nullable|exists:showcase_types,id',
             'complexity_level' => 'nullable|string|in:Beginner,Intermediate,Advanced,Expert',
             'industry_application' => 'nullable|string|max:255',
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB - made optional
             'attachments' => 'nullable|array|max:10',
             'attachments.*' => 'file|max:51200', // 50MB per file
             'agree_terms' => 'required|accepted'
@@ -480,8 +486,9 @@ class ThreadController extends Controller
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
             'description.required' => 'Mô tả dự án là bắt buộc.',
             'description.min' => 'Mô tả phải có ít nhất 50 ký tự.',
-            'category.required' => 'Danh mục là bắt buộc.',
-            'cover_image.required' => 'Ảnh đại diện là bắt buộc.',
+            'showcase_category_id.required' => 'Danh mục là bắt buộc.',
+            'showcase_category_id.exists' => 'Danh mục không hợp lệ.',
+            'showcase_type_id.exists' => 'Loại dự án không hợp lệ.',
             'cover_image.image' => 'File phải là hình ảnh.',
             'cover_image.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif, webp.',
             'cover_image.max' => 'Kích thước ảnh không được vượt quá 5MB.',
@@ -505,8 +512,8 @@ class ThreadController extends Controller
             $showcase = new \App\Models\Showcase([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
-                'category' => $validated['category'],
-                'project_type' => $validated['project_type'] ?? null,
+                'showcase_category_id' => $validated['showcase_category_id'],
+                'showcase_type_id' => $validated['showcase_type_id'] ?? null,
                 'complexity_level' => $validated['complexity_level'] ?? 'Intermediate',
                 'industry_application' => $validated['industry_application'] ?? null,
                 'cover_image' => $coverImagePath,
@@ -514,11 +521,12 @@ class ThreadController extends Controller
                 'status' => 'published',
                 'showcaseable_type' => Thread::class,
                 'showcaseable_id' => $thread->id,
-                'views_count' => 0,
-                'likes_count' => 0,
-                'comments_count' => 0,
-                'average_rating' => 0.0,
-                'ratings_count' => 0
+                'view_count' => 0,
+                'like_count' => 0,
+                'download_count' => 0,
+                'share_count' => 0,
+                'rating_average' => 0.0,
+                'rating_count' => 0
             ]);
 
             $showcase->save();
