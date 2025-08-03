@@ -152,6 +152,11 @@ return array (
   'following' => 'Đang theo dõi',
   'follow' => 'Theo dõi',
 
+  // Loading and sorting states
+  'loading_comments' => 'Đang tải bình luận...',
+  'comments_sorted' => 'Bình luận đã được sắp xếp',
+  'sorting_comments' => 'Đang sắp xếp bình luận...',
+
   // CKEditor Configuration
   'editor' => [
     'placeholder' => 'Mô tả chi tiết về dự án, phương pháp và kết quả đạt được...',

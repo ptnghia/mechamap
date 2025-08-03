@@ -77,6 +77,11 @@ return array (
   'following' => 'Following',
   'follow' => 'Follow',
 
+  // Loading and sorting states
+  'loading_comments' => 'Loading comments...',
+  'comments_sorted' => 'Comments sorted',
+  'sorting_comments' => 'Sorting comments...',
+
   // CKEditor Configuration
   'editor' => [
     'placeholder' => 'Detailed description of the project, methods and results achieved...',
