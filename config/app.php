@@ -168,6 +168,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\LanguageServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
+        App\Providers\DatabaseTranslationServiceProvider::class,
     ],
 
 ];

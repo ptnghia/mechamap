@@ -30,11 +30,13 @@ Route::get('/whats-new/replies', [WhatsNewController::class, 'replies'])->name('
 // New showcases
 Route::get('/whats-new/showcases', [WhatsNewController::class, 'showcases'])->name('whats-new.showcases');
 
-// Trending content
+// Trending content (redirects to popular with trending sort for backward compatibility)
 Route::get('/whats-new/trending', [WhatsNewController::class, 'trending'])->name('whats-new.trending');
 
-// Most viewed content
-Route::get('/whats-new/most-viewed', [WhatsNewController::class, 'mostViewed'])->name('whats-new.most-viewed');
+// Most viewed content (redirects to popular with most_viewed sort for backward compatibility)
+Route::get('/whats-new/most-viewed', function() {
+    return redirect()->route('whats-new.popular', ['sort' => 'most_viewed']);
+})->name('whats-new.most-viewed');
 
 // Hot topics
 Route::get('/whats-new/hot-topics', [WhatsNewController::class, 'hotTopics'])->name('whats-new.hot-topics');

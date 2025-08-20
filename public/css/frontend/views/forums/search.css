@@ -23,8 +23,8 @@
 }
 
 .search-result-item:hover {
-    border-left-color: #007bff;
-    transform: translateX(5px);
+    border-left-color: var(--bs-primary);
+    /* transform: translateX(5px); */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 

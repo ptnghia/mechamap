@@ -25,54 +25,65 @@
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular')
-                            }}</a>
+                        <a class="nav-link active" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.trending') }}">
-                            <i class="fas fa-fire me-1"></i>Trending
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.most-viewed') }}">
-                            <i class="fas fa-eye me-1"></i>Most Viewed
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">
-                            <i class="fas fa-flame me-1"></i>Hot Topics
-                        </a>
+                        <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">{{ __('whats_new.hot_topics') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new')
-                            }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('media.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
-                            __('forum.threads.looking_for_replies') }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{ __('forum.threads.looking_for_replies') }}</a>
                     </li>
                 </ul>
             </div>
 
-            <!-- Timeframe Filter -->
+            <!-- Popular Sub-Navigation -->
+            <div class="popular-sub-nav mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}"
+                                        id="trending-tab" data-bs-toggle="tab" data-bs-target="#trending"
+                                        type="button" role="tab" aria-controls="trending"
+                                        aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
+                                    <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}"
+                                        id="most-viewed-tab" data-bs-toggle="tab" data-bs-target="#most-viewed"
+                                        type="button" role="tab" aria-controls="most-viewed"
+                                        aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
+                                    <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeframe Filter Dropdown -->
             <div class="timeframe-filter mb-4">
-                <div class="btn-group" role="group">
-                    <a href="{{ route('whats-new.popular', ['timeframe' => 'day']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'day' ? 'active' : '' }}">{{ __('common.time.today') }}</a>
-                    <a href="{{ route('whats-new.popular', ['timeframe' => 'week']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'week' ? 'active' : '' }}">{{ __('common.time.this_week') }}</a>
-                    <a href="{{ route('whats-new.popular', ['timeframe' => 'month']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'month' ? 'active' : '' }}">{{ __('common.time.this_month') }}</a>
-                    <a href="{{ route('whats-new.popular', ['timeframe' => 'year']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'year' ? 'active' : '' }}">{{ __('common.time.this_year') }}</a>
-                    <a href="{{ route('whats-new.popular', ['timeframe' => 'all']) }}"
-                        class="btn btn-outline-secondary {{ $timeframe == 'all' ? 'active' : '' }}">{{ __('common.time.all_time') }}</a>
+                <div class="d-flex align-items-center">
+                    <label for="timeframe-select" class="form-label me-2 mb-0">
+                        <i class="fas fa-clock me-1"></i>{{ __('ui.common.timeframe') }}:
+                    </label>
+                    <select id="timeframe-select" class="form-select" style="width: auto;">
+                        <option value="day" {{ $timeframe == 'day' ? 'selected' : '' }}>{{ __('activity.today') }}</option>
+                        <option value="week" {{ $timeframe == 'week' ? 'selected' : '' }}>{{ __('activity.this_week') }}</option>
+                        <option value="month" {{ $timeframe == 'month' ? 'selected' : '' }}>{{ __('activity.this_month') }}</option>
+                        <option value="year" {{ $timeframe == 'year' ? 'selected' : '' }}>{{ __('common.time.this_year') }}</option>
+                        <option value="all" {{ $timeframe == 'all' ? 'selected' : '' }}>{{ __('activity.all_time') }}</option>
+                    </select>
                 </div>
             </div>
 
@@ -270,6 +281,39 @@
                 goToPageBtn.click();
             }
         });
+
+        // Handle sub-navigation tab switching
+        const trendingTab = document.getElementById('trending-tab');
+        const mostViewedTab = document.getElementById('most-viewed-tab');
+
+        if (trendingTab) {
+            trendingTab.addEventListener('click', function() {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('sort', 'trending');
+                currentUrl.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = currentUrl.toString();
+            });
+        }
+
+        if (mostViewedTab) {
+            mostViewedTab.addEventListener('click', function() {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('sort', 'most_viewed');
+                currentUrl.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = currentUrl.toString();
+            });
+        }
+
+        // Handle timeframe dropdown change
+        const timeframeSelect = document.getElementById('timeframe-select');
+        if (timeframeSelect) {
+            timeframeSelect.addEventListener('change', function() {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('timeframe', this.value);
+                currentUrl.searchParams.set('page', '1'); // Reset to page 1
+                window.location.href = currentUrl.toString();
+            });
+        }
     });
 </script>
 @endpush

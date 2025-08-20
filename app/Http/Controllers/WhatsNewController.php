@@ -76,7 +76,12 @@ class WhatsNewController extends Controller
             ? route($routeName, array_merge(['page' => $page + 1], $additionalParams))
             : '#';
 
-        return compact('totalPages', 'prevPageUrl', 'nextPageUrl');
+        return [
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'prevPageUrl' => $prevPageUrl,
+            'nextPageUrl' => $nextPageUrl
+        ];
     }
     /**
      * Display the "What's New" page with recent posts
@@ -153,6 +158,7 @@ class WhatsNewController extends Controller
         $page = $request->input('page', 1);
         $perPage = 20;
         $timeframe = $request->input('timeframe', 'week'); // day, week, month, year, all
+        $sortType = $request->input('sort', 'trending'); // trending, most_viewed
 
         // Determine date range based on timeframe
         $startDate = now();
@@ -174,7 +180,7 @@ class WhatsNewController extends Controller
                 break;
         }
 
-        // Get popular threads based on view count and recent activity
+        // Get threads based on sort type
         $query = Thread::with(['user', 'category', 'forum'])
             ->withCount('allComments as comment_count')
             ->where('is_locked', false);
@@ -188,19 +194,38 @@ class WhatsNewController extends Controller
             });
         }
 
-        $threads = $query->orderBy('view_count', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
+        // Apply sorting logic based on sort type
+        if ($sortType === 'most_viewed') {
+            // Most Viewed: Simple view count sorting
+            $threads = $query->orderBy('view_count', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+        } else {
+            // Trending: Complex trending score calculation
+            $query->selectRaw('threads.*, (
+                (threads.view_count * 0.3) +
+                (threads.cached_comments_count * 2) +
+                (CASE
+                    WHEN threads.created_at > NOW() - INTERVAL 1 DAY THEN 10
+                    WHEN threads.created_at > NOW() - INTERVAL 3 DAY THEN 5
+                    WHEN threads.created_at > NOW() - INTERVAL 7 DAY THEN 2
+                    ELSE 1
+                END)
+            ) as trending_score');
+
+            $threads = $query->orderBy('trending_score', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+        }
 
         // Calculate total pages
         $totalPages = ceil($threads->total() / $perPage);
 
         // Generate pagination URLs
         $prevPageUrl = $page > 1
-            ? route('whats-new.popular', ['page' => $page - 1, 'timeframe' => $timeframe])
+            ? route('whats-new.popular', ['page' => $page - 1, 'timeframe' => $timeframe, 'sort' => $sortType])
             : '#';
 
         $nextPageUrl = $page < $totalPages
-            ? route('whats-new.popular', ['page' => $page + 1, 'timeframe' => $timeframe])
+            ? route('whats-new.popular', ['page' => $page + 1, 'timeframe' => $timeframe, 'sort' => $sortType])
             : '#';
 
         // Optimize thread statistics
@@ -212,7 +237,8 @@ class WhatsNewController extends Controller
             'totalPages',
             'prevPageUrl',
             'nextPageUrl',
-            'timeframe'
+            'timeframe',
+            'sortType'
         ));
     }
 
@@ -441,104 +467,33 @@ class WhatsNewController extends Controller
     }
 
     /**
-     * Display trending content this week
+     * Display trending content this week - Redirect to popular with trending sort
      */
     public function trending(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
-        $timeframe = $request->input('timeframe', 'week'); // day, week, month
+        // Redirect to popular page with trending sort to maintain backward compatibility
+        $params = [
+            'sort' => 'trending',
+            'timeframe' => $request->input('timeframe', 'week'),
+            'page' => $request->input('page', 1)
+        ];
 
-        // Calculate date range for trending
-        $dateFrom = match($timeframe) {
-            'day' => now()->subDay(),
-            'week' => now()->subWeek(),
-            'month' => now()->subMonth(),
-            default => now()->subWeek()
-        };
-
-        // Cache key for trending content
-        $cacheKey = "whats_new_trending_{$timeframe}_page_{$page}";
-
-        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($dateFrom, $page, $perPage) {
-            // Calculate trending score based on:
-            // - Recent activity (comments, views)
-            // - Time decay (newer content gets higher score)
-            // - Engagement rate
-            $threads = Thread::select([
-                'threads.*',
-                DB::raw('(
-                    (threads.view_count * 0.3) +
-                    (threads.cached_comments_count * 2) +
-                    (CASE
-                        WHEN threads.created_at > NOW() - INTERVAL 1 DAY THEN 10
-                        WHEN threads.created_at > NOW() - INTERVAL 3 DAY THEN 5
-                        WHEN threads.created_at > NOW() - INTERVAL 7 DAY THEN 2
-                        ELSE 1
-                    END)
-                ) as trending_score')
-            ])
-            ->with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
-            ->withCount('allComments as comment_count')
-            ->where('created_at', '>=', $dateFrom)
-            ->orderBy('trending_score', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
-
-            return $threads;
-        });
-
-        // Optimize thread statistics
-        $threads = $this->optimizeThreadStatistics($result);
-
-        // Generate pagination info
-        $pagination = $this->generatePaginationData($result, 'whats-new.trending', $page, ['timeframe' => $timeframe]);
-
-        return view('whats-new.trending', compact('threads', 'pagination', 'timeframe'));
+        return redirect()->route('whats-new.popular', $params);
     }
 
     /**
-     * Display most viewed content
+     * Display most viewed content - Redirect to popular with most_viewed sort
      */
     public function mostViewed(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
-        $timeframe = $request->input('timeframe', 'week'); // day, week, month, all
+        // Redirect to popular page with most_viewed sort to maintain backward compatibility
+        $params = [
+            'sort' => 'most_viewed',
+            'timeframe' => $request->input('timeframe', 'week'),
+            'page' => $request->input('page', 1)
+        ];
 
-        // Calculate date range for most viewed
-        $dateFrom = match($timeframe) {
-            'day' => now()->subDay(),
-            'week' => now()->subWeek(),
-            'month' => now()->subMonth(),
-            'all' => null,
-            default => now()->subWeek()
-        };
-
-        // Cache key for most viewed content
-        $cacheKey = "whats_new_most_viewed_{$timeframe}_page_{$page}";
-
-        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($dateFrom, $page, $perPage) {
-            $query = Thread::with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
-                ->withCount('allComments as comment_count')
-                ->where('view_count', '>', 0)
-                ->orderBy('view_count', 'desc')
-                ->orderBy('created_at', 'desc');
-
-            if ($dateFrom) {
-                $query->where('created_at', '>=', $dateFrom);
-            }
-
-            return $query->paginate($perPage, ['*'], 'page', $page);
-        });
-
-        // Optimize thread statistics
-        $threads = $this->optimizeThreadStatistics($result);
-
-        // Generate pagination info
-        $pagination = $this->generatePaginationData($result, 'whats-new.most-viewed', $page, ['timeframe' => $timeframe]);
-
-        return view('whats-new.most-viewed', compact('threads', 'pagination', 'timeframe'));
+        return redirect()->route('whats-new.popular', $params);
     }
 
     /**

@@ -25,36 +25,22 @@
                         <a class="nav-link active" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular') }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.trending') }}">
-                            <i class="fas fa-fire me-1"></i>Trending
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.most-viewed') }}">
-                            <i class="fas fa-eye me-1"></i>Most Viewed
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">
-                            <i class="fas fa-flame me-1"></i>Hot Topics
-                        </a>
+                        <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">{{ __('navigation.hot_topics') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new')
-                            }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('media.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{
-                            __('forum.threads.looking_for_replies') }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.replies') }}">{{ __('forum.threads.looking_for_replies') }}</a>
                     </li>
                 </ul>
             </div>

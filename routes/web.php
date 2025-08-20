@@ -25,6 +25,7 @@ use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\BusinessRegistrationController;
 use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\DevTranslationController;
 use Illuminate\Support\Facades\Route;
 
 // Include test email routes (development only)
@@ -987,3 +988,28 @@ if (app()->environment('local')) {
 
 // Coming Soon page
 Route::get('/coming-soon', [App\Http\Controllers\ComingSoonController::class, 'show'])->name('coming-soon');
+
+/*
+ * ⚠️ DEVELOPMENT ONLY ROUTES ⚠️
+ *
+ * WARNING: These routes are for DEVELOPMENT ENVIRONMENT ONLY!
+ * They provide direct access to sensitive functionality without authentication.
+ *
+ * ⚠️ REMOVE THESE ROUTES BEFORE DEPLOYING TO PRODUCTION! ⚠️
+ *
+ * These routes are automatically disabled in production environment,
+ * but should be completely removed from the codebase before deployment.
+ */
+if (app()->environment('local') || config('app.debug')) {
+    Route::prefix('dev')->name('dev.')->group(function () {
+        // Translation Management (Development Only)
+        Route::get('/translations', [DevTranslationController::class, 'index'])->name('translations.index');
+        Route::get('/translations/data', [DevTranslationController::class, 'getData'])->name('translations.data');
+        Route::post('/translations', [DevTranslationController::class, 'store'])->name('translations.store');
+        Route::put('/translations/{id}', [DevTranslationController::class, 'update'])->name('translations.update');
+        Route::delete('/translations/{id}', [DevTranslationController::class, 'destroy'])->name('translations.destroy');
+    });
+
+    // Direct access route for convenience (matches user requirement)
+    Route::get('/translations', [DevTranslationController::class, 'index'])->name('translations');
+}

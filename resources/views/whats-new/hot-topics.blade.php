@@ -25,22 +25,10 @@
                         <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('common.buttons.popular') }}</a>
+                        <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.trending') }}">
-                            <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('whats-new.most-viewed') }}">
-                            <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('whats-new.hot-topics') }}">
-                            <i class="fas fa-flame me-1"></i>{{ __('navigation.hot_topics') }}
-                        </a>
+                        <a class="nav-link active" href="{{ route('whats-new.hot-topics') }}">{{ __('navigation.hot_topics') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
@@ -60,9 +48,8 @@
             <!-- Hot Topics Description -->
             <div class="alert alert-warning mb-4">
                 <i class="fas fa-flame me-2"></i>
-                <strong>Hot Topics:</strong>
-                Threads with high recent activity and engagement.
-                These discussions are generating the most buzz in the community right now.
+                <strong>{{ __('whats_new.hot_topics_title') }}:</strong>
+                {{ __('whats_new.hot_topics_description') }}
             </div>
 
             <!-- Thread List -->
@@ -73,7 +60,7 @@
                             <!-- Hot Badge -->
                             <div class="hot-badge position-absolute top-0 start-0 translate-middle">
                                 <span class="badge bg-danger rounded-pill">
-                                    <i class="fas fa-flame me-1"></i>HOT
+                                    <i class="fas fa-flame me-1"></i>{{ __('whats_new.hot_label') }}
                                 </span>
                             </div>
 
@@ -81,7 +68,7 @@
                             @if(isset($thread->recent_comments) && $thread->recent_comments > 0)
                                 <div class="activity-badge position-absolute top-0 end-0 translate-middle">
                                     <span class="badge bg-success rounded-pill">
-                                        +{{ $thread->recent_comments }} today
+                                        {{ __('whats_new.activity_today', ['count' => $thread->recent_comments]) }}
                                     </span>
                                 </div>
                             @endif
@@ -100,7 +87,7 @@
                                                  style="width: {{ min(100, ($thread->hot_score / 100) * 100) }}%">
                                             </div>
                                         </div>
-                                        <small class="text-muted ms-2">Heat Level: {{ number_format($thread->hot_score, 0) }}</small>
+                                        <small class="text-muted ms-2">{{ __('whats_new.heat_level', ['level' => number_format($thread->hot_score, 0)]) }}</small>
                                     </div>
                                 </div>
                             @endif
@@ -110,7 +97,7 @@
                                 <div class="recent-activity-display mt-2">
                                     <span class="badge bg-success">
                                         <i class="fas fa-comments me-1"></i>
-                                        {{ $thread->recent_comments }} new comment{{ $thread->recent_comments > 1 ? 's' : '' }} today
+                                        {{ __('whats_new.new_comments_today', ['count' => $thread->recent_comments]) }}
                                     </span>
                                 </div>
                             @endif
@@ -120,49 +107,91 @@
 
                 <!-- Pagination -->
                 @if($pagination['totalPages'] > 1)
-                    <div class="pagination-wrapper mt-4">
-                        <nav aria-label="Hot topics pagination">
-                            <ul class="pagination justify-content-center">
-                                @if($pagination['prevPageUrl'] !== '#')
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $pagination['prevPageUrl'] }}">
-                                            <i class="fas fa-chevron-left"></i> Previous
-                                        </a>
-                                    </li>
-                                @endif
+                    <div class="pagination-container mt-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="pagination-info">
+                                <span>{{ __('ui.pagination.page') }} {{ $pagination['currentPage'] }} {{ __('ui.pagination.of') }} {{ $pagination['totalPages'] }}</span>
+                            </div>
 
-                                @if($pagination['nextPageUrl'] !== '#')
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $pagination['nextPageUrl'] }}">
-                                            Next <i class="fas fa-chevron-right"></i>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm mb-0">
+                                    <!-- Previous Page -->
+                                    <li class="page-item {{ $pagination['currentPage'] <= 1 ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $pagination['prevPageUrl'] }}" aria-label="{{ __('ui.pagination.previous') }}">
+                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
                                         </a>
                                     </li>
-                                @endif
-                            </ul>
-                        </nav>
+
+                                    <!-- First Page -->
+                                    @if($pagination['currentPage'] > 3)
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => 1]) }}">1</a>
+                                        </li>
+                                        @if($pagination['currentPage'] > 4)
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        @endif
+                                    @endif
+
+                                    <!-- Page Numbers -->
+                                    @for($i = max(1, $pagination['currentPage'] - 2); $i <= min($pagination['totalPages'], $pagination['currentPage'] + 2); $i++)
+                                        <li class="page-item {{ $i == $pagination['currentPage'] ? 'active' : '' }}">
+                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => $i]) }}">{{ $i }}</a>
+                                        </li>
+                                    @endfor
+
+                                    <!-- Last Page -->
+                                    @if($pagination['currentPage'] < $pagination['totalPages'] - 2)
+                                        @if($pagination['currentPage'] < $pagination['totalPages'] - 3)
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        @endif
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => $pagination['totalPages']]) }}">{{ $pagination['totalPages'] }}</a>
+                                        </li>
+                                    @endif
+
+                                    <!-- Next Page -->
+                                    <li class="page-item {{ $pagination['currentPage'] >= $pagination['totalPages'] ? 'disabled' : '' }}">
+                                        <a class="page-link" href="{{ $pagination['nextPageUrl'] }}" aria-label="{{ __('ui.pagination.next') }}">
+                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
+                            <div class="pagination-goto">
+                                <div class="input-group input-group-sm">
+                                    <input type="number" class="form-control" id="pageInput" min="1" max="{{ $pagination['totalPages'] }}"
+                                        value="{{ $pagination['currentPage'] }}" placeholder="{{ __('ui.pagination.page') }}">
+                                    <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('ui.pagination.go_to_page') }}</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @endif
             @else
                 <!-- No Hot Topics -->
                 <div class="no-content text-center py-5">
                     <i class="fas fa-flame text-muted mb-3" style="font-size: 4rem;"></i>
-                    <h4 class="text-muted mb-3">No Hot Topics Right Now</h4>
+                    <h4 class="text-muted mb-3">{{ __('whats_new.no_hot_topics') }}</h4>
                     <p class="text-muted mb-4">
-                        There are no particularly hot discussions at the moment.
-                        Check back later or start a new conversation!
+                        {{ __('whats_new.no_hot_topics_description') }}
                     </p>
                     <div class="d-flex gap-2 justify-content-center">
                         <a href="{{ route('threads.create') }}" class="btn btn-primary">
                             <i class="fas fa-plus me-1"></i>
-                            Start New Discussion
+                            {{ __('forum.threads.create') }}
                         </a>
                         <a href="{{ route('whats-new') }}" class="btn btn-outline-primary">
                             <i class="fas fa-list me-1"></i>
                             {{ __('common.actions.view_latest_posts') }}
                         </a>
-                        <a href="{{ route('whats-new.trending') }}" class="btn btn-outline-warning">
-                            <i class="fas fa-fire me-1"></i>
-                            {{ __('common.actions.view_trending') }}
+                        <a href="{{ route('whats-new.popular') }}" class="btn btn-outline-warning">
+                            <i class="fas fa-star me-1"></i>
+                            {{ __('ui.common.popular') }}
                         </a>
                     </div>
                 </div>
@@ -206,6 +235,27 @@
         document.querySelectorAll('.hot-topic-item').forEach(item => {
             item.style.animation = 'pulse 2s infinite';
         });
+
+        // Pagination goto functionality
+        const goToPageBtn = document.getElementById('goToPageBtn');
+        const pageInput = document.getElementById('pageInput');
+
+        if (goToPageBtn && pageInput) {
+            goToPageBtn.addEventListener('click', function() {
+                const page = parseInt(pageInput.value);
+                const maxPage = parseInt(pageInput.getAttribute('max'));
+
+                if (page >= 1 && page <= maxPage) {
+                    window.location.href = `{{ route('whats-new.hot-topics') }}?page=${page}`;
+                }
+            });
+
+            pageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    goToPageBtn.click();
+                }
+            });
+        }
     });
 </script>
 
