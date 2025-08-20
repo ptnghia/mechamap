@@ -228,7 +228,7 @@ standardize-*.php
 # FRONTEND PROJECT IGNORES
 # ============================================================
 
-# Ignore frontend-nextjs directory (separate project)
+# Ignore frontend-nextjs directory (separate Next.js project)
 /frontend-nextjs
 
 # ============================================================
