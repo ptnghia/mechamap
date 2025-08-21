@@ -10,7 +10,7 @@
                 <i class="fas fa-search me-2"></i>
                 {{ __('search.search_results') }}
             </h5>
-            <a href="{{ route('forums.search.advanced') }}" class="btn btn-main active">
+            <a href="{{ route('threads.index') }}" class="btn btn-main active">
                 <i class="fas fa-cogs me-1"></i>
                 {{ __('search.advanced_search') }}
             </a>
@@ -76,8 +76,9 @@
 
                 <!-- Results Tabs -->
                 <ul class="nav nav-tabs mb-3" id="searchTabs" role="tablist">
+                    @if($threads->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'all' || $type === 'threads' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'threads') || ($type === 'all' && $firstActiveTab === 'threads') ? 'active' : '' }}"
                                 id="threads-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#threads"
@@ -87,8 +88,11 @@
                             {{ __('search.threads') }} ({{ $threads->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($posts->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'posts' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'posts') || ($type === 'all' && $firstActiveTab === 'posts') ? 'active' : '' }}"
                                 id="posts-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#posts"
@@ -98,8 +102,11 @@
                             {{ __('search.posts') }} ({{ $posts->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($users->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'users' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'users') || ($type === 'all' && $firstActiveTab === 'users') ? 'active' : '' }}"
                                 id="users-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#users"
@@ -109,8 +116,11 @@
                             {{ __('search.users') }} ({{ $users->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($products->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'products' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'products') || ($type === 'all' && $firstActiveTab === 'products') ? 'active' : '' }}"
                                 id="products-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#products"
@@ -120,8 +130,11 @@
                             {{ __('search.products') }} ({{ $products->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($showcases->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'showcases' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'showcases') || ($type === 'all' && $firstActiveTab === 'showcases') ? 'active' : '' }}"
                                 id="showcases-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#showcases"
@@ -131,8 +144,11 @@
                             {{ __('search.showcases') }} ({{ $showcases->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($documentation->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'documentation' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'documentation') || ($type === 'all' && $firstActiveTab === 'documentation') ? 'active' : '' }}"
                                 id="documentation-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#documentation"
@@ -142,8 +158,11 @@
                             {{ __('search.documentation') }} ({{ $documentation->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($materials->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'materials' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'materials') || ($type === 'all' && $firstActiveTab === 'materials') ? 'active' : '' }}"
                                 id="materials-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#materials"
@@ -153,8 +172,11 @@
                             {{ __('search.materials') }} ({{ $materials->count() }})
                         </button>
                     </li>
+                    @endif
+
+                    @if($cadFiles->count() > 0)
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $type === 'cad_files' ? 'active' : '' }}"
+                        <button class="nav-link {{ ($type === 'cad_files') || ($type === 'all' && $firstActiveTab === 'cad_files') ? 'active' : '' }}"
                                 id="cad-files-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#cad-files"
@@ -164,63 +186,22 @@
                             {{ __('search.cad_files') }} ({{ $cadFiles->count() }})
                         </button>
                     </li>
+                    @endif
                 </ul>
 
                 <!-- Tab Content -->
                 <div class="tab-content" id="searchTabsContent">
                     <!-- Threads Tab -->
-                    <div class="tab-pane fade {{ $type === 'all' || $type === 'threads' ? 'show active' : '' }}"
+                    @if($threads->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'threads') || ($type === 'all' && $firstActiveTab === 'threads') ? 'show active' : '' }}"
                             id="threads"
                             role="tabpanel">
                         @if($threads->count() > 0)
-                            @foreach($threads as $thread)
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img src="{{ $thread->user->getAvatarUrl() }}"
-                                                        alt="{{ $thread->user->name }}"
-                                                        class="rounded-circle"
-                                                        width="40"
-                                                        height="40">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">
-                                                    <a href="{{ route('threads.show', $thread) }}"
-                                                        class="text-decoration-none">
-                                                        {{ $thread->title }}
-                                                    </a>
-                                                </h6>
-                                                <p class="text-muted mb-2">
-                                                    {{ Str::limit(strip_tags($thread->content), 200) }}
-                                                </p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="text-muted small">
-                                                        <i class="fas fa-user me-1"></i>
-                                                        {{ $thread->user->name }}
-                                                        <span class="mx-2">•</span>
-                                                        <i class="fas fa-folder me-1"></i>
-                                                        <a href="{{ route('forums.show', $thread->forum) }}"
-                                                            class="text-muted">
-                                                            {{ $thread->forum->name }}
-                                                        </a>
-                                                        <span class="mx-2">•</span>
-                                                        <i class="fas fa-clock me-1"></i>
-                                                        {{ $thread->created_at->diffForHumans() }}
-                                                    </div>
-                                                    <div class="text-muted small">
-                                                        <i class="fas fa-eye me-1"></i>
-                                                        {{ $thread->views_count ?? 0 }}
-                                                        <span class="mx-2">•</span>
-                                                        <i class="fas fa-comments me-1"></i>
-                                                        {{ $thread->replies_count ?? 0 }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+                            <div class="threads-list">
+                                @foreach($threads as $thread)
+                                    @include('partials.thread-item', ['thread' => $thread])
+                                @endforeach
+                            </div>
                         @else
                             <div class="text-center py-4">
                                 <i class="fas fa-search fa-3x text-muted mb-3"></i>
@@ -229,9 +210,11 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Posts Tab -->
-                    <div class="tab-pane fade {{ $type === 'posts' ? 'show active' : '' }}"
+                    @if($posts->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'posts') || ($type === 'all' && $firstActiveTab === 'posts') ? 'show active' : '' }}"
                             id="posts"
                             role="tabpanel">
                         @if($posts->count() > 0)
@@ -282,43 +265,17 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Users Tab -->
-                    <div class="tab-pane fade {{ $type === 'users' ? 'show active' : '' }}"
+                    @if($users->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'users') || ($type === 'all' && $firstActiveTab === 'users') ? 'show active' : '' }}"
                             id="users"
                             role="tabpanel">
                         @if($users->count() > 0)
-                            <div class="row">
+                            <div class="row g-3">
                                 @foreach($users as $user)
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ $user->getAvatarUrl() }}"
-                                                            alt="{{ $user->name }}"
-                                                            class="rounded-circle me-3"
-                                                            width="50"
-                                                            height="50">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="mb-1">
-                                                            <a href="{{ route('users.show', $user) }}"
-                                                                class="text-decoration-none">
-                                                                {{ $user->name }}
-                                                            </a>
-                                                        </h6>
-                                                        <p class="text-muted mb-1 small">
-                                                            @{{ $user->username }}
-                                                        </p>
-                                                        @if($user->bio)
-                                                            <p class="text-muted mb-0 small">
-                                                                {{ Str::limit($user->bio, 100) }}
-                                                            </p>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @include('partials.user-item', ['user' => $user])
                                 @endforeach
                             </div>
                         @else
@@ -329,50 +286,17 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Products Tab -->
-                    <div class="tab-pane fade {{ $type === 'products' ? 'show active' : '' }}"
+                    @if($products->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'products') || ($type === 'all' && $firstActiveTab === 'products') ? 'show active' : '' }}"
                             id="products"
                             role="tabpanel">
                         @if($products->count() > 0)
                             <div class="row">
                                 @foreach($products as $product)
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="d-flex">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="{{ $product->getFirstImageUrl() }}"
-                                                                alt="{{ $product->name }}"
-                                                                class="rounded"
-                                                                width="80"
-                                                                height="80">
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-2">
-                                                            <a href="{{ route('marketplace.products.show', $product) }}"
-                                                                class="text-decoration-none">
-                                                                {{ $product->name }}
-                                                            </a>
-                                                        </h6>
-                                                        <p class="text-muted small mb-2">
-                                                            {{ Str::limit(strip_tags($product->description), 100) }}
-                                                        </p>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div class="text-muted small">
-                                                                <i class="fas fa-tag me-1"></i>
-                                                                {{ number_format($product->price) }} VNĐ
-                                                                <span class="mx-2">•</span>
-                                                                <i class="fas fa-store me-1"></i>
-                                                                {{ $product->seller->name ?? 'N/A' }}
-                                                            </div>
-                                                            <span class="badge bg-primary">{{ $product->type }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <x-product-card :product="$product" card-class="col-lg-4 col-md-6 mb-4" />
                                 @endforeach
                             </div>
                         @else
@@ -383,52 +307,18 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Showcases Tab -->
-                    <div class="tab-pane fade {{ $type === 'showcases' ? 'show active' : '' }}"
+                    @if($showcases->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'showcases') || ($type === 'all' && $firstActiveTab === 'showcases') ? 'show active' : '' }}"
                             id="showcases"
                             role="tabpanel">
                         @if($showcases->count() > 0)
                             <div class="row">
                                 @foreach($showcases as $showcase)
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="d-flex">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="{{ $showcase->getCoverImageUrl() }}"
-                                                                alt="{{ $showcase->title }}"
-                                                                class="rounded"
-                                                                width="80"
-                                                                height="80">
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <h6 class="mb-2">
-                                                            <a href="{{ route('showcase.show', $showcase) }}"
-                                                                class="text-decoration-none">
-                                                                {{ $showcase->title }}
-                                                            </a>
-                                                        </h6>
-                                                        <p class="text-muted small mb-2">
-                                                            {{ Str::limit(strip_tags($showcase->description), 100) }}
-                                                        </p>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <div class="text-muted small">
-                                                                <i class="fas fa-user me-1"></i>
-                                                                {{ $showcase->user->name }}
-                                                                <span class="mx-2">•</span>
-                                                                <i class="fas fa-eye me-1"></i>
-                                                                {{ $showcase->view_count }}
-                                                                <span class="mx-2">•</span>
-                                                                <i class="fas fa-heart me-1"></i>
-                                                                {{ $showcase->like_count }}
-                                                            </div>
-                                                            <span class="badge bg-success">{{ $showcase->category }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        @include('partials.showcase-item', ['showcase' => $showcase])
                                     </div>
                                 @endforeach
                             </div>
@@ -440,9 +330,11 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Documentation Tab -->
-                    <div class="tab-pane fade {{ $type === 'documentation' ? 'show active' : '' }}"
+                    @if($documentation->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'documentation') || ($type === 'all' && $firstActiveTab === 'documentation') ? 'show active' : '' }}"
                             id="documentation"
                             role="tabpanel">
                         @if($documentation->count() > 0)
@@ -455,7 +347,7 @@
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <h6 class="mb-2">
-                                                    <a href="{{ route('documentation.show', $doc) }}"
+                                                    <a href="{{ route('docs.show', $doc) }}"
                                                         class="text-decoration-none">
                                                         {{ $doc->title }}
                                                     </a>
@@ -489,9 +381,11 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- Materials Tab -->
-                    <div class="tab-pane fade {{ $type === 'materials' ? 'show active' : '' }}"
+                    @if($materials->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'materials') || ($type === 'all' && $firstActiveTab === 'materials') ? 'show active' : '' }}"
                             id="materials"
                             role="tabpanel">
                         @if($materials->count() > 0)
@@ -537,9 +431,11 @@
                             </div>
                         @endif
                     </div>
+                    @endif
 
                     <!-- CAD Files Tab -->
-                    <div class="tab-pane fade {{ $type === 'cad_files' ? 'show active' : '' }}"
+                    @if($cadFiles->count() > 0)
+                    <div class="tab-pane fade {{ ($type === 'cad_files') || ($type === 'all' && $firstActiveTab === 'cad_files') ? 'show active' : '' }}"
                             id="cad-files"
                             role="tabpanel">
                         @if($cadFiles->count() > 0)
@@ -590,6 +486,7 @@
                             </div>
                         @endif
                     </div>
+                    @endif
                 </div>
             @else
                 <!-- No Search Query -->
@@ -612,6 +509,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (searchInput && !searchInput.value) {
         searchInput.focus();
     }
+
+    // Ensure first available tab is active when type is 'all'
+    @if($query && $type === 'all')
+        const tabs = document.querySelectorAll('#searchTabs .nav-link');
+        const tabPanes = document.querySelectorAll('#searchTabsContent .tab-pane');
+
+        // Remove all active classes first
+        tabs.forEach(tab => tab.classList.remove('active'));
+        tabPanes.forEach(pane => pane.classList.remove('show', 'active'));
+
+        // Activate first available tab
+        if (tabs.length > 0) {
+            tabs[0].classList.add('active');
+            const targetId = tabs[0].getAttribute('data-bs-target').substring(1);
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('show', 'active');
+            }
+        }
+    @endif
 });
 </script>
 @endpush

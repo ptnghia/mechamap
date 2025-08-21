@@ -97,10 +97,7 @@ Route::prefix('marketplace')->name('marketplace.')->group(function () {
     Route::get('/products/popular', [App\Http\Controllers\MarketplaceController::class, 'popularProducts'])->name('products.popular');
     Route::get('/products/{slug}', [App\Http\Controllers\MarketplaceController::class, 'show'])->name('products.show');
 
-    // Search routes - CONSOLIDATED: Redirect to products page with search parameters
-    Route::get('/search', function (Request $request) {
-        return redirect()->route('marketplace.products.index', $request->query());
-    })->name('search.results');
+    // Search routes - REMOVED: Moved to unified search system below
 
     Route::get('/search/advanced', function (Request $request) {
         return redirect()->route('marketplace.products.index', array_merge($request->query(), ['advanced' => '1']));
@@ -517,9 +514,13 @@ Route::get('/new', [NewContentController::class, 'index'])->name('new');
 Route::middleware('forum.cache')->group(function () {
     Route::get('/forums', [\App\Http\Controllers\CategoryController::class, 'index'])->name('forums.index');
 
-    // Forum search routes - Keep forum advanced search as primary (most complete UI)
-    Route::get('/forums/search', [ForumController::class, 'search'])->name('forums.search');
-    Route::get('/forums/search/advanced', [ForumController::class, 'advancedSearch'])->name('forums.search.advanced');
+    // Forum search routes - DEPRECATED: Redirect to unified threads search
+    Route::get('/forums/search', function (Request $request) {
+        return redirect()->route('threads.index', $request->query());
+    })->name('forums.search');
+
+
+
     Route::get('/forums/search/categories', [ForumController::class, 'searchByCategory'])->name('forums.search.categories');
 
     Route::get('/forums/{forum}', [ForumController::class, 'show'])->name('forums.show');
@@ -634,16 +635,16 @@ Route::prefix('api/tinymce')->name('api.tinymce.')->middleware(['auth'])->group(
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 // Unified Search Routes
 Route::prefix('search')->name('search.')->group(function () {
-    // Main search interfaces
-    Route::get('/', [AdvancedSearchController::class, 'basic'])->name('index');
+    // Main search interfaces - Use SearchController for comprehensive search
+    Route::get('/', [SearchController::class, 'index'])->name('index');
     Route::get('/basic', [AdvancedSearchController::class, 'basic'])->name('basic');
 
-    // CONSOLIDATED: Redirect global advanced search to forum advanced search for better UX
+    // CONSOLIDATED: Redirect global advanced search to threads for better UX
     Route::get('/advanced', function (Request $request) {
-        // If no specific type filter, default to forum search which has better UI
+        // If no specific type filter, default to threads search which has better UI
         $type = $request->get('filters.type', $request->get('type'));
         if (!$type || $type === 'forum' || $type === 'all') {
-            return redirect()->route('forums.search.advanced', $request->query());
+            return redirect()->route('threads.index', $request->query());
         }
         // For other specific types, use global search
         return app(AdvancedSearchController::class)->index($request);

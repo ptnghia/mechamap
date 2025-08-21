@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-3">
-                        <a href="{{ route('forums.search.advanced') }}" class="btn btn-outline-secondary btn-sm">
+                        <a href="{{ route('threads.index') }}" class="btn btn-outline-secondary btn-sm">
                             <i class="fas fa-edit me-1"></i> {{ __('search.modify_search') }}
                         </a>
 

@@ -357,7 +357,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{{ route('forums.search.advanced', ['category_id' => $category->id]) }}"
+                            <a href="{{ route('threads.index', ['category' => $category->id]) }}"
                                class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-search-plus me-1"></i>
                                 {{ __('forum.search.advanced_search') }}

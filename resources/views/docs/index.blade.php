@@ -37,10 +37,11 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('docs.search') }}" method="GET" class="d-flex">
-                        <input type="text" name="q" class="form-control me-2" 
-                               placeholder="Search documentation..." 
+                    <form action="{{ route('search.index') }}" method="GET" class="d-flex">
+                        <input type="text" name="q" class="form-control me-2"
+                               placeholder="Search documentation..."
                                value="{{ request('q') }}">
+                        <input type="hidden" name="type" value="documentation">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-search"></i> Search
                         </button>
@@ -60,7 +61,7 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         @forelse($categories ?? [] as $category)
-                            <a href="{{ route('docs.category', $category->slug) }}" 
+                            <a href="{{ route('docs.category', $category->slug) }}"
                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="{{ $category->icon ?? 'fas fa-folder' }}" style="color: {{ $category->color_code }}"></i>
@@ -171,23 +172,23 @@
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-unstyled">
-                                <li><a href="{{ route('docs.search', ['type' => 'guide']) }}" class="text-decoration-none">
+                                <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'guide']) }}" class="text-decoration-none">
                                     <i class="fas fa-book"></i> User Guides
                                 </a></li>
-                                <li><a href="{{ route('docs.search', ['type' => 'tutorial']) }}" class="text-decoration-none">
+                                <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'tutorial']) }}" class="text-decoration-none">
                                     <i class="fas fa-graduation-cap"></i> Tutorials
                                 </a></li>
-                                <li><a href="{{ route('docs.search', ['type' => 'api']) }}" class="text-decoration-none">
+                                <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'api']) }}" class="text-decoration-none">
                                     <i class="fas fa-code"></i> API Documentation
                                 </a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="list-unstyled">
-                                <li><a href="{{ route('docs.search', ['difficulty' => 'beginner']) }}" class="text-decoration-none">
+                                <li><a href="{{ route('search.index', ['type' => 'documentation', 'difficulty' => 'beginner']) }}" class="text-decoration-none">
                                     <i class="fas fa-seedling"></i> Beginner Guides
                                 </a></li>
-                                <li><a href="{{ route('docs.search', ['difficulty' => 'advanced']) }}" class="text-decoration-none">
+                                <li><a href="{{ route('search.index', ['type' => 'documentation', 'difficulty' => 'advanced']) }}" class="text-decoration-none">
                                     <i class="fas fa-rocket"></i> Advanced Topics
                                 </a></li>
                                 <li><a href="{{ route('contact') }}" class="text-decoration-none">

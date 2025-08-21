@@ -10,12 +10,14 @@ use App\Models\PollOption;
 use App\Models\Showcase;
 use App\Models\ShowcaseCategory;
 use App\Models\ShowcaseType;
+use App\Models\User;
 use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ThreadController extends Controller
 {
@@ -36,37 +38,104 @@ class ThreadController extends Controller
     }
 
     /**
-     * Display a listing of the threads.
+     * Display a listing of the threads with advanced filtering.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        // Validate advanced search parameters
+        $request->validate([
+            'q' => 'nullable|string|max:255',
+            'search' => 'nullable|string|max:255', // Legacy parameter
+            'category' => 'nullable|exists:categories,id',
+            'forum' => 'nullable|exists:forums,id',
+            'author' => 'nullable|string|max:100',
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date|after_or_equal:date_from',
+            'sort' => 'nullable|in:latest,oldest,most_viewed,most_commented,relevance',
+            'featured' => 'nullable|boolean',
+            'has_poll' => 'nullable|boolean',
+        ]);
+
         $query = Thread::with('user', 'forum', 'category')
             ->withCount(['allComments as comments_count', 'bookmarks', 'ratings']);
 
-        // Apply filters
+        // Search query (support both 'q' and 'search' parameters)
+        $searchQuery = $request->get('q') ?: $request->get('search');
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', "%{$searchQuery}%")
+                    ->orWhere('content', 'like', "%{$searchQuery}%")
+                    ->orWhereHas('user', function ($userQuery) use ($searchQuery) {
+                        $userQuery->where('name', 'like', "%{$searchQuery}%")
+                                  ->orWhere('username', 'like', "%{$searchQuery}%");
+                    });
+            });
+        }
+
+        // Category filter
         if ($request->has('category') && $request->category) {
             $query->where('category_id', $request->category);
         }
 
+        // Forum filter
         if ($request->has('forum') && $request->forum) {
             $query->where('forum_id', $request->forum);
         }
 
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('content', 'like', "%{$search}%");
+        // Author filter
+        if ($request->has('author') && $request->author) {
+            $query->whereHas('user', function ($userQuery) use ($request) {
+                $userQuery->where('username', 'like', "%{$request->author}%")
+                          ->orWhere('name', 'like', "%{$request->author}%");
             });
         }
 
-        // Apply sorting - ALWAYS put sticky threads first
+        // Date range filters
+        if ($request->has('date_from') && $request->date_from) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->has('date_to') && $request->date_to) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        // Featured/Sticky filter
+        if ($request->has('featured') && $request->featured) {
+            $query->where('is_sticky', true);
+        }
+
+        // Poll filter
+        if ($request->has('has_poll') && $request->has_poll) {
+            $query->whereNotNull('poll_id');
+        }
+
+        // Quick date filters
+        $quickFilter = $request->get('quick_filter');
+        if ($quickFilter) {
+            switch ($quickFilter) {
+                case 'today':
+                    $query->whereDate('created_at', Carbon::today());
+                    break;
+                case 'week':
+                    $query->where('created_at', '>=', Carbon::now()->subWeek());
+                    break;
+                case 'month':
+                    $query->where('created_at', '>=', Carbon::now()->subMonth());
+                    break;
+                case 'year':
+                    $query->where('created_at', '>=', Carbon::now()->subYear());
+                    break;
+            }
+        }
+
+        // Apply sorting - ALWAYS put sticky threads first (unless filtering by featured)
         $sort = $request->get('sort', 'latest');
 
-        // Primary sort: sticky threads first
-        $query->orderBy('is_sticky', 'desc');
+        if (!$request->has('featured')) {
+            $query->orderBy('is_sticky', 'desc');
+        }
 
         // Secondary sort: based on user selection
         switch ($sort) {
@@ -79,6 +148,13 @@ class ThreadController extends Controller
             case 'most_commented':
                 $query->orderBy('comments_count', 'desc');
                 break;
+            case 'relevance':
+                if ($searchQuery) {
+                    // Simple relevance scoring based on title match
+                    $query->orderByRaw("CASE WHEN title LIKE ? THEN 1 ELSE 2 END", ["%{$searchQuery}%"]);
+                }
+                $query->latest();
+                break;
             default:
                 $query->latest();
                 break;
@@ -88,7 +164,20 @@ class ThreadController extends Controller
         $categories = Category::all();
         $forums = Forum::all();
 
-        return view('threads.index', compact('threads', 'categories', 'forums', 'sort'));
+        // Prepare filter data for view
+        $filters = [
+            'q' => $searchQuery,
+            'category' => $request->category,
+            'forum' => $request->forum,
+            'author' => $request->author,
+            'date_from' => $request->date_from,
+            'date_to' => $request->date_to,
+            'featured' => $request->featured,
+            'has_poll' => $request->has_poll,
+            'quick_filter' => $quickFilter,
+        ];
+
+        return view('threads.index', compact('threads', 'categories', 'forums', 'sort', 'filters'));
     }
 
     /**

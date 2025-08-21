@@ -76,7 +76,7 @@
 
                 <!-- Tools & Connect -->
                 <li>
-                    <a href="{{ route('forums.search.advanced') }}">
+                    <a href="{{ route('threads.index') }}">
                         <i class="fa-solid fa-search-plus me-2"></i>
                         {{ __('ui.search.advanced_search') }}
                     </a>
@@ -277,14 +277,12 @@
                 {{ t_common("search_discovery") }}
             </a>
             <ul>
-                @if(Route::has('forums.search.advanced'))
                 <li>
-                    <a href="{{ route('forums.search.advanced') }}">
+                    <a href="{{ route('threads.index') }}">
                         <i class="fa-brands fa-searchengin me-2"></i>
                         {{ t_common("advanced_search") }}
                     </a>
                 </li>
-                @endif
                 @if(Route::has('gallery.index'))
                 <li>
                     <a href="{{ route('gallery.index') }}">

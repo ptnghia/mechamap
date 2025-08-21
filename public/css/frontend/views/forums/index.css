@@ -3,9 +3,10 @@
 .forum-stats-card .stats-item:hover{transform:translateY(-2px)}
 .forum-icon{transition:transform .2s ease}
 .forum-item:hover .forum-icon{transform:scale(1.05)}
-.category-header{background:linear-gradient(90deg,#f8f9fa 0%,#e9ecef 100%);border-left:4px solid #007bff}
+.category-header{background:linear-gradient(90deg,#f8f9fa 0%,#e9ecef 100%);border-left: 4px solid var(--bs-primary);}
 .forums_cate_item{}
 .forums_cate_item_title{padding-right:10px;width:68%}
+.forums_cate_item_title i{color: #fff;}
 .forums_cate_item_title h5{}
 .forums_cate_item_title .text-muted{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
 .forums_cate_thongke{}

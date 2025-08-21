@@ -233,6 +233,17 @@ return array (
     'use_general_keywords' => 'Sử dụng từ khóa tổng quát hơn',
     'try_different_keywords' => 'Thử từ khóa khác',
     'browse_forum_categories' => 'Duyệt danh mục diễn đàn',
+    'conditions' => 'Điều kiện tìm kiếm',
+    'clear_all_conditions' => 'Xóa tất cả điều kiện',
+    'remove_condition' => 'Xóa điều kiện',
+    'search_keyword' => 'Từ khóa: :keyword',
+    'search_category' => 'Danh mục: :category',
+    'search_forum' => 'Diễn đàn: :forum',
+    'search_author' => 'Tác giả: :author',
+    'search_date_from' => 'Từ: :date',
+    'search_date_to' => 'Đến: :date',
+    'search_sort' => 'Sắp xếp: :sort',
+    'search_has_poll' => 'Có bình chọn',
   ),
   'notifications' =>
   array (

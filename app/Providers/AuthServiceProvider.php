@@ -200,6 +200,10 @@ class AuthServiceProvider extends ServiceProvider
             return !in_array($user->role, ['guest']); // Guest cannot create content
         });
 
+        \Illuminate\Support\Facades\Gate::define('upload-cad-files', function ($user) {
+            return $user->hasPermission('upload-cad-files');
+        });
+
         // Legacy Gates for existing moderation system
         \Illuminate\Support\Facades\Gate::define('flag-thread', function ($user, $thread) {
             return app(\App\Policies\ModerationPolicy::class)->flagThread($user, $thread);

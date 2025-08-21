@@ -7,6 +7,10 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Forum;
 use App\Models\SearchLog;
+use App\Models\Showcase;
+use App\Models\MarketplaceProduct;
+use App\Models\TechnicalDrawing;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
@@ -22,23 +26,23 @@ class SearchController extends Controller
     public function index(Request $request): View
     {
         $startTime = microtime(true);
-        $query = $request->input('query');
+        $query = $request->input('q') ?: $request->input('query');
         $type = $request->input('type', 'all');
 
         $threads = collect();
         $posts = collect();
         $users = collect();
+        $showcases = collect();
+        $products = collect();
+        $materials = collect();
+        $cadFiles = collect();
+        $documentation = collect();
         $totalResults = 0;
 
         if ($query) {
             // Search threads
             if ($type == 'all' || $type == 'threads') {
-                $threads = Thread::where('title', 'like', "%{$query}%")
-                    ->orWhere('content', 'like', "%{$query}%")
-                    ->with(['user', 'forum'])
-                    ->latest()
-                    ->take(10)
-                    ->get();
+                $threads = $this->searchThreads($query, 10);
             }
 
             // Search posts
@@ -52,14 +56,33 @@ class SearchController extends Controller
 
             // Search users
             if ($type == 'all' || $type == 'users') {
-                $users = User::where('name', 'like', "%{$query}%")
-                    ->orWhere('username', 'like', "%{$query}%")
-                    ->latest()
-                    ->take(10)
-                    ->get();
+                $users = $this->searchUsers($query, 10);
             }
 
-            $totalResults = $threads->count() + $posts->count() + $users->count();
+            // Search showcases
+            if ($type == 'all' || $type == 'showcases') {
+                $showcases = $this->searchShowcases($query, 10);
+            }
+
+            // Search products
+            if ($type == 'all' || $type == 'products') {
+                $products = $this->searchProducts($query, 10);
+            }
+
+            // Search materials
+            if ($type == 'all' || $type == 'materials') {
+                $materials = $this->searchMaterials($query, 10);
+            }
+
+            // Search CAD files
+            if ($type == 'all' || $type == 'cad_files') {
+                $cadFiles = $this->searchCadFiles($query, 10);
+            }
+
+            $totalResults = $threads->count() + $posts->count() + $users->count() +
+                          $showcases->count() + $products->count() + $materials->count() + $cadFiles->count() + $documentation->count();
+        } else {
+            $totalResults = 0;
 
             // Log search activity for analytics
             $this->logSearch($query, $request, $totalResults, $startTime, [
@@ -68,7 +91,33 @@ class SearchController extends Controller
             ]);
         }
 
-        return view('search.index', compact('query', 'type', 'threads', 'posts', 'users'));
+        // Debug: Log to confirm this controller is being used
+        \Log::info('SearchController::index called', ['query' => $query, 'type' => $type, 'view' => 'search.basic']);
+
+        // Determine first active tab when type is 'all'
+        $firstActiveTab = 'threads'; // default
+        if ($type === 'all' && $query) {
+            $tabOrder = ['threads', 'posts', 'users', 'products', 'showcases', 'documentation', 'materials', 'cad_files'];
+            $collections = [
+                'threads' => $threads,
+                'posts' => $posts,
+                'users' => $users,
+                'products' => $products,
+                'showcases' => $showcases,
+                'documentation' => $documentation,
+                'materials' => $materials,
+                'cad_files' => $cadFiles
+            ];
+
+            foreach ($tabOrder as $tab) {
+                if ($collections[$tab]->count() > 0) {
+                    $firstActiveTab = $tab;
+                    break;
+                }
+            }
+        }
+
+        return view('search.basic', compact('query', 'type', 'threads', 'posts', 'users', 'showcases', 'products', 'documentation', 'materials', 'cadFiles', 'totalResults', 'firstActiveTab'));
     }
 
     /**
@@ -366,7 +415,7 @@ class SearchController extends Controller
      * Log search activity for analytics.
      */
     private function logSearch(
-        string $query,
+        ?string $query,
         Request $request,
         int $resultsCount,
         float $startTime,
@@ -393,6 +442,190 @@ class SearchController extends Controller
                 'user_id' => Auth::check() ? Auth::id() : null,
                 'results_count' => $resultsCount
             ]);
+        }
+    }
+
+    /**
+     * Search threads with relevance scoring
+     */
+    private function searchThreads(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        return Thread::where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('content', 'like', "%{$query}%");
+            })
+            ->where('moderation_status', 'approved')
+            ->where('is_spam', false)
+            ->whereNull('hidden_at')
+            ->with(['user', 'forum', 'category', 'media'])
+            ->withCount('allComments as comments_count')
+            ->orderByRaw("
+                CASE
+                    WHEN title LIKE ? THEN 1
+                    WHEN title LIKE ? THEN 2
+                    WHEN content LIKE ? THEN 3
+                    ELSE 4
+                END, created_at DESC
+            ", ["{$query}%", "%{$query}%", "%{$query}%"])
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Search showcases
+     */
+    private function searchShowcases(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        try {
+            return Showcase::where(function ($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('project_type', 'like', "%{$query}%")
+                      ->orWhere('materials', 'like', "%{$query}%");
+                })
+                ->where('status', 'approved')
+                ->where('is_public', true)
+                ->with(['user'])
+                ->orderByRaw("
+                    CASE
+                        WHEN title LIKE ? THEN 1
+                        WHEN project_type LIKE ? THEN 2
+                        WHEN description LIKE ? THEN 3
+                        ELSE 4
+                    END, featured_at DESC, created_at DESC
+                ", ["{$query}%", "%{$query}%", "%{$query}%"])
+                ->limit($limit)
+                ->get();
+        } catch (\Exception $e) {
+            Log::error('Showcase search error: ' . $e->getMessage());
+            return collect();
+        }
+    }
+
+    /**
+     * Search products (marketplace + technical)
+     */
+    private function searchProducts(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        try {
+            // Debug: Check total products
+            $totalProducts = MarketplaceProduct::count();
+            $activeProducts = MarketplaceProduct::where('status', 'approved')->where('is_active', true)->count();
+            \Log::info("Products debug", ['total' => $totalProducts, 'active' => $activeProducts, 'query' => $query]);
+
+            // Search marketplace products
+            $marketplaceProducts = MarketplaceProduct::where(function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('short_description', 'like', "%{$query}%")
+                      ->orWhere('sku', 'like', "%{$query}%");
+                })
+                ->where('status', 'approved')
+                ->where('is_active', true)
+                ->with(['seller'])
+                ->orderByRaw("
+                    CASE
+                        WHEN name LIKE ? THEN 1
+                        WHEN sku LIKE ? THEN 2
+                        WHEN description LIKE ? THEN 3
+                        ELSE 4
+                    END, featured_at DESC, created_at DESC
+                ", ["{$query}%", "%{$query}%", "%{$query}%"])
+                ->limit($limit)
+                ->get();
+
+            return $marketplaceProducts;
+        } catch (\Exception $e) {
+            Log::error('Product search error: ' . $e->getMessage());
+            return collect();
+        }
+    }
+
+    /**
+     * Search users
+     */
+    private function searchUsers(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        $cleanQuery = trim($query);
+
+        return User::where(function ($q) use ($cleanQuery) {
+                $q->where('name', 'like', "%{$cleanQuery}%")
+                  ->orWhere('username', 'like', "%{$cleanQuery}%")
+                  ->orWhere('company_name', 'like', "%{$cleanQuery}%");
+            })
+            ->where('status', 'active')
+            ->whereNull('banned_at')
+            ->orderByRaw("
+                CASE
+                    WHEN username LIKE ? THEN 1
+                    WHEN name LIKE ? THEN 2
+                    WHEN company_name LIKE ? THEN 3
+                    ELSE 4
+                END
+            ", ["{$cleanQuery}%", "{$cleanQuery}%", "{$cleanQuery}%"])
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Search materials
+     */
+    private function searchMaterials(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        try {
+            return Material::where(function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('category', 'like', "%{$query}%")
+                      ->orWhere('code', 'like', "%{$query}%");
+                })
+                ->where('status', 'approved')
+                ->where('is_active', true)
+                ->orderByRaw("
+                    CASE
+                        WHEN name LIKE ? THEN 1
+                        WHEN category LIKE ? THEN 2
+                        WHEN description LIKE ? THEN 3
+                        ELSE 4
+                    END, created_at DESC
+                ", ["{$query}%", "%{$query}%", "%{$query}%"])
+                ->limit($limit)
+                ->get();
+        } catch (\Exception $e) {
+            Log::error('Material search error: ' . $e->getMessage());
+            return collect();
+        }
+    }
+
+    /**
+     * Search CAD files
+     */
+    private function searchCadFiles(string $query, int $limit): \Illuminate\Support\Collection
+    {
+        try {
+            return TechnicalDrawing::where(function ($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('drawing_number', 'like', "%{$query}%")
+                      ->orWhere('part_number', 'like', "%{$query}%");
+                })
+                ->where('status', 'approved')
+                ->where('visibility', 'public')
+                ->where('is_active', true)
+                ->with(['creator'])
+                ->orderByRaw("
+                    CASE
+                        WHEN title LIKE ? THEN 1
+                        WHEN drawing_number LIKE ? THEN 2
+                        WHEN description LIKE ? THEN 3
+                        ELSE 4
+                    END, created_at DESC
+                ", ["{$query}%", "%{$query}%", "%{$query}%"])
+                ->limit($limit)
+                ->get();
+        } catch (\Exception $e) {
+            Log::error('CAD file search error: ' . $e->getMessage());
+            return collect();
         }
     }
 }

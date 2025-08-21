@@ -252,3 +252,98 @@
     object-fit: cover;
     border-radius: 6px;
 }
+
+/* Search Condition Tags */
+.search-conditions {
+    margin-bottom: 1rem;
+}
+
+.search-conditions .condition-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem 0.25rem 0.25rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.search-conditions .condition-tag:hover {
+    background-color: #bbdefb;
+    transform: translateY(-1px);
+}
+
+.search-conditions .condition-tag .remove-condition {
+    background: none;
+    border: none;
+    color: #1976d2;
+    margin-left: 0.5rem;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.search-conditions .condition-tag .remove-condition:hover {
+    color: #d32f2f;
+}
+
+.search-conditions .condition-tag.quick-filter {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+    border-color: #c8e6c9;
+}
+
+.search-conditions .condition-tag.quick-filter:hover {
+    background-color: #c8e6c9;
+}
+
+.search-conditions .condition-tag.quick-filter .remove-condition {
+    color: #2e7d32;
+}
+
+.search-conditions .condition-tag.featured {
+    background-color: #fff3e0;
+    color: #f57c00;
+    border-color: #ffcc02;
+}
+
+.search-conditions .condition-tag.featured:hover {
+    background-color: #ffcc02;
+}
+
+.search-conditions .condition-tag.featured .remove-condition {
+    color: #f57c00;
+}
+
+.search-conditions .clear-all-btn {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #ffcdd2;
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.search-conditions .clear-all-btn:hover {
+    background-color: #ffcdd2;
+    color: #d32f2f;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design for Search Conditions */
+@media (max-width: 768px) {
+    .search-conditions .condition-tag {
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+    }
+}

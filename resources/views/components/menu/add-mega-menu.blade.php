@@ -78,7 +78,7 @@
                 </h6>
                 <ul class="mega-menu-list">
                     <li>
-                        <a href="{{ route('forums.search.advanced') }}" class="mega-menu-item">
+                        <a href="{{ route('threads.index') }}" class="mega-menu-item">
                             <i class="fa-solid fa-search-plus me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.discovery.advanced_search') }}</span>

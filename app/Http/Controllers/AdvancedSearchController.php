@@ -596,9 +596,32 @@ class AdvancedSearchController extends Controller
             ]);
         }
 
+        // Determine first active tab when type is 'all'
+        $firstActiveTab = 'threads'; // default
+        if ($type === 'all' && $query) {
+            $tabOrder = ['threads', 'posts', 'users', 'products', 'showcases', 'documentation', 'materials', 'cad_files'];
+            $collections = [
+                'threads' => $threads,
+                'posts' => $posts,
+                'users' => $users,
+                'products' => $products,
+                'showcases' => $showcases,
+                'documentation' => $documentation,
+                'materials' => $materials,
+                'cad_files' => $cadFiles
+            ];
+
+            foreach ($tabOrder as $tab) {
+                if ($collections[$tab]->count() > 0) {
+                    $firstActiveTab = $tab;
+                    break;
+                }
+            }
+        }
+
         return view('search.basic', compact(
             'query', 'type', 'threads', 'posts', 'users', 'products',
-            'showcases', 'documentation', 'materials', 'cadFiles', 'totalResults'
+            'showcases', 'documentation', 'materials', 'cadFiles', 'totalResults', 'firstActiveTab'
         ));
     }
 
@@ -648,9 +671,11 @@ class AdvancedSearchController extends Controller
 
         // Search marketplace products
         if ($type == 'all' || $type == 'products') {
-            $products = \App\Models\MarketplaceProduct::where('name', 'like', "%{$query}%")
-                ->orWhere('description', 'like', "%{$query}%")
-                ->orWhere('tags', 'like', "%{$query}%")
+            $products = \App\Models\MarketplaceProduct::where(function($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('tags', 'like', "%{$query}%");
+                })
                 ->where('status', 'active')
                 ->with(['seller', 'category'])
                 ->latest()
@@ -660,10 +685,12 @@ class AdvancedSearchController extends Controller
 
         // Search showcases
         if ($type == 'all' || $type == 'showcases') {
-            $showcases = \App\Models\Showcase::where('title', 'like', "%{$query}%")
-                ->orWhere('description', 'like', "%{$query}%")
-                ->orWhere('software_used', 'like', "%{$query}%")
-                ->orWhere('materials', 'like', "%{$query}%")
+            $showcases = \App\Models\Showcase::where(function($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('software_used', 'like', "%{$query}%")
+                      ->orWhere('materials', 'like', "%{$query}%");
+                })
                 ->where('is_public', true)
                 ->where('status', 'published')
                 ->with(['user'])
@@ -674,10 +701,12 @@ class AdvancedSearchController extends Controller
 
         // Search documentation
         if ($type == 'all' || $type == 'documentation') {
-            $documentation = \App\Models\Documentation::where('title', 'like', "%{$query}%")
-                ->orWhere('content', 'like', "%{$query}%")
-                ->orWhere('excerpt', 'like', "%{$query}%")
-                ->orWhere('tags', 'like', "%{$query}%")
+            $documentation = \App\Models\Documentation::where(function($q) use ($query) {
+                    $q->where('title', 'like', "%{$query}%")
+                      ->orWhere('content', 'like', "%{$query}%")
+                      ->orWhere('excerpt', 'like', "%{$query}%")
+                      ->orWhere('tags', 'like', "%{$query}%");
+                })
                 ->where('is_public', true)
                 ->where('status', 'published')
                 ->with(['category', 'author'])
@@ -700,10 +729,12 @@ class AdvancedSearchController extends Controller
 
         // Search CAD files
         if ($type == 'all' || $type == 'cad_files') {
-            $cadFiles = \App\Models\CADFile::where('name', 'like', "%{$query}%")
-                ->orWhere('description', 'like', "%{$query}%")
-                ->orWhere('tags', 'like', "%{$query}%")
-                ->orWhere('cad_software', 'like', "%{$query}%")
+            $cadFiles = \App\Models\CADFile::where(function($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                      ->orWhere('description', 'like', "%{$query}%")
+                      ->orWhere('tags', 'like', "%{$query}%")
+                      ->orWhere('cad_software', 'like', "%{$query}%");
+                })
                 ->where('is_active', true)
                 ->where('status', 'approved')
                 ->with(['user'])
@@ -753,12 +784,11 @@ class AdvancedSearchController extends Controller
                 'response_time_ms' => $responseTime,
                 'filters' => $filters,
                 'content_type' => $filters['content_type'] ?? 'advanced',
-                'search_method' => $filters['method'] ?? 'elasticsearch',
                 'created_at' => now()
             ]);
 
             // Track search for analytics
-            $this->trackSearch($query, $request);
+            $this->trackSearch($query, $request->ip());
 
         } catch (\Exception $e) {
             Log::error('Failed to log search activity: ' . $e->getMessage(), [

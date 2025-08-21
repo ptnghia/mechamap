@@ -103,45 +103,7 @@
                     <!-- Grid View -->
                     <div class="row g-3">
                         @foreach($members as $member)
-                            <div class="col-md-3">
-                                <div class="card h-100 item_member_grid">
-                                    <div class="card-body text-center">
-                                        <img src="{{ $member->getAvatarUrl() }}" alt="{{ $member->name }}" class="rounded-circle mb-3" width="80" height="80">
-                                        <h5 class="card-title mb-1">
-                                            <a href="{{ route('profile.show', $member->username) }}" class="text-decoration-none">
-                                                {{ $member->name }}
-                                            </a>
-                                        </h5>
-                                        <p class="text-muted mb-2">{{ '@' . $member->username }}</p>
-
-                                        @if($member->isOnline())
-                                            <span class="badge bg-success">{{ t_common("members.online") }}</span>
-                                        @endif
-
-                                        @if($member->role == 'admin')
-                                            <span class="badge bg-danger">{{ t_common("members.admin") }}</span>
-                                        @elseif($member->role == 'moderator')
-                                            <span class="badge bg-primary">{{ t_common("members.moderator") }}</span>
-                                        @endif
-                                    </div>
-                                    <div class="card-footer bg-transparent">
-                                        <div class="row text-center">
-                                            <div class="col-4">
-                                                <div class="fw-bold">{{ $member->posts_count ?? 0 }}</div>
-                                                <div class="small text-muted">{{ t_common("members.posts") }}</div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="fw-bold">{{ $member->threads_count ?? 0 }}</div>
-                                                <div class="small text-muted">{{ t_common("members.threads") }}</div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="fw-bold">{{ $member->created_at->format('M Y') }}</div>
-                                                <div class="small text-muted">{{ t_common("members.joined") }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('partials.user-item', ['user' => $member])
                         @endforeach
                     </div>
                 @else

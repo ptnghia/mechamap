@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CAD Library')
+@section('title', __('tools.cad_library.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,32 +11,32 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fa-solid fa-file-code text-primary me-2"></i>
-                        CAD Library
+                        {{ __('tools.cad_library.title') }}
                     </h1>
-                    <p class="text-muted mb-0">Download and share CAD files, 3D models, and technical drawings</p>
+                    <p class="text-muted mb-0">{{ __('tools.cad_library.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     @auth
                     <a href="{{ route('cad.library.my-files') }}" class="btn btn-outline-secondary">
                         <i class="fa-solid fa-folder me-1"></i>
-                        My Files
+                        {{ __('tools.cad_library.my_files') }}
                     </a>
                     <a href="{{ route('cad.library.create') }}" class="btn btn-primary">
                         <i class="fa-solid fa-upload me-1"></i>
-                        Upload CAD File
+                        {{ __('tools.cad_library.upload_file') }}
                     </a>
                     @endauth
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-download me-1"></i>
-                            Export
+                            {{ __('tools.cad_library.export') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('cad.library.export', ['format' => 'csv']) }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>CSV Format
+                                <i class="fa-solid fa-file-csv me-2"></i>{{ __('tools.cad_library.csv_format') }}
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('cad.library.export', ['format' => 'json']) }}">
-                                <i class="fa-solid fa-file-code me-2"></i>JSON Format
+                                <i class="fa-solid fa-file-code me-2"></i>{{ __('tools.cad_library.json_format') }}
                             </a></li>
                         </ul>
                     </div>
@@ -93,8 +93,8 @@
                     <form method="GET" action="{{ route('cad.library.index') }}" class="row g-3">
                         <div class="col-md-3">
                             <label for="search" class="form-label">Search CAD Files</label>
-                            <input type="text" class="form-control" id="search" name="search" 
-                                   value="{{ request('search') }}" 
+                            <input type="text" class="form-control" id="search" name="search"
+                                   value="{{ request('search') }}"
                                    placeholder="Search by title, tags, or description...">
                         </div>
                         <div class="col-md-2">
@@ -168,18 +168,18 @@
                     <i class="fa-solid fa-file-code text-muted" style="font-size: 3rem;"></i>
                 </div>
                 @endif
-                
+
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span class="badge bg-primary">{{ strtoupper($file->file_type ?? 'CAD') }}</span>
                     <span class="badge bg-success">{{ $file->software_used ?? 'Unknown' }}</span>
                 </div>
-                
+
                 <div class="card-body">
                     <h6 class="card-title">{{ $file->title ?? 'Sample CAD File' }}</h6>
                     <p class="card-text text-muted small">
                         {{ Str::limit($file->description ?? 'Professional CAD file for mechanical engineering projects', 100) }}
                     </p>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <small class="text-muted">File Size</small>
@@ -190,7 +190,7 @@
                             <div class="fw-medium">{{ $file->download_count ?? rand(10, 100) }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <small class="text-muted">Rating</small>
@@ -210,16 +210,16 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @if($file->tags ?? false)
                     <div class="mb-2">
-                        @foreach(explode(',', $file->tags) as $tag)
+                        @foreach((is_array($file->tags) ? $file->tags : explode(',', $file->tags)) as $tag)
                         <span class="badge bg-light text-dark me-1">{{ trim($tag) }}</span>
                         @endforeach
                     </div>
                     @endif
                 </div>
-                
+
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">
@@ -254,18 +254,18 @@
                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                     <i class="fa-solid fa-file-code text-muted" style="font-size: 3rem;"></i>
                 </div>
-                
+
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span class="badge bg-primary">{{ ['DWG', 'STEP', 'STL', 'SLDPRT'][($i-1) % 4] }}</span>
                     <span class="badge bg-success">{{ ['AutoCAD', 'SolidWorks', 'Fusion 360'][($i-1) % 3] }}</span>
                 </div>
-                
+
                 <div class="card-body">
                     <h6 class="card-title">{{ ['Mechanical Gear Assembly', 'Bearing Housing', 'Shaft Coupling', 'Motor Mount', 'Valve Body', 'Pump Impeller'][$i-1] }}</h6>
                     <p class="card-text text-muted small">
                         Professional CAD file for mechanical engineering projects. High-quality 3D model with detailed specifications.
                     </p>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <small class="text-muted">File Size</small>
@@ -276,7 +276,7 @@
                             <div class="fw-medium">{{ rand(25, 150) }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <small class="text-muted">Rating</small>
@@ -294,14 +294,14 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-2">
                         <span class="badge bg-light text-dark me-1">mechanical</span>
                         <span class="badge bg-light text-dark me-1">3d-model</span>
                         <span class="badge bg-light text-dark me-1">engineering</span>
                     </div>
                 </div>
-                
+
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">by Engineer{{ $i }}</small>

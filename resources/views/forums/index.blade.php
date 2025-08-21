@@ -76,7 +76,7 @@
     {{-- Quick Search & Filters --}}
     <div class="card mb-4">
         <div class="card-body">
-            <form action="{{ route('forums.search') }}" method="GET" class="d-flex">
+            <form action="{{ route('threads.index') }}" method="GET" class="d-flex">
                 <input type="search" name="q" class="form-control"
                     placeholder="{{ __('forums.search.placeholder_main') }}"
                     value="{{ request('q') }}" minlength="3" required>

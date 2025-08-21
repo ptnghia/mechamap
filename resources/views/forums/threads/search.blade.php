@@ -35,15 +35,15 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('forums.search') }}" method="GET" id="searchForm">
+                    <form action="{{ route('threads.index') }}" method="GET" id="searchForm">
                         <!-- Keywords -->
                         <div class="mb-3">
                             <label for="q" class="form-label">Keywords</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="q" 
-                                   name="q" 
-                                   value="{{ request('q') }}" 
+                            <input type="text"
+                                   class="form-control"
+                                   id="q"
+                                   name="q"
+                                   value="{{ request('q') }}"
                                    placeholder="Enter search terms">
                             <div class="form-text">
                                 Use quotes for exact phrases, + for required words, - to exclude
@@ -54,7 +54,7 @@
                         <div class="mb-3">
                             <label class="form-label">Search In</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="search_titles" name="search_in[]" value="titles" 
+                                <input class="form-check-input" type="checkbox" id="search_titles" name="search_in[]" value="titles"
                                        {{ in_array('titles', request('search_in', ['titles', 'content'])) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="search_titles">Thread Titles</label>
                             </div>
@@ -76,7 +76,7 @@
                             <select class="form-select" id="forums" name="forums[]" multiple size="4">
                                 <option value="">All Forums</option>
                                 @foreach($forums as $forum)
-                                    <option value="{{ $forum->id }}" 
+                                    <option value="{{ $forum->id }}"
                                             {{ in_array($forum->id, request('forums', [])) ? 'selected' : '' }}>
                                         {{ $forum->name }}
                                     </option>
@@ -91,7 +91,7 @@
                             <select class="form-select" id="categories" name="categories[]" multiple size="3">
                                 <option value="">All Categories</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" 
+                                    <option value="{{ $category->id }}"
                                             {{ in_array($category->id, request('categories', [])) ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
@@ -102,11 +102,11 @@
                         <!-- Author -->
                         <div class="mb-3">
                             <label for="author" class="form-label">Author</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="author" 
-                                   name="author" 
-                                   value="{{ request('author') }}" 
+                            <input type="text"
+                                   class="form-control"
+                                   id="author"
+                                   name="author"
+                                   value="{{ request('author') }}"
                                    placeholder="Username or display name">
                         </div>
 
@@ -115,16 +115,16 @@
                             <label class="form-label">Date Range</label>
                             <div class="row">
                                 <div class="col-6">
-                                    <input type="date" 
-                                           class="form-control form-control-sm" 
-                                           name="date_from" 
+                                    <input type="date"
+                                           class="form-control form-control-sm"
+                                           name="date_from"
                                            value="{{ request('date_from') }}"
                                            placeholder="From">
                                 </div>
                                 <div class="col-6">
-                                    <input type="date" 
-                                           class="form-control form-control-sm" 
-                                           name="date_to" 
+                                    <input type="date"
+                                           class="form-control form-control-sm"
+                                           name="date_to"
                                            value="{{ request('date_to') }}"
                                            placeholder="To">
                                 </div>
@@ -256,14 +256,14 @@
                                                     <span class="badge bg-success ms-2">Solved</span>
                                                 @endif
                                             </h6>
-                                            
+
                                             <p class="text-muted mb-2">
                                                 {!! $result->highlighted_content ?? Str::limit(strip_tags($result->content), 150) !!}
                                             </p>
-                                            
+
                                             <div class="d-flex align-items-center text-muted small">
-                                                <img src="{{ $result->user->getAvatarUrl() }}" 
-                                                     alt="{{ $result->user->name }}" 
+                                                <img src="{{ $result->user->getAvatarUrl() }}"
+                                                     alt="{{ $result->user->name }}"
                                                      class="rounded-circle me-2" width="20" height="20">
                                                 <span class="me-3">{{ $result->user->name }}</span>
                                                 <span class="me-3">
@@ -280,7 +280,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-4 text-md-end">
                                             <div class="mb-2">
                                                 <span class="badge bg-primary">{{ $result->forum->name }}</span>
@@ -288,7 +288,7 @@
                                                     <span class="badge bg-secondary">{{ $result->category->name }}</span>
                                                 @endif
                                             </div>
-                                            
+
                                             @if($result->tags->count() > 0)
                                                 <div class="mb-2">
                                                     @foreach($result->tags->take(3) as $tag)
@@ -296,7 +296,7 @@
                                                     @endforeach
                                                 </div>
                                             @endif
-                                            
+
                                             <div class="text-muted small">
                                                 Last activity: {{ $result->updated_at->diffForHumans() }}
                                             </div>
@@ -320,7 +320,7 @@
                             <i class="bx bx-search-alt-2 display-1 text-muted"></i>
                             <h4 class="mt-3">No Results Found</h4>
                             <p class="text-muted">Try adjusting your search criteria or using different keywords.</p>
-                            
+
                             <div class="mt-4">
                                 <h6>Search Tips:</h6>
                                 <ul class="list-unstyled text-muted">
@@ -341,7 +341,7 @@
                         <i class="bx bx-search display-1 text-primary"></i>
                         <h3 class="mt-3">Advanced Forum Search</h3>
                         <p class="text-muted mb-4">Use the filters on the left to find specific threads and posts in the community.</p>
-                        
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="card bg-light">
@@ -415,13 +415,13 @@
 <script>
 function clearForm() {
     document.getElementById('searchForm').reset();
-    window.location.href = '{{ route("forums.search") }}';
+    window.location.href = '{{ route("threads.index") }}';
 }
 
 function saveSearch() {
     const formData = new FormData(document.getElementById('searchForm'));
     const searchParams = new URLSearchParams(formData);
-    
+
     const searchName = prompt('Enter a name for this saved search:');
     if (searchName) {
         // Save to localStorage for now (in real app, save to server)
@@ -432,7 +432,7 @@ function saveSearch() {
             created_at: new Date().toISOString()
         });
         localStorage.setItem('savedSearches', JSON.stringify(savedSearches));
-        
+
         alert('Search saved successfully!');
     }
 }
@@ -440,14 +440,14 @@ function saveSearch() {
 function exportResults() {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set('export', 'csv');
-    
-    window.open('{{ route("forums.search") }}?' + searchParams.toString());
+
+    window.open('{{ route("threads.index") }}?' + searchParams.toString());
 }
 
 function changeView(viewType) {
     const results = document.getElementById('searchResults');
     if (!results) return;
-    
+
     results.className = `search-results-${viewType}`;
     localStorage.setItem('searchViewType', viewType);
 }
