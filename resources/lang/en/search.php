@@ -2,11 +2,10 @@
 
 /**
  * Translation file
- * Auto-updated: 2025-07-21 04:44:47
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
 return array (
-  // New search keys
   'search_placeholder' => 'Search...',
   'all' => 'All',
   'threads' => 'Threads',
@@ -16,27 +15,37 @@ return array (
   'advanced_search' => 'Advanced Search',
   'in' => 'in',
   'no_results_found' => 'No results found for your search.',
-  'try_different_keywords' => 'Try different keywords or use the advanced search.',
+  'try_different_keywords' => 'Try different keywords or check spelling',
   'enter_search_term' => 'Enter a search term to find content.',
-  'search_description' => 'You can search for threads, posts, and users.',
-
-  // Legacy keys
-  'form' =>
+  'search_description' => 'Search for threads, posts, users and more content',
+  'form' => 
   array (
-    'placeholder' => 'Search...',
+    'placeholder' => 
+    array (
+      0 => 'Search...',
+      1 => 'Search...',
+    ),
   ),
-  'results' =>
+  'results' => 
   array (
-    'title' => 'Search Results',
-    'no_results' => 'No results found',
+    'title' => 
+    array (
+      0 => 'Search Results',
+      1 => 'Search Results',
+    ),
+    'no_results' => 
+    array (
+      0 => 'No results found',
+      1 => 'No results found',
+    ),
   ),
-  'scope' =>
+  'scope' => 
   array (
     'all_content' => 'All Content',
     'in_thread' => 'In Thread',
     'in_forum' => 'In Forum',
   ),
-  'actions' =>
+  'actions' => 
   array (
     'advanced' => 'Advanced Search',
     'advanced_desc' => 'Detailed search with multiple filters',
@@ -53,7 +62,7 @@ return array (
   'scope.all_content' => 'All content',
   'scope.in_thread' => 'In thread',
   'scope.in_forum' => 'In forum',
-  'actions.advanced' => 'Advanced search',
+  'actions.advanced' => 'Advanced Search',
   'history.recent' => 'Recent searches',
   'history.empty' => 'No recent searches',
   'suggestions.popular' => 'Popular searches',
@@ -70,7 +79,6 @@ return array (
   'search_results' => 'Search Results',
   'enter_search_terms' => 'Enter search terms...',
   'search' => 'Search',
-  'search_description' => 'Search for threads, posts, users and more content',
   'all_content' => 'All Content',
   'threads_only' => 'Threads Only',
   'posts_only' => 'Posts Only',
@@ -81,23 +89,19 @@ return array (
   'materials_only' => 'Materials Only',
   'cad_files_only' => 'CAD Files Only',
   'found_results' => 'Found :count results for ":query"',
-  'threads' => 'Threads',
-  'posts' => 'Posts',
-  'users' => 'Users',
   'products' => 'Products',
   'showcases' => 'Showcases',
   'documentation' => 'Documentation',
   'materials' => 'Materials',
   'cad_files' => 'CAD Files',
-  'no_threads_found' => 'No threads found',
-  'no_posts_found' => 'No posts found',
+  'no_threads_found' => 'No threads found matching your search criteria.',
+  'no_posts_found' => 'No posts found matching your search criteria.',
   'no_users_found' => 'No users found',
   'no_products_found' => 'No products found',
   'no_showcases_found' => 'No showcases found',
   'no_documentation_found' => 'No documentation found',
   'no_materials_found' => 'No materials found',
   'no_cad_files_found' => 'No CAD files found',
-  'try_different_keywords' => 'Try different keywords or check spelling',
   'view_post' => 'View Post',
   'search_tips' => 'Search Tips',
   'recent_searches' => 'Recent Searches',
@@ -105,38 +109,22 @@ return array (
   'clear_search' => 'Clear Search',
   'search_suggestions' => 'Search Suggestions',
   'no_results' => 'No Results',
-  'search_placeholder' => 'Search...',
   'advanced_search_link' => 'Advanced Search',
   'filter_results' => 'Filter Results',
-  'sort_by' => 'Sort By',
+  'sort_by' => 'Sort by',
   'relevance' => 'Relevance',
   'date' => 'Date',
   'popularity' => 'Popularity',
   'search_criteria' => 'Search Criteria',
-  'keywords' => 'Keywords',
-  'author' => 'Author',
-  'forum' => 'Forum',
   'unknown' => 'Unknown',
-  'date_range' => 'Date Range',
   'any' => 'Any',
   'to' => 'to',
   'present' => 'Present',
   'modify_search' => 'Modify Search',
-  'sort_by' => 'Sort by',
   'descending' => 'Descending',
   'ascending' => 'Ascending',
-  'relevance' => 'Relevance',
-  'date' => 'Date',
   'replies' => 'Replies',
-  'threads' => 'Threads',
-  'posts' => 'Posts',
-  'by' => 'By',
-  'in' => 'in',
   'views' => 'views',
-  'reply_in' => 'Reply in',
-  'no_threads_found' => 'No threads found matching your search criteria.',
-  'no_posts_found' => 'No posts found matching your search criteria.',
-  'actions.advanced' => 'Advanced Search',
   'actions.advanced_desc' => 'Detailed search with multiple criteria',
   'form.submit' => 'Search',
 );

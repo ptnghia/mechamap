@@ -1,19 +1,30 @@
 <?php
 
 /**
- * Forums Translation File - English (COMPREHENSIVE)
- * Complete translation coverage for forums functionality
- * Auto-updated: 2025-07-22 03:55:43
+ * Translation file
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
 return array (
-  'title' => 'Forums',
-  'description' => 'Mechanical engineering discussions',
+  'title' => 
+  array (
+    0 => 'Forums',
+    1 => 'Forums',
+  ),
+  'description' => 
+  array (
+    0 => 'Mechanical engineering discussions',
+    1 => 'Mechanical engineering discussions',
+  ),
   'threads' => 
   array (
     'actions' => 
     array (
-      'create' => 'Create New Thread',
+      'create' => 
+      array (
+        0 => 'Create New Thread',
+        1 => 'Create New Thread',
+      ),
     ),
   ),
   'join_conversation_by_commenting' => 'Join the conversation by commenting on threads',
@@ -24,10 +35,10 @@ return array (
   'no_users_online' => 'No users online',
   'news_feed_empty' => 'The news feed is currently empty',
   'actions.create_thread' => 'Create thread',
-  'actions.new_thread' => 'New thread',
-  'actions.view_more' => 'View more',
-  'actions.clear_filters' => 'Clear filters',
-  'actions.create_first_thread' => 'Create first thread',
+  'actions.new_thread' => 'New Thread',
+  'actions.view_more' => 'View More',
+  'actions.clear_filters' => 'Clear Filters',
+  'actions.create_first_thread' => 'Create First Thread',
   'threads.start_discussion' => 'Start discussion',
   'threads.title' => 'threads',
   'threads.actions.create' => 'Create Thread',
@@ -41,23 +52,8 @@ return array (
   'search.placeholder_main' => 'Search threads, posts...',
   'search.description' => 'Search across all forums and threads',
   'category.recent_threads' => ':count Recent Threads',
-  'actions.view_more' => 'View More',
-  'category.no_threads' => 'No threads in this category',
-  'threads.actions.create' => 'Create Thread',
-  'stats.threads' => 'Threads',
-  'stats.posts' => 'Posts',
-  'stats.members' => 'Members',
-  'stats.forums' => 'Forums',
-  'stats.views' => 'Views',
-  'stats.comments' => 'Comments',
-  'newest_member' => 'Newest Member',
-  'search.placeholder_main' => 'Search threads, posts...',
-  'search.description' => 'Search across all forums and threads',
-  'category.recent_threads' => ':count Recent Threads',
-  'actions.view_more' => 'View More',
   'category.no_threads' => 'No threads in this category',
   'category.forums_in_category' => 'Forums in Category',
-  'actions.new_thread' => 'New Thread',
   'search.placeholder' => 'Search in forum...',
   'sort.latest_activity' => 'Latest Activity',
   'sort.oldest_first' => 'Oldest First',
@@ -66,13 +62,10 @@ return array (
   'filter.all' => 'All',
   'filter.recent' => 'Recent',
   'filter.unanswered' => 'Unanswered',
-  'threads.title' => 'threads',
-  'actions.clear_filters' => 'Clear Filters',
   'threads.no_threads_found' => 'No threads found',
   'threads.no_threads_found_desc' => 'Try adjusting your filters or search',
   'threads.no_threads_yet' => 'No threads yet',
   'threads.be_first_to_post' => 'Be the first to create a thread in this forum',
-  'actions.create_first_thread' => 'Create First Thread',
   'status.pinned' => 'Pinned',
   'status.locked' => 'Locked',
   'actions.bookmark_remove' => 'Remove bookmark',

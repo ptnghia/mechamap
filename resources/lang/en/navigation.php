@@ -2,66 +2,90 @@
 
 /**
  * Translation file
- * Auto-updated: 2025-07-21 04:44:47
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
-return [
-  'main' =>
-  [
-    'home' => 'Home',
-    'forums' => 'Forums',
-    'marketplace' => 'Marketplace',
-    'showcase' => 'Showcase',
+return array (
+  'main' => 
+  array (
+    'home' => 
+    array (
+      0 => 'Home',
+      1 => 'Home',
+    ),
+    'forums' => 
+    array (
+      0 => 'Forums',
+      1 => 'Forums',
+    ),
+    'marketplace' => 
+    array (
+      0 => 'Marketplace',
+      1 => 'Marketplace',
+    ),
+    'showcase' => 
+    array (
+      0 => 'Showcase',
+      1 => 'Showcase',
+    ),
     'community' => 'Community',
     'more' => 'More',
-  ],
-  'auth' =>
-  [
-    'login' => 'Login',
-    'register' => 'Register',
-  ],
-  'actions' =>
-  [
+  ),
+  'auth' => 
+  array (
+    'login' => 
+    array (
+      0 => 'Login',
+      1 => 'Login',
+    ),
+    'register' => 
+    array (
+      0 => 'Register',
+      1 => 'Register',
+    ),
+  ),
+  'actions' => 
+  array (
     'add' => 'Add',
-  ],
-  'admin' =>
-  [
+  ),
+  'admin' => 
+  array (
     'dashboard' => 'Admin Dashboard',
     'user_management' => 'User Management',
     'forum_management' => 'Forum Management',
     'marketplace_management' => 'Marketplace Management',
-  ],
-  'supplier' =>
-  [
+  ),
+  'supplier' => 
+  array (
     'dashboard' => 'Dashboard',
     'my_products' => 'My Products',
     'orders' => 'Orders',
     'reports' => 'Reports',
     'product_management' => 'Product Management',
     'my_orders' => 'My Orders',
-  ],
-  'manufacturer' =>
-  [
+  ),
+  'manufacturer' => 
+  array (
     'dashboard' => 'Manufacturer Dashboard',
     'design_management' => 'Design Management',
     'download_orders' => 'Download Orders',
-  ],
-  'brand' =>
-  [
+  ),
+  'brand' => 
+  array (
     'dashboard' => 'Brand Dashboard',
     'market_insights' => 'Market Insights',
     'marketplace_analytics' => 'Marketplace Analytics',
     'promotion_opportunities' => 'Promotion Opportunities',
     'market_analysis' => 'Market Analysis',
-  ],
-  'sections' =>
-  [
+  ),
+  'sections' => 
+  array (
     'search_discovery' => 'Search & Discovery',
     'help_support' => 'Help & Support',
     'about_mechamap' => 'About MechaMap',
-  ],
-  'pages' =>
-  [
+  ),
+  'pages' => 
+  array (
     'photo_gallery' => 'Photo Gallery',
     'browse_by_tags' => 'Browse by Tags',
     'faq' => 'FAQ',
@@ -70,9 +94,9 @@ return [
     'about_us' => 'About Us',
     'terms_of_service' => 'Terms of Service',
     'privacy_policy' => 'Privacy Policy',
-  ],
-  'user' =>
-  [
+  ),
+  'user' => 
+  array (
     'messages' => 'Messages',
     'notifications' => 'Notifications',
     'saved' => 'Saved',
@@ -80,9 +104,9 @@ return [
     'my_business' => 'My Business',
     'verification_status' => 'Verification Status',
     'my_subscription' => 'My Subscription',
-  ],
-  'community' =>
-  [
+  ),
+  'community' => 
+  array (
     'quick_access' => 'Quick Access',
     'forum_home_desc' => 'Community forum homepage',
     'popular_topics' => 'Popular Topics',
@@ -105,10 +129,11 @@ return [
     'events_webinars_desc' => 'Join community events',
     'job_board' => 'Job Board',
     'job_board_desc' => 'Find career opportunities',
-  ],
-  'add_menu' =>
-  [
-    'create_content' => [
+  ),
+  'add_menu' => 
+  array (
+    'create_content' => 
+    array (
       'title' => 'Create New Content',
       'new_thread' => 'Start Discussion',
       'new_thread_desc' => 'Ask questions, share knowledge',
@@ -122,8 +147,9 @@ return [
       'become_seller_desc' => 'Start selling on marketplace',
       'create_document' => 'Create Document',
       'create_document_desc' => 'Share technical documents',
-    ],
-    'discovery' => [
+    ),
+    'discovery' => 
+    array (
       'title' => 'Search & Discovery',
       'advanced_search' => 'Advanced Search',
       'advanced_search_desc' => 'Find exactly what you need',
@@ -135,8 +161,9 @@ return [
       'tech_trends_desc' => 'Latest engineering trends',
       'recommendations' => 'Recommendations',
       'recommendations_desc' => 'Personalized content for you',
-    ],
-    'tools' => [
+    ),
+    'tools' => 
+    array (
       'title' => 'Tools & Utilities',
       'calculator' => 'Engineering Calculator',
       'calculator_desc' => 'Quick calculations & formulas',
@@ -150,8 +177,9 @@ return [
       'mobile_app_desc' => 'Access on the go',
       'api_integration' => 'API Integration',
       'api_integration_desc' => 'Developer tools & APIs',
-    ],
-    'community' => [
+    ),
+    'community' => 
+    array (
       'title' => 'Community & Support',
       'find_experts' => 'Find Experts',
       'find_experts_desc' => 'Connect with industry experts',
@@ -165,8 +193,9 @@ return [
       'professional_groups_desc' => 'Join specialized communities',
       'events' => 'Events & Webinars',
       'events_desc' => 'Industry events & workshops',
-    ],
-    'support' => [
+    ),
+    'support' => 
+    array (
       'title' => 'Help & Support',
       'faq' => 'FAQ',
       'faq_desc' => 'Frequently asked questions',
@@ -174,18 +203,20 @@ return [
       'contact_desc' => 'Get help from our team',
       'about' => 'About MechaMap',
       'about_desc' => 'Learn about our platform',
-    ],
-    'status' => [
+    ),
+    'status' => 
+    array (
       'coming_soon' => 'Coming Soon',
       'beta' => 'Beta',
       'new' => 'New',
-    ],
-    'footer' => [
+    ),
+    'footer' => 
+    array (
       'quick_tip' => 'Quick tip: Use the search to find relevant discussions',
       'keyboard_shortcut' => 'Keyboard shortcut',
       'dark_mode' => 'Dark mode',
-    ],
-  ],
+    ),
+  ),
   'main.community' => 'Community',
   'main.showcase' => 'Showcase',
   'actions.add' => 'Add',
@@ -311,7 +342,6 @@ return [
   'community.events_webinars_desc' => 'Join community events',
   'community.job_board' => 'Job Board',
   'community.job_board_desc' => 'Find career opportunities',
-
   'nav.main.home' => 'Home',
   'nav.main.forums' => 'Forums',
   'nav.main.marketplace' => 'Marketplace',
@@ -325,6 +355,4 @@ return [
   'trending' => 'Trending',
   'most_viewed' => 'Most Viewed',
   'hot_topics' => 'Hot Topics',
-  'dashboard' => 'Dashboard',
-  'dashboard' => 'Dashboard',
-];
+);

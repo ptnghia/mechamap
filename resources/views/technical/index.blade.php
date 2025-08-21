@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tài nguyên Kỹ thuật - MechaMap')
+@section('title', __('technical.index.title') . ' - MechaMap')
 
 @section('content')
 <div class="py-5">
@@ -10,10 +10,10 @@
             <div class="col-12 text-center">
                 <h1 class="display-4 fw-bold text-primary mb-3">
                     <i class="fa-solid fa-wrench me-3"></i>
-                    Tài nguyên Kỹ thuật
+                    {{ __('technical.index.title') }}
                 </h1>
                 <p class="lead text-muted">
-                    Trung tâm tài nguyên kỹ thuật dành cho kỹ sư cơ khí chuyên nghiệp
+                    {{ __('technical.index.subtitle') }}
                 </p>
             </div>
         </div>
@@ -27,12 +27,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-drafting-compass fa-3x text-primary"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Bản vẽ Kỹ thuật</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.drawings.title') }}</h5>
                         <p class="card-text text-muted">
-                            Thư viện bản vẽ kỹ thuật chuẩn, chi tiết gia công và assembly drawings
+                            {{ __('technical.index.drawings.description') }}
                         </p>
                         <a href="{{ route('technical.drawings.index') }}" class="btn btn-primary">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Xem thêm
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.drawings.view_more') }}
                         </a>
                     </div>
                 </div>
@@ -45,12 +45,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-cube fa-3x text-success"></i>
                         </div>
-                        <h5 class="card-title fw-bold">File CAD</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.cad.title') }}</h5>
                         <p class="card-text text-muted">
-                            Thư viện file CAD 3D, 2D drawings và models cho các ứng dụng cơ khí
+                            {{ __('technical.index.cad.description') }}
                         </p>
                         <a href="#" class="btn btn-success">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Sắp ra mắt
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.cad.coming_soon') }}
                         </a>
                     </div>
                 </div>
@@ -63,12 +63,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-flask fa-3x text-warning"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Cơ sở dữ liệu Vật liệu</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.materials.title') }}</h5>
                         <p class="card-text text-muted">
-                            Thông tin chi tiết về tính chất vật liệu, thép, hợp kim và vật liệu composite
+                            {{ __('technical.index.materials.description') }}
                         </p>
                         <a href="#" class="btn btn-warning">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Sắp ra mắt
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.cad.coming_soon') }}
                         </a>
                     </div>
                 </div>
@@ -81,12 +81,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-book fa-3x text-info"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Tiêu chuẩn Kỹ thuật</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.standards.title') }}</h5>
                         <p class="card-text text-muted">
-                            Tiêu chuẩn TCVN, ISO, ASME, DIN và các quy chuẩn kỹ thuật quốc tế
+                            {{ __('technical.index.standards.description') }}
                         </p>
                         <a href="#" class="btn btn-info">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Sắp ra mắt
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.cad.coming_soon') }}
                         </a>
                     </div>
                 </div>
@@ -99,12 +99,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-calculator fa-3x text-danger"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Công cụ Tính toán</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.tools.title') }}</h5>
                         <p class="card-text text-muted">
-                            Bộ công cụ tính toán kỹ thuật: độ bền, ứng suất, thiết kế trục, bánh răng
+                            {{ __('technical.index.tools.description') }}
                         </p>
                         <a href="#" class="btn btn-danger">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Sắp ra mắt
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.cad.coming_soon') }}
                         </a>
                     </div>
                 </div>
@@ -117,12 +117,12 @@
                         <div class="mb-3">
                             <i class="fa-solid fa-cogs fa-3x text-secondary"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Quy trình Sản xuất</h5>
+                        <h5 class="card-title fw-bold">{{ __('technical.index.processes.title') }}</h5>
                         <p class="card-text text-muted">
-                            Hướng dẫn quy trình gia công, nhiệt luyện, hàn và các công nghệ sản xuất
+                            {{ __('technical.index.processes.description') }}
                         </p>
                         <a href="#" class="btn btn-secondary">
-                            <i class="fa-solid fa-arrow-right me-2"></i>Sắp ra mắt
+                            <i class="fa-solid fa-arrow-right me-2"></i>{{ __('technical.index.cad.coming_soon') }}
                         </a>
                     </div>
                 </div>
@@ -136,27 +136,27 @@
                     <div class="card-body p-4">
                         <h4 class="fw-bold mb-3">
                             <i class="fa-solid fa-bolt me-2 text-warning"></i>
-                            Truy cập nhanh
+                            {{ __('technical.index.quick_access.title') }}
                         </h4>
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <a href="{{ route('forums.index') }}" class="btn btn-outline-primary w-100">
-                                    <i class="fa-solid fa-comments me-2"></i>Diễn đàn
+                                    <i class="fa-solid fa-comments me-2"></i>{{ __('technical.index.quick_access.forums') }}
                                 </a>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('marketplace.index') }}" class="btn btn-outline-success w-100">
-                                    <i class="fa-solid fa-store me-2"></i>Marketplace
+                                    <i class="fa-solid fa-store me-2"></i>{{ __('technical.index.quick_access.marketplace') }}
                                 </a>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('showcase.index') }}" class="btn btn-outline-info w-100">
-                                    <i class="fa-solid fa-trophy me-2"></i>Showcase
+                                    <i class="fa-solid fa-trophy me-2"></i>{{ __('technical.index.quick_access.showcase') }}
                                 </a>
                             </div>
                             <div class="col-md-3">
                                 <a href="#" class="btn btn-outline-warning w-100">
-                                    <i class="fa-solid fa-graduation-cap me-2"></i>Học tập
+                                    <i class="fa-solid fa-graduation-cap me-2"></i>{{ __('technical.index.quick_access.learning') }}
                                 </a>
                             </div>
                         </div>

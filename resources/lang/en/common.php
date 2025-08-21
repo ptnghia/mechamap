@@ -1,27 +1,62 @@
 <?php
 
 /**
- * Common Translation File - English (COMPREHENSIVE)
- * Complete translation coverage for common functionality
- * Auto-updated: 2025-07-22 03:56:38
+ * Translation file
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
-return [
-  'buttons' =>
-  [
-    'save' => 'Save',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'edit' => 'Edit',
-    'create' => 'Create',
+return array (
+  'buttons' => 
+  array (
+    'save' => 
+    array (
+      0 => 'Save',
+      1 => 'Save',
+    ),
+    'cancel' => 
+    array (
+      0 => 'Cancel',
+      1 => 'Cancel',
+    ),
+    'delete' => 
+    array (
+      0 => 'Delete',
+      1 => 'Delete',
+    ),
+    'edit' => 
+    array (
+      0 => 'Edit',
+      1 => 'Edit',
+    ),
+    'create' => 
+    array (
+      0 => 'Create',
+      1 => 'Create',
+    ),
     'add' => 'Add',
     'remove' => 'Remove',
-    'submit' => 'Submit',
+    'submit' => 
+    array (
+      0 => 'Submit',
+      1 => 'Submit',
+    ),
     'send' => 'Send',
-    'back' => 'Back',
-    'next' => 'Next',
+    'back' => 
+    array (
+      0 => 'Back',
+      1 => 'Back',
+    ),
+    'next' => 
+    array (
+      0 => 'Next',
+      1 => 'Next',
+    ),
     'previous' => 'Previous',
-    'close' => 'Close',
+    'close' => 
+    array (
+      0 => 'Close',
+      1 => 'Close',
+    ),
     'open' => 'Open',
     'view' => 'View',
     'explore' => 'Explore',
@@ -158,92 +193,29 @@ return [
     'notify' => 'Notify',
     'mute' => 'Mute',
     'unmute' => 'Unmute',
-    'view_all' => 'View All',
-  ],
-  'status' =>
-  [
-    'active' => 'Active',
-    'inactive' => 'Inactive',
-    'enabled' => 'Enabled',
-    'disabled' => 'Disabled',
-    'online' => 'Online',
-    'offline' => 'Offline',
-    'available' => 'Available',
-    'unavailable' => 'Unavailable',
-    'busy' => 'Busy',
-    'away' => 'Away',
-    'pending' => 'Pending',
-    'approved' => 'Approved',
-    'coming_soon' => 'Coming Soon',
-    'rejected' => 'Rejected',
-    'published' => 'Published',
-    'unpublished' => 'Unpublished',
-    'draft' => 'Draft',
-    'archived' => 'Archived',
-    'deleted' => 'Deleted',
-    'suspended' => 'Suspended',
-    'banned' => 'Banned',
-    'verified' => 'Verified',
-    'unverified' => 'Unverified',
-    'featured' => 'Featured',
-    'pinned' => 'Pinned',
-    'sticky' => 'Sticky',
-    'locked' => 'Locked',
-    'closed' => 'Closed',
-    'open' => 'Open',
-    'completed' => 'Completed',
-    'in_progress' => 'In Progress',
-    'cancelled' => 'Cancelled',
-    'expired' => 'Expired',
-    'valid' => 'Valid',
-    'invalid' => 'Invalid',
-    'success' => 'Success',
-    'failed' => 'Failed',
-    'error' => 'Error',
-    'warning' => 'Warning',
-    'info' => 'Info',
-    'loading' => 'Loading',
-    'processing' => 'Processing',
-    'waiting' => 'Waiting',
-    'ready' => 'Ready',
-    'new' => 'New',
-    'updated' => 'Updated',
-    'modified' => 'Modified',
-    'unchanged' => 'Unchanged',
-    'synchronized' => 'Synchronized',
-    'out_of_sync' => 'Out of Sync',
-    'connected' => 'Connected',
-    'disconnected' => 'Disconnected',
-    'public' => 'Public',
-    'private' => 'Private',
-    'hidden' => 'Hidden',
-    'visible' => 'Visible',
-    'required' => 'Required',
-    'optional' => 'Optional',
-    'recommended' => 'Recommended',
-    'deprecated' => 'Deprecated',
-    'beta' => 'Beta',
-    'stable' => 'Stable',
-    'experimental' => 'Experimental',
-  ],
-  'messages' =>
-  [
+    'view_all' => 
+    array (
+      0 => 'View All',
+      1 => 'View All',
+    ),
+  ),
+  'status' => 'Status',
+  'messages' => 
+  array (
     'forgot_password' => 'Forgot Password',
     'switched_successfully' => 'Successfully switched',
     'switch_failed' => 'Switch failed',
     'auto_detect_failed' => 'Auto detect failed',
     'marked_all_read' => 'Marked all as read',
-  ],
-  'time' =>
-  [
-    'today' => 'Today',
-    'this_week' => 'This Week',
-    'this_month' => 'This Month',
-    'this_year' => 'This Year',
-    'all_time' => 'All Time',
-  ],
-  'units' =>
-  [
+    'processing' => 'Processing...',
+    'error_occurred' => 'An error occurred',
+    'success' => 'Success!',
+    'error' => 'Error!',
+    'loading' => 'Loading...',
+  ),
+  'time' => 'Time',
+  'units' => 
+  array (
     'byte' => 'byte',
     'bytes' => 'bytes',
     'kb' => 'KB',
@@ -365,73 +337,34 @@ return [
     'international' => 'quốc tế',
     'worldwide' => 'toàn thế giới',
     'universal' => 'phổ quát',
-  ],
-  'form' =>
-  [
-    'password' => 'Password',
-  ],
-  'language' =>
-  [
+  ),
+  'form' => 
+  array (
+    'password' => 
+    array (
+      0 => 'Password',
+      1 => 'Password',
+    ),
+  ),
+  'language' => 
+  array (
     'switch' => 'Switch Language',
     'select' => 'Select Language',
     'auto_detect' => 'Auto Detect',
     'switched_successfully' => 'Language switched successfully',
     'switch_failed' => 'Failed to switch language',
     'auto_detect_failed' => 'Unable to auto detect language',
-  ],
-  'labels' =>
-  [
+  ),
+  'labels' => 
+  array (
     'category' => 'Category',
     'replies' => 'replies',
     'by' => 'by',
     'forum' => 'forum',
-  ],
-  'members' =>
-  [
-    'staff_title' => 'Management Team',
-    'staff_description' => 'Meet the MechaMap management team',
-    'list_title' => 'Members',
-    'list_description' => 'Browse and discover community members',
-    'search_placeholder' => 'Search members...',
-    'search' => 'Search',
-    'list_view' => 'List View',
-    'grid_view' => 'Grid View',
-    'total' => 'Total',
-    'members_count' => 'members',
-    'filtered_by' => 'Filtered by',
-    'sort_by' => 'Sort by',
-    'name' => 'Name',
-    'join_date' => 'Join Date',
-    'descending' => 'Descending',
-    'ascending' => 'Ascending',
-    'direction' => 'Direction',
-    'all_members' => 'All Members',
-    'online_now' => 'Online Now',
-    'staff' => 'Staff',
-    'administrators' => 'Administrator',
-    'administrator' => 'Administrator',
-    'moderators' => 'Moderator',
-    'moderator' => 'Moderator',
-    'online' => 'Online',
-    'no_bio_available' => 'No bio available',
-    'posts' => 'Posts',
-    'threads' => 'Threads',
-    'joined' => 'Joined',
-    'last_seen' => 'Last Seen',
-    'admin' => 'Admin',
-    'online_title' => 'Online Members',
-    'online_description' => 'List of active members',
-    'online_members_info' => 'Online member information',
-    'no_administrators_found' => 'No administrators found',
-    'no_moderators_found' => 'No moderators found',
-    'no_members_online' => 'No members online',
-    'followers' => 'Followers',
-    'no_members_found' => 'No members found',
-    'try_different_search' => 'Try using different search terms',
-    0 => 'Members',
-  ],
-  'technical' =>
-  [
+  ),
+  'members' => 'Members',
+  'technical' => 
+  array (
     'resources' => 'Technical Resources',
     'database' => 'Technical Database',
     'materials_database' => 'Materials Database',
@@ -444,9 +377,9 @@ return [
     'material_cost_calculator' => 'Material Cost Calculator',
     'process_selector' => 'Process Selector',
     'standards_compliance' => 'Standards Compliance',
-  ],
-  'knowledge' =>
-  [
+  ),
+  'knowledge' => 
+  array (
     'title' => 'Knowledge',
     'learning_resources' => 'Learning Resources',
     'knowledge_base' => 'Knowledge Base',
@@ -456,28 +389,24 @@ return [
     'industry_news' => 'Industry News',
     'whats_new' => 'What\'s New',
     'industry_reports' => 'Industry Reports',
-  ],
-  'new_threads' => 'New threads in :category',
+  ),
+  'new_threads' => 'New Threads in :category',
   'note' => 'Note',
   'confirm' => 'Confirm',
-  'saved' => 'Saved',
-
-  // Site information
-  'site' => [
+  'saved' => 'Saved.',
+  'site' => 
+  array (
     'tagline' => 'Vietnam\'s Leading Engineering Community',
-  ],
-
-  // Common content labels
+  ),
   'views' => 'Views',
   'comments' => 'Comments',
   'updated' => 'Updated',
   'replies' => 'Replies',
   'posts' => 'Posts',
   'threads' => 'Threads',
-  'members' => 'Members',
   'latest_post' => 'Latest Post',
   'last_activity' => 'Last Activity',
-  'created_at' => 'Created At',
+  'created_at' => 'Created at',
   'author' => 'Author',
   'category' => 'Category',
   'messages.processing' => 'Processing...',
@@ -490,7 +419,6 @@ return [
   'members.list_view' => 'List view',
   'members.grid_view' => 'Grid view',
   'members.all_members' => 'All members',
-  'marketplace' => 'Marketplace',
   'oldest' => 'Oldest',
   'most_commented' => 'Most commented',
   'cancel' => 'Cancel',
@@ -509,15 +437,6 @@ return [
   'members.online_members_info' => 'members online',
   'members.leaderboard_title' => 'Leaderboard',
   'members.leaderboard_description' => 'Most active members',
-  'members.list_title' => 'Members List',
-  'members.list_description' => 'All members in the community',
-  'members.search_placeholder' => 'Search members...',
-  'members.search' => 'Search',
-  'members.list_view' => 'List view',
-  'members.grid_view' => 'Grid view',
-  'members.all_members' => 'All members',
-  'members.online_now' => 'Online now',
-  'members.staff' => 'Staff',
   'members.total' => 'Total',
   'members.members_count' => 'members',
   'members.filtered_by' => 'Filtered by',
@@ -658,8 +577,6 @@ return [
   'success' => 'Success',
   'warning' => 'Warning',
   'info' => 'Information',
-  'confirm' => 'Confirm',
-  'cancel' => 'Cancel',
   'save' => 'Save',
   'edit' => 'Edit',
   'delete' => 'Delete',
@@ -696,7 +613,6 @@ return [
   'about' => 'About',
   'contact' => 'Contact',
   'support' => 'Support',
-  'status' => 'Status',
   'active' => 'Active',
   'inactive' => 'Inactive',
   'enabled' => 'Enabled',
@@ -718,9 +634,7 @@ return [
   'popular' => 'Popular',
   'trending' => 'Trending',
   'new' => 'New',
-  'updated' => 'Updated',
   'latest' => 'Latest',
-  'oldest' => 'Oldest',
   'recent' => 'Recent',
   'all' => 'All',
   'none' => 'None',
@@ -740,7 +654,6 @@ return [
   'main' => 'Main',
   'page' => 'Page',
   'section' => 'Section',
-  'category' => 'Category',
   'tag' => 'Tag',
   'title' => 'Title',
   'description' => 'Description',
@@ -748,11 +661,9 @@ return [
   'details' => 'Details',
   'overview' => 'Overview',
   'date' => 'Date',
-  'time' => 'Time',
   'created' => 'Created',
   'modified' => 'Modified',
   'published_at' => 'Published at',
-  'created_at' => 'Created at',
   'updated_at' => 'Updated at',
   'today' => 'Today',
   'yesterday' => 'Yesterday',
@@ -911,11 +822,9 @@ return [
   'thread_showcase.title_required' => 'Please enter showcase title',
   'thread_showcase.description_required' => 'Please enter showcase description',
   'thread_showcase.description_min' => 'Description must be at least 50 characters',
-  'home' => 'Home',
   'community' => 'Community',
   'popular_topics' => 'Popular Topics',
   'recent_discussions' => 'Recent Discussions',
-  'trending' => 'Trending',
   'most_viewed' => 'Most Viewed',
   'hot_topics' => 'Hot Topics',
   'member_directory' => 'Member Directory',
@@ -941,14 +850,9 @@ return [
   'my_profile' => 'My Profile',
   'account_settings' => 'Account Settings',
   'notifications' => 'Notifications',
-  'logout' => 'Logout',
-  'login' => 'Login',
-  'register' => 'Register',
-  'labels.by' => 'by',
   'buttons.explore' => 'Explore',
   'buttons.create' => 'Create',
   'buttons.join' => 'Join',
-  'feature.marketplace.actions.cancel' => 'Cancel',
   'actions.cancel' => 'Cancel',
   'status.coming_soon' => 'Coming Soon',
   'by' => 'By',
@@ -958,14 +862,9 @@ return [
   'members.no_administrators_found' => 'No administrators found',
   'members.no_moderators_found' => 'No moderators found',
   'view_all' => 'View All',
-  'by' => 'By',
   'in' => 'in',
   'statistics' => 'Statistics',
-  'threads' => 'Threads',
-  'posts' => 'Posts',
-  'members' => 'Members',
   'newest_member' => 'Newest Member',
-  'none' => 'None',
   'online_now' => 'Online Now',
   'total_online' => 'Total online',
   'no_users_online' => 'No users online.',
@@ -982,14 +881,10 @@ return [
   'time.all_time' => 'All Time',
   'members.last_seen' => 'Last seen',
   'members.no_members_online' => 'No members online',
-  'new_threads' => 'New Threads in :category',
-  'today' => 'Today',
-  'yesterday' => 'Yesterday',
   'actions.view_latest_posts' => 'View Latest Posts',
   'actions.view_popular' => 'View Popular',
   'actions.view_trending' => 'View Trending',
   'notes' => 'Notes',
-  'remove' => 'Remove',
   'marketplace.in_stock' => 'In Stock',
   'marketplace.out_of_stock' => 'Out of Stock',
   'marketplace_actions.by' => 'by',
@@ -1001,7 +896,4 @@ return [
   'marketplace_actions.added_to_cart' => 'Added to cart',
   'marketplace_actions.wishlist' => 'Wishlist',
   'marketplace_actions.cart' => 'Cart',
-  'cancel' => 'Cancel',
-  'save' => 'Save',
-  'saved' => 'Saved.',
-];
+);

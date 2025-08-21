@@ -721,6 +721,17 @@ document.addEventListener('DOMContentLoaded', function() {
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
 
+            // Set timeout để tránh button bị stuck
+            const timeoutId = setTimeout(() => {
+                console.warn('Like request timeout - resetting button state');
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 10000); // 10 giây timeout
+
+            // Tạo AbortController để có thể cancel request
+            const controller = new AbortController();
+            const timeoutController = setTimeout(() => controller.abort(), 8000); // 8 giây abort
+
             fetch(this.action, {
                 method: 'POST',
                 headers: {
@@ -728,9 +739,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({}),
+                signal: controller.signal
             })
-            .then(response => response.json())
+            .then(response => {
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     button.innerHTML = `<i class="fas fa-heart"></i> ${data.likes_count} Thích`;
@@ -741,13 +761,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (statsCard) {
                         statsCard.textContent = data.likes_count;
                     }
+
+                    // Show success toast
+                    showToast(data.message || 'Cập nhật thành công!', 'success');
                 } else {
                     button.innerHTML = originalText;
+                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                console.error('Like request error:', error);
                 button.innerHTML = originalText;
+
+                if (error.name === 'AbortError') {
+                    showToast('Yêu cầu bị hủy do timeout!', 'warning');
+                } else {
+                    showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
+                }
             })
             .finally(() => {
                 button.disabled = false;
@@ -762,9 +795,19 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const button = this.querySelector('button');
-            const originalText = button.innerHTML;
+
+            // Disable button to prevent double clicks but keep original text
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+            // Set timeout để tránh button bị stuck
+            const timeoutId = setTimeout(() => {
+                console.warn('Bookmark request timeout - resetting button state');
+                button.disabled = false;
+            }, 10000); // 10 giây timeout
+
+            // Tạo AbortController để có thể cancel request
+            const controller = new AbortController();
+            const timeoutController = setTimeout(() => controller.abort(), 8000); // 8 giây abort
 
             fetch(this.action, {
                 method: 'POST',
@@ -773,9 +816,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({}),
+                signal: controller.signal
             })
-            .then(response => response.json())
+            .then(response => {
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const icon = data.is_bookmarked ? 'fa-bookmark' : 'fa-bookmark';
@@ -785,26 +837,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     button.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
                     button.className = btnClass;
 
-                    // Show temporary success message
-                    const toast = document.createElement('div');
-                    toast.className = 'position-fixed top-0 end-0 p-3';
-                    toast.style.zIndex = '9999';
-                    toast.innerHTML = `
-                        <div class="toast show" role="alert">
-                            <div class="toast-body bg-success text-white">
-                                <i class="fas fa-check me-2"></i>${data.message}
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(toast);
-                    setTimeout(() => toast.remove(), 3000);
+                    // Show success toast
+                    showToast(data.message || 'Cập nhật thành công!', 'success');
                 } else {
-                    button.innerHTML = originalText;
+                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                button.innerHTML = originalText;
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                console.error('Bookmark request error:', error);
+
+                if (error.name === 'AbortError') {
+                    showToast('Yêu cầu bị hủy do timeout!', 'warning');
+                } else {
+                    showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
+                }
             })
             .finally(() => {
                 button.disabled = false;
@@ -815,13 +864,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle follow button with AJAX
     const followForm = document.querySelector('.follow-form');
     if (followForm) {
-        followForm.addEventListener('submit', function(e) {
+        // Remove any existing event listeners to prevent duplicates
+        const newFollowForm = followForm.cloneNode(true);
+        followForm.parentNode.replaceChild(newFollowForm, followForm);
+
+        newFollowForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const button = this.querySelector('button');
             const originalText = button.innerHTML;
+
+            // Create unique namespace for this request to avoid conflicts
+            const requestId = 'follow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            console.log('Starting follow request:', requestId);
+
+            // Disable button to prevent double clicks but keep original text
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+            // Set timeout để tránh button bị stuck với unique ID
+            const timeoutId = setTimeout(() => {
+                console.warn('Follow request timeout - resetting button state:', requestId);
+                if (button.getAttribute('data-request-id') === requestId) {
+                    button.disabled = false;
+                    button.setAttribute('data-request-status', 'timeout');
+                    button.removeAttribute('data-request-id');
+                    showToast('Yêu cầu timeout - vui lòng thử lại!', 'warning');
+                }
+            }, 10000); // 10 giây timeout
+
+            // Tạo AbortController để có thể cancel request
+            const controller = new AbortController();
+            const timeoutController = setTimeout(() => {
+                console.warn('Follow request abort timeout:', requestId);
+                controller.abort();
+            }, 8000); // 8 giây abort
+
+            // Mark button as processing
+            button.setAttribute('data-request-id', requestId);
+            button.setAttribute('data-request-status', 'processing');
 
             fetch(this.action, {
                 method: 'POST',
@@ -830,36 +910,103 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({}),
+                signal: controller.signal
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Follow request response received:', requestId, response.status);
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                // Check if this request is still valid (not timed out)
+                if (button.getAttribute('data-request-id') !== requestId) {
+                    console.warn('Follow request outdated, ignoring response:', requestId);
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                // Double check request is still valid
+                if (button.getAttribute('data-request-id') !== requestId) {
+                    console.warn('Follow request outdated, ignoring data:', requestId);
+                    return;
+                }
+
+                console.log('Follow request completed successfully:', requestId, data);
+
                 if (data.success) {
-                    const icon = data.is_following ? 'fa-user-check' : 'fa-user-plus';
+                    const icon = data.is_following ? 'fa-bell-fill' : 'fa-bell';
                     const text = data.is_following ? 'Đang theo dõi' : 'Theo dõi';
-                    const btnClass = data.is_following ? 'btn btn-sm btn-outline-primary' : 'btn btn-sm btn-primary';
 
                     button.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
-                    button.className = btnClass;
+                    button.setAttribute('data-request-status', 'success');
 
                     // Update follow count in sidebar
                     const followStats = document.querySelector('.card-body .fw-bold.text-success');
                     if (followStats) {
                         followStats.textContent = data.follows_count;
                     }
+
+                    // Show success toast
+                    showToast(data.message || 'Cập nhật thành công!', 'success');
                 } else {
-                    button.innerHTML = originalText;
+                    button.setAttribute('data-request-status', 'error');
+                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                button.innerHTML = originalText;
+                console.error('Follow request error:', requestId, error);
+                clearTimeout(timeoutId);
+                clearTimeout(timeoutController);
+
+                // Only process error if this request is still valid
+                if (button.getAttribute('data-request-id') === requestId) {
+                    button.setAttribute('data-request-status', 'error');
+
+                    if (error.name === 'AbortError') {
+                        showToast('Yêu cầu bị hủy do timeout!', 'warning');
+                    } else {
+                        showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
+                    }
+                } else {
+                    console.warn('Follow request error ignored (outdated):', requestId);
+                }
             })
             .finally(() => {
-                button.disabled = false;
+                // Only reset if this request is still valid
+                if (button.getAttribute('data-request-id') === requestId) {
+                    button.disabled = false;
+                    button.removeAttribute('data-request-id');
+                    console.log('Follow request finalized:', requestId);
+                } else {
+                    console.warn('Follow request finalization ignored (outdated):', requestId);
+                }
             });
         });
     }
+
+    // Fallback protection: Reset any stuck buttons after 15 seconds
+    setInterval(() => {
+        const stuckButtons = document.querySelectorAll('button[data-request-status="processing"]');
+        stuckButtons.forEach(button => {
+            const requestId = button.getAttribute('data-request-id');
+            const requestTime = requestId ? parseInt(requestId.split('_')[1]) : 0;
+            const currentTime = Date.now();
+
+            // If button has been processing for more than 15 seconds, reset it
+            if (currentTime - requestTime > 15000) {
+                console.warn('Force resetting stuck button:', requestId);
+                button.disabled = false;
+                button.removeAttribute('data-request-id');
+                button.removeAttribute('data-request-status');
+                showToast('Yêu cầu đã bị timeout và được reset!', 'warning');
+            }
+        });
+    }, 5000); // Check every 5 seconds
 
     // Auto-expand textareas
     const textareas = document.querySelectorAll('textarea');
@@ -883,6 +1030,55 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Toast notification function
+    function showToast(message, type = 'info') {
+        const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+
+        const toastId = 'toast-' + Date.now();
+        const bgClass = {
+            'success': 'bg-success',
+            'error': 'bg-danger',
+            'warning': 'bg-warning',
+            'info': 'bg-info'
+        }[type] || 'bg-info';
+
+        const iconClass = {
+            'success': 'fa-check-circle',
+            'error': 'fa-exclamation-circle',
+            'warning': 'fa-exclamation-triangle',
+            'info': 'fa-info-circle'
+        }[type] || 'fa-info-circle';
+
+        const toastHtml = `
+            <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+                <div class="toast-body ${bgClass} text-white d-flex align-items-center">
+                    <i class="fas ${iconClass} me-2"></i>
+                    <span>${message}</span>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+
+        toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+
+        const toastElement = document.getElementById(toastId);
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+
+        // Auto remove after hide
+        toastElement.addEventListener('hidden.bs.toast', () => {
+            toastElement.remove();
+        });
+    }
+
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.className = 'toast-container position-fixed top-0 end-0 p-3';
+        container.style.zIndex = '9999';
+        document.body.appendChild(container);
+        return container;
+    }
 });
 
 // Add highlight CSS for smooth scroll

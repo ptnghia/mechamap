@@ -2,15 +2,27 @@
 
 /**
  * Translation file
- * Auto-updated: 2025-07-21 04:44:47
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
 return array (
-  'coming_soon' =>
+  'coming_soon' => 
   array (
-    'notify_success' => 'Đã đăng ký thông báo thành công',
-    'share_text' => 'Chia sẻ với bạn bè',
-    'copied' => 'Đã sao chép',
+    'notify_success' => 
+    array (
+      0 => 'Đã đăng ký thông báo thành công',
+      1 => 'Đã đăng ký thông báo thành công',
+    ),
+    'share_text' => 
+    array (
+      0 => 'Chia sẻ với bạn bè',
+      1 => 'Chia sẻ với bạn bè',
+    ),
+    'copied' => 
+    array (
+      0 => 'Đã sao chép',
+      1 => 'Đã sao chép',
+    ),
   ),
   'home_title' => 'Trang chủ',
   'about_title' => 'Giới thiệu',
@@ -32,9 +44,8 @@ return array (
   'services_title' => 'Dịch vụ',
   'products_title' => 'Sản phẩm',
   'solutions_title' => 'Giải pháp',
-
-  // Writing guide (max 3 levels)
-  'writing_guide' => [
+  'writing_guide' => 
+  array (
     'title' => 'Hướng Dẫn Viết Bài',
     'heading' => 'Hướng Dẫn Viết Bài Chất Lượng',
     'nav_title' => 'Viết Tiêu Đề',
@@ -53,5 +64,5 @@ return array (
     'quality_clear' => 'Chất lượng: Rõ nét, không mờ',
     'copyright_notice' => 'Lưu ý bản quyền:',
     'ready_to_write' => 'Sẵn sàng viết bài?',
-  ],
+  ),
 );

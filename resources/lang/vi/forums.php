@@ -1,14 +1,21 @@
 <?php
 
 /**
- * Forums Translation File - Vietnamese (COMPREHENSIVE)
- * Complete translation coverage for forums functionality
- * Auto-updated: 2025-07-22 03:55:43
+ * Translation file
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
 return array (
-  'title' => 'Diễn đàn',
-  'description' => 'Thảo luận về kỹ thuật cơ khí',
+  'title' => 
+  array (
+    0 => 'Diễn đàn',
+    1 => 'Diễn đàn',
+  ),
+  'description' => 
+  array (
+    0 => 'Thảo luận về kỹ thuật cơ khí',
+    1 => 'Thảo luận về kỹ thuật cơ khí',
+  ),
   'threads' => 
   array (
     'title' => 'Chủ đề diễn đàn',
@@ -30,7 +37,11 @@ return array (
     'be_first_to_post' => 'Hãy là người đầu tiên tạo chủ đề thảo luận',
     'actions' => 
     array (
-      'create' => 'Tạo chủ đề mới',
+      'create' => 
+      array (
+        0 => 'Tạo chủ đề mới',
+        1 => 'Tạo chủ đề mới',
+      ),
       'create_thread' => 'Tạo chủ đề mới',
       'pin' => 'Ghim chủ đề',
       'unpin' => 'Bỏ ghim',
@@ -224,27 +235,11 @@ return array (
   'stats.forums' => 'Diễn đàn',
   'stats.views' => 'Lượt xem',
   'stats.comments' => 'Bình luận',
-  'newest_member' => 'Thành viên mới nhất',
   'search.placeholder_main' => 'Tìm kiếm chủ đề, bài viết...',
   'search.description' => 'Tìm kiếm trong tất cả diễn đàn và chủ đề',
   'category.recent_threads' => ':count chủ đề gần đây',
-  'actions.view_more' => 'Xem thêm',
-  'category.no_threads' => 'Không có chủ đề nào trong danh mục này',
-  'threads.actions.create' => 'Tạo chủ đề',
-  'stats.threads' => 'Chủ đề',
-  'stats.posts' => 'Bài viết',
-  'stats.members' => 'Thành viên',
-  'stats.forums' => 'Diễn đàn',
-  'stats.views' => 'Lượt xem',
-  'stats.comments' => 'Bình luận',
-  'newest_member' => 'Thành viên mới nhất',
-  'search.placeholder_main' => 'Tìm kiếm chủ đề, bài viết...',
-  'search.description' => 'Tìm kiếm trong tất cả diễn đàn và chủ đề',
-  'category.recent_threads' => ':count chủ đề gần đây',
-  'actions.view_more' => 'Xem thêm',
   'category.no_threads' => 'Không có chủ đề nào trong danh mục này',
   'category.forums_in_category' => 'Diễn đàn trong danh mục',
-  'actions.new_thread' => 'Chủ đề mới',
   'search.placeholder' => 'Tìm kiếm trong diễn đàn...',
   'sort.latest_activity' => 'Hoạt động mới nhất',
   'sort.oldest_first' => 'Cũ nhất trước',
@@ -253,13 +248,10 @@ return array (
   'filter.all' => 'Tất cả',
   'filter.recent' => 'Gần đây',
   'filter.unanswered' => 'Chưa trả lời',
-  'threads.title' => 'chủ đề',
-  'actions.clear_filters' => 'Xóa bộ lọc',
   'threads.no_threads_found' => 'Không tìm thấy chủ đề nào',
   'threads.no_threads_found_desc' => 'Thử điều chỉnh bộ lọc hoặc tìm kiếm của bạn',
   'threads.no_threads_yet' => 'Chưa có chủ đề nào',
   'threads.be_first_to_post' => 'Hãy là người đầu tiên tạo chủ đề trong diễn đàn này',
-  'actions.create_first_thread' => 'Tạo chủ đề đầu tiên',
   'status.pinned' => 'Đã ghim',
   'status.locked' => 'Đã khóa',
   'actions.bookmark_remove' => 'Bỏ đánh dấu',

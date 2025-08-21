@@ -2,15 +2,27 @@
 
 /**
  * Translation file
- * Auto-updated: 2025-07-21 04:44:47
+ * Auto-updated: 2025-08-21 06:48:37
  */
 
 return array (
-  'coming_soon' =>
+  'coming_soon' => 
   array (
-    'notify_success' => 'Successfully subscribed for notifications',
-    'share_text' => 'Share with friends',
-    'copied' => 'Copied',
+    'notify_success' => 
+    array (
+      0 => 'Successfully subscribed for notifications',
+      1 => 'Successfully subscribed for notifications',
+    ),
+    'share_text' => 
+    array (
+      0 => 'Share with friends',
+      1 => 'Share with friends',
+    ),
+    'copied' => 
+    array (
+      0 => 'Copied',
+      1 => 'Copied',
+    ),
   ),
   'home_title' => 'Home',
   'about_title' => 'About',
@@ -32,9 +44,8 @@ return array (
   'services_title' => 'Services',
   'products_title' => 'Products',
   'solutions_title' => 'Solutions',
-
-  // Writing guide (max 3 levels)
-  'writing_guide' => [
+  'writing_guide' => 
+  array (
     'title' => 'Writing Guide',
     'heading' => 'Quality Writing Guide',
     'nav_title' => 'Write Title',
@@ -53,5 +64,5 @@ return array (
     'quality_clear' => 'Quality: Clear, not blurry',
     'copyright_notice' => 'Copyright notice:',
     'ready_to_write' => 'Ready to write?',
-  ],
+  ),
 );
