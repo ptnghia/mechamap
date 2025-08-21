@@ -2,8 +2,8 @@
 
 @section('title', __('tools.material_calculator.title'))
 
-@section('content')
-<div class="container-fluid">
+@section('full-width-content')
+<div class="container">
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">

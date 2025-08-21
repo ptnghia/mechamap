@@ -143,25 +143,25 @@ k
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('common.technical.database') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('materials.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.materials') }}">
                                     <i class="fa-solid fa-cube me-2"></i>{{ __('common.technical.materials_database') }}
                                     <span class="badge bg-primary ms-2">10</span>
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('standards.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
                                     <i class="fa-solid fa-certificate me-2"></i>{{ __('common.technical.engineering_standards') }}
                                     <span class="badge bg-success ms-2">8</span>
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('manufacturing.processes.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
                                     <i class="fa-solid fa-gears me-2"></i>{{ __('common.technical.manufacturing_processes') }}
                                     <span class="badge bg-info ms-2">10</span>
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('common.technical.design_resources') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('cad.library.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
                                     <i class="fa-solid fa-file-code me-2"></i>{{ __('common.technical.cad_library') }}
                                     <span class="badge bg-warning ms-2">20+</span>
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('technical.drawings.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.technical-docs') }}">
                                     <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('common.technical.technical_drawings') }}
                                     <span class="badge bg-secondary ms-2">15+</span>
                                 </a></li>
@@ -170,10 +170,10 @@ k
                                 <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
                                     <i class="fa-solid fa-calculator me-2"></i>{{ __('common.technical.material_cost_calculator') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.process-selector') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.process-calculator') }}">
                                     <i class="fa-solid fa-route me-2"></i>{{ __('common.technical.process_selector') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.standards-checker') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
                                     <i class="fa-solid fa-check-circle me-2"></i>{{ __('common.technical.standards_compliance') }}
                                 </a></li>
                             </ul>
@@ -193,7 +193,7 @@ k
                                 <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
                                     <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('common.knowledge.tutorials_guides') }}
                                 </a></li>
-                                <li><a class="dropdown-item" href="{{ route('documentation.index') }}">
+                                <li><a class="dropdown-item" href="{{ route('tools.documentation') }}">
                                     <i class="fa-solid fa-file-lines me-2"></i>{{ __('common.knowledge.technical_documentation') }}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>

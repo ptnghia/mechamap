@@ -195,7 +195,7 @@
         @auth
         @if(in_array(auth()->user()->role, ['senior_member', 'member', 'guest']))
         <li>
-            <a href="{{ route('docs.index') }}">
+            <a href="{{ route('tools.documentation') }}">
                 <i class="fa-solid fa-book me-2"></i>
                 {{ __('nav.docs') }}
             </a>

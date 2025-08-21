@@ -12,20 +12,20 @@
                 <p class="lead mb-4">{{ __('docs.subtitle') }}</p>
                 <div class="row text-center">
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ $stats['total_docs'] ?? 3 }}</h3>
-                        <p class="mb-0">{{ __('docs.documents') }}</p>
+                        <h3 class="fw-bold">{{ $totalDocs }}</h3>
+                        <p class="mb-0">Tài liệu</p>
                     </div>
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ $stats['total_categories'] ?? 2 }}</h3>
-                        <p class="mb-0">{{ __('docs.categories') }}</p>
+                        <h3 class="fw-bold">{{ $totalCategories }}</h3>
+                        <p class="mb-0">Danh mục</p>
                     </div>
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ number_format($stats['total_views'] ?? 2) }}</h3>
-                        <p class="mb-0">{{ __('docs.total_views') }}</p>
+                        <h3 class="fw-bold">{{ number_format($totalViews) }}</h3>
+                        <p class="mb-0">Tổng lượt xem</p>
                     </div>
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ number_format($stats['total_downloads'] ?? 0) }}</h3>
-                        <p class="mb-0">{{ __('docs.downloads') }}</p>
+                        <h3 class="fw-bold">{{ number_format($totalDownloads) }}</h3>
+                        <p class="mb-0">Lượt tải</p>
                     </div>
                 </div>
             </div>
@@ -61,14 +61,14 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         @forelse($categories ?? [] as $category)
-                            <span
-                               class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="#" onclick="alert('Tính năng đang phát triển')"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
                                     <i class="{{ $category->icon ?? 'fas fa-folder' }}" style="color: {{ $category->color_code }}"></i>
                                     {{ $category->name }}
                                 </div>
-                                <span class="badge bg-primary rounded-pill">{{ $category->published_documentations_count ?? 0 }}</span>
-                            </span>
+                                <span class="badge bg-primary rounded-pill">{{ $category->documentations_count ?? 0 }}</span>
+                            </a>
                         @empty
                             <div class="list-group-item text-muted">
                                 <i class="fas fa-info-circle"></i> No categories available
@@ -122,7 +122,7 @@
             <div class="mb-4">
                 <h3 class="mb-3"><i class="fas fa-clock"></i> {{ __('docs.recent_documentation') }}</h3>
                 <div class="row">
-                    @forelse($recentDocs ?? [] as $doc)
+                    @forelse($documentation as $doc)
                         <div class="col-md-6 mb-3">
                             <div class="card">
                                 <div class="card-body">

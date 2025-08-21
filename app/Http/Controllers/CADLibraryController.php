@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CADFile;
+use App\Models\Showcase;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -11,11 +13,15 @@ use Illuminate\Support\Facades\Cache;
 class CADLibraryController extends Controller
 {
     /**
-     * Display CAD library index
+     * Display CAD library index - Aggregated from Showcase CAD files
      */
     public function index(Request $request)
     {
-        $query = CADFile::with(['user', 'category']);
+        // Get showcases that have CAD files
+        $query = Showcase::with(['user', 'media'])
+            ->where('has_cad_files', true)
+            ->where('status', 'approved')
+            ->where('is_public', true);
 
         // Search functionality
         if ($request->filled('search')) {
@@ -23,72 +29,159 @@ class CADLibraryController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('title', 'LIKE', "%{$search}%")
                   ->orWhere('description', 'LIKE', "%{$search}%")
-                  ->orWhere('tags', 'LIKE', "%{$search}%");
+                  ->orWhere('software_used', 'LIKE', "%{$search}%")
+                  ->orWhere('file_attachments', 'LIKE', "%{$search}%");
             });
         }
 
-        // Filter by category
+        // Filter by category (showcase category)
         if ($request->filled('category')) {
-            $query->where('category_id', $request->get('category'));
-        }
-
-        // Filter by file type
-        if ($request->filled('file_type')) {
-            $query->where('file_type', $request->get('file_type'));
+            $query->where('category', $request->get('category'));
         }
 
         // Filter by software
         if ($request->filled('software')) {
-            $query->where('software_used', $request->get('software'));
+            $query->where('software_used', 'LIKE', "%{$request->get('software')}%");
+        }
+
+        // Filter by file type (from file_attachments JSON)
+        if ($request->filled('file_type')) {
+            $fileType = strtolower($request->get('file_type'));
+            $query->where(function($q) use ($fileType) {
+                // Search for files with the specific extension
+                $q->where('file_attachments', 'LIKE', "%.{$fileType}%")
+                  ->orWhere('file_attachments', 'LIKE', "%.{$fileType}\"%")
+                  ->orWhere('file_attachments', 'LIKE', "%\".{$fileType}%")
+                  ->orWhere('file_attachments', 'LIKE', "% {$fileType} %");
+            });
         }
 
         // Sort options
         $sortBy = $request->get('sort', 'created_at');
         $sortOrder = $request->get('order', 'desc');
 
-        $allowedSorts = ['title', 'created_at', 'download_count', 'file_size', 'rating'];
+        $allowedSorts = ['title', 'created_at', 'download_count', 'view_count', 'rating_average'];
         if (in_array($sortBy, $allowedSorts)) {
             $query->orderBy($sortBy, $sortOrder);
         }
 
-        $cadFiles = $query->paginate(12);
+        $showcases = $query->paginate(12);
 
-        // Get filter options
-        $categories = Cache::remember('cad_categories', 3600, function() {
-            return \App\Models\ProductCategory::orderBy('name')->get(['id', 'name']);
+        // Transform showcases to CAD file format for display
+        $cadFiles = $showcases->through(function ($showcase) {
+            return $this->transformShowcaseToCADFile($showcase);
         });
 
-        $fileTypes = ['dwg', 'step', 'iges', 'stl', 'obj', 'solidworks', 'inventor', 'fusion360'];
-        $softwareOptions = ['AutoCAD', 'SolidWorks', 'Inventor', 'Fusion 360', 'CATIA', 'NX', 'Creo'];
+        // Get filter options from showcases
+        $categories = Cache::remember('showcase_cad_categories', 3600, function() {
+            return Showcase::where('has_cad_files', true)
+                ->where('status', 'approved')
+                ->select('category')
+                ->distinct()
+                ->whereNotNull('category')
+                ->pluck('category')
+                ->map(function($cat) {
+                    return ['id' => $cat, 'name' => ucfirst($cat)];
+                });
+        });
 
-        return view('technical.cad.library.index', compact(
+        $fileTypes = ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'];
+        $softwareOptions = Cache::remember('showcase_software_options', 3600, function() {
+            return Showcase::where('has_cad_files', true)
+                ->where('status', 'approved')
+                ->whereNotNull('software_used')
+                ->pluck('software_used')
+                ->flatMap(function($software) {
+                    // Handle both string and array cases
+                    if (is_string($software)) {
+                        return json_decode($software, true) ?: [];
+                    } elseif (is_array($software)) {
+                        return $software;
+                    }
+                    return [];
+                })
+                ->unique()
+                ->values();
+        });
+
+        // Calculate statistics
+        $totalDownloads = Showcase::where('has_cad_files', true)
+            ->where('status', 'approved')
+            ->sum('download_count');
+
+        $totalContributors = Showcase::where('has_cad_files', true)
+            ->where('status', 'approved')
+            ->distinct('user_id')
+            ->count('user_id');
+
+        return view('tools.libraries.cad.index', compact(
             'cadFiles',
             'categories',
             'fileTypes',
-            'softwareOptions'
+            'softwareOptions',
+            'totalDownloads',
+            'totalContributors'
         ));
     }
 
     /**
-     * Display CAD file details
+     * Redirect to showcase detail instead of showing CAD file detail
      */
-    public function show(CADFile $cadFile)
+    public function show($id)
     {
-        $cadFile->load(['user', 'category', 'comments.user']);
+        // Find showcase by ID (since we're using showcase IDs as CAD file IDs)
+        $showcase = Showcase::findOrFail($id);
 
-        // Increment view count
-        $cadFile->increment('view_count');
+        // Redirect to showcase detail page
+        return redirect()->route('showcase.show', $showcase->slug);
+    }
 
-        // Get related CAD files
-        $relatedFiles = CADFile::where('id', '!=', $cadFile->id)
-                              ->where(function($q) use ($cadFile) {
-                                  $q->where('category_id', $cadFile->category_id)
-                                    ->orWhere('software_used', $cadFile->software_used);
-                              })
-                              ->limit(6)
-                              ->get();
+    /**
+     * Transform showcase to CAD file format for display
+     */
+    private function transformShowcaseToCADFile($showcase)
+    {
+        // Parse file attachments
+        $fileAttachments = is_string($showcase->file_attachments)
+            ? json_decode($showcase->file_attachments, true) ?: []
+            : (is_array($showcase->file_attachments) ? $showcase->file_attachments : []);
 
-        return view('technical.cad.library.show', compact('cadFile', 'relatedFiles'));
+        $softwareUsed = is_string($showcase->software_used)
+            ? json_decode($showcase->software_used, true) ?: []
+            : (is_array($showcase->software_used) ? $showcase->software_used : []);
+
+        // Get first CAD file extension for file type
+        $fileType = 'unknown';
+        foreach ($fileAttachments as $file) {
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (in_array($ext, ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'])) {
+                $fileType = $ext;
+                break;
+            }
+        }
+
+        return (object) [
+            'id' => $showcase->id,
+            'title' => $showcase->title,
+            'description' => $showcase->description,
+            'file_type' => $fileType,
+            'file_size' => 'N/A', // Not available from showcase
+            'software_used' => implode(', ', $softwareUsed),
+            'tags' => $fileAttachments, // Use file attachments as tags
+            'download_count' => $showcase->download_count,
+            'view_count' => $showcase->view_count,
+            'rating' => $showcase->rating_average,
+            'created_at' => $showcase->created_at,
+            'updated_at' => $showcase->updated_at,
+            'user' => $showcase->user,
+            'category' => (object) ['name' => ucfirst($showcase->category)],
+            'cover_image' => $showcase->cover_image,
+            'file_attachments' => $fileAttachments,
+            'showcase_slug' => $showcase->slug ?: $showcase->id, // Fallback to ID if no slug
+            'showcase_id' => $showcase->id, // Add ID for safety
+            'complexity_level' => $showcase->complexity_level,
+            'industry_application' => $showcase->industry_application,
+        ];
     }
 
     /**

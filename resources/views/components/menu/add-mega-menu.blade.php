@@ -149,7 +149,7 @@
                 <ul class="mega-menu-list">
                     <!--
                     <li>
-                        <a href="{{ route('materials.index') }}" class="mega-menu-item">
+                        <a href="{{ route('tools.materials') }}" class="mega-menu-item">
                             <i class="fa-solid fa-table me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.material_lookup') }}</span>
@@ -159,7 +159,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('standards.index') }}" class="mega-menu-item">
+                        <a href="{{ route('tools.standards') }}" class="mega-menu-item">
                             <i class="fa-solid fa-certificate me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.standards_lookup') }}</span>
@@ -169,7 +169,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('cad.library.index') }}" class="mega-menu-item">
+                        <a href="{{ route('tools.cad-library') }}" class="mega-menu-item">
                             <i class="fa-solid fa-cube me-2"></i>
                             <div class="mega-menu-item-content">
                                 <span class="mega-menu-item-title">{{ t_navigation('add_menu.tools.cad_library') }}</span>

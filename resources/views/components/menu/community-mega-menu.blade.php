@@ -163,7 +163,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('manufacturing.processes.calculator') }}" class="tool-link">
+                                        <a href="{{ route('tools.process-calculator') }}" class="tool-link">
                                             <i class="fa-solid fa-cogs me-2"></i>
                                             {{ __('navigation.tools.process_calculator') }}
                                         </a>
@@ -176,19 +176,19 @@
                                 <h6 class="tool-group-title">{{ __('navigation.tools.databases') }}</h6>
                                 <ul class="tool-links">
                                     <li>
-                                        <a href="{{ route('materials.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.materials') }}" class="tool-link">
                                             <i class="fa-solid fa-cube me-2"></i>
                                             {{ __('navigation.tools.materials_db') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('standards.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.standards') }}" class="tool-link">
                                             <i class="fa-solid fa-clipboard-check me-2"></i>
                                             {{ __('navigation.tools.standards_db') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('manufacturing.processes.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.processes') }}" class="tool-link">
                                             <i class="fa-solid fa-industry me-2"></i>
                                             {{ __('navigation.tools.processes_db') }}
                                         </a>
@@ -201,19 +201,19 @@
                                 <h6 class="tool-group-title">{{ __('navigation.tools.libraries') }}</h6>
                                 <ul class="tool-links">
                                     <li>
-                                        <a href="{{ route('cad.library.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.cad-library') }}" class="tool-link">
                                             <i class="fa-solid fa-file-code me-2"></i>
                                             {{ __('navigation.tools.cad_library') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('technical.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.technical-docs') }}" class="tool-link">
                                             <i class="fa-solid fa-wrench me-2"></i>
                                             {{ __('navigation.tools.technical_resources') }}
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('docs.index') }}" class="tool-link">
+                                        <a href="{{ route('tools.documentation') }}" class="tool-link">
                                             <i class="fa-solid fa-book me-2"></i>
                                             {{ __('navigation.tools.documentation') }}
                                         </a>

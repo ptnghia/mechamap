@@ -192,6 +192,21 @@
             'jobs.index',
             'events.index',
             'events.show',
+
+            // Tools & Calculators - All tools use full-width layout
+            'tools.index',
+            'tools.material-calculator',
+            'tools.process-calculator',
+            'tools.materials',
+            'tools.materials.show',
+            'tools.standards',
+            'tools.processes',
+            'tools.cad-library',
+            'tools.cad-library.show',
+            'tools.technical-docs',
+            'tools.documentation',
+            'tools.documentation.show',
+
             ];
 
             // Kiểm tra route hiện tại

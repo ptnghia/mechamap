@@ -303,7 +303,7 @@
                     <div class="card-body">
                         @foreach($relatedDocs as $related)
                             <div class="mb-3">
-                                <a href="{{ route('tools.documentation.show', $related->slug) }}" class="text-decoration-none">
+                                <a href="{{ route('docs.show', $related->slug) }}" class="text-decoration-none">
                                     <h6 class="mb-1">{{ $related->title }}</h6>
                                 </a>
                                 <p class="small text-muted mb-1">{{ Str::limit($related->excerpt, 80) }}</p>
@@ -399,10 +399,7 @@ document.querySelectorAll('.rating-stars i').forEach(star => {
     star.addEventListener('click', function() {
         const rating = this.dataset.rating;
 
-        // fetch('{{ route("docs.rate", $documentation->slug) }}', {
-        console.log('Rating clicked:', rating);
-        // TODO: Implement rating functionality
-        /*
+        fetch('{{ route("docs.rate", $documentation->slug) }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -415,7 +412,7 @@ document.querySelectorAll('.rating-stars i').forEach(star => {
             if (data.success) {
                 location.reload();
             }
-        }); */
+        });
     });
 });
 

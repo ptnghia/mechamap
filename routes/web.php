@@ -252,60 +252,33 @@ Route::prefix('jobs')->name('jobs.')->group(function () {
     Route::post('/{job}/apply', [App\Http\Controllers\JobController::class, 'apply'])->name('apply')->middleware('auth');
 });
 
-// Technical Resources routes - NEW SECTION
-Route::prefix('materials')->name('materials.')->group(function () {
-    Route::get('/', [App\Http\Controllers\MaterialController::class, 'index'])->name('index');
-    // Route::get('/search', [App\Http\Controllers\MaterialController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with material filter
-    Route::get('/compare', [App\Http\Controllers\MaterialController::class, 'compare'])->name('compare');
-    Route::get('/calculator', [App\Http\Controllers\MaterialController::class, 'calculator'])->name('calculator');
-    Route::get('/export', [App\Http\Controllers\MaterialController::class, 'export'])->name('export');
-    Route::get('/{material}', [App\Http\Controllers\MaterialController::class, 'show'])->name('show');
-});
+// ===== UNIFIED TOOLS ROUTES SECTION =====
+// All tools are now organized under /tools prefix for consistency
 
-Route::prefix('standards')->name('standards.')->group(function () {
-    Route::get('/', [App\Http\Controllers\StandardController::class, 'index'])->name('index');
-    // Route::get('/search', [App\Http\Controllers\StandardController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with standard filter
-    Route::get('/compare', [App\Http\Controllers\StandardController::class, 'compare'])->name('compare');
-    Route::get('/compliance-checker', [App\Http\Controllers\StandardController::class, 'complianceChecker'])->name('compliance-checker');
-    Route::get('/export', [App\Http\Controllers\StandardController::class, 'export'])->name('export');
-    Route::get('/{standard}', [App\Http\Controllers\StandardController::class, 'show'])->name('show');
-});
+Route::prefix('tools')->name('tools.')->group(function () {
+    // Tools Overview
+    Route::get('/', [App\Http\Controllers\ToolController::class, 'index'])->name('index');
 
-Route::prefix('manufacturing')->name('manufacturing.')->group(function () {
-    Route::get('/processes', [App\Http\Controllers\ManufacturingProcessController::class, 'index'])->name('processes.index');
-    // Route::get('/processes/search', [App\Http\Controllers\ManufacturingProcessController::class, 'search'])->name('processes.search'); // CONSOLIDATED: Use main search with process filter
-    Route::get('/processes/selector', [App\Http\Controllers\ManufacturingProcessController::class, 'selector'])->name('processes.selector');
-    Route::get('/processes/calculator', [App\Http\Controllers\ManufacturingProcessController::class, 'calculator'])->name('processes.calculator');
-    Route::get('/processes/compare', [App\Http\Controllers\ManufacturingProcessController::class, 'compare'])->name('processes.compare');
-    Route::get('/processes/export', [App\Http\Controllers\ManufacturingProcessController::class, 'export'])->name('processes.export');
-    Route::get('/processes/{process}', [App\Http\Controllers\ManufacturingProcessController::class, 'show'])->name('processes.show');
-});
+    // CALCULATORS
+    Route::get('/material-calculator', [App\Http\Controllers\ToolController::class, 'materialCalculator'])->name('material-calculator');
+    Route::get('/process-calculator', [App\Http\Controllers\ToolController::class, 'processCalculator'])->name('process-calculator');
 
-Route::prefix('cad')->name('cad.')->group(function () {
-    Route::prefix('library')->name('library.')->group(function () {
-        Route::get('/', [App\Http\Controllers\CADLibraryController::class, 'index'])->name('index');
-        // Route::get('/search', [App\Http\Controllers\CADLibraryController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with CAD filter
-        Route::get('/stats', [App\Http\Controllers\CADLibraryController::class, 'getStats'])->name('stats');
-        Route::get('/my-files', [App\Http\Controllers\CADLibraryController::class, 'myFiles'])->name('my-files')->middleware('auth');
-        Route::get('/create', [App\Http\Controllers\CADLibraryController::class, 'create'])->name('create')->middleware('auth');
-        Route::post('/', [App\Http\Controllers\CADLibraryController::class, 'store'])->name('store')->middleware('auth');
-        Route::get('/export', [App\Http\Controllers\CADLibraryController::class, 'export'])->name('export');
-        Route::get('/{cadFile}', [App\Http\Controllers\CADLibraryController::class, 'show'])->name('show');
-        Route::get('/{cadFile}/download', [App\Http\Controllers\CADLibraryController::class, 'download'])->name('download')->middleware('auth');
-        Route::post('/{cadFile}/rate', [App\Http\Controllers\CADLibraryController::class, 'rate'])->name('rate')->middleware('auth');
-        Route::post('/{cadFile}/comment', [App\Http\Controllers\CADLibraryController::class, 'comment'])->name('comment')->middleware('auth');
-    });
-});
+    // DATABASES
+    Route::get('/materials', [App\Http\Controllers\ToolController::class, 'materials'])->name('materials');
+    Route::get('/materials/{material}', [App\Http\Controllers\ToolController::class, 'materialShow'])->name('materials.show');
 
-// Technical Resources main page
-Route::get('/technical', function () {
-    return view('technical.index');
-})->name('technical.index');
+    Route::get('/standards', [App\Http\Controllers\ToolController::class, 'standards'])->name('standards');
 
-Route::prefix('technical')->name('technical.')->group(function () {
-    Route::get('/drawings', function () {
-        return view('coming-soon', ['title' => 'Technical Drawings', 'message' => 'Technical drawings library coming soon']);
-    })->name('drawings.index');
+    Route::get('/processes', [App\Http\Controllers\ToolController::class, 'processes'])->name('processes');
+
+    // LIBRARIES
+    Route::get('/cad-library', [App\Http\Controllers\CADLibraryController::class, 'index'])->name('cad-library');
+    Route::get('/cad-library/{id}', [App\Http\Controllers\CADLibraryController::class, 'show'])->name('cad-library.show');
+
+    Route::get('/technical-docs', [App\Http\Controllers\ToolController::class, 'technicalDocs'])->name('technical-docs');
+
+    Route::get('/documentation', [App\Http\Controllers\ToolController::class, 'documentation'])->name('documentation');
+    Route::get('/documentation/{documentation}', [App\Http\Controllers\ToolController::class, 'documentationShow'])->name('documentation.show');
 });
 
 // Community main page
@@ -315,19 +288,6 @@ Route::get('/community', function () {
 
 // Showcase main route (moved from public-showcase)
 Route::get('/showcase', [ShowcaseController::class, 'publicShowcase'])->name('showcase.index');
-
-// Tools & Calculators routes
-Route::prefix('tools')->name('tools.')->group(function () {
-    Route::get('/material-calculator', function () {
-        return view('tools.material-calculator');
-    })->name('material-calculator');
-    Route::get('/process-selector', function () {
-        return view('coming-soon', ['title' => 'Process Selector', 'message' => 'Manufacturing process selector coming soon']);
-    })->name('process-selector');
-    Route::get('/standards-checker', function () {
-        return view('coming-soon', ['title' => 'Standards Compliance', 'message' => 'Standards compliance checker coming soon']);
-    })->name('standards-checker');
-});
 
 // Knowledge Base routes - NEW SECTION
 Route::prefix('knowledge')->name('knowledge.')->group(function () {
@@ -340,9 +300,7 @@ Route::get('/tutorials', function () {
     return view('coming-soon', ['title' => 'Tutorials & Guides', 'message' => 'Tutorials section coming soon']);
 })->name('tutorials.index');
 
-Route::get('/documentation', function () {
-    return view('coming-soon', ['title' => 'Technical Documentation', 'message' => 'Documentation library coming soon']);
-})->name('documentation.index');
+// Documentation route moved to /tools/documentation
 
 Route::prefix('news')->name('news.')->group(function () {
     Route::get('/industry', function () {
@@ -752,20 +710,10 @@ Route::get('/sitemap-users.xml', [App\Http\Controllers\SitemapController::class,
 Route::get('/sitemap-products.xml', [App\Http\Controllers\SitemapController::class, 'products'])->name('sitemap.products');
 Route::get('/robots.txt', [App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
 
-// Documentation Routes (Public)
-Route::prefix('docs')->name('docs.')->group(function () {
-    Route::get('/', [App\Http\Controllers\DocumentationController::class, 'index'])->name('index');
-    // Route::get('/search', [App\Http\Controllers\DocumentationController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with documentation filter
-    Route::get('/category/{category:slug}', [App\Http\Controllers\DocumentationController::class, 'category'])->name('category');
-    Route::get('/download/{documentation}/{file}', [App\Http\Controllers\DocumentationController::class, 'download'])->name('download');
-    Route::get('/{documentation:slug}', [App\Http\Controllers\DocumentationController::class, 'show'])->name('show');
-
-    // User interactions (requires auth)
-    Route::middleware('auth')->group(function () {
-        Route::post('/{documentation}/rate', [App\Http\Controllers\DocumentationController::class, 'rate'])->name('rate');
-        Route::post('/{documentation}/comment', [App\Http\Controllers\DocumentationController::class, 'comment'])->name('comment');
-    });
-});
+// Documentation Routes moved to /tools/documentation
+// Legacy /docs routes for backward compatibility
+Route::redirect('/docs', '/tools/documentation');
+Route::redirect('/docs/{any}', '/tools/documentation')->where('any', '.*');
 
 // Contact support - redirect to main contact page
 Route::get('/contact/support', function () {

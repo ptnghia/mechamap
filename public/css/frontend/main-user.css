@@ -4645,7 +4645,14 @@ body.user-frontend {
     margin-bottom: .125rem;
     text-transform: uppercase
 }
-
+.mega-menu-footer{}
+.footer-title{text-align: center;background-color: #fcf9ec;padding: 12px;margin-bottom: 15px;margin-top: 15px;color: var(--bs-primary);text-transform: uppercase;font-weight: 700;}
+.tool-links{list-style: none;padding: 0;}
+.tool-group-title{display: none;}
+.tool-links li a{display: block;padding: 10px 0;color: #495057;text-transform: uppercase;font-weight: 500;font-size: 14px;}
+.tool-links li a:hover{color: var(--bs-primary);}
+.tool-links li a i{width: 17px;color: var(--bs-primary);}
+.tool-group{padding-left: 10px;padding-right: 10px;}
 .mega-menu-item-desc {
     display: block;
     font-size: .75rem;
