@@ -75,9 +75,10 @@ class NotificationController extends Controller
     }
 
     /**
-     * Get user's notifications for dropdown (AJAX)
+     * Get user's notifications with count (AJAX) - Unified endpoint
+     * Replaces both dropdown() and unreadCount() methods
      */
-    public function dropdown(Request $request): JsonResponse
+    public function getNotifications(Request $request): JsonResponse
     {
         try {
             $user = Auth::user();
@@ -85,85 +86,91 @@ class NotificationController extends Controller
             if (!$user) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Unauthorized'
+                    'message' => 'Unauthorized',
+                    'notifications' => [],
+                    'unread_count' => 0
                 ], 401);
             }
 
-            // Get recent notifications (last 10)
-            $notifications = NotificationCacheService::getUserNotifications($user, 1, 10);
+            // Get parameters
+            $loadNotifications = $request->boolean('load_notifications', true);
+            $limit = min($request->integer('limit', 10), 50); // Max 50 notifications
+            $page = max($request->integer('page', 1), 1);
 
-            // Get unread count
+            // Always get unread count (cached)
             $unreadCount = NotificationCacheService::getUnreadCount($user);
 
-            // Format notifications for frontend
-            $formattedNotifications = collect($notifications)->map(function ($notification) {
-                return [
-                    'id' => $notification['id'],
-                    'type' => $notification['type'],
-                    'title' => $notification['title'],
-                    'message' => $notification['message'],
-                    'is_read' => $notification['is_read'],
-                    'created_at' => $notification['created_at'],
-                    'time_ago' => \Carbon\Carbon::parse($notification['created_at'])->diffForHumans(),
-                    'icon' => $this->getNotificationIcon($notification['type']),
-                    'color' => $this->getNotificationColor($notification['type']),
-                    'action_url' => $notification['data']['action_url'] ?? null,
-                ];
-            });
+            $formattedNotifications = [];
+            $hasMore = false;
+
+            // Only load notifications if requested
+            if ($loadNotifications) {
+                // Get notifications (cached)
+                $notifications = NotificationCacheService::getUserNotifications($user, $page, $limit);
+
+                // Format notifications for frontend
+                $formattedNotifications = collect($notifications)->map(function ($notification) {
+                    return [
+                        'id' => $notification['id'],
+                        'type' => $notification['type'],
+                        'title' => $notification['title'],
+                        'message' => $notification['message'],
+                        'is_read' => $notification['is_read'],
+                        'created_at' => $notification['created_at'],
+                        'time_ago' => \Carbon\Carbon::parse($notification['created_at'])->diffForHumans(),
+                        'icon' => $this->getNotificationIcon($notification['type']),
+                        'color' => $this->getNotificationColor($notification['type']),
+                        'action_url' => $notification['data']['action_url'] ?? null,
+                    ];
+                })->toArray();
+
+                $hasMore = count($notifications) >= $limit;
+            }
 
             return response()->json([
                 'success' => true,
                 'notifications' => $formattedNotifications,
                 'unread_count' => $unreadCount,
-                'has_more' => count($notifications) >= 10
+                'has_more' => $hasMore,
+                'page' => $page,
+                'limit' => $limit,
+                'loaded_notifications' => $loadNotifications
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Notification dropdown failed', [
+            Log::error('Get notifications failed', [
                 'user_id' => Auth::id(),
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'request_params' => $request->all()
             ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Có lỗi xảy ra khi tải thông báo'
+                'message' => 'Có lỗi xảy ra khi tải thông báo',
+                'notifications' => [],
+                'unread_count' => 0
             ], 500);
         }
     }
 
     /**
-     * Get unread notification count (AJAX)
+     * Get user's notifications for dropdown (AJAX) - Legacy support
+     * @deprecated Use getNotifications() instead
+     */
+    public function dropdown(Request $request): JsonResponse
+    {
+        // Redirect to new unified endpoint
+        return $this->getNotifications($request->merge(['load_notifications' => true]));
+    }
+
+    /**
+     * Get unread notification count (AJAX) - Legacy support
+     * @deprecated Use getNotifications() instead
      */
     public function unreadCount(Request $request): JsonResponse
     {
-        try {
-            $user = Auth::user();
-
-            if (!$user) {
-                return response()->json([
-                    'success' => true,
-                    'unread_count' => 0
-                ]);
-            }
-
-            $unreadCount = NotificationCacheService::getUnreadCount($user);
-
-            return response()->json([
-                'success' => true,
-                'unread_count' => $unreadCount
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Get unread count failed', [
-                'user_id' => Auth::id(),
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'unread_count' => 0
-            ]);
-        }
+        // Redirect to new unified endpoint with count only
+        return $this->getNotifications($request->merge(['load_notifications' => false]));
     }
 
     /**

@@ -1,6 +1,7 @@
 /**
- * Real-time Notification Manager
- * Manages notification UI components and real-time updates
+ * Enhanced Real-time Notification Manager
+ * Manages notification UI components, real-time updates, sound alerts, and toast notifications
+ * Integrates with NotificationUIManager for unified UI control
  */
 class NotificationManager {
     constructor() {
@@ -13,6 +14,45 @@ class NotificationManager {
         this.currentNotifications = [];
         this.unreadCount = 0;
 
+        // Reference to NotificationUIManager
+        this.uiManager = null;
+
+        // Enhanced features
+        this.soundEnabled = this.getSoundPreference();
+        this.toastContainer = null;
+        this.audioContext = null;
+        this.notificationSounds = {};
+
+        // Notification categories with icons and colors
+        this.notificationTypes = {
+            'system': { icon: 'fas fa-cog', color: 'primary', sound: 'system' },
+            'message': { icon: 'fas fa-envelope', color: 'info', sound: 'message' },
+            'follow': { icon: 'fas fa-user-plus', color: 'success', sound: 'follow' },
+            'like': { icon: 'fas fa-heart', color: 'danger', sound: 'like' },
+            'showcase': { icon: 'fas fa-star', color: 'warning', sound: 'showcase' },
+            'order': { icon: 'fas fa-shopping-cart', color: 'info', sound: 'order' },
+            'warning': { icon: 'fas fa-exclamation-triangle', color: 'warning', sound: 'warning' },
+            'success': { icon: 'fas fa-check-circle', color: 'success', sound: 'success' },
+            'thread_created': { icon: 'fas fa-plus-circle', color: 'success', sound: 'thread' },
+            'thread_replied': { icon: 'fas fa-reply', color: 'info', sound: 'reply' },
+            'comment_mention': { icon: 'fas fa-at', color: 'warning', sound: 'mention' },
+            'business_verified': { icon: 'fas fa-check-circle', color: 'success', sound: 'success' },
+            'business_rejected': { icon: 'fas fa-times-circle', color: 'danger', sound: 'warning' },
+            'product_approved': { icon: 'fas fa-box', color: 'success', sound: 'success' },
+            'product_rejected': { icon: 'fas fa-box', color: 'danger', sound: 'warning' },
+            'order_update': { icon: 'fas fa-shopping-cart', color: 'info', sound: 'order' },
+            'role_changed': { icon: 'fas fa-user-cog', color: 'warning', sound: 'system' },
+            'commission_paid': { icon: 'fas fa-dollar-sign', color: 'success', sound: 'success' },
+            'system_announcement': { icon: 'fas fa-bullhorn', color: 'primary', sound: 'system' },
+            'quote_request': { icon: 'fas fa-file-invoice', color: 'info', sound: 'message' },
+            'user_registered': { icon: 'fas fa-user-plus', color: 'success', sound: 'follow' },
+            'forum_activity': { icon: 'fas fa-comments', color: 'info', sound: 'thread' },
+            'marketplace_activity': { icon: 'fas fa-store', color: 'info', sound: 'order' },
+            'login_from_new_device': { icon: 'fas fa-shield-alt', color: 'warning', sound: 'warning' },
+            'password_changed': { icon: 'fas fa-key', color: 'danger', sound: 'warning' },
+            'default': { icon: 'fas fa-bell', color: 'secondary', sound: 'default' }
+        };
+
         this.init();
     }
 
@@ -22,26 +62,52 @@ class NotificationManager {
     init() {
         if (this.isInitialized) return;
 
-        // Find DOM elements
-        this.findElements();
+        console.log('NotificationManager: Initializing with NotificationUIManager integration...');
 
-        // Setup event listeners
-        this.setupEventListeners();
+        // Wait for NotificationUIManager to be ready
+        this.waitForUIManager().then(() => {
+            // Find DOM elements
+            this.findElements();
 
-        // Initialize connection status
-        this.initConnectionStatus();
+            // Setup event listeners
+            this.setupEventListeners();
 
-        // Load initial notifications
-        this.loadNotifications();
+            // Initialize connection status
+            this.initConnectionStatus();
 
-        // Setup real-time service callbacks
-        this.setupRealTimeCallbacks();
+            // Initialize enhanced features
+            this.initToastContainer();
+            this.initAudioSystem();
 
-        // Request notification permission
-        this.requestNotificationPermission();
+            // Load initial notifications
+            this.loadNotifications();
 
-        this.isInitialized = true;
-        console.log('NotificationManager: Initialized');
+            // Setup real-time service callbacks
+            this.setupRealTimeCallbacks();
+
+            // Request notification permission
+            this.requestNotificationPermission();
+
+            this.isInitialized = true;
+            console.log('NotificationManager: Enhanced Initialized with NotificationUIManager integration');
+        });
+    }
+
+    /**
+     * Wait for NotificationUIManager to be ready
+     */
+    async waitForUIManager() {
+        return new Promise((resolve) => {
+            if (window.NotificationUIManager && window.NotificationUIManager.isInitialized) {
+                this.uiManager = window.NotificationUIManager;
+                resolve();
+            } else {
+                document.addEventListener('notificationUI:notificationUIReady', (e) => {
+                    this.uiManager = e.detail.manager;
+                    resolve();
+                });
+            }
+        });
     }
 
     /**
@@ -81,6 +147,59 @@ class NotificationManager {
         // Connection status indicator disabled to prevent cosmetic issues
         // WebSocket connection works perfectly without visual indicator
         this.connectionStatus = null;
+    }
+
+    /**
+     * Initialize toast container for popup notifications
+     */
+    initToastContainer() {
+        // Create toast container if it doesn't exist
+        this.toastContainer = document.querySelector('#toast-container');
+        if (!this.toastContainer) {
+            this.toastContainer = document.createElement('div');
+            this.toastContainer.id = 'toast-container';
+            this.toastContainer.className = 'toast-container';
+            document.body.appendChild(this.toastContainer);
+        }
+    }
+
+    /**
+     * Initialize audio system for notification sounds
+     */
+    initAudioSystem() {
+        try {
+            // Initialize NotificationSounds class for generated sounds
+            if (window.NotificationSounds) {
+                this.notificationSounds = new window.NotificationSounds();
+            } else {
+                console.warn('NotificationManager: NotificationSounds class not available');
+            }
+        } catch (error) {
+            console.warn('NotificationManager: Audio system not available', error);
+        }
+    }
+
+    /**
+     * Get sound preference from localStorage
+     */
+    getSoundPreference() {
+        return localStorage.getItem('notification-sound-enabled') !== 'false';
+    }
+
+    /**
+     * Set sound preference
+     */
+    setSoundPreference(enabled) {
+        this.soundEnabled = enabled;
+        localStorage.setItem('notification-sound-enabled', enabled.toString());
+    }
+
+    /**
+     * Toggle sound preference
+     */
+    toggleSound() {
+        this.setSoundPreference(!this.soundEnabled);
+        return this.soundEnabled;
     }
 
     /**
@@ -206,6 +325,10 @@ class NotificationManager {
                         this.currentNotifications = [];
                         this.unreadCount = 0;
                     }
+
+                    // Update timestamp
+                    this.lastNotificationLoad = Date.now();
+
                     this.updateNotificationCounter();
                     this.renderNotifications();
                 }
@@ -216,7 +339,7 @@ class NotificationManager {
     }
 
     /**
-     * Handle new notification
+     * Handle new notification with enhanced features
      */
     handleNewNotification(notification) {
         // Add to current notifications
@@ -232,9 +355,161 @@ class NotificationManager {
         this.addNotificationToList(notification);
         this.animateNotificationBell();
 
+        // Enhanced features for new notifications
+        this.playNotificationSound(notification.type);
+        this.showToastNotification(notification);
+        this.showBrowserNotification(notification);
+
+        // Bridge to NotificationDropdown component
+        this.bridgeToNotificationDropdown(notification);
+
         // Limit notifications in memory
         if (this.currentNotifications.length > 50) {
             this.currentNotifications = this.currentNotifications.slice(0, 50);
+            // Re-render to sync DOM with currentNotifications
+            this.renderNotifications();
+        }
+    }
+
+    /**
+     * Bridge notification to NotificationDropdown component
+     */
+    bridgeToNotificationDropdown(notification) {
+        console.log('🌉 NotificationManager: Bridging notification to dropdown component:', notification);
+
+        // Dispatch custom event for NotificationDropdown to listen
+        document.dispatchEvent(new CustomEvent('notificationManager:newNotification', {
+            detail: notification
+        }));
+
+        // Also dispatch generic notification-received event
+        document.dispatchEvent(new CustomEvent('notification-received', {
+            detail: notification
+        }));
+
+        console.log('✅ NotificationManager: Notification bridged to dropdown component');
+    }
+
+    /**
+     * Play notification sound based on type
+     */
+    playNotificationSound(notificationType) {
+        if (!this.soundEnabled || !this.notificationSounds) return;
+
+        try {
+            const typeConfig = this.notificationTypes[notificationType] || this.notificationTypes['default'];
+            const soundType = typeConfig.sound;
+
+            // Use generated sounds from NotificationSounds class
+            this.notificationSounds.playSound(soundType);
+        } catch (error) {
+            console.warn('NotificationManager: Sound playback failed', error);
+        }
+    }
+
+    /**
+     * Show toast notification popup
+     */
+    showToastNotification(notification) {
+        if (!this.toastContainer) return;
+
+        const typeConfig = this.notificationTypes[notification.type] || this.notificationTypes['default'];
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${typeConfig.color} show`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+            <div class="toast-header">
+                <i class="${typeConfig.icon} toast-icon"></i>
+                <strong class="me-auto">${this.escapeHtml(notification.title)}</strong>
+                <small class="text-muted">vừa xong</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${this.escapeHtml(notification.message)}
+                ${notification.data && notification.data.action_url ? `
+                    <div class="mt-2">
+                        <a href="${notification.data.action_url}" class="btn btn-sm btn-outline-${typeConfig.color}">
+                            ${notification.data.action_text || 'Xem chi tiết'}
+                        </a>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+
+        // Add close button functionality
+        const closeBtn = toast.querySelector('.btn-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
+        }
+
+        // Add to container
+        this.toastContainer.appendChild(toast);
+
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }
+        }, 5000);
+
+        // Limit number of toasts
+        const toasts = this.toastContainer.querySelectorAll('.toast');
+        if (toasts.length > 3) {
+            const oldestToast = toasts[0];
+            oldestToast.classList.remove('show');
+            setTimeout(() => {
+                if (oldestToast.parentNode) {
+                    oldestToast.parentNode.removeChild(oldestToast);
+                }
+            }, 300);
+        }
+    }
+
+    /**
+     * Show browser notification
+     */
+    showBrowserNotification(notification) {
+        if ('Notification' in window && Notification.permission === 'granted') {
+            const typeConfig = this.notificationTypes[notification.type] || this.notificationTypes['default'];
+
+            const browserNotification = new Notification(notification.title, {
+                body: notification.message,
+                icon: '/images/logo-notification.png',
+                badge: '/images/logo-badge.png',
+                tag: `mechamap-${notification.id}`,
+                requireInteraction: false,
+                silent: !this.soundEnabled
+            });
+
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                browserNotification.close();
+            }, 5000);
+
+            // Handle click
+            browserNotification.onclick = () => {
+                window.focus();
+                if (notification.data && notification.data.action_url) {
+                    window.location.href = notification.data.action_url;
+                }
+                browserNotification.close();
+            };
         }
     }
 
@@ -295,9 +570,29 @@ class NotificationManager {
         if (this.notificationDropdown) {
             this.notificationDropdown.classList.add('show');
 
-            // Load fresh notifications
-            this.loadNotifications();
+            // Only load fresh notifications if we don't have any or it's been a while
+            if (!this.currentNotifications || this.currentNotifications.length === 0 || this.shouldRefreshNotifications()) {
+                this.loadNotifications();
+            } else {
+                // Use existing notifications and render them
+                this.renderNotifications();
+            }
+
+            // Add sound toggle button
+            this.addSoundToggleButton();
         }
+    }
+
+    /**
+     * Check if notifications should be refreshed from server
+     */
+    shouldRefreshNotifications() {
+        // Refresh if last load was more than 5 minutes ago
+        if (!this.lastNotificationLoad) {
+            return true;
+        }
+        const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+        return this.lastNotificationLoad < fiveMinutesAgo;
     }
 
     /**
@@ -317,62 +612,64 @@ class NotificationManager {
     }
 
     /**
-     * Render notifications
+     * Render notifications - Use NotificationUIManager
      */
     renderNotifications() {
-        if (!this.notificationList) return;
-
-        if (this.currentNotifications.length === 0) {
-            this.renderEmptyState();
-            return;
+        if (this.uiManager) {
+            // Use unified UI manager for rendering
+            this.uiManager.renderNotifications(this.currentNotifications);
+        } else {
+            console.warn('NotificationManager: UIManager not available for rendering');
         }
-
-        this.notificationList.innerHTML = '';
-
-        this.currentNotifications.forEach(notification => {
-            const notificationElement = this.createNotificationElement(notification);
-            this.notificationList.appendChild(notificationElement);
-        });
     }
 
     /**
-     * Render empty state
+     * Render empty state - Use NotificationUIManager
+     * @deprecated Use NotificationUIManager.showEmpty() instead
      */
     renderEmptyState() {
-        if (this.notificationList) {
-            this.notificationList.innerHTML = `
-                <div class="notification-empty">
-                    <div class="notification-empty-icon">
-                        <i class="fas fa-bell-slash"></i>
-                    </div>
-                    <div class="notification-empty-text">
-                        Không có thông báo nào
-                    </div>
-                </div>
-            `;
+        if (this.uiManager) {
+            this.uiManager.showEmpty();
+        } else {
+            console.warn('NotificationManager: UIManager not available for empty state');
         }
     }
 
     /**
-     * Create notification element
+     * Create notification element with enhanced categorization
      */
     createNotificationElement(notification) {
         const element = document.createElement('div');
-        element.className = `notification-item ${notification.is_read ? 'read' : 'unread'}`;
+        const typeConfig = this.notificationTypes[notification.type] || this.notificationTypes['default'];
+
+        element.className = `notification-item notification-type-${notification.type} ${notification.is_read ? 'read' : 'unread'}`;
         element.setAttribute('data-notification-id', notification.id);
+        element.setAttribute('data-notification-type', notification.type);
 
         const timeAgo = this.formatTimeAgo(new Date(notification.created_at));
 
         element.innerHTML = `
+            <div class="notification-icon">
+                <div class="notification-icon-wrapper bg-${typeConfig.color}">
+                    <i class="${typeConfig.icon}"></i>
+                </div>
+                ${!notification.is_read ? '<div class="notification-unread-dot"></div>' : ''}
+            </div>
             <div class="notification-content">
                 <div class="notification-header">
-                    <h6 class="notification-title mb-1">${this.escapeHtml(notification.title)}</h6>
+                    <div class="notification-title-wrapper">
+                        <h6 class="notification-title mb-1">${this.escapeHtml(notification.title)}</h6>
+                        <span class="notification-category badge bg-${typeConfig.color} bg-opacity-10 text-${typeConfig.color}">
+                            ${this.getNotificationCategoryName(notification.type)}
+                        </span>
+                    </div>
                     <small class="notification-time text-muted">${timeAgo}</small>
                 </div>
                 <p class="notification-message mb-2">${this.escapeHtml(notification.message)}</p>
                 ${notification.data && notification.data.action_url ? `
                     <div class="notification-actions">
-                        <a href="${notification.data.action_url}" class="btn btn-sm btn-outline-primary">
+                        <a href="${notification.data.action_url}" class="btn btn-sm btn-outline-${typeConfig.color}">
+                            <i class="fas fa-external-link-alt me-1"></i>
                             ${notification.data.action_text || 'Xem chi tiết'}
                         </a>
                     </div>
@@ -394,6 +691,42 @@ class NotificationManager {
         this.setupNotificationElementEvents(element, notification);
 
         return element;
+    }
+
+    /**
+     * Get notification category display name
+     */
+    getNotificationCategoryName(type) {
+        const categoryNames = {
+            'system': 'Hệ thống',
+            'message': 'Tin nhắn',
+            'follow': 'Theo dõi',
+            'like': 'Thích',
+            'showcase': 'Showcase',
+            'order': 'Đơn hàng',
+            'warning': 'Cảnh báo',
+            'success': 'Thành công',
+            'thread_created': 'Chủ đề mới',
+            'thread_replied': 'Phản hồi',
+            'comment_mention': 'Nhắc đến',
+            'business_verified': 'Doanh nghiệp',
+            'business_rejected': 'Doanh nghiệp',
+            'product_approved': 'Sản phẩm',
+            'product_rejected': 'Sản phẩm',
+            'order_update': 'Đơn hàng',
+            'role_changed': 'Vai trò',
+            'commission_paid': 'Hoa hồng',
+            'system_announcement': 'Thông báo',
+            'quote_request': 'Báo giá',
+            'user_registered': 'Người dùng',
+            'forum_activity': 'Diễn đàn',
+            'marketplace_activity': 'Marketplace',
+            'login_from_new_device': 'Bảo mật',
+            'password_changed': 'Bảo mật',
+            'default': 'Khác'
+        };
+
+        return categoryNames[type] || categoryNames['default'];
     }
 
     /**
@@ -539,7 +872,9 @@ class NotificationManager {
 
                             // Show empty state if no notifications left
                             if (this.currentNotifications.length === 0) {
-                                this.renderEmptyState();
+                                if (this.uiManager) {
+                                    this.uiManager.showEmpty();
+                                }
                             }
                         }, 300);
                     }
@@ -616,7 +951,9 @@ class NotificationManager {
                     this.updateNotificationCounter();
 
                     // Update UI
-                    this.renderEmptyState();
+                    if (this.uiManager) {
+                        this.uiManager.showEmpty();
+                    }
                 }
             }
         } catch (error) {
@@ -642,6 +979,85 @@ class NotificationManager {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    /**
+     * Add sound toggle button to notification dropdown
+     */
+    addSoundToggleButton() {
+        const dropdown = document.querySelector('.notification-dropdown');
+        if (!dropdown) return;
+
+        const footer = dropdown.querySelector('.notification-footer');
+        if (!footer) return;
+
+        // Check if sound toggle already exists
+        if (footer.querySelector('.sound-toggle-btn')) return;
+
+        const soundToggle = document.createElement('button');
+        soundToggle.className = 'sound-toggle-btn btn btn-sm btn-outline-secondary me-2';
+        soundToggle.innerHTML = `
+            <i class="fas fa-volume-${this.soundEnabled ? 'up' : 'mute'}"></i>
+            <span class="ms-1">${this.soundEnabled ? 'Tắt âm' : 'Bật âm'}</span>
+        `;
+        soundToggle.title = this.soundEnabled ? 'Tắt âm thanh thông báo' : 'Bật âm thanh thông báo';
+
+        soundToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const newState = this.toggleSound();
+            soundToggle.innerHTML = `
+                <i class="fas fa-volume-${newState ? 'up' : 'mute'}"></i>
+                <span class="ms-1">${newState ? 'Tắt âm' : 'Bật âm'}</span>
+            `;
+            soundToggle.title = newState ? 'Tắt âm thanh thông báo' : 'Bật âm thanh thông báo';
+
+            // Show feedback toast
+            this.showSoundToggleFeedback(newState);
+        });
+
+        // Insert before the "Xem tất cả" link
+        const viewAllLink = footer.querySelector('a');
+        if (viewAllLink) {
+            footer.insertBefore(soundToggle, viewAllLink);
+        } else {
+            footer.appendChild(soundToggle);
+        }
+    }
+
+    /**
+     * Show sound toggle feedback
+     */
+    showSoundToggleFeedback(enabled) {
+        if (!this.toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${enabled ? 'success' : 'secondary'} show`;
+        toast.innerHTML = `
+            <div class="toast-header">
+                <i class="fas fa-volume-${enabled ? 'up' : 'mute'} toast-icon"></i>
+                <strong class="me-auto">Âm thanh thông báo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Âm thanh thông báo đã được ${enabled ? 'bật' : 'tắt'}
+            </div>
+        `;
+
+        this.toastContainer.appendChild(toast);
+
+        // Auto-hide after 2 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }
+        }, 2000);
     }
 
     /**

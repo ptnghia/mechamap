@@ -224,6 +224,14 @@ class Showcase extends Model
     }
 
     /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
      * Get the user that owns the showcase item.
      */
     public function user(): BelongsTo

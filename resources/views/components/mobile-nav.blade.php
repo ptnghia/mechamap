@@ -613,7 +613,7 @@
                     <a href="{{ route('notifications.index') }}">
                         <i class="fa-solid fa-bell me-2"></i>
                         {{ t_common("notifications") }}
-                        <span class="badge bg-danger ms-2" id="mobileNotificationBadge" style="display: none;">0</span>
+                        <span class="badge bg-danger ms-2" id="mobileNotificationBadge-{{ uniqid() }}" data-mobile-notification-badge style="display: none;">0</span>
                     </a>
                 </li>
                 @endif
@@ -939,7 +939,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sync notification badge
     function syncNotificationBadge() {
         const desktopNotificationCounter = document.querySelector('.notification-counter');
-        const mobileNotificationBadge = document.getElementById('mobileNotificationBadge');
+        const mobileNotificationBadge = document.querySelector('[data-mobile-notification-badge]');
         const mobileHeaderNotificationBadge = document.getElementById('mobileHeaderNotificationBadge');
 
         if (desktopNotificationCounter) {

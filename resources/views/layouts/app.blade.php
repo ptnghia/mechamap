@@ -19,51 +19,8 @@
     <meta name="auth-token" content="{{ auth()->user()->createToken('websocket-access')->plainTextToken }}">
     @endauth
 
-    <!-- SEO Meta Tags -->
-    <title>{{ $title ?? $seo['site_title'] ?? config('app.name') }} - @yield('title', __('seo.site.tagline'))</title>
-    <meta name="description"
-        content="{{ $description ?? $seo['site_description'] ?? __('seo.site.description') }}">
-    <meta name="keywords"
-        content="{{ $keywords ?? $seo['site_keywords'] ?? __('seo.site.keywords') }}">
-    <meta name="author" content="{{ __('ui.layout.meta_author') }}">
-
-    @if(!($seo['allow_indexing'] ?? true))
-    <meta name="robots" content="noindex, nofollow">
-    @endif
-
-    @if(!empty($seo['canonical_url'] ?? ''))
-    <link rel="canonical" href="{{ $seo['canonical_url'] }}">
-    @else
-    <link rel="canonical" href="{{ url()->current() }}">
-    @endif
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="{{ $title ?? $seo['og_title'] ?? $seo['site_title'] ?? config('app.name') }}">
-    <meta property="og:description"
-        content="{{ $description ?? $seo['og_description'] ?? $seo['site_description'] ?? __('seo.site.description') }}">
-    @if(!empty($seo['og_image'] ?? ''))
-    <meta property="og:image" content="{{ url($seo['og_image']) }}">
-    @endif
-    @if(!empty($seo['facebook_app_id'] ?? ''))
-    <meta property="fb:app_id" content="{{ $seo['facebook_app_id'] }}">
-    @endif
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="{{ $seo['twitter_card'] ?? 'summary' }}">
-    @if(!empty($seo['twitter_username'] ?? ''))
-    <meta name="twitter:site" content="{{ " @" . $seo['twitter_username'] }}">
-    <meta name="twitter:creator" content="{{ " @" . $seo['twitter_username'] }}">
-    @endif
-    <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title"
-        content="{{ $title ?? $seo['twitter_title'] ?? $seo['site_title'] ?? config('app.name') }}">
-    <meta name="twitter:description"
-        content="{{ $description ?? $seo['twitter_description'] ?? $seo['site_description'] ?? 'MechaMap - Diễn đàn cộng đồng chia sẻ kiến thức và kinh nghiệm' }}">
-    @if(!empty($seo['twitter_image'] ?? ''))
-    <meta name="twitter:image" content="{{ url($seo['twitter_image']) }}">
-    @endif
+    <!-- SEO Meta Tags with Multilingual Support -->
+    <x-seo-meta :locale="app()->getLocale()" />
 
     <!-- Google Search Console Verification -->
     @if(!empty($seo['google_search_console_id'] ?? ''))
@@ -98,6 +55,7 @@
     <script src="{{ asset_versioned('js/theme-preload.js') }}"></script>
     <!-- Component CSS -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/notifications.css') }}">
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/enhanced-notifications.css') }}">
 
     <!-- Frontend CSS - Optimized Structure with Cache Busting -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
@@ -211,6 +169,9 @@
             'tools.documentation',
             'tools.documentation.show',
 
+            // showcaseß
+            'showcase.index',
+            'showcase.show',
             ];
 
             // Kiểm tra route hiện tại
@@ -286,6 +247,7 @@
     @auth
     <!-- Socket.IO-based Notification Service for Node.js WebSocket server -->
     <script src="{{ asset_versioned('js/frontend/services/notification-service.js') }}"></script>
+    <script src="{{ asset_versioned('js/frontend/components/notification-sounds.js') }}"></script>
     <script src="{{ asset_versioned('js/frontend/components/notification-manager.js') }}"></script>
     <script src="{{ asset_versioned('js/frontend/components/typing-indicator.js') }}"></script>
     @endauth
@@ -348,20 +310,16 @@
     <!-- Theme Debug Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Theme debug info:', {
-                themeButton: document.getElementById('theme-toggle'),
-                dataTheme: document.documentElement.getAttribute('data-theme'),
-                localStorageTheme: localStorage.getItem('theme')
-            });
+            // Theme system initialized
 
             // Thêm xử lý lỗi dự phòng
             setTimeout(function() {
                 const toggleBtn = document.getElementById('theme-toggle');
                 if (toggleBtn && !toggleBtn._hasClickHandler) {
-                    console.log({!! json_encode(__('ui.layout.console.theme_button_fallback')) !!});
+                    // Theme button fallback handler
                     toggleBtn._hasClickHandler = true;
                     toggleBtn.addEventListener('click', function(e) {
-                        console.log('Theme button clicked (fallback handler)');
+                        // Theme button clicked (fallback handler)
                         e.preventDefault();
                         if (window.themeManager) {
                             window.themeManager.toggle();
@@ -386,6 +344,9 @@
     <!-- Mobile Navigation Script - Now handled in mobile-nav.blade.php component -->
 
     <!-- Header System - Legacy header.js removed, using unified search in header component -->
+
+    <!-- Translation Service -->
+    <script src="{{ asset('js/translation-service.js') }}"></script>
 
     <!-- Components Script -->
     <script src="{{ asset_versioned('js/components.js') }}"></script>

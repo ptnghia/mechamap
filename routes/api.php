@@ -9,6 +9,38 @@ Route::middleware('web')->group(function () {
     // Showcase API routes
     Route::post('/threads/{thread}/create-showcase', [App\Http\Controllers\ThreadController::class, 'createShowcaseAjax'])
         ->name('api.threads.create-showcase');
+
+    // Showcase Rating API routes
+    Route::prefix('showcases/{showcase}')->group(function () {
+        Route::get('/ratings', [App\Http\Controllers\Api\ShowcaseRatingController::class, 'index'])
+            ->name('api.showcases.ratings.index');
+        Route::post('/ratings', [App\Http\Controllers\Api\ShowcaseRatingController::class, 'store'])
+            ->name('api.showcases.ratings.store');
+    });
+
+    Route::prefix('ratings/{rating}')->group(function () {
+        Route::put('/', [App\Http\Controllers\Api\ShowcaseRatingController::class, 'update'])
+            ->name('api.ratings.update');
+        Route::delete('/', [App\Http\Controllers\Api\ShowcaseRatingController::class, 'destroy'])
+            ->name('api.ratings.destroy');
+        Route::post('/like', [App\Http\Controllers\Api\ShowcaseRatingController::class, 'toggleLike'])
+            ->name('api.ratings.like');
+
+        // Rating Replies routes
+        Route::get('/replies', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'index'])
+            ->name('api.ratings.replies.index');
+        Route::post('/replies', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'store'])
+            ->name('api.ratings.replies.store');
+    });
+
+    Route::prefix('replies/{reply}')->group(function () {
+        Route::put('/', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'update'])
+            ->name('api.replies.update');
+        Route::delete('/', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'destroy'])
+            ->name('api.replies.destroy');
+        Route::post('/like', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'toggleLike'])
+            ->name('api.replies.like');
+    });
     Route::get('/auth/token', function (Request $request) {
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthenticated'], 401);
@@ -346,6 +378,22 @@ Route::get('/sidebar/stats', function() {
 
 // Test API ThreadController directly
 Route::get('/threads-controller-test', [App\Http\Controllers\Api\ThreadController::class, 'index']);
+
+// Translation API endpoints (public)
+Route::prefix('translations')->group(function () {
+    Route::get('/js', [App\Http\Controllers\TranslationController::class, 'getJavaScriptTranslations']);
+    Route::get('/keys', [App\Http\Controllers\TranslationController::class, 'getSpecificKeys']);
+    Route::get('/notifications', [App\Http\Controllers\TranslationController::class, 'getNotificationTranslations']);
+    Route::post('/clear-cache', [App\Http\Controllers\TranslationController::class, 'clearCache']);
+});
+
+// Notification Test API endpoints (public for testing)
+Route::prefix('test/notifications')->group(function () {
+    Route::post('/create', [App\Http\Controllers\NotificationTestController::class, 'createTestNotifications']);
+    Route::delete('/clear', [App\Http\Controllers\NotificationTestController::class, 'clearTestNotifications']);
+    Route::get('/stats', [App\Http\Controllers\NotificationTestController::class, 'getNotificationStats']);
+    Route::post('/realtime', [App\Http\Controllers\NotificationTestController::class, 'simulateRealtimeNotification']);
+});
 
 // Notifications API endpoint (public - for header badge)
 Route::get('/notifications', function() {

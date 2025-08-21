@@ -105,6 +105,7 @@
                     <button type="button"
                             class="btn btn-sm btn_meta {{ $isLiked ? 'active' : '' }} btn-like"
                             data-thread-id="{{ $thread->id }}"
+                            data-thread-slug="{{ $thread->slug }}"
                             data-liked="{{ $isLiked ? 'true' : 'false' }}"
                             title="{{ $isLiked ? __('thread.unlike') : __('thread.like') }}">
                         <i class="fas fa-thumbs-up"></i>
@@ -127,6 +128,7 @@
                     <button type="button"
                             class="btn btn-sm btn_meta {{ $isSaved ? 'active' : '' }} btn-save ms-2"
                             data-thread-id="{{ $thread->id }}"
+                            data-thread-slug="{{ $thread->slug }}"
                             data-saved="{{ $isSaved ? 'true' : 'false' }}"
                             title="{{ $isSaved ? __('thread.unsave') : __('thread.save') }}">
                         <i class="{{ $isSaved ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
@@ -917,6 +919,7 @@ function initializeThreadActions() {
             if (this.onclick) return; // Skip if it's a login button
 
             const threadId = this.dataset.threadId;
+            const threadSlug = this.dataset.threadSlug;
             const isLiked = this.dataset.liked === 'true';
 
             // Disable button during request
@@ -924,8 +927,8 @@ function initializeThreadActions() {
             const originalContent = this.innerHTML;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
 
-            // Make AJAX request
-            fetch(`/threads/${threadId}/like`, {
+            // Make AJAX request - use slug for route model binding
+            fetch(`/threads/${threadSlug}/like`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -979,6 +982,7 @@ function initializeThreadActions() {
             if (this.onclick) return; // Skip if it's a login button
 
             const threadId = this.dataset.threadId;
+            const threadSlug = this.dataset.threadSlug;
             const isSaved = this.dataset.saved === 'true';
 
             // Disable button during request
@@ -986,8 +990,8 @@ function initializeThreadActions() {
             const originalContent = this.innerHTML;
             this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
 
-            // Make AJAX request
-            fetch(`/threads/${threadId}/save`, {
+            // Make AJAX request - use slug for route model binding
+            fetch(`/threads/${threadSlug}/save`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

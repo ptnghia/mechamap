@@ -1405,87 +1405,74 @@ document.addEventListener('DOMContentLoaded', function() {
     // Refresh mini cart when dropdown is opened - handled above with show.bs.dropdown event
     // Removed duplicate event listener to avoid conflicts with Bootstrap dropdown
 
-    // Notification functionality
+    // Notification functionality - Using NotificationUIManager
     window.loadNotifications = function() {
         @auth
-        fetch('/api/notifications/recent')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateNotificationUI(data.notifications);
-                    updateNotificationCount(data.total_unread);
-                }
-            })
-            .catch(error => console.error('Error loading notifications:', error));
+        // Wait for NotificationUIManager to be ready
+        if (window.NotificationUIManager) {
+            window.NotificationUIManager.showLoading();
+
+            fetch('/api/notifications/recent')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Use unified NotificationUIManager
+                        window.NotificationUIManager.renderNotifications(data.notifications);
+                        window.NotificationUIManager.updateCounter(data.total_unread);
+                    } else {
+                        window.NotificationUIManager.showError('Không thể tải thông báo');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading notifications:', error);
+                    window.NotificationUIManager.showError('Lỗi khi tải thông báo');
+                });
+        } else {
+            console.warn('NotificationUIManager not available');
+        }
         @endauth
     };
 
+    // Legacy functions for backward compatibility - redirect to NotificationUIManager
     window.updateNotificationUI = function(notifications) {
-        const notificationItems = document.getElementById('notificationItems');
-        const notificationEmpty = document.getElementById('notificationEmpty');
-
-        if (!notificationItems) return;
-
-        if (notifications.length === 0) {
-            notificationEmpty.style.display = 'block';
-            return;
+        if (window.NotificationUIManager) {
+            window.NotificationUIManager.renderNotifications(notifications);
         }
-
-        notificationEmpty.style.display = 'none';
-
-        let itemsHTML = '';
-        notifications.forEach(notification => {
-            itemsHTML += `
-                <div class="notification-item p-3 border-bottom" data-id="${notification.id}">
-                    <div class="d-flex">
-                        <div class="avatar-sm me-3">
-                            <span class="avatar-title bg-${notification.color} rounded-circle">
-                                <i class="fas fa-${notification.icon}"></i>
-                            </span>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1 font-size-14">${notification.title}</h6>
-                            <p class="mb-1 text-muted font-size-13">${notification.message}</p>
-                            <small class="text-muted">${notification.time_ago}</small>
-                        </div>
-                        ${!notification.is_read ? '<div class="ms-2"><span class="badge bg-primary rounded-pill">{{ __('messages.notifications.new_badge') }}</span></div>' : ''}
-                    </div>
-                </div>
-            `;
-        });
-
-        notificationItems.innerHTML = itemsHTML;
     };
 
     window.updateNotificationCount = function(count) {
-        const notificationCount = document.getElementById('notificationCount');
-        if (notificationCount) {
-            if (count > 0) {
-                notificationCount.textContent = count > 99 ? '99+' : count;
-                notificationCount.style.display = 'block';
-            } else {
-                notificationCount.style.display = 'none';
-            }
+        if (window.NotificationUIManager) {
+            window.NotificationUIManager.updateCounter(count);
         }
     };
 
     window.markAllNotificationsRead = function() {
         @auth
-        fetch('/api/notifications/mark-all-read', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                loadNotifications();
-                showNotification('{{ __('common.messages.marked_all_read') }}', 'success');
-            }
-        })
-        .catch(error => console.error('Error marking notifications as read:', error));
+        if (window.NotificationUIManager) {
+            window.NotificationUIManager.showLoading();
+
+            fetch('/api/notifications/mark-all-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload notifications through unified manager
+                    loadNotifications();
+                    showNotification('{{ __('common.messages.marked_all_read') }}', 'success');
+                } else {
+                    window.NotificationUIManager.showError('Không thể đánh dấu đã đọc');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notifications as read:', error);
+                window.NotificationUIManager.showError('Lỗi khi đánh dấu đã đọc');
+            });
+        }
         @endauth
     };
 
@@ -1901,6 +1888,9 @@ document.addEventListener('DOMContentLoaded', function() {
     @if(auth()->user()->canBuyAnyProduct())
         <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>
     @endif
+    {{-- Include Notification System Components --}}
+    <script src="{{ asset('js/frontend/components/notification-event-system.js') }}"></script>
+    <script src="{{ asset('js/frontend/components/notification-ui-manager.js') }}"></script>
 @endauth
 
 {{-- JavaScript to fix duplicate menu issue --}}
@@ -1925,27 +1915,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     hasPlus: !!hasPlus,
                     index: index
                 });
-                console.log(`Found "Thêm" menu #${addMenus.length}:`, {
-                    text: link.textContent.trim(),
-                    hasPlus: !!hasPlus,
-                    index: index
-                });
+                // Found menu item
             }
         });
 
         // If we have more than 1 "Thêm" menu, hide duplicates
         if (addMenus.length > 1) {
-            console.log(`⚠️ Found ${addMenus.length} duplicate "Thêm" menus. Hiding duplicates...`);
+            // Found duplicate menus, hiding them
 
             // Keep only the one with + icon, hide others
             addMenus.forEach(function(menu, idx) {
                 if (!menu.hasPlus) {
                     menu.element.style.display = 'none';
-                    console.log(`✅ Hidden duplicate "{{ __("nav.create.title") }}" menu: ${menu.text}`);
+                    // Hidden duplicate menu
                 }
             });
-        } else {
-            console.log('✅ No duplicate "{{ __("nav.create.title") }}" menus found');
         }
     }, 100);
 });

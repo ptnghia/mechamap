@@ -853,8 +853,14 @@ Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () 
 
 // Notification AJAX API routes
 Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
+    // New unified endpoint (recommended)
+    Route::get('/', [\App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('ajax.notifications.get');
+
+    // Legacy endpoints (for backward compatibility)
     Route::get('/dropdown', [\App\Http\Controllers\NotificationController::class, 'dropdown'])->name('ajax.notifications.dropdown');
     Route::get('/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('ajax.notifications.unread-count');
+
+    // Action endpoints
     Route::patch('/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read');
     Route::patch('/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read');
     Route::delete('/{notification}', [\App\Http\Controllers\NotificationController::class, 'delete'])->name('ajax.notifications.delete');

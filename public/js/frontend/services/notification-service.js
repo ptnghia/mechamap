@@ -106,9 +106,11 @@ class NotificationService {
 
             if (response.ok) {
                 const data = await response.json();
-                if (data.success && data.data && data.data.token) {
-                    localStorage.setItem('sanctum_token', data.data.token);
-                    return data.data.token;
+                // Handle nested data structure: data.data.data.token
+                const token = data?.data?.data?.token || data?.data?.token;
+                if (data.success && token) {
+                    localStorage.setItem('sanctum_token', token);
+                    return token;
                 }
             }
         } catch (error) {
@@ -220,7 +222,7 @@ class NotificationService {
         });
 
         // Notification events
-        this.socket.on('notification.sent', (data) => {
+        this.socket.on('notification', (data) => {
             console.log('NotificationService: Received notification:', data);
             this.handleNotification(data);
         });
@@ -228,6 +230,14 @@ class NotificationService {
         this.socket.on('notification.read', (data) => {
             console.log('NotificationService: Notification read:', data);
             this.handleNotificationRead(data);
+        });
+
+        // Handle test notifications (for development/testing)
+        this.socket.on('test-notification', (data) => {
+            console.log('🧪 NotificationService: Received test notification:', data);
+            if (data.userId === this.userId) {
+                this.handleNotification(data.notification);
+            }
         });
 
         // Typing events
@@ -276,15 +286,33 @@ class NotificationService {
     /**
      * Handle incoming notification
      */
-    handleNotification(notification) {
+    handleNotification(payload) {
+        // Extract notification data from WebSocket payload
+        const notification = payload.data || payload;
+        const unreadCount = payload.metadata?.unread_count;
+
+        console.log('NotificationService: Processing notification:', notification);
+
         // Trigger callbacks for notification managers
         this.triggerCallbacks('onNotification', notification);
+
+        // Update unread count if provided
+        if (unreadCount !== undefined) {
+            document.dispatchEvent(new CustomEvent('notification-count-updated', {
+                detail: { unreadCount }
+            }));
+        }
 
         // Show browser notification if permission granted
         this.showBrowserNotification(notification);
 
         // Play notification sound
         this.playNotificationSound();
+
+        // Dispatch global event for other components
+        document.dispatchEvent(new CustomEvent('notification-received', {
+            detail: notification
+        }));
     }
 
     /**

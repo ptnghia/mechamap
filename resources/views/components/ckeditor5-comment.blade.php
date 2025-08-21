@@ -230,7 +230,7 @@ function initializeCKEditor5Comment(editorId) {
                 });
             }
 
-            console.log('CKEditor5 initialized for:', editorId);
+            // CKEditor5 initialized successfully
         })
         .catch(error => {
             console.error('Error initializing CKEditor5:', error);

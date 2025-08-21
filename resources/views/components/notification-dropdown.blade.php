@@ -1,12 +1,119 @@
 @props(['position' => 'right'])
 
+@push('styles')
+<style>
+.custom-notification-dropdown {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.custom-notification-dropdown.dropdown-left {
+    right: 0;
+}
+
+.custom-notification-dropdown.dropdown-right {
+    left: 0;
+}
+
+.notification-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.notification-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.notification-footer-link:hover {
+    background: #e9ecef;
+}
+
+.notification-item {
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-bell:hover i {
+    color: #0d6efd !important;
+}
+
+.notification-bell[aria-expanded="true"] i {
+    color: #0d6efd !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .custom-notification-dropdown {
+        width: 320px !important;
+        max-width: calc(100vw - 20px);
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+    }
+}
+
+/* Loading animation */
+.notification-loading .spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notification item animations */
+.notification-item {
+    animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton-line, .skeleton-avatar {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+</style>
+@endpush
+
 <div class="notification-dropdown-wrapper position-relative">
     @auth
         <!-- Notification Bell Button -->
         <button type="button"
                 class="btn btn-link position-relative notification-bell p-2"
                 id="notificationBell"
-                data-bs-toggle="dropdown"
                 aria-expanded="false"
                 title="Thông báo">
             <i class="fas fa-bell fs-5 text-muted"></i>
@@ -17,25 +124,28 @@
             </span>
         </button>
 
-        <!-- Dropdown Menu -->
-        <div class="dropdown-menu dropdown-menu-{{ $position }} notification-dropdown"
+        <!-- Custom Dropdown Menu -->
+        <div class="custom-notification-dropdown {{ $position === 'left' ? 'dropdown-left' : 'dropdown-right' }}"
              id="notificationDropdown"
              aria-labelledby="notificationBell"
-             style="width: 380px; max-height: 500px;">
+             style="display: none; position: absolute; top: 100%; z-index: 1050; width: 380px; max-height: 500px; background: white; border: 1px solid #dee2e6; border-radius: 0.375rem; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);"
+             data-position="{{ $position }}">
 
             <!-- Header -->
-            <div class="dropdown-header d-flex justify-content-between align-items-center py-3 px-3 border-bottom">
-                <h6 class="mb-0 fw-bold">Thông báo</h6>
+            <div class="notification-header d-flex justify-content-between align-items-center py-3 px-3 border-bottom">
+                <h6 class="mb-0 fw-bold" data-translate="notifications.ui.header">Thông báo</h6>
                 <div class="d-flex gap-2">
                     <button type="button"
                             class="btn btn-sm btn-outline-primary btn-mark-all-read"
                             id="markAllRead"
+                            data-translate-title="notifications.ui.mark_all_read"
                             title="Đánh dấu tất cả là đã đọc">
                         <i class="fas fa-check-double"></i>
                     </button>
                     <button type="button"
                             class="btn btn-sm btn-outline-secondary btn-clear-all"
                             id="clearAll"
+                            data-translate-title="notifications.ui.clear_all"
                             title="Xóa tất cả">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -50,6 +160,46 @@
                 <div class="mt-2 text-muted small">Đang tải thông báo...</div>
             </div>
 
+            <!-- Loading Skeleton -->
+            <div class="notification-skeleton" id="notificationSkeleton" style="display: none;">
+                <div class="notification-item p-3">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="skeleton-avatar rounded-circle bg-light" style="width: 40px; height: 40px;"></div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 16px; width: 70%;"></div>
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 14px; width: 90%;"></div>
+                            <div class="skeleton-line bg-light rounded" style="height: 12px; width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-item p-3">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="skeleton-avatar rounded-circle bg-light" style="width: 40px; height: 40px;"></div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 16px; width: 80%;"></div>
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 14px; width: 85%;"></div>
+                            <div class="skeleton-line bg-light rounded" style="height: 12px; width: 45%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-item p-3">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="skeleton-avatar rounded-circle bg-light" style="width: 40px; height: 40px;"></div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 16px; width: 75%;"></div>
+                            <div class="skeleton-line mb-2 bg-light rounded" style="height: 14px; width: 95%;"></div>
+                            <div class="skeleton-line bg-light rounded" style="height: 12px; width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Notifications List -->
             <div class="notification-list" id="notificationItems" style="max-height: 400px; overflow-y: auto;">
                 <!-- Notifications will be loaded here by NotificationManager -->
@@ -58,13 +208,14 @@
             <!-- Empty State -->
             <div class="notification-empty text-center py-4" id="notificationEmpty" style="display: none;">
                 <i class="fas fa-bell-slash text-muted fs-1 mb-3"></i>
-                <p class="text-muted mb-0">Không có thông báo nào</p>
+                <p class="text-muted mb-0" data-translate="notifications.ui.no_notifications">Không có thông báo nào</p>
             </div>
 
             <!-- Footer -->
-            <div class="dropdown-footer border-top">
+            <div class="notification-footer border-top">
                 <a href="{{ route('notifications.index') }}"
-                   class="dropdown-item text-center py-3 text-primary fw-medium">
+                   class="notification-footer-link text-center py-3 text-primary fw-medium d-block text-decoration-none"
+                   data-translate="notifications.ui.view_all">
                     <i class="fas fa-list me-1"></i>
                     Xem tất cả thông báo
                 </a>
@@ -84,43 +235,118 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const notificationDropdown = {
-        // Elements
-        bellBtn: document.getElementById('notificationBell'),
-        badge: document.querySelector('.notification-counter'),
-        unreadCount: document.querySelector('.notification-counter'),
-        dropdownMenu: document.getElementById('notificationDropdown'),
-        notificationList: document.getElementById('notificationItems'),
-        loadingState: document.querySelector('.notification-loading'),
-        emptyState: document.getElementById('notificationEmpty'),
-        markAllReadBtn: document.getElementById('markAllRead'),
+    // Wait for NotificationUIManager to be ready
+    document.addEventListener('notificationUI:notificationUIReady', function(e) {
+        initNotificationDropdown(e.detail.manager);
+    });
 
-        // State
-        isLoaded: false,
-        notifications: [],
+    // If NotificationUIManager is already ready
+    if (window.NotificationUIManager && window.NotificationUIManager.isInitialized) {
+        initNotificationDropdown(window.NotificationUIManager);
+    }
 
-        // Initialize
-        init() {
-            if (!this.bellBtn) return;
+    function initNotificationDropdown(uiManager) {
+        const notificationDropdown = {
+            // Reference to unified UI manager
+            uiManager: uiManager,
 
-            this.loadUnreadCount();
-            this.bindEvents();
+            // State
+            isLoaded: false,
+            isLoading: false,
+            notifications: [],
+            cachedData: null,
+            lastFetchTime: null,
+            cacheTimeout: 60000, // 1 minute cache
+            refreshInterval: null,
+            translationsLoaded: false,
 
-            // Auto refresh every 30 seconds
-            setInterval(() => {
-                this.loadUnreadCount();
-                if (this.isLoaded) {
-                    this.loadNotifications();
+            // Initialize
+            init() {
+                if (!this.uiManager.elements.bell) return;
+
+                // Load translations first
+                this.loadTranslations();
+
+                // Load notifications immediately on page load (with count)
+                this.loadNotificationsWithCount(true);
+                this.bindEvents();
+                this.setupWebSocketHandlers();
+
+                // Auto refresh every 30 seconds (count only, unless dropdown is open)
+                this.refreshInterval = setInterval(() => {
+                    const isDropdownOpen = this.isDropdownOpen();
+                    this.loadNotificationsWithCount(!isDropdownOpen); // Load full data if dropdown is open
+                }, 30000);
+
+                console.log('NotificationDropdown: Initialized with NotificationUIManager');
+            },
+
+        // Load translations
+        async loadTranslations() {
+            try {
+                if (window.translationService) {
+                    await window.translationService.loadNotificationTranslations();
+                    this.translationsLoaded = true;
+                    this.updateTranslatedElements();
+                    console.log('NotificationDropdown: Translations loaded');
+                } else {
+                    console.warn('NotificationDropdown: Translation service not available');
                 }
-            }, 30000);
+            } catch (error) {
+                console.error('NotificationDropdown: Failed to load translations:', error);
+            }
+        },
+
+        // Update elements with translations
+        updateTranslatedElements() {
+            if (!this.translationsLoaded || !window.translationService) return;
+
+            // Update elements with data-translate attribute
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                const translation = window.translationService.trans(key);
+                if (translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+
+            // Update elements with data-translate-title attribute
+            document.querySelectorAll('[data-translate-title]').forEach(element => {
+                const key = element.getAttribute('data-translate-title');
+                const translation = window.translationService.trans(key);
+                if (translation !== key) {
+                    element.setAttribute('title', translation);
+                }
+            });
         },
 
         // Bind events
         bindEvents() {
-            // Use Bootstrap dropdown events instead of click to avoid conflicts
-            this.bellBtn.addEventListener('show.bs.dropdown', () => {
-                if (!this.isLoaded) {
-                    this.loadNotifications();
+            // Preload notifications on hover (for faster UX)
+            this.bellBtn.addEventListener('mouseenter', () => {
+                if (!this.isLoaded && !this.isLoading) {
+                    this.preloadNotifications();
+                }
+            });
+
+            // Custom dropdown toggle
+            this.bellBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleDropdown();
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!this.bellBtn.contains(e.target) && !this.dropdownMenu.contains(e.target)) {
+                    this.closeDropdown();
+                }
+            });
+
+            // Close dropdown on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isDropdownOpen()) {
+                    this.closeDropdown();
                 }
             });
 
@@ -128,72 +354,298 @@ document.addEventListener('DOMContentLoaded', function() {
             this.markAllReadBtn?.addEventListener('click', () => {
                 this.markAllAsRead();
             });
+
+            // Prevent dropdown from closing when clicking inside
+            this.dropdownMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Reposition dropdown on window resize
+            window.addEventListener('resize', () => {
+                if (this.isDropdownOpen()) {
+                    this.positionDropdown();
+                }
+            });
         },
 
-        // Load unread count
-        async loadUnreadCount() {
-            try {
-                const response = await fetch('/ajax/notifications/unread-count', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                });
+        // Dropdown control methods
+        isDropdownOpen() {
+            return this.dropdownMenu.style.display === 'block';
+        },
 
-                const data = await response.json();
-
-                if (data.success) {
-                    this.updateUnreadCount(data.unread_count);
-                }
-            } catch (error) {
-                console.error('Failed to load unread count:', error);
+        toggleDropdown() {
+            if (this.isDropdownOpen()) {
+                this.closeDropdown();
+            } else {
+                this.openDropdown();
             }
         },
 
-        // Load notifications
-        async loadNotifications() {
-            this.showLoading();
+        openDropdown() {
+            // Position dropdown
+            this.positionDropdown();
 
-            try {
-                const response = await fetch('/ajax/notifications/dropdown', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                });
+            // Show dropdown with animation
+            this.dropdownMenu.style.display = 'block';
+            this.dropdownMenu.style.opacity = '0';
+            this.dropdownMenu.style.transform = 'translateY(-10px)';
 
-                const data = await response.json();
+            // Update aria attributes
+            this.bellBtn.setAttribute('aria-expanded', 'true');
 
-                if (data.success) {
-                    this.notifications = data.notifications;
-                    this.renderNotifications();
-                    this.updateUnreadCount(data.unread_count);
-                    this.isLoaded = true;
-                } else {
-                    this.showError('Không thể tải thông báo');
-                }
-            } catch (error) {
-                console.error('Failed to load notifications:', error);
-                this.showError('Có lỗi xảy ra khi tải thông báo');
-            } finally {
-                this.hideLoading();
+            // Show skeleton loading if no data yet
+            if (!this.isLoaded && this.notifications.length === 0) {
+                this.showSkeleton();
             }
+
+            // Animate in
+            requestAnimationFrame(() => {
+                this.dropdownMenu.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                this.dropdownMenu.style.opacity = '1';
+                this.dropdownMenu.style.transform = 'translateY(0)';
+            });
+
+            // Force refresh notifications when dropdown opens (bypass cache)
+            this.forceRefresh();
         },
 
-        // Render notifications
-        renderNotifications() {
-            if (this.notifications.length === 0) {
-                this.showEmpty();
+        closeDropdown() {
+            if (!this.isDropdownOpen()) return;
+
+            // Animate out
+            this.dropdownMenu.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+            this.dropdownMenu.style.opacity = '0';
+            this.dropdownMenu.style.transform = 'translateY(-10px)';
+
+            // Update aria attributes
+            this.bellBtn.setAttribute('aria-expanded', 'false');
+
+            // Hide after animation
+            setTimeout(() => {
+                this.dropdownMenu.style.display = 'none';
+                this.dropdownMenu.style.transition = '';
+            }, 150);
+        },
+
+        positionDropdown() {
+            const position = this.dropdownMenu.getAttribute('data-position') || 'right';
+            const rect = this.bellBtn.getBoundingClientRect();
+            const dropdownWidth = window.innerWidth <= 576 ? 320 : 380;
+            const viewportWidth = window.innerWidth;
+            const margin = 10; // Margin from screen edge
+
+            // Reset positioning
+            this.dropdownMenu.style.left = '';
+            this.dropdownMenu.style.right = '';
+            this.dropdownMenu.style.transform = '';
+
+            // Mobile responsive positioning
+            if (window.innerWidth <= 576) {
+                this.dropdownMenu.style.left = '50%';
+                this.dropdownMenu.style.transform = 'translateX(-50%)';
                 return;
             }
 
-            const html = this.notifications.map(notification => this.renderNotification(notification)).join('');
-            this.notificationList.innerHTML = html;
+            if (position === 'left') {
+                // Position to the left of the button
+                this.dropdownMenu.style.right = '0';
+            } else {
+                // Position to the right of the button (default)
+                // Check if dropdown would go off-screen
+                const spaceOnRight = viewportWidth - rect.right;
+                const spaceOnLeft = rect.left;
 
-            // Bind notification events
-            this.bindNotificationEvents();
+                if (spaceOnRight < dropdownWidth + margin && spaceOnLeft > dropdownWidth + margin) {
+                    // Not enough space on right but enough on left, position to left
+                    this.dropdownMenu.style.right = '0';
+                } else if (spaceOnRight < dropdownWidth + margin && spaceOnLeft < dropdownWidth + margin) {
+                    // Not enough space on either side, center it
+                    this.dropdownMenu.style.left = '50%';
+                    this.dropdownMenu.style.transform = 'translateX(-50%)';
+                } else {
+                    // Enough space on right
+                    this.dropdownMenu.style.left = '0';
+                }
+            }
+        },
 
-            this.hideEmpty();
+        // Setup WebSocket handlers for real-time updates
+        setupWebSocketHandlers() {
+            console.log('🔗 Setting up WebSocket handlers for NotificationDropdown...');
+
+            // Listen for WebSocket notification events from NotificationService
+            if (window.NotificationService) {
+                console.log('📡 NotificationService found, setting up listeners...');
+
+                // Listen for new notifications
+                window.NotificationService.on('onNotification', (notification) => {
+                    console.log('🔔 NotificationDropdown received WebSocket notification:', notification);
+                    this.handleNewNotification(notification);
+                });
+
+                // Listen for notification updates
+                window.NotificationService.on('notificationUpdate', (data) => {
+                    console.log('🔄 NotificationDropdown received notification update:', data);
+                    if (data.type === 'read') {
+                        this.handleNotificationRead(data.notificationId);
+                    }
+                });
+            } else {
+                console.warn('⚠️ NotificationService not available for real-time updates');
+            }
+
+            // Listen for global notification events (fallback)
+            document.addEventListener('notification-received', (event) => {
+                console.log('📨 NotificationDropdown received global notification event:', event.detail);
+                this.handleNewNotification(event.detail);
+            });
+
+            document.addEventListener('notification-read', (event) => {
+                console.log('✅ NotificationDropdown received notification read event:', event.detail);
+                this.handleNotificationRead(event.detail.notificationId);
+            });
+
+            // Listen for NotificationManager events (bridge compatibility)
+            document.addEventListener('notificationManager:newNotification', (event) => {
+                console.log('🌉 NotificationDropdown received NotificationManager event:', event.detail);
+                this.handleNewNotification(event.detail);
+            });
+        },
+
+        // Load notifications with count using unified endpoint
+        async loadNotificationsWithCount(countOnly = false) {
+            try {
+                // Check cache first - only for count-only requests
+                if (countOnly && this.cachedData && this.lastFetchTime &&
+                    (Date.now() - this.lastFetchTime) < this.cacheTimeout) {
+                    this.updateUnreadCount(this.cachedData.unread_count);
+                    return;
+                }
+
+                const params = new URLSearchParams({
+                    load_notifications: countOnly ? 'false' : 'true',
+                    limit: '10'
+                });
+
+                const response = await fetch(`/ajax/notifications?${params}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update cache
+                    this.cachedData = data;
+                    this.lastFetchTime = Date.now();
+
+                    // Update UI
+                    this.updateUnreadCount(data.unread_count);
+
+                    if (data.loaded_notifications && data.notifications) {
+                        this.notifications = data.notifications;
+                        this.renderNotifications();
+                        this.isLoaded = true;
+                    }
+                } else {
+                    console.error('Failed to load notifications:', data.message);
+                    if (!countOnly) {
+                        this.showError('Không thể tải thông báo');
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load notifications:', error);
+                if (!countOnly) {
+                    this.showError('Có lỗi xảy ra khi tải thông báo');
+                }
+            }
+        },
+
+        // Handle new notification from WebSocket
+        handleNewNotification(notification) {
+            console.log('🔔 Processing new notification in dropdown:', notification);
+
+            // Ensure notification has required properties
+            if (!notification || !notification.id) {
+                console.warn('⚠️ Invalid notification received:', notification);
+                return;
+            }
+
+            // Format notification for dropdown display
+            const formattedNotification = this.formatNotificationForDisplay(notification);
+
+            // Update unread count
+            if (this.cachedData) {
+                this.cachedData.unread_count++;
+                this.updateUnreadCount(this.cachedData.unread_count);
+            } else {
+                // If no cached data, just increment badge
+                const currentCount = parseInt(this.unreadCount.textContent) || 0;
+                this.updateUnreadCount(currentCount + 1);
+            }
+
+            // Add to notifications list if loaded
+            if (this.isLoaded && this.notifications) {
+                // Check if notification already exists (prevent duplicates)
+                const existingIndex = this.notifications.findIndex(n => n.id === notification.id);
+                if (existingIndex === -1) {
+                    this.notifications.unshift(formattedNotification);
+                    this.renderNotifications();
+                    console.log('✅ Added new notification to dropdown list');
+                } else {
+                    console.log('ℹ️ Notification already exists in list, skipping');
+                }
+            }
+
+            // Show visual feedback if dropdown is open
+            if (this.isDropdownOpen()) {
+                this.showNewNotificationAnimation();
+            }
+
+            // Invalidate cache to force refresh on next load
+            this.clearCache();
+        },
+
+        // Clear cache and force refresh
+        clearCache() {
+            this.cachedData = null;
+            this.lastFetchTime = null;
+            this.isLoaded = false;
+        },
+
+        // Force refresh notifications (bypass cache)
+        async forceRefresh() {
+            this.clearCache();
+            await this.loadNotificationsWithCount(false);
+        },
+
+        // Handle notification read event
+        handleNotificationRead(notificationId) {
+            // Update unread count
+            if (this.cachedData) {
+                this.cachedData.unread_count = Math.max(0, this.cachedData.unread_count - 1);
+                this.updateUnreadCount(this.cachedData.unread_count);
+            }
+
+            // Update notification in list
+            if (this.notifications) {
+                const notification = this.notifications.find(n => n.id == notificationId);
+                if (notification) {
+                    notification.is_read = true;
+                    this.renderNotifications();
+                }
+            }
+        },
+
+        // Render notifications - Use NotificationUIManager
+        renderNotifications() {
+            // Use unified UI manager for rendering
+            this.uiManager.renderNotifications(this.notifications);
+
+            // Hide skeleton loading
+            this.hideSkeleton();
         },
 
         // Render single notification
@@ -210,18 +662,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="notification-content flex-grow-1">
                             <div class="notification-title fw-medium mb-1">
-                                ${notification.title}
+                                ${this.translateNotificationText(notification.title)}
                             </div>
                             <div class="notification-message text-muted small mb-2">
-                                ${notification.message}
+                                ${this.translateNotificationText(notification.message)}
                             </div>
                             <div class="notification-meta d-flex justify-content-between align-items-center">
                                 <small class="text-muted">${notification.time_ago}</small>
                                 <div class="notification-actions">
-                                    ${isUnread ? '<span class="badge bg-primary">Mới</span>' : ''}
+                                    ${isUnread ? `<span class="badge bg-primary">${this.getTranslation('notifications.ui.new_badge', 'Mới')}</span>` : ''}
                                     <button type="button"
                                             class="btn btn-sm btn-link text-muted p-0 ms-2 delete-notification-btn"
-                                            title="Xóa thông báo">
+                                            title="${this.getTranslation('notifications.ui.delete_notification', 'Xóa thông báo')}">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
@@ -231,6 +683,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${actionUrl !== '#' ? `<a href="${actionUrl}" class="stretched-link"></a>` : ''}
                 </div>
             `;
+        },
+
+        // Helper method to get translation
+        getTranslation(key, fallback) {
+            if (this.translationsLoaded && window.translationService) {
+                return window.translationService.trans(key, {}, fallback);
+            }
+            return fallback;
+        },
+
+        // Helper method to translate notification text
+        translateNotificationText(text) {
+            if (!text) return '';
+
+            // Check if text looks like a translation key
+            if (text.includes('.') && text.match(/^[a-z_]+\.[a-z_]+/)) {
+                return this.getTranslation(text, text);
+            }
+
+            return text;
         },
 
         // Bind notification events
@@ -272,16 +744,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await response.json();
 
                 if (data.success) {
-                    // Update UI
-                    const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
-                    if (item) {
-                        item.classList.remove('bg-light');
-                        const badge = item.querySelector('.badge');
-                        if (badge) badge.remove();
-                    }
+                    // Trigger global event for other components
+                    document.dispatchEvent(new CustomEvent('notification-read', {
+                        detail: { notificationId }
+                    }));
 
-                    // Update unread count
-                    this.loadUnreadCount();
+                    // Update UI immediately (will be handled by handleNotificationRead)
+                    this.handleNotificationRead(notificationId);
                 }
             } catch (error) {
                 console.error('Failed to mark as read:', error);
@@ -321,7 +790,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
 
-        // Delete notification
+        // Delete notification - Use NotificationUIManager
         async deleteNotification(notificationId) {
             try {
                 const response = await fetch(`/ajax/notifications/${notificationId}`, {
@@ -335,19 +804,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await response.json();
 
                 if (data.success) {
-                    // Remove from UI
-                    const item = document.querySelector(`[data-notification-id="${notificationId}"]`);
-                    if (item) {
-                        item.remove();
-                    }
-
                     // Update notifications array
                     this.notifications = this.notifications.filter(n => n.id != notificationId);
 
-                    // Check if empty
-                    if (this.notifications.length === 0) {
-                        this.showEmpty();
-                    }
+                    // Use NotificationUIManager to handle UI updates
+                    this.uiManager.handleNotificationDeleted(notificationId);
 
                     // Update unread count
                     this.loadUnreadCount();
@@ -374,27 +835,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
 
-        // Show loading state
+        // Show loading state - Use NotificationUIManager
         showLoading() {
-            this.loadingState.classList.remove('d-none');
-            this.notificationList.innerHTML = '';
-            this.hideEmpty();
+            this.uiManager.showLoading();
         },
 
-        // Hide loading state
+        // Hide loading state - Use NotificationUIManager
         hideLoading() {
-            this.loadingState.classList.add('d-none');
+            this.uiManager.hideLoading();
         },
 
-        // Show empty state
+        // Show empty state - Use NotificationUIManager
         showEmpty() {
-            this.emptyState.classList.remove('d-none');
-            this.notificationList.innerHTML = '';
+            this.uiManager.showEmpty();
         },
 
-        // Hide empty state
+        // Hide empty state - Use NotificationUIManager
         hideEmpty() {
-            this.emptyState.classList.add('d-none');
+            this.uiManager.hideEmpty();
         },
 
         // Show error
@@ -405,11 +863,99 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="text-muted mb-0">${message}</p>
                 </div>
             `;
-        }
-    };
+        },
 
-    // Initialize notification dropdown
-    notificationDropdown.init();
+        // Preload notifications (background loading)
+        async preloadNotifications() {
+            if (this.isLoading || this.isLoaded) return;
+
+            this.isLoading = true;
+            try {
+                await this.loadNotificationsWithCount(false);
+            } catch (error) {
+                console.error('Failed to preload notifications:', error);
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        // Show skeleton loading state
+        showSkeleton() {
+            this.hideLoading();
+            this.hideEmpty();
+            this.notificationList.innerHTML = '';
+            this.skeletonState.style.display = 'block';
+        },
+
+        // Hide skeleton loading state
+        hideSkeleton() {
+            this.skeletonState.style.display = 'none';
+        },
+
+        // Format notification for dropdown display
+        formatNotificationForDisplay(notification) {
+            // Ensure required properties exist
+            const formatted = {
+                id: notification.id,
+                title: notification.title || 'Thông báo mới',
+                message: notification.message || '',
+                type: notification.type || 'system',
+                icon: notification.icon || 'fas fa-bell',
+                color: notification.color || 'primary',
+                is_read: notification.is_read || false,
+                created_at: notification.created_at || new Date().toISOString(),
+                time_ago: notification.time_ago || 'Vừa xong',
+                action_url: notification.action_url || '#',
+                user_id: notification.user_id
+            };
+
+            console.log('📝 Formatted notification for display:', formatted);
+            return formatted;
+        },
+
+        // Show animation for new notification
+        showNewNotificationAnimation() {
+            // Add a subtle animation to indicate new notification
+            if (this.notificationList && this.notificationList.firstElementChild) {
+                const firstItem = this.notificationList.firstElementChild;
+                firstItem.style.animation = 'slideInDown 0.3s ease-out';
+
+                // Add a temporary highlight
+                firstItem.style.backgroundColor = '#e3f2fd';
+                setTimeout(() => {
+                    firstItem.style.backgroundColor = '';
+                    firstItem.style.animation = '';
+                }, 2000);
+            }
+        },
+
+        // Cleanup method
+        destroy() {
+            if (this.refreshInterval) {
+                clearInterval(this.refreshInterval);
+                this.refreshInterval = null;
+            }
+
+            // Clear cache
+            this.cachedData = null;
+            this.lastFetchTime = null;
+
+            // Remove event listeners would be handled by browser when elements are removed
+            console.log('NotificationDropdown: Cleaned up');
+        }
+        };
+
+        // Initialize notification dropdown
+        notificationDropdown.init();
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            notificationDropdown.destroy();
+        });
+
+        // Store reference for external access
+        window.notificationDropdown = notificationDropdown;
+    }
 });
 </script>
 @endpush

@@ -31,6 +31,7 @@ class ShowcaseController extends Controller
         $featuredShowcases = Showcase::where('is_public', true)
             ->whereIn('status', ['featured', 'approved'])
             ->with(['user', 'showcaseable', 'media', 'ratings'])
+            ->withCount(['comments', 'likes'])
             ->orderByRaw("CASE WHEN status = 'featured' THEN 1 ELSE 2 END")
             ->orderBy('view_count', 'desc')
             ->orderBy('rating_average', 'desc')
@@ -152,6 +153,7 @@ class ShowcaseController extends Controller
     private function getAllShowcasesWithFilters(Request $request)
     {
         $query = Showcase::with(['user', 'showcaseable', 'media', 'ratings'])
+            ->withCount(['comments', 'likes'])
             ->where('is_public', true)
             ->whereIn('status', ['featured', 'approved']);
 

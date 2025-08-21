@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -39,6 +40,9 @@ class ShowcaseRating extends Model
         'documentation',
         'overall_rating',
         'review',
+        'has_media',
+        'images',
+        'like_count',
     ];
 
     /**
@@ -52,6 +56,9 @@ class ShowcaseRating extends Model
         'usefulness' => 'integer',
         'documentation' => 'integer',
         'overall_rating' => 'decimal:2',
+        'has_media' => 'boolean',
+        'images' => 'array',
+        'like_count' => 'integer',
     ];
 
     /**
@@ -63,10 +70,18 @@ class ShowcaseRating extends Model
 
         // Auto-calculate overall rating before saving
         static::saving(function ($rating) {
-            $rating->overall_rating = ($rating->technical_quality + 
-                                    $rating->innovation + 
-                                    $rating->usefulness + 
+            $rating->overall_rating = ($rating->technical_quality +
+                                    $rating->innovation +
+                                    $rating->usefulness +
                                     $rating->documentation) / 4;
+
+            // Auto-update has_media when images are set
+            $rating->has_media = !empty($rating->images) && count($rating->images) > 0;
+        });
+
+        // Update like_count when likes are added/removed
+        static::saved(function ($rating) {
+            $rating->updateLikeCount();
         });
     }
 
@@ -110,5 +125,98 @@ class ShowcaseRating extends Model
             'usefulness' => 'Tính hữu ích',
             'documentation' => 'Chất lượng tài liệu',
         ];
+    }
+
+    /**
+     * Get all replies for this rating.
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(ShowcaseRatingReply::class, 'rating_id')
+            ->with(['user', 'likes'])
+            ->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * Get all likes for this rating.
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(ShowcaseRatingLike::class, 'rating_id');
+    }
+
+    /**
+     * Check if this rating is liked by the given user.
+     */
+    public function isLikedBy(User $user): bool
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Toggle like for this rating by the given user.
+     */
+    public function toggleLike(User $user): bool
+    {
+        $existingLike = $this->likes()->where('user_id', $user->id)->first();
+
+        if ($existingLike) {
+            $existingLike->delete();
+            $this->updateLikeCount();
+            return false; // Unliked
+        } else {
+            $this->likes()->create(['user_id' => $user->id]);
+            $this->updateLikeCount();
+            return true; // Liked
+        }
+    }
+
+    /**
+     * Update the like_count based on actual likes.
+     */
+    public function updateLikeCount(): void
+    {
+        $this->like_count = $this->likes()->count();
+        $this->saveQuietly(); // Save without triggering events
+    }
+
+    /**
+     * Get formatted review content with basic HTML support.
+     */
+    public function getFormattedReviewAttribute(): string
+    {
+        return $this->review ? nl2br(e($this->review)) : '';
+    }
+
+    /**
+     * Get image URLs if images exist.
+     */
+    public function getImageUrlsAttribute(): array
+    {
+        if (!$this->has_media || empty($this->images)) {
+            return [];
+        }
+
+        return collect($this->images)->map(function ($image) {
+            // Assuming images are stored as relative paths
+            return asset('storage/' . $image);
+        })->toArray();
+    }
+
+    /**
+     * Scope to get ratings with media.
+     */
+    public function scopeWithMedia($query)
+    {
+        return $query->where('has_media', true);
+    }
+
+    /**
+     * Scope to get popular ratings (high like count).
+     */
+    public function scopePopular($query, int $minLikes = 1)
+    {
+        return $query->where('like_count', '>=', $minLikes)
+            ->orderBy('like_count', 'desc');
     }
 }

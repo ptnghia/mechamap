@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 /**
  * Multilingual SEO Service
- * 
+ *
  * Handles SEO data with multilingual support
  */
 class MultilingualSeoService
@@ -41,8 +41,8 @@ class MultilingualSeoService
             'og_title' => $this->processTitle($pageSeo->getLocalizedOgTitle($locale), $request),
             'og_description' => $this->processDescription($pageSeo->getLocalizedOgDescription($locale), $request),
             'og_image' => $pageSeo->og_image,
-            'twitter_title' => $this->processTitle($pageSeo->twitter_title_i18n[$locale] ?? $pageSeo->twitter_title, $request),
-            'twitter_description' => $this->processDescription($pageSeo->twitter_description_i18n[$locale] ?? $pageSeo->twitter_description, $request),
+            'twitter_title' => $this->processTitle($this->getLocalizedTwitterTitle($pageSeo, $locale), $request),
+            'twitter_description' => $this->processDescription($this->getLocalizedTwitterDescription($pageSeo, $locale), $request),
             'twitter_image' => $pageSeo->twitter_image,
             'canonical_url' => $this->getCanonicalUrl($pageSeo->canonical_url, $request),
             'no_index' => $pageSeo->no_index,
@@ -115,24 +115,60 @@ class MultilingualSeoService
         // Get route parameters
         $routeParams = $request->route() ? $request->route()->parameters() : [];
 
+        // Special handling for marketplace products - find product by slug
+        if ($request->route() && $request->route()->getName() === 'marketplace.products.show') {
+            $slug = $routeParams['slug'] ?? null;
+            if ($slug) {
+                try {
+                    $product = \App\Models\MarketplaceProduct::where('slug', $slug)
+                        ->where('status', 'approved')
+                        ->where('is_active', true)
+                        ->first();
+                    if ($product) {
+                        $routeParams['product'] = $product;
+                    }
+                } catch (\Exception $e) {
+                    // Ignore errors and continue without product
+                }
+            }
+        }
+
+
+
         // Replace common placeholders
         foreach ($routeParams as $key => $value) {
+
+
             if (is_object($value)) {
-                // Handle model objects
-                if (method_exists($value, 'name')) {
+                // Special handling for specific models FIRST (before generic patterns)
+                if ($key === 'forum' && isset($value->name)) {
+                    $text = str_replace('{forum_name}', $value->name, $text);
+                }
+                if ($key === 'thread' && isset($value->title)) {
+                    $text = str_replace('{thread_title}', $value->title, $text);
+                }
+                if ($key === 'category' && isset($value->name)) {
+                    $text = str_replace('{category_name}', $value->name, $text);
+                }
+                if ($key === 'product' && isset($value->name)) {
+                    $text = str_replace('{product_name}', $value->name, $text);
+                }
+
+                // Handle model objects (generic patterns)
+                if (isset($value->name)) {
                     $text = str_replace('{' . $key . '_name}', $value->name, $text);
                     $text = str_replace('{' . $key . '}', $value->name, $text);
                 }
-                if (method_exists($value, 'title')) {
+                if (isset($value->title)) {
                     $text = str_replace('{' . $key . '_title}', $value->title, $text);
-                    if (!method_exists($value, 'name')) {
+                    if (!isset($value->name)) {
                         $text = str_replace('{' . $key . '}', $value->title, $text);
                     }
                 }
-                if (method_exists($value, 'username')) {
+                if (isset($value->username)) {
                     $text = str_replace('{user_name}', $value->username, $text);
                 }
-                if (method_exists($value, 'description')) {
+                if (isset($value->description)) {
                     $text = str_replace('{' . $key . '_description}', $value->description, $text);
                 }
             } else {
@@ -288,5 +324,37 @@ class MultilingualSeoService
         }
 
         return $exportData;
+    }
+
+    /**
+     * Get localized Twitter title
+     *
+     * @param PageSeo $pageSeo
+     * @param string $locale
+     * @return string|null
+     */
+    private function getLocalizedTwitterTitle(PageSeo $pageSeo, string $locale): ?string
+    {
+        if ($pageSeo->twitter_title_i18n && isset($pageSeo->twitter_title_i18n[$locale])) {
+            return $pageSeo->twitter_title_i18n[$locale];
+        }
+
+        return $pageSeo->twitter_title ?: $pageSeo->getLocalizedTitle($locale);
+    }
+
+    /**
+     * Get localized Twitter description
+     *
+     * @param PageSeo $pageSeo
+     * @param string $locale
+     * @return string|null
+     */
+    private function getLocalizedTwitterDescription(PageSeo $pageSeo, string $locale): ?string
+    {
+        if ($pageSeo->twitter_description_i18n && isset($pageSeo->twitter_description_i18n[$locale])) {
+            return $pageSeo->twitter_description_i18n[$locale];
+        }
+
+        return $pageSeo->twitter_description ?: $pageSeo->getLocalizedDescription($locale);
     }
 }

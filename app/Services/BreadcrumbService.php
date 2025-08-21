@@ -29,7 +29,7 @@ class BreadcrumbService
 
         // Always start with Home - get from SEO data with localization
         $homeSeo = PageSeo::findByRoute('home');
-        $homeTitle = $homeSeo ? $this->extractBreadcrumbTitle($homeSeo->getLocalizedTitle()) : __('breadcrumb.home');
+        $homeTitle = $homeSeo ? $this->extractBreadcrumbTitle($homeSeo->getLocalizedTitle(), $request) : __('breadcrumb.home');
 
         $breadcrumbs[] = [
             'title' => $homeTitle,
@@ -96,24 +96,46 @@ class BreadcrumbService
         // Handle specific route patterns with hierarchy
         if ($this->isHierarchicalRoute($routeName)) {
             $breadcrumbs = $this->generateHierarchicalBreadcrumbs($routeName, $request);
-        }
 
-        // Add current page breadcrumb
-        if ($pageSeo) {
-            $breadcrumbs[] = [
-                'title' => $this->extractBreadcrumbTitle($pageSeo->getLocalizedTitle(), $request),
-                'url' => $request->url(),
-                'active' => false
-            ];
+            // Add current page breadcrumb for hierarchical routes if not already included
+            if ($pageSeo && !$this->isCurrentPageInBreadcrumbs($breadcrumbs, $request->url())) {
+                $breadcrumbs[] = [
+                    'title' => $this->extractBreadcrumbTitle($pageSeo->getLocalizedTitle(), $request),
+                    'url' => $request->url(),
+                    'active' => false
+                ];
+            }
         } else {
-            // Fallback for current page
-            $fallbackBreadcrumb = $this->generateFallbackBreadcrumbForRoute($routeName, $request);
-            if ($fallbackBreadcrumb) {
-                $breadcrumbs[] = $fallbackBreadcrumb;
+            // Add current page breadcrumb for non-hierarchical routes
+            if ($pageSeo) {
+                $breadcrumbs[] = [
+                    'title' => $this->extractBreadcrumbTitle($pageSeo->getLocalizedTitle(), $request),
+                    'url' => $request->url(),
+                    'active' => false
+                ];
+            } else {
+                // Fallback for current page
+                $fallbackBreadcrumb = $this->generateFallbackBreadcrumbForRoute($routeName, $request);
+                if ($fallbackBreadcrumb) {
+                    $breadcrumbs[] = $fallbackBreadcrumb;
+                }
             }
         }
 
         return $breadcrumbs;
+    }
+
+    /**
+     * Check if current page URL is already in breadcrumbs
+     */
+    private function isCurrentPageInBreadcrumbs(array $breadcrumbs, string $currentUrl): bool
+    {
+        foreach ($breadcrumbs as $breadcrumb) {
+            if (isset($breadcrumb['url']) && $breadcrumb['url'] === $currentUrl) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -150,13 +172,16 @@ class BreadcrumbService
 
         // Forum hierarchy: Forums > Category > Forum > Thread
         if (str_starts_with($routeName, 'forums.') || str_starts_with($routeName, 'threads.') || str_starts_with($routeName, 'categories.')) {
-            $forumsSeo = PageSeo::findByRoute('forums.index');
-            if ($forumsSeo) {
-                $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($forumsSeo->getLocalizedTitle()),
-                    'url' => route('forums.index'),
-                    'active' => false
-                ];
+            // Only add forums.index breadcrumb if we're NOT on the forums.index page itself
+            if ($routeName !== 'forums.index') {
+                $forumsSeo = PageSeo::findByRoute('forums.index');
+                if ($forumsSeo) {
+                    $breadcrumbs[] = [
+                        'title' => $this->extractBreadcrumbTitle($forumsSeo->getLocalizedTitle(), $request),
+                        'url' => route('forums.index'),
+                        'active' => false
+                    ];
+                }
             }
 
             // Add category if available
@@ -184,7 +209,7 @@ class BreadcrumbService
             $marketplaceSeo = PageSeo::findByRoute('marketplace.index');
             if ($marketplaceSeo) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($marketplaceSeo->getLocalizedTitle()),
+                    'title' => $this->extractBreadcrumbTitle($marketplaceSeo->getLocalizedTitle(), $request),
                     'url' => route('marketplace.index'),
                     'active' => false
                 ];
@@ -194,7 +219,7 @@ class BreadcrumbService
                 $productsSeo = PageSeo::findByRoute('marketplace.products.index');
                 if ($productsSeo) {
                     $breadcrumbs[] = [
-                        'title' => $this->extractBreadcrumbTitle($productsSeo->getLocalizedTitle()),
+                        'title' => $this->extractBreadcrumbTitle($productsSeo->getLocalizedTitle(), $request),
                         'url' => route('marketplace.products.index'),
                         'active' => false
                     ];
@@ -207,7 +232,7 @@ class BreadcrumbService
             $usersSeo = PageSeo::findByRoute('users.index');
             if ($usersSeo) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($usersSeo->getLocalizedTitle()),
+                    'title' => $this->extractBreadcrumbTitle($usersSeo->getLocalizedTitle(), $request),
                     'url' => route('users.index'),
                     'active' => false
                 ];
@@ -244,18 +269,57 @@ class BreadcrumbService
         // Get route parameters
         $routeParams = $request->route() ? $request->route()->parameters() : [];
 
+        // Special handling for marketplace products - find product by slug
+        if ($request->route() && $request->route()->getName() === 'marketplace.products.show') {
+            $slug = $routeParams['slug'] ?? null;
+            if ($slug) {
+                try {
+                    $product = \App\Models\MarketplaceProduct::where('slug', $slug)
+                        ->where('status', 'approved')
+                        ->where('is_active', true)
+                        ->first();
+                    if ($product) {
+                        $routeParams['product'] = $product;
+                    }
+                } catch (\Exception $e) {
+                    // Ignore errors and continue without product
+                }
+            }
+        }
+
         // Replace common placeholders
         foreach ($routeParams as $key => $value) {
             if (is_object($value)) {
-                // Handle model objects
-                if (method_exists($value, 'name')) {
+                // Special handling for specific models FIRST (before generic patterns)
+                if ($key === 'forum' && isset($value->name)) {
+                    $title = str_replace('{forum_name}', $value->name, $title);
+                }
+                if ($key === 'thread' && isset($value->title)) {
+                    $title = str_replace('{thread_title}', $value->title, $title);
+                }
+                if ($key === 'category' && isset($value->name)) {
+                    $title = str_replace('{category_name}', $value->name, $title);
+                }
+                if ($key === 'product' && isset($value->name)) {
+                    $title = str_replace('{product_name}', $value->name, $title);
+                }
+
+                // Handle model objects (generic patterns)
+                if (isset($value->name)) {
                     $title = str_replace('{' . $key . '_name}', $value->name, $title);
+                    $title = str_replace('{' . $key . '}', $value->name, $title);
                 }
-                if (method_exists($value, 'title')) {
+                if (isset($value->title)) {
                     $title = str_replace('{' . $key . '_title}', $value->title, $title);
+                    if (!isset($value->name)) {
+                        $title = str_replace('{' . $key . '}', $value->title, $title);
+                    }
                 }
-                if (method_exists($value, 'username')) {
+                if (isset($value->username)) {
                     $title = str_replace('{user_name}', $value->username, $title);
+                }
+                if ($key === 'category' && method_exists($value, 'name')) {
+                    $title = str_replace('{category_name}', $value->name, $title);
                 }
             } else {
                 // Handle string parameters

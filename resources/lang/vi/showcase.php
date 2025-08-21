@@ -6,7 +6,7 @@
  */
 
 return array (
-  'title' => 
+  'title' =>
   array (
     0 => 'Trưng bày',
     1 => 'Trưng bày',
@@ -14,7 +14,7 @@ return array (
   'subtitle' => 'Dự án và sản phẩm của cộng đồng',
   'description' => 'Khám phá các dự án kỹ thuật cơ khí xuất sắc từ cộng đồng',
   'new' => 'Showcase mới',
-  'categories' => 
+  'categories' =>
   array (
     'all' => 'Tất cả',
     'mechanical_design' => 'Thiết kế Cơ khí',
@@ -52,14 +52,14 @@ return array (
   'cover_image_help' => 'Ảnh đại diện chính cho showcase (tỷ lệ 16:9 được khuyến nghị)',
   'current_thread_image' => 'Ảnh hiện tại của chủ đề',
   'complexity_level' => 'Mức độ phức tạp',
-  'complexity_levels' => 
+  'complexity_levels' =>
   array (
     'beginner' => 'Cơ bản',
     'intermediate' => 'Trung bình',
     'advanced' => 'Nâng cao',
     'expert' => 'Chuyên gia',
   ),
-  'project_types' => 
+  'project_types' =>
   array (
     'design_project' => 'Dự án Thiết kế',
     'case_study' => 'Nghiên cứu Tình huống',
@@ -75,14 +75,14 @@ return array (
   'browse_files' => 'duyệt tệp',
   'file_upload_help' => 'Hỗ trợ: JPG, PNG, PDF, DWG, STEP, STL',
   'file_upload_limits' => 'Tối đa 10 tệp, mỗi tệp không quá 50MB',
-  'actions' => 
+  'actions' =>
   array (
-    'create' => 
+    'create' =>
     array (
       0 => 'Tạo showcase',
       1 => 'Tạo showcase',
     ),
-    'edit' => 
+    'edit' =>
     array (
       0 => 'Sửa showcase',
       1 => 'Sửa showcase',
@@ -104,7 +104,7 @@ return array (
     'feature' => 'Nổi bật',
     'promote' => 'Quảng bá',
   ),
-  'create' => 
+  'create' =>
   array (
     'title' => 'Tạo Showcase Mới',
     'heading' => 'Tạo Showcase Mới',
@@ -123,7 +123,7 @@ return array (
     'desc_placeholder' => 'Mô tả showcase...',
     'location_label' => 'Địa điểm:',
   ),
-  'form' => 
+  'form' =>
   array (
     'title_placeholder' => 'Nhập tiêu đề dự án...',
     'description_placeholder' => 'Mô tả chi tiết về dự án của bạn...',
@@ -144,7 +144,7 @@ return array (
     'member_role' => 'Vai trò',
     'member_contact' => 'Liên hệ',
   ),
-  'status' => 
+  'status' =>
   array (
     'draft' => 'Bản nháp',
     'in_progress' => 'Đang thực hiện',
@@ -158,7 +158,7 @@ return array (
     'production' => 'Sản xuất',
     'published' => 'Đã xuất bản',
   ),
-  'visibility' => 
+  'visibility' =>
   array (
     'public' => 'Công khai',
     'private' => 'Riêng tư',
@@ -166,7 +166,7 @@ return array (
     'members_only' => 'Chỉ thành viên',
     'featured' => 'Nổi bật',
   ),
-  'display' => 
+  'display' =>
   array (
     'featured_projects' => 'Dự án nổi bật',
     'latest_projects' => 'Dự án mới nhất',
@@ -185,7 +185,7 @@ return array (
     'no_projects' => 'Không có dự án nào',
     'empty_state' => 'Chưa có dự án nào được tạo',
   ),
-  'details' => 
+  'details' =>
   array (
     'overview' => 'Tổng quan',
     'specifications' => 'Thông số kỹ thuật',
@@ -208,7 +208,12 @@ return array (
     'updated_date' => 'Ngày cập nhật',
     'completion_date' => 'Ngày hoàn thành',
   ),
-  'comments' => 
+  'quick_stats' => 'Thống kê nhanh',
+  'total_projects' => 'Tổng dự án',
+  'contributors' => 'Người đóng góp',
+  'share_your_project' => 'Chia sẻ dự án của bạn',
+  'showcase_description' => 'Trưng bày dự án kỹ thuật và nhận phản hồi từ cộng đồng',
+  'comments' =>
   array (
     'add_comment' => 'Thêm bình luận',
     'write_comment' => 'Viết bình luận...',
@@ -227,7 +232,7 @@ return array (
     'comment_updated' => 'Đã cập nhật bình luận',
     'comment_deleted' => 'Đã xóa bình luận',
   ),
-  'interactions' => 
+  'interactions' =>
   array (
     'liked' => 'Đã thích',
     'unliked' => 'Đã bỏ thích',
@@ -243,7 +248,7 @@ return array (
     'action_completed' => 'Đã thực hiện',
   ),
   'search' => 'Tìm kiếm',
-  'errors' => 
+  'errors' =>
   array (
     'project_not_found' => 'Không tìm thấy dự án',
     'access_denied' => 'Không có quyền truy cập',
@@ -261,7 +266,7 @@ return array (
     'server_error' => 'Lỗi máy chủ',
     'validation_error' => 'Lỗi xác thực dữ liệu',
   ),
-  'success' => 
+  'success' =>
   array (
     'project_created' => 'Đã tạo dự án thành công',
     'project_updated' => 'Đã cập nhật dự án thành công',
@@ -273,7 +278,7 @@ return array (
     'comment_posted' => 'Đã đăng bình luận thành công',
     'settings_saved' => 'Đã lưu cài đặt thành công',
   ),
-  'notifications' => 
+  'notifications' =>
   array (
     'new_project' => 'Dự án mới đã được tạo',
     'project_updated' => 'Dự án đã được cập nhật',
@@ -291,7 +296,7 @@ return array (
   'files_selected' => 'Tệp đã chọn',
   'file_upload_description' => 'Tải lên hình ảnh, bản vẽ kỹ thuật, tệp CAD hoặc tài liệu liên quan đến dự án',
   'confirm_info' => 'Xác nhận thông tin',
-  'confirm_points' => 
+  'confirm_points' =>
   array (
     0 => 'Showcase sẽ được tạo và liên kết với chủ đề này',
     1 => 'Thông tin sẽ được hiển thị công khai',
@@ -306,7 +311,7 @@ return array (
   'cover_image_required' => 'Vui lòng chọn ảnh bìa',
   'file_size_error' => 'Kích thước tệp quá lớn (tối đa 5MB)',
   'terms_required' => 'Vui lòng đồng ý với điều khoản sử dụng',
-  'labels' => 
+  'labels' =>
   array (
     'author' => 'Tác giả',
     'category' => 'Danh mục',
@@ -366,7 +371,7 @@ return array (
   'no_projects_found' => 'Không tìm thấy dự án nào',
   'try_different_filters' => 'Thử sử dụng bộ lọc khác',
   'create_new_project' => 'Tạo dự án mới',
-  'features' => 
+  'features' =>
   array (
     'cad' => 'CAD',
     'download' => 'Download',
@@ -431,7 +436,7 @@ return array (
   'file_type_not_supported' => 'Loại tệp :filename không được hỗ trợ',
   'features.cad' => 'CAD',
   'features.download' => 'Tải xuống',
-  'show' => 
+  'show' =>
   array (
     'default_title' => 'Showcase Item',
     'image_alt' => 'Showcase image',

@@ -494,6 +494,36 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get display name (name or username)
+     *
+     * @return string
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        return $this->name ?: $this->username ?: 'Người dùng';
+    }
+
+    /**
+     * Get showcases count
+     *
+     * @return int
+     */
+    public function getShowcasesCountAttribute(): int
+    {
+        return $this->showcaseItems()->count();
+    }
+
+    /**
+     * Get ratings count
+     *
+     * @return int
+     */
+    public function getRatingsCountAttribute(): int
+    {
+        return $this->showcaseRatings()->count();
+    }
+
+    /**
      * Get avatar URL with proper fallback logic
      *
      * @return string
@@ -1025,6 +1055,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function showcaseItems(): HasMany
     {
         return $this->hasMany(Showcase::class);
+    }
+
+    /**
+     * Get the showcase ratings created by the user.
+     */
+    public function showcaseRatings(): HasMany
+    {
+        return $this->hasMany(\App\Models\ShowcaseRating::class);
     }
 
     /**

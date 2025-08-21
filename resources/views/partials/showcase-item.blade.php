@@ -8,7 +8,7 @@ $userAvatar = isset($showcase->user) ? $showcase->user->getAvatarUrl() : route('
 $showcaseTitle = $showcase->title ?? 'Untitled Showcase';
 $showcaseDescription = isset($showcase->description) ? Str::limit($showcase->description, 100) : '';
 $viewCount = $showcase->view_count ?? 0;
-$likesCount = $showcase->likes_count ?? 0;
+$likesCount = $showcase->like_count ?? $showcase->likes_count ?? 0;
 $createdAt = isset($showcase->created_at) && $showcase->created_at instanceof \Carbon\Carbon
     ? $showcase->created_at->diffForHumans()
     : '';
@@ -33,6 +33,9 @@ $category = $showcase->category ?? null;
 $ratingAverage = $showcase->rating_average ?? 0;
 $ratingCount = $showcase->rating_count ?? 0;
 $hasRating = $ratingAverage > 0 && $ratingCount > 0;
+
+// Comment count
+$commentCount = $showcase->comments_count ?? $showcase->comments()->count();
 
 // Additional showcase info
 $projectType = $showcase->project_type ?? null;
@@ -147,6 +150,11 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                 <span class="stat-item">
                     <i class="fas fa-heart"></i> {{ number_format($likesCount) }}
                 </span>
+                @if($commentCount > 0)
+                <span class="stat-item">
+                    <i class="fas fa-comment"></i> {{ number_format($commentCount) }}
+                </span>
+                @endif
                 @if($showcase->download_count > 0)
                 <span class="stat-item">
                     <i class="fas fa-download"></i> {{ number_format($showcase->download_count) }}

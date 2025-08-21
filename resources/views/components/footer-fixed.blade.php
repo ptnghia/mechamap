@@ -61,10 +61,10 @@
                     <!-- Dark Mode Toggle -->
                     <button type="button"
                             class="btn btn-sm btn-outline-light rounded-circle p-2 ms-2"
-                            id="darkModeToggle"
+                            id="darkModeToggleFixed"
                             data-bs-toggle="tooltip"
                             title="{{ t_footer('tools.toggle_theme') }}">
-                        <img src="{{ asset('images/moon.svg') }}" alt="{{ t_footer('tools.dark_mode') }}" width="16" height="16" id="darkModeIcon">
+                        <img src="{{ asset('images/moon.svg') }}" alt="{{ t_footer('tools.dark_mode') }}" width="16" height="16" id="darkModeIconFixed">
                         <span class="visually-hidden">{{ t_footer('accessibility.toggle_navigation') }}</span>
                     </button>
                 </div>
@@ -76,8 +76,8 @@
 <script>
 // Dark mode toggle functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const darkModeIcon = document.getElementById('darkModeIcon');
+    const darkModeToggle = document.getElementById('darkModeToggleFixed');
+    const darkModeIcon = document.getElementById('darkModeIconFixed');
 
     if (darkModeToggle && darkModeIcon) {
         // Check for saved theme preference or default to light mode

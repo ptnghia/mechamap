@@ -280,7 +280,7 @@ class TinyMCEConfig {
 
         // Handle initialization
         editor.on('init', function() {
-            console.log(`TinyMCE initialized for: ${editor.id}`);
+            // TinyMCE initialized successfully
         });
     }
 }

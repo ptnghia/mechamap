@@ -3,6 +3,9 @@
 @php
     $seoService = app(\App\Services\MultilingualSeoService::class);
     $seoData = $seoService->getSeoData(request(), $locale);
+
+    // Get additional SEO settings from middleware (for backward compatibility)
+    $additionalSeo = $seo ?? [];
 @endphp
 
 {{-- Basic Meta Tags --}}
@@ -44,16 +47,27 @@
 @endif
 
 @if(!empty($seoData['og_image']))
-    <meta property="og:image" content="{{ $seoData['og_image'] }}">
+    <meta property="og:image" content="{{ url($seoData['og_image']) }}">
     <meta property="og:image:alt" content="{{ $seoData['og_title'] ?? 'MechaMap' }}">
 @else
     <meta property="og:image" content="{{ asset('images/seo/mechamap-og-default.jpg') }}">
     <meta property="og:image:alt" content="MechaMap - Vietnam Mechanical Engineering Community">
 @endif
 
+{{-- Facebook App ID from additional settings --}}
+@if(!empty($additionalSeo['facebook_app_id']))
+    <meta property="fb:app_id" content="{{ $additionalSeo['facebook_app_id'] }}">
+@endif
+
 {{-- Twitter Card Tags --}}
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@mechamap_vn">
+<meta name="twitter:card" content="{{ $additionalSeo['twitter_card'] ?? 'summary_large_image' }}">
+@if(!empty($additionalSeo['twitter_username']))
+    <meta name="twitter:site" content="{{ '@' . $additionalSeo['twitter_username'] }}">
+    <meta name="twitter:creator" content="{{ '@' . $additionalSeo['twitter_username'] }}">
+@else
+    <meta name="twitter:site" content="@mechamap_vn">
+@endif
+<meta name="twitter:url" content="{{ request()->url() }}">
 
 @if(!empty($seoData['twitter_title']))
     <meta name="twitter:title" content="{{ $seoData['twitter_title'] }}">
@@ -64,20 +78,37 @@
 @endif
 
 @if(!empty($seoData['twitter_image']))
-    <meta name="twitter:image" content="{{ $seoData['twitter_image'] }}">
+    <meta name="twitter:image" content="{{ url($seoData['twitter_image']) }}">
 @else
     <meta name="twitter:image" content="{{ asset('images/seo/mechamap-twitter-default.jpg') }}">
 @endif
 
 {{-- Hreflang Tags for Multilingual --}}
-<link rel="alternate" hreflang="vi" href="{{ request()->url() }}">
-<link rel="alternate" hreflang="en" href="{{ request()->url() }}">
-<link rel="alternate" hreflang="x-default" href="{{ request()->url() }}">
+@php
+    $currentUrl = request()->url();
+    $currentLocale = app()->getLocale();
+    $availableLocales = ['vi', 'en'];
+@endphp
+
+@foreach($availableLocales as $hreflangLocale)
+    @if($hreflangLocale === $currentLocale)
+        <link rel="alternate" hreflang="{{ $hreflangLocale }}" href="{{ $currentUrl }}">
+    @else
+        {{-- In future, generate proper URL for other locale --}}
+        <link rel="alternate" hreflang="{{ $hreflangLocale }}" href="{{ $currentUrl }}?lang={{ $hreflangLocale }}">
+    @endif
+@endforeach
+<link rel="alternate" hreflang="x-default" href="{{ $currentUrl }}">
 
 {{-- Additional Meta Tags --}}
-<meta name="author" content="MechaMap">
+<meta name="author" content="{{ __('ui.layout.meta_author') }}">
 <meta name="generator" content="Laravel {{ app()->version() }}">
 <meta name="theme-color" content="#0d6efd">
+
+{{-- Google Search Console Verification --}}
+@if(!empty($additionalSeo['google_search_console_id']))
+    <meta name="google-site-verification" content="{{ $additionalSeo['google_search_console_id'] }}">
+@endif
 
 {{-- Extra Meta Tags --}}
 @if(!empty($seoData['extra_meta']))

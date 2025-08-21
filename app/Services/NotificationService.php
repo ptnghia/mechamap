@@ -394,24 +394,31 @@ class NotificationService
                 return;
             }
 
+            // Format notification data for frontend compatibility
+            $notificationData = [
+                'id' => $notification->id,
+                'type' => $notification->type,
+                'title' => $notification->title,
+                'message' => $notification->message,
+                'is_read' => $notification->is_read,
+                'created_at' => $notification->created_at->toISOString(),
+                'time_ago' => $notification->created_at->diffForHumans(),
+                'icon' => self::getNotificationIcon($notification->type),
+                'color' => self::getNotificationColor($notification->type),
+                'action_url' => $notification->data['action_url'] ?? null,
+            ];
+
             $payload = [
-                'event' => 'notification.sent',
+                'event' => 'notification',
                 'user_id' => $user->id,
                 'channel' => 'user.' . $user->id,
                 'priority' => $notification->data['priority'] ?? 'normal',
-                'data' => [
-                    'notification_id' => $notification->id,
-                    'type' => $notification->type,
-                    'title' => $notification->title,
-                    'message' => $notification->message,
-                    'action_url' => $notification->data['action_url'] ?? null,
-                    'created_at' => $notification->created_at->toISOString(),
-                    'is_read' => $notification->is_read,
-                ],
+                'data' => $notificationData,
                 'metadata' => [
                     'version' => '1.0',
                     'source' => 'laravel_api',
                     'request_id' => request()->header('X-Request-ID', uniqid()),
+                    'unread_count' => \App\Services\NotificationCacheService::getUnreadCount($user),
                 ]
             ];
 
@@ -767,6 +774,52 @@ class NotificationService
     public static function markAsReadBulk(\App\Models\User $user, array $notificationIds = []): int
     {
         return \App\Models\Notification::markAsReadBulk($user, $notificationIds);
+    }
+
+    /**
+     * Get notification icon based on type
+     */
+    public static function getNotificationIcon(string $type): string
+    {
+        return match($type) {
+            'thread_created' => 'fas fa-plus-circle',
+            'thread_replied' => 'fas fa-reply',
+            'comment_mention' => 'fas fa-at',
+            'login_from_new_device' => 'fas fa-shield-alt',
+            'password_changed' => 'fas fa-key',
+            'product_out_of_stock' => 'fas fa-exclamation-triangle',
+            'price_drop_alert' => 'fas fa-arrow-down',
+            'wishlist_available' => 'fas fa-heart',
+            'review_received' => 'fas fa-star',
+            'seller_message' => 'fas fa-envelope',
+            'user_followed' => 'fas fa-user-plus',
+            'achievement_unlocked' => 'fas fa-trophy',
+            'weekly_digest' => 'fas fa-newspaper',
+            default => 'fas fa-bell'
+        };
+    }
+
+    /**
+     * Get notification color based on type
+     */
+    public static function getNotificationColor(string $type): string
+    {
+        return match($type) {
+            'thread_created' => 'success',
+            'thread_replied' => 'info',
+            'comment_mention' => 'warning',
+            'login_from_new_device' => 'warning',
+            'password_changed' => 'danger',
+            'product_out_of_stock' => 'danger',
+            'price_drop_alert' => 'success',
+            'wishlist_available' => 'primary',
+            'review_received' => 'warning',
+            'seller_message' => 'info',
+            'user_followed' => 'primary',
+            'achievement_unlocked' => 'warning',
+            'weekly_digest' => 'secondary',
+            default => 'primary'
+        };
     }
 
     /**

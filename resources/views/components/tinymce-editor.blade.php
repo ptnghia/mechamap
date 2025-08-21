@@ -122,7 +122,7 @@ function initializeTinyMCEEditor(editorId, context, options = {}) {
             // Hide the original textarea (TinyMCE replaces it)
             textarea.style.display = 'none';
 
-            console.log(`TinyMCE initialized for: ${editorId} (context: ${context})`);
+            // TinyMCE initialized successfully
 
             // Initialize drag & drop and paste handlers
             TinyMCEUploader.initDragDrop(editorId);
