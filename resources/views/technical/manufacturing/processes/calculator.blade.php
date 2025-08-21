@@ -52,9 +52,9 @@
                         <!-- Process Selection -->
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label for="process_id" class="form-label">Manufacturing Process</label>
+                                <label for="process_id" class="form-label">{{ __('tools.process_calculator.manufacturing_process') }}</label>
                                 <select class="form-select" id="process_id" name="process_id" required>
-                                    <option value="">Select a process...</option>
+                                    <option value="">{{ __('tools.process_calculator.select_process') }}</option>
                                     @foreach($processes as $process)
                                     <option value="{{ $process->id }}" data-category="{{ $process->category }}">
                                         {{ $process->name }} ({{ ucfirst($process->category) }})
@@ -63,9 +63,9 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="material_type" class="form-label">Material Type</label>
+                                <label for="material_type" class="form-label">{{ __('tools.process_calculator.material_selection') }}</label>
                                 <select class="form-select" id="material_type" name="material_type">
-                                    <option value="">Select material...</option>
+                                    <option value="">{{ __('tools.process_calculator.select_material') }}</option>
                                     <option value="steel">Steel</option>
                                     <option value="aluminum">Aluminum</option>
                                     <option value="plastic">Plastic</option>
@@ -79,22 +79,22 @@
                         <!-- Dimensions -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-muted mb-3">Part Dimensions</h6>
+                                <h6 class="text-muted mb-3">{{ __('tools.process_calculator.dimensions') }}</h6>
                             </div>
                             <div class="col-md-3">
-                                <label for="length" class="form-label">Length (mm)</label>
+                                <label for="length" class="form-label">{{ __('tools.process_calculator.length_mm') }}</label>
                                 <input type="number" class="form-control" id="length" name="length" step="0.01" min="0">
                             </div>
                             <div class="col-md-3">
-                                <label for="width" class="form-label">Width (mm)</label>
+                                <label for="width" class="form-label">{{ __('tools.process_calculator.width_mm') }}</label>
                                 <input type="number" class="form-control" id="width" name="width" step="0.01" min="0">
                             </div>
                             <div class="col-md-3">
-                                <label for="height" class="form-label">Height (mm)</label>
+                                <label for="height" class="form-label">{{ __('tools.process_calculator.height_mm') }}</label>
                                 <input type="number" class="form-control" id="height" name="height" step="0.01" min="0">
                             </div>
                             <div class="col-md-3">
-                                <label for="quantity" class="form-label">Quantity</label>
+                                <label for="quantity" class="form-label">{{ __('tools.process_calculator.quantity') }}</label>
                                 <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1">
                             </div>
                         </div>
@@ -102,18 +102,18 @@
                         <!-- Process Parameters -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-muted mb-3">Process Parameters</h6>
+                                <h6 class="text-muted mb-3">{{ __('tools.process_calculator.process_parameters') }}</h6>
                             </div>
                             <div class="col-md-4">
-                                <label for="cutting_speed" class="form-label">Cutting Speed (m/min)</label>
+                                <label for="cutting_speed" class="form-label">{{ __('tools.process_calculator.cutting_speed') }}</label>
                                 <input type="number" class="form-control" id="cutting_speed" name="cutting_speed" step="0.1" min="0">
                             </div>
                             <div class="col-md-4">
-                                <label for="feed_rate" class="form-label">Feed Rate (mm/min)</label>
+                                <label for="feed_rate" class="form-label">{{ __('tools.process_calculator.feed_rate') }}</label>
                                 <input type="number" class="form-control" id="feed_rate" name="feed_rate" step="0.01" min="0">
                             </div>
                             <div class="col-md-4">
-                                <label for="depth_of_cut" class="form-label">Depth of Cut (mm)</label>
+                                <label for="depth_of_cut" class="form-label">{{ __('tools.process_calculator.depth_of_cut') }}</label>
                                 <input type="number" class="form-control" id="depth_of_cut" name="depth_of_cut" step="0.01" min="0">
                             </div>
                         </div>
@@ -121,18 +121,18 @@
                         <!-- Cost Parameters -->
                         <div class="row mb-4">
                             <div class="col-12">
-                                <h6 class="text-muted mb-3">Cost Parameters</h6>
+                                <h6 class="text-muted mb-3">{{ __('tools.process_calculator.cost_parameters') }}</h6>
                             </div>
                             <div class="col-md-4">
-                                <label for="machine_rate" class="form-label">Machine Rate ($/hour)</label>
+                                <label for="machine_rate" class="form-label">{{ __('tools.process_calculator.machine_rate') }}</label>
                                 <input type="number" class="form-control" id="machine_rate" name="machine_rate" value="50" step="0.01" min="0">
                             </div>
                             <div class="col-md-4">
-                                <label for="labor_rate" class="form-label">Labor Rate ($/hour)</label>
+                                <label for="labor_rate" class="form-label">{{ __('tools.process_calculator.labor_rate') }}</label>
                                 <input type="number" class="form-control" id="labor_rate" name="labor_rate" value="25" step="0.01" min="0">
                             </div>
                             <div class="col-md-4">
-                                <label for="material_cost" class="form-label">Material Cost ($/kg)</label>
+                                <label for="material_cost" class="form-label">{{ __('tools.process_calculator.material_cost') }}</label>
                                 <input type="number" class="form-control" id="material_cost" name="material_cost" step="0.01" min="0">
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="fa-solid fa-calculator me-2"></i>
-                                    Calculate Process Parameters
+                                    {{ __('tools.process_calculator.calculate_process') }}
                                 </button>
                                 <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="resetForm()">
                                     <i class="fa-solid fa-refresh me-2"></i>
@@ -161,13 +161,13 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fa-solid fa-chart-line me-2"></i>
-                        Calculation Results
+                        {{ __('tools.process_calculator.calculation_results') }}
                     </h5>
                 </div>
                 <div class="card-body">
                     <div id="calculationResults" class="text-center text-muted py-5">
                         <i class="fa-solid fa-calculator fa-3x mb-3"></i>
-                        <p>Enter parameters and click calculate to see results</p>
+                        <p>{{ __('tools.process_calculator.enter_parameters') }}</p>
                     </div>
                 </div>
             </div>
@@ -177,26 +177,26 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fa-solid fa-bolt me-2"></i>
-                        Quick Calculations
+                        {{ __('tools.process_calculator.quick_calculations') }}
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('turning')">
                             <i class="fa-solid fa-sync-alt me-1"></i>
-                            Turning Operation
+                            {{ __('tools.process_calculator.turning') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('milling')">
                             <i class="fa-solid fa-cog me-1"></i>
-                            Milling Operation
+                            {{ __('tools.process_calculator.milling') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('drilling')">
                             <i class="fa-solid fa-circle-notch me-1"></i>
-                            Drilling Operation
+                            {{ __('tools.process_calculator.drilling') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('grinding')">
                             <i class="fa-solid fa-circle me-1"></i>
-                            Grinding Operation
+                            {{ __('tools.process_calculator.grinding') }}
                         </button>
                     </div>
                 </div>
@@ -207,7 +207,7 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         <i class="fa-solid fa-lightbulb me-2"></i>
-                        Process Tips
+                        {{ __('tools.process_calculator.process_tips') }}
                     </h5>
                 </div>
                 <div class="card-body">
@@ -230,16 +230,16 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
                         <i class="fa-solid fa-history me-2"></i>
-                        Calculation History
+                        {{ __('tools.process_calculator.calculation_history') }}
                     </h5>
                     <button class="btn btn-sm btn-outline-danger" onclick="clearHistory()">
                         <i class="fa-solid fa-trash me-1"></i>
-                        Clear History
+                        {{ __('tools.process_calculator.clear_history') }}
                     </button>
                 </div>
                 <div class="card-body">
                     <div id="calculationHistory" class="text-center text-muted py-3">
-                        <p>No calculations performed yet</p>
+                        <p>{{ __('tools.process_calculator.no_calculations') }}</p>
                     </div>
                 </div>
             </div>
@@ -360,7 +360,7 @@ function calculateProcess() {
     // Display results
     const resultsHtml = `
         <div class="text-start">
-            <h6 class="text-primary mb-3">Calculation Results</h6>
+            <h6 class="text-primary mb-3">{{ __('tools.process_calculator.calculation_results') }}</h6>
             <div class="row g-2">
                 <div class="col-6">
                     <div class="border rounded p-2 text-center">
@@ -443,7 +443,7 @@ function resetForm() {
     document.getElementById('calculationResults').innerHTML = `
         <div class="text-center text-muted py-5">
             <i class="fa-solid fa-calculator fa-3x mb-3"></i>
-            <p>Enter parameters and click calculate to see results</p>
+            <p>{{ __('tools.process_calculator.enter_parameters') }}</p>
         </div>
     `;
     document.getElementById('processTips').innerHTML = `

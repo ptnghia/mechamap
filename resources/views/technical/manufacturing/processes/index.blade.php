@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manufacturing Processes')
+@section('title', __('technical.processes.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,23 +11,23 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fa-solid fa-gears text-primary me-2"></i>
-                        Manufacturing Processes
+                        {{ __('technical.processes.title') }}
                     </h1>
-                    <p class="text-muted mb-0">Comprehensive guide to manufacturing processes and techniques</p>
+                    <p class="text-muted mb-0">{{ __('technical.processes.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ route('manufacturing.processes.selector') }}" class="btn btn-outline-primary">
                         <i class="fa-solid fa-route me-1"></i>
-                        Process Selector
+                        {{ __('technical.processes.process_selector') }}
                     </a>
                     <a href="{{ route('manufacturing.processes.calculator') }}" class="btn btn-outline-success">
                         <i class="fa-solid fa-calculator me-1"></i>
-                        Cost Calculator
+                        {{ __('technical.processes.cost_calculator') }}
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-download me-1"></i>
-                            Export
+                            {{ __('technical.processes.export') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('manufacturing.processes.export', ['format' => 'csv']) }}">
@@ -50,15 +50,15 @@
                 <div class="card-body">
                     <form method="GET" action="{{ route('manufacturing.processes.index') }}" class="row g-3">
                         <div class="col-md-4">
-                            <label for="search" class="form-label">Search Processes</label>
-                            <input type="text" class="form-control" id="search" name="search" 
-                                   value="{{ request('search') }}" 
-                                   placeholder="Search by name, category, or description...">
+                            <label for="search" class="form-label">{{ __('technical.processes.search_processes') }}</label>
+                            <input type="text" class="form-control" id="search" name="search"
+                                   value="{{ request('search') }}"
+                                   placeholder="{{ __('technical.processes.search_placeholder') }}">
                         </div>
                         <div class="col-md-3">
-                            <label for="category" class="form-label">Category</label>
+                            <label for="category" class="form-label">{{ __('technical.processes.category') }}</label>
                             <select class="form-select" id="category" name="category">
-                                <option value="">All Categories</option>
+                                <option value="">{{ __('technical.processes.all_categories') }}</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
                                     {{ ucfirst($category) }}
@@ -67,9 +67,9 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label for="skill_level" class="form-label">Skill Level</label>
+                            <label for="skill_level" class="form-label">{{ __('technical.processes.skill_level') }}</label>
                             <select class="form-select" id="skill_level" name="skill_level">
-                                <option value="">All Levels</option>
+                                <option value="">{{ __('technical.processes.all_levels') }}</option>
                                 @foreach($skillLevels as $level)
                                 <option value="{{ $level }}" {{ request('skill_level') == $level ? 'selected' : '' }}>
                                     {{ ucfirst($level) }}
@@ -100,17 +100,17 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <span class="text-muted">
-                        Showing {{ $processes->firstItem() ?? 0 }} to {{ $processes->lastItem() ?? 0 }} 
-                        of {{ $processes->total() }} processes
+                        {{ __('technical.processes.showing_results') }} {{ $processes->firstItem() ?? 0 }} {{ __('technical.processes.to') }} {{ $processes->lastItem() ?? 0 }}
+                        {{ __('technical.processes.of') }} {{ $processes->total() }} {{ __('technical.processes.processes') }}
                     </span>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <label for="sort" class="form-label mb-0 text-muted">Sort by:</label>
+                    <label for="sort" class="form-label mb-0 text-muted">{{ __('technical.processes.sort_by') }}</label>
                     <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name</option>
-                        <option value="category" {{ request('sort') == 'category' ? 'selected' : '' }}>Category</option>
-                        <option value="cost_per_hour" {{ request('sort') == 'cost_per_hour' ? 'selected' : '' }}>Cost</option>
-                        <option value="production_rate" {{ request('sort') == 'production_rate' ? 'selected' : '' }}>Production Rate</option>
+                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.processes.name') }}</option>
+                        <option value="category" {{ request('sort') == 'category' ? 'selected' : '' }}>{{ __('technical.processes.category') }}</option>
+                        <option value="cost_per_hour" {{ request('sort') == 'cost_per_hour' ? 'selected' : '' }}>{{ __('technical.processes.cost') }}</option>
+                        <option value="production_rate" {{ request('sort') == 'production_rate' ? 'selected' : '' }}>{{ __('technical.processes.production_rate') }}</option>
                     </select>
                 </div>
             </div>
@@ -129,31 +129,31 @@
                 <div class="card-body">
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Setup Time</small>
-                            <div class="fw-medium">{{ $process->setup_time ?? 'N/A' }}</div>
+                            <small class="text-muted">{{ __('technical.processes.setup_time') }}</small>
+                            <div class="fw-medium">{{ $process->setup_time ?? __('technical.processes.na') }}</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Cycle Time</small>
-                            <div class="fw-medium">{{ $process->cycle_time ?? 'N/A' }}</div>
+                            <small class="text-muted">{{ __('technical.processes.cycle_time') }}</small>
+                            <div class="fw-medium">{{ $process->cycle_time ?? __('technical.processes.na') }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Cost/Hour</small>
+                            <small class="text-muted">{{ __('technical.processes.cost_per_hour') }}</small>
                             <div class="fw-medium">${{ number_format($process->cost_per_hour ?? 0) }}</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Skill Level</small>
-                            <div class="fw-medium">{{ ucfirst($process->skill_level_required ?? 'Basic') }}</div>
+                            <small class="text-muted">{{ __('technical.processes.skill_level') }}</small>
+                            <div class="fw-medium">{{ ucfirst($process->skill_level_required ?? __('technical.processes.basic')) }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
-                        <small class="text-muted">Production Rate</small>
-                        <div class="fw-medium">{{ $process->production_rate ?? 'Variable' }}</div>
+                        <small class="text-muted">{{ __('technical.processes.production_rate') }}</small>
+                        <div class="fw-medium">{{ $process->production_rate ?? __('technical.processes.variable') }}</div>
                     </div>
-                    
+
                     <p class="card-text text-muted small">
                         {{ Str::limit($process->description ?? 'Manufacturing process description', 100) }}
                     </p>
@@ -161,14 +161,14 @@
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex gap-1">
-                            <input type="checkbox" class="form-check-input process-compare" 
+                            <input type="checkbox" class="form-check-input process-compare"
                                    value="{{ $process->id }}" id="compare_{{ $process->id }}">
                             <label class="form-check-label small text-muted" for="compare_{{ $process->id }}">
-                                Compare
+                                {{ __('technical.processes.compare') }}
                             </label>
                         </div>
                         <a href="{{ route('manufacturing.processes.show', $process) }}" class="btn btn-sm btn-outline-primary">
-                            View Details
+                            {{ __('technical.processes.view_details') }}
                         </a>
                     </div>
                 </div>
@@ -202,10 +202,10 @@
 
     <!-- Compare Processes Button -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-        <button type="button" class="btn btn-success btn-lg rounded-pill shadow" 
+        <button type="button" class="btn btn-success btn-lg rounded-pill shadow"
                 id="compareButton" style="display: none;" onclick="compareProcesses()">
             <i class="fa-solid fa-balance-scale me-2"></i>
-            Compare (<span id="compareCount">0</span>)
+            {{ __('technical.processes.compare_button') }} (<span id="compareCount">0</span>)
         </button>
     </div>
 </div>
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkboxes = document.querySelectorAll('.process-compare');
     const compareButton = document.getElementById('compareButton');
     const compareCount = document.getElementById('compareCount');
-    
+
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             if (this.checked) {
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 selectedProcesses = selectedProcesses.filter(id => id !== this.value);
             }
-            
+
             compareCount.textContent = selectedProcesses.length;
             compareButton.style.display = selectedProcesses.length > 1 ? 'block' : 'none';
         });
@@ -244,12 +244,12 @@ function compareProcesses() {
         alert('Please select at least 2 processes to compare');
         return;
     }
-    
+
     const url = new URL('{{ route("manufacturing.processes.compare") }}');
     selectedProcesses.forEach(id => {
         url.searchParams.append('processes[]', id);
     });
-    
+
     window.location.href = url.toString();
 }
 </script>

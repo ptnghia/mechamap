@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('tools.cad_library.title'))
+@section('title', __('cad.library.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,32 +11,32 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fa-solid fa-file-code text-primary me-2"></i>
-                        {{ __('tools.cad_library.title') }}
+                        {{ __('cad.library.title') }}
                     </h1>
-                    <p class="text-muted mb-0">{{ __('tools.cad_library.description') }}</p>
+                    <p class="text-muted mb-0">{{ __('cad.library.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     @auth
                     <a href="{{ route('cad.library.my-files') }}" class="btn btn-outline-secondary">
                         <i class="fa-solid fa-folder me-1"></i>
-                        {{ __('tools.cad_library.my_files') }}
+                        My Files
                     </a>
                     <a href="{{ route('cad.library.create') }}" class="btn btn-primary">
                         <i class="fa-solid fa-upload me-1"></i>
-                        {{ __('tools.cad_library.upload_file') }}
+                        Upload File
                     </a>
                     @endauth
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-download me-1"></i>
-                            {{ __('tools.cad_library.export') }}
+                            {{ __('cad.library.export') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('cad.library.export', ['format' => 'csv']) }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>{{ __('tools.cad_library.csv_format') }}
+                                <i class="fa-solid fa-file-csv me-2"></i>CSV Format
                             </a></li>
                             <li><a class="dropdown-item" href="{{ route('cad.library.export', ['format' => 'json']) }}">
-                                <i class="fa-solid fa-file-code me-2"></i>{{ __('tools.cad_library.json_format') }}
+                                <i class="fa-solid fa-file-code me-2"></i>JSON Format
                             </a></li>
                         </ul>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="card-body">
                     <i class="fa-solid fa-file-code text-primary mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title" id="totalFiles">20+</h5>
-                    <p class="card-text text-muted">CAD Files</p>
+                    <p class="card-text text-muted">{{ __('cad.library.cad_files') }}</p>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
                 <div class="card-body">
                     <i class="fa-solid fa-download text-success mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title" id="totalDownloads">1,250+</h5>
-                    <p class="card-text text-muted">Downloads</p>
+                    <p class="card-text text-muted">{{ __('cad.library.downloads') }}</p>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <div class="card-body">
                     <i class="fa-solid fa-cube text-info mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">15+</h5>
-                    <p class="card-text text-muted">File Types</p>
+                    <p class="card-text text-muted">{{ __('cad.library.file_types') }}</p>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
                 <div class="card-body">
                     <i class="fa-solid fa-users text-warning mb-2" style="font-size: 2rem;"></i>
                     <h5 class="card-title">50+</h5>
-                    <p class="card-text text-muted">Contributors</p>
+                    <p class="card-text text-muted">{{ __('cad.library.contributors') }}</p>
                 </div>
             </div>
         </div>
@@ -92,15 +92,15 @@
                 <div class="card-body">
                     <form method="GET" action="{{ route('cad.library.index') }}" class="row g-3">
                         <div class="col-md-3">
-                            <label for="search" class="form-label">Search CAD Files</label>
+                            <label for="search" class="form-label">{{ __('cad.library.search_cad_files') }}</label>
                             <input type="text" class="form-control" id="search" name="search"
                                    value="{{ request('search') }}"
-                                   placeholder="Search by title, tags, or description...">
+                                   placeholder="{{ __('cad.library.search_placeholder') }}">
                         </div>
                         <div class="col-md-2">
-                            <label for="category" class="form-label">Category</label>
+                            <label for="category" class="form-label">{{ __('cad.library.category') }}</label>
                             <select class="form-select" id="category" name="category">
-                                <option value="">All Categories</option>
+                                <option value="">{{ __('cad.library.all_categories') }}</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -109,9 +109,9 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="file_type" class="form-label">File Type</label>
+                            <label for="file_type" class="form-label">{{ __('cad.library.file_type') }}</label>
                             <select class="form-select" id="file_type" name="file_type">
-                                <option value="">All Types</option>
+                                <option value="">{{ __('cad.library.all_types') }}</option>
                                 @foreach($fileTypes as $type)
                                 <option value="{{ $type }}" {{ request('file_type') == $type ? 'selected' : '' }}>
                                     {{ strtoupper($type) }}
@@ -120,9 +120,9 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="software" class="form-label">Software</label>
+                            <label for="software" class="form-label">{{ __('cad.library.software') }}</label>
                             <select class="form-select" id="software" name="software">
-                                <option value="">All Software</option>
+                                <option value="">{{ __('cad.library.all_software') }}</option>
                                 @foreach($softwareOptions as $software)
                                 <option value="{{ $software }}" {{ request('software') == $software ? 'selected' : '' }}>
                                     {{ $software }}
@@ -131,12 +131,12 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="sort" class="form-label">Sort By</label>
+                            <label for="sort" class="form-label">{{ __('cad.library.sort_by') }}</label>
                             <select class="form-select" id="sort" name="sort">
-                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Newest</option>
-                                <option value="download_count" {{ request('sort') == 'download_count' ? 'selected' : '' }}>Most Downloaded</option>
-                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Highest Rated</option>
-                                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>Name A-Z</option>
+                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>{{ __('cad.library.newest') }}</option>
+                                <option value="download_count" {{ request('sort') == 'download_count' ? 'selected' : '' }}>{{ __('cad.library.most_downloaded') }}</option>
+                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>{{ __('cad.library.highest_rated') }}</option>
+                                <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>{{ __('cad.library.name_az') }}</option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -182,18 +182,18 @@
 
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">File Size</small>
+                            <small class="text-muted">{{ __('cad.library.file_size') }}</small>
                             <div class="fw-medium">{{ number_format(($file->file_size ?? 1024000) / 1024, 1) }} KB</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Downloads</small>
+                            <small class="text-muted">{{ __('cad.library.downloads') }}</small>
                             <div class="fw-medium">{{ $file->download_count ?? rand(10, 100) }}</div>
                         </div>
                     </div>
 
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Rating</small>
+                            <small class="text-muted">{{ __('cad.library.rating') }}</small>
                             <div class="fw-medium">
                                 @for($i = 1; $i <= 5; $i++)
                                     <i class="fa-solid fa-star {{ $i <= ($file->average_rating ?? 4.5) ? 'text-warning' : 'text-muted' }}"></i>
@@ -202,10 +202,16 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">License</small>
+                            <small class="text-muted">{{ __('cad.library.license') }}</small>
                             <div class="fw-medium">
                                 <span class="badge bg-{{ ($file->license_type ?? 'free') == 'free' ? 'success' : 'warning' }}">
-                                    {{ ucfirst($file->license_type ?? 'Free') }}
+                                    @if(($file->license_type ?? 'free') == 'free')
+                                        {{ __('cad.library.free') }}
+                                    @elseif(($file->license_type ?? 'free') == 'commercial')
+                                        {{ __('cad.library.commercial') }}
+                                    @else
+                                        {{ __('cad.library.educational') }}
+                                    @endif
                                 </span>
                             </div>
                         </div>
@@ -223,22 +229,22 @@
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">
-                            by {{ $file->user->name ?? 'MechaMap User' }}
+                            {{ __('cad.library.by') }} {{ $file->user->name ?? 'MechaMap User' }}
                         </small>
                         <div class="d-flex gap-1">
                             <a href="{{ route('cad.library.show', $file->id ?? 1) }}" class="btn btn-sm btn-outline-primary">
                                 <i class="fa-solid fa-eye me-1"></i>
-                                View
+                                {{ __('cad.library.view') }}
                             </a>
                             @auth
                             <a href="{{ route('cad.library.download', $file->id ?? 1) }}" class="btn btn-sm btn-primary">
                                 <i class="fa-solid fa-download me-1"></i>
-                                Download
+                                {{ __('cad.library.download') }}
                             </a>
                             @else
                             <a href="{{ route('login') }}" class="btn btn-sm btn-primary">
                                 <i class="fa-solid fa-sign-in-alt me-1"></i>
-                                Login
+                                {{ __('cad.library.login') }}
                             </a>
                             @endauth
                         </div>
@@ -337,7 +343,7 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-star me-2"></i>
-                        Popular CAD Software
+                        {{ __('cad.library.popular_cad_software') }}
                     </h6>
                 </div>
                 <div class="card-body">
@@ -349,7 +355,7 @@
                                     <i class="fa-solid fa-cube text-primary" style="font-size: 2rem;"></i>
                                 </div>
                                 <h6 class="mb-1">{{ $software }}</h6>
-                                <small class="text-muted">{{ rand(5, 15) }} files available</small>
+                                <small class="text-muted">{{ rand(5, 15) }} {{ __('cad.library.files_available') }}</small>
                             </div>
                         </div>
                         @endforeach

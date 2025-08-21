@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Documentation Portal - MechaMap')
+@section('title', __('docs.title') . ' - MechaMap')
 
 @section('content')
 <div class="container-fluid py-4">
@@ -8,24 +8,24 @@
     <div class="row mb-5">
         <div class="col-12">
             <div class="bg-primary text-white rounded-3 p-5 text-center">
-                <h1 class="display-4 fw-bold mb-3">📚 MechaMap Documentation</h1>
-                <p class="lead mb-4">Comprehensive guides, tutorials, and API documentation for the MechaMap platform</p>
+                <h1 class="display-4 fw-bold mb-3">📚 {{ __('docs.title') }}</h1>
+                <p class="lead mb-4">{{ __('docs.subtitle') }}</p>
                 <div class="row text-center">
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ $stats['total_docs'] ?? 0 }}</h3>
-                        <p class="mb-0">Documents</p>
+                        <h3 class="fw-bold">{{ $stats['total_docs'] ?? 3 }}</h3>
+                        <p class="mb-0">{{ __('docs.documents') }}</p>
                     </div>
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ $stats['total_categories'] ?? 0 }}</h3>
-                        <p class="mb-0">Categories</p>
+                        <h3 class="fw-bold">{{ $stats['total_categories'] ?? 2 }}</h3>
+                        <p class="mb-0">{{ __('docs.categories') }}</p>
                     </div>
                     <div class="col-md-3">
-                        <h3 class="fw-bold">{{ number_format($stats['total_views'] ?? 0) }}</h3>
-                        <p class="mb-0">Total Views</p>
+                        <h3 class="fw-bold">{{ number_format($stats['total_views'] ?? 2) }}</h3>
+                        <p class="mb-0">{{ __('docs.total_views') }}</p>
                     </div>
                     <div class="col-md-3">
                         <h3 class="fw-bold">{{ number_format($stats['total_downloads'] ?? 0) }}</h3>
-                        <p class="mb-0">Downloads</p>
+                        <p class="mb-0">{{ __('docs.downloads') }}</p>
                     </div>
                 </div>
             </div>
@@ -39,11 +39,11 @@
                 <div class="card-body">
                     <form action="{{ route('search.index') }}" method="GET" class="d-flex">
                         <input type="text" name="q" class="form-control me-2"
-                               placeholder="Search documentation..."
+                               placeholder="{{ __('docs.search_placeholder') }}"
                                value="{{ request('q') }}">
                         <input type="hidden" name="type" value="documentation">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Search
+                            <i class="fas fa-search"></i> {{ __('docs.search') }}
                         </button>
                     </form>
                 </div>
@@ -56,7 +56,7 @@
         <div class="col-lg-3 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-folder"></i> Categories</h5>
+                    <h5 class="mb-0"><i class="fas fa-folder"></i> {{ __('docs.categories') }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
@@ -84,7 +84,7 @@
             <!-- Featured Documents -->
             @if(isset($featuredDocs) && $featuredDocs->count() > 0)
             <div class="mb-4">
-                <h3 class="mb-3"><i class="fas fa-star text-warning"></i> Featured Documentation</h3>
+                <h3 class="mb-3"><i class="fas fa-star text-warning"></i> {{ __('docs.featured_documentation') }}</h3>
                 <div class="row">
                     @foreach($featuredDocs as $doc)
                         <div class="col-md-6 mb-3">
@@ -120,7 +120,7 @@
 
             <!-- Recent Documents -->
             <div class="mb-4">
-                <h3 class="mb-3"><i class="fas fa-clock"></i> Recent Documentation</h3>
+                <h3 class="mb-3"><i class="fas fa-clock"></i> {{ __('docs.recent_documentation') }}</h3>
                 <div class="row">
                     @forelse($recentDocs ?? [] as $doc)
                         <div class="col-md-6 mb-3">
@@ -166,33 +166,33 @@
             <!-- Quick Links -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-link"></i> Quick Links</h5>
+                    <h5 class="mb-0"><i class="fas fa-link"></i> {{ __('docs.quick_links') }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-unstyled">
                                 <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'guide']) }}" class="text-decoration-none">
-                                    <i class="fas fa-book"></i> User Guides
+                                    <i class="fas fa-book"></i> {{ __('docs.user_guides') }}
                                 </a></li>
                                 <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'tutorial']) }}" class="text-decoration-none">
-                                    <i class="fas fa-graduation-cap"></i> Tutorials
+                                    <i class="fas fa-graduation-cap"></i> {{ __('docs.tutorials') }}
                                 </a></li>
                                 <li><a href="{{ route('search.index', ['type' => 'documentation', 'doc_type' => 'api']) }}" class="text-decoration-none">
-                                    <i class="fas fa-code"></i> API Documentation
+                                    <i class="fas fa-code"></i> {{ __('docs.api_documentation') }}
                                 </a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="list-unstyled">
                                 <li><a href="{{ route('search.index', ['type' => 'documentation', 'difficulty' => 'beginner']) }}" class="text-decoration-none">
-                                    <i class="fas fa-seedling"></i> Beginner Guides
+                                    <i class="fas fa-seedling"></i> {{ __('docs.beginner_guides') }}
                                 </a></li>
                                 <li><a href="{{ route('search.index', ['type' => 'documentation', 'difficulty' => 'advanced']) }}" class="text-decoration-none">
-                                    <i class="fas fa-rocket"></i> Advanced Topics
+                                    <i class="fas fa-rocket"></i> {{ __('docs.advanced_topics') }}
                                 </a></li>
                                 <li><a href="{{ route('contact') }}" class="text-decoration-none">
-                                    <i class="fas fa-question-circle"></i> Need Help?
+                                    <i class="fas fa-question-circle"></i> {{ __('docs.need_help') }}
                                 </a></li>
                             </ul>
                         </div>

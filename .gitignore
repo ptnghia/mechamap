@@ -231,6 +231,9 @@ standardize-*.php
 # Ignore frontend-nextjs directory (separate Next.js project)
 /frontend-nextjs
 
+# Ignore mechamap-nextjs directory (separate Next.js project)
+/mechamap-nextjs
+
 # ============================================================
 # REALTIME SERVER PROJECT IGNORES
 # ============================================================

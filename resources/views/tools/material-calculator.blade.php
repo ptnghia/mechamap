@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Material Cost Calculator')
+@section('title', __('tools.material_calculator.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,22 +11,22 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fa-solid fa-calculator text-primary me-2"></i>
-                        Material Cost Calculator
+                        {{ __('tools.material_calculator.title') }}
                     </h1>
-                    <p class="text-muted mb-0">Calculate material costs, quantities, and project estimates with precision</p>
+                    <p class="text-muted mb-0">{{ __('tools.material_calculator.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-outline-secondary" onclick="saveCalculation()">
                         <i class="fa-solid fa-save me-1"></i>
-                        Save Calculation
+                        {{ __('tools.material_calculator.save_calculation') }}
                     </button>
                     <button class="btn btn-outline-primary" onclick="exportResults()">
                         <i class="fa-solid fa-download me-1"></i>
-                        Export Results
+                        {{ __('tools.material_calculator.export_results') }}
                     </button>
                     <button class="btn btn-outline-info" onclick="showHistory()">
                         <i class="fa-solid fa-history me-1"></i>
-                        History
+                        {{ __('tools.material_calculator.history') }}
                     </button>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-cog me-2"></i>
-                        Material Calculation Parameters
+                        {{ __('tools.material_calculator.parameters') }}
                     </h6>
                 </div>
                 <div class="card-body">
@@ -48,23 +48,23 @@
                         <!-- Material Selection -->
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label for="materialType" class="form-label">Material Type</label>
+                                <label for="materialType" class="form-label">{{ __('tools.material_calculator.material_type') }}</label>
                                 <select class="form-select" id="materialType" onchange="updateMaterialProperties()">
-                                    <option value="">Select Material</option>
-                                    <option value="steel_carbon">Carbon Steel</option>
-                                    <option value="steel_stainless">Stainless Steel</option>
-                                    <option value="aluminum">Aluminum</option>
-                                    <option value="copper">Copper</option>
-                                    <option value="brass">Brass</option>
-                                    <option value="titanium">Titanium</option>
-                                    <option value="plastic_abs">ABS Plastic</option>
-                                    <option value="plastic_pvc">PVC</option>
+                                    <option value="">{{ __('tools.material_calculator.select_material') }}</option>
+                                    <option value="steel_carbon">{{ __('tools.material_calculator.carbon_steel') }}</option>
+                                    <option value="steel_stainless">{{ __('tools.material_calculator.stainless_steel') }}</option>
+                                    <option value="aluminum">{{ __('tools.material_calculator.aluminum') }}</option>
+                                    <option value="copper">{{ __('tools.material_calculator.copper') }}</option>
+                                    <option value="brass">{{ __('tools.material_calculator.brass') }}</option>
+                                    <option value="titanium">{{ __('tools.material_calculator.titanium') }}</option>
+                                    <option value="plastic_abs">{{ __('tools.material_calculator.abs_plastic') }}</option>
+                                    <option value="plastic_pvc">{{ __('tools.material_calculator.pvc') }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="materialGrade" class="form-label">Material Grade/Specification</label>
+                                <label for="materialGrade" class="form-label">{{ __('tools.material_calculator.material_grade') }}</label>
                                 <select class="form-select" id="materialGrade">
-                                    <option value="">Select Grade</option>
+                                    <option value="">{{ __('tools.material_calculator.select_grade') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -74,23 +74,23 @@
                             <div class="col-12">
                                 <h6 class="text-primary mb-3">
                                     <i class="fa-solid fa-ruler me-2"></i>
-                                    Dimensions & Quantities
+                                    {{ __('tools.material_calculator.dimensions_quantities') }}
                                 </h6>
                             </div>
                             <div class="col-md-3">
-                                <label for="length" class="form-label">Length (mm)</label>
+                                <label for="length" class="form-label">{{ __('tools.material_calculator.length_mm') }}</label>
                                 <input type="number" class="form-control" id="length" step="0.1" onchange="calculateMaterial()">
                             </div>
                             <div class="col-md-3">
-                                <label for="width" class="form-label">Width (mm)</label>
+                                <label for="width" class="form-label">{{ __('tools.material_calculator.width_mm') }}</label>
                                 <input type="number" class="form-control" id="width" step="0.1" onchange="calculateMaterial()">
                             </div>
                             <div class="col-md-3">
-                                <label for="thickness" class="form-label">Thickness (mm)</label>
+                                <label for="thickness" class="form-label">{{ __('tools.material_calculator.thickness_mm') }}</label>
                                 <input type="number" class="form-control" id="thickness" step="0.1" onchange="calculateMaterial()">
                             </div>
                             <div class="col-md-3">
-                                <label for="quantity" class="form-label">Quantity</label>
+                                <label for="quantity" class="form-label">{{ __('tools.material_calculator.quantity') }}</label>
                                 <input type="number" class="form-control" id="quantity" value="1" min="1" onchange="calculateMaterial()">
                             </div>
                         </div>
@@ -100,27 +100,27 @@
                             <div class="col-12">
                                 <h6 class="text-primary mb-3">
                                     <i class="fa-solid fa-shapes me-2"></i>
-                                    Shape & Form
+                                    {{ __('tools.material_calculator.shape_form') }}
                                 </h6>
                             </div>
                             <div class="col-md-6">
-                                <label for="shapeType" class="form-label">Shape Type</label>
+                                <label for="shapeType" class="form-label">{{ __('tools.material_calculator.shape_type') }}</label>
                                 <select class="form-select" id="shapeType" onchange="updateShapeFields()">
-                                    <option value="rectangular">Rectangular/Sheet</option>
-                                    <option value="round">Round/Cylinder</option>
-                                    <option value="tube">Tube/Pipe</option>
-                                    <option value="angle">Angle/L-Shape</option>
-                                    <option value="channel">Channel/U-Shape</option>
-                                    <option value="beam">I-Beam/H-Beam</option>
+                                    <option value="rectangular">{{ __('tools.material_calculator.rectangular_sheet') }}</option>
+                                    <option value="round">{{ __('tools.material_calculator.round_cylinder') }}</option>
+                                    <option value="tube">{{ __('tools.material_calculator.tube_pipe') }}</option>
+                                    <option value="angle">{{ __('tools.material_calculator.angle_l_shape') }}</option>
+                                    <option value="channel">{{ __('tools.material_calculator.channel_u_shape') }}</option>
+                                    <option value="beam">{{ __('tools.material_calculator.i_beam_h_beam') }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="formType" class="form-label">Form Type</label>
+                                <label for="formType" class="form-label">{{ __('tools.material_calculator.form_type') }}</label>
                                 <select class="form-select" id="formType">
-                                    <option value="raw">Raw Material</option>
-                                    <option value="machined">Machined</option>
-                                    <option value="fabricated">Fabricated</option>
-                                    <option value="finished">Finished Product</option>
+                                    <option value="raw">{{ __('tools.material_calculator.raw_material') }}</option>
+                                    <option value="machined">{{ __('tools.material_calculator.machined') }}</option>
+                                    <option value="fabricated">{{ __('tools.material_calculator.fabricated') }}</option>
+                                    <option value="finished">{{ __('tools.material_calculator.finished_product') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -130,19 +130,19 @@
                             <div class="col-12">
                                 <h6 class="text-primary mb-3">
                                     <i class="fa-solid fa-sliders me-2"></i>
-                                    Additional Parameters
+                                    {{ __('tools.material_calculator.additional_parameters') }}
                                 </h6>
                             </div>
                             <div class="col-md-4">
-                                <label for="wastePercentage" class="form-label">Waste Percentage (%)</label>
+                                <label for="wastePercentage" class="form-label">{{ __('tools.material_calculator.waste_percentage') }}</label>
                                 <input type="number" class="form-control" id="wastePercentage" value="10" min="0" max="50" onchange="calculateMaterial()">
                             </div>
                             <div class="col-md-4">
-                                <label for="laborCost" class="form-label">Labor Cost (VND/hour)</label>
+                                <label for="laborCost" class="form-label">{{ __('tools.material_calculator.labor_cost_vnd') }}</label>
                                 <input type="number" class="form-control" id="laborCost" value="150000" onchange="calculateMaterial()">
                             </div>
                             <div class="col-md-4">
-                                <label for="processingTime" class="form-label">Processing Time (hours)</label>
+                                <label for="processingTime" class="form-label">{{ __('tools.material_calculator.processing_time') }}</label>
                                 <input type="number" class="form-control" id="processingTime" value="1" step="0.1" onchange="calculateMaterial()">
                             </div>
                         </div>
@@ -150,18 +150,18 @@
                         <!-- Currency & Units -->
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label for="currency" class="form-label">Currency</label>
+                                <label for="currency" class="form-label">{{ __('tools.material_calculator.currency') }}</label>
                                 <select class="form-select" id="currency" onchange="calculateMaterial()">
-                                    <option value="VND">Vietnamese Dong (VND)</option>
-                                    <option value="USD">US Dollar (USD)</option>
-                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="VND">{{ __('tools.material_calculator.vnd') }}</option>
+                                    <option value="USD">{{ __('tools.material_calculator.usd') }}</option>
+                                    <option value="EUR">{{ __('tools.material_calculator.eur') }}</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="unitSystem" class="form-label">Unit System</label>
+                                <label for="unitSystem" class="form-label">{{ __('tools.material_calculator.unit_system') }}</label>
                                 <select class="form-select" id="unitSystem" onchange="updateUnits()">
-                                    <option value="metric">Metric (mm, kg)</option>
-                                    <option value="imperial">Imperial (in, lb)</option>
+                                    <option value="metric">{{ __('tools.material_calculator.metric') }}</option>
+                                    <option value="imperial">{{ __('tools.material_calculator.imperial') }}</option>
                                 </select>
                             </div>
                         </div>
@@ -171,7 +171,7 @@
                             <div class="col-12">
                                 <button type="button" class="btn btn-primary btn-lg w-100" onclick="calculateMaterial()">
                                     <i class="fa-solid fa-calculator me-2"></i>
-                                    Calculate Material Cost
+                                    {{ __('tools.material_calculator.calculate') }}
                                 </button>
                             </div>
                         </div>
@@ -186,14 +186,14 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-chart-line me-2"></i>
-                        Calculation Results
+                        {{ __('tools.material_calculator.calculation_results') }}
                     </h6>
                 </div>
                 <div class="card-body">
                     <div id="calculationResults">
                         <div class="text-center text-muted py-4">
                             <i class="fa-solid fa-calculator" style="font-size: 3rem;"></i>
-                            <p class="mt-3">Enter material parameters and click calculate to see results</p>
+                            <p class="mt-3">{{ __('tools.material_calculator.enter_parameters') }}</p>
                         </div>
                     </div>
                 </div>
@@ -204,12 +204,12 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-info-circle me-2"></i>
-                        Material Properties
+                        {{ __('tools.material_calculator.material_properties') }}
                     </h6>
                 </div>
                 <div class="card-body">
                     <div id="materialProperties">
-                        <p class="text-muted">Select a material to view its properties</p>
+                        <p class="text-muted">{{ __('tools.material_calculator.select_material_properties') }}</p>
                     </div>
                 </div>
             </div>
@@ -219,26 +219,26 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-bolt me-2"></i>
-                        Quick Calculations
+                        {{ __('tools.material_calculator.quick_calculations') }}
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('sheet')">
                             <i class="fa-solid fa-square me-1"></i>
-                            Steel Sheet
+                            {{ __('tools.material_calculator.steel_sheet') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('pipe')">
                             <i class="fa-solid fa-circle me-1"></i>
-                            Steel Pipe
+                            {{ __('tools.material_calculator.steel_pipe') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('beam')">
                             <i class="fa-solid fa-minus me-1"></i>
-                            I-Beam
+                            {{ __('tools.material_calculator.i_beam') }}
                         </button>
                         <button class="btn btn-outline-primary btn-sm" onclick="quickCalc('aluminum')">
                             <i class="fa-solid fa-cube me-1"></i>
-                            Aluminum Block
+                            {{ __('tools.material_calculator.aluminum_block') }}
                         </button>
                     </div>
                 </div>
@@ -253,7 +253,7 @@
                 <div class="card-header">
                     <h6 class="mb-0">
                         <i class="fa-solid fa-history me-2"></i>
-                        Recent Calculations
+                        {{ __('tools.material_calculator.recent_calculations') }}
                     </h6>
                 </div>
                 <div class="card-body">
@@ -261,17 +261,17 @@
                         <table class="table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Material</th>
-                                    <th>Dimensions</th>
-                                    <th>Quantity</th>
-                                    <th>Total Cost</th>
-                                    <th>Actions</th>
+                                    <th>{{ __('tools.material_calculator.date') }}</th>
+                                    <th>{{ __('tools.material_calculator.material') }}</th>
+                                    <th>{{ __('tools.material_calculator.dimensions') }}</th>
+                                    <th>{{ __('tools.material_calculator.quantity') }}</th>
+                                    <th>{{ __('tools.material_calculator.total_cost') }}</th>
+                                    <th>{{ __('tools.material_calculator.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="calculationHistory">
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No calculations yet</td>
+                                    <td colspan="6" class="text-center text-muted">{{ __('tools.material_calculator.no_calculations') }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -335,16 +335,16 @@ function updateMaterialProperties() {
     const materialType = document.getElementById('materialType').value;
     const gradeSelect = document.getElementById('materialGrade');
     const propertiesDiv = document.getElementById('materialProperties');
-    
+
     if (materialType && materialProperties[materialType]) {
         const material = materialProperties[materialType];
-        
+
         // Update grades dropdown
         gradeSelect.innerHTML = '<option value="">Select Grade</option>';
         material.grades.forEach(grade => {
             gradeSelect.innerHTML += `<option value="${grade}">${grade}</option>`;
         });
-        
+
         // Update properties display
         propertiesDiv.innerHTML = `
             <h6>${material.name}</h6>
@@ -371,7 +371,7 @@ function updateMaterialProperties() {
         gradeSelect.innerHTML = '<option value="">Select Grade</option>';
         propertiesDiv.innerHTML = '<p class="text-muted">Select a material to view its properties</p>';
     }
-    
+
     calculateMaterial();
 }
 
@@ -384,28 +384,28 @@ function calculateMaterial() {
     const wastePercentage = parseFloat(document.getElementById('wastePercentage').value) || 0;
     const laborCost = parseFloat(document.getElementById('laborCost').value) || 0;
     const processingTime = parseFloat(document.getElementById('processingTime').value) || 0;
-    
+
     if (!materialType || !length || !width || !thickness) {
         return;
     }
-    
+
     const material = materialProperties[materialType];
     if (!material) return;
-    
+
     // Calculate volume in cm³
     const volume = (length * width * thickness) / 1000; // mm³ to cm³
-    
+
     // Calculate weight in kg
     const weight = (volume * material.density) / 1000; // g to kg
-    
+
     // Apply waste percentage
     const totalWeight = weight * (1 + wastePercentage / 100) * quantity;
-    
+
     // Calculate costs
     const materialCost = totalWeight * material.price;
     const totalLaborCost = laborCost * processingTime * quantity;
     const totalCost = materialCost + totalLaborCost;
-    
+
     // Display results
     const resultsDiv = document.getElementById('calculationResults');
     resultsDiv.innerHTML = `
@@ -449,14 +449,14 @@ function quickCalc(type) {
         beam: { material: 'steel_carbon', length: 6000, width: 200, thickness: 10 },
         aluminum: { material: 'aluminum', length: 500, width: 300, thickness: 20 }
     };
-    
+
     const preset = presets[type];
     if (preset) {
         document.getElementById('materialType').value = preset.material;
         document.getElementById('length').value = preset.length;
         document.getElementById('width').value = preset.width;
         document.getElementById('thickness').value = preset.thickness;
-        
+
         updateMaterialProperties();
         calculateMaterial();
     }

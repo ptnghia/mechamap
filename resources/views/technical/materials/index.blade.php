@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Materials Database')
+@section('title', __('technical.materials.title'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,23 +11,23 @@
                 <div>
                     <h1 class="h3 mb-1">
                         <i class="fa-solid fa-cube text-primary me-2"></i>
-                        Materials Database
+                        {{ __('technical.materials.title') }}
                     </h1>
-                    <p class="text-muted mb-0">Comprehensive database of engineering materials with properties and specifications</p>
+                    <p class="text-muted mb-0">{{ __('technical.materials.description') }}</p>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="{{ route('materials.calculator') }}" class="btn btn-outline-primary">
                         <i class="fa-solid fa-calculator me-1"></i>
-                        Cost Calculator
+                        {{ __('technical.materials.cost_calculator') }}
                     </a>
                     <a href="{{ route('materials.compare') }}" class="btn btn-outline-success">
                         <i class="fa-solid fa-balance-scale me-1"></i>
-                        Compare Materials
+                        {{ __('technical.materials.compare_materials') }}
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-download me-1"></i>
-                            Export
+                            {{ __('technical.materials.export') }}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('materials.export', ['format' => 'csv']) }}">
@@ -50,15 +50,15 @@
                 <div class="card-body">
                     <form method="GET" action="{{ route('materials.index') }}" class="row g-3">
                         <div class="col-md-4">
-                            <label for="search" class="form-label">Search Materials</label>
-                            <input type="text" class="form-control" id="search" name="search" 
-                                   value="{{ request('search') }}" 
-                                   placeholder="Search by name, code, or description...">
+                            <label for="search" class="form-label">{{ __('technical.materials.search_materials') }}</label>
+                            <input type="text" class="form-control" id="search" name="search"
+                                   value="{{ request('search') }}"
+                                   placeholder="{{ __('technical.materials.search_placeholder') }}">
                         </div>
                         <div class="col-md-3">
-                            <label for="category" class="form-label">Category</label>
+                            <label for="category" class="form-label">{{ __('technical.materials.category') }}</label>
                             <select class="form-select" id="category" name="category">
-                                <option value="">All Categories</option>
+                                <option value="">{{ __('technical.materials.all_categories') }}</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
                                     {{ ucfirst($category) }}
@@ -67,9 +67,9 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label for="type" class="form-label">Material Type</label>
+                            <label for="type" class="form-label">{{ __('technical.materials.material_type') }}</label>
                             <select class="form-select" id="type" name="type">
-                                <option value="">All Types</option>
+                                <option value="">{{ __('technical.materials.all_types') }}</option>
                                 @foreach($types as $type)
                                 <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
                                     {{ ucfirst($type) }}
@@ -100,18 +100,18 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
                     <span class="text-muted">
-                        Showing {{ $materials->firstItem() ?? 0 }} to {{ $materials->lastItem() ?? 0 }} 
-                        of {{ $materials->total() }} materials
+                        {{ __('technical.materials.showing_results') }} {{ $materials->firstItem() ?? 0 }} {{ __('technical.materials.to') }} {{ $materials->lastItem() ?? 0 }}
+                        {{ __('technical.materials.of') }} {{ $materials->total() }} {{ __('technical.materials.materials') }}
                     </span>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <label for="sort" class="form-label mb-0 text-muted">Sort by:</label>
+                    <label for="sort" class="form-label mb-0 text-muted">{{ __('technical.materials.sort_by') }}</label>
                     <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name</option>
-                        <option value="code" {{ request('sort') == 'code' ? 'selected' : '' }}>Code</option>
-                        <option value="density" {{ request('sort') == 'density' ? 'selected' : '' }}>Density</option>
-                        <option value="tensile_strength" {{ request('sort') == 'tensile_strength' ? 'selected' : '' }}>Tensile Strength</option>
-                        <option value="cost_per_kg" {{ request('sort') == 'cost_per_kg' ? 'selected' : '' }}>Cost</option>
+                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.materials.name') }}</option>
+                        <option value="code" {{ request('sort') == 'code' ? 'selected' : '' }}>{{ __('technical.materials.code') }}</option>
+                        <option value="density" {{ request('sort') == 'density' ? 'selected' : '' }}>{{ __('technical.materials.density') }}</option>
+                        <option value="tensile_strength" {{ request('sort') == 'tensile_strength' ? 'selected' : '' }}>{{ __('technical.materials.tensile_strength') }}</option>
+                        <option value="cost_per_kg" {{ request('sort') == 'cost_per_kg' ? 'selected' : '' }}>{{ __('technical.materials.cost') }}</option>
                     </select>
                 </div>
             </div>
@@ -130,37 +130,37 @@
                 <div class="card-body">
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Category</small>
+                            <small class="text-muted">{{ __('technical.materials.category') }}</small>
                             <div class="fw-medium">{{ ucfirst($material->category) }}</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Type</small>
+                            <small class="text-muted">{{ __('technical.materials.type') }}</small>
                             <div class="fw-medium">{{ ucfirst($material->material_type) }}</div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Density</small>
+                            <small class="text-muted">{{ __('technical.materials.density') }}</small>
                             <div class="fw-medium">{{ number_format($material->density, 2) }} g/cm³</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Tensile Strength</small>
+                            <small class="text-muted">{{ __('technical.materials.tensile_strength') }}</small>
                             <div class="fw-medium">{{ number_format($material->tensile_strength) }} MPa</div>
                         </div>
                     </div>
-                    
+
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <small class="text-muted">Yield Strength</small>
+                            <small class="text-muted">{{ __('technical.materials.yield_strength') }}</small>
                             <div class="fw-medium">{{ number_format($material->yield_strength) }} MPa</div>
                         </div>
                         <div class="col-6">
-                            <small class="text-muted">Cost</small>
+                            <small class="text-muted">{{ __('technical.materials.cost') }}</small>
                             <div class="fw-medium">${{ number_format($material->cost_per_kg, 2) }}/kg</div>
                         </div>
                     </div>
-                    
+
                     <p class="card-text text-muted small">
                         {{ Str::limit($material->description, 100) }}
                     </p>
@@ -168,14 +168,14 @@
                 <div class="card-footer bg-transparent">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex gap-1">
-                            <input type="checkbox" class="form-check-input material-compare" 
+                            <input type="checkbox" class="form-check-input material-compare"
                                    value="{{ $material->id }}" id="compare_{{ $material->id }}">
                             <label class="form-check-label small text-muted" for="compare_{{ $material->id }}">
-                                Compare
+                                {{ __('technical.materials.compare') }}
                             </label>
                         </div>
                         <a href="{{ route('materials.show', $material) }}" class="btn btn-sm btn-outline-primary">
-                            View Details
+                            {{ __('technical.materials.view_details') }}
                         </a>
                     </div>
                 </div>
@@ -209,10 +209,10 @@
 
     <!-- Compare Materials Button -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-        <button type="button" class="btn btn-success btn-lg rounded-pill shadow" 
+        <button type="button" class="btn btn-success btn-lg rounded-pill shadow"
                 id="compareButton" style="display: none;" onclick="compareMaterials()">
             <i class="fa-solid fa-balance-scale me-2"></i>
-            Compare (<span id="compareCount">0</span>)
+            {{ __('technical.materials.compare_button') }} (<span id="compareCount">0</span>)
         </button>
     </div>
 </div>
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkboxes = document.querySelectorAll('.material-compare');
     const compareButton = document.getElementById('compareButton');
     const compareCount = document.getElementById('compareCount');
-    
+
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             if (this.checked) {
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 selectedMaterials = selectedMaterials.filter(id => id !== this.value);
             }
-            
+
             compareCount.textContent = selectedMaterials.length;
             compareButton.style.display = selectedMaterials.length > 1 ? 'block' : 'none';
         });
@@ -251,12 +251,12 @@ function compareMaterials() {
         alert('Please select at least 2 materials to compare');
         return;
     }
-    
+
     const url = new URL('{{ route("materials.compare") }}');
     selectedMaterials.forEach(id => {
         url.searchParams.append('materials[]', id);
     });
-    
+
     window.location.href = url.toString();
 }
 </script>
