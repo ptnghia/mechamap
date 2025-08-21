@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register BreadcrumbService as singleton
+        $this->app->singleton(\App\Services\BreadcrumbService::class);
     }
 
     /**

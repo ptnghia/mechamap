@@ -141,6 +141,10 @@
 <body class="user-frontend">
     <div class="">
         <x-header />
+
+        <!-- Dynamic Breadcrumb -->
+        <x-breadcrumb :breadcrumbs="$breadcrumbs ?? []" />
+
         <!-- Page Heading -->
         @isset($header)
         <header class="sticky-top">

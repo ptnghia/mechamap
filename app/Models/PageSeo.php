@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string|null $route_name
@@ -64,12 +64,19 @@ class PageSeo extends Model
         'title',
         'description',
         'keywords',
+        'title_i18n',
+        'description_i18n',
+        'keywords_i18n',
         'og_title',
         'og_description',
         'og_image',
+        'og_title_i18n',
+        'og_description_i18n',
         'twitter_title',
         'twitter_description',
         'twitter_image',
+        'twitter_title_i18n',
+        'twitter_description_i18n',
         'canonical_url',
         'no_index',
         'extra_meta',
@@ -84,6 +91,13 @@ class PageSeo extends Model
     protected $casts = [
         'no_index' => 'boolean',
         'is_active' => 'boolean',
+        'title_i18n' => 'array',
+        'description_i18n' => 'array',
+        'keywords_i18n' => 'array',
+        'og_title_i18n' => 'array',
+        'og_description_i18n' => 'array',
+        'twitter_title_i18n' => 'array',
+        'twitter_description_i18n' => 'array',
     ];
 
     /**
@@ -118,5 +132,134 @@ class PageSeo extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Get localized title
+     *
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLocalizedTitle(?string $locale = null): ?string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        // Try to get from i18n JSON first
+        if ($this->title_i18n && isset($this->title_i18n[$locale])) {
+            return $this->title_i18n[$locale];
+        }
+
+        // Fallback to default title
+        return $this->title;
+    }
+
+    /**
+     * Get localized description
+     *
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLocalizedDescription(?string $locale = null): ?string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        if ($this->description_i18n && isset($this->description_i18n[$locale])) {
+            return $this->description_i18n[$locale];
+        }
+
+        return $this->description;
+    }
+
+    /**
+     * Get localized keywords
+     *
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLocalizedKeywords(?string $locale = null): ?string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        if ($this->keywords_i18n && isset($this->keywords_i18n[$locale])) {
+            return $this->keywords_i18n[$locale];
+        }
+
+        return $this->keywords;
+    }
+
+    /**
+     * Get localized OG title
+     *
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLocalizedOgTitle(?string $locale = null): ?string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        if ($this->og_title_i18n && isset($this->og_title_i18n[$locale])) {
+            return $this->og_title_i18n[$locale];
+        }
+
+        return $this->og_title ?: $this->getLocalizedTitle($locale);
+    }
+
+    /**
+     * Get localized OG description
+     *
+     * @param string|null $locale
+     * @return string|null
+     */
+    public function getLocalizedOgDescription(?string $locale = null): ?string
+    {
+        $locale = $locale ?: app()->getLocale();
+
+        if ($this->og_description_i18n && isset($this->og_description_i18n[$locale])) {
+            return $this->og_description_i18n[$locale];
+        }
+
+        return $this->og_description ?: $this->getLocalizedDescription($locale);
+    }
+
+    /**
+     * Set multilingual data
+     *
+     * @param array $data
+     * @return void
+     */
+    public function setMultilingualData(array $data): void
+    {
+        $multilingualFields = [
+            'title' => 'title_i18n',
+            'description' => 'description_i18n',
+            'keywords' => 'keywords_i18n',
+            'og_title' => 'og_title_i18n',
+            'og_description' => 'og_description_i18n',
+            'twitter_title' => 'twitter_title_i18n',
+            'twitter_description' => 'twitter_description_i18n',
+        ];
+
+        foreach ($multilingualFields as $field => $i18nField) {
+            if (isset($data[$field]) && is_array($data[$field])) {
+                $this->{$i18nField} = $data[$field];
+            }
+        }
+    }
+
+    /**
+     * Get all localized data for current locale
+     *
+     * @param string|null $locale
+     * @return array
+     */
+    public function getLocalizedData(?string $locale = null): array
+    {
+        return [
+            'title' => $this->getLocalizedTitle($locale),
+            'description' => $this->getLocalizedDescription($locale),
+            'keywords' => $this->getLocalizedKeywords($locale),
+            'og_title' => $this->getLocalizedOgTitle($locale),
+            'og_description' => $this->getLocalizedOgDescription($locale),
+        ];
     }
 }
