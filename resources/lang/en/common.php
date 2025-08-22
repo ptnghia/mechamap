@@ -6,53 +6,53 @@
  */
 
 return array (
-  'buttons' => 
+  'buttons' =>
   array (
-    'save' => 
+    'save' =>
     array (
       0 => 'Save',
       1 => 'Save',
     ),
-    'cancel' => 
+    'cancel' =>
     array (
       0 => 'Cancel',
       1 => 'Cancel',
     ),
-    'delete' => 
+    'delete' =>
     array (
       0 => 'Delete',
       1 => 'Delete',
     ),
-    'edit' => 
+    'edit' =>
     array (
       0 => 'Edit',
       1 => 'Edit',
     ),
-    'create' => 
+    'create' =>
     array (
       0 => 'Create',
       1 => 'Create',
     ),
     'add' => 'Add',
     'remove' => 'Remove',
-    'submit' => 
+    'submit' =>
     array (
       0 => 'Submit',
       1 => 'Submit',
     ),
     'send' => 'Send',
-    'back' => 
+    'back' =>
     array (
       0 => 'Back',
       1 => 'Back',
     ),
-    'next' => 
+    'next' =>
     array (
       0 => 'Next',
       1 => 'Next',
     ),
     'previous' => 'Previous',
-    'close' => 
+    'close' =>
     array (
       0 => 'Close',
       1 => 'Close',
@@ -193,14 +193,14 @@ return array (
     'notify' => 'Notify',
     'mute' => 'Mute',
     'unmute' => 'Unmute',
-    'view_all' => 
+    'view_all' =>
     array (
       0 => 'View All',
       1 => 'View All',
     ),
   ),
   'status' => 'Status',
-  'messages' => 
+  'messages' =>
   array (
     'forgot_password' => 'Forgot Password',
     'switched_successfully' => 'Successfully switched',
@@ -214,7 +214,7 @@ return array (
     'loading' => 'Loading...',
   ),
   'time' => 'Time',
-  'units' => 
+  'units' =>
   array (
     'byte' => 'byte',
     'bytes' => 'bytes',
@@ -338,15 +338,15 @@ return array (
     'worldwide' => 'toàn thế giới',
     'universal' => 'phổ quát',
   ),
-  'form' => 
+  'form' =>
   array (
-    'password' => 
+    'password' =>
     array (
       0 => 'Password',
       1 => 'Password',
     ),
   ),
-  'language' => 
+  'language' =>
   array (
     'switch' => 'Switch Language',
     'select' => 'Select Language',
@@ -355,7 +355,7 @@ return array (
     'switch_failed' => 'Failed to switch language',
     'auto_detect_failed' => 'Unable to auto detect language',
   ),
-  'labels' => 
+  'labels' =>
   array (
     'category' => 'Category',
     'replies' => 'replies',
@@ -363,7 +363,7 @@ return array (
     'forum' => 'forum',
   ),
   'members' => 'Members',
-  'technical' => 
+  'technical' =>
   array (
     'resources' => 'Technical Resources',
     'database' => 'Technical Database',
@@ -378,7 +378,7 @@ return array (
     'process_selector' => 'Process Selector',
     'standards_compliance' => 'Standards Compliance',
   ),
-  'knowledge' => 
+  'knowledge' =>
   array (
     'title' => 'Knowledge',
     'learning_resources' => 'Learning Resources',
@@ -394,7 +394,7 @@ return array (
   'note' => 'Note',
   'confirm' => 'Confirm',
   'saved' => 'Saved.',
-  'site' => 
+  'site' =>
   array (
     'tagline' => 'Vietnam\'s Leading Engineering Community',
   ),
@@ -896,4 +896,6 @@ return array (
   'marketplace_actions.added_to_cart' => 'Added to cart',
   'marketplace_actions.wishlist' => 'Wishlist',
   'marketplace_actions.cart' => 'Cart',
+  'back_to_marketplace' => 'Back to Marketplace',
+  'sort_by' => 'Sort by',
 );

@@ -283,6 +283,70 @@ class MarketplaceController extends Controller
     }
 
     /**
+     * Display all suppliers/sellers listing with filters
+     */
+    public function suppliers(Request $request): View
+    {
+        $query = MarketplaceSeller::with(['user'])
+            ->where('status', 'active');
+
+        // Filter by verification status
+        if ($request->has('verified') && $request->verified == '1') {
+            $query->where('verification_status', 'verified');
+        }
+
+        // Search by name or store name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('store_name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Filter by location
+        if ($request->filled('location')) {
+            $query->where('location', 'like', "%{$request->location}%");
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'newest');
+        switch ($sort) {
+            case 'top_rated':
+                $query->orderBy('rating_average', 'desc');
+                break;
+            case 'most_sales':
+                $query->orderBy('total_sales', 'desc');
+                break;
+            case 'most_products':
+                $query->withCount('products')->orderBy('products_count', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'newest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $suppliers = $query->paginate(12)->withQueryString();
+
+        // Get statistics
+        $stats = [
+            'total_suppliers' => MarketplaceSeller::where('status', 'active')->count(),
+            'verified_suppliers' => MarketplaceSeller::where('status', 'active')
+                ->where('verification_status', 'verified')->count(),
+            'total_products' => MarketplaceProduct::where('status', 'approved')
+                ->where('is_active', true)->count(),
+        ];
+
+        return view('marketplace.suppliers.index', compact('suppliers', 'stats'));
+    }
+
+    /**
      * Display seller profile and products
      */
     public function seller(string $slug): View

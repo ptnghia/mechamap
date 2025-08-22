@@ -345,7 +345,7 @@
                                     </div>
 
                                     {{-- Integrated Rating & Comment Form --}}
-                                    @php $userRating = $showcase->getUserRating(auth()->user()); @endphp
+                                    @php $userRating = auth()->check() ? $showcase->getUserRating(auth()->user()) : null; @endphp
                                     @include('showcases.partials.rating-comment-form', [
                                         'showcase' => $showcase,
                                         'userRating' => $userRating

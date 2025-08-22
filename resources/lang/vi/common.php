@@ -6,53 +6,53 @@
  */
 
 return array (
-  'buttons' => 
+  'buttons' =>
   array (
-    'save' => 
+    'save' =>
     array (
       0 => 'Lưu',
       1 => 'Lưu',
     ),
-    'cancel' => 
+    'cancel' =>
     array (
       0 => 'Hủy',
       1 => 'Hủy',
     ),
-    'delete' => 
+    'delete' =>
     array (
       0 => 'Xóa',
       1 => 'Xóa',
     ),
-    'edit' => 
+    'edit' =>
     array (
       0 => 'Sửa',
       1 => 'Sửa',
     ),
-    'create' => 
+    'create' =>
     array (
       0 => 'Tạo',
       1 => 'Tạo',
     ),
     'add' => 'Thêm',
     'remove' => 'Xóa bỏ',
-    'submit' => 
+    'submit' =>
     array (
       0 => 'Gửi',
       1 => 'Gửi',
     ),
     'send' => 'Gửi',
-    'back' => 
+    'back' =>
     array (
       0 => 'Quay lại',
       1 => 'Quay lại',
     ),
-    'next' => 
+    'next' =>
     array (
       0 => 'Tiếp theo',
       1 => 'Tiếp theo',
     ),
     'previous' => 'Trước',
-    'close' => 
+    'close' =>
     array (
       0 => 'Đóng',
       1 => 'Đóng',
@@ -193,14 +193,14 @@ return array (
     'notify' => 'Thông báo',
     'mute' => 'Tắt tiếng',
     'unmute' => 'Bật tiếng',
-    'view_all' => 
+    'view_all' =>
     array (
       0 => 'Xem tất cả',
       1 => 'Xem tất cả',
     ),
   ),
   'status' => 'Trạng thái',
-  'messages' => 
+  'messages' =>
   array (
     'search' => 'Tìm kiếm',
     'forum' => 'Diễn đàn',
@@ -357,7 +357,7 @@ return array (
     'loading' => 'Đang tải...',
   ),
   'time' => 'Thời gian',
-  'units' => 
+  'units' =>
   array (
     'byte' => 'byte',
     'bytes' => 'bytes',
@@ -481,15 +481,15 @@ return array (
     'worldwide' => 'toàn thế giới',
     'universal' => 'phổ quát',
   ),
-  'form' => 
+  'form' =>
   array (
-    'password' => 
+    'password' =>
     array (
       0 => 'Mật khẩu',
       1 => 'Mật khẩu',
     ),
   ),
-  'language' => 
+  'language' =>
   array (
     'switch' => 'Chuyển đổi ngôn ngữ',
     'select' => 'Chọn ngôn ngữ',
@@ -498,7 +498,7 @@ return array (
     'switch_failed' => 'Lỗi khi chuyển đổi ngôn ngữ',
     'auto_detect_failed' => 'Không thể tự động phát hiện ngôn ngữ',
   ),
-  'labels' => 
+  'labels' =>
   array (
     'category' => 'Danh mục',
     'replies' => 'phản hồi',
@@ -506,7 +506,7 @@ return array (
     'forum' => 'diễn đàn',
   ),
   'members' => 'Thành viên',
-  'technical' => 
+  'technical' =>
   array (
     'resources' => 'Tài nguyên kỹ thuật',
     'database' => 'Cơ sở dữ liệu kỹ thuật',
@@ -521,7 +521,7 @@ return array (
     'process_selector' => 'Chọn quy trình',
     'standards_compliance' => 'Tuân thủ tiêu chuẩn',
   ),
-  'knowledge' => 
+  'knowledge' =>
   array (
     'title' => 'Tri thức',
     'learning_resources' => 'Tài nguyên học tập',
@@ -539,7 +539,7 @@ return array (
   'close' => 'Đóng',
   'loading' => 'Đang tải...',
   'marketplace' => 'Thị trường',
-  'marketplace_actions' => 
+  'marketplace_actions' =>
   array (
     'by' => 'bởi',
     'add_to_wishlist' => 'Thêm vào danh sách mong muốn',
@@ -581,7 +581,7 @@ return array (
   'login' => 'Đăng nhập',
   'marketplace_title' => 'Marketplace',
   'register' => 'Đăng ký',
-  'thread_showcase' => 
+  'thread_showcase' =>
   array (
     'step_title' => 'Showcase dự án',
     'step_aria' => 'Bước 3: Tạo showcase dự án (tùy chọn)',
@@ -609,7 +609,7 @@ return array (
   'of' => 'trên',
   'results' => 'kết quả',
   'Go to page :page' => 'Đi đến trang :page',
-  'roles' => 
+  'roles' =>
   array (
     'supplier' => 'Nhà cung cấp',
     'admin' => 'Quản trị viên',
@@ -617,7 +617,7 @@ return array (
     'moderator' => 'Kiểm duyệt viên',
   ),
   'navigation' => 'Điều hướng',
-  'dashboard' => 
+  'dashboard' =>
   array (
     'quick_stats' => 'Thống kê nhanh',
     'products' => 'Sản phẩm',
@@ -687,7 +687,7 @@ return array (
   'note' => 'Ghi chú',
   'confirm' => 'Xác nhận',
   'saved' => 'Đã lưu.',
-  'site' => 
+  'site' =>
   array (
     'tagline' => 'Cộng đồng kỹ thuật hàng đầu Việt Nam',
   ),
@@ -1149,4 +1149,6 @@ return array (
   'marketplace_actions.added_to_cart' => 'Đã thêm vào giỏ hàng',
   'marketplace_actions.wishlist' => 'Yêu thích',
   'marketplace_actions.cart' => 'Giỏ hàng',
+  'back_to_marketplace' => 'Quay về Marketplace',
+  'sort_by' => 'Sắp xếp theo',
 );
