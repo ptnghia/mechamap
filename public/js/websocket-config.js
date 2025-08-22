@@ -1,6 +1,7 @@
 /**
- * MechaMap WebSocket Configuration
- * Environment-specific WebSocket client configuration
+ * MechaMap Unified WebSocket System
+ * Single WebSocket connection for all real-time features
+ * Environment-aware: localhost:3000 (dev) | https://realtime.mechamap.com (prod)
  */
 
 window.MechaMapWebSocket = (function() {
@@ -17,10 +18,24 @@ window.MechaMapWebSocket = (function() {
 
         // Creating new WebSocketManager instance
         this.socket = null;
+        this.isConnected = false;
         this.isConnecting = false;
         this.connectionPromise = null;
         this.connectionAttempts = 0;
-        this.MAX_CONNECTION_ATTEMPTS = 1;
+        this.MAX_CONNECTION_ATTEMPTS = 5;
+        this.reconnectDelay = 1000;
+        this.userId = null;
+        this.userToken = null;
+
+        // Callbacks for different events
+        this.callbacks = {
+            onNotification: [],
+            onConnect: [],
+            onDisconnect: [],
+            onError: [],
+            onTyping: [],
+            onUserActivity: []
+        };
 
         instance = this;
         return this;
@@ -56,6 +71,30 @@ window.MechaMapWebSocket = (function() {
     }
 
     /**
+     * Load Socket.IO library dynamically
+     */
+    async function loadSocketIO() {
+        return new Promise((resolve, reject) => {
+            if (typeof io !== 'undefined') {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.socket.io/4.7.4/socket.io.min.js';
+            script.onload = () => {
+                console.log('MechaMap WebSocket: Socket.IO loaded');
+                resolve();
+            };
+            script.onerror = () => {
+                console.error('MechaMap WebSocket: Failed to load Socket.IO');
+                reject(new Error('Failed to load Socket.IO'));
+            };
+            document.head.appendChild(script);
+        });
+    }
+
+    /**
      * Get authentication token from Laravel Sanctum
      */
     async function getAuthToken() {
@@ -66,12 +105,12 @@ window.MechaMapWebSocket = (function() {
     }
 
     /**
-     * Get Sanctum token from Laravel API (for authenticated users)
+     * Get JWT token from Laravel API (for authenticated users)
      */
     async function getSanctumToken() {
-        // Fetching Sanctum token from Laravel API
+        // Fetching JWT token from Laravel API (compatible with WebSocket server)
         try {
-            const response = await fetch('/api/user/websocket-token', {
+            const response = await fetch('/api/user/token', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -92,16 +131,22 @@ window.MechaMapWebSocket = (function() {
                 let websocketUrl = null;
                 let userId = null;
 
-                // Expected structure: { success: true, data: { token, user_id, websocket_url } }
-                if (data.success && data.data && data.data.token) {
+                // Handle both JWT and Sanctum response structures
+                if (data.success && data.data && data.data.data && data.data.data.token) {
+                    // JWT format: { success: true, data: { data: { token, user: { id } } } }
+                    token = data.data.data.token;
+                    websocketUrl = 'https://realtime.mechamap.com'; // Use hardcoded URL for JWT
+                    userId = data.data.data.user?.id;
+                } else if (data.success && data.data && data.data.token) {
+                    // Sanctum format: { success: true, data: { token, user_id, websocket_url } }
                     token = data.data.token;
                     websocketUrl = data.data.websocket_url;
                     userId = data.data.user_id;
                 } else if (data.token) {
                     // Fallback for direct token in response
                     token = data.token;
-                    websocketUrl = data.websocket_url;
-                    userId = data.user_id;
+                    websocketUrl = data.websocket_url || config.websocket.url;
+                    userId = data.user_id || data.user?.id;
                 }
 
                 console.log('🔍 API Response structure:', {
@@ -378,6 +423,141 @@ window.MechaMapWebSocket = (function() {
         };
     }
 
+    /**
+     * Add callback for specific event type
+     */
+    function addCallback(eventType, callback) {
+        if (wsManager.callbacks[eventType]) {
+            wsManager.callbacks[eventType].push(callback);
+        }
+    }
+
+    /**
+     * Remove callback for specific event type
+     */
+    function removeCallback(eventType, callback) {
+        if (wsManager.callbacks[eventType]) {
+            const index = wsManager.callbacks[eventType].indexOf(callback);
+            if (index > -1) {
+                wsManager.callbacks[eventType].splice(index, 1);
+            }
+        }
+    }
+
+    /**
+     * Trigger callbacks for specific event type
+     */
+    function triggerCallbacks(eventType, data) {
+        if (wsManager.callbacks[eventType]) {
+            wsManager.callbacks[eventType].forEach(callback => {
+                try {
+                    callback(data);
+                } catch (error) {
+                    console.error(`MechaMap WebSocket: Callback error for ${eventType}:`, error);
+                }
+            });
+        }
+    }
+
+    /**
+     * Initialize unified WebSocket connection
+     */
+    async function initialize() {
+        try {
+            // Load Socket.IO if not already loaded
+            await loadSocketIO();
+
+            // Get user data
+            const userMeta = document.querySelector('meta[name="user-id"]');
+            if (!userMeta) {
+                console.log('MechaMap WebSocket: No authenticated user found');
+                return null;
+            }
+
+            wsManager.userId = userMeta.getAttribute('content');
+
+            // Create connection
+            const socket = await createConnection();
+            if (!socket) {
+                console.error('MechaMap WebSocket: Failed to create connection');
+                return null;
+            }
+
+            // Setup event handlers
+            setupEventHandlers(socket);
+
+            // Subscribe to user channel
+            subscribeToUserChannel(socket, wsManager.userId);
+
+            wsManager.socket = socket;
+            wsManager.isConnected = true;
+
+            console.log('✅ MechaMap WebSocket: Initialized successfully');
+            triggerCallbacks('onConnect', { socket, userId: wsManager.userId });
+
+            return socket;
+
+        } catch (error) {
+            console.error('MechaMap WebSocket: Initialization failed:', error);
+            triggerCallbacks('onError', error);
+            return null;
+        }
+    }
+
+    /**
+     * Setup event handlers for socket
+     */
+    function setupEventHandlers(socket) {
+        socket.on('connect', () => {
+            console.log('✅ WebSocket connected:', socket.id);
+            wsManager.isConnected = true;
+            wsManager.connectionAttempts = 0;
+            triggerCallbacks('onConnect', { socket, userId: wsManager.userId });
+        });
+
+        socket.on('disconnect', (reason) => {
+            console.log('🔌 WebSocket disconnected:', reason);
+            wsManager.isConnected = false;
+            triggerCallbacks('onDisconnect', { reason });
+
+            // Auto-reconnect if not intentional disconnect
+            if (reason !== 'io client disconnect') {
+                setTimeout(() => {
+                    if (wsManager.connectionAttempts < wsManager.MAX_CONNECTION_ATTEMPTS) {
+                        console.log(`🔄 Reconnecting... (attempt ${wsManager.connectionAttempts + 1}/${wsManager.MAX_CONNECTION_ATTEMPTS})`);
+                        initialize();
+                    }
+                }, wsManager.reconnectDelay);
+            }
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('❌ WebSocket connection error:', error.message);
+            wsManager.isConnected = false;
+            triggerCallbacks('onError', error);
+        });
+
+        // Notification events
+        socket.on('notification', (data) => {
+            console.log('🔔 Received notification:', data);
+            triggerCallbacks('onNotification', data);
+        });
+
+        // Typing events
+        socket.on('typing_start', (data) => {
+            triggerCallbacks('onTyping', { ...data, action: 'start' });
+        });
+
+        socket.on('typing_stop', (data) => {
+            triggerCallbacks('onTyping', { ...data, action: 'stop' });
+        });
+
+        // User activity events
+        socket.on('user_activity', (data) => {
+            triggerCallbacks('onUserActivity', data);
+        });
+    }
+
     // Public API
     return {
         // Configuration
@@ -385,6 +565,7 @@ window.MechaMapWebSocket = (function() {
         getAuthToken,
 
         // Connection management
+        initialize,
         createConnection,
         testConnection,
         getConnectionStatus,
@@ -395,6 +576,12 @@ window.MechaMapWebSocket = (function() {
         // Event handlers
         setupNotificationHandler,
         setupMessageHandler,
+        addCallback,
+        removeCallback,
+
+        // Socket instance access
+        getSocket: () => wsManager.socket,
+        isConnected: () => wsManager.isConnected,
 
         // Utilities
         isProduction,

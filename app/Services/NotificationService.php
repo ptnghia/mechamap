@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Notification;
 use App\Services\NotificationLocalizationService;
+use App\Services\NotificationPreloadService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Events\NotificationBroadcastEvent;
@@ -71,6 +72,9 @@ class NotificationService
 
                 // Invalidate user notifications cache
                 \App\Services\NotificationCacheService::invalidateUserCache($user);
+
+                // Clear preload cache for user
+                app(NotificationPreloadService::class)->clearCache($user->id);
 
                 // Send email if requested and user has email notifications enabled
                 if ($sendEmail && $user->email_notifications_enabled) {

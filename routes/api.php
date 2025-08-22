@@ -1214,7 +1214,7 @@ if (app()->environment('local')) {
 
 // WebSocket Server API Routes (với API Key authentication)
 Route::middleware(['websocket.api'])->prefix('websocket-api')->group(function () {
-    // User authentication verification
+    // User authentication verification (supports both Sanctum and JWT tokens)
     Route::post('/verify-user', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'verifyUser']);
 
     // User information

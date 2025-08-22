@@ -259,14 +259,66 @@ class UnifiedNotificationController extends Controller
                 ], 400);
             }
 
-            // Verify Sanctum token
-            $user = \Laravel\Sanctum\PersonalAccessToken::findToken($token)?->tokenable;
+            $user = null;
+
+            // Check if it's a Sanctum token (contains |)
+            if (str_contains($token, '|')) {
+                // Verify Sanctum token
+                $user = \Laravel\Sanctum\PersonalAccessToken::findToken($token)?->tokenable;
+            } else {
+                // Try to verify as JWT token
+                try {
+                    $jwtSecret = env('JWT_SECRET', config('app.key'));
+                    $decoded = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($jwtSecret, 'HS256'));
+                    $payload = (array) $decoded;
+
+                    // Check expiration
+                    if (isset($payload['exp']) && $payload['exp'] < time()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Token expired'
+                        ], 401);
+                    }
+
+                    // Get user ID from payload
+                    $userId = $payload['userId'] ?? $payload['sub'] ?? $payload['user_id'] ?? null;
+
+                    if ($userId) {
+                        $user = \App\Models\User::find($userId);
+                    }
+
+                } catch (\Firebase\JWT\ExpiredException $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Token expired'
+                    ], 401);
+                } catch (\Firebase\JWT\SignatureInvalidException $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid token signature'
+                    ], 401);
+                } catch (\Exception $e) {
+                    // JWT verification failed, token might be invalid
+                    Log::warning('JWT verification failed', [
+                        'error' => $e->getMessage(),
+                        'token_prefix' => substr($token, 0, 10) . '...'
+                    ]);
+                }
+            }
 
             if (!$user) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid token'
                 ], 401);
+            }
+
+            // Check if user is active
+            if (isset($user->status) && $user->status !== 'active') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User account is not active'
+                ], 403);
             }
 
             return response()->json([

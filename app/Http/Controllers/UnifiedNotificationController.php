@@ -101,6 +101,20 @@ class UnifiedNotificationController extends Controller
             }
 
             $notifications = $query->paginate($perPage);
+
+            // Transform custom notifications to translate titles
+            $notifications->getCollection()->transform(function ($notification) {
+                // Translate title if it's a translation key
+                $title = $notification->title;
+                if (str_starts_with($title, 'notifications.types.')) {
+                    $title = __($title);
+                }
+
+                // Update the title in the notification object
+                $notification->title = $title;
+
+                return $notification;
+            });
         }
 
         // Get statistics

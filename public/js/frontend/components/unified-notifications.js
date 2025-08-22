@@ -147,10 +147,7 @@ class UnifiedNotifications {
             });
         }
 
-        // Fallback: Poll for updates every 30 seconds
-        setInterval(() => {
-            this.updateUnreadCount();
-        }, 30000);
+        // No fallback polling - rely on WebSocket for real-time updates
     }
 
     /**

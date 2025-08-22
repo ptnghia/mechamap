@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\SendWelcomeEmail;
+use App\Http\View\Composers\NotificationComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Register localization Blade directives
         $this->registerLocalizationBladeDirectives();
+
+        // Register View Composers
+        $this->registerViewComposers();
 
         // Register event listeners
         $this->registerEventListeners();
@@ -185,5 +190,18 @@ class AppServiceProvider extends ServiceProvider
 
         // Send welcome email after email verification
         Event::listen(Verified::class, SendWelcomeEmail::class);
+    }
+
+    /**
+     * Register View Composers
+     */
+    private function registerViewComposers(): void
+    {
+        // Register NotificationComposer for layouts that need notification data
+        View::composer([
+            'layouts.app',
+            'layouts.admin',
+            'layouts.user-dashboard'
+        ], NotificationComposer::class);
     }
 }

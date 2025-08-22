@@ -3,11 +3,26 @@
 @push('styles')
 <style>
 .custom-notification-dropdown {
+    position: absolute;
+    top: 100%;
+    width: 380px;
+    max-width: 90vw;
     background: white;
     border: 1px solid #dee2e6;
     border-radius: 0.375rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     overflow: hidden;
+    z-index: 1050;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.custom-notification-dropdown.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .custom-notification-dropdown.dropdown-left {
@@ -256,29 +271,61 @@ document.addEventListener('DOMContentLoaded', function() {
             notifications: [],
             cachedData: null,
             lastFetchTime: null,
-            cacheTimeout: 60000, // 1 minute cache
-            refreshInterval: null,
+            cacheTimeout: 300000, // 5 minutes cache (since we have WebSocket for real-time updates)
+
             translationsLoaded: false,
 
             // Initialize
             init() {
-                if (!this.uiManager.elements.bell) return;
+                // Initialize DOM elements
+                this.initElements();
+
+                if (!this.bellBtn) {
+                    console.error('NotificationDropdown: Bell button not found');
+                    return;
+                }
 
                 // Load translations first
                 this.loadTranslations();
 
-                // Load notifications immediately on page load (with count)
-                this.loadNotificationsWithCount(true);
+                // Load preloaded data if available
+                this.loadPreloadedData();
+
+                // Load notifications immediately on page load (with count) if no preloaded data
+                if (!this.isLoaded) {
+                    this.loadNotificationsWithCount(true);
+                }
+
                 this.bindEvents();
                 this.setupWebSocketHandlers();
 
-                // Auto refresh every 30 seconds (count only, unless dropdown is open)
-                this.refreshInterval = setInterval(() => {
-                    const isDropdownOpen = this.isDropdownOpen();
-                    this.loadNotificationsWithCount(!isDropdownOpen); // Load full data if dropdown is open
-                }, 30000);
+                // No auto refresh - rely on WebSocket for real-time updates
+                // Only refresh when explicitly needed (new notifications via WebSocket)
 
                 console.log('NotificationDropdown: Initialized with NotificationUIManager');
+            },
+
+            // Initialize DOM elements
+            initElements() {
+                this.bellBtn = document.getElementById('notificationBell');
+                this.dropdownMenu = document.getElementById('notificationDropdown');
+                this.notificationList = document.getElementById('notificationItems');
+                this.markAllReadBtn = document.getElementById('markAllRead');
+                this.skeletonState = document.getElementById('notificationSkeleton');
+                this.emptyState = document.getElementById('notificationEmpty');
+
+                // Get badge and counter elements
+                if (this.bellBtn) {
+                    this.badge = this.bellBtn.querySelector('.notification-counter');
+                    this.unreadCount = this.badge;
+                }
+
+                console.log('NotificationDropdown: DOM elements initialized', {
+                    bellBtn: !!this.bellBtn,
+                    dropdownMenu: !!this.dropdownMenu,
+                    notificationList: !!this.notificationList,
+                    badge: !!this.badge
+                });
             },
 
         // Load translations
@@ -370,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Dropdown control methods
         isDropdownOpen() {
-            return this.dropdownMenu.style.display === 'block';
+            return this.dropdownMenu.classList.contains('show');
         },
 
         toggleDropdown() {
@@ -385,10 +432,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Position dropdown
             this.positionDropdown();
 
-            // Show dropdown with animation
-            this.dropdownMenu.style.display = 'block';
-            this.dropdownMenu.style.opacity = '0';
-            this.dropdownMenu.style.transform = 'translateY(-10px)';
+            // Add show class for CSS visibility
+            this.dropdownMenu.classList.add('show');
 
             // Update aria attributes
             this.bellBtn.setAttribute('aria-expanded', 'true');
@@ -398,33 +443,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.showSkeleton();
             }
 
-            // Animate in
-            requestAnimationFrame(() => {
-                this.dropdownMenu.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
-                this.dropdownMenu.style.opacity = '1';
-                this.dropdownMenu.style.transform = 'translateY(0)';
-            });
-
-            // Force refresh notifications when dropdown opens (bypass cache)
-            this.forceRefresh();
+            // Only load notifications if not already loaded (smart loading)
+            if (!this.isLoaded && !this.isLoading) {
+                this.loadNotificationsWithCount(false);
+            }
         },
 
         closeDropdown() {
             if (!this.isDropdownOpen()) return;
 
-            // Animate out
-            this.dropdownMenu.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
-            this.dropdownMenu.style.opacity = '0';
-            this.dropdownMenu.style.transform = 'translateY(-10px)';
+            // Remove show class for CSS visibility
+            this.dropdownMenu.classList.remove('show');
 
             // Update aria attributes
             this.bellBtn.setAttribute('aria-expanded', 'false');
-
-            // Hide after animation
-            setTimeout(() => {
-                this.dropdownMenu.style.display = 'none';
-                this.dropdownMenu.style.transition = '';
-            }, 150);
         },
 
         positionDropdown() {
@@ -527,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     limit: '10'
                 });
 
-                const response = await fetch(`/ajax/notifications?${params}`, {
+                const response = await fetch(`/ajax/notifications/dropdown?${params}`, {
                     headers: {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -597,15 +629,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     console.log('ℹ️ Notification already exists in list, skipping');
                 }
-            }
 
-            // Show visual feedback if dropdown is open
-            if (this.isDropdownOpen()) {
-                this.showNewNotificationAnimation();
+                // Show visual feedback if dropdown is open
+                if (this.isDropdownOpen()) {
+                    this.showNewNotificationAnimation();
+                }
+            } else {
+                // If not loaded yet, mark as stale for next dropdown open
+                this.isLoaded = false;
+                console.log('📝 Marked notifications as stale for next load');
             }
-
-            // Invalidate cache to force refresh on next load
-            this.clearCache();
         },
 
         // Clear cache and force refresh
@@ -929,13 +962,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
 
-        // Cleanup method
-        destroy() {
-            if (this.refreshInterval) {
-                clearInterval(this.refreshInterval);
-                this.refreshInterval = null;
+        // Load preloaded data from PHP
+        loadPreloadedData() {
+            try {
+                // Check if preloaded data is available
+                @if(isset($preloadedNotifications) && isset($preloadedUnreadCount))
+                const preloadedData = {
+                    notifications: @json($preloadedNotifications),
+                    unread_count: {{ $preloadedUnreadCount }},
+                    has_notifications: {{ $hasPreloadedNotifications ? 'true' : 'false' }}
+                };
+
+                if (preloadedData.notifications && preloadedData.notifications.length >= 0) {
+                    console.log('📦 Loading preloaded notification data:', preloadedData);
+
+                    // Set cached data
+                    this.cachedData = preloadedData;
+                    this.lastFetchTime = Date.now();
+                    this.isLoaded = true;
+
+                    // Update UI immediately
+                    this.notifications = preloadedData.notifications;
+                    this.updateUnreadCount(preloadedData.unread_count);
+
+                    // Emit events
+                    this.emitSystemEvent('notificationsUpdated', {
+                        notifications: this.notifications,
+                        count: this.notifications.length
+                    });
+
+                    this.emitSystemEvent('unreadCountChanged', {
+                        count: preloadedData.unread_count
+                    });
+
+                    this.emitSystemEvent('emptyStateChanged', {
+                        isEmpty: this.notifications.length === 0
+                    });
+
+                    console.log('✅ Preloaded notification data loaded successfully');
+                    return true;
+                }
+                @endif
+            } catch (error) {
+                console.warn('⚠️ Failed to load preloaded notification data:', error);
             }
 
+            return false;
+        },
+
+        // Cleanup method
+        destroy() {
             // Clear cache
             this.cachedData = null;
             this.lastFetchTime = null;

@@ -245,6 +245,9 @@
 
     <!-- WebSocket & Real-time Dependencies -->
     @auth
+    <!-- Load WebSocket config first (required by NotificationService) -->
+    <x-websocket-config :auto-init="false" />
+
     <!-- Socket.IO-based Notification Service for Node.js WebSocket server -->
     <script src="{{ asset_versioned('js/frontend/services/notification-service.js') }}"></script>
     <script src="{{ asset_versioned('js/frontend/components/notification-sounds.js') }}"></script>
@@ -354,9 +357,27 @@
     <!-- Thread Actions Script -->
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
 
-    <!-- WebSocket Configuration and Connection -->
+    <!-- Initialize unified WebSocket system after all components are loaded -->
     @auth
-    <x-websocket-config :auto-init="true" />
+    <script>
+        // Initialize unified WebSocket system
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MechaMapWebSocket) {
+                console.log('🚀 Initializing unified MechaMap WebSocket system...');
+                window.MechaMapWebSocket.initialize().then(socket => {
+                    if (socket) {
+                        console.log('✅ MechaMap WebSocket system initialized successfully');
+                    } else {
+                        console.warn('⚠️ MechaMap WebSocket initialization failed');
+                    }
+                }).catch(error => {
+                    console.error('❌ MechaMap WebSocket initialization error:', error);
+                });
+            } else {
+                console.error('❌ MechaMapWebSocket not found!');
+            }
+        });
+    </script>
     @endauth
 
 

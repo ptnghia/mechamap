@@ -1,17 +1,23 @@
 /**
- * MechaMap Real-time Notification Service
- * Socket.IO-based WebSocket connection to Node.js server
- * Replaces Laravel Reverb/Pusher.js implementation
+ * MechaMap Unified Notification Service
+ * Bridge to MechaMapWebSocket for backward compatibility
+ * This file maintains compatibility with existing code while using the unified WebSocket system
  */
 class NotificationService {
     constructor() {
-        this.socket = null;
+        console.log('NotificationService: Using unified MechaMapWebSocket system');
+
+        // Check if MechaMapWebSocket is available
+        if (!window.MechaMapWebSocket) {
+            console.error('NotificationService: MechaMapWebSocket not found! Make sure websocket-config.js is loaded first.');
+            return;
+        }
+
+        this.webSocket = window.MechaMapWebSocket;
         this.isConnected = false;
-        this.reconnectAttempts = 0;
-        this.maxReconnectAttempts = 5;
-        this.reconnectDelay = 1000;
         this.userId = null;
-        this.userToken = null;
+
+        // Legacy callback support
         this.callbacks = {
             onNotification: [],
             onConnect: [],
@@ -21,511 +27,173 @@ class NotificationService {
             onUserActivity: []
         };
 
-        // Configuration
-        this.config = {
-            serverUrl: this.getServerUrl(),
-            transports: ['websocket', 'polling'],
-            timeout: 10000,
-            forceNew: false,
-            autoConnect: false
-        };
-
-        console.log('NotificationService: Initializing with Node.js WebSocket server');
         this.init();
-    }
-
-    /**
-     * Get WebSocket server URL based on environment
-     */
-    getServerUrl() {
-        const hostname = window.location.hostname;
-        const protocol = window.location.protocol === 'https:' ? 'https' : 'http';
-
-        // Production: realtime.mechamap.com
-        // All environments now use production server
-        if (hostname === 'mechamap.com' || hostname === 'www.mechamap.com') {
-            return 'https://realtime.mechamap.com';
-        } else if (hostname === 'mechamap.test' || hostname.includes('mechamap')) {
-            return 'https://realtime.mechamap.com';
-        } else {
-            return 'https://realtime.mechamap.com';
-        }
     }
 
     /**
      * Initialize notification service
      */
-    init() {
-        // Get user authentication data
-        this.getUserData();
-
-        if (this.userId && this.userToken) {
-            console.log(`NotificationService: Initializing for user ${this.userId}`);
-            this.connect();
-        } else {
-            console.log('NotificationService: No authenticated user found');
-        }
-    }
-
-    /**
-     * Get user data from meta tags and localStorage
-     */
-    getUserData() {
-        // Get user ID from meta tag
-        const userMeta = document.querySelector('meta[name="user-id"]');
-        if (userMeta) {
-            this.userId = userMeta.getAttribute('content');
-        }
-
-        // Get Sanctum token from localStorage first, then try API
-        this.userToken = localStorage.getItem('sanctum_token');
-        if (!this.userToken) {
-            // If no cached token, we'll get it async when needed
-            this.getAuthToken().then(token => {
-                if (token) {
-                    this.userToken = token;
-                }
-            });
-        }
-    }
-
-    /**
-     * Get authentication token from Laravel (Sanctum token)
-     */
-    async getAuthToken() {
+    async init() {
         try {
-            const response = await fetch('/api/user/token', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-                },
-                credentials: 'include'
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                // Handle nested data structure: data.data.data.token
-                const token = data?.data?.data?.token || data?.data?.token;
-                if (data.success && token) {
-                    localStorage.setItem('sanctum_token', token);
-                    return token;
-                }
-            }
-        } catch (error) {
-            console.error('NotificationService: Failed to get auth token', error);
-        }
-        return null;
-    }
-
-    /**
-     * Connect to WebSocket server
-     */
-    connect() {
-        if (this.isConnected || !this.userId || !this.userToken) {
-            return;
-        }
-
-        console.log(`NotificationService: Connecting to ${this.config.serverUrl}`);
-
-        try {
-            // Load Socket.IO if not already loaded
-            if (typeof io === 'undefined') {
-                this.loadSocketIO().then(() => {
-                    this.establishConnection();
-                });
-            } else {
-                this.establishConnection();
-            }
-        } catch (error) {
-            console.error('NotificationService: Connection failed', error);
-            this.handleConnectionError(error);
-        }
-    }
-
-    /**
-     * Load Socket.IO library dynamically
-     */
-    async loadSocketIO() {
-        return new Promise((resolve, reject) => {
-            if (typeof io !== 'undefined') {
-                resolve();
+            // Get user data from meta tags
+            const userMeta = document.querySelector('meta[name="user-id"]');
+            if (!userMeta) {
+                console.log('NotificationService: No authenticated user found');
                 return;
             }
 
-            const script = document.createElement('script');
-            script.src = 'https://cdn.socket.io/4.7.4/socket.io.min.js';
-            script.onload = () => {
-                console.log('NotificationService: Socket.IO loaded');
-                resolve();
-            };
-            script.onerror = () => {
-                console.error('NotificationService: Failed to load Socket.IO');
-                reject(new Error('Failed to load Socket.IO'));
-            };
-            document.head.appendChild(script);
-        });
-    }
+            this.userId = userMeta.getAttribute('content');
+            console.log('NotificationService: Using unified WebSocket for user:', this.userId);
 
-    /**
-     * Establish Socket.IO connection
-     */
-    establishConnection() {
-        this.socket = io(this.config.serverUrl, {
-            ...this.config,
-            auth: {
-                token: this.userToken,
-                userId: this.userId
+            // Setup callbacks to bridge to unified WebSocket
+            this.setupWebSocketBridge();
+
+            // Initialize unified WebSocket if not already done
+            if (!this.webSocket.isConnected()) {
+                console.log('NotificationService: Initializing unified WebSocket...');
+                await this.webSocket.initialize();
+            } else {
+                console.log('NotificationService: Using existing WebSocket connection');
+                this.isConnected = true;
+                this.triggerCallbacks('onConnect', { userId: this.userId });
             }
-        });
 
-        this.setupEventListeners();
-        this.socket.connect();
+        } catch (error) {
+            console.error('NotificationService: Initialization failed', error);
+            this.triggerCallbacks('onError', error);
+        }
     }
 
     /**
-     * Setup Socket.IO event listeners
+     * Setup bridge between legacy callbacks and unified WebSocket
      */
-    setupEventListeners() {
-        // Connection events
-        this.socket.on('connect', () => {
+    setupWebSocketBridge() {
+        // Bridge connect events
+        this.webSocket.addCallback('onConnect', (data) => {
             this.isConnected = true;
-            this.reconnectAttempts = 0;
-            console.log('NotificationService: Connected to WebSocket server');
-            console.log('   Socket ID:', this.socket.id);
-            this.triggerCallbacks('onConnect');
-
-            // Subscribe to user's private channel
-            this.subscribeToUserChannel();
+            console.log('NotificationService: Connected via unified WebSocket');
+            this.triggerCallbacks('onConnect', data);
         });
 
-        this.socket.on('disconnect', (reason) => {
+        // Bridge disconnect events
+        this.webSocket.addCallback('onDisconnect', (data) => {
             this.isConnected = false;
-            console.log('NotificationService: Disconnected:', reason);
-            this.triggerCallbacks('onDisconnect', reason);
-
-            // Auto-reconnect unless manually disconnected
-            if (reason !== 'io client disconnect') {
-                this.attemptReconnect();
-            }
+            console.log('NotificationService: Disconnected from unified WebSocket');
+            this.triggerCallbacks('onDisconnect', data);
         });
 
-        this.socket.on('connect_error', (error) => {
-            console.error('NotificationService: Connection error:', error);
-            this.handleConnectionError(error);
-        });
-
-        // Server events
-        this.socket.on('connected', (data) => {
-            console.log('NotificationService: Server confirmation:', data);
-        });
-
-        // Notification events
-        this.socket.on('notification', (data) => {
-            console.log('NotificationService: Received notification:', data);
-            this.handleNotification(data);
-        });
-
-        this.socket.on('notification.read', (data) => {
-            console.log('NotificationService: Notification read:', data);
-            this.handleNotificationRead(data);
-        });
-
-        // Handle test notifications (for development/testing)
-        this.socket.on('test-notification', (data) => {
-            console.log('🧪 NotificationService: Received test notification:', data);
-            if (data.userId === this.userId) {
-                this.handleNotification(data.notification);
-            }
-        });
-
-        // Typing events
-        this.socket.on('user_typing', (data) => {
-            this.triggerCallbacks('onTyping', { ...data, isTyping: true });
-        });
-
-        this.socket.on('user_stopped_typing', (data) => {
-            this.triggerCallbacks('onTyping', { ...data, isTyping: false });
-        });
-
-        // User activity events
-        this.socket.on('user_activity', (data) => {
-            this.triggerCallbacks('onUserActivity', data);
-        });
-
-        // Error handling
-        this.socket.on('error', (error) => {
-            console.error('NotificationService: Server error:', error);
+        // Bridge error events
+        this.webSocket.addCallback('onError', (error) => {
+            console.error('NotificationService: Error from unified WebSocket:', error);
             this.triggerCallbacks('onError', error);
         });
-    }
 
-    /**
-     * Subscribe to user's private channel
-     */
-    subscribeToUserChannel() {
-        if (!this.socket || !this.userId) return;
-
-        const channel = `private-user.${this.userId}`;
-        console.log(`NotificationService: Subscribing to ${channel}`);
-
-        this.socket.emit('subscribe', { channel });
-
-        this.socket.on('subscribed', (data) => {
-            if (data.channel === channel) {
-                console.log(`NotificationService: Successfully subscribed to ${channel}`);
-            }
+        // Bridge notification events
+        this.webSocket.addCallback('onNotification', (notification) => {
+            console.log('NotificationService: Received notification via unified WebSocket:', notification);
+            this.triggerCallbacks('onNotification', notification);
         });
 
-        this.socket.on('subscription_error', (data) => {
-            console.error('NotificationService: Subscription error:', data);
+        // Bridge typing events
+        this.webSocket.addCallback('onTyping', (data) => {
+            this.triggerCallbacks('onTyping', data);
+        });
+
+        // Bridge user activity events
+        this.webSocket.addCallback('onUserActivity', (data) => {
+            this.triggerCallbacks('onUserActivity', data);
         });
     }
 
     /**
-     * Handle incoming notification
+     * Add callback for specific event type (legacy support)
      */
-    handleNotification(payload) {
-        // Extract notification data from WebSocket payload
-        const notification = payload.data || payload;
-        const unreadCount = payload.metadata?.unread_count;
-
-        console.log('NotificationService: Processing notification:', notification);
-
-        // Trigger callbacks for notification managers
-        this.triggerCallbacks('onNotification', notification);
-
-        // Update unread count if provided
-        if (unreadCount !== undefined) {
-            document.dispatchEvent(new CustomEvent('notification-count-updated', {
-                detail: { unreadCount }
-            }));
-        }
-
-        // Show browser notification if permission granted
-        this.showBrowserNotification(notification);
-
-        // Play notification sound
-        this.playNotificationSound();
-
-        // Dispatch global event for other components
-        document.dispatchEvent(new CustomEvent('notification-received', {
-            detail: notification
-        }));
-    }
-
-    /**
-     * Handle notification read event
-     */
-    handleNotificationRead(data) {
-        // Update UI to mark notification as read
-        const notificationElement = document.querySelector(`[data-notification-id="${data.notificationId}"]`);
-        if (notificationElement) {
-            notificationElement.classList.add('read');
-            notificationElement.classList.remove('unread');
+    addCallback(eventType, callback) {
+        if (this.callbacks[eventType]) {
+            this.callbacks[eventType].push(callback);
         }
     }
 
     /**
-     * Show browser notification
+     * Remove callback for specific event type (legacy support)
      */
-    showBrowserNotification(notification) {
-        if ('Notification' in window && Notification.permission === 'granted') {
-            const browserNotification = new Notification(notification.title || 'MechaMap', {
-                body: notification.message || notification.content,
-                icon: '/images/logo/mechamap-icon.png',
-                tag: `mechamap-${notification.id}`,
-                requireInteraction: false
-            });
-
-            // Auto-close after 5 seconds
-            setTimeout(() => {
-                browserNotification.close();
-            }, 5000);
-
-            // Handle click
-            browserNotification.onclick = () => {
-                window.focus();
-                if (notification.url) {
-                    window.location.href = notification.url;
-                }
-                browserNotification.close();
-            };
-        }
-    }
-
-    /**
-     * Play notification sound
-     */
-    playNotificationSound() {
-        try {
-            const audio = new Audio('/sounds/notification.mp3');
-            audio.volume = 0.3;
-            audio.play().catch(e => {
-                // Ignore autoplay policy errors
-                console.log('NotificationService: Audio autoplay blocked');
-            });
-        } catch (error) {
-            // Ignore audio errors
-        }
-    }
-
-    /**
-     * Attempt to reconnect
-     */
-    attemptReconnect() {
-        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-            console.error('NotificationService: Max reconnection attempts reached');
-            this.triggerCallbacks('onError', new Error('Max reconnection attempts reached'));
-            return;
-        }
-
-        this.reconnectAttempts++;
-        const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // Exponential backoff
-
-        console.log(`NotificationService: Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-
-        setTimeout(() => {
-            if (!this.isConnected) {
-                this.connect();
-            }
-        }, delay);
-    }
-
-    /**
-     * Handle connection error
-     */
-    handleConnectionError(error) {
-        console.error('NotificationService: Connection error:', error);
-        this.triggerCallbacks('onError', error);
-
-        // Note: HTTP polling fallback removed - relying on WebSocket reconnection
-        // Real-time notifications are preferred over polling for better UX
-        console.log('NotificationService: Will attempt WebSocket reconnection instead of polling fallback');
-    }
-
-    /**
-     * Send typing indicator
-     */
-    sendTyping(threadId, isTyping = true) {
-        if (!this.socket || !this.isConnected) return;
-
-        this.socket.emit('typing', {
-            threadId,
-            userId: this.userId,
-            isTyping
-        });
-    }
-
-    /**
-     * Mark notification as read
-     */
-    markAsRead(notificationId) {
-        if (!this.socket || !this.isConnected) return;
-
-        this.socket.emit('notification.read', {
-            notificationId,
-            userId: this.userId
-        });
-    }
-
-    /**
-     * Send user activity update
-     */
-    updateActivity(activity = 'online') {
-        if (!this.socket || !this.isConnected) return;
-
-        this.socket.emit('user_activity', {
-            userId: this.userId,
-            activity,
-            timestamp: new Date().toISOString()
-        });
-    }
-
-    /**
-     * Register event callback
-     */
-    on(event, callback) {
-        if (this.callbacks[event]) {
-            this.callbacks[event].push(callback);
-        }
-    }
-
-    /**
-     * Remove event callback
-     */
-    off(event, callback) {
-        if (this.callbacks[event]) {
-            const index = this.callbacks[event].indexOf(callback);
+    removeCallback(eventType, callback) {
+        if (this.callbacks[eventType]) {
+            const index = this.callbacks[eventType].indexOf(callback);
             if (index > -1) {
-                this.callbacks[event].splice(index, 1);
+                this.callbacks[eventType].splice(index, 1);
             }
         }
     }
 
     /**
-     * Trigger callbacks for event
+     * Trigger callbacks for specific event type (legacy support)
      */
-    triggerCallbacks(event, data = null) {
-        if (this.callbacks[event]) {
-            this.callbacks[event].forEach(callback => {
+    triggerCallbacks(eventType, data) {
+        if (this.callbacks[eventType]) {
+            this.callbacks[eventType].forEach(callback => {
                 try {
                     callback(data);
                 } catch (error) {
-                    console.error(`NotificationService: Callback error for ${event}:`, error);
+                    console.error(`NotificationService: Callback error for ${eventType}:`, error);
                 }
             });
         }
     }
 
     /**
-     * Disconnect from server
+     * Legacy method - now delegates to unified WebSocket
      */
-    disconnect() {
-        if (this.socket) {
-            this.socket.disconnect();
+    connect() {
+        console.log('NotificationService: connect() called - delegating to unified WebSocket');
+        if (!this.webSocket.isConnected()) {
+            return this.webSocket.initialize();
         }
-        this.isConnected = false;
-        console.log('NotificationService: Manually disconnected');
+        return Promise.resolve(this.webSocket.getSocket());
     }
 
     /**
-     * Get connection status
+     * Legacy method - now delegates to unified WebSocket
      */
-    getStatus() {
+    disconnect() {
+        console.log('NotificationService: disconnect() called - delegating to unified WebSocket');
+        const socket = this.webSocket.getSocket();
+        if (socket) {
+            socket.disconnect();
+        }
+        this.isConnected = false;
+    }
+
+    /**
+     * Legacy method - check connection status
+     */
+    getConnectionStatus() {
         return {
-            connected: this.isConnected,
-            socketId: this.socket?.id,
-            userId: this.userId,
-            reconnectAttempts: this.reconnectAttempts,
-            serverUrl: this.config.serverUrl
+            connected: this.webSocket.isConnected(),
+            socket: this.webSocket.getSocket()
         };
     }
 
     /**
-     * Get connection status (alias for compatibility)
+     * Legacy method aliases for backward compatibility
      */
-    getConnectionStatus() {
-        return this.getStatus();
+    on(eventType, callback) {
+        this.addCallback(eventType, callback);
     }
 
-    /**
-     * Request notification permission
-     */
-    requestNotificationPermission() {
-        if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission().then(permission => {
-                console.log('NotificationService: Browser notification permission:', permission);
-            });
-        }
+    off(eventType, callback) {
+        this.removeCallback(eventType, callback);
     }
 }
 
-// Initialize global notification service
-window.NotificationService = new NotificationService();
+// Create global instance for backward compatibility
+if (typeof window !== 'undefined') {
+    // Create instance first
+    const notificationServiceInstance = new NotificationService();
 
-// Export for module systems
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = NotificationService;
+    // Expose both class and instance for backward compatibility
+    window.NotificationService = notificationServiceInstance;
+    window.notificationService = notificationServiceInstance;
+
+    console.log('NotificationService: Global instance created and exposed');
 }

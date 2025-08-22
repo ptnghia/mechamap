@@ -10,7 +10,7 @@ class ChatWidget {
         this.conversations = [];
         this.unreadCount = 0;
         this.refreshInterval = null;
-        
+
         this.init();
     }
 
@@ -135,14 +135,14 @@ class ChatWidget {
             const otherUser = conv.other_participant;
             const lastMessage = conv.last_message;
             const isUnread = conv.unread_count > 0;
-            
+
             return `
-                <div class="conversation-item ${isUnread ? 'unread' : ''}" 
+                <div class="conversation-item ${isUnread ? 'unread' : ''}"
                      data-conversation-id="${conv.id}"
                      onclick="chatWidget.openConversation(${conv.id})">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-2">
-                            <img src="${otherUser?.avatar || '/images/default-avatar.png'}" 
+                            <img src="${otherUser?.avatar || '/images/default-avatar.png'}"
                                  class="rounded-circle" width="40" height="40" alt="">
                             ${otherUser?.is_online ? '<span class="online-indicator"></span>' : ''}
                         </div>
@@ -170,11 +170,11 @@ class ChatWidget {
 
     async openConversation(conversationId) {
         this.activeConversationId = conversationId;
-        
+
         // Switch to chat tab
         const chatTab = document.getElementById('active-chat-tab');
         const conversationsTab = document.getElementById('conversations-tab');
-        
+
         if (chatTab && conversationsTab) {
             chatTab.style.display = 'block';
             chatTab.click();
@@ -182,11 +182,11 @@ class ChatWidget {
 
         // Load messages
         await this.loadMessages(conversationId);
-        
+
         // Enable message input
         const messageInput = document.getElementById('messageInput');
         const submitBtn = document.querySelector('#messageForm button[type="submit"]');
-        
+
         if (messageInput && submitBtn) {
             messageInput.disabled = false;
             submitBtn.disabled = false;
@@ -195,7 +195,7 @@ class ChatWidget {
 
         // Update active conversation ID
         document.getElementById('activeConversationId').value = conversationId;
-        
+
         // Mark as read
         this.markAsRead(conversationId);
     }
@@ -249,7 +249,7 @@ class ChatWidget {
         }).join('');
 
         container.innerHTML = html;
-        
+
         // Scroll to bottom
         container.scrollTop = container.scrollHeight;
     }
@@ -257,7 +257,7 @@ class ChatWidget {
     async sendMessage() {
         const messageInput = document.getElementById('messageInput');
         const conversationId = document.getElementById('activeConversationId').value;
-        
+
         if (!messageInput || !conversationId || !messageInput.value.trim()) {
             return;
         }
@@ -333,7 +333,7 @@ class ChatWidget {
         const html = users.map(user => `
             <div class="suggestion-item" onclick="chatWidget.selectRecipient(${user.id}, '${this.escapeHtml(user.name)}')">
                 <div class="d-flex align-items-center">
-                    <img src="${user.avatar || '/images/default-avatar.png'}" 
+                    <img src="${user.avatar || '/images/default-avatar.png'}"
                          class="rounded-circle me-2" width="30" height="30" alt="">
                     <div>
                         <div class="fw-medium">${this.escapeHtml(user.name)}</div>
@@ -378,17 +378,17 @@ class ChatWidget {
 
             if (response.ok) {
                 const data = await response.json();
-                
+
                 // Close modal
                 bootstrap.Modal.getInstance(document.getElementById('newChatModal')).hide();
-                
+
                 // Reset form
                 document.getElementById('newChatForm').reset();
                 document.getElementById('selectedRecipientId').value = '';
-                
+
                 // Reload conversations
                 await this.loadConversations();
-                
+
                 // Open the new conversation
                 if (data.data?.conversation?.id) {
                     this.openConversation(data.data.conversation.id);
@@ -430,7 +430,7 @@ class ChatWidget {
     updateUnreadCount() {
         const totalUnread = this.conversations.reduce((sum, conv) => sum + (conv.unread_count || 0), 0);
         const badge = document.getElementById('unreadBadge');
-        
+
         if (badge) {
             if (totalUnread > 0) {
                 badge.textContent = totalUnread > 99 ? '99+' : totalUnread;
@@ -442,17 +442,8 @@ class ChatWidget {
     }
 
     startRefreshTimer() {
-        // Refresh conversations every 30 seconds
-        this.refreshInterval = setInterval(() => {
-            if (this.isOpen) {
-                this.loadConversations();
-                
-                // Refresh active chat messages
-                if (this.activeConversationId) {
-                    this.loadMessages(this.activeConversationId);
-                }
-            }
-        }, 30000);
+        // Real-time updates handled by WebSocket - no polling needed
+        console.log('ChatWidget: Using WebSocket for real-time updates');
     }
 
     // Utility methods
@@ -466,16 +457,16 @@ class ChatWidget {
 
     formatTime(timestamp) {
         if (!timestamp) return '';
-        
+
         const date = new Date(timestamp);
         const now = new Date();
         const diff = now - date;
-        
+
         if (diff < 60000) return 'Vừa xong';
         if (diff < 3600000) return `${Math.floor(diff / 60000)} phút`;
         if (diff < 86400000) return `${Math.floor(diff / 3600000)} giờ`;
         if (diff < 604800000) return `${Math.floor(diff / 86400000)} ngày`;
-        
+
         return date.toLocaleDateString('vi-VN');
     }
 
