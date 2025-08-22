@@ -71,6 +71,9 @@
                         <p class="text-muted mb-0">Manage Vietnamese translations for MechaMap</p>
                     </div>
                     <div>
+                        <button type="button" class="btn btn-success me-2" id="generateEnglishBtn">
+                            <i class="fas fa-magic me-2"></i>Generate Missing English
+                        </button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTranslationModal">
                             <i class="fas fa-plus me-2"></i>Add Translation
                         </button>
@@ -557,6 +560,89 @@
                 if (enContent && !viContent) {
                     $('#translationContentVi').attr('placeholder', 'Translate: "' + enContent.substring(0, 50) + (enContent.length > 50 ? '..."' : '"'));
                 }
+            });
+
+            // Generate Missing English Translations
+            $('#generateEnglishBtn').on('click', function() {
+                const btn = $(this);
+                const originalText = btn.html();
+
+                Swal.fire({
+                    title: 'Generate Missing English Translations?',
+                    html: `
+                        <p>This will automatically create English translations for all Vietnamese translations that don't have English counterparts.</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Current Status:</strong><br>
+                            Vietnamese: {{ number_format($stats['vietnamese_translations']) }} translations<br>
+                            English: {{ number_format($stats['english_translations']) }} translations<br>
+                            <strong>Missing: {{ number_format($stats['vietnamese_translations'] - $stats['english_translations']) }} English translations</strong>
+                        </div>
+                        <p class="text-muted small">Generated translations will use a mapping dictionary and can be manually edited later.</p>
+                    `,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '<i class="fas fa-magic me-2"></i>Generate Now',
+                    cancelButtonText: 'Cancel',
+                    showLoaderOnConfirm: true,
+                    preConfirm: () => {
+                        return $.ajax({
+                            url: '/dev/translations/generate-english',
+                            type: 'POST',
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const response = result.value;
+
+                        if (response.success) {
+                            // Reload the table to show new translations
+                            table.ajax.reload();
+
+                            // Show success message with details
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'English Translations Generated!',
+                                html: `
+                                    <div class="text-start">
+                                        <p><strong>✅ Successfully created:</strong> ${response.created} English translations</p>
+                                        <p><strong>📊 Total missing:</strong> ${response.total_missing} translations</p>
+                                        ${response.errors.length > 0 ? `<p><strong>⚠️ Errors:</strong> ${response.errors.length} translations had issues</p>` : ''}
+                                    </div>
+                                    <div class="alert alert-success mt-3">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        Page will reload to show updated statistics...
+                                    </div>
+                                `,
+                                timer: 5000,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Reload Page Now'
+                            }).then(() => {
+                                // Reload page to update statistics
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Generation Failed',
+                                text: response.message || 'An error occurred while generating translations'
+                            });
+                        }
+                    }
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Request Failed',
+                        text: 'Failed to communicate with server. Please try again.'
+                    });
+                });
             });
         });
     </script>

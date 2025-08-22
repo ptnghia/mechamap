@@ -294,6 +294,222 @@ class DevTranslationController extends Controller
     }
 
     /**
+     * Auto-generate missing English translations (AJAX)
+     */
+    public function generateMissingEnglish(Request $request)
+    {
+        if (!$this->isDevelopmentEnvironment()) {
+            return response()->json(['error' => 'Not available in production'], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Get all Vietnamese translations that don't have English counterparts
+            $missingTranslations = Translation::where('locale', 'vi')
+                ->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('translations as t2')
+                        ->whereRaw('t2.key = translations.key')
+                        ->where('t2.locale', 'en');
+                })
+                ->where('is_active', true)
+                ->get();
+
+            $created = 0;
+            $errors = [];
+
+            foreach ($missingTranslations as $viTranslation) {
+                try {
+                    $englishContent = $this->translateToEnglish($viTranslation->content);
+
+                    Translation::create([
+                        'key' => $viTranslation->key,
+                        'content' => $englishContent,
+                        'locale' => 'en',
+                        'group_name' => $viTranslation->group_name,
+                        'namespace' => $viTranslation->namespace,
+                        'is_active' => true,
+                        'created_by' => 1, // System user for dev
+                        'updated_by' => 1,
+                    ]);
+
+                    $created++;
+                } catch (\Exception $e) {
+                    $errors[] = "Error creating English translation for key '{$viTranslation->key}': " . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Successfully created {$created} English translations.",
+                'created' => $created,
+                'errors' => $errors,
+                'total_missing' => $missingTranslations->count(),
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error generating English translations: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Translate Vietnamese text to English using mapping dictionary
+     */
+    private function translateToEnglish($vietnameseText)
+    {
+        // Comprehensive Vietnamese to English translation mapping
+        $translations = [
+            // Common UI terms
+            'Trang chủ' => 'Home',
+            'Đăng nhập' => 'Login',
+            'Đăng ký' => 'Register',
+            'Đăng xuất' => 'Logout',
+            'Tìm kiếm' => 'Search',
+            'Thông báo' => 'Notification',
+            'Tin nhắn' => 'Message',
+            'Hồ sơ' => 'Profile',
+            'Cài đặt' => 'Settings',
+            'Quản lý' => 'Management',
+            'Danh sách' => 'List',
+            'Chi tiết' => 'Details',
+            'Thêm mới' => 'Add New',
+            'Chỉnh sửa' => 'Edit',
+            'Xóa' => 'Delete',
+            'Lưu' => 'Save',
+            'Hủy' => 'Cancel',
+            'Xác nhận' => 'Confirm',
+            'Gửi' => 'Send',
+            'Tải lên' => 'Upload',
+            'Tải xuống' => 'Download',
+            'Xem' => 'View',
+            'Chia sẻ' => 'Share',
+            'Thích' => 'Like',
+            'Bình luận' => 'Comment',
+            'Trả lời' => 'Reply',
+            'Theo dõi' => 'Follow',
+            'Đóng' => 'Close',
+            'Mở' => 'Open',
+            'Tạo' => 'Create',
+            'Cập nhật' => 'Update',
+            'Sửa' => 'Edit',
+            'Xem' => 'View',
+            'Quay lại' => 'Back',
+            'Tiếp theo' => 'Next',
+            'Gửi' => 'Submit',
+            'Lọc' => 'Filter',
+            'Sắp xếp' => 'Sort',
+            'Đang tải' => 'Loading',
+            'Lỗi' => 'Error',
+            'Thành công' => 'Success',
+            'Cảnh báo' => 'Warning',
+            'Thông tin' => 'Info',
+            'Trạng thái' => 'Status',
+            'Thao tác' => 'Actions',
+            'Thứ tự' => 'Order',
+            'Hoàn thành' => 'Completed',
+            'ID' => 'ID',
+
+            // Forum & Community terms
+            'Diễn đàn' => 'Forums',
+            'Chủ đề' => 'Thread',
+            'Bài viết' => 'Post',
+            'Danh mục' => 'Category',
+            'Thành viên' => 'Member',
+            'Cộng đồng' => 'Community',
+            'Thảo luận' => 'Discussion',
+            'Câu hỏi' => 'Question',
+            'Câu trả lời' => 'Answer',
+            'Đánh giá' => 'Rating',
+            'Điểm' => 'Points',
+            'Cấp độ' => 'Level',
+            'Huy hiệu' => 'Badge',
+            'Thành tích' => 'Achievement',
+
+            // Marketplace terms
+            'Marketplace' => 'Marketplace',
+            'Sản phẩm' => 'Product',
+            'Mua' => 'Buy',
+            'Bán' => 'Sell',
+            'Giá' => 'Price',
+            'Đơn hàng' => 'Order',
+            'Thanh toán' => 'Payment',
+            'Giao hàng' => 'Delivery',
+            'Đánh giá' => 'Review',
+            'Nhà cung cấp' => 'Supplier',
+            'Nhà sản xuất' => 'Manufacturer',
+            'Thương hiệu' => 'Brand',
+
+            // Engineering terms
+            'Kỹ thuật' => 'Engineering',
+            'Cơ khí' => 'Mechanical',
+            'Thiết kế' => 'Design',
+            'Dự án' => 'Project',
+            'Showcase' => 'Showcase',
+            'Công cụ' => 'Tools',
+            'Phần mềm' => 'Software',
+            'Tài liệu' => 'Document',
+            'Hướng dẫn' => 'Guide',
+            'Giải pháp' => 'Solution',
+
+            // Time & Date terms
+            'Hôm nay' => 'Today',
+            'Hôm qua' => 'Yesterday',
+            'Tuần này' => 'This Week',
+            'Tháng này' => 'This Month',
+            'Năm nay' => 'This Year',
+            'Tất cả thời gian' => 'All Time',
+            'Khoảng thời gian' => 'Time Period',
+
+            // Activity terms
+            'Hoạt động' => 'Activity',
+            'Tạo chủ đề' => 'Thread Created',
+            'Đăng bình luận' => 'Comment Posted',
+            'Đánh dấu chủ đề' => 'Thread Bookmarked',
+            'Đánh giá chủ đề' => 'Thread Rated',
+            'Theo dõi người dùng' => 'User Followed',
+            'Chuỗi hoạt động' => 'Activity Streak',
+            'Tất cả hoạt động' => 'All Activities',
+            'Chưa có hoạt động nào' => 'No Activities Yet',
+            'Bắt đầu tham gia' => 'Start Participating',
+
+            // Common phrases
+            'Chưa có' => 'None',
+            'Không có' => 'No',
+            'Có' => 'Yes',
+            'Tất cả' => 'All',
+            'Mới' => 'New',
+            'Cũ' => 'Old',
+            'Phổ biến' => 'Popular',
+            'Xu hướng' => 'Trending',
+            'Mới nhất' => 'Latest',
+            'Cũ nhất' => 'Oldest',
+        ];
+
+        // Check for exact match first
+        if (isset($translations[$vietnameseText])) {
+            return $translations[$vietnameseText];
+        }
+
+        // Try partial matches for longer texts
+        foreach ($translations as $vi => $en) {
+            if (str_contains($vietnameseText, $vi)) {
+                return str_replace($vi, $en, $vietnameseText);
+            }
+        }
+
+        // If no translation found, return with [EN] prefix
+        return "[EN] {$vietnameseText}";
+    }
+
+    /**
      * Generate action buttons for DataTable rows
      */
     private function generateActionButtons($translation): string

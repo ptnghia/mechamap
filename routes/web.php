@@ -964,6 +964,7 @@ if (app()->environment('local') || config('app.debug')) {
         Route::post('/translations', [DevTranslationController::class, 'store'])->name('translations.store');
         Route::put('/translations/{id}', [DevTranslationController::class, 'update'])->name('translations.update');
         Route::delete('/translations/{id}', [DevTranslationController::class, 'destroy'])->name('translations.destroy');
+        Route::post('/translations/generate-english', [DevTranslationController::class, 'generateMissingEnglish'])->name('translations.generate-english');
     });
 
     // Direct access route for convenience (matches user requirement)
