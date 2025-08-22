@@ -11,7 +11,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-8">
                         <h1 class="h2 mb-1">
-                            Welcome back, {{ auth()->user()->name }}! 
+                            Welcome back, {{ auth()->user()->name }}!
                             <span class="wave">👋</span>
                         </h1>
                         <p class="text-muted mb-0">
@@ -24,7 +24,7 @@
                                 <i class="bx bx-user me-1"></i>
                                 My Profile
                             </a>
-                            <a href="{{ route('users.notifications.index') }}" class="btn btn-primary position-relative">
+                            <a href="{{ route('notifications.index') }}" class="btn btn-primary position-relative">
                                 <i class="bx bx-bell me-1"></i>
                                 Notifications
                                 @if($unreadNotifications > 0)
@@ -260,15 +260,15 @@
             <!-- Profile Summary -->
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <img src="{{ auth()->user()->getAvatarUrl() }}" 
-                         alt="{{ auth()->user()->name }}" 
+                    <img src="{{ auth()->user()->getAvatarUrl() }}"
+                         alt="{{ auth()->user()->name }}"
                          class="profile-avatar rounded-circle mb-3">
                     <h5 class="mb-1">{{ auth()->user()->name }}</h5>
                     <p class="text-muted mb-2">{{ '@' . auth()->user()->username }}</p>
                     @if(auth()->user()->title)
                     <p class="text-primary mb-3">{{ auth()->user()->title }}</p>
                     @endif
-                    
+
                     <!-- Profile Completion -->
                     <div class="profile-completion mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-1">
@@ -279,7 +279,7 @@
                             <div class="progress-bar" style="width: {{ $profileCompletion }}%"></div>
                         </div>
                     </div>
-                    
+
                     <a href="{{ route('users.profile.edit') }}" class="btn btn-outline-primary btn-sm">
                         <i class="bx bx-edit me-1"></i>
                         Edit Profile
@@ -319,7 +319,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <a href="{{ route('users.notifications.index') }}" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <a href="{{ route('notifications.index') }}" class="btn btn-outline-primary btn-sm w-100 mt-3">
                         View All Notifications
                     </a>
                     @else
@@ -594,17 +594,17 @@
         padding: 1.5rem;
         text-align: center;
     }
-    
+
     .quick-action-card {
         padding: 1rem 0.5rem;
     }
-    
+
     .quick-action-icon {
         width: 40px;
         height: 40px;
         font-size: 1.25rem;
     }
-    
+
     .profile-avatar {
         width: 60px;
         height: 60px;
@@ -632,7 +632,7 @@ setInterval(() => {
                 if (notificationBadge && data.unreadNotifications > 0) {
                     notificationBadge.textContent = data.unreadNotifications;
                 }
-                
+
                 // Show subtle update indicator
                 const updateIndicator = document.createElement('div');
                 updateIndicator.className = 'alert alert-info alert-dismissible fade show position-fixed';
@@ -643,7 +643,7 @@ setInterval(() => {
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 `;
                 document.body.appendChild(updateIndicator);
-                
+
                 // Auto-dismiss after 3 seconds
                 setTimeout(() => {
                     updateIndicator.remove();

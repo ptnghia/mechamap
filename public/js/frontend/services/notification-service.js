@@ -400,57 +400,9 @@ class NotificationService {
         console.error('NotificationService: Connection error:', error);
         this.triggerCallbacks('onError', error);
 
-        // Start HTTP polling as fallback
-        setTimeout(() => {
-            if (!this.isConnected) {
-                console.log('NotificationService: Starting HTTP polling fallback');
-                this.startPolling();
-            }
-        }, 5000);
-    }
-
-    /**
-     * Start HTTP polling as fallback
-     */
-    startPolling() {
-        if (this.pollingInterval) {
-            clearInterval(this.pollingInterval);
-        }
-
-        this.pollingInterval = setInterval(async () => {
-            try {
-                const response = await fetch('/api/notifications/poll', {
-                    method: 'GET',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Authorization': `Bearer ${this.userToken}`,
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-                    },
-                    credentials: 'same-origin'
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.notifications && data.notifications.length > 0) {
-                        data.notifications.forEach(notification => {
-                            this.handleNotification(notification);
-                        });
-                    }
-                }
-            } catch (error) {
-                console.error('NotificationService: Polling failed:', error);
-            }
-        }, 30000); // Poll every 30 seconds
-    }
-
-    /**
-     * Stop HTTP polling
-     */
-    stopPolling() {
-        if (this.pollingInterval) {
-            clearInterval(this.pollingInterval);
-            this.pollingInterval = null;
-        }
+        // Note: HTTP polling fallback removed - relying on WebSocket reconnection
+        // Real-time notifications are preferred over polling for better UX
+        console.log('NotificationService: Will attempt WebSocket reconnection instead of polling fallback');
     }
 
     /**
@@ -534,7 +486,6 @@ class NotificationService {
         if (this.socket) {
             this.socket.disconnect();
         }
-        this.stopPolling();
         this.isConnected = false;
         console.log('NotificationService: Manually disconnected');
     }

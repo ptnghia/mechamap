@@ -313,27 +313,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Auto-refresh notifications every 2 minutes
+// Auto-refresh notifications every 5 minutes (reduced frequency)
+// Only when page is visible to reduce server load
 setInterval(function() {
-    // Check for new notifications count
-    fetch('/admin/notifications/api/unread-count')
-        .then(response => response.json())
-        .then(data => {
-            // Update notification badge in header if needed
-            const badge = document.querySelector('.noti-icon .badge');
-            if (badge) {
-                if (data.count > 0) {
-                    badge.textContent = data.formatted;
-                    badge.style.display = 'block';
-                } else {
-                    badge.style.display = 'none';
+    // Only check when page is visible
+    if (document.visibilityState === 'visible') {
+        fetch('/admin/notifications/api/unread-count')
+            .then(response => response.json())
+            .then(data => {
+                // Update notification badge in header if needed
+                const badge = document.querySelector('.noti-icon .badge');
+                if (badge) {
+                    if (data.count > 0) {
+                        badge.textContent = data.formatted;
+                        badge.style.display = 'block';
+                    } else {
+                        badge.style.display = 'none';
+                    }
                 }
-            }
-        })
-        .catch(error => {
-            console.error('Error checking notification count:', error);
-        });
-}, 120000); // 2 minutes
+            })
+            .catch(error => {
+                console.error('Error checking notification count:', error);
+            });
+    }
+}, 300000); // 5 minutes (reduced from 2 minutes)
 
 console.log('Notification system initialized');
 </script>

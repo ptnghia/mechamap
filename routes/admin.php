@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\PageSeoController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ShowcaseController;
-use App\Http\Controllers\Admin\AlertController;
+use App\Http\Controllers\UnifiedNotificationController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\ModerationController;
@@ -734,15 +734,16 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::post('/test-api', [SearchController::class, 'testSearch'])->name('test.api');
     });
 
-    // Alerts management routes (chỉ admin có quyền manage_system)
-    Route::middleware(['admin.auth'])->prefix('alerts')->name('alerts.')->group(function () {
-        Route::get('/', [AlertController::class, 'index'])->name('index');
-        Route::put('/settings', [AlertController::class, 'updateSettings'])->name('settings.update');
-        Route::put('/', [AlertController::class, 'updateSettings'])->name('update');
-        Route::get('/test', [AlertController::class, 'testAlert'])->name('test');
-        Route::post('/test', [AlertController::class, 'sendTestAlert'])->name('test.send');
-        Route::get('/statistics', [AlertController::class, 'statistics'])->name('statistics');
-        Route::post('/cleanup', [AlertController::class, 'cleanupOldAlerts'])->name('cleanup');
+    // Unified Notifications management routes (replaces alerts)
+    Route::middleware(['admin.auth'])->prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [UnifiedNotificationController::class, 'adminIndex'])->name('index');
+        Route::post('/bulk-send', [UnifiedNotificationController::class, 'bulkSend'])->name('bulk-send');
+        Route::get('/analytics', [UnifiedNotificationController::class, 'analytics'])->name('analytics');
+        Route::post('/system-announcement', [UnifiedNotificationController::class, 'systemAnnouncement'])->name('system-announcement');
+        Route::post('/cleanup', [UnifiedNotificationController::class, 'cleanup'])->name('cleanup');
+
+        // Legacy alerts redirect
+        Route::redirect('/alerts', '/admin/notifications', 301);
         Route::get('/export-statistics', [AlertController::class, 'exportStatistics'])->name('export-statistics');
     });
 

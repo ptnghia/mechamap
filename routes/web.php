@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FollowingController;
-use App\Http\Controllers\AlertController;
+use App\Http\Controllers\UnifiedNotificationController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ShowcaseController;
@@ -424,13 +424,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/followed-threads', [FollowingController::class, 'threads'])->name('following.threads');
     Route::get('/participated-discussions', [FollowingController::class, 'participated'])->name('following.participated');
 
-    // Alerts routes
-    Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
-    Route::patch('/alerts/{alert}/read', [AlertController::class, 'markAsRead'])->name('alerts.read');
-    Route::patch('/alerts/{alert}/unread', [AlertController::class, 'markAsUnread'])->name('alerts.unread');
-    Route::delete('/alerts/{alert}', [AlertController::class, 'destroy'])->name('alerts.destroy');
-    Route::patch('/alerts/mark-all-read', [AlertController::class, 'markAllAsRead'])->name('alerts.mark-all-read');
-    Route::delete('/alerts/clear-all', [AlertController::class, 'clearAll'])->name('alerts.clear-all');
+    // Unified Notifications routes (replaces alerts)
+    Route::get('/notifications', [UnifiedNotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/read', [UnifiedNotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::patch('/notifications/{notification}/unread', [UnifiedNotificationController::class, 'markAsUnread'])->name('notifications.unread');
+    Route::delete('/notifications/{notification}', [UnifiedNotificationController::class, 'delete'])->name('notifications.delete');
+    Route::patch('/notifications/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::delete('/notifications/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('notifications.clear-all');
+    Route::patch('/notifications/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('notifications.archive');
+
+    // Legacy alerts redirect
+    Route::redirect('/alerts', '/notifications', 301);
 
     // Conversations routes
     Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
@@ -851,24 +855,20 @@ Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () 
     Route::get('/follow-status', [\App\Http\Controllers\ThreadFollowController::class, 'status'])->name('ajax.threads.follow.status');
 });
 
-// Notification AJAX API routes
+// Unified Notification AJAX API routes
 Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
-    // New unified endpoint (recommended)
-    Route::get('/', [\App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('ajax.notifications.get');
-
-    // Legacy endpoints (for backward compatibility)
-    Route::get('/dropdown', [\App\Http\Controllers\NotificationController::class, 'dropdown'])->name('ajax.notifications.dropdown');
-    Route::get('/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])->name('ajax.notifications.unread-count');
+    // Unified endpoints
+    Route::get('/dropdown', [UnifiedNotificationController::class, 'dropdown'])->name('ajax.notifications.dropdown');
+    Route::get('/unread-count', [UnifiedNotificationController::class, 'unreadCount'])->name('ajax.notifications.unread-count');
 
     // Action endpoints
-    Route::patch('/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read');
-    Route::patch('/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read');
-    Route::delete('/{notification}', [\App\Http\Controllers\NotificationController::class, 'delete'])->name('ajax.notifications.delete');
-});
-
-// Notification pages
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/{notification}/read', [UnifiedNotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read');
+    Route::patch('/{notification}/unread', [UnifiedNotificationController::class, 'markAsUnread'])->name('ajax.notifications.mark-unread');
+    Route::patch('/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read');
+    Route::delete('/{notification}', [UnifiedNotificationController::class, 'delete'])->name('ajax.notifications.delete');
+    Route::delete('/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('ajax.notifications.clear-all');
+    Route::patch('/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('ajax.notifications.archive');
+    Route::post('/{notification}/track', [UnifiedNotificationController::class, 'trackInteraction'])->name('ajax.notifications.track');
 });
 
 // Device management AJAX API routes

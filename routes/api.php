@@ -488,8 +488,8 @@ Route::middleware('auth:sanctum')->get('/notifications/poll', function() {
     }
 });
 
-// Notifications recent endpoint (public - for header dropdown)
-Route::get('/notifications/recent', function() {
+// Notifications recent endpoint (for header dropdown)
+Route::middleware(['web'])->get('/notifications/recent', function() {
     try {
         // Check if user is authenticated
         if (Auth::check()) {
@@ -502,9 +502,16 @@ Route::get('/notifications/recent', function() {
                 ->get()
                 ->map(function ($notification) {
                     $data = is_array($notification->data) ? $notification->data : json_decode($notification->data ?? '{}', true);
+
+                    // Get title and translate if it's a translation key
+                    $title = $notification->title ?? $data['title'] ?? 'Thông báo';
+                    if (str_starts_with($title, 'notifications.types.')) {
+                        $title = __($title);
+                    }
+
                     return [
                         'id' => $notification->id,
-                        'title' => $notification->title ?? $data['title'] ?? 'Thông báo',
+                        'title' => $title,
                         'message' => $notification->message ?? $data['message'] ?? 'Bạn có thông báo mới',
                         'icon' => $data['icon'] ?? 'bell',
                         'color' => $data['color'] ?? 'primary',

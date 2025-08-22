@@ -552,14 +552,14 @@ k
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('alerts.index') }}">
+                                    <a class="dropdown-item" href="{{ route('notifications.index') }}">
                                         <i class="fa-solid fa-bell me-2"></i>
                                         {{ __('navigation.user.notifications') }}
                                         @php
-                                        $unreadAlertsCount = Auth::user()->alerts()->whereNull('read_at')->count();
+                                        $unreadNotificationsCount = Auth::user()->userNotifications()->where('is_read', false)->count();
                                         @endphp
-                                        @if($unreadAlertsCount > 0)
-                                        <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadAlertsCount }}</span>
+                                        @if($unreadNotificationsCount > 0)
+                                        <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadNotificationsCount }}</span>
                                         @endif
                                     </a>
                                 </li>

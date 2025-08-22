@@ -899,11 +899,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the alerts for the user.
+     * Get the alerts for the user (deprecated - use userNotifications).
+     * @deprecated Use userNotifications() instead
      */
     public function alerts(): HasMany
     {
-        return $this->hasMany(Alert::class);
+        // Redirect to userNotifications for backward compatibility
+        return $this->userNotifications();
     }
 
     /**

@@ -555,6 +555,25 @@ if (!function_exists('t_emails')) {
     }
 }
 
+if (!function_exists('get_notification_category_color')) {
+    /**
+     * Get notification category color
+     * @param string $category
+     * @return string
+     */
+    function get_notification_category_color(string $category): string
+    {
+        return match($category) {
+            'system' => 'blue',
+            'forum' => 'green',
+            'marketplace' => 'orange',
+            'social' => 'purple',
+            'security' => 'red',
+            default => 'gray'
+        };
+    }
+}
+
 if (!function_exists('t_errors')) {
     /**
      * Get errors translation
