@@ -432,8 +432,38 @@ class NotificationUIManager {
                 }
                 break;
 
+            case 'emptyStateChanged':
+                // Handle empty state changes
+                this.updateEmptyState(data.isEmpty);
+                break;
+
+            case 'dropdownStateChanged':
+                // Handle dropdown state changes
+                this.updateDropdownState(data.isOpen);
+                break;
+
+            case 'notificationsUpdated':
+                // Handle notifications list updates
+                this.updateNotificationsList(data.notifications, data.count);
+                break;
+
+            case 'unreadCountChanged':
+                // Handle unread count updates
+                this.updateUnreadCount(data.count);
+                break;
+
+            case 'preloadedDataLoaded':
+                // Handle preloaded data in one consolidated event
+                this.updateNotificationsList(data.notifications, data.count);
+                this.updateUnreadCount(data.unreadCount);
+                this.updateEmptyState(data.isEmpty);
+                break;
+
             default:
-                console.log(`NotificationUIManager: Unhandled system event '${eventName}'`, data);
+                // Only log truly unhandled events to reduce noise
+                if (!['componentRegistered', 'uiManagerReady'].includes(eventName)) {
+                    console.debug(`NotificationUIManager: Unhandled system event '${eventName}'`, data);
+                }
         }
     }
 
@@ -443,6 +473,54 @@ class NotificationUIManager {
     updateState(newState) {
         this.state = { ...this.state, ...newState };
         console.log('NotificationUIManager: State updated', this.state);
+    }
+
+    /**
+     * Update empty state
+     */
+    updateEmptyState(isEmpty) {
+        this.state.isEmpty = isEmpty;
+        // Update UI to reflect empty state
+        if (this.elements.list) {
+            this.elements.list.classList.toggle('empty', isEmpty);
+        }
+    }
+
+    /**
+     * Update dropdown state
+     */
+    updateDropdownState(isOpen) {
+        this.state.isDropdownOpen = isOpen;
+        // Update UI to reflect dropdown state
+        if (this.elements.dropdown) {
+            this.elements.dropdown.classList.toggle('show', isOpen);
+        }
+        if (this.elements.bell) {
+            this.elements.bell.setAttribute('aria-expanded', isOpen.toString());
+        }
+    }
+
+    /**
+     * Update notifications list
+     */
+    updateNotificationsList(notifications, count) {
+        // Only update if data has actually changed
+        if (JSON.stringify(this.state.notifications) !== JSON.stringify(notifications)) {
+            this.state.notifications = notifications || [];
+            this.state.notificationCount = count || 0;
+            this.render();
+        }
+    }
+
+    /**
+     * Update unread count
+     */
+    updateUnreadCount(count) {
+        // Only update if count has actually changed
+        if (this.state.unreadCount !== count) {
+            this.state.unreadCount = count;
+            this.updateCounter(count);
+        }
     }
 }
 

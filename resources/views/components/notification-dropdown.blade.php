@@ -291,9 +291,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Load preloaded data if available
                 this.loadPreloadedData();
 
-                // Load notifications immediately on page load (with count) if no preloaded data
-                if (!this.isLoaded) {
+                // Only load if no preloaded data was available
+                if (!this.isLoaded && !this.cachedData) {
+                    console.log('📦 No preloaded data found, loading notifications...');
                     this.loadNotificationsWithCount(true);
+                } else if (this.isLoaded) {
+                    console.log('📦 Using preloaded notification data');
                 }
 
                 this.bindEvents();
@@ -985,17 +988,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.notifications = preloadedData.notifications;
                     this.updateUnreadCount(preloadedData.unread_count);
 
-                    // Emit events
-                    this.emitSystemEvent('notificationsUpdated', {
+                    // Emit consolidated event to reduce noise
+                    this.emitSystemEvent('preloadedDataLoaded', {
                         notifications: this.notifications,
-                        count: this.notifications.length
-                    });
-
-                    this.emitSystemEvent('unreadCountChanged', {
-                        count: preloadedData.unread_count
-                    });
-
-                    this.emitSystemEvent('emptyStateChanged', {
+                        count: this.notifications.length,
+                        unreadCount: preloadedData.unread_count,
                         isEmpty: this.notifications.length === 0
                     });
 
