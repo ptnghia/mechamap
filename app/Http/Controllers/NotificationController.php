@@ -13,6 +13,57 @@ use Illuminate\Support\Facades\Log;
 class NotificationController extends Controller
 {
     /**
+     * Get notifications for header dropdown
+     */
+    public function getHeaderNotifications()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'notifications' => [],
+                'unread_count' => 0
+            ]);
+        }
+
+        // Lấy 20 thông báo mới nhất, sắp xếp theo ưu tiên và ngày
+        $notifications = Notification::where('user_id', $user->id)
+            ->orderByRaw("CASE
+                WHEN priority = 'urgent' THEN 1
+                WHEN priority = 'high' THEN 2
+                WHEN priority = 'normal' THEN 3
+                WHEN priority = 'low' THEN 4
+                ELSE 5 END")
+            ->orderBy('created_at', 'desc')
+            ->limit(20)
+            ->get()
+            ->map(function ($notification) {
+                return [
+                    'id' => $notification->id,
+                    'type' => $notification->type,
+                    'title' => $notification->title,
+                    'message' => $notification->message,
+                    'is_read' => $notification->is_read,
+                    'created_at' => $notification->created_at,
+                    'time_ago' => $notification->created_at->diffForHumans(),
+                    'icon' => 'fas fa-' . $notification->icon, // Add fas fa- prefix
+                    'color' => $notification->color,
+                    'priority' => $notification->priority
+                ];
+            });
+
+        // Đếm số thông báo chưa đọc
+        $unreadCount = Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->count();
+
+        return [
+            'notifications' => $notifications,
+            'unread_count' => $unreadCount
+        ];
+    }
+
+    /**
      * Display notification management page
      */
     public function index(Request $request)
@@ -350,21 +401,40 @@ class NotificationController extends Controller
      */
     private function getNotificationTypeLabel(string $type): string
     {
-        return match($type) {
-            'thread_created' => 'Thread mới',
-            'thread_replied' => 'Reply thread',
-            'comment_mention' => 'Được nhắc đến',
-            'login_from_new_device' => 'Đăng nhập thiết bị mới',
-            'password_changed' => 'Đổi mật khẩu',
-            'product_out_of_stock' => 'Hết hàng',
-            'price_drop_alert' => 'Giảm giá',
-            'wishlist_available' => 'Wishlist có hàng',
-            'review_received' => 'Nhận đánh giá',
-            'seller_message' => 'Tin nhắn seller',
-            'user_followed' => 'Được theo dõi',
-            'achievement_unlocked' => 'Thành tựu mới',
-            'weekly_digest' => 'Tổng hợp tuần',
-            default => ucfirst(str_replace('_', ' ', $type))
-        };
+        $translationKey = "notifications.types.{$type}";
+
+        // Try to get translation, fallback to hardcoded values if not found
+        $translation = __($translationKey);
+
+        // If translation key not found, return fallback
+        if ($translation === $translationKey) {
+            return match($type) {
+                'thread_created' => __('notifications.types.thread_created', 'Thread mới'),
+                'thread_replied' => __('notifications.types.thread_replied', 'Reply thread'),
+                'comment_mention' => __('notifications.types.comment_mention', 'Được nhắc đến'),
+                'login_from_new_device' => __('notifications.types.login_from_new_device', 'Đăng nhập thiết bị mới'),
+                'password_changed' => __('notifications.types.password_changed', 'Đổi mật khẩu'),
+                'product_out_of_stock' => __('notifications.types.product_out_of_stock', 'Hết hàng'),
+                'price_drop_alert' => __('notifications.types.price_drop_alert', 'Giảm giá'),
+                'wishlist_available' => __('notifications.types.wishlist_available', 'Wishlist có hàng'),
+                'review_received' => __('notifications.types.review_received', 'Nhận đánh giá'),
+                'seller_message' => __('notifications.types.seller_message', 'Tin nhắn seller'),
+                'user_followed' => __('notifications.types.user_followed', 'Được theo dõi'),
+                'achievement_unlocked' => __('notifications.types.achievement_unlocked', 'Thành tựu mới'),
+                'weekly_digest' => __('notifications.types.weekly_digest', 'Tổng hợp tuần'),
+                'system_announcement' => __('notifications.types.system_announcement', 'Thông báo hệ thống'),
+                'product_approved' => __('notifications.types.product_approved', 'Sản phẩm được duyệt'),
+                'business_verified' => __('notifications.types.business_verified', 'Doanh nghiệp được xác minh'),
+                'commission_paid' => __('notifications.types.commission_paid', 'Hoa hồng đã thanh toán'),
+                'quote_request' => __('notifications.types.quote_request', 'Yêu cầu báo giá'),
+                'role_changed' => __('notifications.types.role_changed', 'Vai trò được cập nhật'),
+                'order_update' => __('notifications.types.order_update', 'Cập nhật đơn hàng'),
+                'forum_activity' => __('notifications.types.forum_activity', 'Hoạt động diễn đàn'),
+                'marketplace_activity' => __('notifications.types.marketplace_activity', 'Hoạt động marketplace'),
+                default => ucfirst(str_replace('_', ' ', $type))
+            };
+        }
+
+        return $translation;
     }
 }

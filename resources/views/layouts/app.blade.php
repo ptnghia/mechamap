@@ -53,9 +53,7 @@
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
     <script src="{{ asset_versioned('js/theme-preload.js') }}"></script>
-    <!-- Component CSS -->
-    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/notifications.css') }}">
-    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/enhanced-notifications.css') }}">
+    <!-- Component CSS - Notification styles removed -->
 
     <!-- Frontend CSS - Optimized Structure with Cache Busting -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
@@ -248,11 +246,7 @@
     <!-- Load WebSocket config first (required by NotificationService) -->
     <x-websocket-config :auto-init="false" />
 
-    <!-- Socket.IO-based Notification Service for Node.js WebSocket server -->
-    <script src="{{ asset_versioned('js/frontend/services/notification-service.js') }}"></script>
-    <script src="{{ asset_versioned('js/frontend/components/notification-sounds.js') }}"></script>
-    <script src="{{ asset_versioned('js/frontend/components/notification-manager.js') }}"></script>
-    <script src="{{ asset_versioned('js/frontend/components/typing-indicator.js') }}"></script>
+    <!-- Notification JavaScript removed -->
     @endauth
 
     <!-- Dark Mode JS -->
@@ -349,7 +343,7 @@
     <!-- Header System - Legacy header.js removed, using unified search in header component -->
 
     <!-- Translation Service -->
-    <script src="{{ asset('js/translation-service.js') }}"></script>
+    <script src="{{ asset_versioned('js/translation-service.js') }}"></script>
 
     <!-- Components Script -->
     <script src="{{ asset_versioned('js/components.js') }}"></script>

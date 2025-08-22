@@ -5,10 +5,10 @@
 @props(['showBanner' => true, 'isMarketplace' => false])
 
 <!-- Unified Search CSS -->
-<link rel="stylesheet" href="{{ asset('css/frontend/components/unified-search.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/unified-search.css') }}">
 
 <!-- Mobile Navigation CSS -->
-<link rel="stylesheet" href="{{ asset('css/frontend/components/mobile-nav.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/mobile-nav.css') }}">
 
 <header class="site-header">
     <!-- Banner (optional) -->
@@ -418,10 +418,21 @@ k
                             @endif
                         @endauth
 
-                        <!-- Notifications - Enhanced with new system -->
+                        <!-- Notifications - Simple Bell Icon -->
                         @auth
                         <li class="nav-item">
-                            <x-notification-dropdown position="end" />
+                            <a class="nav-link position-relative" href="{{ route('notifications.index') }}">
+                                <i class="fas fa-bell fs-5 text-muted"></i>
+                                @php
+                                $unreadNotificationsCount = Auth::user()->userNotifications()->where('is_read', false)->count();
+                                @endphp
+                                @if($unreadNotificationsCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ $unreadNotificationsCount }}
+                                    <span class="visually-hidden">unread notifications</span>
+                                </span>
+                                @endif
+                            </a>
                         </li>
                         @endauth
 
@@ -1242,9 +1253,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Notification toggle - Already handled by notification-dropdown component
-    // The notification dropdown component has its own event handling with show.bs.dropdown
-    // No additional event listeners needed here to avoid conflicts
+    // Notification functionality removed - using simple link to notifications page
 
     // Dark mode toggle
     const darkModeSwitch = document.getElementById('darkModeSwitch');
@@ -1405,88 +1414,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Refresh mini cart when dropdown is opened - handled above with show.bs.dropdown event
     // Removed duplicate event listener to avoid conflicts with Bootstrap dropdown
 
-    // Notification functionality - Using NotificationUIManager
-    window.loadNotifications = function() {
-        @auth
-        // Wait for NotificationUIManager to be ready
-        if (window.NotificationUIManager) {
-            window.NotificationUIManager.showLoading();
-
-            fetch('/api/notifications/recent')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Use unified NotificationUIManager
-                        window.NotificationUIManager.renderNotifications(data.notifications);
-                        window.NotificationUIManager.updateCounter(data.total_unread);
-                    } else {
-                        window.NotificationUIManager.showError('Không thể tải thông báo');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading notifications:', error);
-                    window.NotificationUIManager.showError('Lỗi khi tải thông báo');
-                });
-        } else {
-            console.warn('NotificationUIManager not available');
-        }
-        @endauth
-    };
-
-    // Legacy functions for backward compatibility - redirect to NotificationUIManager
-    window.updateNotificationUI = function(notifications) {
-        if (window.NotificationUIManager) {
-            window.NotificationUIManager.renderNotifications(notifications);
-        }
-    };
-
-    window.updateNotificationCount = function(count) {
-        if (window.NotificationUIManager) {
-            window.NotificationUIManager.updateCounter(count);
-        }
-    };
-
-    window.markAllNotificationsRead = function() {
-        @auth
-        if (window.NotificationUIManager) {
-            window.NotificationUIManager.showLoading();
-
-            fetch('/api/notifications/mark-all-read', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Reload notifications through unified manager
-                    loadNotifications();
-                    showNotification('{{ __('common.messages.marked_all_read') }}', 'success');
-                } else {
-                    window.NotificationUIManager.showError('Không thể đánh dấu đã đọc');
-                }
-            })
-            .catch(error => {
-                console.error('Error marking notifications as read:', error);
-                window.NotificationUIManager.showError('Lỗi khi đánh dấu đã đọc');
-            });
-        }
-        @endauth
-    };
-
-    // Load notifications when dropdown is opened - handled by notification-dropdown component
-    // Removed duplicate event listener to avoid conflicts with Bootstrap dropdown
-
-    // Auto-refresh notifications every 30 seconds
-    @auth
-    setInterval(() => {
-        if (document.visibilityState === 'visible') {
-            loadNotifications();
-        }
-    }, 30000);
-    @endauth
+    // Notification functionality removed - using simple link to notifications page
 
     // Mobile Search Functionality - Sync with Desktop
     const mobileSearchInput = document.getElementById('mobileSearchInput');
@@ -1886,11 +1814,50 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Mini Cart Enhancements - Only load if user can buy products -->
 @auth
     @if(auth()->user()->canBuyAnyProduct())
-        <script src="{{ asset('assets/js/mini-cart-enhancements.js') }}"></script>
+        <script src="{{ asset_versioned('assets/js/mini-cart-enhancements.js') }}"></script>
     @endif
-    {{-- Include Notification System Components --}}
-    <script src="{{ asset('js/frontend/components/notification-event-system.js') }}"></script>
-    <script src="{{ asset('js/frontend/components/notification-ui-manager.js') }}"></script>
+    {{-- Simple Notification Dropdown Handler --}}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const bellBtn = document.getElementById('notificationBell');
+        const dropdownMenu = document.getElementById('notificationDropdown');
+
+        if (!bellBtn || !dropdownMenu) {
+            return;
+        }
+
+        // Toggle dropdown
+        bellBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const isOpen = dropdownMenu.classList.contains('show');
+            if (isOpen) {
+                dropdownMenu.classList.remove('show');
+                bellBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                dropdownMenu.classList.add('show');
+                bellBtn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!bellBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+                bellBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close dropdown on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+                bellBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+    </script>
 @endauth
 
 {{-- JavaScript to fix duplicate menu issue --}}
@@ -1934,3 +1901,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 </script>
+
+{{-- Notification styles removed --}}

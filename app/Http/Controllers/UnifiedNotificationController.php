@@ -146,9 +146,13 @@ class UnifiedNotificationController extends Controller
                     $title = __($title);
                 }
 
+                // Translate notification type for display
+                $typeLabel = $this->getNotificationTypeLabel($notification->type);
+
                 return [
                     'id' => $notification->id,
                     'type' => $notification->type,
+                    'type_label' => $typeLabel,
                     'category' => $notification->category,
                     'title' => $title,
                     'message' => \Str::limit($notification->message, 100),
@@ -431,5 +435,25 @@ class UnifiedNotificationController extends Controller
             'security' => 'red',
             default => 'gray'
         };
+    }
+
+    /**
+     * Get translated notification type label
+     */
+    private function getNotificationTypeLabel(string $type): string
+    {
+        // Convert type to lowercase and replace underscores with underscores for translation key
+        $translationKey = 'notifications.types.' . strtolower($type);
+
+        // Try to get translation
+        $translation = __($translationKey);
+
+        // If translation found, return it
+        if ($translation !== $translationKey) {
+            return $translation;
+        }
+
+        // Fallback: convert type to readable format
+        return str_replace('_', ' ', ucwords(strtolower($type), '_'));
     }
 }

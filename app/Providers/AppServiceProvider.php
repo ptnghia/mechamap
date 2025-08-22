@@ -201,7 +201,8 @@ class AppServiceProvider extends ServiceProvider
         View::composer([
             'layouts.app',
             'layouts.admin',
-            'layouts.user-dashboard'
+            'layouts.user-dashboard',
+            'components.header'
         ], NotificationComposer::class);
     }
 }

@@ -2,19 +2,12 @@
 
 namespace App\Http\View\Composers;
 
-use App\Services\NotificationPreloadService;
+use App\Http\Controllers\NotificationController;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationComposer
 {
-    protected NotificationPreloadService $notificationPreloadService;
-
-    public function __construct(NotificationPreloadService $notificationPreloadService)
-    {
-        $this->notificationPreloadService = $notificationPreloadService;
-    }
-
     /**
      * Bind data to the view.
      */
@@ -22,18 +15,17 @@ class NotificationComposer
     {
         // Only add notification data for authenticated users
         if (Auth::check()) {
-            $notificationData = $this->notificationPreloadService->getPreloadData();
-            
+            $notificationController = new NotificationController();
+            $notificationData = $notificationController->getHeaderNotifications();
+
             $view->with([
-                'preloadedNotifications' => $notificationData['notifications'],
-                'preloadedUnreadCount' => $notificationData['unread_count'],
-                'hasPreloadedNotifications' => $notificationData['has_notifications']
+                'headerNotifications' => $notificationData['notifications'],
+                'headerUnreadCount' => $notificationData['unread_count']
             ]);
         } else {
             $view->with([
-                'preloadedNotifications' => [],
-                'preloadedUnreadCount' => 0,
-                'hasPreloadedNotifications' => false
+                'headerNotifications' => collect([]),
+                'headerUnreadCount' => 0
             ]);
         }
     }

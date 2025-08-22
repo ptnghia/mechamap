@@ -286,22 +286,22 @@ class NotificationPreferencesController extends Controller
     {
         return [
             'forum' => [
-                'label' => 'Thông báo Forum',
+                'label' => __('notifications.categories.forum', 'Thông báo Forum'),
                 'icon' => 'fas fa-comments',
                 'types' => ['thread_created', 'thread_replied', 'comment_mention']
             ],
             'security' => [
-                'label' => 'Thông báo Bảo mật',
+                'label' => __('notifications.categories.security', 'Thông báo Bảo mật'),
                 'icon' => 'fas fa-shield-alt',
                 'types' => ['login_from_new_device', 'password_changed']
             ],
             'marketplace' => [
-                'label' => 'Thông báo Marketplace',
+                'label' => __('notifications.categories.marketplace', 'Thông báo Marketplace'),
                 'icon' => 'fas fa-shopping-cart',
                 'types' => ['product_out_of_stock', 'price_drop_alert', 'wishlist_available', 'review_received', 'seller_message']
             ],
             'social' => [
-                'label' => 'Thông báo Xã hội',
+                'label' => __('notifications.categories.social', 'Thông báo Xã hội'),
                 'icon' => 'fas fa-users',
                 'types' => ['user_followed', 'achievement_unlocked']
             ],
