@@ -110,7 +110,7 @@ window.MechaMapWebSocket = (function() {
     async function getSanctumToken() {
         // Fetching JWT token from Laravel API (compatible with WebSocket server)
         try {
-            const response = await fetch('/api/user/token', {
+            const response = await fetch('/api/user/websocket-token', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

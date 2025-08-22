@@ -744,7 +744,6 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
         // Legacy alerts redirect
         Route::redirect('/alerts', '/admin/notifications', 301);
-        Route::get('/export-statistics', [AlertController::class, 'exportStatistics'])->name('export-statistics');
     });
 
     // Messages management routes (chỉ admin có quyền manage_system)

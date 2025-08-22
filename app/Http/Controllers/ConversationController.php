@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alert;
 use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\UnifiedNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +23,34 @@ class ConversationController extends Controller
     {
         $user = Auth::user();
         $filter = $request->input('filter');
+        $search = $request->input('search');
+        $sortBy = $request->input('sort_by', 'updated_at');
+        $sortOrder = $request->input('sort_order', 'desc');
 
         $query = Conversation::whereHas('participants', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         });
+
+        // Apply search
+        if ($search) {
+            $query->where(function ($q) use ($search, $user) {
+                // Search in conversation title
+                $q->where('title', 'like', "%{$search}%")
+                  // Search in participant names
+                  ->orWhereHas('participants.user', function ($q2) use ($search, $user) {
+                      $q2->where('id', '!=', $user->id)
+                         ->where(function ($q3) use ($search) {
+                             $q3->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%")
+                                ->orWhere('username', 'like', "%{$search}%");
+                         });
+                  })
+                  // Search in message content
+                  ->orWhereHas('messages', function ($q2) use ($search) {
+                      $q2->where('content', 'like', "%{$search}%");
+                  });
+            });
+        }
 
         // Apply filters
         if ($filter === 'unread') {
@@ -41,16 +65,133 @@ class ConversationController extends Controller
                 $q->where('user_id', $user->id)
                     ->whereRaw('messages.id IN (SELECT MIN(id) FROM messages GROUP BY conversation_id)');
             });
+        } elseif ($filter === 'archived') {
+            // Add archived filter if needed
+            $query->whereHas('participants', function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->where('is_archived', true);
+            });
+        } elseif ($filter === 'active') {
+            // Only conversations with recent activity (last 30 days)
+            $query->where('updated_at', '>=', now()->subDays(30));
+        }
+
+        // Apply sorting
+        $allowedSortFields = ['updated_at', 'created_at', 'title'];
+        if (!in_array($sortBy, $allowedSortFields)) {
+            $sortBy = 'updated_at';
         }
 
         $conversations = $query->with(['participants.user', 'messages' => function ($q) {
             $q->latest()->limit(1);
         }])
-            ->latest('updated_at')
+            ->orderBy($sortBy, $sortOrder)
             ->paginate(20)
             ->withQueryString();
 
-        return view('conversations.index', compact('conversations', 'filter'));
+        // Get filter counts for UI
+        $filterCounts = $this->getFilterCounts($user);
+
+        return view('conversations.index', compact('conversations', 'filter', 'search', 'sortBy', 'sortOrder', 'filterCounts'));
+    }
+
+    /**
+     * Get filter counts for UI
+     */
+    private function getFilterCounts($user): array
+    {
+        $baseQuery = Conversation::whereHas('participants', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        });
+
+        return [
+            'all' => (clone $baseQuery)->count(),
+            'unread' => (clone $baseQuery)->whereHas('messages', function ($q) use ($user) {
+                $q->whereHas('conversation.participants', function ($q2) use ($user) {
+                    $q2->where('user_id', $user->id)
+                        ->whereColumn('messages.created_at', '>', DB::raw('COALESCE(conversation_participants.last_read_at, "1970-01-01")'));
+                })->where('user_id', '!=', $user->id);
+            })->count(),
+            'started' => (clone $baseQuery)->whereHas('messages', function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->whereRaw('messages.id IN (SELECT MIN(id) FROM messages GROUP BY conversation_id)');
+            })->count(),
+            'active' => (clone $baseQuery)->where('updated_at', '>=', now()->subDays(30))->count(),
+        ];
+    }
+
+    /**
+     * Search conversations via AJAX
+     */
+    public function search(Request $request)
+    {
+        $user = Auth::user();
+        $query = $request->input('q', '');
+        $filter = $request->input('filter');
+
+        if (empty($query)) {
+            return response()->json(['data' => []]);
+        }
+
+        $conversationQuery = Conversation::whereHas('participants', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->where(function ($q) use ($query, $user) {
+            // Search in conversation title
+            $q->where('title', 'like', "%{$query}%")
+              // Search in participant names
+              ->orWhereHas('participants.user', function ($q2) use ($query, $user) {
+                  $q2->where('id', '!=', $user->id)
+                     ->where(function ($q3) use ($query) {
+                         $q3->where('name', 'like', "%{$query}%")
+                            ->orWhere('email', 'like', "%{$query}%")
+                            ->orWhere('username', 'like', "%{$query}%");
+                     });
+              })
+              // Search in message content
+              ->orWhereHas('messages', function ($q2) use ($query) {
+                  $q2->where('content', 'like', "%{$query}%");
+              });
+        });
+
+        // Apply filter if provided
+        if ($filter === 'unread') {
+            $conversationQuery->whereHas('messages', function ($q) use ($user) {
+                $q->whereHas('conversation.participants', function ($q2) use ($user) {
+                    $q2->where('user_id', $user->id)
+                        ->whereColumn('messages.created_at', '>', DB::raw('COALESCE(conversation_participants.last_read_at, "1970-01-01")'));
+                })->where('user_id', '!=', $user->id);
+            });
+        }
+
+        $conversations = $conversationQuery->with(['participants.user', 'messages' => function ($q) {
+            $q->latest()->limit(1);
+        }])
+        ->latest('updated_at')
+        ->limit(10)
+        ->get();
+
+        $results = $conversations->map(function ($conversation) use ($user) {
+            $otherParticipant = $conversation->participants
+                ->where('user_id', '!=', $user->id)
+                ->first()?->user;
+
+            return [
+                'id' => $conversation->id,
+                'title' => $conversation->title,
+                'other_participant' => $otherParticipant ? [
+                    'id' => $otherParticipant->id,
+                    'name' => $otherParticipant->name,
+                    'avatar' => $otherParticipant->avatar ?? '/images/default-avatar.png',
+                ] : null,
+                'last_message' => $conversation->messages->first() ? [
+                    'content' => Str::limit($conversation->messages->first()->content, 50),
+                    'created_at' => $conversation->messages->first()->created_at,
+                ] : null,
+                'url' => route('conversations.show', $conversation->id),
+            ];
+        });
+
+        return response()->json(['data' => $results]);
     }
 
     /**
@@ -205,13 +346,21 @@ class ConversationController extends Controller
             'preview' => Str::limit($message->content, 100)
         ]);
 
-        Alert::create([
-            'user_id' => $recipient->id,
-            'title' => $title,
-            'content' => $content,
-            'type' => 'info',
-            'alertable_id' => $conversation->id,
-            'alertable_type' => Conversation::class,
-        ]);
+        UnifiedNotificationService::send(
+            $recipient,
+            'message_received',
+            $title,
+            $content,
+            [
+                'conversation_id' => $conversation->id,
+                'sender_id' => $sender->id,
+                'sender_name' => $sender->name,
+                'message_preview' => Str::limit($message->content, 100),
+                'action_url' => route('conversations.show', $conversation->id),
+                'priority' => 'normal',
+                'category' => 'social'
+            ],
+            ['database'] // Only database notification for general messages
+        );
     }
 }

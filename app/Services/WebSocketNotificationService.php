@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * WebSocket Notification Service
- * 
+ *
  * Tích hợp với Node.js WebSocket server để gửi thông báo real-time
  * cho các tương tác showcase (ratings, replies, likes)
  */
@@ -100,7 +100,7 @@ class WebSocketNotificationService
             }
 
             // Gửi đến tác giả showcase (nếu khác với tác giả đánh giá và người reply)
-            if ($rating->showcase->user_id !== $reply->user_id && 
+            if ($rating->showcase->user_id !== $reply->user_id &&
                 $rating->showcase->user_id !== $rating->user_id) {
                 $this->sendToUser($rating->showcase->user_id, $notificationData);
             }
@@ -157,7 +157,7 @@ class WebSocketNotificationService
     /**
      * Gửi notification đến một user cụ thể
      */
-    private function sendToUser(int $userId, array $data): void
+    public function sendToUser(int $userId, array $data): void
     {
         $this->sendWebSocketMessage([
             'action' => 'send_to_user',
@@ -169,7 +169,7 @@ class WebSocketNotificationService
     /**
      * Broadcast đến một channel
      */
-    private function broadcastToChannel(string $channel, array $data): void
+    public function broadcastToChannel(string $channel, array $data): void
     {
         $this->sendWebSocketMessage([
             'action' => 'broadcast_to_channel',
@@ -186,7 +186,7 @@ class WebSocketNotificationService
         try {
             // Lấy danh sách followers (giả sử có relationship)
             // $followers = $showcase->followers()->pluck('user_id');
-            
+
             // Tạm thời skip vì chưa có follower system hoàn chỉnh
             // foreach ($followers as $followerId) {
             //     if ($followerId !== $excludeUserId) {

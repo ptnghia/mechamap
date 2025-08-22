@@ -138,15 +138,22 @@
 
     @push('scripts')
     <script>
+        // Conversation realtime messaging
+        const conversationId = {{ $conversation->id }};
+        const currentUserId = {{ Auth::id() }};
+        let conversationMessages = null;
+        let messageInput = null;
+
         // Scroll to bottom of conversation on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const conversationMessages = document.querySelector('.conversation-messages');
+            conversationMessages = document.querySelector('.conversation-messages');
+            messageInput = document.getElementById('messageInput');
+
             if (conversationMessages) {
                 conversationMessages.scrollTop = conversationMessages.scrollHeight;
             }
 
             // Focus on message input
-            const messageInput = document.getElementById('messageInput');
             if (messageInput) {
                 messageInput.focus();
             }
@@ -158,7 +165,113 @@
                     document.getElementById('messageForm').submit();
                 }
             });
+
+            // Setup realtime messaging
+            setupRealtimeMessaging();
         });
+
+        // Setup realtime messaging with WebSocket
+        function setupRealtimeMessaging() {
+            // Wait for WebSocket to be ready
+            function waitForWebSocket() {
+                if (typeof window.MechaMapWebSocket !== 'undefined' &&
+                    window.MechaMapWebSocket.isConnected() &&
+                    window.MechaMapWebSocket.getSocket()) {
+
+                    console.log('🔔 Setting up realtime messaging for conversation:', conversationId);
+
+                    const socket = window.MechaMapWebSocket.getSocket();
+
+                    // Subscribe to conversation channel
+                    socket.emit('subscribe', {
+                        channel: `conversation.${conversationId}`
+                    });
+
+                    // Listen for new messages
+                    window.MechaMapWebSocket.addCallback('conversation-message', function(data) {
+                        if (data.message && data.message.conversation_id == conversationId) {
+                            handleNewMessage(data.message);
+                        }
+                    });
+
+                    // Listen for message sent events
+                    socket.on('message.sent', function(data) {
+                        if (data.message && data.message.conversation_id == conversationId) {
+                            handleNewMessage(data.message);
+                        }
+                    });
+
+                    console.log('✅ Realtime messaging setup complete');
+                } else {
+                    console.log('⏳ Waiting for WebSocket connection...');
+                    setTimeout(waitForWebSocket, 500); // Retry after 500ms
+                }
+            }
+
+            waitForWebSocket();
+        }
+
+        // Handle new message received via WebSocket
+        function handleNewMessage(message) {
+            // Don't add message if it's from current user (already added by form submission)
+            if (message.sender.id == currentUserId) {
+                return;
+            }
+
+            console.log('📨 New message received:', message);
+
+            // Create message HTML
+            const messageHtml = createMessageHtml(message);
+
+            // Add to conversation
+            if (conversationMessages) {
+                conversationMessages.insertAdjacentHTML('beforeend', messageHtml);
+                conversationMessages.scrollTop = conversationMessages.scrollHeight;
+            }
+
+            // Show notification if page is not visible
+            if (document.hidden) {
+                showDesktopNotification(message);
+            }
+        }
+
+        // Create HTML for new message
+        function createMessageHtml(message) {
+            const messageTime = new Date(message.created_at).toLocaleString();
+            const avatarUrl = message.sender.avatar || '/images/default-avatar.png';
+
+            return `
+                <div class="message-item mb-3">
+                    <div class="d-flex">
+                        <img src="${avatarUrl}" alt="${message.sender.name}" class="rounded-circle me-3" width="40" height="40">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">${message.sender.name}</h6>
+                                <small class="text-muted">${messageTime}</small>
+                            </div>
+                            <div class="message-content">
+                                <p class="mb-0">${message.content}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show desktop notification for new message
+        function showDesktopNotification(message) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(`Tin nhắn mới từ ${message.sender.name}`, {
+                    body: message.content.substring(0, 100),
+                    icon: message.sender.avatar || '/images/default-avatar.png'
+                });
+            }
+        }
+
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
     </script>
     @endpush
 @endsection

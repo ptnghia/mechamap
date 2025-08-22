@@ -7,7 +7,7 @@ use App\Models\Conversation;
 use App\Models\ConversationParticipant;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Alert;
+use App\Services\UnifiedNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -491,17 +491,26 @@ class ConversationController extends Controller
         // Get sender name
         $senderName = Auth::user()->name;
 
-        // Create alerts for each participant
+        // Create notifications for each participant
         foreach ($otherParticipants as $participant) {
-            // Create alert
-            Alert::create([
-                'user_id' => $participant->user_id,
-                'title' => 'Tin nhắn mới',
-                'content' => "{$senderName} đã gửi cho bạn một tin nhắn mới.",
-                'type' => 'message',
-                'alertable_id' => $conversation->id,
-                'alertable_type' => Conversation::class,
-            ]);
+            $user = \App\Models\User::find($participant->user_id);
+            if ($user) {
+                UnifiedNotificationService::send(
+                    $user,
+                    'message_received',
+                    'Tin nhắn mới',
+                    "{$senderName} đã gửi cho bạn một tin nhắn mới.",
+                    [
+                        'conversation_id' => $conversation->id,
+                        'sender_id' => Auth::id(),
+                        'sender_name' => $senderName,
+                        'action_url' => route('conversations.show', $conversation->id),
+                        'priority' => 'normal',
+                        'category' => 'social'
+                    ],
+                    ['database'] // Only database notification
+                );
+            }
         }
     }
 }

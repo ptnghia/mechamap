@@ -265,7 +265,7 @@ class NotificationService
     /**
      * Send email notification
      */
-    private static function sendEmail(User $user, Notification $notification): void
+    public static function sendEmail(User $user, Notification $notification): void
     {
         try {
             // Send appropriate email based on notification type

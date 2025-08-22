@@ -109,7 +109,7 @@ Route::middleware(['web'])->get('/user/websocket-token', function (Request $requ
             'data' => [
                 'token' => $token->plainTextToken,
                 'user_id' => $user->id,
-                'websocket_url' => 'http://localhost:3000',
+                'websocket_url' => env('WEBSOCKET_SERVER_URL', 'https://realtime.mechamap.com'),
                 'expires_at' => now()->addHours(24)->toISOString(),
                 'permissions' => ['receive_notifications']
             ]
@@ -912,14 +912,14 @@ Route::prefix('v1')->group(function () {
             Route::post('/{id}/report', [App\Http\Controllers\Api\CommentController::class, 'report']);
         });
 
-        // Notifications routes (protected - legacy system)
+        // Notifications routes (redirected to unified system for backward compatibility)
         Route::prefix('notifications')->group(function () {
-            Route::get('/', [App\Http\Controllers\Api\NotificationController::class, 'index']);
-            Route::get('/unread', [App\Http\Controllers\Api\NotificationController::class, 'getUnread']);
-            Route::get('/recent', [App\Http\Controllers\Api\NotificationController::class, 'getRecent']);
-            Route::post('/mark-read', [App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
-            Route::post('/mark-all-read', [App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
-            Route::delete('/{id}', [App\Http\Controllers\Api\NotificationController::class, 'destroy']);
+            Route::get('/', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'index']);
+            Route::get('/unread', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'recent']);
+            Route::get('/recent', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'recent']);
+            Route::post('/mark-read', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'markAsRead']);
+            Route::post('/mark-all-read', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'markAllAsRead']);
+            Route::delete('/{id}', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'delete']);
         });
 
         // Unified Notifications routes (protected - new unified system)

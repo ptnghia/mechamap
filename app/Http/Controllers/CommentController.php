@@ -6,7 +6,7 @@ use App\Models\Comment;
 use App\Models\Thread;
 use App\Models\CommentLike;
 use App\Models\Media;
-use App\Services\AlertService;
+use App\Services\UnifiedNotificationService;
 use App\Services\UserActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,21 +20,17 @@ class CommentController extends Controller
      */
     protected UserActivityService $activityService;
 
-    /**
-     * The alert service instance.
-     */
-    protected AlertService $alertService;
+
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserActivityService $activityService, AlertService $alertService)
+    public function __construct(UserActivityService $activityService)
     {
         $this->middleware('auth');
         $this->activityService = $activityService;
-        $this->alertService = $alertService;
     }
 
     /**
@@ -91,8 +87,24 @@ class CommentController extends Controller
                 \App\Services\NotificationService::sendCommentMentionNotification($comment, $mentions);
             }
 
-            // Tạo thông báo cho người theo dõi thread và chủ thread (legacy)
-            $this->alertService->createCommentAlert(Auth::user(), $thread, $comment);
+            // Tạo thông báo cho chủ thread
+            if ($thread->user_id !== Auth::id()) {
+                UnifiedNotificationService::send(
+                    $thread->user,
+                    'comment_created',
+                    'Bình luận mới',
+                    Auth::user()->name . ' đã bình luận trong chủ đề: ' . $thread->title,
+                    [
+                        'thread_id' => $thread->id,
+                        'comment_id' => $comment->id,
+                        'commenter_name' => Auth::user()->name,
+                        'action_url' => route('threads.show', $thread->id) . '#comment-' . $comment->id,
+                        'priority' => 'normal',
+                        'category' => 'social'
+                    ],
+                    ['database']
+                );
+            }
 
             // Fire real-time event
             event(new \App\Events\CommentCreated($comment));

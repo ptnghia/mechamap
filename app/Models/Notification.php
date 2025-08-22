@@ -17,7 +17,7 @@ class Notification extends Model
     /**
      * The table associated with the model.
      */
-    protected $table = 'custom_notifications';
+    protected $table = 'notifications';
 
     protected $fillable = [
         'user_id',
@@ -111,19 +111,21 @@ class Notification extends Model
     }
 
     /**
-     * Get notification category based on type
+     * Get notification category based on type (DEPRECATED - now using database field)
+     *
+     * @deprecated Use database 'category' field instead
      */
-    public function getCategoryAttribute(): string
-    {
-        return match ($this->type) {
-            'comment', 'like', 'follow', 'mention', 'reply' => 'social',
-            'thread_created', 'thread_replied', 'comment_mention', 'showcase' => 'content',
-            'business_verified', 'business_rejected', 'product_approved', 'product_rejected', 'order_update', 'commission_paid', 'quote_request' => 'marketplace',
-            'login_from_new_device', 'password_changed' => 'security',
-            'system_announcement', 'role_changed', 'system' => 'system',
-            default => 'system',
-        };
-    }
+    // public function getCategoryAttribute(): string
+    // {
+    //     return match ($this->type) {
+    //         'comment', 'like', 'follow', 'mention', 'reply' => 'social',
+    //         'thread_created', 'thread_replied', 'comment_mention', 'showcase' => 'content',
+    //         'business_verified', 'business_rejected', 'product_approved', 'product_rejected', 'order_update', 'commission_paid', 'quote_request' => 'marketplace',
+    //         'login_from_new_device', 'password_changed' => 'security',
+    //         'system_announcement', 'role_changed', 'system' => 'system',
+    //         default => 'system',
+    //     };
+    // }
 
     /**
      * Get notification color based on type and priority

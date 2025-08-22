@@ -15,24 +15,89 @@
 
         <div class="card shadow-sm rounded-3">
             <div class="card-header bg-white py-3">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="mb-0">Messages</h5>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                            id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-filter me-1"></i> Filters
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
-                            <li><a class="dropdown-item" href="{{ route('conversations.index') }}">All messages</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('conversations.index', ['filter' => 'unread']) }}">Unread only</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('conversations.index', ['filter' => 'started']) }}">{{
-                                    __('forum.threads.started_by_me') }}</a></li>
-                        </ul>
+                    <div class="d-flex gap-2">
+                        <!-- Search Box -->
+                        <div class="position-relative">
+                            <input type="text" class="form-control form-control-sm" id="conversationSearch"
+                                   placeholder="Tìm kiếm cuộc trò chuyện..." value="{{ $search ?? '' }}"
+                                   style="width: 250px;">
+                            <div class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                <i class="fas fa-search text-muted"></i>
+                            </div>
+                            <!-- Search Results Dropdown -->
+                            <div id="searchResults" class="dropdown-menu w-100" style="max-height: 300px; overflow-y: auto;"></div>
+                        </div>
+
+                        <!-- Sort Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sort me-1"></i> Sắp xếp
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item" href="{{ route('conversations.index', array_merge(request()->query(), ['sort_by' => 'updated_at', 'sort_order' => 'desc'])) }}">
+                                    <i class="fas fa-clock me-2"></i>Mới nhất
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('conversations.index', array_merge(request()->query(), ['sort_by' => 'updated_at', 'sort_order' => 'asc'])) }}">
+                                    <i class="fas fa-clock me-2"></i>Cũ nhất
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ route('conversations.index', array_merge(request()->query(), ['sort_by' => 'title', 'sort_order' => 'asc'])) }}">
+                                    <i class="fas fa-sort-alpha-down me-2"></i>Theo tên A-Z
+                                </a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Filter Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                id="filtersDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-filter me-1"></i> Bộ lọc
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filtersDropdown">
+                                <li><a class="dropdown-item {{ !$filter ? 'active' : '' }}" href="{{ route('conversations.index', array_merge(request()->except('filter'), request()->query())) }}">
+                                    <i class="fas fa-comments me-2"></i>Tất cả
+                                    @if(isset($filterCounts['all']))<span class="badge bg-secondary ms-1">{{ $filterCounts['all'] }}</span>@endif
+                                </a></li>
+                                <li><a class="dropdown-item {{ $filter === 'unread' ? 'active' : '' }}" href="{{ route('conversations.index', array_merge(request()->query(), ['filter' => 'unread'])) }}">
+                                    <i class="fas fa-envelope me-2"></i>Chưa đọc
+                                    @if(isset($filterCounts['unread']))<span class="badge bg-primary ms-1">{{ $filterCounts['unread'] }}</span>@endif
+                                </a></li>
+                                <li><a class="dropdown-item {{ $filter === 'started' ? 'active' : '' }}" href="{{ route('conversations.index', array_merge(request()->query(), ['filter' => 'started'])) }}">
+                                    <i class="fas fa-user-edit me-2"></i>Tôi bắt đầu
+                                    @if(isset($filterCounts['started']))<span class="badge bg-info ms-1">{{ $filterCounts['started'] }}</span>@endif
+                                </a></li>
+                                <li><a class="dropdown-item {{ $filter === 'active' ? 'active' : '' }}" href="{{ route('conversations.index', array_merge(request()->query(), ['filter' => 'active'])) }}">
+                                    <i class="fas fa-fire me-2"></i>Hoạt động gần đây
+                                    @if(isset($filterCounts['active']))<span class="badge bg-success ms-1">{{ $filterCounts['active'] }}</span>@endif
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Active Filters Display -->
+                @if($filter || $search)
+                <div class="d-flex flex-wrap gap-2 mb-2">
+                    @if($search)
+                    <span class="badge bg-primary">
+                        <i class="fas fa-search me-1"></i>Tìm kiếm: "{{ $search }}"
+                        <a href="{{ route('conversations.index', array_merge(request()->except('search'), request()->query())) }}" class="text-white ms-1">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                    @endif
+                    @if($filter)
+                    <span class="badge bg-info">
+                        <i class="fas fa-filter me-1"></i>Lọc: {{ ucfirst($filter) }}
+                        <a href="{{ route('conversations.index', array_merge(request()->except('filter'), request()->query())) }}" class="text-white ms-1">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                    @endif
+                </div>
+                @endif
             </div>
             <div class="card-body p-0">
                 @if($conversations->count() > 0)
@@ -170,4 +235,112 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('conversationSearch');
+    const searchResults = document.getElementById('searchResults');
+    let searchTimeout;
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+
+        // Clear previous timeout
+        clearTimeout(searchTimeout);
+
+        if (query.length < 2) {
+            searchResults.classList.remove('show');
+            return;
+        }
+
+        // Debounce search
+        searchTimeout = setTimeout(() => {
+            performSearch(query);
+        }, 300);
+    });
+
+    // Perform AJAX search
+    function performSearch(query) {
+        const currentFilter = new URLSearchParams(window.location.search).get('filter');
+        const searchUrl = new URL('{{ route("conversations.search") }}', window.location.origin);
+        searchUrl.searchParams.set('q', query);
+        if (currentFilter) {
+            searchUrl.searchParams.set('filter', currentFilter);
+        }
+
+        fetch(searchUrl)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data.data);
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                searchResults.innerHTML = '<div class="dropdown-item text-danger">Lỗi tìm kiếm</div>';
+                searchResults.classList.add('show');
+            });
+    }
+
+    // Display search results
+    function displaySearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="dropdown-item text-muted">Không tìm thấy kết quả</div>';
+        } else {
+            const resultsHtml = results.map(result => {
+                const participantName = result.other_participant ? result.other_participant.name : 'Unknown';
+                const participantAvatar = result.other_participant ? result.other_participant.avatar : '/images/default-avatar.png';
+                const lastMessage = result.last_message ? result.last_message.content : 'Chưa có tin nhắn';
+                const lastMessageTime = result.last_message ? new Date(result.last_message.created_at).toLocaleDateString() : '';
+
+                return `
+                    <a href="${result.url}" class="dropdown-item py-2">
+                        <div class="d-flex align-items-center">
+                            <img src="${participantAvatar}" alt="${participantName}" class="rounded-circle me-2" width="32" height="32">
+                            <div class="flex-grow-1">
+                                <div class="fw-medium">${participantName}</div>
+                                <div class="text-muted small">${lastMessage}</div>
+                                ${lastMessageTime ? `<div class="text-muted small">${lastMessageTime}</div>` : ''}
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+            searchResults.innerHTML = resultsHtml;
+        }
+
+        searchResults.classList.add('show');
+    }
+
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.classList.remove('show');
+        }
+    });
+
+    // Handle Enter key for full search
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = this.value.trim();
+            if (query) {
+                const currentUrl = new URL(window.location);
+                currentUrl.searchParams.set('search', query);
+                window.location.href = currentUrl.toString();
+            }
+        }
+    });
+
+    // Clear search when input is empty
+    searchInput.addEventListener('keyup', function() {
+        if (this.value === '') {
+            searchResults.classList.remove('show');
+        }
+    });
+});
+</script>
+@endpush
+
 @endsection

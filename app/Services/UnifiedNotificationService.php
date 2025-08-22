@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\Notification as CustomNotification;
+use App\Models\NotificationTemplate;
+use App\Models\NotificationPreference;
+use App\Models\NotificationLog;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -18,64 +21,98 @@ use Illuminate\Support\Collection;
 class UnifiedNotificationService
 {
     /**
-     * Send notification using both systems
+     * Send notification using enhanced unified system
      *
      * @param User|array $users
      * @param string $type
      * @param string $title
      * @param string $message
      * @param array $data
-     * @param array $channels
+     * @param array $requestedChannels
      * @return bool
      */
-    public static function send($users, string $type, string $title, string $message, array $data = [], array $channels = ['database']): bool
+    public static function send($users, string $type, string $title, string $message, array $data = [], array $requestedChannels = ['database']): bool
     {
         try {
             if (!is_array($users)) {
                 $users = [$users];
             }
 
+            $successCount = 0;
+            $totalAttempts = 0;
+
             foreach ($users as $user) {
                 if (!$user instanceof User) {
                     continue;
                 }
 
-                // Send via custom notification system (for backward compatibility)
-                self::sendCustomNotification($user, $type, $title, $message, $data);
+                // Get user's enabled channels for this notification type
+                $enabledChannels = NotificationPreference::getEnabledChannels($user->id, $type);
 
-                // Send via Laravel built-in notification system
-                if (in_array('database', $channels)) {
-                    self::sendLaravelNotification($user, $type, $title, $message, $data);
+                // Intersect with requested channels
+                $channelsToSend = array_intersect($requestedChannels, $enabledChannels);
+
+                if (empty($channelsToSend)) {
+                    Log::info("User {$user->id} has disabled all requested channels for notification type: {$type}");
+                    continue;
                 }
 
-                // Send via email if requested
-                if (in_array('mail', $channels) && $user->email_notifications_enabled) {
-                    self::sendEmailNotification($user, $type, $title, $message, $data);
-                }
+                $userSuccess = true;
 
-                // Log the notification
-                self::logNotification($user, $type, $channels, 'sent', $data);
+                // Send to each enabled channel
+                foreach ($channelsToSend as $channel) {
+                    $totalAttempts++;
 
-                // Broadcast real-time notification if database channel is used
-                if (in_array('database', $channels)) {
                     try {
-                        $notification = $user->userNotifications()->latest()->first();
-                        broadcast(new \App\Events\NotificationSent($user, [
-                            'id' => $notification->id,
-                            'type' => $type,
-                            'title' => $title,
-                            'message' => $message,
-                            'data' => $data,
-                            'created_at' => $notification->created_at,
-                            'source' => 'custom'
-                        ]));
+                        switch ($channel) {
+                            case 'database':
+                                self::sendDatabaseNotification($user, $type, $title, $message, $data);
+                                break;
+
+                            case 'email':
+                            case 'mail':
+                                self::sendEmailNotification($user, $type, $title, $message, $data);
+                                break;
+
+                            case 'broadcast':
+                            case 'websocket':
+                                self::sendBroadcastNotification($user, $type, $title, $message, $data);
+                                break;
+
+                            default:
+                                Log::warning("Unknown notification channel: {$channel}");
+                                continue 2;
+                        }
+
+                        $successCount++;
+
                     } catch (\Exception $e) {
-                        \Log::error('Failed to broadcast notification: ' . $e->getMessage());
+                        $userSuccess = false;
+                        Log::error("Failed to send {$channel} notification to user {$user->id}: " . $e->getMessage());
+
+                        // Log the failure
+                        NotificationLog::logDelivery(
+                            null,
+                            $type,
+                            $channel,
+                            User::class,
+                            $user->id,
+                            'failed',
+                            ['title' => $title, 'message' => $message],
+                            $e->getMessage()
+                        );
                     }
+                }
+
+                if ($userSuccess) {
+                    Log::info("Successfully sent notification to user {$user->id} via channels: " . implode(', ', $channelsToSend));
                 }
             }
 
-            return true;
+            $successRate = $totalAttempts > 0 ? ($successCount / $totalAttempts) * 100 : 0;
+            Log::info("Notification batch completed: {$successCount}/{$totalAttempts} successful ({$successRate}%)");
+
+            return $successCount > 0;
 
         } catch (\Exception $e) {
             Log::error('Unified notification send failed: ' . $e->getMessage());
@@ -84,22 +121,185 @@ class UnifiedNotificationService
     }
 
     /**
-     * Send custom notification (legacy system)
+     * Send database notification (primary notification system)
      */
-    private static function sendCustomNotification(User $user, string $type, string $title, string $message, array $data): void
+    private static function sendDatabaseNotification(User $user, string $type, string $title, string $message, array $data): void
     {
         try {
-            CustomNotification::create([
+            // Check if user wants to receive this notification type
+            $enabledChannels = NotificationPreference::getEnabledChannels($user->id, $type);
+
+            if (empty($enabledChannels)) {
+                Log::info("User {$user->id} has disabled all channels for notification type: {$type}");
+                return;
+            }
+
+            // Auto-determine category based on type
+            $category = self::getCategoryFromType($type);
+
+            // Auto-determine priority and urgency
+            $priority = $data['priority'] ?? self::getPriorityFromType($type);
+            $urgencyLevel = self::getUrgencyLevelFromType($type);
+
+
+
+            // Try to get template for this notification type
+            $template = NotificationTemplate::active()->forType($type)->first();
+
+            // Use template if available, otherwise use provided title/message
+            if ($template && $template->supportsChannel('database')) {
+                $rendered = $template->render('database', $data);
+                if ($rendered) {
+                    $title = $rendered['title'] ?? $title;
+                    $message = $rendered['message'] ?? $message;
+                }
+            }
+
+            // Create the notification
+            $notification = CustomNotification::create([
                 'user_id' => $user->id,
                 'type' => $type,
+                'category' => $category,
                 'title' => $title,
                 'message' => $message,
                 'data' => $data,
-                'priority' => $data['priority'] ?? 'normal',
+                'priority' => $priority,
+                'urgency_level' => $urgencyLevel,
+                'status' => 'pending', // Will be updated to delivered after successful creation
                 'is_read' => false,
+                'action_url' => $data['action_url'] ?? null,
+                'requires_action' => $data['requires_action'] ?? false,
             ]);
+
+            // Update notification status to delivered
+            $notification->update(['status' => 'delivered']);
+
+            // Log the delivery
+            NotificationLog::logDelivery(
+                $notification->id,
+                $type,
+                'database',
+                User::class,
+                $user->id,
+                'sent',
+                ['title' => $title, 'message' => $message]
+            );
+
         } catch (\Exception $e) {
             Log::error('Custom notification failed: ' . $e->getMessage());
+
+            // Log the failure
+            NotificationLog::logDelivery(
+                null,
+                $type,
+                'database',
+                User::class,
+                $user->id,
+                'failed',
+                ['title' => $title, 'message' => $message],
+                $e->getMessage()
+            );
+        }
+    }
+
+    /**
+     * Send email notification using templates
+     */
+    private static function sendEmailNotification(User $user, string $type, string $title, string $message, array $data): void
+    {
+        try {
+            // Get email template for this notification type
+            $template = NotificationTemplate::active()
+                ->forType($type)
+                ->forChannel('email')
+                ->first();
+
+            if (!$template) {
+                Log::warning("No email template found for notification type: {$type}");
+                // Fallback to basic email without template
+                self::sendBasicEmail($user, $title, $message, $data);
+                return;
+            }
+
+            // Render email template with variables
+            $rendered = $template->render('email', $data);
+
+            if (!$rendered) {
+                Log::error("Failed to render email template for type: {$type}");
+                return;
+            }
+
+            // Validate required email fields
+            if (empty($rendered['subject']) || empty($rendered['body'])) {
+                Log::error("Email template missing required fields (subject/body) for type: {$type}");
+                return;
+            }
+
+            // Send email using Laravel Mail
+            \Mail::to($user->email)->send(new \App\Mail\NotificationEmail(
+                $rendered['subject'],
+                $rendered['body'],
+                $data
+            ));
+
+            // Log successful email delivery
+            NotificationLog::logDelivery(
+                null, // No notification_id for email-only
+                $type,
+                'email',
+                User::class,
+                $user->id,
+                'sent',
+                [
+                    'subject' => $rendered['subject'],
+                    'to' => $user->email,
+                    'template_used' => true
+                ]
+            );
+
+            Log::info("Email notification sent successfully", [
+                'user_id' => $user->id,
+                'type' => $type,
+                'email' => $user->email
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error("Email notification failed for user {$user->id}: " . $e->getMessage());
+
+            // Log the failure
+            NotificationLog::logDelivery(
+                null,
+                $type,
+                'email',
+                User::class,
+                $user->id,
+                'failed',
+                ['to' => $user->email],
+                $e->getMessage()
+            );
+        }
+    }
+
+    /**
+     * Send basic email without template (fallback)
+     */
+    private static function sendBasicEmail(User $user, string $title, string $message, array $data): void
+    {
+        try {
+            \Mail::to($user->email)->send(new \App\Mail\BasicNotificationEmail(
+                $title,
+                $message,
+                $data
+            ));
+
+            Log::info("Basic email notification sent", [
+                'user_id' => $user->id,
+                'email' => $user->email
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error("Basic email notification failed: " . $e->getMessage());
+            throw $e;
         }
     }
 
@@ -124,22 +324,80 @@ class UnifiedNotificationService
     }
 
     /**
-     * Send email notification
+     * Send broadcast notification via WebSocket
      */
-    private static function sendEmailNotification(User $user, string $type, string $title, string $message, array $data): void
+    private static function sendBroadcastNotification(User $user, string $type, string $title, string $message, array $data): void
     {
         try {
-            // Use existing email notification logic from NotificationService
-            \App\Services\NotificationService::sendEmail($user, (object)[
+            // Get broadcast template if available
+            $template = NotificationTemplate::active()
+                ->forType($type)
+                ->forChannel('broadcast')
+                ->first();
+
+            $broadcastData = [
+                'id' => uniqid('broadcast_'),
                 'type' => $type,
                 'title' => $title,
                 'message' => $message,
                 'data' => $data,
+                'user_id' => $user->id,
+                'timestamp' => now()->toISOString(),
+                'source' => 'unified_service'
+            ];
+
+            // Use template if available
+            if ($template) {
+                $rendered = $template->render('broadcast', $data);
+                if ($rendered) {
+                    $broadcastData['title'] = $rendered['title'] ?? $title;
+                    $broadcastData['message'] = $rendered['message'] ?? $message;
+                    $broadcastData['template_used'] = true;
+                }
+            }
+
+            // Broadcast via Laravel Broadcasting
+            broadcast(new \App\Events\NotificationSent($user, $broadcastData));
+
+            // Log successful broadcast
+            NotificationLog::logDelivery(
+                null,
+                $type,
+                'broadcast',
+                User::class,
+                $user->id,
+                'sent',
+                [
+                    'broadcast_id' => $broadcastData['id'],
+                    'channel' => "user.{$user->id}",
+                    'template_used' => isset($broadcastData['template_used'])
+                ]
+            );
+
+            Log::info("Broadcast notification sent successfully", [
+                'user_id' => $user->id,
+                'type' => $type,
+                'broadcast_id' => $broadcastData['id']
             ]);
+
         } catch (\Exception $e) {
-            Log::error('Email notification failed: ' . $e->getMessage());
+            Log::error("Broadcast notification failed for user {$user->id}: " . $e->getMessage());
+
+            // Log the failure
+            NotificationLog::logDelivery(
+                null,
+                $type,
+                'broadcast',
+                User::class,
+                $user->id,
+                'failed',
+                ['channel' => "user.{$user->id}"],
+                $e->getMessage()
+            );
         }
     }
+
+
 
     /**
      * Get unified notifications for user
@@ -322,5 +580,268 @@ class UnifiedNotificationService
                 'unified' => ['total' => 0, 'unread' => 0],
             ];
         }
+    }
+
+    /**
+     * Auto-determine category from notification type
+     */
+    private static function getCategoryFromType(string $type): string
+    {
+        $categoryMappings = [
+            'forum' => [
+                'forum_activity', 'thread_created', 'thread_replied', 'comment_created',
+                'comment_mention', 'thread_liked', 'comment_liked'
+            ],
+            'marketplace' => [
+                'marketplace_activity', 'product_approved', 'product_rejected',
+                'order_update', 'commission_paid', 'quote_request', 'business_verified',
+                'business_rejected'
+            ],
+            'social' => [
+                'user_followed', 'user_registered', 'user_mention', 'like_received',
+                'follow_received', 'message_received'
+            ],
+            'security' => [
+                'login_from_new_device', 'password_changed', 'account_locked',
+                'suspicious_activity', 'security_alert'
+            ],
+        ];
+
+        foreach ($categoryMappings as $category => $types) {
+            if (in_array($type, $types)) {
+                return $category;
+            }
+        }
+
+        return 'system'; // default
+    }
+
+    /**
+     * Auto-determine priority from notification type
+     */
+    private static function getPriorityFromType(string $type): string
+    {
+        $urgentTypes = ['security_alert', 'account_locked', 'suspicious_activity'];
+        $highTypes = [
+            'password_changed', 'login_from_new_device', 'system_announcement',
+            'business_rejected', 'product_rejected'
+        ];
+
+        if (in_array($type, $urgentTypes)) {
+            return 'urgent';
+        }
+
+        if (in_array($type, $highTypes)) {
+            return 'high';
+        }
+
+        return 'normal';
+    }
+
+    /**
+     * Auto-determine urgency level from notification type
+     */
+    private static function getUrgencyLevelFromType(string $type): int
+    {
+        $level3Types = ['security_alert', 'account_locked', 'suspicious_activity'];
+        $level2Types = [
+            'password_changed', 'login_from_new_device', 'system_announcement',
+            'maintenance_notice', 'business_verified', 'business_rejected',
+            'product_rejected', 'order_update'
+        ];
+
+        if (in_array($type, $level3Types)) {
+            return 3;
+        }
+
+        if (in_array($type, $level2Types)) {
+            return 2;
+        }
+
+        return 1; // default
+    }
+
+    /**
+     * Send bulk notifications to multiple users
+     */
+    public static function sendBulk(array $users, string $type, string $title, string $message, array $data = [], array $channels = ['database']): array
+    {
+        $results = [
+            'total' => count($users),
+            'successful' => 0,
+            'failed' => 0,
+            'errors' => []
+        ];
+
+        foreach ($users as $user) {
+            try {
+                // Ensure $user is a User instance
+                if (!$user instanceof User) {
+                    $results['failed']++;
+                    $results['errors'][] = [
+                        'user_id' => 'unknown',
+                        'error' => 'Invalid user object provided'
+                    ];
+                    continue;
+                }
+
+                if (self::send($user, $type, $title, $message, $data, $channels)) {
+                    $results['successful']++;
+                } else {
+                    $results['failed']++;
+                }
+            } catch (\Exception $e) {
+                $results['failed']++;
+                $results['errors'][] = [
+                    'user_id' => $user->id ?? 'unknown',
+                    'error' => $e->getMessage()
+                ];
+            }
+        }
+
+        Log::info("Bulk notification completed", $results);
+        return $results;
+    }
+
+    /**
+     * Get delivery statistics
+     */
+    public static function getDeliveryStats(array $filters = []): array
+    {
+        return NotificationLog::getDeliveryStats($filters);
+    }
+
+    /**
+     * Get system health metrics
+     */
+    public static function getSystemHealth(): array
+    {
+        try {
+            $stats = [
+                'total_notifications' => CustomNotification::count(),
+                'total_logs' => NotificationLog::count(),
+                'total_templates' => NotificationTemplate::count(),
+                'active_templates' => NotificationTemplate::active()->count(),
+                'total_preferences' => NotificationPreference::count(),
+                'enabled_preferences' => NotificationPreference::enabled()->count(),
+            ];
+
+            // Recent activity (last 24 hours)
+            $recentStats = [
+                'notifications_24h' => CustomNotification::where('created_at', '>', now()->subDay())->count(),
+                'logs_24h' => NotificationLog::where('created_at', '>', now()->subDay())->count(),
+                'success_rate_24h' => NotificationLog::getSuccessRate(),
+            ];
+
+            // Channel distribution
+            $channelStats = NotificationLog::selectRaw('channel, COUNT(*) as count')
+                ->groupBy('channel')
+                ->pluck('count', 'channel')
+                ->toArray();
+
+            return [
+                'overview' => $stats,
+                'recent_activity' => $recentStats,
+                'channel_distribution' => $channelStats,
+                'timestamp' => now()->toISOString()
+            ];
+
+        } catch (\Exception $e) {
+            Log::error('Failed to get system health: ' . $e->getMessage());
+
+            return [
+                'overview' => [
+                    'total_notifications' => 0,
+                    'total_logs' => 0,
+                    'total_templates' => 0,
+                    'active_templates' => 0,
+                    'total_preferences' => 0,
+                    'enabled_preferences' => 0,
+                ],
+                'recent_activity' => [
+                    'notifications_24h' => 0,
+                    'logs_24h' => 0,
+                    'success_rate_24h' => 0,
+                ],
+                'channel_distribution' => [],
+                'timestamp' => now()->toISOString(),
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Retry failed notifications
+     */
+    public static function retryFailedNotifications(int $limit = 100): array
+    {
+        $failedLogs = NotificationLog::getFailedForRetry($limit);
+        $results = [
+            'total_retried' => 0,
+            'successful_retries' => 0,
+            'failed_retries' => 0
+        ];
+
+        foreach ($failedLogs as $log) {
+            try {
+                $user = User::find($log->notifiable_id);
+                if (!$user) {
+                    continue;
+                }
+
+                $data = $log->data ?? [];
+                $title = $data['title'] ?? 'Retry Notification';
+                $message = $data['message'] ?? 'Retrying failed notification';
+
+                if (self::send($user, $log->type, $title, $message, $data, [$log->channel])) {
+                    $log->markAsRetried();
+                    $results['successful_retries']++;
+                } else {
+                    $results['failed_retries']++;
+                }
+
+                $results['total_retried']++;
+
+            } catch (\Exception $e) {
+                Log::error("Failed to retry notification log {$log->id}: " . $e->getMessage());
+                $results['failed_retries']++;
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Clear old notification logs
+     */
+    public static function cleanupOldLogs(int $daysToKeep = 30): int
+    {
+        $cutoffDate = now()->subDays($daysToKeep);
+
+        $deletedCount = NotificationLog::where('created_at', '<', $cutoffDate)
+            ->where('status', '!=', 'failed') // Keep failed logs for debugging
+            ->delete();
+
+        Log::info("Cleaned up {$deletedCount} old notification logs older than {$daysToKeep} days");
+
+        return $deletedCount;
+    }
+
+    /**
+     * Get notification templates with caching
+     */
+    public static function getTemplatesCached(): Collection
+    {
+        return \Cache::remember('notification_templates', 3600, function () {
+            return NotificationTemplate::active()->get();
+        });
+    }
+
+    /**
+     * Invalidate template cache
+     */
+    public static function invalidateTemplateCache(): void
+    {
+        \Cache::forget('notification_templates');
     }
 }

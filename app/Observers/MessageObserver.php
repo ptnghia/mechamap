@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\Message;
-use App\Services\NotificationService;
+use App\Services\UnifiedNotificationService;
+use App\Services\WebSocketNotificationService;
+use App\Events\MessageSent;
 use Illuminate\Support\Facades\Log;
 
 class MessageObserver
@@ -58,6 +60,23 @@ class MessageObserver
                 $this->sendMessageNotification($message, $sender, $recipient, $conversation);
             }
 
+            // Broadcast MessageSent event for realtime updates
+            $recipientData = $recipients->map(function ($participant) {
+                return [
+                    'id' => $participant->user->id,
+                    'name' => $participant->user->name,
+                    'role' => $participant->user->role,
+                ];
+            })->toArray();
+
+            event(new MessageSent($message, $sender, $recipientData));
+
+            Log::info('MessageSent event broadcasted', [
+                'message_id' => $message->id,
+                'conversation_id' => $conversation->id,
+                'recipients_count' => count($recipientData)
+            ]);
+
         } catch (\Exception $e) {
             Log::error('Failed to handle message creation notification', [
                 'message_id' => $message->id,
@@ -74,7 +93,7 @@ class MessageObserver
         try {
             // Check if this is a marketplace-related conversation
             $isMarketplaceMessage = $this->isMarketplaceConversation($conversation, $sender, $recipient);
-            
+
             // Determine notification type and content
             if ($isMarketplaceMessage) {
                 $this->sendMarketplaceMessageNotification($message, $sender, $recipient, $conversation);
@@ -134,13 +153,13 @@ class MessageObserver
         ];
 
         // Send email for marketplace messages
-        $result = NotificationService::send(
+        $result = UnifiedNotificationService::send(
             $recipient,
             $notificationType,
             $title,
             $messageText,
             $data,
-            true // Send email for marketplace messages
+            ['database', 'mail'] // Send both database and email for marketplace messages
         );
 
         if ($result) {
@@ -150,6 +169,9 @@ class MessageObserver
                 'recipient_id' => $recipient->id,
                 'notification_type' => $notificationType
             ]);
+
+            // Send WebSocket notification for real-time updates
+            $this->sendWebSocketNotification($recipient, $sender, $message, 'marketplace');
         }
     }
 
@@ -174,13 +196,13 @@ class MessageObserver
         ];
 
         // Don't send email for general messages, just in-app notification
-        $result = NotificationService::send(
+        $result = UnifiedNotificationService::send(
             $recipient,
             'message_received',
             $title,
             $messageText,
             $data,
-            false
+            ['database'] // Only database notification for general messages
         );
 
         if ($result) {
@@ -189,6 +211,9 @@ class MessageObserver
                 'sender_id' => $sender->id,
                 'recipient_id' => $recipient->id
             ]);
+
+            // Send WebSocket notification for real-time updates
+            $this->sendWebSocketNotification($recipient, $sender, $message, 'general');
         }
     }
 
@@ -241,7 +266,7 @@ class MessageObserver
 
         // Check user's notification preferences
         $preferences = $recipient->notification_preferences ?? [];
-        
+
         // Check if user has disabled message notifications
         if (isset($preferences['message_received']['enabled']) && !$preferences['message_received']['enabled']) {
             return false;
@@ -252,5 +277,57 @@ class MessageObserver
         }
 
         return true;
+    }
+
+    /**
+     * Send WebSocket notification for real-time updates
+     */
+    private function sendWebSocketNotification($recipient, $sender, $message, $type = 'general'): void
+    {
+        try {
+            $webSocketService = new WebSocketNotificationService();
+
+            $notificationData = [
+                'type' => 'message_received',
+                'message_type' => $type,
+                'title' => 'Tin nhắn mới',
+                'message' => "{$sender->name} đã gửi cho bạn một tin nhắn mới",
+                'data' => [
+                    'conversation_id' => $message->conversation_id,
+                    'message_id' => $message->id,
+                    'sender_id' => $sender->id,
+                    'sender_name' => $sender->name,
+                    'sender_avatar' => $sender->avatar_url ?? '/images/default-avatar.png',
+                    'message_preview' => \Str::limit($message->content, 100),
+                    'timestamp' => $message->created_at->toISOString(),
+                    'action_url' => route('conversations.show', $message->conversation_id)
+                ],
+                'priority' => $type === 'marketplace' ? 'high' : 'normal',
+                'category' => $type === 'marketplace' ? 'business' : 'social'
+            ];
+
+            // Send to specific user
+            $webSocketService->sendToUser($recipient->id, $notificationData);
+
+            // Also broadcast to conversation channel for real-time chat updates
+            $webSocketService->broadcastToChannel(
+                "conversation.{$message->conversation_id}",
+                $notificationData
+            );
+
+            Log::info('WebSocket notification sent for message', [
+                'message_id' => $message->id,
+                'recipient_id' => $recipient->id,
+                'type' => $type
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to send WebSocket notification for message: ' . $e->getMessage(), [
+                'message_id' => $message->id,
+                'recipient_id' => $recipient->id,
+                'sender_id' => $sender->id,
+                'type' => $type
+            ]);
+        }
     }
 }
