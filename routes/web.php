@@ -5,8 +5,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FollowingController;
 use App\Http\Controllers\UnifiedNotificationController;
-use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\BookmarkController;
+// MOVED TO DASHBOARD: use App\Http\Controllers\ConversationController;
+// MOVED TO DASHBOARD: use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ShowcaseController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\SubscriptionController;
@@ -20,13 +20,16 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserThreadController;
-use App\Http\Controllers\UserDashboardController;
+// MOVED TO DASHBOARD: use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\ThreadActionController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\BusinessRegistrationController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\DevTranslationController;
 use Illuminate\Support\Facades\Route;
+
+// Include dashboard routes
+require __DIR__.'/dashboard.php';
 
 // Include test email routes (development only)
 if (app()->environment(['local', 'development'])) {
@@ -73,6 +76,11 @@ Route::prefix('language')->name('language.')->group(function () {
     Route::get('/supported', [LanguageController::class, 'supported'])->name('supported');
     Route::post('/auto-detect', [LanguageController::class, 'autoDetect'])->name('auto-detect');
 });
+
+// CSRF Token refresh for AJAX error handling
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+})->name('csrf.token');
 
 // Debug translation route (temporary)
 Route::get('/debug-translation', function() {
@@ -353,25 +361,8 @@ Route::get('/accessibility', function () {
     return view('coming-soon', ['title' => 'Accessibility', 'message' => 'Accessibility information coming soon']);
 })->name('accessibility');
 
-// Main Dashboard Route - Redirects to role-specific dashboard
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-
-    if (!$user) {
-        return redirect()->route('login');
-    }
-
-    // Redirect based on role using existing dashboard routes
-    return match($user->role) {
-        'super_admin', 'admin', 'moderator' => redirect()->route('admin.dashboard'),
-        'supplier' => redirect()->route('supplier.dashboard'),
-        'manufacturer' => redirect()->route('manufacturer.dashboard'),
-        'brand' => redirect()->route('brand.dashboard'),
-        'verified_partner' => redirect()->route('partner.dashboard'),
-        'member', 'senior_member', 'guest' => redirect()->route('user.dashboard'),
-        default => redirect()->route('user.dashboard'),
-    };
-})->middleware(['auth', 'verified.social'])->name('dashboard');
+// Main Dashboard Route - Now handled by dashboard.php
+// Route moved to routes/dashboard.php for better organization
 
 
 
@@ -399,14 +390,14 @@ Route::get('/users/{user:username}', [ProfileController::class, 'show'])->name('
 Route::get('/users/{user:username}/activities', [ActivityController::class, 'index'])->name('profile.activities');
 
 Route::middleware('auth')->group(function () {
-    // Profile edit routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    // MOVED TO DASHBOARD: Profile edit routes now handled by dashboard.php
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
 
-    // Profile orders route
-    Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+    // MOVED TO DASHBOARD: Profile orders route now handled by dashboard.php
+    // Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
 
     // Follow/unfollow routes
     Route::post('/users/{user:username}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
@@ -427,29 +418,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/followed-threads', [FollowingController::class, 'threads'])->name('following.threads');
     Route::get('/participated-discussions', [FollowingController::class, 'participated'])->name('following.participated');
 
-    // Unified Notifications routes (replaces alerts)
-    Route::get('/notifications', [UnifiedNotificationController::class, 'index'])->name('notifications.index');
-    Route::patch('/notifications/{notification}/read', [UnifiedNotificationController::class, 'markAsRead'])->name('notifications.read');
-    Route::patch('/notifications/{notification}/unread', [UnifiedNotificationController::class, 'markAsUnread'])->name('notifications.unread');
-    Route::delete('/notifications/{notification}', [UnifiedNotificationController::class, 'delete'])->name('notifications.delete');
-    Route::patch('/notifications/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
-    Route::delete('/notifications/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('notifications.clear-all');
-    Route::patch('/notifications/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('notifications.archive');
+    // MOVED TO DASHBOARD: Unified Notifications routes now handled by dashboard.php
+    // Route::get('/notifications', [UnifiedNotificationController::class, 'index'])->name('notifications.index');
+    // Route::patch('/notifications/{notification}/read', [UnifiedNotificationController::class, 'markAsRead'])->name('notifications.read');
+    // Route::patch('/notifications/{notification}/unread', [UnifiedNotificationController::class, 'markAsUnread'])->name('notifications.unread');
+    // Route::delete('/notifications/{notification}', [UnifiedNotificationController::class, 'delete'])->name('notifications.delete');
+    // Route::patch('/notifications/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    // Route::delete('/notifications/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('notifications.clear-all');
+    // Route::patch('/notifications/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('notifications.archive');
 
     // Legacy alerts redirect
     Route::redirect('/alerts', '/notifications', 301);
 
-    // Conversations routes
-    Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
-    Route::get('/conversations/search', [ConversationController::class, 'search'])->name('conversations.search');
-    Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
-    Route::post('/conversations', [ConversationController::class, 'store'])->name('conversations.store');
-    Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
+    // MOVED TO DASHBOARD: Conversations routes now handled by dashboard.php
+    // Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+    // Route::get('/conversations/search', [ConversationController::class, 'search'])->name('conversations.search');
+    // Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
+    // Route::post('/conversations', [ConversationController::class, 'store'])->name('conversations.store');
+    // Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
 
-    // Bookmarks routes
-    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
-    Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
-    Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
+    // MOVED TO DASHBOARD: Bookmarks routes now handled by dashboard.php
+    // Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+    // Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
+    // Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
 
     // Showcase routes (authenticated) - Core functionality only
     Route::get('/showcase/create', [ShowcaseController::class, 'create'])->name('showcase.create');
@@ -516,45 +507,47 @@ Route::prefix('browse')->name('browse.threads.')->group(function () {
     // Route::get('/threads/search', [UserThreadController::class, 'search'])->name('search'); // CONSOLIDATED: Use main search with thread filter
 });
 
-// User Dashboard Routes (Authenticated only) - For Community Members
-Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/my-threads', [UserDashboardController::class, 'myThreads'])->name('my-threads');
-    Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
-    Route::get('/activity', [UserDashboardController::class, 'activity'])->name('activity');
-    Route::get('/following', [UserDashboardController::class, 'following'])->name('following');
+// =============================================================================
+// BACKWARD COMPATIBILITY REDIRECTS
+// =============================================================================
+// Redirect old routes to new dashboard structure for backward compatibility
 
-    // Bookmark management
-    Route::get('/bookmarks', [UserDashboardController::class, 'bookmarks'])->name('bookmarks');
-    // Route::post('/bookmarks/search', [UserDashboardController::class, 'searchBookmarks'])->name('bookmarks.search'); // CONSOLIDATED: Use main search with bookmark filter
-    Route::post('/bookmarks/folders', [UserDashboardController::class, 'createBookmarkFolder'])->name('bookmarks.create-folder');
-    Route::put('/bookmarks/folders/{folder}', [UserDashboardController::class, 'updateFolder'])->name('bookmarks.folders.update');
-    Route::delete('/bookmarks/folders/{folder}', [UserDashboardController::class, 'deleteFolder'])->name('bookmarks.folders.delete');
-    Route::put('/bookmarks/{bookmark}', [UserDashboardController::class, 'updateBookmark'])->name('bookmarks.update');
-    Route::delete('/bookmarks/{bookmark}', [UserDashboardController::class, 'deleteBookmark'])->name('bookmarks.delete');
-    Route::post('/bookmarks/bulk-delete', [UserDashboardController::class, 'bulkDeleteBookmarks'])->name('bookmarks.bulk-delete');
+Route::middleware('auth')->group(function () {
+    // Old profile routes → Dashboard profile routes
+    Route::redirect('/profile', '/dashboard/profile/edit', 301);
+    Route::redirect('/profile/orders', '/dashboard/marketplace/orders', 301);
 
-    // Rating management
-    Route::get('/ratings', [UserDashboardController::class, 'ratings'])->name('ratings');
+    // Old notification routes → Dashboard notification routes
+    Route::redirect('/notifications', '/dashboard/notifications', 301);
 
-    // My threads
-    Route::get('/my-threads', [UserDashboardController::class, 'myThreads'])->name('my-threads');
+    // Old conversation routes → Dashboard conversation routes
+    Route::redirect('/conversations', '/dashboard/conversations', 301);
 
-    // My comments
-    Route::get('/comments', [UserDashboardController::class, 'comments'])->name('comments');
+    // Old bookmark routes → Dashboard bookmark routes
+    Route::redirect('/bookmarks', '/dashboard/community/bookmarks', 301);
 
-    // Activity feed
-    Route::get('/activity', [UserDashboardController::class, 'activity'])->name('activity');
-
-    // Settings routes
-    Route::get('/settings', [UserDashboardController::class, 'settings'])->name('settings');
-    Route::post('/settings/profile', [UserDashboardController::class, 'updateProfile'])->name('settings.profile');
-    Route::post('/settings/password', [UserDashboardController::class, 'updatePassword'])->name('settings.password');
-    Route::post('/settings/preferences', [UserDashboardController::class, 'updatePreferences'])->name('settings.preferences');
-    Route::post('/settings/notifications', [UserDashboardController::class, 'updateNotifications'])->name('settings.notifications');
-    Route::post('/settings/privacy', [UserDashboardController::class, 'updatePrivacy'])->name('settings.privacy');
-    Route::delete('/settings/delete-account', [UserDashboardController::class, 'deleteAccount'])->name('settings.delete-account');
+    // Old user dashboard routes → New dashboard routes
+    Route::redirect('/user/dashboard', '/dashboard', 301);
+    Route::redirect('/user/my-threads', '/dashboard/community/threads', 301);
+    Route::redirect('/user/bookmarks', '/dashboard/community/bookmarks', 301);
+    Route::redirect('/user/activity', '/dashboard/activity', 301);
+    Route::redirect('/user/following', '/dashboard/activity', 301);
+    Route::redirect('/user/ratings', '/dashboard/community/ratings', 301);
+    Route::redirect('/user/comments', '/dashboard/community/comments', 301);
+    Route::redirect('/user/settings', '/dashboard/settings', 301);
 });
+
+// MOVED TO DASHBOARD: User Dashboard Routes now handled by routes/dashboard.php
+// All user dashboard functionality has been reorganized into:
+// - /dashboard (main dashboard)
+// - /dashboard/community/* (community features)
+// - /dashboard/marketplace/* (marketplace features)
+// - /dashboard/profile/* (profile management)
+// - /dashboard/settings/* (user settings)
+// - /dashboard/notifications/* (notifications)
+// - /dashboard/conversations/* (conversations)
+//
+// This provides better organization and cleaner URL structure
 
 // Enhanced thread interaction routes (override existing ones)
 Route::middleware('auth')->group(function () {
@@ -880,6 +873,7 @@ Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
     Route::delete('/{notification}', [UnifiedNotificationController::class, 'delete'])->name('ajax.notifications.delete');
     Route::delete('/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('ajax.notifications.clear-all');
     Route::patch('/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('ajax.notifications.archive');
+    Route::post('/{notification}/reply', [UnifiedNotificationController::class, 'reply'])->name('ajax.notifications.reply');
     Route::post('/{notification}/track', [UnifiedNotificationController::class, 'trackInteraction'])->name('ajax.notifications.track');
 });
 

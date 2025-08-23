@@ -153,7 +153,7 @@
                                 <div class="notification-content flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                         <h6 class="notification-title mb-0 {{ !$notification->is_read ? 'fw-bold' : '' }}">
-                                            {{ $notification->title }}
+                                            {{ $notification->localized_title }}
                                         </h6>
                                         <div class="notification-actions d-flex gap-1">
                                             @if(!$notification->is_read)
@@ -175,7 +175,7 @@
                                     </div>
 
                                     <p class="notification-message text-muted mb-2">
-                                        {{ $notification->message }}
+                                        {{ $notification->localized_message }}
                                     </p>
 
                                     <div class="notification-meta d-flex justify-content-between align-items-center">

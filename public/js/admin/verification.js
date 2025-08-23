@@ -45,7 +45,7 @@ class BusinessVerificationAdmin {
         try {
             const response = await fetch('/admin/verification/analytics');
             const data = await response.json();
-            
+
             if (data.success) {
                 this.updateAnalyticsDisplay(data.stats, data.monthly_stats);
             }
@@ -89,7 +89,7 @@ class BusinessVerificationAdmin {
     updateBulkActionsBar() {
         const bulkBar = document.getElementById('bulkActionsBar');
         const selectedCount = document.getElementById('selectedCount');
-        
+
         if (this.selectedApplications.size > 0) {
             bulkBar?.classList.remove('d-none');
             if (selectedCount) {
@@ -102,10 +102,10 @@ class BusinessVerificationAdmin {
 
     async assignReviewer(event, applicationId) {
         event.preventDefault();
-        
+
         const formData = new FormData(event.target);
         const reviewerId = formData.get('reviewer_id');
-        
+
         if (!reviewerId) {
             this.showAlert('Please select a reviewer', 'warning');
             return;
@@ -113,7 +113,7 @@ class BusinessVerificationAdmin {
 
         try {
             this.showLoading(true);
-            
+
             const response = await fetch(`/admin/verification/applications/${applicationId}/assign-reviewer`, {
                 method: 'POST',
                 headers: {
@@ -124,7 +124,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert('Reviewer assigned successfully', 'success');
                 setTimeout(() => location.reload(), 1500);
@@ -140,10 +140,10 @@ class BusinessVerificationAdmin {
 
     async approveApplication(applicationId) {
         const notes = await this.promptForNotes('Approval Notes (optional):');
-        
+
         try {
             this.showLoading(true);
-            
+
             const response = await fetch(`/admin/verification/applications/${applicationId}/approve`, {
                 method: 'POST',
                 headers: {
@@ -154,7 +154,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert('Application approved successfully', 'success');
                 this.updateApplicationStatus(applicationId, data.status);
@@ -170,7 +170,7 @@ class BusinessVerificationAdmin {
 
     async rejectApplication(applicationId) {
         const reason = await this.promptForReason('Rejection Reason (required):');
-        
+
         if (!reason) {
             this.showAlert('Rejection reason is required', 'warning');
             return;
@@ -178,7 +178,7 @@ class BusinessVerificationAdmin {
 
         try {
             this.showLoading(true);
-            
+
             const response = await fetch(`/admin/verification/applications/${applicationId}/reject`, {
                 method: 'POST',
                 headers: {
@@ -189,7 +189,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert('Application rejected successfully', 'success');
                 this.updateApplicationStatus(applicationId, data.status);
@@ -205,7 +205,7 @@ class BusinessVerificationAdmin {
 
     async requestAdditionalInfo(applicationId) {
         const info = await this.promptForInfo('Additional Information Required:');
-        
+
         if (!info) {
             this.showAlert('Please specify what additional information is required', 'warning');
             return;
@@ -213,7 +213,7 @@ class BusinessVerificationAdmin {
 
         try {
             this.showLoading(true);
-            
+
             const response = await fetch(`/admin/verification/applications/${applicationId}/request-info`, {
                 method: 'POST',
                 headers: {
@@ -224,7 +224,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert('Additional information requested successfully', 'success');
                 this.updateApplicationStatus(applicationId, data.status);
@@ -239,13 +239,13 @@ class BusinessVerificationAdmin {
     }
 
     async verifyDocument(documentId, status) {
-        const notes = status === 'rejected' ? 
-            await this.promptForNotes('Rejection reason:') : 
+        const notes = status === 'rejected' ?
+            await this.promptForNotes('Rejection reason:') :
             await this.promptForNotes('Verification notes (optional):');
 
         try {
             this.showLoading(true);
-            
+
             const response = await fetch(`/admin/verification/documents/${documentId}/verify`, {
                 method: 'POST',
                 headers: {
@@ -256,7 +256,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert('Document verification updated successfully', 'success');
                 this.updateDocumentStatus(documentId, data.document);
@@ -286,7 +286,7 @@ class BusinessVerificationAdmin {
         }
 
         let additionalData = {};
-        
+
         if (action === 'assign_reviewer') {
             const reviewerId = await this.promptForReviewer();
             if (!reviewerId) return;
@@ -303,7 +303,7 @@ class BusinessVerificationAdmin {
 
         try {
             this.showLoading(true);
-            
+
             const response = await fetch('/admin/verification/bulk-action', {
                 method: 'POST',
                 headers: {
@@ -318,7 +318,7 @@ class BusinessVerificationAdmin {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.showAlert(data.message, 'success');
                 setTimeout(() => location.reload(), 2000);
@@ -372,7 +372,7 @@ class BusinessVerificationAdmin {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
-            
+
             if (response.ok) {
                 // Update only the table content
                 const html = await response.text();
@@ -380,7 +380,7 @@ class BusinessVerificationAdmin {
                 const doc = parser.parseFromString(html, 'text/html');
                 const newTableBody = doc.querySelector('tbody');
                 const currentTableBody = document.querySelector('tbody');
-                
+
                 if (newTableBody && currentTableBody) {
                     currentTableBody.innerHTML = newTableBody.innerHTML;
                     this.bindEvents(); // Re-bind events for new elements
@@ -391,55 +391,87 @@ class BusinessVerificationAdmin {
         }
     }
 
-    // Utility methods
+    // Utility methods using SweetAlert
     async promptForNotes(message) {
-        return new Promise((resolve) => {
-            const notes = prompt(message);
-            resolve(notes);
-        });
+        const result = await window.showTextareaPrompt(
+            'Ghi chú',
+            message,
+            'Nhập ghi chú của bạn...',
+            '',
+            { required: false }
+        );
+        return result.isConfirmed ? result.value : null;
     }
 
     async promptForReason(message) {
-        return new Promise((resolve) => {
-            const reason = prompt(message);
-            resolve(reason);
-        });
+        const result = await window.showTextareaPrompt(
+            'Lý do',
+            message,
+            'Nhập lý do...',
+            '',
+            { required: true }
+        );
+        return result.isConfirmed ? result.value : null;
     }
 
     async promptForInfo(message) {
-        return new Promise((resolve) => {
-            const info = prompt(message);
-            resolve(info);
-        });
+        const result = await window.showPrompt(
+            'Thông tin',
+            message,
+            'Nhập thông tin...',
+            '',
+            { required: true }
+        );
+        return result.isConfirmed ? result.value : null;
     }
 
     async promptForReviewer() {
-        return new Promise((resolve) => {
-            const reviewers = document.querySelectorAll('#reviewer_id option');
-            let options = 'Select a reviewer:\n';
-            reviewers.forEach((option, index) => {
-                if (option.value) {
-                    options += `${index}: ${option.textContent}\n`;
-                }
-            });
-            
-            const selection = prompt(options + '\nEnter the number:');
-            const selectedOption = reviewers[parseInt(selection)];
-            resolve(selectedOption ? selectedOption.value : null);
+        const reviewers = document.querySelectorAll('#reviewer_id option');
+        const options = {};
+
+        reviewers.forEach((option) => {
+            if (option.value) {
+                options[option.value] = option.textContent;
+            }
         });
+
+        const result = await window.showSelectPrompt(
+            'Chọn người đánh giá',
+            'Vui lòng chọn người đánh giá cho đơn này:',
+            {
+                inputOptions: options,
+                placeholder: 'Chọn người đánh giá...',
+                required: true
+            }
+        );
+
+        return result.isConfirmed ? result.value : null;
     }
 
     async promptForPriority() {
-        return new Promise((resolve) => {
-            const priority = prompt('Select priority:\n1: Low\n2: Medium\n3: High\n4: Urgent\n\nEnter number:');
-            const priorities = ['', 'low', 'medium', 'high', 'urgent'];
-            resolve(priorities[parseInt(priority)] || null);
-        });
+        const priorities = {
+            'low': 'Thấp',
+            'medium': 'Trung bình',
+            'high': 'Cao',
+            'urgent': 'Khẩn cấp'
+        };
+
+        const result = await window.showSelectPrompt(
+            'Chọn mức độ ưu tiên',
+            'Vui lòng chọn mức độ ưu tiên:',
+            {
+                inputOptions: priorities,
+                placeholder: 'Chọn mức độ ưu tiên...',
+                required: true
+            }
+        );
+
+        return result.isConfirmed ? result.value : null;
     }
 
     showLoading(show, message = 'Processing...') {
         let overlay = document.getElementById('loadingOverlay');
-        
+
         if (show) {
             if (!overlay) {
                 overlay = document.createElement('div');
@@ -470,10 +502,10 @@ class BusinessVerificationAdmin {
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `;
-        
+
         const container = document.querySelector('.container-fluid');
         container.insertAdjacentHTML('afterbegin', alertHtml);
-        
+
         setTimeout(() => {
             const alert = container.querySelector('.alert');
             if (alert) {

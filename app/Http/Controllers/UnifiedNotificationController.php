@@ -305,6 +305,40 @@ class UnifiedNotificationController extends Controller
     }
 
     /**
+     * Reply to notification - Simple redirect approach
+     */
+    public function reply(Request $request, Notification $notification): JsonResponse
+    {
+        if ($notification->user_id !== Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $replyableTypes = ['message_received', 'seller_message', 'comment_mention', 'thread_replied', 'review_received'];
+
+        if (!in_array($notification->type, $replyableTypes)) {
+            return response()->json(['success' => false, 'message' => 'This notification type cannot be replied to'], 400);
+        }
+
+        try {
+            // Mark notification as read
+            $notification->update(['is_read' => true]);
+
+            // Get redirect URL based on notification type
+            $redirectUrl = $this->getReplyRedirectUrl($notification);
+
+            return response()->json([
+                'success' => true,
+                'message' => __('notifications.reply.success'),
+                'redirect_url' => $redirectUrl
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Notification reply error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => __('notifications.reply.error')], 500);
+        }
+    }
+
+    /**
      * Track notification interaction
      */
     public function trackInteraction(Request $request, Notification $notification): JsonResponse
@@ -448,5 +482,38 @@ class UnifiedNotificationController extends Controller
 
         // Fallback: convert type to readable format
         return str_replace('_', ' ', ucwords(strtolower($type), '_'));
+    }
+
+    /**
+     * Get redirect URL for reply action based on notification type
+     */
+    private function getReplyRedirectUrl(Notification $notification): string
+    {
+        $data = $notification->data ?? [];
+
+        switch ($notification->type) {
+            case 'message_received':
+            case 'seller_message':
+                // Redirect to conversations/messages page
+                return route('dashboard.conversations.index');
+
+            case 'comment_mention':
+            case 'thread_replied':
+                // Redirect to the specific thread if available
+                $threadId = $data['thread_id'] ?? null;
+                if ($threadId) {
+                    return route('threads.show', $threadId);
+                }
+                // Fallback to forums
+                return route('forums.index');
+
+            case 'review_received':
+                // Redirect to marketplace orders or reviews page
+                return route('dashboard.marketplace.orders');
+
+            default:
+                // Default fallback to notifications page
+                return route('dashboard.notifications.index');
+        }
     }
 }

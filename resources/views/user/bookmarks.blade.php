@@ -403,29 +403,31 @@ function bulkDelete() {
         return;
     }
 
-    if (confirm({!! json_encode(__('user.bookmarks.confirmations.delete_multiple', ['count' => '${ids.length}'])) !!}.replace('${ids.length}', ids.length))) {
-        fetch('{{ route("user.bookmarks.bulk-delete") }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ bookmark_ids: ids })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showAlert('success', data.message);
-                location.reload();
-            } else {
-                showAlert('danger', data.message);
-            }
-        })
-        .catch(error => {
-            showAlert('danger', {!! json_encode(__('user.bookmarks.errors.delete_bookmarks_failed')) !!});
-        });
-    }
+    window.showDeleteConfirm(`${ids.length} bookmark(s)`).then((result) => {
+        if (result.isConfirmed) {
+            fetch('{{ route("user.bookmarks.bulk-delete") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ bookmark_ids: ids })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.showSuccess('Thành công', data.message);
+                    location.reload();
+                } else {
+                    window.showError('Lỗi', data.message);
+                }
+            })
+            .catch(error => {
+                window.showError('Lỗi', {!! json_encode(__('user.bookmarks.errors.delete_bookmarks_failed')) !!});
+            });
+        }
+    });
 }
 
 function showAlert(type, message) {

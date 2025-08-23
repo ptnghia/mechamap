@@ -32,7 +32,7 @@
             </h6>
             <div class="d-flex gap-2">
                 @if($unreadCount > 0)
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="markAllReadBtn">
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="markAllReadBtn" data-dropdown="true">
                         <i class="fa-solid fa-check-double me-1"></i>
                         {{ __('notifications.ui.mark_all_read') }}
                     </button>
@@ -240,9 +240,10 @@ function initializeNotificationDropdown() {
         }
     });
 
-    // Mark all notifications as read
+    // Mark all notifications as read (only for dropdown, not for notifications page)
     const markAllBtn = document.getElementById('markAllReadBtn');
-    if (markAllBtn) {
+    // Chỉ xử lý nút trong dropdown (có data-dropdown="true")
+    if (markAllBtn && markAllBtn.getAttribute('data-dropdown') === 'true') {
         markAllBtn.addEventListener('click', function() {
             markAllNotificationsAsRead();
         });
@@ -301,9 +302,11 @@ function markAllNotificationsAsRead() {
 
             updateNotificationBadge();
 
-            // Hide mark all read button
+            // Hide mark all read button (only for dropdown)
             const markAllBtn = document.getElementById('markAllReadBtn');
-            if (markAllBtn) markAllBtn.style.display = 'none';
+            if (markAllBtn && markAllBtn.getAttribute('data-dropdown') === 'true') {
+                markAllBtn.style.display = 'none';
+            }
         }
     })
     .catch(error => console.error('Error marking all notifications as read:', error));

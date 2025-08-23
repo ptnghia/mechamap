@@ -48,6 +48,9 @@
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Scripts -->
@@ -170,6 +173,8 @@
             // showcaseß
             'showcase.index',
             'showcase.show',
+
+
             ];
 
             // Kiểm tra route hiện tại
@@ -237,6 +242,34 @@
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- SweetAlert2 Utilities -->
+    <script src="{{ asset_versioned('js/sweetalert-utils.js') }}"></script>
+
+    <!-- Initialize Smart Global AJAX Error Handling -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup smart global AJAX error handling with SweetAlert
+            if (window.setupGlobalAjaxErrorHandling) {
+                // Configure smart error handling options
+                window.setupGlobalAjaxErrorHandling({
+                    skipNetworkErrors: true,        // Don't show dialog for network errors
+                    skipCSRFErrors: false,          // Handle CSRF errors with reload prompt
+                    skipAPIErrors: true,            // Let API endpoints handle their own errors
+                    logErrors: true                 // Log errors to console for debugging
+                });
+                console.log('✅ Smart Global AJAX error handling initialized');
+            } else {
+                console.warn('⚠️ Smart Global AJAX error handling not available');
+            }
+        });
+    </script>
+
+    <!-- Notification System -->
+    <script src="{{ asset_versioned('js/notification-system.js') }}"></script>
 
     <!-- Main App JS -->
     <script src="{{ asset_versioned('js/app.js') }}"></script>

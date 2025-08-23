@@ -276,28 +276,30 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const deviceId = this.dataset.deviceId;
 
-            if (confirm('{!! addslashes(__('devices.confirmations.untrust_device')) !!}')) {
-                fetch(`/ajax/devices/${deviceId}/untrust`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        showToast(data.message, 'success');
-                        location.reload();
-                    } else {
-                        showToast(data.message || 'Có lỗi xảy ra', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showToast('Có lỗi xảy ra', 'error');
-                });
-            }
+            window.showConfirm('Xác nhận', '{!! addslashes(__('devices.confirmations.untrust_device')) !!}').then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/ajax/devices/${deviceId}/untrust`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.showToast(data.message, 'success');
+                            location.reload();
+                        } else {
+                            window.showToast(data.message || 'Có lỗi xảy ra', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        window.showToast('Có lỗi xảy ra', 'error');
+                    });
+                }
+            });
         });
     });
 

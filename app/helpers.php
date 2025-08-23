@@ -244,7 +244,7 @@ if (!function_exists('get_logo_url')) {
      */
     function get_logo_url()
     {
-        return get_setting('logo_url', '/images/logo.png');
+        return get_setting('logo_url', '/images/logo.svg');
     }
 }
 

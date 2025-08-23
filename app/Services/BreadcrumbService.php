@@ -371,13 +371,24 @@ class BreadcrumbService
             'tools.index' => 'Công cụ',
             'members' => 'Cộng đồng',
             'members.index' => 'Cộng đồng',
+            'dashboard' => 'Dashboard',
+            'dashboard.index' => 'Dashboard',
+            'dashboard.conversations' => 'Cuộc hội thoại',
+            'dashboard.conversations.index' => 'Cuộc hội thoại',
+            'dashboard.conversations.show' => 'Chi tiết cuộc hội thoại',
+            'dashboard.conversations.create' => 'Tạo cuộc hội thoại',
         ];
 
         if (isset($routeMap[$routeName])) {
             try {
+                $url = $request->url(); // Default to current URL
+                if (Route::has($routeName)) {
+                    $url = route($routeName);
+                }
+
                 return [
                     'title' => $routeMap[$routeName],
-                    'url' => Route::has($routeName) ? route($routeName) : $request->url(),
+                    'url' => $url,
                     'active' => false
                 ];
             } catch (\Exception $e) {

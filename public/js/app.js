@@ -589,13 +589,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initialize confirmation dialogs
+    // Initialize confirmation dialogs with SweetAlert
     document.querySelectorAll('[data-confirm]').forEach(element => {
         element.addEventListener('click', function(e) {
+            e.preventDefault();
             const message = this.dataset.confirm;
-            if (!confirm(message)) {
-                e.preventDefault();
-            }
+            const isDelete = this.dataset.confirmType === 'delete' ||
+                           this.classList.contains('btn-danger') ||
+                           this.innerHTML.includes('fa-trash');
+
+            const confirmFunction = isDelete ? window.showDeleteConfirm : window.showConfirm;
+            const title = isDelete ? 'Xác nhận xóa' : 'Xác nhận';
+
+            confirmFunction(title, message).then((result) => {
+                if (result.isConfirmed) {
+                    // If it's a form submit button, submit the form
+                    if (this.type === 'submit' && this.form) {
+                        this.form.submit();
+                    }
+                    // If it's a link, navigate to the href
+                    else if (this.href) {
+                        window.location.href = this.href;
+                    }
+                    // If it has a data-action, trigger it
+                    else if (this.dataset.action) {
+                        eval(this.dataset.action);
+                    }
+                }
+            });
         });
     });
 

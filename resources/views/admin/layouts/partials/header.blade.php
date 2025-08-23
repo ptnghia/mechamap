@@ -18,20 +18,20 @@
             <div class="navbar-brand-box">
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset('images/setting/logo.png') }}" alt="MechaMap" height="30">
+                        <img src="{{ asset('images/brand/logo.png') }}" alt="MechaMap" height="30">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('images/setting/logo.png') }}" alt="MechaMap" height="24">
+                        <img src="{{ asset('images/brand/logo.png') }}" alt="MechaMap" height="24">
                         <span class="logo-txt">MechaMap Admin</span>
                     </span>
                 </a>
 
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset('images/setting/logo.png') }}" alt="MechaMap" height="30">
+                        <img src="{{ asset('images/brand/logo.png') }}" alt="MechaMap" height="30">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ asset('images/setting/logo.png') }}" alt="MechaMap" height="24">
+                        <img src="{{ asset('images/brand/logo.png') }}" alt="MechaMap" height="24">
                         <span class="logo-txt">MechaMap Admin</span>
                     </span>
                 </a>

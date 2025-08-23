@@ -561,7 +561,7 @@ k
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('user.bookmarks') }}">
+                                    <a class="dropdown-item" href="{{ route('dashboard.community.bookmarks.index') }}">
                                         <i class="fa-regular fa-bookmark me-2"></i>
                                         {{ __('navigation.user.saved') }}
                                     </a>
