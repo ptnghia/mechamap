@@ -35,20 +35,79 @@ class ProfileController extends Controller
     public function index(Request $request): View
     {
         $query = User::query();
+        $view = $request->input('view', 'list'); // list or grid
+        $filter = $request->input('filter', 'all'); // all, online, staff
 
         // Search by name or username
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('username', 'like', "%{$search}%");
+                    ->orWhere('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
-        // Filter by role
+        // Filter by role groups
         if ($role = $request->input('role')) {
-            $query->whereHas('roles', function ($q) use ($role) {
-                $q->where('name', $role);
-            });
+            switch ($role) {
+                // System Management Group
+                case 'system_management':
+                    $query->whereIn('role', ['super_admin', 'system_admin', 'content_admin']);
+                    break;
+
+                // Community Management Group
+                case 'community_management':
+                    $query->whereIn('role', ['content_moderator', 'marketplace_moderator', 'community_moderator']);
+                    break;
+
+                // Community Members Group
+                case 'community_members':
+                    $query->whereIn('role', ['senior_member', 'member', 'guest']);
+                    break;
+
+                // Business Partners Group
+                case 'business_partners':
+                    $query->whereIn('role', ['verified_partner', 'manufacturer', 'supplier', 'brand']);
+                    break;
+
+                // Legacy support for old role group names
+                case 'admin':
+                    $query->whereIn('role', ['super_admin', 'system_admin', 'content_admin']);
+                    break;
+                case 'moderator':
+                    $query->whereIn('role', ['content_moderator', 'marketplace_moderator', 'community_moderator']);
+                    break;
+                case 'member':
+                    $query->whereIn('role', ['senior_member', 'member', 'guest']);
+                    break;
+                case 'business':
+                    $query->whereIn('role', ['verified_partner', 'manufacturer', 'supplier', 'brand']);
+                    break;
+
+                // Individual roles
+                default:
+                    if (in_array($role, ['super_admin', 'system_admin', 'content_admin', 'content_moderator', 'marketplace_moderator', 'community_moderator', 'senior_member', 'member', 'guest', 'verified_partner', 'manufacturer', 'supplier', 'brand'])) {
+                        $query->where('role', $role);
+                    }
+                    break;
+            }
+        }
+
+        // Apply filters
+        switch ($filter) {
+            case 'online':
+                $query->where('last_activity', '>=', now()->subMinutes(15));
+                break;
+            case 'staff':
+                $query->whereIn('role', [
+                    'super_admin', 'system_admin', 'content_admin',
+                    'content_moderator', 'marketplace_moderator', 'community_moderator'
+                ]);
+                break;
+            case 'all':
+            default:
+                // No additional filter
+                break;
         }
 
         // Sort users
@@ -58,7 +117,7 @@ class ProfileController extends Controller
                 $query->orderBy('name');
                 break;
             case 'posts':
-                $query->withCount('posts')->orderByDesc('posts_count');
+                $query->withCount('comments')->orderByDesc('comments_count');
                 break;
             case 'threads':
                 $query->withCount('threads')->orderByDesc('threads_count');
@@ -72,11 +131,81 @@ class ProfileController extends Controller
                 break;
         }
 
-        $users = $query->withCount(['posts', 'threads'])
+        // Always load counts and relationships (use comments as posts in MechaMap)
+        $users = $query->withCount(['comments as posts_count', 'threads', 'followers'])
+            ->with(['followers'])
             ->paginate(20)
             ->withQueryString();
 
-        return view('profile.index', compact('users'));
+        // Get statistics for sidebar
+        $stats = [
+            'total_members' => User::count(),
+            'newest_member' => User::latest()->first(),
+            'online_members' => User::where('last_seen_at', '>=', now()->subMinutes(15))->count(),
+        ];
+
+        // Get top contributors this month (based on comments)
+        $topContributors = User::withCount(['comments' => function ($query) {
+                $query->whereMonth('created_at', now()->month);
+            }])
+            ->having('comments_count', '>', 0)
+            ->orderByDesc('comments_count')
+            ->take(5)
+            ->get();
+
+        // Get staff members
+        $staffMembers = User::whereIn('role', [
+                'super_admin', 'system_admin', 'content_admin'
+            ])
+            ->take(10)
+            ->get();
+
+        return view('profile.index', compact('users', 'view', 'filter', 'stats', 'topContributors', 'staffMembers'));
+    }
+
+    /**
+     * Display online members.
+     */
+    public function online(Request $request): View
+    {
+        $request->merge(['filter' => 'online']);
+        return $this->index($request);
+    }
+
+    /**
+     * Display staff members.
+     */
+    public function staff(Request $request): View
+    {
+        $request->merge(['filter' => 'staff']);
+        return $this->index($request);
+    }
+
+    /**
+     * Display leaderboard.
+     */
+    public function leaderboard(Request $request): View
+    {
+        // Top posters based on comments (actual posts in MechaMap are comments)
+        $topPosters = User::withCount('comments')
+            ->having('comments_count', '>', 0)
+            ->orderByDesc('comments_count')
+            ->take(20)
+            ->get();
+
+        $topThreadCreators = User::withCount('threads')
+            ->having('threads_count', '>', 0)
+            ->orderByDesc('threads_count')
+            ->take(20)
+            ->get();
+
+        $topFollowed = User::withCount('followers')
+            ->having('followers_count', '>', 0)
+            ->orderByDesc('followers_count')
+            ->take(20)
+            ->get();
+
+        return view('profile.leaderboard', compact('topPosters', 'topThreadCreators', 'topFollowed'));
     }
 
     /**
@@ -84,9 +213,9 @@ class ProfileController extends Controller
      */
     public function show(User $user): View
     {
-        // Lấy thông tin thống kê
+        // Lấy thông tin thống kê (use comments as replies in MechaMap)
         $stats = [
-            'replies' => $user->posts()->count(),
+            'replies' => $user->comments()->count(),
             'discussions_created' => $user->threads()->count(),
             'reaction_score' => $user->reaction_score,
             'points' => $user->points,
@@ -114,8 +243,8 @@ class ProfileController extends Controller
         // Kiểm tra tiến độ thiết lập tài khoản
         $setupProgress = $this->calculateSetupProgress($user);
 
-        // Sử dụng view mới theo mẫu SkyscraperCity
-        return view('profile.show-skyscraper', compact(
+        // Sử dụng view profile show
+        return view('profile.show', compact(
             'user',
             'stats',
             'followers',

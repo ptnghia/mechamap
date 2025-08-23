@@ -209,9 +209,9 @@ Route::get('/forums/popular', function () {
     return redirect()->route('whats-new.popular');
 })->name('forums.popular');
 
-// Community routes - Enhanced
+// Community routes - Enhanced - Redirect to unified users page
 Route::get('/members', function () {
-    return view('coming-soon', ['title' => 'Members', 'message' => 'Members directory coming soon']);
+    return redirect()->route('users.index');
 })->name('members.index');
 
 // Companies Directory - Enhanced
@@ -390,8 +390,11 @@ Route::middleware(['auth'])->prefix('messages')->name('chat.')->group(function (
 
 // Demo Admin Chat - REMOVED (temporary testing route)
 
-// Profile routes
+// Profile routes - Enhanced with member features
 Route::get('/users', [ProfileController::class, 'index'])->name('users.index');
+Route::get('/users/online', [ProfileController::class, 'online'])->name('users.online');
+Route::get('/users/staff', [ProfileController::class, 'staff'])->name('users.staff');
+Route::get('/users/leaderboard', [ProfileController::class, 'leaderboard'])->name('users.leaderboard');
 Route::get('/users/{user:username}', [ProfileController::class, 'show'])->name('profile.show');
 Route::get('/users/{user:username}/activities', [ActivityController::class, 'index'])->name('profile.activities');
 
@@ -631,10 +634,16 @@ Route::prefix('search')->name('search.')->group(function () {
 // Legacy AJAX search route removed - now using /api/v1/search/unified
 
 // Real-time routes removed - now handled by Node.js WebSocket server
-Route::get('/members', [MemberController::class, 'index'])->name('members.index');
-Route::get('/members/online', [MemberController::class, 'online'])->name('members.online');
-Route::get('/members/staff', [MemberController::class, 'staff'])->name('members.staff');
-Route::get('/members/leaderboard', [MemberController::class, 'leaderboard'])->name('members.leaderboard');
+// Legacy member routes - redirect to unified users routes
+Route::get('/members/online', function () {
+    return redirect()->route('users.online');
+})->name('members.online');
+Route::get('/members/staff', function () {
+    return redirect()->route('users.staff');
+})->name('members.staff');
+Route::get('/members/leaderboard', function () {
+    return redirect()->route('users.leaderboard');
+})->name('members.leaderboard');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 
 // Theme routes
@@ -864,8 +873,10 @@ Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
 
     // Action endpoints
     Route::patch('/{notification}/read', [UnifiedNotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read');
+    Route::post('/{notification}/mark-read', [UnifiedNotificationController::class, 'markAsRead'])->name('ajax.notifications.mark-read-post');
     Route::patch('/{notification}/unread', [UnifiedNotificationController::class, 'markAsUnread'])->name('ajax.notifications.mark-unread');
     Route::patch('/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read');
+    Route::post('/mark-all-read', [UnifiedNotificationController::class, 'markAllAsRead'])->name('ajax.notifications.mark-all-read-post');
     Route::delete('/{notification}', [UnifiedNotificationController::class, 'delete'])->name('ajax.notifications.delete');
     Route::delete('/clear-all', [UnifiedNotificationController::class, 'clearAll'])->name('ajax.notifications.clear-all');
     Route::patch('/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('ajax.notifications.archive');

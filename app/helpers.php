@@ -158,8 +158,21 @@ if (!function_exists('getOnlineUsersCount')) {
     function getOnlineUsersCount()
     {
         return Cache::remember('online_users_count', 300, function () {
-            return \App\Models\User::where('last_activity', '>=', now()->subMinutes(15))->count();
+            return \App\Models\User::where('last_seen_at', '>=', now()->subMinutes(15))->count();
         });
+    }
+}
+
+if (!function_exists('formatActivityType')) {
+    /**
+     * Format activity type with translation
+     *
+     * @param string $activityType
+     * @return string
+     */
+    function formatActivityType($activityType)
+    {
+        return __('activity.' . $activityType, [], app()->getLocale()) ?: $activityType;
     }
 }
 
@@ -648,6 +661,17 @@ if (!function_exists('t_footer')) {
     function t_footer($key, $replace = [], $locale = null)
     {
         return __("footer.$key", $replace, $locale);
+    }
+}
+
+if (!function_exists('t_notification')) {
+    /**
+     * Get notification translation
+     * @param string $key Format: section.key (e.g., 'ui.header', 'types.new_message', 'messages.new_message')
+     */
+    function t_notification($key, $replace = [], $locale = null)
+    {
+        return __("notifications.$key", $replace, $locale);
     }
 }
 

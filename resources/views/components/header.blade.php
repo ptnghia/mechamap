@@ -130,9 +130,7 @@ k
                         {{-- CSS to hide duplicate menu items --}}
                         <style>
                         /* Hide the 6th nav item (duplicate {{ t_ui('buttons.add') }} menu) */
-                        .navbar-nav .nav-item:nth-child(6) {
-                            display: none !important;
-                        }
+
                         </style>
 
                         <!-- 5. Technical Resources - UPDATED (removed showcase) -->
@@ -285,7 +283,7 @@ k
                         @endauth
 
                         <!-- More Dropdown - Enhanced -->
-                        <li class="nav-item dropdown">
+                        <!--li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-ellipsis me-1"></i>
                                 {{ t_navigation('main.more') }}
@@ -364,7 +362,7 @@ k
                                     </div>
                                 </li>
                             </ul>
-                        </li>
+                        </li-->
                     </ul>
 
                     <!-- Right Side Actions -->
@@ -418,22 +416,9 @@ k
                             @endif
                         @endauth
 
-                        <!-- Notifications - Simple Bell Icon -->
+                        <!-- Notifications - Realtime Dropdown -->
                         @auth
-                        <li class="nav-item">
-                            <a class="nav-link position-relative" href="{{ route('notifications.index') }}">
-                                <i class="fas fa-bell fs-5 text-muted"></i>
-                                @php
-                                $unreadNotificationsCount = Auth::user()->userNotifications()->where('is_read', false)->count();
-                                @endphp
-                                @if($unreadNotificationsCount > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    {{ $unreadNotificationsCount }}
-                                    <span class="visually-hidden">unread notifications</span>
-                                </span>
-                                @endif
-                            </a>
-                        </li>
+                        @include('partials.notification-dropdown')
                         @endauth
 
                         <!-- Language Switcher -->
@@ -562,7 +547,7 @@ k
                                         @endif
                                     </a>
                                 </li>
-                                <li>
+                                <li class="notification-dropdown">
                                     <a class="dropdown-item" href="{{ route('notifications.index') }}">
                                         <i class="fa-solid fa-bell me-2"></i>
                                         {{ __('navigation.user.notifications') }}

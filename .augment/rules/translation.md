@@ -12,7 +12,7 @@ type: "manual"
 
 ## Translation Keys
 
-- Tất cả các **translation keys** được lưu trong **database**.
+- Tất cả các **translation keys** được lưu trong **database bảng translations**.
 - Sử dụng link quản lý translation:  
   👉 [https://mechamap.test/translations](https://mechamap.test/translations)  
   để **tra cứu, chỉnh sửa hoặc thêm mới** khi cần.
@@ -23,7 +23,7 @@ type: "manual"
   1. Kiểm tra translation key tương ứng.  
   2. Sử dụng key phù hợp thay cho text cố định.  
   3. Nếu chưa có key, sử dụng link [https://mechamap.test/translations](https://mechamap.test/translations)  
-     để tạo mới hoặc chỉnh sửa.
+     để tạo mới hoặc chỉnh sửa. hoặc tạo script để thêm vào database bảng translations
 
 ## Quy tắc chỉnh sửa / thêm mới translation keys
 

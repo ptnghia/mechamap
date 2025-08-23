@@ -17,7 +17,61 @@ use App\Events\NotificationBroadcastEvent;
 class NotificationService
 {
     /**
-     * Send notification to user(s)
+     * Send notification using translation keys
+     *
+     * @param User|array $users
+     * @param string $type
+     * @param string $titleKey Translation key for title (e.g., 'notifications.types.new_message')
+     * @param string $messageKey Translation key for message (e.g., 'notifications.messages.new_message')
+     * @param array $data Data for translation placeholders
+     * @param bool $sendEmail
+     * @return bool
+     */
+    public static function sendWithTranslationKeys($users, string $type, string $titleKey, string $messageKey, array $data = [], bool $sendEmail = false): bool
+    {
+        try {
+            if (!is_array($users)) {
+                $users = [$users];
+            }
+
+            foreach ($users as $user) {
+                // Create notification with translation keys instead of hardcoded text
+                $notification = Notification::create([
+                    'user_id' => $user->id,
+                    'type' => $type,
+                    'title' => $titleKey, // Store translation key
+                    'message' => $messageKey, // Store translation key
+                    'data' => $data,
+                    'is_read' => false,
+                    'priority' => $data['priority'] ?? 'normal',
+                ]);
+
+                // Broadcast real-time notification
+                if (config('broadcasting.default') !== 'null') {
+                    broadcast(new NotificationBroadcastEvent($notification))->toOthers();
+                }
+
+                // Send email if requested
+                if ($sendEmail && $user->email_verified_at) {
+                    self::sendEmailNotification($user, $notification);
+                }
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Failed to send notification with translation keys', [
+                'error' => $e->getMessage(),
+                'type' => $type,
+                'titleKey' => $titleKey,
+                'messageKey' => $messageKey,
+                'data' => $data
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Send notification to user(s) (Legacy method - backward compatibility)
      *
      * @param User|array $users
      * @param string $type

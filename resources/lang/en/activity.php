@@ -19,6 +19,13 @@ return [
     'thread_bookmarked' => 'Thread Bookmarked',
     'thread_rated' => 'Thread Rated',
     'user_followed' => 'User Followed',
+    'showcase_created_from_thread' => 'Created showcase from thread',
+    'comment_liked' => 'Liked comment',
+    'thread_liked' => 'Liked thread',
+    'thread_saved' => 'Saved thread',
+    'showcase_created' => 'Created showcase',
+    'showcase_liked' => 'Liked showcase',
+    'profile_updated' => 'Updated profile',
 
     // Filters
     'time_period' => 'Time Period',

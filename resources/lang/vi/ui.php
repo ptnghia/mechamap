@@ -293,4 +293,32 @@ return [
         'showing_results' => 'Hiển thị :start-:end của :total sản phẩm',
     ],
 
+    'leaderboard' => [
+        'title' => 'Bảng xếp hạng thành viên',
+        'back_to_list' => 'Quay lại danh sách',
+        'top_posts' => 'Top bài viết',
+        'top_threads' => 'Top chủ đề',
+        'top_followed' => 'Top theo dõi',
+        'top_posts_description' => 'Top thành viên có nhiều bài viết nhất',
+        'top_threads_description' => 'Top thành viên tạo nhiều chủ đề nhất',
+        'top_followed_description' => 'Top thành viên được theo dõi nhiều nhất',
+        'posts' => 'bài viết',
+        'threads' => 'chủ đề',
+        'followers' => 'người theo dõi',
+        'no_data' => 'Chưa có dữ liệu',
+        'no_posts_yet' => 'Chưa có thành viên nào có bài viết.',
+        'no_threads_yet' => 'Chưa có thành viên nào tạo chủ đề.',
+        'no_followers_yet' => 'Chưa có thành viên nào được theo dõi.',
+    ],
+
+    'users' => [
+        'posts' => 'bài viết',
+        'threads' => 'chủ đề',
+        'followers' => 'theo dõi',
+        'follow' => 'Theo dõi',
+        'unfollow' => 'Bỏ theo dõi',
+        'joined' => 'Tham gia',
+        'online' => 'Trực tuyến',
+    ],
+
 ];

@@ -102,16 +102,11 @@ class UnifiedNotificationController extends Controller
 
             $notifications = $query->paginate($perPage);
 
-            // Transform custom notifications to translate titles
+            // Transform custom notifications to use localized content
             $notifications->getCollection()->transform(function ($notification) {
-                // Translate title if it's a translation key
-                $title = $notification->title;
-                if (str_starts_with($title, 'notifications.types.')) {
-                    $title = __($title);
-                }
-
-                // Update the title in the notification object
-                $notification->title = $title;
+                // Use localized attributes instead of direct translation
+                $notification->title = $notification->localized_title;
+                $notification->message = $notification->localized_message;
 
                 return $notification;
             });
@@ -140,11 +135,9 @@ class UnifiedNotificationController extends Controller
             ->limit($limit)
             ->get()
             ->map(function ($notification) {
-                // Translate title if it's a translation key
-                $title = $notification->title;
-                if (str_starts_with($title, 'notifications.types.')) {
-                    $title = __($title);
-                }
+                // Use localized attributes for title and message
+                $title = $notification->localized_title;
+                $message = $notification->localized_message;
 
                 // Translate notification type for display
                 $typeLabel = $this->getNotificationTypeLabel($notification->type);
@@ -155,7 +148,7 @@ class UnifiedNotificationController extends Controller
                     'type_label' => $typeLabel,
                     'category' => $notification->category,
                     'title' => $title,
-                    'message' => \Str::limit($notification->message, 100),
+                    'message' => \Str::limit($message, 100),
                     'icon' => $notification->getIconAttribute(),
                     'color' => $this->getCategoryColor($notification->category),
                     'action_url' => $notification->action_url,

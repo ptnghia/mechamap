@@ -139,7 +139,7 @@ class DashboardController extends Controller
         if (!Schema::hasColumn('users', 'last_seen_at')) {
             return 0;
         }
-        return User::where('last_seen_at', '>=', now()->subMinutes(5))->count();
+        return User::where('last_seen_at', '>=', now()->subMinutes(15))->count();
     }
 
     /**

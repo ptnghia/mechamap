@@ -769,10 +769,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Check if the user is online.
+     * Unified logic: user is online if last_seen_at is within 15 minutes
      */
     public function isOnline(): bool
     {
-        return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(5));
+        return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(15));
     }
 
 

@@ -54,8 +54,29 @@
                                 @case('profile_updated')
                                     {{ __('profile.updated_profile_information') }}
                                     @break
+                                @case('showcase_created_from_thread')
+                                    {{ formatActivityType('showcase_created_from_thread') }}
+                                    @break
+                                @case('comment_posted')
+                                    {{ formatActivityType('comment_posted') }}
+                                    @break
+                                @case('comment_liked')
+                                    {{ formatActivityType('comment_liked') }}
+                                    @break
+                                @case('thread_bookmarked')
+                                    {{ formatActivityType('thread_bookmarked') }}
+                                    @break
+                                @case('user_followed')
+                                    {{ formatActivityType('user_followed') }}
+                                    @break
+                                @case('showcase_created')
+                                    {{ formatActivityType('showcase_created') }}
+                                    @break
+                                @case('showcase_liked')
+                                    {{ formatActivityType('showcase_liked') }}
+                                    @break
                                 @default
-                                    {{ $activity->activity_type }}
+                                    {{ formatActivityType($activity->activity_type) }}
                             @endswitch
                         </div>
                         <div class="activity-time">{{ $activity->created_at->diffForHumans() }}</div>

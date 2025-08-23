@@ -205,4 +205,34 @@ return [
     'marketplace' => [
         'showing_results' => 'Showing :start-:end of :total products',
     ],
+
+    // Leaderboard
+    'leaderboard' => [
+        'title' => 'Member Leaderboard',
+        'back_to_list' => 'Back to List',
+        'top_posts' => 'Top Posts',
+        'top_threads' => 'Top Threads',
+        'top_followed' => 'Top Followed',
+        'top_posts_description' => 'Top members with most posts',
+        'top_threads_description' => 'Top members who created most threads',
+        'top_followed_description' => 'Top most followed members',
+        'posts' => 'posts',
+        'threads' => 'threads',
+        'followers' => 'followers',
+        'no_data' => 'No data available',
+        'no_posts_yet' => 'No members have posts yet.',
+        'no_threads_yet' => 'No members have created threads yet.',
+        'no_followers_yet' => 'No members have followers yet.',
+    ],
+
+    // Users
+    'users' => [
+        'posts' => 'posts',
+        'threads' => 'threads',
+        'followers' => 'followers',
+        'follow' => 'Follow',
+        'unfollow' => 'Unfollow',
+        'joined' => 'Joined',
+        'online' => 'Online',
+    ],
 ];

@@ -19,6 +19,13 @@ return [
     'thread_bookmarked' => 'Đánh dấu chủ đề',
     'thread_rated' => 'Đánh giá chủ đề',
     'user_followed' => 'Theo dõi người dùng',
+    'showcase_created_from_thread' => 'Tạo showcase từ chủ đề',
+    'comment_liked' => 'Thích bình luận',
+    'thread_liked' => 'Thích chủ đề',
+    'thread_saved' => 'Lưu chủ đề',
+    'showcase_created' => 'Tạo showcase',
+    'showcase_liked' => 'Thích showcase',
+    'profile_updated' => 'Cập nhật hồ sơ',
 
     // Filters
     'time_period' => 'Khoảng thời gian',

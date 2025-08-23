@@ -82,6 +82,75 @@ class Notification extends Model
     }
 
     /**
+     * Get localized title for notification
+     */
+    public function getLocalizedTitleAttribute(): string
+    {
+        // If title is a translation key, translate it
+        if ($this->isTranslationKey($this->title)) {
+            return $this->translateKey($this->title);
+        }
+
+        // If title is hardcoded text, return as is (backward compatibility)
+        return $this->title;
+    }
+
+    /**
+     * Get localized message for notification
+     */
+    public function getLocalizedMessageAttribute(): string
+    {
+        // Check if message contains translation key with data (format: "key|json_data")
+        if (str_contains($this->message, '|') && $this->isTranslationKey(explode('|', $this->message)[0])) {
+            [$key, $jsonData] = explode('|', $this->message, 2);
+            $data = json_decode($jsonData, true) ?? [];
+            return $this->translateKey($key, $data);
+        }
+
+        // If message is a simple translation key, translate it
+        if ($this->isTranslationKey($this->message)) {
+            return $this->translateKey($this->message, $this->data ?? []);
+        }
+
+        // If message is hardcoded text, return as is (backward compatibility)
+        return $this->message;
+    }
+
+    /**
+     * Check if a string is a translation key
+     */
+    private function isTranslationKey(string $text): bool
+    {
+        return str_starts_with($text, 'notifications.') ||
+               str_starts_with($text, 'core.notifications.') ||
+               str_starts_with($text, 'ui.notifications.');
+    }
+
+    /**
+     * Translate a key with fallback
+     */
+    private function translateKey(string $key, array $replace = []): string
+    {
+        $translated = __($key, $replace);
+
+        // If translation not found, try fallback or return original
+        if ($translated === $key) {
+            // Try with different prefix
+            $fallbackKey = 'core.notifications.' . str_replace('notifications.', '', $key);
+            $fallback = __($fallbackKey, $replace);
+
+            if ($fallback !== $fallbackKey) {
+                return $fallback;
+            }
+
+            // Return original key if no translation found
+            return $key;
+        }
+
+        return $translated;
+    }
+
+    /**
      * Get notification icon based on type
      */
     public function getIconAttribute(): string
