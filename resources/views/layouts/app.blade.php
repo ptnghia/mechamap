@@ -17,7 +17,8 @@
     <meta name="auth-token" content="{{ auth()->user()->createToken('websocket-access')->plainTextToken }}">
     @endauth
     <!-- SEO Meta Tags with Multilingual Support -->
-    <x-seo-meta :locale="app()->getLocale()" /><link rel="preconnect" href="https://fonts.googleapis.com">
+    <x-seo-meta :locale="app()->getLocale()" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Arimo:ital,wght@0,400..700;1,400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
