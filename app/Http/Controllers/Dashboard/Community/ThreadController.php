@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 /**
  * Thread Controller cho Dashboard Community
- * 
+ *
  * Quản lý threads của user trong dashboard
  */
 class ThreadController extends BaseController

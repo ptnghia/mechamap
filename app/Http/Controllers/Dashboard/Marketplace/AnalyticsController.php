@@ -51,9 +51,7 @@ class AnalyticsController extends BaseController
             'seller' => $seller,
             'analytics' => $analytics,
             'currentPeriod' => $period,
-            'dateRange' => $dateRange,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'dateRange' => $dateRange]);
     }
 
     /**

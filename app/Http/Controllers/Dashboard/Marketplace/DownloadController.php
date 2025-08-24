@@ -103,9 +103,7 @@ class DownloadController extends BaseController
             'currentProductType' => $productType,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'currentSort' => $sort]);
     }
 
     /**
@@ -150,9 +148,7 @@ class DownloadController extends BaseController
         return $this->dashboardResponse('dashboard.marketplace.downloads.order-files', [
             'orderItem' => $orderItem,
             'digitalFiles' => $digitalFiles,
-            'downloadHistory' => $downloadHistory,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'downloadHistory' => $downloadHistory]);
     }
 
     /**

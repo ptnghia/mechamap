@@ -111,9 +111,7 @@ class RatingController extends BaseController
                 'per_page' => $perPage,
                 'total' => $allRatings->count(),
                 'last_page' => ceil($allRatings->count() / $perPage),
-            ],
-            'breadcrumb' => $breadcrumb
-        ]);
+            ]]);
     }
 
     /**
@@ -143,9 +141,7 @@ class RatingController extends BaseController
 
         return $this->dashboardResponse('dashboard.community.ratings.edit', [
             'rating' => $rating,
-            'type' => $type,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'type' => $type]);
     }
 
     /**

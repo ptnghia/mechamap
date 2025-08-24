@@ -27,9 +27,7 @@ class ProfileController extends BaseController
         ]);
 
         return $this->dashboardResponse('dashboard.common.profile.edit', [
-            'user' => $this->user,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'user' => $this->user]);
     }
 
     /**
@@ -272,8 +270,6 @@ class ProfileController extends BaseController
         ]);
 
         return $this->dashboardResponse('dashboard.common.profile.stats', [
-            'stats' => $stats,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'stats' => $stats]);
     }
 }

@@ -81,9 +81,7 @@ class CommentController extends BaseController
             'currentThreadId' => $threadId,
             'currentStatus' => $status,
             'search' => $search,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'currentSort' => $sort]);
     }
 
     /**
@@ -104,9 +102,7 @@ class CommentController extends BaseController
         ]);
 
         return $this->dashboardResponse('dashboard.community.comments.show', [
-            'comment' => $comment,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'comment' => $comment]);
     }
 
     /**
@@ -125,9 +121,7 @@ class CommentController extends BaseController
         ]);
 
         return $this->dashboardResponse('dashboard.community.comments.edit', [
-            'comment' => $comment,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'comment' => $comment]);
     }
 
     /**

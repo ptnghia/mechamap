@@ -100,9 +100,7 @@ class WishlistController extends BaseController
             'currentCategory' => $category,
             'currentProductType' => $productType,
             'currentPriceRange' => $priceRange,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'currentSort' => $sort]);
     }
 
     /**

@@ -116,9 +116,7 @@ class ProductController extends BaseController
             'currentStatus' => $status,
             'currentCategory' => $category,
             'currentProductType' => $productType,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'currentSort' => $sort]);
     }
 
     /**
@@ -142,9 +140,7 @@ class ProductController extends BaseController
 
         return $this->dashboardResponse('dashboard.marketplace.products.create', [
             'seller' => $seller,
-            'categories' => $categories,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'categories' => $categories]);
     }
 
     /**
@@ -168,9 +164,7 @@ class ProductController extends BaseController
 
         return $this->dashboardResponse('dashboard.marketplace.products.show', [
             'seller' => $seller,
-            'product' => $product,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'product' => $product]);
     }
 
     /**
@@ -195,9 +189,7 @@ class ProductController extends BaseController
         return $this->dashboardResponse('dashboard.marketplace.products.edit', [
             'seller' => $seller,
             'product' => $product,
-            'categories' => $categories,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'categories' => $categories]);
     }
 
     /**

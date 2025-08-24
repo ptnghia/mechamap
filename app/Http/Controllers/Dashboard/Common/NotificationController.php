@@ -130,9 +130,7 @@ class NotificationController extends BaseController
             'currentSearch' => $search,
             'currentSender' => $sender,
             'currentDateRange' => $dateRange,
-            'isArchiveView' => $archived,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'isArchiveView' => $archived]);
     }
 
     /**
@@ -331,9 +329,7 @@ class NotificationController extends BaseController
             'categories' => $categories,
             'currentCategory' => $category,
             'currentDateArchived' => $dateArchived,
-            'currentSearch' => $search,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'currentSearch' => $search]);
     }
 
     /**

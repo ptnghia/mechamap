@@ -104,9 +104,7 @@ class ConversationController extends BaseController
             'conversations' => $conversations,
             'search' => $search,
             'filter' => $filter,
-            'filterCounts' => $filterCounts,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'filterCounts' => $filterCounts]);
     }
 
     /**
@@ -142,9 +140,7 @@ class ConversationController extends BaseController
         return $this->dashboardResponse('dashboard.common.conversations.show', [
             'conversation' => $conversation,
             'messages' => $messages,
-            'otherParticipants' => $otherParticipants,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'otherParticipants' => $otherParticipants]);
     }
 
     /**
@@ -173,9 +169,7 @@ class ConversationController extends BaseController
 
         return $this->dashboardResponse('dashboard.common.conversations.create', [
             'users' => $users,
-            'search' => $search,
-            'breadcrumb' => $breadcrumb
-        ]);
+            'search' => $search]);
     }
 
     /**

@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 /**
  * Seller Controller cho Dashboard Marketplace
- * 
+ *
  * Quản lý seller dashboard và activities
  */
 class SellerController extends BaseController
@@ -87,7 +87,7 @@ class SellerController extends BaseController
     {
         $request->validate([
             'store_name' => 'required|string|max:255',
-            'store_slug' => 'required|string|max:255|unique:marketplace_sellers,store_slug,' . 
+            'store_slug' => 'required|string|max:255|unique:marketplace_sellers,store_slug,' .
                 ($this->user->marketplaceSeller->id ?? 'NULL'),
             'store_description' => 'required|string|max:1000',
             'business_type' => 'required|string|in:individual,company',
