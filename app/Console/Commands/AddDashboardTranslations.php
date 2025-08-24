@@ -29,18 +29,14 @@ class AddDashboardTranslations extends Command
      * Groups are auto-detected from key prefix (before first dot)
      */
     protected $translations = [
-        // ===== MARKETPLACE TRANSLATIONS =====
-        'marketplace.sections.latest_products' => [
-            'vi' => 'Sản phẩm mới nhất',
-            'en' => 'Latest Products'
+        // ===== UI BUTTONS TRANSLATIONS =====
+        'ui.buttons.add_to_cart' => [
+            'vi' => 'Thêm vào giỏ',
+            'en' => 'Add to Cart'
         ],
-        'marketplace.sections.latest_products_desc' => [
-            'vi' => 'Khám phá những sản phẩm kỹ thuật mới nhất từ cộng đồng',
-            'en' => 'Discover the latest technical products from our community'
-        ],
-        'marketplace.labels.by' => [
-            'vi' => 'bởi',
-            'en' => 'by'
+        'ui.buttons.add_to_wishlist' => [
+            'vi' => 'Thêm vào yêu thích',
+            'en' => 'Add to Wishlist'
         ],
 
         // ===== SIDEBAR USER DASHBOARD - MISSING TRANSLATIONS =====

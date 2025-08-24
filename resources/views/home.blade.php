@@ -6,7 +6,7 @@
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <!-- Home Page Specific CSS -->
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/home.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/home.css') }}">
 @endpush
 
 @section('content')
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Products Swiper
     const productsSwiper = new Swiper('.products-swiper', {
         slidesPerView: 1,
-        spaceBetween: 20,
+        spaceBetween: 10,
         loop: false,
         autoplay: {
             delay: 4000,
@@ -221,19 +221,19 @@ document.addEventListener('DOMContentLoaded', function() {
         breakpoints: {
             576: {
                 slidesPerView: 2,
-                spaceBetween: 15,
+                spaceBetween: 10,
             },
             768: {
-                slidesPerView: 3,
-                spaceBetween: 20,
+                slidesPerView: 2,
+                spaceBetween: 10,
             },
             992: {
-                slidesPerView: 4,
-                spaceBetween: 20,
+                slidesPerView: 3,
+                spaceBetween: 10,
             },
             1200: {
-                slidesPerView: 5,
-                spaceBetween: 20,
+                slidesPerView: 3,
+                spaceBetween: 10,
             }
         }
     });

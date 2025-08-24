@@ -284,12 +284,12 @@ class MarketplaceProduct extends Model
     {
         // Check if featured_image exists
         if ($this->featured_image) {
-            return asset('images/products/' . $this->featured_image);
+            return get_product_image_url($this->featured_image);
         }
 
         // Check if images array has any images
         if ($this->images && is_array($this->images) && count($this->images) > 0) {
-            return asset('images/products/' . $this->images[0]);
+            return get_product_image_url($this->images[0]);
         }
 
         // Return placeholder image
