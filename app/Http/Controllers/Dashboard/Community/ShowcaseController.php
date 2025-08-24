@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * Showcase Controller cho Dashboard Community
- * 
+ *
  * Quản lý showcases của user trong dashboard
  */
 class ShowcaseController extends BaseController
@@ -252,17 +252,17 @@ class ShowcaseController extends BaseController
     {
         $total = Showcase::where('user_id', $this->user->id)->count();
         $published = Showcase::where('user_id', $this->user->id)
-            ->where('status', 'published')->count();
+            ->where('status', 'approved')->count();
         $pending = Showcase::where('user_id', $this->user->id)
             ->where('status', 'pending')->count();
         $featured = Showcase::where('user_id', $this->user->id)
-            ->where('is_featured', true)->count();
+            ->where('status', 'featured')->count();
 
         $totalViews = Showcase::where('user_id', $this->user->id)->sum('view_count');
-        $totalRatings = Showcase::where('user_id', $this->user->id)->sum('ratings_count');
+        $totalRatings = Showcase::where('user_id', $this->user->id)->sum('rating_count');
         $averageRating = Showcase::where('user_id', $this->user->id)
-            ->where('ratings_count', '>', 0)
-            ->avg('average_rating');
+            ->where('rating_count', '>', 0)
+            ->avg('rating_average');
 
         return [
             'total' => $total,
@@ -285,7 +285,7 @@ class ShowcaseController extends BaseController
     {
         foreach ($images as $image) {
             $path = $image->store('showcases/images', 'public');
-            
+
             $showcase->images()->create([
                 'file_path' => $path,
                 'file_name' => $image->getClientOriginalName(),
@@ -302,7 +302,7 @@ class ShowcaseController extends BaseController
     {
         foreach ($attachments as $attachment) {
             $path = $attachment->store('showcases/attachments', 'public');
-            
+
             $showcase->attachments()->create([
                 'file_path' => $path,
                 'file_name' => $attachment->getClientOriginalName(),

@@ -3,9 +3,15 @@
 namespace App\Observers;
 
 use App\Models\Message;
+use App\Models\Conversation;
+use App\Models\ConversationParticipant;
+use App\Models\GroupMember;
+use App\Models\User;
 use App\Services\UnifiedNotificationService;
 use App\Services\WebSocketNotificationService;
+use App\Services\GroupWebSocketService;
 use App\Events\MessageSent;
+use App\Events\GroupMessageSent;
 use Illuminate\Support\Facades\Log;
 
 class MessageObserver
@@ -29,6 +35,102 @@ class MessageObserver
                 return;
             }
 
+            // Handle different conversation types
+            if ($conversation->type === 'group') {
+                $this->handleGroupMessage($message, $sender, $conversation);
+            } else {
+                $this->handlePrivateMessage($message, $sender, $conversation);
+            }
+
+            Log::info('MessageSent event broadcasted', [
+                'message_id' => $message->id,
+                'conversation_id' => $conversation->id,
+                'recipients_count' => count($recipientData)
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to handle message creation notification', [
+                'message_id' => $message->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Handle group message
+     */
+    private function handleGroupMessage(Message $message, User $sender, Conversation $conversation): void
+    {
+        try {
+            // Get all active group members except the sender
+            $groupMembers = GroupMember::where('conversation_id', $conversation->id)
+                ->where('user_id', '!=', $message->user_id)
+                ->where('is_active', true)
+                ->with('user')
+                ->get();
+
+            if ($groupMembers->isEmpty()) {
+                Log::info('No group members found for message notification', [
+                    'message_id' => $message->id,
+                    'group_id' => $conversation->id
+                ]);
+                return;
+            }
+
+            Log::info('New group message created', [
+                'message_id' => $message->id,
+                'group_id' => $conversation->id,
+                'sender_id' => $sender->id,
+                'members_count' => $groupMembers->count()
+            ]);
+
+            // Send notification to each group member
+            foreach ($groupMembers as $member) {
+                $recipient = $member->user;
+                if (!$recipient) {
+                    continue;
+                }
+
+                $this->sendMessageNotification($message, $sender, $recipient, $conversation);
+            }
+
+            // Prepare member data for broadcasting
+            $memberData = $groupMembers->map(function ($member) {
+                return [
+                    'id' => $member->user->id,
+                    'name' => $member->user->name,
+                    'role' => $member->user->role,
+                ];
+            })->toArray();
+
+            // Broadcast GroupMessageSent event for real-time updates
+            event(new GroupMessageSent($message, $sender, $memberData));
+
+            // Use GroupWebSocketService for enhanced group features
+            $groupWebSocketService = app(GroupWebSocketService::class);
+            $groupWebSocketService->broadcastGroupMessage($message);
+
+            Log::info('Group message events broadcasted', [
+                'message_id' => $message->id,
+                'group_id' => $conversation->id,
+                'members_count' => count($memberData)
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to handle group message', [
+                'message_id' => $message->id,
+                'group_id' => $conversation->id,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Handle private message
+     */
+    private function handlePrivateMessage(Message $message, User $sender, Conversation $conversation): void
+    {
+        try {
             // Get all participants except the sender
             $recipients = $conversation->participants()
                 ->where('user_id', '!=', $message->user_id)
@@ -36,14 +138,14 @@ class MessageObserver
                 ->get();
 
             if ($recipients->isEmpty()) {
-                Log::info('No recipients found for message notification', [
+                Log::info('No recipients found for private message notification', [
                     'message_id' => $message->id,
                     'conversation_id' => $conversation->id
                 ]);
                 return;
             }
 
-            Log::info('New message created', [
+            Log::info('New private message created', [
                 'message_id' => $message->id,
                 'conversation_id' => $conversation->id,
                 'sender_id' => $sender->id,
@@ -71,15 +173,16 @@ class MessageObserver
 
             event(new MessageSent($message, $sender, $recipientData));
 
-            Log::info('MessageSent event broadcasted', [
+            Log::info('Private message event broadcasted', [
                 'message_id' => $message->id,
                 'conversation_id' => $conversation->id,
                 'recipients_count' => count($recipientData)
             ]);
 
         } catch (\Exception $e) {
-            Log::error('Failed to handle message creation notification', [
+            Log::error('Failed to handle private message', [
                 'message_id' => $message->id,
+                'conversation_id' => $conversation->id,
                 'error' => $e->getMessage()
             ]);
         }

@@ -35,3 +35,24 @@ Broadcast::channel('notifications', function ($user) {
     // All authenticated users can listen to global notifications
     return $user ? ['id' => $user->id, 'name' => $user->name] : false;
 });
+
+// Group conversation channels
+Broadcast::channel('group.{groupId}', function ($user, $groupId) {
+    // Check if user is a member of the group
+    $member = \App\Models\GroupMember::where('conversation_id', $groupId)
+        ->where('user_id', $user->id)
+        ->where('is_active', true)
+        ->first();
+
+    return $member ? ['id' => $user->id, 'name' => $user->name] : false;
+});
+
+// Private conversation channels
+Broadcast::channel('conversation.{conversationId}', function ($user, $conversationId) {
+    // Check if user is a participant in the conversation
+    $participant = \App\Models\ConversationParticipant::where('conversation_id', $conversationId)
+        ->where('user_id', $user->id)
+        ->first();
+
+    return $participant ? ['id' => $user->id, 'name' => $user->name] : false;
+});

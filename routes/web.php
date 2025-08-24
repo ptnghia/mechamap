@@ -366,17 +366,26 @@ Route::get('/accessibility', function () {
 
 
 
-// Chat/Messages routes
-Route::middleware(['auth'])->prefix('messages')->name('chat.')->group(function () {
-    Route::get('/', [App\Http\Controllers\ChatController::class, 'index'])->name('index');
-    Route::get('/create', [App\Http\Controllers\ChatController::class, 'create'])->name('create');
-    Route::post('/', [App\Http\Controllers\ChatController::class, 'store'])->name('store');
-    Route::get('/{id}', [App\Http\Controllers\ChatController::class, 'show'])->name('show');
-    Route::post('/{id}/send', [App\Http\Controllers\ChatController::class, 'sendMessage'])->name('send');
+// Chat/Messages routes - REDIRECTED TO DASHBOARD
+// Old messages routes redirect to new dashboard messages
+Route::middleware(['auth'])->group(function () {
+    // Main messages redirects
+    Route::get('/messages', function () {
+        return redirect()->route('dashboard.messages.index');
+    });
 
-    // API routes for chat
-    // Route::get('/api/search-users', [App\Http\Controllers\ChatController::class, 'searchUsers'])->name('api.search-users'); // CONSOLIDATED: Use main search with user filter
-    Route::get('/api/unread-count', [App\Http\Controllers\ChatController::class, 'getUnreadCount'])->name('api.unread-count');
+    Route::get('/messages/create', function () {
+        return redirect()->route('dashboard.messages.create');
+    });
+
+    Route::get('/messages/{id}', function ($id) {
+        return redirect()->route('dashboard.messages.show', $id);
+    });
+
+    // Keep API routes for backward compatibility
+    Route::prefix('messages')->name('chat.')->group(function () {
+        Route::get('/api/unread-count', [App\Http\Controllers\ChatController::class, 'getUnreadCount'])->name('api.unread-count');
+    });
 });
 
 // Demo Admin Chat - REMOVED (temporary testing route)

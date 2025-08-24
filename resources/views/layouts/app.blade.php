@@ -5,53 +5,31 @@
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-authenticated" content="{{ Auth::check() ? 'true' : 'false' }}">
-
-    <!-- User Info for Real-time Features -->
     @auth
+    <!-- User Info for Real-time Features -->
     <meta name="user-id" content="{{ auth()->id() }}">
     <meta name="user-name" content="{{ auth()->user()->name }}">
     <meta name="auth-token" content="{{ auth()->user()->createToken('websocket-access')->plainTextToken }}">
     @endauth
-
     <!-- SEO Meta Tags with Multilingual Support -->
-    <x-seo-meta :locale="app()->getLocale()" />
-
-    <!-- Google Search Console Verification -->
-    @if(!empty($seo['google_search_console_id'] ?? ''))
-    <meta name="google-site-verification" content="{{ $seo['google_search_console_id'] }}">
-    @endif
-
-    <!-- Favicon -->
-    <link rel="icon" href="{{ get_favicon_url() }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ get_favicon_url() }}" type="image/x-icon">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <x-seo-meta :locale="app()->getLocale()" /><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Arimo:ital,wght@0,400..700;1,400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css" integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- HC-MobileNav CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.css">
-
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
-
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-    <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Scripts -->
     <!-- Theme Preloader - Loads before page rendering to prevent flashing -->
@@ -60,6 +38,7 @@
 
     <!-- Frontend CSS - Optimized Structure with Cache Busting -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main-user.css') }}">
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main.css') }}">
     <!-- Animation CSS -->
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/animation.css') }}">
     <!-- Responsive CSS -->
@@ -80,7 +59,8 @@
         }
     </style>
     @endif
-
+    <!-- Custom Styles -->
+    @stack('styles')
     <!-- All component CSS now included in main-user-optimized.css -->
 
     <!-- Extra Meta Tags -->
@@ -93,8 +73,7 @@
     {!! $seo['header_scripts'] !!}
     @endif
 
-    <!-- Custom Styles -->
-    @stack('styles')
+
 </head>
 
 <body class="user-frontend">

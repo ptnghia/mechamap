@@ -18,6 +18,8 @@ use App\Http\Controllers\Dashboard\Marketplace\WishlistController;
 use App\Http\Controllers\Dashboard\Marketplace\SellerController;
 use App\Http\Controllers\Dashboard\Marketplace\ProductController;
 use App\Http\Controllers\Dashboard\Marketplace\AnalyticsController;
+use App\Http\Controllers\Dashboard\MessagesController;
+use App\Http\Controllers\Dashboard\GroupConversationController;
 
 // Import old controllers for backward compatibility
 use App\Http\Controllers\ProfileController as OldProfileController;
@@ -78,17 +80,59 @@ Route::middleware(['auth', 'verified.social'])
 
             // Bulk operations
             Route::post('/bulk', [NotificationController::class, 'bulk'])->name('bulk');
+
+            // Archive functionality
+            Route::get('/archive', [NotificationController::class, 'archiveIndex'])->name('archive');
+            Route::patch('/{notification}/restore', [NotificationController::class, 'restore'])->name('restore');
+            Route::post('/restore-all', [NotificationController::class, 'restoreAll'])->name('restore-all');
+            Route::delete('/delete-all-archived', [NotificationController::class, 'deleteAllArchived'])->name('delete-all-archived');
         });
 
-        Route::prefix('conversations')->name('conversations.')->group(function () {
-            Route::get('/', [ConversationController::class, 'index'])->name('index');
-            Route::get('/create', [ConversationController::class, 'create'])->name('create');
-            Route::post('/', [ConversationController::class, 'store'])->name('store');
-            Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
-            Route::post('/{conversation}/reply', [ConversationController::class, 'reply'])->name('reply');
-            Route::post('/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('messages.store');
-            Route::get('/search', [ConversationController::class, 'search'])->name('search');
-            Route::delete('/{conversation}', [ConversationController::class, 'destroy'])->name('destroy');
+        // Messages System (thay thế conversations cũ)
+        Route::prefix('messages')->name('messages.')->group(function () {
+            Route::get('/', [MessagesController::class, 'index'])->name('index');
+            Route::get('/create', [MessagesController::class, 'create'])->name('create');
+            Route::post('/', [MessagesController::class, 'store'])->name('store');
+
+            // Group Conversations - Must be before /{conversation} route
+            Route::prefix('groups')->name('groups.')->group(function () {
+                Route::get('/', [GroupConversationController::class, 'index'])->name('index');
+                Route::get('/create', [GroupConversationController::class, 'create'])->name('create');
+                Route::post('/request', [GroupConversationController::class, 'submitRequest'])->name('request');
+
+                // Group Management
+                Route::get('/{conversation}/settings', [GroupConversationController::class, 'settings'])->name('settings');
+                Route::put('/{conversation}/settings', [GroupConversationController::class, 'updateSettings'])->name('settings.update');
+
+                // Member Management
+                Route::post('/{conversation}/members', [GroupConversationController::class, 'addMember'])->name('members.add');
+                Route::delete('/{conversation}/members/{user}', [GroupConversationController::class, 'removeMember'])->name('members.remove');
+                Route::patch('/{conversation}/members/{user}/role', [GroupConversationController::class, 'changeMemberRole'])->name('members.role');
+
+                // Group Actions
+                Route::post('/{conversation}/leave', [GroupConversationController::class, 'leaveGroup'])->name('leave');
+                Route::post('/{conversation}/transfer-ownership', [GroupConversationController::class, 'transferOwnership'])->name('transfer-ownership');
+
+                // AJAX endpoints
+                Route::get('/search-users', [GroupConversationController::class, 'searchUsers'])->name('search-users');
+
+                // WebSocket test page
+                Route::get('/websocket-test', function () {
+                    $groups = \App\Models\Conversation::where('is_group', true)
+                        ->whereHas('groupMembers', function ($query) {
+                            $query->where('user_id', auth()->id())
+                                  ->where('is_active', true);
+                        })
+                        ->get();
+
+                    return view('groups.websocket-test', compact('groups'));
+                })->name('websocket-test');
+            });
+
+            // Individual conversation routes - Must be after groups
+            Route::get('/{conversation}', [MessagesController::class, 'show'])->name('show');
+            Route::post('/{conversation}/send', [MessagesController::class, 'sendMessage'])->name('send');
+            Route::get('/{conversation}/messages', [MessagesController::class, 'getMessages'])->name('get-messages');
         });
 
         // Settings
@@ -256,12 +300,11 @@ Route::middleware(['auth', 'verified.social'])->group(function () {
     Route::delete('/notifications/clear-all', [NotificationController::class, 'clearAll'])->name('notifications.clear-all');
     Route::patch('/notifications/{notification}/archive', [NotificationController::class, 'archive'])->name('notifications.archive');
 
-    // Old conversation route names → Dashboard conversation routes
-    Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
-    Route::get('/conversations/search', [ConversationController::class, 'search'])->name('conversations.search');
-    Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
-    Route::post('/conversations', [ConversationController::class, 'store'])->name('conversations.store');
-    Route::post('/conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
+    // Old conversation route names → Dashboard messages routes
+    Route::get('/conversations', [MessagesController::class, 'index'])->name('conversations.index');
+    Route::get('/conversations/{conversation}', [MessagesController::class, 'show'])->name('conversations.show');
+    Route::post('/conversations', [MessagesController::class, 'store'])->name('conversations.store');
+    Route::post('/conversations/{conversation}/messages', [MessagesController::class, 'sendMessage'])->name('conversations.messages.store');
 
     // Old bookmark route names → Dashboard bookmark routes
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');

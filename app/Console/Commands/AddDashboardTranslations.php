@@ -1343,6 +1343,256 @@ class AddDashboardTranslations extends Command
             'vi' => 'Thông báo cũ hơn 30 ngày sẽ được tự động lưu trữ.',
             'en' => 'Notifications older than 30 days will be automatically archived.'
         ],
+
+        // Archive Page
+        'notifications.archive.title' => [
+            'vi' => 'Thông báo đã lưu trữ',
+            'en' => 'Archived Notifications'
+        ],
+        'notifications.archive.heading' => [
+            'vi' => 'Thông báo đã lưu trữ',
+            'en' => 'Archived Notifications'
+        ],
+        'notifications.archive.description' => [
+            'vi' => 'Quản lý và khôi phục thông báo đã lưu trữ',
+            'en' => 'Manage and restore archived notifications'
+        ],
+        'notifications.archive.back_to_notifications' => [
+            'vi' => 'Quay lại thông báo',
+            'en' => 'Back to Notifications'
+        ],
+        'notifications.archive.restore_all' => [
+            'vi' => 'Khôi phục tất cả',
+            'en' => 'Restore All'
+        ],
+        'notifications.archive.delete_all' => [
+            'vi' => 'Xóa tất cả',
+            'en' => 'Delete All'
+        ],
+        'notifications.archive.total_archived' => [
+            'vi' => 'Tổng đã lưu trữ',
+            'en' => 'Total Archived'
+        ],
+        'notifications.archive.this_month' => [
+            'vi' => 'Tháng này',
+            'en' => 'This Month'
+        ],
+        'notifications.archive.older_than_30_days' => [
+            'vi' => 'Cũ hơn 30 ngày',
+            'en' => 'Older than 30 days'
+        ],
+        'notifications.archive.storage_saved' => [
+            'vi' => 'Dung lượng tiết kiệm',
+            'en' => 'Storage Saved'
+        ],
+        'notifications.archive.filter_category' => [
+            'vi' => 'Lọc theo danh mục',
+            'en' => 'Filter by Category'
+        ],
+        'notifications.archive.all_categories' => [
+            'vi' => 'Tất cả danh mục',
+            'en' => 'All Categories'
+        ],
+        'notifications.archive.filter_date_archived' => [
+            'vi' => 'Lọc theo ngày lưu trữ',
+            'en' => 'Filter by Date Archived'
+        ],
+        'notifications.archive.all_time' => [
+            'vi' => 'Tất cả thời gian',
+            'en' => 'All Time'
+        ],
+        'notifications.archive.today' => [
+            'vi' => 'Hôm nay',
+            'en' => 'Today'
+        ],
+        'notifications.archive.this_week' => [
+            'vi' => 'Tuần này',
+            'en' => 'This Week'
+        ],
+        'notifications.archive.last_3_months' => [
+            'vi' => '3 tháng qua',
+            'en' => 'Last 3 Months'
+        ],
+        'notifications.archive.last_6_months' => [
+            'vi' => '6 tháng qua',
+            'en' => 'Last 6 Months'
+        ],
+        'notifications.archive.this_year' => [
+            'vi' => 'Năm nay',
+            'en' => 'This Year'
+        ],
+        'notifications.archive.search' => [
+            'vi' => 'Tìm kiếm',
+            'en' => 'Search'
+        ],
+        'notifications.archive.search_placeholder' => [
+            'vi' => 'Tìm kiếm trong thông báo đã lưu trữ...',
+            'en' => 'Search in archived notifications...'
+        ],
+        'notifications.archive.apply_filters' => [
+            'vi' => 'Áp dụng bộ lọc',
+            'en' => 'Apply Filters'
+        ],
+        'notifications.archive.select_all' => [
+            'vi' => 'Chọn tất cả',
+            'en' => 'Select All'
+        ],
+        'notifications.archive.selected' => [
+            'vi' => 'đã chọn',
+            'en' => 'selected'
+        ],
+        'notifications.archive.restore_selected' => [
+            'vi' => 'Khôi phục đã chọn',
+            'en' => 'Restore Selected'
+        ],
+        'notifications.archive.delete_selected' => [
+            'vi' => 'Xóa đã chọn',
+            'en' => 'Delete Selected'
+        ],
+        'notifications.archive.archived' => [
+            'vi' => 'Đã lưu trữ',
+            'en' => 'Archived'
+        ],
+        'notifications.archive.restore' => [
+            'vi' => 'Khôi phục',
+            'en' => 'Restore'
+        ],
+        'notifications.archive.delete_permanently' => [
+            'vi' => 'Xóa vĩnh viễn',
+            'en' => 'Delete Permanently'
+        ],
+        'notifications.archive.no_archived_notifications' => [
+            'vi' => 'Không có thông báo đã lưu trữ',
+            'en' => 'No Archived Notifications'
+        ],
+        'notifications.archive.no_archived_description' => [
+            'vi' => 'Bạn chưa có thông báo nào được lưu trữ.',
+            'en' => 'You don\'t have any archived notifications yet.'
+        ],
+        'notifications.archive.view_active_notifications' => [
+            'vi' => 'Xem thông báo hoạt động',
+            'en' => 'View Active Notifications'
+        ],
+        'notifications.archive.auto_archive_title' => [
+            'vi' => 'Tự động lưu trữ',
+            'en' => 'Auto Archive'
+        ],
+
+        // Settings - Notification Preferences
+        'settings.notifications.title' => [
+            'vi' => 'Tùy chọn thông báo',
+            'en' => 'Notification Preferences'
+        ],
+        'settings.notifications.description' => [
+            'vi' => 'Quản lý cách bạn nhận thông báo từ MechaMap',
+            'en' => 'Manage how you receive notifications from MechaMap'
+        ],
+        'settings.notifications.updated_successfully' => [
+            'vi' => 'Cài đặt thông báo đã được cập nhật thành công',
+            'en' => 'Notification settings updated successfully'
+        ],
+        'settings.notifications.global_settings' => [
+            'vi' => 'Cài đặt chung',
+            'en' => 'Global Settings'
+        ],
+        'settings.notifications.category_preferences' => [
+            'vi' => 'Tùy chọn theo danh mục',
+            'en' => 'Category Preferences'
+        ],
+        'settings.notifications.delivery_settings' => [
+            'vi' => 'Cài đặt gửi thông báo',
+            'en' => 'Delivery Settings'
+        ],
+        'settings.notifications.notification_type' => [
+            'vi' => 'Loại thông báo',
+            'en' => 'Notification Type'
+        ],
+        'settings.notifications.enable_category' => [
+            'vi' => 'Bật thông báo :category',
+            'en' => 'Enable :category notifications'
+        ],
+        'settings.notifications.frequency' => [
+            'vi' => 'Tần suất',
+            'en' => 'Frequency'
+        ],
+        'settings.notifications.quiet_hours' => [
+            'vi' => 'Giờ im lặng',
+            'en' => 'Quiet Hours'
+        ],
+        'settings.notifications.start_time' => [
+            'vi' => 'Bắt đầu',
+            'en' => 'Start Time'
+        ],
+        'settings.notifications.end_time' => [
+            'vi' => 'Kết thúc',
+            'en' => 'End Time'
+        ],
+        'settings.notifications.quick_actions' => [
+            'vi' => 'Thao tác nhanh',
+            'en' => 'Quick Actions'
+        ],
+        'settings.notifications.enable_all' => [
+            'vi' => 'Bật tất cả',
+            'en' => 'Enable All'
+        ],
+        'settings.notifications.disable_all' => [
+            'vi' => 'Tắt tất cả',
+            'en' => 'Disable All'
+        ],
+        'settings.notifications.reset_defaults' => [
+            'vi' => 'Đặt lại mặc định',
+            'en' => 'Reset to Defaults'
+        ],
+        'settings.notifications.save_preferences' => [
+            'vi' => 'Lưu tùy chọn',
+            'en' => 'Save Preferences'
+        ],
+
+        // Settings - General
+        'settings.index.title' => [
+            'vi' => 'Cài đặt',
+            'en' => 'Settings'
+        ],
+        'settings.index.general' => [
+            'vi' => 'Cài đặt chung',
+            'en' => 'General Settings'
+        ],
+        'settings.index.language' => [
+            'vi' => 'Ngôn ngữ',
+            'en' => 'Language'
+        ],
+        'settings.index.timezone' => [
+            'vi' => 'Múi giờ',
+            'en' => 'Timezone'
+        ],
+        'settings.index.theme' => [
+            'vi' => 'Giao diện',
+            'en' => 'Theme'
+        ],
+        'settings.index.light' => [
+            'vi' => 'Sáng',
+            'en' => 'Light'
+        ],
+        'settings.index.dark' => [
+            'vi' => 'Tối',
+            'en' => 'Dark'
+        ],
+        'settings.index.auto' => [
+            'vi' => 'Tự động',
+            'en' => 'Auto'
+        ],
+        'settings.index.notifications' => [
+            'vi' => 'Thông báo',
+            'en' => 'Notifications'
+        ],
+        'settings.index.privacy' => [
+            'vi' => 'Quyền riêng tư',
+            'en' => 'Privacy'
+        ],
+        'settings.index.save' => [
+            'vi' => 'Lưu',
+            'en' => 'Save'
+        ],
     ];
 
     /**

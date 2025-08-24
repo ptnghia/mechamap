@@ -13,12 +13,12 @@
     <!-- User Info -->
     <div class="sidebar-user">
         <div class="user-avatar">
-            <img src="{{ $currentUser->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($currentUser->name) . '&background=007bff&color=fff' }}"
-                 alt="{{ $currentUser->name }}" class="avatar-img">
+            <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) . '&background=007bff&color=fff' }}"
+                 alt="{{ Auth::user()->name }}" class="avatar-img">
         </div>
         <div class="user-info">
-            <h6 class="user-name">{{ $currentUser->name }}</h6>
-            <span class="user-role">{{ ucfirst(str_replace('_', ' ', $currentUser->role)) }}</span>
+            <h6 class="user-name">{{ Auth::user()->name }}</h6>
+            <span class="user-role">{{ ucfirst(str_replace('_', ' ', Auth::user()->role)) }}</span>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
     <nav class="sidebar-nav">
         <!-- Common Section -->
         <div class="nav-section">
-            <h6 class="nav-section-title">{{ __('sidebar.dashboard') }}</h6>
+            <h6 class="nav-section-title">{{ __('sidebar.user_dashboard.dashboard') }}</h6>
             <ul class="nav-menu">
                 @foreach($menuItems['common'] as $item)
                     <li class="nav-item">
@@ -45,7 +45,7 @@
 
         <!-- Community Section -->
         <div class="nav-section">
-            <h6 class="nav-section-title">{{ __('sidebar.community') }}</h6>
+            <h6 class="nav-section-title">Cộng đồng</h6>
             <ul class="nav-menu">
                 @foreach($menuItems['community'] as $item)
                     <li class="nav-item">
@@ -61,6 +61,27 @@
                 @endforeach
             </ul>
         </div>
+
+        <!-- Messages Section -->
+        @if(isset($menuItems['messages']) && count($menuItems['messages']) > 0)
+            <div class="nav-section">
+                <h6 class="nav-section-title">{{ __('sidebar.user_dashboard.messages') }}</h6>
+                <ul class="nav-menu">
+                    @foreach($menuItems['messages'] as $item)
+                        <li class="nav-item">
+                            <a href="{{ route($item['route']) }}"
+                               class="nav-link {{ $item['active'] ? 'active' : '' }}">
+                                <i class="{{ $item['icon'] }}"></i>
+                                <span class="nav-text">{{ $item['name'] }}</span>
+                                @if(isset($item['badge']) && $item['badge'] > 0)
+                                    <span class="badge bg-primary ms-auto">{{ $item['badge'] }}</span>
+                                @endif
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <!-- Marketplace Section -->
         @if(isset($menuItems['marketplace']) && count($menuItems['marketplace']) > 0)

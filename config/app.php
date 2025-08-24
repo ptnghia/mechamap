@@ -169,6 +169,7 @@ return [
         App\Providers\LanguageServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
         App\Providers\DatabaseTranslationServiceProvider::class,
+        App\Providers\GroupConversationServiceProvider::class,
     ],
 
 ];

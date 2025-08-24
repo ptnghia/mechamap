@@ -528,7 +528,7 @@ k
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('chat.index') }}">
+                                    <a class="dropdown-item" href="{{ route('dashboard.messages.index') }}">
                                         <i class="fa-solid fa-comments me-2"></i>
                                         {{ __('navigation.user.messages') }}
                                         @php

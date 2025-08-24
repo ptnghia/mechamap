@@ -97,59 +97,84 @@ class BaseController extends Controller
         $menuItems = [
             'common' => [
                 [
-                    'name' => __('sidebar.dashboard'),
+                    'name' => __('sidebar.user_dashboard.dashboard'),
                     'route' => 'dashboard',
                     'icon' => 'fas fa-tachometer-alt',
                     'active' => request()->routeIs('dashboard')
                 ],
                 [
-                    'name' => __('sidebar.profile'),
+                    'name' => __('sidebar.user_dashboard.profile'),
                     'route' => 'dashboard.profile.edit',
                     'icon' => 'fas fa-user',
                     'active' => request()->routeIs('dashboard.profile.*')
                 ],
                 [
-                    'name' => __('sidebar.activity'),
+                    'name' => __('sidebar.user_dashboard.activity'),
                     'route' => 'dashboard.activity',
                     'icon' => 'fas fa-chart-line',
                     'active' => request()->routeIs('dashboard.activity')
                 ],
                 [
-                    'name' => __('sidebar.notifications'),
+                    'name' => __('sidebar.user_dashboard.notifications'),
                     'route' => 'dashboard.notifications.index',
                     'icon' => 'fas fa-bell',
                     'active' => request()->routeIs('dashboard.notifications.index'),
                     'badge' => $this->user ? $this->user->unreadNotifications()->count() : 0
                 ],
-                // TODO: Implement messages feature
-                // [
-                //     'name' => 'Messages',
-                //     'route' => 'dashboard.messages',
-                //     'icon' => 'fas fa-envelope',
-                //     'active' => request()->routeIs('dashboard.messages')
-                // ],
                 [
-                    'name' => __('sidebar.settings'),
+                    'name' => __('sidebar.user_dashboard.messages'),
+                    'route' => 'dashboard.messages.index',
+                    'icon' => 'fas fa-envelope',
+                    'active' => request()->routeIs('dashboard.messages.*')
+                ],
+                [
+                    'name' => __('sidebar.user_dashboard.settings'),
                     'route' => 'dashboard.settings.index',
                     'icon' => 'fas fa-cog',
                     'active' => request()->routeIs('dashboard.settings.index')
                 ],
             ],
+            'messages' => [
+                [
+                    'name' => __('sidebar.user_dashboard.all_messages'),
+                    'route' => 'dashboard.messages.index',
+                    'icon' => 'fas fa-comments',
+                    'active' => request()->routeIs('dashboard.messages.index')
+                ],
+                [
+                    'name' => __('sidebar.user_dashboard.group_conversations'),
+                    'route' => 'dashboard.messages.groups.index',
+                    'icon' => 'fas fa-users',
+                    'active' => request()->routeIs('dashboard.messages.groups.*')
+                ],
+                [
+                    'name' => __('sidebar.user_dashboard.create_group'),
+                    'route' => 'dashboard.messages.groups.create',
+                    'icon' => 'fas fa-plus-circle',
+                    'active' => request()->routeIs('dashboard.messages.groups.create')
+                ],
+                [
+                    'name' => __('sidebar.user_dashboard.new_message'),
+                    'route' => 'dashboard.messages.create',
+                    'icon' => 'fas fa-edit',
+                    'active' => request()->routeIs('dashboard.messages.create')
+                ],
+            ],
             'community' => [
                 [
-                    'name' => __('sidebar.my_threads'),
+                    'name' => __('sidebar.user_dashboard.my_threads'),
                     'route' => 'dashboard.community.threads.index',
                     'icon' => 'fas fa-comments',
                     'active' => request()->routeIs('dashboard.community.threads.index')
                 ],
                 [
-                    'name' => __('sidebar.bookmarks'),
+                    'name' => __('sidebar.user_dashboard.bookmarks'),
                     'route' => 'dashboard.community.bookmarks.index',
                     'icon' => 'fas fa-bookmark',
                     'active' => request()->routeIs('dashboard.community.bookmarks.index')
                 ],
                 [
-                    'name' => __('sidebar.showcases'),
+                    'name' => __('sidebar.user_dashboard.showcases'),
                     'route' => 'dashboard.community.showcases.index',
                     'icon' => 'fas fa-star',
                     'active' => request()->routeIs('dashboard.community.showcases.index')

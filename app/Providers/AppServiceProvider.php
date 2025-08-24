@@ -48,6 +48,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\MarketplaceProduct::observe(\App\Observers\MarketplaceProductObserver::class);
         \App\Models\ProductReview::observe(\App\Observers\ProductReviewObserver::class);
         \App\Models\Message::observe(\App\Observers\MessageObserver::class);
+        \App\Models\GroupMember::observe(\App\Observers\GroupMemberObserver::class);
 
         // Register custom Blade directives for admin permissions
         $this->registerAdminBladeDirectives();

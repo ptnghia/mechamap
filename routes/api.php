@@ -1236,3 +1236,12 @@ Route::middleware(['websocket.api'])->prefix('websocket-api')->group(function ()
     // Get user permissions
     Route::get('/user/{id}/permissions', [App\Http\Controllers\Api\UnifiedNotificationController::class, 'getUserPermissions']);
 });
+
+// Group WebSocket endpoints
+Route::middleware('auth:sanctum')->prefix('groups/websocket')->group(function () {
+    Route::post('/join', [App\Http\Controllers\Api\GroupWebSocketController::class, 'joinGroup']);
+    Route::post('/leave', [App\Http\Controllers\Api\GroupWebSocketController::class, 'leaveGroup']);
+    Route::post('/typing', [App\Http\Controllers\Api\GroupWebSocketController::class, 'sendTyping']);
+    Route::get('/{groupId}/stats', [App\Http\Controllers\Api\GroupWebSocketController::class, 'getChannelStats']);
+    Route::get('/{groupId}/typing', [App\Http\Controllers\Api\GroupWebSocketController::class, 'getTypingUsers']);
+});

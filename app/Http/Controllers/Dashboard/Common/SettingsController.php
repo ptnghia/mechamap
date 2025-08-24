@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Common;
 
 use App\Http\Controllers\Dashboard\BaseController;
+use App\Services\NotificationPreferencesService;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -24,8 +25,18 @@ class SettingsController extends BaseController
             ['name' => 'Settings', 'route' => 'dashboard.settings']
         ]);
 
+        // Get notification preferences data
+        $notificationCategories = NotificationPreferencesService::getNotificationCategories();
+        $deliveryMethods = NotificationPreferencesService::getDeliveryMethods();
+        $userPreferences = NotificationPreferencesService::getUserPreferences($this->user);
+        $frequencyOptions = NotificationPreferencesService::getFrequencyOptions();
+
         return $this->dashboardResponse('dashboard.common.settings.index', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'notificationCategories' => $notificationCategories,
+            'deliveryMethods' => $deliveryMethods,
+            'userPreferences' => $userPreferences,
+            'frequencyOptions' => $frequencyOptions
         ]);
     }
 
@@ -70,36 +81,63 @@ class SettingsController extends BaseController
      */
     public function updateNotifications(Request $request): RedirectResponse
     {
+        // Validate global settings
         $request->validate([
-            'email_notifications' => 'boolean',
-            'push_notifications' => 'boolean',
-            'sms_notifications' => 'boolean',
-            'marketing_emails' => 'boolean',
-            'forum_notifications' => 'boolean',
-            'marketplace_notifications' => 'boolean',
-            'thread_replies' => 'boolean',
-            'thread_likes' => 'boolean',
-            'new_followers' => 'boolean',
-            'mention_notifications' => 'boolean',
-            'order_updates' => 'boolean',
-            'product_updates' => 'boolean',
+            'global.email_enabled' => 'boolean',
+            'global.push_enabled' => 'boolean',
+            'global.sms_enabled' => 'boolean',
+            'global.in_app_enabled' => 'boolean',
         ]);
 
-        $notificationSettings = $request->only([
-            'email_notifications', 'push_notifications', 'sms_notifications',
-            'marketing_emails', 'forum_notifications', 'marketplace_notifications',
-            'thread_replies', 'thread_likes', 'new_followers', 'mention_notifications',
-            'order_updates', 'product_updates'
-        ]);
+        // Build notification preferences from request
+        $preferences = [
+            'global' => [
+                'email_enabled' => $request->boolean('global.email_enabled'),
+                'push_enabled' => $request->boolean('global.push_enabled'),
+                'sms_enabled' => $request->boolean('global.sms_enabled'),
+                'in_app_enabled' => $request->boolean('global.in_app_enabled'),
+            ],
+            'categories' => [],
+            'delivery_methods' => []
+        ];
 
-        // Update notification preferences
-        $preferences = $this->user->preferences ?? [];
-        $preferences['notifications'] = $notificationSettings;
+        // Process category preferences
+        $categories = NotificationPreferencesService::getNotificationCategories();
+        foreach ($categories as $categoryKey => $category) {
+            $preferences['categories'][$categoryKey] = [
+                'enabled' => $request->boolean("categories.{$categoryKey}.enabled"),
+                'types' => []
+            ];
 
-        $this->user->update(['preferences' => $preferences]);
+            foreach ($category['types'] as $typeKey => $typeName) {
+                $preferences['categories'][$categoryKey]['types'][$typeKey] = [
+                    'email' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.email"),
+                    'push' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.push"),
+                    'sms' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.sms"),
+                    'in_app' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.in_app"),
+                ];
+            }
+        }
+
+        // Process delivery method preferences
+        $deliveryMethods = NotificationPreferencesService::getDeliveryMethods();
+        foreach ($deliveryMethods as $methodKey => $method) {
+            $preferences['delivery_methods'][$methodKey] = [
+                'enabled' => $request->boolean("delivery_methods.{$methodKey}.enabled"),
+                'frequency' => $request->input("delivery_methods.{$methodKey}.frequency", 'immediate'),
+                'quiet_hours' => [
+                    'enabled' => $request->boolean("delivery_methods.{$methodKey}.quiet_hours.enabled"),
+                    'start' => $request->input("delivery_methods.{$methodKey}.quiet_hours.start", '22:00'),
+                    'end' => $request->input("delivery_methods.{$methodKey}.quiet_hours.end", '08:00'),
+                ]
+            ];
+        }
+
+        // Update user preferences
+        NotificationPreferencesService::updateUserPreferences($this->user, $preferences);
 
         return redirect()->route('dashboard.settings.index')
-            ->with('success', 'Notification settings updated successfully.');
+            ->with('success', __('settings.notifications.updated_successfully'));
     }
 
     /**

@@ -68,4 +68,28 @@ return [
   'products' => 'Products',
   'orders' => 'Orders',
   'total_revenue' => 'Total Revenue',
+
+    // Navigation
+    'navigation' => [
+        'dashboard' => 'Dashboard',
+        'profile' => 'Profile',
+        'activity' => 'Activity',
+        'notifications' => 'Notifications',
+        'messages' => 'Messages',
+        'groups' => 'Group Conversations',
+        'create_group' => 'Create Group',
+        'settings' => 'Settings',
+        'community' => 'Community',
+        'threads' => 'Threads',
+        'bookmarks' => 'Bookmarks',
+        'comments' => 'Comments',
+        'showcases' => 'Showcases',
+        'marketplace' => 'Marketplace',
+        'orders' => 'Orders',
+        'downloads' => 'Downloads',
+        'wishlist' => 'Wishlist',
+        'seller' => 'Seller',
+        'products' => 'Products',
+        'analytics' => 'Analytics',
+    ],
 ];

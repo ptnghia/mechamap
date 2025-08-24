@@ -13,12 +13,12 @@
 <!-- Featured Showcases Section -->
 @if(isset($featuredShowcases) && $featuredShowcases->count() > 0)
 <section class="featured-showcases mb-5">
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
             <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
         </div>
-        <a href="{{ route('showcase.index') }}" class="btn btn-outline-primary">
+        <a href="{{ route('showcase.index') }}" class="btn btn-main active">
             {{ t_ui('buttons.view_all') }}
         </a>
     </div>

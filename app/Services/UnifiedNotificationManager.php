@@ -488,4 +488,53 @@ class UnifiedNotificationManager
             default => 1
         };
     }
+
+    /**
+     * Get notification categories for archive filtering
+     */
+    public static function getNotificationCategories(): array
+    {
+        return [
+            'forum' => [
+                'name' => 'Forum',
+                'name_vi' => 'Diễn đàn',
+                'description' => 'Forum related notifications',
+                'description_vi' => 'Thông báo liên quan đến diễn đàn',
+                'icon' => 'fas fa-comments',
+                'color' => 'primary'
+            ],
+            'marketplace' => [
+                'name' => 'Marketplace',
+                'name_vi' => 'Thương mại',
+                'description' => 'Marketplace and commerce notifications',
+                'description_vi' => 'Thông báo thương mại và mua bán',
+                'icon' => 'fas fa-store',
+                'color' => 'success'
+            ],
+            'social' => [
+                'name' => 'Social',
+                'name_vi' => 'Xã hội',
+                'description' => 'Social interactions and activities',
+                'description_vi' => 'Tương tác xã hội và hoạt động',
+                'icon' => 'fas fa-users',
+                'color' => 'info'
+            ],
+            'security' => [
+                'name' => 'Security',
+                'name_vi' => 'Bảo mật',
+                'description' => 'Security and account notifications',
+                'description_vi' => 'Thông báo bảo mật và tài khoản',
+                'icon' => 'fas fa-shield-alt',
+                'color' => 'warning'
+            ],
+            'system' => [
+                'name' => 'System',
+                'name_vi' => 'Hệ thống',
+                'description' => 'System announcements and updates',
+                'description_vi' => 'Thông báo hệ thống và cập nhật',
+                'icon' => 'fas fa-cog',
+                'color' => 'secondary'
+            ]
+        ];
+    }
 }

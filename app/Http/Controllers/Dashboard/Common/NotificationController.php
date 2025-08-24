@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\BaseController;
 use App\Models\Notification;
 use App\Services\UnifiedNotificationManager;
 use App\Services\NotificationCategoryService;
+use App\Services\NotificationCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -99,16 +100,16 @@ class NotificationController extends BaseController
         // Get notifications with pagination
         $notifications = $query->paginate($perPage)->withQueryString();
 
-        // Get enhanced statistics
-        $stats = $this->getEnhancedNotificationStats();
+        // Get enhanced statistics (cached)
+        $stats = NotificationCacheService::getEnhancedStats($this->user);
 
-        // Get category data
+        // Get category data (cached)
         $categories = NotificationCategoryService::getCategories();
-        $categoryCounts = NotificationCategoryService::getCategoryCounts($this->user->id);
+        $categoryCounts = NotificationCacheService::getCategoryCounts($this->user);
         $unreadCategoryCounts = NotificationCategoryService::getUnreadCategoryCounts($this->user->id);
 
-        // Get available filters
-        $filters = $this->getAvailableFilters();
+        // Get available filters (cached)
+        $filters = NotificationCacheService::getAvailableFilters($this->user);
 
         $breadcrumb = $this->getBreadcrumb([
             ['name' => 'Notifications', 'route' => 'dashboard.notifications']
@@ -152,10 +153,13 @@ class NotificationController extends BaseController
         // Increment view count
         $notification->increment('view_count');
 
+        // Clear user cache
+        NotificationCacheService::clearUserCache($this->user->id);
+
         return response()->json([
             'success' => true,
             'message' => 'Notification marked as read',
-            'unread_count' => UnifiedNotificationManager::getUnreadCount($this->user)
+            'unread_count' => NotificationCacheService::getUnreadCount($this->user)
         ]);
     }
 
@@ -174,10 +178,13 @@ class NotificationController extends BaseController
             'status' => 'sent'
         ]);
 
+        // Clear user cache
+        NotificationCacheService::clearUserCache($this->user->id);
+
         return response()->json([
             'success' => true,
             'message' => 'Notification marked as unread',
-            'unread_count' => UnifiedNotificationManager::getUnreadCount($this->user)
+            'unread_count' => NotificationCacheService::getUnreadCount($this->user)
         ]);
     }
 
@@ -251,6 +258,237 @@ class NotificationController extends BaseController
             'success' => true,
             'message' => 'Notification archived'
         ]);
+    }
+
+    /**
+     * Show archived notifications
+     */
+    public function archiveIndex(Request $request)
+    {
+        $perPage = 20;
+        $category = $request->get('category', 'all');
+        $dateArchived = $request->get('date_archived');
+        $search = $request->get('search');
+
+        // Build query for archived notifications
+        $query = $this->user->userNotifications()
+            ->where('status', 'archived')
+            ->whereNotNull('archived_at')
+            ->latest('archived_at');
+
+        // Apply filters
+        if ($category !== 'all') {
+            $query->where('type', 'like', $category . '%');
+        }
+
+        if ($dateArchived) {
+            switch ($dateArchived) {
+                case 'today':
+                    $query->whereDate('archived_at', today());
+                    break;
+                case 'week':
+                    $query->whereBetween('archived_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $query->whereMonth('archived_at', now()->month)
+                          ->whereYear('archived_at', now()->year);
+                    break;
+                case '3months':
+                    $query->where('archived_at', '>=', now()->subMonths(3));
+                    break;
+                case '6months':
+                    $query->where('archived_at', '>=', now()->subMonths(6));
+                    break;
+                case 'year':
+                    $query->whereYear('archived_at', now()->year);
+                    break;
+            }
+        }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('message', 'like', "%{$search}%");
+            });
+        }
+
+        $notifications = $query->paginate($perPage);
+
+        // Calculate archive statistics
+        $stats = $this->getArchiveStats();
+
+        // Get categories for filter
+        $categories = UnifiedNotificationManager::getNotificationCategories();
+
+        $breadcrumb = $this->getBreadcrumb([
+            ['name' => 'Notifications', 'route' => 'dashboard.notifications.index'],
+            ['name' => 'Archive', 'route' => 'dashboard.notifications.archive']
+        ]);
+
+        return $this->dashboardResponse('dashboard.common.notifications.archive', [
+            'notifications' => $notifications,
+            'stats' => $stats,
+            'categories' => $categories,
+            'currentCategory' => $category,
+            'currentDateArchived' => $dateArchived,
+            'currentSearch' => $search,
+            'breadcrumb' => $breadcrumb
+        ]);
+    }
+
+    /**
+     * Restore notification from archive
+     */
+    public function restore(Notification $notification): JsonResponse
+    {
+        try {
+            // Log for debugging
+            \Log::info('Restore notification attempt', [
+                'notification_id' => $notification->id,
+                'user_id' => $this->user->id,
+                'notification_user_id' => $notification->user_id,
+                'notification_status' => $notification->status
+            ]);
+
+            // Check ownership
+            if ($notification->user_id !== $this->user->id) {
+                \Log::warning('Unauthorized restore attempt', [
+                    'notification_id' => $notification->id,
+                    'user_id' => $this->user->id,
+                    'notification_user_id' => $notification->user_id
+                ]);
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+
+            // Check if notification is archived
+            if ($notification->status !== 'archived') {
+                \Log::warning('Attempt to restore non-archived notification', [
+                    'notification_id' => $notification->id,
+                    'status' => $notification->status
+                ]);
+                return response()->json(['success' => false, 'message' => 'Notification is not archived'], 400);
+            }
+
+            // Restore notification - set status based on read state
+            $newStatus = $notification->is_read ? 'read' : 'delivered';
+            $notification->update([
+                'status' => $newStatus,
+                'archived_at' => null
+            ]);
+
+            \Log::info('Notification restored successfully', [
+                'notification_id' => $notification->id,
+                'user_id' => $this->user->id
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification restored successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error restoring notification', [
+                'notification_id' => $notification->id ?? 'unknown',
+                'user_id' => $this->user->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to restore notification'
+            ], 500);
+        }
+    }
+
+    /**
+     * Restore all archived notifications
+     */
+    public function restoreAll(): JsonResponse
+    {
+        try {
+            $archivedNotifications = $this->user->userNotifications()
+                ->where('status', 'archived')
+                ->get();
+
+            $count = 0;
+            foreach ($archivedNotifications as $notification) {
+                $newStatus = $notification->is_read ? 'read' : 'delivered';
+                $notification->update([
+                    'status' => $newStatus,
+                    'archived_at' => null
+                ]);
+                $count++;
+            }
+
+            \Log::info('Restored all archived notifications', [
+                'user_id' => $this->user->id,
+                'count' => $count
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Restored {$count} notifications",
+                'count' => $count
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error restoring all notifications', [
+                'user_id' => $this->user->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to restore notifications'
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete all archived notifications permanently
+     */
+    public function deleteAllArchived(): JsonResponse
+    {
+        $count = $this->user->userNotifications()
+            ->where('status', 'archived')
+            ->count();
+
+        $this->user->userNotifications()
+            ->where('status', 'archived')
+            ->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Permanently deleted {$count} archived notifications",
+            'count' => $count
+        ]);
+    }
+
+    /**
+     * Get archive statistics
+     */
+    private function getArchiveStats(): array
+    {
+        $archivedQuery = $this->user->userNotifications()->where('status', 'archived');
+
+        $totalArchived = $archivedQuery->count();
+        $thisMonth = $archivedQuery->whereMonth('archived_at', now()->month)
+                                  ->whereYear('archived_at', now()->year)
+                                  ->count();
+        $olderThan30Days = $archivedQuery->where('archived_at', '<', now()->subDays(30))->count();
+
+        // Calculate approximate storage saved (rough estimate)
+        $avgNotificationSize = 1; // KB per notification (rough estimate)
+        $storageSaved = round($totalArchived * $avgNotificationSize / 1024, 2); // Convert to MB
+
+        return [
+            'total_archived' => $totalArchived,
+            'this_month' => $thisMonth,
+            'older_than_30_days' => $olderThan30Days,
+            'storage_saved' => $storageSaved . ' MB'
+        ];
     }
 
     /**

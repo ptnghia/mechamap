@@ -178,12 +178,23 @@ return [
     'user_dashboard' => [
         // Navigation
         'dashboard' => 'Bảng điều khiển',
+        'profile' => 'Hồ sơ',
+        'activity' => 'Hoạt động',
+        'notifications' => 'Thông báo',
+        'messages' => 'Tin nhắn',
+        'settings' => 'Cài đặt',
         'my_threads' => 'Bài viết của tôi',
         'my_comments' => 'Bình luận của tôi',
         'bookmarks' => 'Đã lưu',
-        'activity' => 'Hoạt động',
+        'showcases' => 'Showcase',
         'following' => 'Đang theo dõi',
         'ratings' => 'Đánh giá',
+
+        // Messages
+        'all_messages' => 'Tất cả tin nhắn',
+        'group_conversations' => 'Nhóm thảo luận',
+        'create_group' => 'Tạo nhóm',
+        'new_message' => 'Tin nhắn mới',
 
         // Quick Stats
         'quick_stats' => 'Thống kê nhanh',

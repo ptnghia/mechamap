@@ -39,6 +39,9 @@
                     </nav>
                 @endif
 
+                <!-- SEO Breadcrumb Navigation -->
+                <x-seo-breadcrumb :breadcrumbs="App\Services\DashboardBreadcrumbService::generate()" />
+
                 <!-- Flash Messages -->
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
