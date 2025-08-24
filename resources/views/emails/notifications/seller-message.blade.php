@@ -137,7 +137,7 @@
                 Trả lời tin nhắn
             </a>
             
-            <a href="{{ route('conversations.index') }}" 
+            <a href="{{ route('dashboard.conversations.index') }}" 
                style="display: inline-block; background: #6c757d; color: white; text-decoration: none; padding: 14px 28px; border-radius: 6px; font-weight: 600; font-size: 16px;">
                 <i class="fas fa-list" style="margin-right: 8px;"></i>
                 Xem tất cả tin nhắn
@@ -193,7 +193,7 @@
                    style="display: inline-block; background: #007bff; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 14px;">
                     Cài đặt thông báo
                 </a>
-                <a href="{{ route('conversations.index') }}" 
+                <a href="{{ route('dashboard.conversations.index') }}" 
                    style="display: inline-block; background: #6c757d; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px; font-size: 14px;">
                     Quản lý tin nhắn
                 </a>
@@ -203,7 +203,7 @@
 @endsection
 
 @section('footer-links')
-    <a href="{{ route('conversations.index') }}" style="color: #007bff; text-decoration: none;">
+    <a href="{{ route('dashboard.conversations.index') }}" style="color: #007bff; text-decoration: none;">
         Tin nhắn
     </a>
     <span style="color: #dee2e6; margin: 0 8px;">|</span>

@@ -101,12 +101,6 @@ class ProductController extends BaseController
         // Get statistics
         $stats = $this->getProductStats($seller);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Seller Dashboard', 'route' => 'dashboard.marketplace.seller.dashboard'],
-            ['name' => 'Products', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.products.index', [
             'seller' => $seller,
             'products' => $products,
@@ -132,12 +126,6 @@ class ProductController extends BaseController
 
         $categories = MarketplaceCategory::orderBy('name')->get();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Products', 'route' => 'dashboard.marketplace.products'],
-            ['name' => 'Create Product', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.products.create', [
             'seller' => $seller,
             'categories' => $categories]);
@@ -155,12 +143,6 @@ class ProductController extends BaseController
         }
 
         $product->load(['category', 'images', 'digitalFiles']);
-
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Products', 'route' => 'dashboard.marketplace.products'],
-            ['name' => $product->name, 'route' => null]
-        ]);
 
         return $this->dashboardResponse('dashboard.marketplace.products.show', [
             'seller' => $seller,
@@ -180,12 +162,6 @@ class ProductController extends BaseController
 
         $categories = MarketplaceCategory::orderBy('name')->get();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Products', 'route' => 'dashboard.marketplace.products'],
-            ['name' => 'Edit Product', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.products.edit', [
             'seller' => $seller,
             'product' => $product,
@@ -204,12 +180,10 @@ class ProductController extends BaseController
         }
 
         $request->validate([
-            'is_active' => 'required|boolean',
-        ]);
+            'is_active' => 'required|boolean']);
 
         $product->update([
-            'is_active' => $request->is_active,
-        ]);
+            'is_active' => $request->is_active]);
 
         $message = $request->is_active ? 'Product activated successfully.' : 'Product deactivated successfully.';
 
@@ -259,8 +233,7 @@ class ProductController extends BaseController
         $request->validate([
             'action' => 'required|string|in:activate,deactivate,delete,draft',
             'product_ids' => 'required|array',
-            'product_ids.*' => 'exists:marketplace_products,id',
-        ]);
+            'product_ids.*' => 'exists:marketplace_products,id']);
 
         $productIds = $request->product_ids;
         $action = $request->action;
@@ -350,7 +323,6 @@ class ProductController extends BaseController
             'product_types' => $productTypes,
             'this_month' => MarketplaceProduct::where('seller_id', $seller->id)
                 ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->count(),
-        ];
+                ->count()];
     }
 }

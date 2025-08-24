@@ -75,11 +75,6 @@ class OrderController extends BaseController
         // Get statistics
         $stats = $this->getOrderStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'My Orders', 'route' => 'dashboard.marketplace.orders']
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.orders.index', [
             'orders' => $orders,
             'stats' => $stats,
@@ -87,8 +82,7 @@ class OrderController extends BaseController
             'currentStatus' => $status,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
+            'currentSort' => $sort
         ]);
     }
 
@@ -108,15 +102,8 @@ class OrderController extends BaseController
             'customer'
         ]);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'My Orders', 'route' => 'dashboard.marketplace.orders'],
-            ['name' => 'Order #' . $order->order_number, 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.orders.show', [
-            'order' => $order,
-            'breadcrumb' => $breadcrumb
+            'order' => $order
         ]);
     }
 
@@ -132,15 +119,8 @@ class OrderController extends BaseController
 
         $order->load(['items.product', 'items.seller.user']);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'My Orders', 'route' => 'dashboard.marketplace.orders'],
-            ['name' => 'Track Order', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.orders.tracking', [
-            'order' => $order,
-            'breadcrumb' => $breadcrumb
+            'order' => $order
         ]);
     }
 
@@ -207,14 +187,12 @@ class OrderController extends BaseController
         }
 
         $request->validate([
-            'reason' => 'required|string|max:500',
-        ]);
+            'reason' => 'required|string|max:500']);
 
         $order->update([
             'status' => 'cancelled',
             'cancellation_reason' => $request->reason,
-            'cancelled_at' => now(),
-        ]);
+            'cancelled_at' => now()]);
 
         return response()->json([
             'success' => true,
@@ -265,8 +243,7 @@ class OrderController extends BaseController
                 ->count(),
             'this_year' => MarketplaceOrder::where('customer_id', $this->user->id)
                 ->whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])
-                ->count(),
-        ];
+                ->count()];
     }
 
     /**
@@ -286,8 +263,7 @@ class OrderController extends BaseController
                     'payment_status' => $order->payment_status,
                     'total_amount' => $order->total_amount,
                     'items_count' => $order->items->count(),
-                    'created_at' => $order->created_at->toISOString(),
-                ];
+                    'created_at' => $order->created_at->toISOString()];
             });
 
         $filename = 'orders_' . $this->user->username . '_' . now()->format('Y-m-d');
@@ -295,8 +271,7 @@ class OrderController extends BaseController
         if ($format === 'csv') {
             $headers = [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\"",
-            ];
+                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\""];
 
             $callback = function () use ($orders) {
                 $file = fopen('php://output', 'w');
@@ -309,8 +284,7 @@ class OrderController extends BaseController
                         $order['payment_status'],
                         $order['total_amount'],
                         $order['items_count'],
-                        $order['created_at'],
-                    ]);
+                        $order['created_at']]);
                 }
 
                 fclose($file);

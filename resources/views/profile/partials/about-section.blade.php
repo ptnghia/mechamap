@@ -14,7 +14,7 @@
                 @else
                     <div class="about-value">
                         @if(Auth::id() == $user->id)
-                            <a href="{{ route('profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
+                            <a href="{{ route('dashboard.profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
                         @else
                             {{ __('profile.no_information_provided') }}
                         @endif
@@ -30,7 +30,7 @@
                 @else
                     <div class="about-value">
                         @if(Auth::id() == $user->id)
-                            <a href="{{ route('profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
+                            <a href="{{ route('dashboard.profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
                         @else
                             {{ __('profile.no_information_provided') }}
                         @endif
@@ -44,7 +44,7 @@
                 @else
                     <div class="about-value">
                         @if(Auth::id() == $user->id)
-                            <a href="{{ route('profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
+                            <a href="{{ route('dashboard.profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
                         @else
                             {{ __('profile.no_information_provided') }}
                         @endif
@@ -58,7 +58,7 @@
                 @else
                     <div class="about-value">
                         @if(Auth::id() == $user->id)
-                            <a href="{{ route('profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
+                            <a href="{{ route('dashboard.profile.edit') }}">{{ __('profile.edit_in_account_settings') }}</a>
                         @else
                             {{ __('profile.no_information_provided') }}
                         @endif

@@ -140,7 +140,7 @@
                         <i class="fas fa-comments me-2"></i>
                         {{ $widgets['recent_threads']['title'] }}
                     </h5>
-                    <a href="{{ route('user.my-threads') }}" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('dashboard.community.threads') }}" class="btn btn-sm btn-outline-primary">
                         {{ __('dashboard.view_all') }}
                     </a>
                 </div>

@@ -75,7 +75,7 @@
     <!-- Filters -->
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
-            <form method="GET" action="{{ route('notifications.index') }}" class="row g-3">
+            <form method="GET" action="{{ route('dashboard.notifications.index') }}" class="row g-3">
                 <div class="col-md-4">
                     <label for="type" class="form-label">{{ __('notifications.index.notification_type') }}</label>
                     <select name="type" id="type" class="form-select">
@@ -219,7 +219,7 @@
                             {{ __('notifications.index.no_notifications_desc') }}
                         @endif
                     </p>
-                    <a href="{{ route('notifications.index') }}" class="btn btn-primary">
+                    <a href="{{ route('dashboard.notifications.index') }}" class="btn btn-primary">
                         <i class="fas fa-refresh me-1"></i>
                         {{ __('notifications.index.view_all') }}
                     </a>

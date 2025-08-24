@@ -48,8 +48,7 @@ class RatingController extends BaseController
                     'review' => $rating->review,
                     'created_at' => $rating->created_at,
                     'updated_at' => $rating->updated_at,
-                    'target' => $rating->thread,
-                ];
+                    'target' => $rating->thread];
             });
         }
 
@@ -71,8 +70,7 @@ class RatingController extends BaseController
                     'review' => $rating->review,
                     'created_at' => $rating->created_at,
                     'updated_at' => $rating->updated_at,
-                    'target' => $rating->showcase,
-                ];
+                    'target' => $rating->showcase];
             });
         }
 
@@ -93,11 +91,6 @@ class RatingController extends BaseController
         // Get statistics
         $stats = $this->getRatingStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Ratings', 'route' => 'dashboard.community.ratings']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.ratings.index', [
             'ratings' => $ratings,
             'stats' => $stats,
@@ -110,8 +103,7 @@ class RatingController extends BaseController
                 'current_page' => $currentPage,
                 'per_page' => $perPage,
                 'total' => $allRatings->count(),
-                'last_page' => ceil($allRatings->count() / $perPage),
-            ]]);
+                'last_page' => ceil($allRatings->count() / $perPage)]]);
     }
 
     /**
@@ -133,12 +125,6 @@ class RatingController extends BaseController
             abort(404);
         }
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Ratings', 'route' => 'dashboard.community.ratings'],
-            ['name' => 'Edit Rating', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.community.ratings.edit', [
             'rating' => $rating,
             'type' => $type]);
@@ -151,8 +137,7 @@ class RatingController extends BaseController
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'review' => 'nullable|string|max:1000',
-        ]);
+            'review' => 'nullable|string|max:1000']);
 
         if ($type === 'thread') {
             $rating = ThreadRating::where('id', $id)
@@ -168,8 +153,7 @@ class RatingController extends BaseController
 
         $rating->update([
             'rating' => $request->rating,
-            'review' => $request->review,
-        ]);
+            'review' => $request->review]);
 
         return redirect()->route('dashboard.community.ratings')
             ->with('success', 'Rating updated successfully.');
@@ -279,7 +263,6 @@ class RatingController extends BaseController
                 ->count() +
                 ShowcaseRating::where('user_id', $this->user->id)
                 ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->count(),
-        ];
+                ->count()];
     }
 }

@@ -39,7 +39,7 @@
                     <nav aria-label="breadcrumb" class="mt-3">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('user.dashboard') }}">{{ __('nav.user.dashboard') }}</a>
+                                <a href="{{ route('dashboard') }}">{{ __('nav.user.dashboard') }}</a>
                             </li>
                             @foreach($breadcrumbs as $breadcrumb)
                                 @if($loop->last)

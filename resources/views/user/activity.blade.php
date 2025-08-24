@@ -53,7 +53,7 @@
 
 <!-- Filters -->
 <div class="dashboard-filters">
-    <form method="GET" action="{{ route('user.activity') }}">
+    <form method="GET" action="{{ route('dashboard.activity') }}">
         <div class="row">
             <div class="col-md-3">
                 <div class="filter-group">

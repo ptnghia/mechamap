@@ -47,18 +47,12 @@ class SellerController extends BaseController
         // Get recent reviews
         $recentReviews = collect(); // Placeholder for reviews
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Seller Dashboard', 'route' => 'dashboard.marketplace.seller.dashboard']
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.seller.dashboard', [
             'seller' => $seller,
             'stats' => $stats,
             'recentOrders' => $recentOrders,
             'topProducts' => $topProducts,
-            'recentReviews' => $recentReviews,
-            'breadcrumb' => $breadcrumb
+            'recentReviews' => $recentReviews
         ]);
     }
 
@@ -69,14 +63,8 @@ class SellerController extends BaseController
     {
         $seller = MarketplaceSeller::where('user_id', $this->user->id)->first();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Seller Setup', 'route' => 'dashboard.marketplace.seller.setup']
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.seller.setup', [
-            'seller' => $seller,
-            'breadcrumb' => $breadcrumb
+            'seller' => $seller
         ]);
     }
 
@@ -102,8 +90,7 @@ class SellerController extends BaseController
             'country' => 'required|string|max:100',
             'bank_name' => 'nullable|string|max:255',
             'bank_account_number' => 'nullable|string|max:255',
-            'bank_account_name' => 'nullable|string|max:255',
-        ]);
+            'bank_account_name' => 'nullable|string|max:255']);
 
         $seller = MarketplaceSeller::updateOrCreate(
             ['user_id' => $this->user->id],
@@ -162,20 +149,13 @@ class SellerController extends BaseController
 
         $orderItems = $query->orderBy('created_at', 'desc')->paginate(20);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Seller Dashboard', 'route' => 'dashboard.marketplace.seller.dashboard'],
-            ['name' => 'Orders', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.seller.orders', [
             'seller' => $seller,
             'orderItems' => $orderItems,
             'currentStatus' => $status,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'search' => $search,
-            'breadcrumb' => $breadcrumb
+            'search' => $search
         ]);
     }
 
@@ -193,14 +173,12 @@ class SellerController extends BaseController
         $request->validate([
             'status' => 'required|string|in:pending,processing,shipped,delivered,cancelled',
             'tracking_number' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:500',
-        ]);
+            'notes' => 'nullable|string|max:500']);
 
         $orderItem->update([
             'fulfillment_status' => $request->status,
             'tracking_number' => $request->tracking_number,
-            'fulfillment_notes' => $request->notes,
-        ]);
+            'fulfillment_notes' => $request->notes]);
 
         return response()->json([
             'success' => true,
@@ -251,8 +229,7 @@ class SellerController extends BaseController
             'this_month_revenue' => $thisMonthRevenue,
             'average_order_value' => $averageOrderValue,
             'conversion_rate' => 0, // Placeholder
-            'total_views' => MarketplaceProduct::where('seller_id', $seller->id)->sum('view_count'),
-        ];
+            'total_views' => MarketplaceProduct::where('seller_id', $seller->id)->sum('view_count')];
     }
 
     /**
@@ -299,8 +276,7 @@ class SellerController extends BaseController
                     'unit_price' => $orderItem->unit_price,
                     'total_price' => $orderItem->total_price,
                     'status' => $orderItem->fulfillment_status,
-                    'created_at' => $orderItem->created_at->toISOString(),
-                ];
+                    'created_at' => $orderItem->created_at->toISOString()];
             });
 
         $filename = 'seller_orders_' . $seller->store_slug . '_' . now()->format('Y-m-d');
@@ -308,8 +284,7 @@ class SellerController extends BaseController
         if ($format === 'csv') {
             $headers = [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\"",
-            ];
+                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\""];
 
             $callback = function () use ($orders) {
                 $file = fopen('php://output', 'w');

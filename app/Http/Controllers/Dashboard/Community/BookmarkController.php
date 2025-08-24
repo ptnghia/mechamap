@@ -67,19 +67,13 @@ class BookmarkController extends BaseController
         // Get statistics
         $stats = $this->getBookmarkStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'Bookmarks', 'route' => 'dashboard.community.bookmarks']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.bookmarks.index', [
             'bookmarks' => $bookmarks,
             'folders' => $folders,
             'stats' => $stats,
             'currentFolder' => $folder,
             'search' => $search,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
+            'currentSort' => $sort
         ]);
     }
 

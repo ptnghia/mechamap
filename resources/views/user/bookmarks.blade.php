@@ -30,7 +30,7 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">{{ __('user.bookmarks.folder_label') }}</label>
                         <div class="list-group list-group-flush">
-                            <a href="{{ route('user.bookmarks') }}"
+                            <a href="{{ route('dashboard.community.bookmarks.index') }}"
                                 class="list-group-item list-group-item-action {{ !request('folder') ? 'active' : '' }}">
                                 <i class="fas fa-folder-open me-2"></i>
                                 Tất cả ({{ $stats['total'] }})

@@ -12,7 +12,7 @@
                 @endphp
 
                 <div class="d-flex align-items-center">
-                    <a href="{{ route('conversations.index') }}" class="btn btn-outline-secondary me-3">
+                    <a href="{{ route('dashboard.conversations.index') }}" class="btn btn-outline-secondary me-3">
                         <i class="fas fa-arrow-left"></i>
                     </a>
                     <h1 class="h3 mb-0">

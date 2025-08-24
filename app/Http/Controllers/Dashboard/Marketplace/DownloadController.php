@@ -90,11 +90,6 @@ class DownloadController extends BaseController
         // Get available downloads (not yet downloaded)
         $availableDownloads = $this->getAvailableDownloads();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Downloads', 'route' => 'dashboard.marketplace.downloads']
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.downloads.index', [
             'downloads' => $downloads,
             'availableDownloads' => $availableDownloads,
@@ -139,12 +134,6 @@ class DownloadController extends BaseController
             ->get()
             ->keyBy('file_path');
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Downloads', 'route' => 'dashboard.marketplace.downloads'],
-            ['name' => 'Order Files', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.downloads.order-files', [
             'orderItem' => $orderItem,
             'digitalFiles' => $digitalFiles,
@@ -162,8 +151,7 @@ class DownloadController extends BaseController
         }
 
         $request->validate([
-            'file_index' => 'required|integer|min:0',
-        ]);
+            'file_index' => 'required|integer|min:0']);
 
         try {
             // Get downloadable files
@@ -225,8 +213,7 @@ class DownloadController extends BaseController
                 'path' => $download->file_path,
                 'size' => $download->file_size,
                 'mime_type' => $download->mime_type,
-                'extension' => pathinfo($download->original_filename, PATHINFO_EXTENSION),
-            ];
+                'extension' => pathinfo($download->original_filename, PATHINFO_EXTENSION)];
 
             // Generate new download token
             $tokenData = $this->downloadService->generateDownloadToken($this->user, $orderItem, $fileData);
@@ -288,8 +275,7 @@ class DownloadController extends BaseController
             'total_size_formatted' => $this->formatBytes($totalSize),
             'unique_products' => $uniqueProducts,
             'this_month' => $thisMonth,
-            'this_week' => $thisWeek,
-        ];
+            'this_week' => $thisWeek];
     }
 
     /**
@@ -323,8 +309,7 @@ class DownloadController extends BaseController
                         'order_item' => $orderItem,
                         'file' => $file,
                         'product' => $orderItem->product,
-                        'order' => $orderItem->order,
-                    ]);
+                        'order' => $orderItem->order]);
                 }
             }
         }

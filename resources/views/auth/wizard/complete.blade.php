@@ -217,7 +217,7 @@
                     </a>
                 @endif
                 
-                <a href="{{ route('profile.edit') }}" class="btn btn-outline-secondary btn-lg">
+                <a href="{{ route('dashboard.profile.edit') }}" class="btn btn-outline-secondary btn-lg">
                     <i class="fas fa-user-edit me-2"></i>
                     Hoàn thiện Profile
                 </a>

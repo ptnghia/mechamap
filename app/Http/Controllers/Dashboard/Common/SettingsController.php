@@ -21,19 +21,13 @@ class SettingsController extends BaseController
      */
     public function index(Request $request)
     {
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Settings', 'route' => 'dashboard.settings']
-        ]);
-
         // Get notification preferences data
         $notificationCategories = NotificationPreferencesService::getNotificationCategories();
         $deliveryMethods = NotificationPreferencesService::getDeliveryMethods();
         $userPreferences = NotificationPreferencesService::getUserPreferences($this->user);
         $frequencyOptions = NotificationPreferencesService::getFrequencyOptions();
 
-        return $this->dashboardResponse('dashboard.common.settings.index', [
-            'breadcrumb' => $breadcrumb,
-            'notificationCategories' => $notificationCategories,
+        return $this->dashboardResponse('dashboard.common.settings.index', [            'notificationCategories' => $notificationCategories,
             'deliveryMethods' => $deliveryMethods,
             'userPreferences' => $userPreferences,
             'frequencyOptions' => $frequencyOptions
@@ -53,8 +47,7 @@ class SettingsController extends BaseController
             'push_notifications' => 'boolean',
             'marketing_emails' => 'boolean',
             'forum_notifications' => 'boolean',
-            'marketplace_notifications' => 'boolean',
-        ]);
+            'marketplace_notifications' => 'boolean']);
 
         $preferences = $request->only([
             'locale', 'timezone', 'theme', 'email_notifications',
@@ -86,8 +79,7 @@ class SettingsController extends BaseController
             'global.email_enabled' => 'boolean',
             'global.push_enabled' => 'boolean',
             'global.sms_enabled' => 'boolean',
-            'global.in_app_enabled' => 'boolean',
-        ]);
+            'global.in_app_enabled' => 'boolean']);
 
         // Build notification preferences from request
         $preferences = [
@@ -95,8 +87,7 @@ class SettingsController extends BaseController
                 'email_enabled' => $request->boolean('global.email_enabled'),
                 'push_enabled' => $request->boolean('global.push_enabled'),
                 'sms_enabled' => $request->boolean('global.sms_enabled'),
-                'in_app_enabled' => $request->boolean('global.in_app_enabled'),
-            ],
+                'in_app_enabled' => $request->boolean('global.in_app_enabled')],
             'categories' => [],
             'delivery_methods' => []
         ];
@@ -114,8 +105,7 @@ class SettingsController extends BaseController
                     'email' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.email"),
                     'push' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.push"),
                     'sms' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.sms"),
-                    'in_app' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.in_app"),
-                ];
+                    'in_app' => $request->boolean("categories.{$categoryKey}.types.{$typeKey}.in_app")];
             }
         }
 
@@ -128,8 +118,7 @@ class SettingsController extends BaseController
                 'quiet_hours' => [
                     'enabled' => $request->boolean("delivery_methods.{$methodKey}.quiet_hours.enabled"),
                     'start' => $request->input("delivery_methods.{$methodKey}.quiet_hours.start", '22:00'),
-                    'end' => $request->input("delivery_methods.{$methodKey}.quiet_hours.end", '08:00'),
-                ]
+                    'end' => $request->input("delivery_methods.{$methodKey}.quiet_hours.end", '08:00')]
             ];
         }
 
@@ -153,8 +142,7 @@ class SettingsController extends BaseController
             'allow_messages' => 'required|string|in:everyone,friends,none',
             'allow_friend_requests' => 'boolean',
             'show_activity' => 'boolean',
-            'indexable_profile' => 'boolean',
-        ]);
+            'indexable_profile' => 'boolean']);
 
         $privacySettings = $request->only([
             'profile_visibility', 'show_online_status', 'show_email', 'show_phone',
@@ -180,8 +168,7 @@ class SettingsController extends BaseController
             'two_factor_enabled' => 'boolean',
             'login_notifications' => 'boolean',
             'session_timeout' => 'required|integer|min:15|max:1440', // 15 minutes to 24 hours
-            'require_password_change' => 'boolean',
-        ]);
+            'require_password_change' => 'boolean']);
 
         $securitySettings = $request->only([
             'two_factor_enabled', 'login_notifications', 'session_timeout',
@@ -208,8 +195,7 @@ class SettingsController extends BaseController
             'threads' => $this->user->threads()->with(['comments', 'category', 'forum'])->get()->toArray(),
             'comments' => $this->user->comments()->with(['thread'])->get()->toArray(),
             'bookmarks' => $this->user->bookmarks()->with(['thread'])->get()->toArray(),
-            'notifications' => $this->user->userNotifications()->get()->toArray(),
-        ];
+            'notifications' => $this->user->userNotifications()->get()->toArray()];
 
         // Add marketplace data if user has permissions
         if ($this->user->hasAnyMarketplacePermission()) {
@@ -231,15 +217,13 @@ class SettingsController extends BaseController
     {
         $request->validate([
             'password' => 'required|current_password',
-            'reason' => 'required|string|max:500',
-        ]);
+            'reason' => 'required|string|max:500']);
 
         // Mark account as deactivated
         $this->user->update([
             'is_active' => false,
             'deactivated_at' => now(),
-            'deactivation_reason' => $request->reason,
-        ]);
+            'deactivation_reason' => $request->reason]);
 
         // Logout user
         auth()->logout();
@@ -256,15 +240,13 @@ class SettingsController extends BaseController
     public function resetToDefaults(Request $request): RedirectResponse
     {
         $request->validate([
-            'password' => 'required|current_password',
-        ]);
+            'password' => 'required|current_password']);
 
         // Reset preferences to default
         $this->user->update([
             'preferences' => null,
             'locale' => config('app.locale'),
-            'timezone' => config('app.timezone'),
-        ]);
+            'timezone' => config('app.timezone')]);
 
         return redirect()->route('dashboard.settings.index')
             ->with('success', 'All settings have been reset to defaults.');
@@ -284,18 +266,15 @@ class SettingsController extends BaseController
                 'username' => $this->user->username,
                 'role' => $this->user->role,
                 'created_at' => $this->user->created_at,
-                'last_login_at' => $this->user->last_login_at,
-            ],
+                'last_login_at' => $this->user->last_login_at],
             'activity_summary' => $this->getDashboardStats(),
-            'export_date' => now()->toISOString(),
-        ];
+            'export_date' => now()->toISOString()];
 
         $filename = 'mechamap_account_data_' . $this->user->username . '_' . now()->format('Y-m-d') . '.json';
 
         return response()->streamDownload(function () use ($userData) {
             echo json_encode($userData, JSON_PRETTY_PRINT);
         }, $filename, [
-            'Content-Type' => 'application/json',
-        ]);
+            'Content-Type' => 'application/json']);
     }
 }

@@ -22,10 +22,6 @@ class ProfileController extends BaseController
      */
     public function edit(Request $request)
     {
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Profile', 'route' => 'dashboard.profile.edit']
-        ]);
-
         return $this->dashboardResponse('dashboard.common.profile.edit', [
             'user' => $this->user]);
     }
@@ -99,8 +95,7 @@ class ProfileController extends BaseController
             'website' => 'nullable|url|max:255',
             'profession' => 'nullable|string|max:100',
             'about_me' => 'nullable|string|max:1000',
-            'signature' => 'nullable|string|max:500',
-        ]);
+            'signature' => 'nullable|string|max:500']);
 
         $data = $request->only([
             'name', 'email', 'username', 'phone', 'location',
@@ -185,12 +180,10 @@ class ProfileController extends BaseController
     {
         $request->validateWithBag('updatePassword', [
             'current_password' => 'required|current_password',
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+            'password' => ['required', 'confirmed', Password::defaults()]]);
 
         $this->user->update([
-            'password' => Hash::make($request->password),
-        ]);
+            'password' => Hash::make($request->password)]);
 
         return redirect()->route('dashboard.profile.edit')
             ->with('status', 'password-updated');
@@ -201,14 +194,7 @@ class ProfileController extends BaseController
      */
     public function showDeleteForm()
     {
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Profile', 'route' => 'dashboard.profile.edit'],
-            ['name' => 'Delete Account', 'route' => null]
-        ]);
-
-        return $this->dashboardResponse('dashboard.common.profile.delete', [
-            'breadcrumb' => $breadcrumb
-        ]);
+        return $this->dashboardResponse('dashboard.common.profile.delete', [        ]);
     }
 
     /**
@@ -217,8 +203,7 @@ class ProfileController extends BaseController
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
-            'password' => 'required|current_password',
-        ]);
+            'password' => 'required|current_password']);
 
         $user = $this->user;
 
@@ -255,19 +240,13 @@ class ProfileController extends BaseController
             'following_count' => $this->user->following()->count(),
             'followers_count' => $this->user->followers()->count(),
             'profile_views' => $this->user->profile_views ?? 0,
-            'reputation_score' => $this->user->reputation_score ?? 0,
-        ];
+            'reputation_score' => $this->user->reputation_score ?? 0];
 
         // Marketplace stats nếu có quyền
         if ($this->user->hasAnyMarketplacePermission()) {
             $marketplaceStats = $this->getMarketplaceStats();
             $stats = array_merge($stats, $marketplaceStats);
         }
-
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Profile', 'route' => 'dashboard.profile.edit'],
-            ['name' => 'Statistics', 'route' => null]
-        ]);
 
         return $this->dashboardResponse('dashboard.common.profile.stats', [
             'stats' => $stats]);

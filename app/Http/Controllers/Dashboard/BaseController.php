@@ -228,19 +228,6 @@ class BaseController extends Controller
     }
 
     /**
-     * Lấy breadcrumb cho dashboard
-     */
-    protected function getBreadcrumb($items = [])
-    {
-        $breadcrumb = [
-            ['name' => 'Home', 'route' => 'home'],
-            ['name' => 'Dashboard', 'route' => 'dashboard'],
-        ];
-
-        return array_merge($breadcrumb, $items);
-    }
-
-    /**
      * Response với data chung cho dashboard
      */
     protected function dashboardResponse($view, $data = [])
@@ -249,7 +236,6 @@ class BaseController extends Controller
             'dashboardStats' => $this->getDashboardStats(),
             'marketplaceStats' => $this->getMarketplaceStats(),
             'menuItems' => $this->getDashboardMenuItems(),
-            'breadcrumb' => $this->getBreadcrumb(),
         ];
 
         return view($view, array_merge($commonData, $data));

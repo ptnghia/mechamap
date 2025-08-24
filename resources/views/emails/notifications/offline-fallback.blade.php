@@ -139,7 +139,7 @@
 @endsection
 
 @section('footer-links')
-    <a href="{{ route('notifications.index') }}" style="color: #007bff; text-decoration: none;">
+    <a href="{{ route('dashboard.notifications.index') }}" style="color: #007bff; text-decoration: none;">
         Tất cả thông báo
     </a>
     <span style="color: #dee2e6; margin: 0 8px;">|</span>

@@ -573,7 +573,7 @@ k
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <a class="dropdown-item" href="{{ route('dashboard.profile.edit') }}">
                                         <i class="fas fa-cog me-2"></i>
                                         {{ __('nav.user.settings') }}
                                     </a>

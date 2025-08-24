@@ -37,7 +37,7 @@
                         {{ __('notifications.ui.mark_all_read') }}
                     </button>
                 @endif
-                <a href="{{ route('notifications.index') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('dashboard.notifications.index') }}" class="btn btn-sm btn-primary">
                     <i class="fa-solid fa-cog me-1"></i>
                     {{ __('notifications.ui.manage') }}
                 </a>
@@ -131,7 +131,7 @@
         <div class="dropdown-footer border-top">
             <div class="row g-0">
                 <div class="col-6">
-                    <a href="{{ route('notifications.index') }}"
+                    <a href="{{ route('dashboard.notifications.index') }}"
                        class="btn btn-link text-decoration-none w-100 py-3 text-center border-end">
                         <i class="fa-solid fa-list me-1"></i>
                         {{ __('notifications.view_all') }}

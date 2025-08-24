@@ -156,11 +156,11 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <a href="{{ route('profile.edit') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('dashboard.profile.edit') }}" class="list-group-item list-group-item-action">
                             <i class="person me-2"></i>
                             Thông tin cá nhân
                         </a>
-                        <a href="{{ route('profile.orders') }}" class="list-group-item list-group-item-action active">
+                        <a href="{{ route('dashboard.marketplace.orders') }}" class="list-group-item list-group-item-action active">
                             <i class="bag-check me-2"></i>
                             Đơn hàng của tôi
                         </a>

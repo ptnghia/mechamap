@@ -192,7 +192,7 @@
                             Print Order
                         </a>
                         @auth
-                            <a href="{{ route('profile.orders') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('dashboard.marketplace.orders') }}" class="btn btn-outline-secondary">
                                 <i class="fas fa-list-ul me-2"></i>
                                 View All Orders
                             </a>

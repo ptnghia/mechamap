@@ -159,7 +159,7 @@
                             <i class="fas fa-comments me-2"></i>
                             Threads gần đây
                         </h5>
-                        <a href="{{ route('user.my-threads') }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('dashboard.community.threads') }}" class="btn btn-sm btn-outline-primary">
                             Xem tất cả
                         </a>
                     </div>
@@ -233,7 +233,7 @@
                             <i class="fas fa-comment me-2"></i>
                             Comments gần đây
                         </h5>
-                        <a href="{{ route('user.comments') }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('dashboard.community.comments') }}" class="btn btn-sm btn-outline-primary">
                             Xem tất cả
                         </a>
                     </div>

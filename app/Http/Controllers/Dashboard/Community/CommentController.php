@@ -69,11 +69,6 @@ class CommentController extends BaseController
         // Get statistics
         $stats = $this->getCommentStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Comments', 'route' => 'dashboard.community.comments']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.comments.index', [
             'comments' => $comments,
             'threads' => $threads,
@@ -95,12 +90,6 @@ class CommentController extends BaseController
 
         $comment->load(['thread.user', 'thread.forum', 'parent', 'replies.user']);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Comments', 'route' => 'dashboard.community.comments'],
-            ['name' => 'Comment Details', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.community.comments.show', [
             'comment' => $comment]);
     }
@@ -113,12 +102,6 @@ class CommentController extends BaseController
         if ($comment->user_id !== $this->user->id) {
             abort(403, 'You can only edit your own comments.');
         }
-
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Comments', 'route' => 'dashboard.community.comments'],
-            ['name' => 'Edit Comment', 'route' => null]
-        ]);
 
         return $this->dashboardResponse('dashboard.community.comments.edit', [
             'comment' => $comment]);
@@ -134,13 +117,11 @@ class CommentController extends BaseController
         }
 
         $request->validate([
-            'content' => 'required|string|min:10|max:10000',
-        ]);
+            'content' => 'required|string|min:10|max:10000']);
 
         $comment->update([
             'content' => $request->content,
-            'edited_at' => now(),
-        ]);
+            'edited_at' => now()]);
 
         return redirect()->route('dashboard.community.comments.show', $comment)
             ->with('success', 'Comment updated successfully.');
@@ -196,8 +177,7 @@ class CommentController extends BaseController
                 ->count(),
             'this_month' => Comment::where('user_id', $this->user->id)
                 ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->count(),
-        ];
+                ->count()];
     }
 
     /**
@@ -208,8 +188,7 @@ class CommentController extends BaseController
         $request->validate([
             'action' => 'required|string|in:delete,approve,flag',
             'comment_ids' => 'required|array',
-            'comment_ids.*' => 'exists:comments,id',
-        ]);
+            'comment_ids.*' => 'exists:comments,id']);
 
         $commentIds = $request->comment_ids;
         $action = $request->action;
@@ -272,8 +251,7 @@ class CommentController extends BaseController
                     'content' => strip_tags($comment->content),
                     'likes_count' => $comment->likes_count,
                     'status' => $comment->moderation_status,
-                    'created_at' => $comment->created_at->toISOString(),
-                ];
+                    'created_at' => $comment->created_at->toISOString()];
             });
 
         $filename = 'comments_' . $this->user->username . '_' . now()->format('Y-m-d');
@@ -281,8 +259,7 @@ class CommentController extends BaseController
         if ($format === 'csv') {
             $headers = [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\"",
-            ];
+                'Content-Disposition' => "attachment; filename=\"{$filename}.csv\""];
 
             $callback = function () use ($comments) {
                 $file = fopen('php://output', 'w');
@@ -295,8 +272,7 @@ class CommentController extends BaseController
                         $comment['content'],
                         $comment['likes_count'],
                         $comment['status'],
-                        $comment['created_at'],
-                    ]);
+                        $comment['created_at']]);
                 }
 
                 fclose($file);

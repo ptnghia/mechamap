@@ -42,7 +42,6 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\TrackUserActivity::class,
             \App\Http\Middleware\ApplySeoSettings::class,
-            \App\Http\Middleware\InjectBreadcrumb::class,
             \App\Http\Middleware\InjectMarketplacePermissions::class,
         ]);
 

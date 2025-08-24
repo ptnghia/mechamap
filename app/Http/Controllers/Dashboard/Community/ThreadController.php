@@ -59,11 +59,6 @@ class ThreadController extends BaseController
         // Get forums for filter
         $forums = Forum::orderBy('name')->get();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Threads', 'route' => 'dashboard.community.threads']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.threads.index', [
             'threads' => $threads,
             'stats' => $stats,
@@ -72,8 +67,7 @@ class ThreadController extends BaseController
             'currentStatus' => $status,
             'currentType' => $type,
             'currentSolved' => $solved,
-            'search' => $search,
-            'breadcrumb' => $breadcrumb
+            'search' => $search
         ]);
     }
 
@@ -97,15 +91,9 @@ class ThreadController extends BaseController
 
         $threads = $query->latest('thread_follows.created_at')->paginate(20);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'Followed Threads', 'route' => 'dashboard.community.followed-threads']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.threads.followed', [
             'threads' => $threads,
-            'search' => $search,
-            'breadcrumb' => $breadcrumb
+            'search' => $search
         ]);
     }
 
@@ -136,15 +124,9 @@ class ThreadController extends BaseController
 
         $threads = $query->latest()->paginate(20);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'Participated Threads', 'route' => 'dashboard.community.participated']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.threads.participated', [
             'threads' => $threads,
-            'search' => $search,
-            'breadcrumb' => $breadcrumb
+            'search' => $search
         ]);
     }
 
@@ -181,8 +163,7 @@ class ThreadController extends BaseController
             'participated_threads' => $this->user->comments()
                 ->select('thread_id')
                 ->distinct()
-                ->count(),
-        ];
+                ->count()];
     }
 
     /**
@@ -203,8 +184,7 @@ class ThreadController extends BaseController
 
         return response()->json([
             'success' => true,
-            'threads' => $threads,
-        ]);
+            'threads' => $threads]);
     }
 
     /**
@@ -215,8 +195,7 @@ class ThreadController extends BaseController
         $request->validate([
             'action' => 'required|string|in:delete,archive,mark_solved,mark_unsolved',
             'thread_ids' => 'required|array',
-            'thread_ids.*' => 'exists:threads,id',
-        ]);
+            'thread_ids.*' => 'exists:threads,id']);
 
         $threadIds = $request->thread_ids;
         $action = $request->action;

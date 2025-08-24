@@ -38,14 +38,7 @@ class AnalyticsController extends BaseController
             'sales' => $this->getSalesAnalytics($seller, $dateRange),
             'products' => $this->getProductAnalytics($seller, $dateRange),
             'customers' => $this->getCustomerAnalytics($seller, $dateRange),
-            'trends' => $this->getTrendAnalytics($seller, $dateRange),
-        ];
-
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Seller Dashboard', 'route' => 'dashboard.marketplace.seller.dashboard'],
-            ['name' => 'Analytics', 'route' => null]
-        ]);
+            'trends' => $this->getTrendAnalytics($seller, $dateRange)];
 
         return $this->dashboardResponse('dashboard.marketplace.analytics.index', [
             'seller' => $seller,
@@ -137,8 +130,7 @@ class AnalyticsController extends BaseController
             'total_orders' => $totalOrders,
             'total_products' => $totalProducts,
             'average_order_value' => $averageOrderValue,
-            'revenue_growth' => $revenueGrowth,
-        ];
+            'revenue_growth' => $revenueGrowth];
     }
 
     /**
@@ -178,8 +170,7 @@ class AnalyticsController extends BaseController
         return [
             'daily_sales' => $dailySales,
             'top_products' => $topProducts,
-            'sales_by_type' => $salesByType,
-        ];
+            'sales_by_type' => $salesByType];
     }
 
     /**
@@ -215,8 +206,7 @@ class AnalyticsController extends BaseController
         return [
             'product_views' => $productViews,
             'conversion_data' => $conversionData,
-            'product_performance' => $productPerformance,
-        ];
+            'product_performance' => $productPerformance];
     }
 
     /**
@@ -246,8 +236,7 @@ class AnalyticsController extends BaseController
 
         return [
             'top_customers' => $topCustomers,
-            'new_customers' => $newCustomers,
-        ];
+            'new_customers' => $newCustomers];
     }
 
     /**
@@ -276,8 +265,7 @@ class AnalyticsController extends BaseController
 
         return [
             'revenue_trend' => $revenueTrend,
-            'order_trend' => $orderTrend,
-        ];
+            'order_trend' => $orderTrend];
     }
 
     /**

@@ -24,7 +24,7 @@
                                 <i class="bx bx-user me-1"></i>
                                 My Profile
                             </a>
-                            <a href="{{ route('notifications.index') }}" class="btn btn-primary position-relative">
+                            <a href="{{ route('dashboard.notifications.index') }}" class="btn btn-primary position-relative">
                                 <i class="bx bx-bell me-1"></i>
                                 Notifications
                                 @if($unreadNotifications > 0)
@@ -319,7 +319,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <a href="{{ route('notifications.index') }}" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <a href="{{ route('dashboard.notifications.index') }}" class="btn btn-outline-primary btn-sm w-100 mt-3">
                         View All Notifications
                     </a>
                     @else

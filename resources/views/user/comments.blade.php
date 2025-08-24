@@ -22,7 +22,7 @@
             <!-- Filters -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <form method="GET" action="{{ route('user.comments') }}" class="row g-3">
+                    <form method="GET" action="{{ route('dashboard.community.comments') }}" class="row g-3">
                         <div class="col-md-4">
                             <label for="thread_id" class="form-label">Thread</label>
                             <select name="thread_id" id="thread_id" class="form-select">
@@ -47,7 +47,7 @@
                             <button type="submit" class="btn btn-primary me-2">
                                 <i class="fas fa-search"></i> Lọc
                             </button>
-                            <a href="{{ route('user.comments') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('dashboard.community.comments') }}" class="btn btn-outline-secondary">
                                 <i class="fas fa-times"></i> Xóa bộ lọc
                             </a>
                         </div>

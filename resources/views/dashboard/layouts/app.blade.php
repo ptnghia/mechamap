@@ -16,8 +16,8 @@
         <div class="dashboard-main">
             <!-- Content -->
             <div class="dashboard-content">
-                <!-- Breadcrumb -->
-                @if(isset($breadcrumb) && count($breadcrumb) > 0)
+                {{-- Breadcrumb DISABLED for testing --}}
+                {{-- @if(isset($breadcrumb) && count($breadcrumb) > 0)
                     <nav aria-label="breadcrumb" class="mb-4">
                         <ol class="breadcrumb">
                             @foreach($breadcrumb as $item)
@@ -37,10 +37,9 @@
                             @endforeach
                         </ol>
                     </nav>
-                @endif
+                @endif --}}
 
-                <!-- SEO Breadcrumb Navigation -->
-                <x-seo-breadcrumb :breadcrumbs="App\Services\DashboardBreadcrumbService::generate()" />
+
 
                 <!-- Flash Messages -->
                 @if(session('success'))

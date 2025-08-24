@@ -93,12 +93,7 @@ class ConversationController extends BaseController
             'started' => 0, // Skip this count since conversations table doesn't have created_by column
             'active' => Conversation::whereHas('participants', function ($query) {
                 $query->where('user_id', $this->user->id);
-            })->where('updated_at', '>=', now()->subDays(7))->count(),
-        ];
-
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Messages', 'route' => null]
-        ]);
+            })->where('updated_at', '>=', now()->subDays(7))->count()];
 
         return $this->dashboardResponse('dashboard.common.conversations.index', [
             'conversations' => $conversations,
@@ -132,11 +127,6 @@ class ConversationController extends BaseController
         $otherParticipants = $conversation->participants
             ->where('id', '!=', $this->user->id);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Messages', 'route' => 'dashboard.conversations'],
-            ['name' => 'Conversation', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.common.conversations.show', [
             'conversation' => $conversation,
             'messages' => $messages,
@@ -162,11 +152,6 @@ class ConversationController extends BaseController
                 ->get();
         }
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Messages', 'route' => 'dashboard.conversations'],
-            ['name' => 'New Conversation', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.common.conversations.create', [
             'users' => $users,
             'search' => $search]);
@@ -180,8 +165,7 @@ class ConversationController extends BaseController
         $request->validate([
             'recipient_id' => 'required|exists:users,id',
             'title' => 'nullable|string|max:255',
-            'first_message' => 'required|string|max:5000',
-        ]);
+            'first_message' => 'required|string|max:5000']);
 
         $participantIds = [$request->recipient_id, $this->user->id];
 
@@ -194,8 +178,7 @@ class ConversationController extends BaseController
             // Add message to existing conversation
             $existingConversation->messages()->create([
                 'user_id' => $this->user->id,
-                'content' => $request->first_message,
-            ]);
+                'content' => $request->first_message]);
 
             $existingConversation->touch(); // Update updated_at
 
@@ -205,23 +188,20 @@ class ConversationController extends BaseController
 
         // Create new conversation
         $conversation = Conversation::create([
-            'title' => $request->title,
-        ]);
+            'title' => $request->title]);
 
         // Add participants
         foreach ($participantIds as $userId) {
             ConversationParticipant::create([
                 'conversation_id' => $conversation->id,
                 'user_id' => $userId,
-                'last_read_at' => $userId === $this->user->id ? now() : null,
-            ]);
+                'last_read_at' => $userId === $this->user->id ? now() : null]);
         }
 
         // Add first message
         $conversation->messages()->create([
             'user_id' => $this->user->id,
-            'content' => $request->first_message,
-        ]);
+            'content' => $request->first_message]);
 
         return redirect()->route('dashboard.conversations.show', $conversation)
             ->with('success', 'Conversation created successfully.');
@@ -238,14 +218,12 @@ class ConversationController extends BaseController
         }
 
         $request->validate([
-            'content' => 'required|string|max:5000',
-        ]);
+            'content' => 'required|string|max:5000']);
 
         // Add reply message
         $conversation->messages()->create([
             'user_id' => $this->user->id,
-            'content' => $request->content,
-        ]);
+            'content' => $request->content]);
 
         // Update conversation timestamp
         $conversation->touch();
@@ -314,13 +292,10 @@ class ConversationController extends BaseController
                 'url' => route('dashboard.conversations.show', $conversation),
                 'other_participant' => $otherParticipant ? [
                     'name' => $otherParticipant->name,
-                    'avatar' => $otherParticipant->getAvatarUrl(),
-                ] : null,
+                    'avatar' => $otherParticipant->getAvatarUrl()] : null,
                 'last_message' => $conversation->lastMessage ? [
                     'content' => $conversation->lastMessage->content,
-                    'created_at' => $conversation->lastMessage->created_at,
-                ] : null,
-            ];
+                    'created_at' => $conversation->lastMessage->created_at] : null];
         });
 
         return response()->json(['data' => $results]);
@@ -337,21 +312,17 @@ class ConversationController extends BaseController
         }
 
         $request->validate([
-            'message' => 'required|string|max:5000',
-        ]);
+            'message' => 'required|string|max:5000']);
 
         $conversation->messages()->create([
             'user_id' => $this->user->id,
-            'content' => $request->message,
-        ]);
+            'content' => $request->message]);
 
         $conversation->touch(); // Update updated_at
 
         return redirect()->route('dashboard.conversations.show', $conversation)
             ->with('success', 'Message sent successfully.');
     }
-
-
 
     /**
      * Xóa conversation

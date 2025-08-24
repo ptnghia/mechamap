@@ -98,7 +98,7 @@
     <div class="tab-pane fade show active" id="given" role="tabpanel" aria-labelledby="given-tab">
         <!-- Filters for Given Ratings -->
         <div class="dashboard-filters mb-4">
-            <form method="GET" action="{{ route('user.ratings') }}">
+            <form method="GET" action="{{ route('dashboard.community.ratings') }}">
                 <input type="hidden" name="tab" value="given">
                 <div class="row">
                     <div class="col-md-3">

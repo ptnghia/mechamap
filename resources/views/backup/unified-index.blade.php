@@ -20,7 +20,7 @@
                     <!-- Super Admin: System Notifications Toggle -->
                     @if(Auth::user()->role === 'super_admin')
                     <div class="btn-group" role="group">
-                        <a href="{{ route('notifications.index') }}"
+                        <a href="{{ route('dashboard.notifications.index') }}"
                            class="btn {{ !$showSystemNotifications ? 'btn-primary' : 'btn-outline-primary' }}">
                             <i class="fas fa-user me-1"></i>
                             User Notifications
@@ -116,7 +116,7 @@
             <!-- Filters -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
-                    <form method="GET" action="{{ route('notifications.index') }}" class="row g-3">
+                    <form method="GET" action="{{ route('dashboard.notifications.index') }}" class="row g-3">
                         <!-- Search -->
                         <div class="col-md-4">
                             <label class="form-label">Tìm kiếm</label>
@@ -168,7 +168,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                <a href="{{ route('notifications.index') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('dashboard.notifications.index') }}" class="btn btn-outline-secondary">
                                     <i class="fas fa-times"></i>
                                 </a>
                             </div>

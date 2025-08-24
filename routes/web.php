@@ -437,7 +437,7 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/notifications/{notification}/archive', [UnifiedNotificationController::class, 'archive'])->name('notifications.archive');
 
     // Legacy alerts redirect
-    Route::redirect('/alerts', '/notifications', 301);
+    Route::redirect('/alerts', '/dashboard/notifications', 301);
 
     // MOVED TO DASHBOARD: Conversations routes now handled by dashboard.php
     // Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
@@ -519,31 +519,14 @@ Route::prefix('browse')->name('browse.threads.')->group(function () {
 // =============================================================================
 // BACKWARD COMPATIBILITY REDIRECTS
 // =============================================================================
-// Redirect old routes to new dashboard structure for backward compatibility
+// All old routes have been updated in views and components.
+// Keeping minimal redirects for external links and bookmarks.
 
 Route::middleware('auth')->group(function () {
-    // Old profile routes → Dashboard profile routes
+    // Essential redirects for external bookmarks/links only
     Route::redirect('/profile', '/dashboard/profile/edit', 301);
-    Route::redirect('/profile/orders', '/dashboard/marketplace/orders', 301);
-
-    // Old notification routes → Dashboard notification routes
     Route::redirect('/notifications', '/dashboard/notifications', 301);
-
-    // Old conversation routes → Dashboard conversation routes
-    Route::redirect('/conversations', '/dashboard/conversations', 301);
-
-    // Old bookmark routes → Dashboard bookmark routes
-    Route::redirect('/bookmarks', '/dashboard/community/bookmarks', 301);
-
-    // Old user dashboard routes → New dashboard routes
     Route::redirect('/user/dashboard', '/dashboard', 301);
-    Route::redirect('/user/my-threads', '/dashboard/community/threads', 301);
-    Route::redirect('/user/bookmarks', '/dashboard/community/bookmarks', 301);
-    Route::redirect('/user/activity', '/dashboard/activity', 301);
-    Route::redirect('/user/following', '/dashboard/activity', 301);
-    Route::redirect('/user/ratings', '/dashboard/community/ratings', 301);
-    Route::redirect('/user/comments', '/dashboard/community/comments', 301);
-    Route::redirect('/user/settings', '/dashboard/settings', 301);
 });
 
 // MOVED TO DASHBOARD: User Dashboard Routes now handled by routes/dashboard.php

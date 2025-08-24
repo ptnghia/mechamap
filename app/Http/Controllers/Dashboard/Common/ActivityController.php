@@ -25,17 +25,12 @@ class ActivityController extends BaseController
         $stats = $this->getActivityStats($period);
         $timeline = $this->getActivityTimeline($period);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Activity', 'route' => 'dashboard.activity']
-        ]);
-
         return $this->dashboardResponse('dashboard.common.activity.index', [
             'activities' => $activities,
             'stats' => $stats,
             'timeline' => $timeline,
             'currentFilter' => $filter,
-            'currentPeriod' => $period,
-            'breadcrumb' => $breadcrumb
+            'currentPeriod' => $period
         ]);
     }
 

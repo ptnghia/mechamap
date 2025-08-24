@@ -70,11 +70,6 @@ class ShowcaseController extends BaseController
         // Get statistics
         $stats = $this->getShowcaseStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Showcases', 'route' => 'dashboard.community.showcases']
-        ]);
-
         return $this->dashboardResponse('dashboard.community.showcases.index', [
             'showcases' => $showcases,
             'categories' => $categories,
@@ -82,8 +77,7 @@ class ShowcaseController extends BaseController
             'currentStatus' => $status,
             'currentCategory' => $category,
             'search' => $search,
-            'currentSort' => $sort,
-            'breadcrumb' => $breadcrumb
+            'currentSort' => $sort
         ]);
     }
 
@@ -94,15 +88,8 @@ class ShowcaseController extends BaseController
     {
         $categories = ShowcaseCategory::orderBy('name')->get();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Showcases', 'route' => 'dashboard.community.showcases'],
-            ['name' => 'Create Showcase', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.community.showcases.create', [
-            'categories' => $categories,
-            'breadcrumb' => $breadcrumb
+            'categories' => $categories
         ]);
     }
 
@@ -160,15 +147,8 @@ class ShowcaseController extends BaseController
 
         $showcase->load(['category', 'thread', 'images', 'attachments', 'ratings.user']);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Showcases', 'route' => 'dashboard.community.showcases'],
-            ['name' => $showcase->title, 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.community.showcases.show', [
-            'showcase' => $showcase,
-            'breadcrumb' => $breadcrumb
+            'showcase' => $showcase
         ]);
     }
 
@@ -183,16 +163,9 @@ class ShowcaseController extends BaseController
 
         $categories = ShowcaseCategory::orderBy('name')->get();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Community', 'route' => null],
-            ['name' => 'My Showcases', 'route' => 'dashboard.community.showcases'],
-            ['name' => 'Edit Showcase', 'route' => null]
-        ]);
-
         return $this->dashboardResponse('dashboard.community.showcases.edit', [
             'showcase' => $showcase,
-            'categories' => $categories,
-            'breadcrumb' => $breadcrumb
+            'categories' => $categories
         ]);
     }
 

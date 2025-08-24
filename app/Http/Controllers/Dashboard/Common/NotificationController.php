@@ -111,10 +111,6 @@ class NotificationController extends BaseController
         // Get available filters (cached)
         $filters = NotificationCacheService::getAvailableFilters($this->user);
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Notifications', 'route' => 'dashboard.notifications']
-        ]);
-
         return $this->dashboardResponse('dashboard.common.notifications.index', [
             'notifications' => $notifications,
             'stats' => $stats,
@@ -318,11 +314,6 @@ class NotificationController extends BaseController
         // Get categories for filter
         $categories = UnifiedNotificationManager::getNotificationCategories();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Notifications', 'route' => 'dashboard.notifications.index'],
-            ['name' => 'Archive', 'route' => 'dashboard.notifications.archive']
-        ]);
-
         return $this->dashboardResponse('dashboard.common.notifications.archive', [
             'notifications' => $notifications,
             'stats' => $stats,
@@ -505,8 +496,7 @@ class NotificationController extends BaseController
             'this_week' => $this->user->userNotifications()->whereBetween('created_at', [
                 now()->startOfWeek(),
                 now()->endOfWeek()
-            ])->count(),
-        ];
+            ])->count()];
     }
 
     /**
@@ -523,8 +513,7 @@ class NotificationController extends BaseController
         foreach ($categories as $category => $types) {
             $categoryStats[$category] = [
                 'total' => $this->user->userNotifications()->whereIn('type', $types)->count(),
-                'unread' => $this->user->userNotifications()->whereIn('type', $types)->where('is_read', false)->count(),
-            ];
+                'unread' => $this->user->userNotifications()->whereIn('type', $types)->where('is_read', false)->count()];
         }
 
         // Thêm priority breakdown
@@ -534,14 +523,12 @@ class NotificationController extends BaseController
         foreach ($priorities as $priority) {
             $priorityStats[$priority] = [
                 'total' => $this->user->userNotifications()->where('priority', $priority)->count(),
-                'unread' => $this->user->userNotifications()->where('priority', $priority)->where('is_read', false)->count(),
-            ];
+                'unread' => $this->user->userNotifications()->where('priority', $priority)->where('is_read', false)->count()];
         }
 
         return array_merge($basic, [
             'categories' => $categoryStats,
-            'priorities' => $priorityStats,
-        ]);
+            'priorities' => $priorityStats]);
     }
 
     /**
@@ -666,8 +653,7 @@ class NotificationController extends BaseController
                     'is_read' => $notification->is_read,
                     'created_at' => $notification->created_at,
                     'action_url' => $notification->action_url,
-                    'icon' => $notification->getIconAttribute(),
-                ];
+                    'icon' => $notification->getIconAttribute()];
             });
 
         $unreadCount = UnifiedNotificationManager::getUnreadCount($this->user);

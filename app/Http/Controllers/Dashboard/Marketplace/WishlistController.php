@@ -87,11 +87,6 @@ class WishlistController extends BaseController
         // Get statistics
         $stats = $this->getWishlistStats();
 
-        $breadcrumb = $this->getBreadcrumb([
-            ['name' => 'Marketplace', 'route' => null],
-            ['name' => 'Wishlist', 'route' => 'dashboard.marketplace.wishlist']
-        ]);
-
         return $this->dashboardResponse('dashboard.marketplace.wishlist.index', [
             'wishlistItems' => $wishlistItems,
             'categories' => $categories,
@@ -109,8 +104,7 @@ class WishlistController extends BaseController
     public function add(Request $request): JsonResponse
     {
         $request->validate([
-            'product_id' => 'required|exists:marketplace_products,id',
-        ]);
+            'product_id' => 'required|exists:marketplace_products,id']);
 
         $product = MarketplaceProduct::findOrFail($request->product_id);
 
@@ -137,8 +131,7 @@ class WishlistController extends BaseController
         // Add to wishlist
         MarketplaceWishlist::create([
             'user_id' => $this->user->id,
-            'product_id' => $product->id,
-        ]);
+            'product_id' => $product->id]);
 
         return response()->json([
             'success' => true,
@@ -173,8 +166,7 @@ class WishlistController extends BaseController
     {
         $request->validate([
             'wishlist_ids' => 'required|array',
-            'wishlist_ids.*' => 'exists:marketplace_wishlists,id',
-        ]);
+            'wishlist_ids.*' => 'exists:marketplace_wishlists,id']);
 
         $deleted = MarketplaceWishlist::whereIn('id', $request->wishlist_ids)
             ->where('user_id', $this->user->id)
@@ -244,8 +236,7 @@ class WishlistController extends BaseController
     public function checkProduct(Request $request): JsonResponse
     {
         $request->validate([
-            'product_id' => 'required|exists:marketplace_products,id',
-        ]);
+            'product_id' => 'required|exists:marketplace_products,id']);
 
         $inWishlist = MarketplaceWishlist::where('user_id', $this->user->id)
             ->where('product_id', $request->product_id)
@@ -335,7 +326,6 @@ class WishlistController extends BaseController
                 ->count(),
             'this_week' => MarketplaceWishlist::where('user_id', $this->user->id)
                 ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
-                ->count(),
-        ];
+                ->count()];
     }
 }

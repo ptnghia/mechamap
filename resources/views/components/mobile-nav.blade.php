@@ -603,14 +603,14 @@
                 </li>
                 @endif
                 <li>
-                    <a href="{{ route('profile.edit') }}">
+                    <a href="{{ route('dashboard.profile.edit') }}">
                         <i class="fa-solid fa-cog me-2"></i>
                         {{ __('nav.user.account_settings') }}
                     </a>
                 </li>
-                @if(Route::has('notifications.index'))
+                @if(Route::has('dashboard.notifications.index'))
                 <li>
-                    <a href="{{ route('notifications.index') }}">
+                    <a href="{{ route('dashboard.notifications.index') }}">
                         <i class="fa-solid fa-bell me-2"></i>
                         {{ t_common("notifications") }}
                         <span class="badge bg-danger ms-2" id="mobileNotificationBadge-{{ uniqid() }}" data-mobile-notification-badge style="display: none;">0</span>
@@ -748,7 +748,7 @@ document.addEventListener('DOMContentLoaded', function() {
             @auth
             // Show notification icon for authenticated users
             const notificationLink = document.createElement('a');
-            notificationLink.href = '{{ route('notifications.index') }}';
+            notificationLink.href = '{{ route('dashboard.notifications.index') }}';
             notificationLink.style.cssText = `
                 position: relative;
                 color: #6c757d;
