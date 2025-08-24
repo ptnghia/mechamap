@@ -117,14 +117,12 @@ $product = MarketplaceProduct::create([
 
 ## Database Enhancements
 
-### Normalized View
-A database view `marketplace_products_normalized` provides normalized data:
+### ~~Normalized View~~ (DEPRECATED)
+~~A database view `marketplace_products_normalized` provides normalized data:~~
 
-```sql
-SELECT * FROM marketplace_products_normalized 
-WHERE is_digital_product = 1 
-AND is_available = 1;
-```
+⚠️ **DEPRECATED as of 2025-08-24**: The `marketplace_products_normalized` view has been removed because it was not being used in the application. All normalization logic is now handled in the application layer through the `MarketplaceDataNormalizationService` and model methods.
+
+For historical reference, the view definition is backed up at: `database/backups/marketplace_products_normalized_view_backup.sql`
 
 ### Performance Indexes
 Added indexes for better query performance:
