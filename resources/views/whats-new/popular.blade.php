@@ -18,6 +18,14 @@
                 </a>
             </div>
 
+            <!-- Page Description -->
+            <div class="page-description mb-4">
+                <div class="alert alert-warning border-0">
+                    <i class="fas fa-fire me-2"></i>
+                    <strong>{{ __('ui.whats_new.popular.title') }}:</strong> {{ __('ui.whats_new.popular.description') }}
+                </div>
+            </div>
+
             <!-- Navigation Tabs -->
             <div class="whats-new-tabs mb-4">
                 <ul class="nav nav-pills nav-fill">

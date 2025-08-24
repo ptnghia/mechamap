@@ -80,8 +80,6 @@
 <body class="user-frontend">
     <div class="">
         <x-header />
-
-
         <!-- Page Heading -->
         @isset($header)
         <header class="sticky-top">

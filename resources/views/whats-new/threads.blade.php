@@ -18,6 +18,14 @@
                 </a>
             </div>
 
+            <!-- Page Description -->
+            <div class="page-description mb-4">
+                <div class="alert alert-success border-0">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    <strong>{{ __('ui.whats_new.threads.title') }}:</strong> {{ __('ui.whats_new.threads.description') }}
+                </div>
+            </div>
+
             <!-- Navigation Tabs -->
             <div class="whats-new-tabs mb-4">
                 <ul class="nav nav-pills nav-fill">
@@ -81,9 +89,9 @@
         const goToPageBtn = document.getElementById('goToPageBtn');
         const pageInput = document.getElementById('pageInput');
 
-        
 
-        
+
+
     });
 </script>
 @endpush
