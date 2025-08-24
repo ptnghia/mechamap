@@ -20,7 +20,7 @@
 
 .product-image {
     width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
@@ -62,17 +62,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--bs-primary);
 }
 
 .wishlist-btn:hover {
-    background: #dc3545;
+    background: var(--bs-primary);
     color: white;
-    border-color: #dc3545;
+    border-color: var(--bs-primary);
 }
 
 .product-title a {
     font-weight: 600;
     line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .product-title a:hover {
@@ -80,7 +86,7 @@
 }
 
 .seller-info a {
-    color: #6c757d;
+    color: var(--bs-primary);
     font-weight: 500;
 }
 
@@ -108,58 +114,7 @@
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(13,110,253,0.3);
 }
-
-/* Products Swiper Styles */
-.products-swiper {
-    position: relative;
-    padding: 0 50px;
-}
-
-.products-swiper .swiper-button-next,
-.products-swiper .swiper-button-prev {
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 50%;
-    color: #6c757d;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.products-swiper .swiper-button-next:hover,
-.products-swiper .swiper-button-prev:hover {
-    background: #0d6efd;
-    color: white;
-    border-color: #0d6efd;
-}
-
-.products-swiper .swiper-button-next::after,
-.products-swiper .swiper-button-prev::after {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.products-pagination .swiper-pagination-bullet {
-    background: #dee2e6;
-    opacity: 1;
-}
-
-.products-pagination .swiper-pagination-bullet-active {
-    background: #0d6efd;
-}
-
-/* Latest Products Section */
-.latest-products {
-    background: #f8f9fa;
-    padding: 60px 0;
-    margin-top: 60px;
-}
-
-.latest-products .section-title {
-    color: #212529;
-}
-
+.seller-info small{overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .products-swiper {

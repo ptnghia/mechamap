@@ -3,27 +3,20 @@
 @section('title', $category->name . ' - ' . t_common("site.tagline"))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/forums/index.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/forums.css') }}">
 @endpush
 
 @section('content')
 <div class="body_page">
-    {{-- Breadcrumb --}}
-    <!--nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('nav.main.home') }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('forums.index') }}">{{ __('nav.main.forums') }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
-        </ol>
-    </nav-->
-
     {{-- Category Header --}}
     <div class="row align-items-center mb-4">
         <div class="col-md-8">
+            <div class="div_title_page">
             <h1 class="h3 mb-1 title_page">{{ $category->name }}</h1>
             @if($category->description)
             <p class="text-muted mb-0">{{ $category->description }}</p>
             @endif
+            </div>
         </div>
         <div class="col-md-4 text-md-end mt-3 mt-md-0">
             @auth
@@ -38,7 +31,7 @@
     {{-- Category Statistics --}}
     <div class="row mb-4 list_thongke_cate">
         <div class="col-md-3 mb-3">
-            <div class="card stats-card shadow-sm">
+            <div class="card stats-card">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-primary">{{ number_format($categoryStats['forums_count']) }}</div>
                     <div class="text-muted">{{ __('forum.forums.title') }}</div>
@@ -46,7 +39,7 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card stats-card shadow-sm">
+            <div class="card stats-card">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-success">{{ number_format($categoryStats['threads_count']) }}</div>
                     <div class="text-muted">{{ __('forum.threads.title') }}</div>
@@ -54,7 +47,7 @@
             </div>
         </div>
         <div class="col-md-3 mb-3">
-            <div class="card stats-card shadow-sm">
+            <div class="card stats-card">
                 <div class="card-body text-center">
                     <div class="fs-2 fw-bold text-info">{{ number_format($categoryStats['views_count']) }}</div>
                     <div class="text-muted">{{ t_common("views") }}</div>

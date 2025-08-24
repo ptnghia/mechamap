@@ -43,7 +43,15 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                     onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
             </div>
             <div>
-                <strong class="thread-user-name">{{ $userName }}</strong><br>
+                <strong class="thread-user-name">
+                    @if(isset($thread->user) && $thread->user->username)
+                        <a href="{{ route('profile.show', $thread->user->username) }}" class="text-decoration-none">
+                            {{ $userName }}
+                        </a>
+                    @else
+                        {{ $userName }}
+                    @endif
+                </strong><br>
                 <!-- Status badge nếu có -->
                 @if(isset($thread->status) && $thread->status)
                 <!--span class="badge bg-light text-dark"><i class="fas fa-info-circle me-1"></i>{{ $thread->status
@@ -118,7 +126,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
     <div class="row align-items-center">
         <!-- Nội dung chính -->
-        <div class="{{ $hasImage ? 'col-md-8 col-sm-8 col-9' : 'col-12' }}">
+        <div class="{{ $hasImage ? 'col-md-9 col-sm-8 col-9' : 'col-12' }}">
             <div class="thread-title-section">
                 <div class="thread-title">
                     <a href="{{ $threadUrl }}">
@@ -146,7 +154,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
         <!-- Hình ảnh - chỉ hiển thị khi có hình ảnh thực tế -->
         @if($hasImage)
-        <div class="col-md-4 col-sm-4 col-3">
+        <div class="col-md-3 col-sm-4 col-3">
             <div class="thread-image-container">
                 <img src="{{ $threadImage }}" alt="{{ $thread->title }}" class="img-fluid rounded"
                     onerror="this.style.display='none'">
@@ -164,14 +172,14 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
             <div class="thread-category-badges">
                 @if(isset($thread->category) && $thread->category)
-                <a href="{{ route('threads.index', ['category' => $thread->category->id]) }}" class="badge bg-secondary text-decoration-none">
+                <a href="{{ route('categories.show', $thread->category->slug) }}" class="badge bg-secondary text-decoration-none">
                     <i class="fa-solid fa-tag"></i>
                     {{ $thread->category->name }}
                 </a>
                 @endif
 
                 @if(isset($thread->forum) && $thread->forum)
-                <a href="{{ route('threads.index', ['forum' => $thread->forum->id]) }}" class="badge bg-info text-decoration-none">
+                <a href="{{ route('forums.show', $thread->forum->slug) }}" class="badge bg-info text-decoration-none">
                     <i class="fa-solid fa-folder-open"></i>
                      {{ $thread->forum->name }}
                 </a>

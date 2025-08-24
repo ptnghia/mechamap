@@ -35,8 +35,8 @@
   --bs-info: #6b8e9c;
   --bs-info-rgb: 107, 142, 156;
   --bs-info-text-emphasis: #485f68;
-  --bs-info-bg-subtle: #f1f5f6;
-  --bs-info-border-subtle: #c9d6db;
+  --bs-info-bg-subtle: #fcf9ec;
+  --bs-info-border-subtle: #fcf9ec;
 
   /* Warning Color Palette */
   --bs-warning: #b8956a;
@@ -169,7 +169,6 @@ a:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 1px;
   border-radius: 5px;
   font-size: 14px;
 }
@@ -1126,8 +1125,9 @@ a:focus {
 .alert-info {
   --bs-alert-color: var(--bs-info-text-emphasis);
   --bs-alert-bg: var(--bs-info-bg-subtle);
-  --bs-alert-border-color: var(--bs-info-border-subtle);
+  --bs-alert-border-color: #7e775766;
   padding: 10px 15px;
+  text-align: center;
 }
 
 .alert-warning {

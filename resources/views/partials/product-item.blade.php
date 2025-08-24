@@ -30,7 +30,7 @@
         <h6 class="product-title mb-2">
             <a href="{{ route('marketplace.products.show', $product->slug) }}"
                class="text-decoration-none text-dark">
-                {{ Str::limit($product->name, 50) }}
+                {{ Str::limit($product->name, 150) }}
             </a>
         </h6>
 

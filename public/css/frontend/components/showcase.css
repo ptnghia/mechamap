@@ -10,7 +10,7 @@
 .showcase-card:hover {
     transform: translateY(-5px)
 }
-
+.showcase-categories{width: auto;flex: 1;display: flex;justify-content: end;}
 .showcase-image {
     position: relative;
     height: 250px;
@@ -49,7 +49,10 @@
 .showcase-actions .btn {
     border-radius: 20px;
     padding: .5rem 1rem;
-    font-weight: 500
+    font-weight: 500;
+    display: flex;
+    gap: 7px;
+    color: var(--bs-primary);
 }
 
 .showcase-content {
@@ -90,4 +93,91 @@
 .showcase-tech-info .tech-item {
     display: flex;
     align-items: center
+}
+.showcase-title {
+    margin-bottom: 5px;
+    font-weight: 600;
+    line-height: 1.3;
+    font-size: 16px
+}
+
+.showcase-title a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color .3s ease
+}
+
+.showcase-title a:hover {
+    color: #3498db
+}
+
+.showcase-description {
+    color: #6c757d;
+    font-size: .9rem;
+    line-height: 1.5;
+    margin-bottom: 7px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-top: 10px
+}
+
+.showcase-stats {
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+    justify-content: space-between;
+    font-size: .8rem;
+    gap: .75rem;
+    font-family: "Archivo Narrow",sans-serif
+}
+
+.showcase-stats .stat-item i {
+    font-size: .8rem;
+    margin-bottom: 0
+}
+
+.showcase-stats .badge {
+    font-size: .75rem;
+    padding: 8px 10px;
+    font-family: "Roboto Condensed",sans-serif;
+    border-radius: 5px
+}
+
+.showcase-skeleton {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05)
+}
+
+.showcase-skeleton .skeleton-image {
+    height: 200px;
+    background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite
+}
+
+.showcase-skeleton .skeleton-content {
+    padding: 1.5rem
+}
+
+.showcase-skeleton .skeleton-line {
+    height: 12px;
+    background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 6px;
+    margin-bottom: .5rem
+}
+
+.showcase-skeleton .skeleton-line.short {
+    width: 60%
+}
+
+.showcase-skeleton .skeleton-line.medium {
+    width: 80%
 }

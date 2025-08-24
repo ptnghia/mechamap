@@ -136,7 +136,9 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                     </div>
                 @else
                     {{-- Single software: show as text --}}
-                    <span class="small text-muted">{{ $softwareUsed }}</span>
+                    <div class="software-badges">
+                    <span class="badge bg-light text-dark me-1 small">{{ $softwareUsed }}</span>
+                    </div>
                 @endif
             </div>
         </div>

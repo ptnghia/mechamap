@@ -12,41 +12,42 @@
 @section('content')
 <!-- Featured Showcases Section -->
 @if(isset($featuredShowcases) && $featuredShowcases->count() > 0)
-<section class="featured-showcases mb-5">
+<section class="featured-showcases">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
             <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
         </div>
         <a href="{{ route('showcase.index') }}" class="btn btn-main active">
-            {{ t_ui('buttons.view_all') }}
+            {{ t_ui('buttons.view_all') }}  <i class="fas fa-arrow-right ms-2"></i>
         </a>
     </div>
 
     <!-- Swiper Container -->
     <div class="swiper showcases-swiper">
-        <div class="swiper-wrapper pb-5">
+        <div class="swiper-wrapper pb-3">
             @foreach($featuredShowcases as $showcase)
             <div class="swiper-slide">
                 @include('partials.showcase-item', ['showcase' => $showcase])
             </div>
             @endforeach
         </div>
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
+        <!-- Navigation -->
+        <div class="swiper-button-next showcases-next"></div>
+        <div class="swiper-button-prev showcases-prev"></div>
     </div>
 </section>
 @endif
 
 <!-- Latest Threads -->
-<div class="body_left">
+<div class="body_left mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="section-title mb-1">{{ t_homepage('sections.latest_threads') }}</h2>
             <p class="text-muted mb-0">{{ t_homepage('sections.latest_threads_desc') }}</p>
         </div>
         <a href="{{ route('threads.index') }}" class="btn btn-primary">
-            {{ t_ui('buttons.view_all') }} <i class="fas fa-arrow-right"></i>"
+            {{ t_ui('buttons.view_all') }} <i class="fas fa-arrow-right ms-2"></i>
         </a>
     </div>
     <div class="list-group list-group-flush" id="latest-threads">
@@ -55,39 +56,35 @@
         @endforeach
     </div>
     <div class="text-center">
-        <button id="load-more-threads" class="btn btn-outline-primary">{{ t_ui('pagination.load_more') }}</button>
+        <button id="load-more-threads" class="btn btn-outline-primary"><i class="fa-solid fa-spinner me-2"></i> {{ t_ui('pagination.load_more') }}</button>
     </div>
 </div>
 
 <!-- Latest Marketplace Products Section -->
 @if(isset($latestProducts) && $latestProducts->count() > 0)
-<section class="latest-products mb-5">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="section-title mb-1">{{ t_marketplace('sections.latest_products') }}</h2>
-                <p class="text-muted mb-0">{{ t_marketplace('sections.latest_products_desc') }}</p>
-            </div>
-            <a href="{{ route('marketplace.products.index') }}" class="btn btn-main active">
-                {{ t_ui('buttons.view_all') }}
-            </a>
+<section class="latest-products mb-5 mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title mb-1">{{ t_marketplace('sections.latest_products') }}</h2>
+            <p class="text-muted mb-0">{{ t_marketplace('sections.latest_products_desc') }}</p>
         </div>
+        <a href="{{ route('marketplace.products.index') }}" class="btn btn-main active">
+            {{ t_ui('buttons.view_all') }}  <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
 
-        <!-- Swiper Container -->
-        <div class="swiper products-swiper">
-            <div class="swiper-wrapper pb-5">
-                @foreach($latestProducts as $product)
-                <div class="swiper-slide">
-                    @include('partials.product-item', ['product' => $product])
-                </div>
-                @endforeach
+    <!-- Swiper Container -->
+    <div class="swiper products-swiper">
+        <div class="swiper-wrapper pb-5">
+            @foreach($latestProducts as $product)
+            <div class="swiper-slide">
+                @include('partials.product-item', ['product' => $product])
             </div>
-            <!-- Pagination -->
-            <div class="swiper-pagination products-pagination"></div>
-            <!-- Navigation -->
-            <div class="swiper-button-next products-next"></div>
-            <div class="swiper-button-prev products-prev"></div>
+            @endforeach
         </div>
+        <!-- Navigation -->
+        <div class="swiper-button-next products-next"></div>
+        <div class="swiper-button-prev products-prev"></div>
     </div>
 </section>
 @endif
@@ -177,13 +174,13 @@ document.addEventListener('DOMContentLoaded', function() {
         slidesPerView: 1,
         spaceBetween: 20,
         loop: false, // Tắt loop để tránh warning khi ít slides
-        //autoplay: {
-        //    delay: 5000,
-        //    disableOnInteraction: false,
-        //},
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.showcases-next',
+            prevEl: '.showcases-prev',
         },
         breakpoints: {
             640: {
@@ -209,10 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
         autoplay: {
             delay: 4000,
             disableOnInteraction: false,
-        },
-        pagination: {
-            el: '.products-pagination',
-            clickable: true,
         },
         navigation: {
             nextEl: '.products-next',
