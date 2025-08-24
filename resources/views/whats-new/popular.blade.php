@@ -44,27 +44,32 @@
                     </li>
                 </ul>
             </div>
-
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}"
+                            id="trending-tab" data-bs-toggle="tab" data-bs-target="#trending"
+                            type="button" role="tab" aria-controls="trending"
+                            aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
+                        <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
+                    </button>
+                    <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}"
+                            id="most-viewed-tab" data-bs-toggle="tab" data-bs-target="#most-viewed"
+                            type="button" role="tab" aria-controls="most-viewed"
+                            aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
+                        <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
+                    </button>
+                </div>
+            </div>
             <!-- Popular Sub-Navigation -->
             <div class="popular-sub-nav mb-4">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}"
-                                        id="trending-tab" data-bs-toggle="tab" data-bs-target="#trending"
-                                        type="button" role="tab" aria-controls="trending"
-                                        aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
-                                    <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
-                                </button>
+
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}"
-                                        id="most-viewed-tab" data-bs-toggle="tab" data-bs-target="#most-viewed"
-                                        type="button" role="tab" aria-controls="most-viewed"
-                                        aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
-                                    <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
-                                </button>
+
                             </li>
                         </ul>
                     </div>
@@ -88,81 +93,13 @@
             </div>
 
             <!-- Pagination Top -->
-            <div class="pagination-container mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="pagination-info">
-                        <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
-                    </div>
-
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
-                            <!-- Previous Page -->
-                            <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
-                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
-                                </a>
-                            </li>
-
-                            <!-- First Page -->
-                            @if($page > 3)
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ route('whats-new.popular', ['page' => 1, 'timeframe' => $timeframe]) }}">1</a>
-                            </li>
-                            @endif
-
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page > 4)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
-
-                            <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ route('whats-new.popular', ['page' => $i, 'timeframe' => $timeframe]) }}">{{
-                                    $i }}</a>
-                                </li>
-                                @endfor
-
-                                <!-- Current Page -->
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </li>
-
-                                <!-- Pages after current -->
-                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ route('whats-new.popular', ['page' => $i, 'timeframe' => $timeframe]) }}">{{
-                                        $i }}</a>
-                                    </li>
-                                    @endfor
-
-                                    <!-- Ellipsis for skipped pages -->
-                                    @if($page < $totalPages - 3) <li class="page-item disabled">
-                                        <span class="page-link">...</span>
-                                        </li>
-                                        @endif
-
-                                        <!-- Last Page -->
-                                        @if($page < $totalPages - 2) <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ route('whats-new.popular', ['page' => $totalPages, 'timeframe' => $timeframe]) }}">{{
-                                                $totalPages }}</a>
-                                            </li>
-                                            @endif
-
-                                            <!-- Next Page -->
-                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
-                                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
-                                                </a>
-                                            </li>
-                        </ul>
-                    </nav>
-                </div>
+            @if($threads->hasPages())
+            <div class="text-center mt-4">
+                {{ $threads->links() }}
             </div>
+            @endif
+
+
 
             <!-- Threads List -->
             <div class="body_left">
@@ -176,89 +113,11 @@
             </div>
 
             <!-- Pagination Bottom -->
-            <div class="pagination-container mt-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="pagination-info">
-                        <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
-                    </div>
-
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
-                            <!-- Previous Page -->
-                            <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                                <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
-                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
-                                </a>
-                            </li>
-
-                            <!-- First Page -->
-                            @if($page > 3)
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ route('whats-new.popular', ['page' => 1, 'timeframe' => $timeframe]) }}">1</a>
-                            </li>
-                            @endif
-
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page > 4)
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                            @endif
-
-                            <!-- Pages before current -->
-                            @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ route('whats-new.popular', ['page' => $i, 'timeframe' => $timeframe]) }}">{{
-                                    $i }}</a>
-                                </li>
-                                @endfor
-
-                                <!-- Current Page -->
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </li>
-
-                                <!-- Pages after current -->
-                                @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ route('whats-new.popular', ['page' => $i, 'timeframe' => $timeframe]) }}">{{
-                                        $i }}</a>
-                                    </li>
-                                    @endfor
-
-                                    <!-- Ellipsis for skipped pages -->
-                                    @if($page < $totalPages - 3) <li class="page-item disabled">
-                                        <span class="page-link">...</span>
-                                        </li>
-                                        @endif
-
-                                        <!-- Last Page -->
-                                        @if($page < $totalPages - 2) <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ route('whats-new.popular', ['page' => $totalPages, 'timeframe' => $timeframe]) }}">{{
-                                                $totalPages }}</a>
-                                            </li>
-                                            @endif
-
-                                            <!-- Next Page -->
-                                            <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                                <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
-                                                    <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
-                                                </a>
-                                            </li>
-                        </ul>
-                    </nav>
-
-                    <div class="pagination-goto">
-                        <div class="input-group input-group-sm">
-                            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages }}"
-                                value="{{ $page }}" placeholder="{{ __('ui.pagination.page') }}">
-                            <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('ui.pagination.go_to_page') }}</button>
-                        </div>
-                    </div>
-                </div>
+            @if($threads->hasPages())
+            <div class="text-center mt-4">
+                {{ $threads->links() }}
             </div>
+            @endif
         </div>
     </div>
 </div>
@@ -266,21 +125,6 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const goToPageBtn = document.getElementById('goToPageBtn');
-        const pageInput = document.getElementById('pageInput');
-
-        goToPageBtn.addEventListener('click', function() {
-            const page = parseInt(pageInput.value);
-            if (page >= 1 && page <= {{ $totalPages }}) {
-                window.location.href = '{{ route("whats-new.popular") }}?page=' + page + '&timeframe={{ $timeframe }}';
-            }
-        });
-
-        pageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                goToPageBtn.click();
-            }
-        });
 
         // Handle sub-navigation tab switching
         const trendingTab = document.getElementById('trending-tab');

@@ -171,14 +171,14 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             </div>
 
             <div class="thread-category-badges">
-                @if(isset($thread->category) && $thread->category)
+                @if(isset($thread->category) && $thread->category && $thread->category->slug)
                 <a href="{{ route('categories.show', $thread->category->slug) }}" class="badge bg-secondary text-decoration-none">
                     <i class="fa-solid fa-tag"></i>
                     {{ $thread->category->name }}
                 </a>
                 @endif
 
-                @if(isset($thread->forum) && $thread->forum)
+                @if(isset($thread->forum) && $thread->forum && $thread->forum->slug)
                 <a href="{{ route('forums.show', $thread->forum->slug) }}" class="badge bg-info text-decoration-none">
                     <i class="fa-solid fa-folder-open"></i>
                      {{ $thread->forum->name }}

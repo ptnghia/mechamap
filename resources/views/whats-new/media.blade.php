@@ -46,32 +46,11 @@
     </div>
 
     <!-- Pagination Top -->
-    <div class="pagination-container mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="pagination-info">
-                {{ __('ui.pagination.page_info', ['current' => $page ?? 1, 'total' => $totalPages ?? 1]) }}
+            @if($mediaItems->hasPages())
+            <div class="text-center mt-4">
+                {{ $mediaItems->links() }}
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item {{ ($page ?? 1) <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl ?? '#' }}">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-                    </li>
-                    @for ($i = max(1, ($page ?? 1) - 2); $i <= min(($totalPages ?? 1), ($page ?? 1) + 2); $i++)
-                        <li class="page-item {{ $i == ($page ?? 1) ? 'active' : '' }}">
-                            <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                        </li>
-                    @endfor
-                    <li class="page-item {{ ($page ?? 1) >= ($totalPages ?? 1) ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $nextPageUrl ?? '#' }}">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+            @endif
 
     <!-- Media Description -->
     <div class="media-description mb-4">
@@ -134,32 +113,11 @@
     @endif
 
     <!-- Pagination Bottom -->
-    <div class="pagination-container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="pagination-info">
-                {{ __('ui.pagination.page_info', ['current' => $page ?? 1, 'total' => $totalPages ?? 1]) }}
+            @if($mediaItems->hasPages())
+            <div class="text-center mt-4">
+                {{ $mediaItems->links() }}
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item {{ ($page ?? 1) <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl ?? '#' }}">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </a>
-                    </li>
-                    @for ($i = max(1, ($page ?? 1) - 2); $i <= min(($totalPages ?? 1), ($page ?? 1) + 2); $i++)
-                        <li class="page-item {{ $i == ($page ?? 1) ? 'active' : '' }}">
-                            <a class="page-link" href="{{ route('whats-new.media', ['page' => $i]) }}">{{ $i }}</a>
-                        </li>
-                    @endfor
-                    <li class="page-item {{ ($page ?? 1) >= ($totalPages ?? 1) ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $nextPageUrl ?? '#' }}">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+            @endif
 
     <!-- Go to Page Input -->
     <div class="go-to-page mt-3">
@@ -187,22 +145,9 @@
         const pageInput = document.getElementById('pageInput');
 
         if (goToPageBtn && pageInput) {
-            goToPageBtn.addEventListener('click', function() {
-                const page = parseInt(pageInput.value);
-                const maxPages = {{ $totalPages ?? 1 }};
+            
 
-                if (page >= 1 && page <= maxPages) {
-                    window.location.href = "{{ route('whats-new.media') }}?page=" + page;
-                } else {
-                    alert('{{ __("ui.pagination.invalid_page") }}');
-                }
-            });
-
-            pageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    goToPageBtn.click();
-                }
-            });
+            
         }
 
         // Loading animation for images

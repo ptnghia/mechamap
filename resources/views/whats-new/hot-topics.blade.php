@@ -106,72 +106,13 @@
                 </div>
 
                 <!-- Pagination -->
-                @if($pagination['totalPages'] > 1)
-                    <div class="pagination-container mt-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="pagination-info">
-                                <span>{{ __('ui.pagination.page') }} {{ $pagination['currentPage'] }} {{ __('ui.pagination.of') }} {{ $pagination['totalPages'] }}</span>
-                            </div>
-
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination pagination-sm mb-0">
-                                    <!-- Previous Page -->
-                                    <li class="page-item {{ $pagination['currentPage'] <= 1 ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pagination['prevPageUrl'] }}" aria-label="{{ __('ui.pagination.previous') }}">
-                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
-                                        </a>
-                                    </li>
-
-                                    <!-- First Page -->
-                                    @if($pagination['currentPage'] > 3)
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => 1]) }}">1</a>
-                                        </li>
-                                        @if($pagination['currentPage'] > 4)
-                                            <li class="page-item disabled">
-                                                <span class="page-link">...</span>
-                                            </li>
-                                        @endif
-                                    @endif
-
-                                    <!-- Page Numbers -->
-                                    @for($i = max(1, $pagination['currentPage'] - 2); $i <= min($pagination['totalPages'], $pagination['currentPage'] + 2); $i++)
-                                        <li class="page-item {{ $i == $pagination['currentPage'] ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => $i]) }}">{{ $i }}</a>
-                                        </li>
-                                    @endfor
-
-                                    <!-- Last Page -->
-                                    @if($pagination['currentPage'] < $pagination['totalPages'] - 2)
-                                        @if($pagination['currentPage'] < $pagination['totalPages'] - 3)
-                                            <li class="page-item disabled">
-                                                <span class="page-link">...</span>
-                                            </li>
-                                        @endif
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ route('whats-new.hot-topics', ['page' => $pagination['totalPages']]) }}">{{ $pagination['totalPages'] }}</a>
-                                        </li>
-                                    @endif
-
-                                    <!-- Next Page -->
-                                    <li class="page-item {{ $pagination['currentPage'] >= $pagination['totalPages'] ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $pagination['nextPageUrl'] }}" aria-label="{{ __('ui.pagination.next') }}">
-                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                            <div class="pagination-goto">
-                                <div class="input-group input-group-sm">
-                                    <input type="number" class="form-control" id="pageInput" min="1" max="{{ $pagination['totalPages'] }}"
-                                        value="{{ $pagination['currentPage'] }}" placeholder="{{ __('ui.pagination.page') }}">
-                                    <button class="btn btn-primary" type="button" id="goToPageBtn">{{ __('ui.pagination.go_to_page') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @if($threads->hasPages())
+                <div class="text-center mt-4">
+                    {{ $threads->links() }}
+                </div>
                 @endif
+
+
             @else
                 <!-- No Hot Topics -->
                 <div class="no-content text-center py-5">
@@ -236,26 +177,7 @@
             item.style.animation = 'pulse 2s infinite';
         });
 
-        // Pagination goto functionality
-        const goToPageBtn = document.getElementById('goToPageBtn');
-        const pageInput = document.getElementById('pageInput');
 
-        if (goToPageBtn && pageInput) {
-            goToPageBtn.addEventListener('click', function() {
-                const page = parseInt(pageInput.value);
-                const maxPage = parseInt(pageInput.getAttribute('max'));
-
-                if (page >= 1 && page <= maxPage) {
-                    window.location.href = `{{ route('whats-new.hot-topics') }}?page=${page}`;
-                }
-            });
-
-            pageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    goToPageBtn.click();
-                }
-            });
-        }
     });
 </script>
 

@@ -124,8 +124,6 @@ class WhatsNewController extends Controller
      */
     public function popular(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
         $timeframe = $request->input('timeframe', 'week'); // day, week, month, year, all
         $sortType = $request->input('sort', 'trending'); // trending, most_viewed
 
@@ -167,7 +165,7 @@ class WhatsNewController extends Controller
         if ($sortType === 'most_viewed') {
             // Most Viewed: Simple view count sorting
             $threads = $query->orderBy('view_count', 'desc')
-                ->paginate($perPage, ['*'], 'page', $page);
+                ->paginate(20);
         } else {
             // Trending: Complex trending score calculation
             $query->selectRaw('threads.*, (
@@ -182,30 +180,14 @@ class WhatsNewController extends Controller
             ) as trending_score');
 
             $threads = $query->orderBy('trending_score', 'desc')
-                ->paginate($perPage, ['*'], 'page', $page);
+                ->paginate(20);
         }
 
-        // Calculate total pages
-        $totalPages = ceil($threads->total() / $perPage);
-
-        // Generate pagination URLs
-        $prevPageUrl = $page > 1
-            ? route('whats-new.popular', ['page' => $page - 1, 'timeframe' => $timeframe, 'sort' => $sortType])
-            : '#';
-
-        $nextPageUrl = $page < $totalPages
-            ? route('whats-new.popular', ['page' => $page + 1, 'timeframe' => $timeframe, 'sort' => $sortType])
-            : '#';
-
-        // Optimize thread statistics
-        $this->optimizeThreadStatistics($threads);
+        // Append query parameters to pagination links
+        $threads->appends($request->query());
 
         return view('whats-new.popular', compact(
             'threads',
-            'page',
-            'totalPages',
-            'prevPageUrl',
-            'nextPageUrl',
             'timeframe',
             'sortType'
         ));
@@ -216,43 +198,14 @@ class WhatsNewController extends Controller
      */
     public function threads(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
+        // Get recent threads with optimized eager loading
+        $threads = Thread::with(['user:id,name,avatar', 'category:id,name', 'forum:id,name'])
+            ->withCount('allComments as comment_count')
+            ->where('is_locked', false)
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
-        // Cache key for new threads
-        $cacheKey = "whats_new_threads_{$page}";
-
-        $threads = Cache::remember($cacheKey, self::CACHE_DURATION, function() use ($page, $perPage) {
-            // Get recent threads with optimized eager loading
-            return Thread::with(['user:id,name,avatar', 'category:id,name', 'forum:id,name'])
-                ->withCount('allComments as comment_count')
-                ->where('is_locked', false)
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage, ['*'], 'page', $page);
-        });
-
-        // Calculate total pages
-        $totalPages = ceil($threads->total() / $perPage);
-
-        // Generate pagination URLs
-        $prevPageUrl = $page > 1
-            ? route('whats-new.threads', ['page' => $page - 1])
-            : '#';
-
-        $nextPageUrl = $page < $totalPages
-            ? route('whats-new.threads', ['page' => $page + 1])
-            : '#';
-
-        // Optimize thread statistics
-        $this->optimizeThreadStatistics($threads);
-
-        return view('whats-new.threads', compact(
-            'threads',
-            'page',
-            'totalPages',
-            'prevPageUrl',
-            'nextPageUrl'
-        ));
+        return view('whats-new.threads', compact('threads'));
     }
 
     /**
@@ -261,65 +214,29 @@ class WhatsNewController extends Controller
     public function media(Request $request)
     {
         try {
-            $page = $request->input('page', 1);
-            $perPage = 20;
+            // Get recent media with optimized eager loading using polymorphic relationship
+            $mediaItems = Media::with([
+                'user:id,name,avatar',
+                'mediable' // This will load the related model (Thread, Comment, etc.)
+            ])
+                ->where('mediable_type', 'App\\Models\\Thread') // Only media attached to threads
+                ->whereHasMorph('mediable', ['App\\Models\\Thread'], function ($query) {
+                    $query->where('is_locked', false)
+                        ->whereNull('deleted_at');
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
 
-            // Cache key for new media
-            $cacheKey = "whats_new_media_{$page}";
-
-            $mediaItems = Cache::remember($cacheKey, self::CACHE_DURATION, function() use ($page, $perPage) {
-                // Get recent media with optimized eager loading using polymorphic relationship
-                return Media::with([
-                    'user:id,name,avatar',
-                    'mediable' // This will load the related model (Thread, Comment, etc.)
-                ])
-                    ->where('mediable_type', 'App\\Models\\Thread') // Only media attached to threads
-                    ->whereHasMorph('mediable', ['App\\Models\\Thread'], function ($query) {
-                        $query->where('is_locked', false)
-                            ->whereNull('deleted_at');
-                    })
-                    ->orderBy('created_at', 'desc')
-                    ->paginate($perPage, ['*'], 'page', $page);
-            });
-
-            // Calculate total pages
-            $totalPages = ceil($mediaItems->total() / $perPage);
-
-            // Generate pagination URLs
-            $prevPageUrl = $page > 1
-                ? route('whats-new.media', ['page' => $page - 1])
-                : '#';
-
-            $nextPageUrl = $page < $totalPages
-                ? route('whats-new.media', ['page' => $page + 1])
-                : '#';
-
-            return view('whats-new.media', compact(
-                'mediaItems',
-                'page',
-                'totalPages',
-                'prevPageUrl',
-                'nextPageUrl'
-            ));
+            return view('whats-new.media', compact('mediaItems'));
 
         } catch (\Exception $e) {
             // Log error for debugging
             \Log::error('WhatsNew media error: ' . $e->getMessage());
 
             // Return empty result to avoid 500 error
-            $mediaItems = collect();
-            $page = 1;
-            $totalPages = 1;
-            $prevPageUrl = '#';
-            $nextPageUrl = '#';
+            $mediaItems = Media::whereRaw('1 = 0')->paginate(20); // Empty paginated collection
 
-            return view('whats-new.media', compact(
-                'mediaItems',
-                'page',
-                'totalPages',
-                'prevPageUrl',
-                'nextPageUrl'
-            ));
+            return view('whats-new.media', compact('mediaItems'));
         }
     }
 
@@ -328,47 +245,18 @@ class WhatsNewController extends Controller
      */
     public function replies(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
+        // Get threads with few replies, optimized query
+        $threads = Thread::with(['user:id,name,avatar', 'category:id,name', 'forum:id,name'])
+            ->withCount('allComments as comment_count')
+            ->where('is_locked', false)
+            ->whereDoesntHave('comments')
+            ->orWhereHas('comments', function ($query) {
+                $query->havingRaw('COUNT(*) < 5');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
-        // Cache key for threads needing replies
-        $cacheKey = "whats_new_replies_{$page}";
-
-        $threads = Cache::remember($cacheKey, self::CACHE_DURATION, function() use ($page, $perPage) {
-            // Get threads with few replies, optimized query
-            return Thread::with(['user:id,name,avatar', 'category:id,name', 'forum:id,name'])
-                ->withCount('allComments as comment_count')
-                ->where('is_locked', false)
-                ->whereDoesntHave('comments')
-                ->orWhereHas('comments', function ($query) {
-                    $query->havingRaw('COUNT(*) < 5');
-                })
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage, ['*'], 'page', $page);
-        });
-
-        // Calculate total pages
-        $totalPages = ceil($threads->total() / $perPage);
-
-        // Generate pagination URLs
-        $prevPageUrl = $page > 1
-            ? route('whats-new.replies', ['page' => $page - 1])
-            : '#';
-
-        $nextPageUrl = $page < $totalPages
-            ? route('whats-new.replies', ['page' => $page + 1])
-            : '#';
-
-        // Optimize thread statistics
-        $this->optimizeThreadStatistics($threads);
-
-        return view('whats-new.replies', compact(
-            'threads',
-            'page',
-            'totalPages',
-            'prevPageUrl',
-            'nextPageUrl'
-        ));
+        return view('whats-new.replies', compact('threads'));
     }
 
     /**
@@ -376,26 +264,11 @@ class WhatsNewController extends Controller
      */
     public function showcases(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
-
         // Get recent showcases
         $showcases = \App\Models\Showcase::with(['user', 'showcaseable', 'media'])
             ->whereHas('showcaseable') // Ensure showcaseable exists
             ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
-
-        // Calculate total pages
-        $totalPages = ceil($showcases->total() / $perPage);
-
-        // Generate pagination URLs
-        $prevPageUrl = $page > 1
-            ? route('whats-new.showcases', ['page' => $page - 1])
-            : '#';
-
-        $nextPageUrl = $page < $totalPages
-            ? route('whats-new.showcases', ['page' => $page + 1])
-            : '#';
+            ->paginate(20);
 
         // Process featured images using unified service
         ShowcaseImageService::processFeaturedImages($showcases->getCollection());
@@ -426,13 +299,7 @@ class WhatsNewController extends Controller
             }
         }
 
-        return view('whats-new.showcases', compact(
-            'showcases',
-            'page',
-            'totalPages',
-            'prevPageUrl',
-            'nextPageUrl'
-        ));
+        return view('whats-new.showcases', compact('showcases'));
     }
 
     /**
@@ -470,45 +337,29 @@ class WhatsNewController extends Controller
      */
     public function hotTopics(Request $request)
     {
-        $page = $request->input('page', 1);
-        $perPage = 20;
+        // Hot topics are threads with high recent activity
+        $threads = Thread::select([
+            'threads.*',
+            DB::raw('(
+                SELECT COUNT(*)
+                FROM comments
+                WHERE comments.thread_id = threads.id
+                AND comments.created_at > NOW() - INTERVAL 24 HOUR
+            ) as recent_comments'),
+            DB::raw('(
+                (threads.view_count * 0.1) +
+                (threads.cached_comments_count * 1.5) +
+                ((SELECT COUNT(*) FROM comments WHERE comments.thread_id = threads.id AND comments.created_at > NOW() - INTERVAL 24 HOUR) * 5)
+            ) as hot_score')
+        ])
+        ->with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
+        ->withCount('allComments as comment_count')
+        ->having('hot_score', '>', 0)
+        ->orderBy('hot_score', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->paginate(20);
 
-        // Cache key for hot topics
-        $cacheKey = "whats_new_hot_topics_page_{$page}";
-
-        $result = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($page, $perPage) {
-            // Hot topics are threads with high recent activity
-            $threads = Thread::select([
-                'threads.*',
-                DB::raw('(
-                    SELECT COUNT(*)
-                    FROM comments
-                    WHERE comments.thread_id = threads.id
-                    AND comments.created_at > NOW() - INTERVAL 24 HOUR
-                ) as recent_comments'),
-                DB::raw('(
-                    (threads.view_count * 0.1) +
-                    (threads.cached_comments_count * 1.5) +
-                    ((SELECT COUNT(*) FROM comments WHERE comments.thread_id = threads.id AND comments.created_at > NOW() - INTERVAL 24 HOUR) * 5)
-                ) as hot_score')
-            ])
-            ->with(['user:id,name,username,avatar', 'forum:id,name,slug', 'category:id,name,slug'])
-            ->withCount('allComments as comment_count')
-            ->having('hot_score', '>', 0)
-            ->orderBy('hot_score', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
-
-            return $threads;
-        });
-
-        // Optimize thread statistics
-        $threads = $this->optimizeThreadStatistics($result);
-
-        // Generate pagination info
-        $pagination = $this->generatePaginationData($result, 'whats-new.hot-topics', $page);
-
-        return view('whats-new.hot-topics', compact('threads', 'pagination'));
+        return view('whats-new.hot-topics', compact('threads'));
     }
 
     /**

@@ -44,78 +44,11 @@
     </div>
 
     <!-- Pagination Top -->
-    <div class="pagination-container mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="pagination-info">
-                <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
+            @if($showcases->hasPages())
+            <div class="text-center mt-4">
+                {{ $showcases->links() }}
             </div>
-
-            <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm mb-0">
-                    <!-- Previous Page -->
-                    <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
-                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
-                        </a>
-                    </li>
-
-                    <!-- First Page -->
-                    @if($page > 3)
-                    <li class="page-item">
-                        <a class="page-link" href="{{ route('whats-new.showcases', ['page' => 1]) }}">1</a>
-                    </li>
-                    @endif
-
-                    <!-- Ellipsis for skipped pages -->
-                    @if($page > 4)
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                    @endif
-
-                    <!-- Pages before current -->
-                    @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
-                        <a class="page-link" href="{{ route('whats-new.showcases', ['page' => $i]) }}">{{ $i
-                            }}</a>
-                        </li>
-                        @endfor
-
-                        <!-- Current Page -->
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-
-                        <!-- Pages after current -->
-                        @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
-                            <a class="page-link" href="{{ route('whats-new.showcases', ['page' => $i]) }}">{{ $i
-                                }}</a>
-                            </li>
-                            @endfor
-
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3) <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                                </li>
-                                @endif
-
-                                <!-- Last Page -->
-                                @if($page < $totalPages - 2) <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ route('whats-new.showcases', ['page' => $totalPages]) }}">{{
-                                        $totalPages }}</a>
-                                    </li>
-                                    @endif
-
-                                    <!-- Next Page -->
-                                    <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
-                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
-                                        </a>
-                                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+            @endif
 
     <!-- Showcases Grid -->
     <div class="body_left">
@@ -212,78 +145,11 @@
     </div>
 
     <!-- Pagination Bottom -->
-    <div class="pagination-container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="pagination-info">
-                <span>{{ __('ui.pagination.page') }} {{ $page }} {{ __('ui.pagination.of') }} {{ $totalPages }}</span>
+            @if($showcases->hasPages())
+            <div class="text-center mt-4">
+                {{ $showcases->links() }}
             </div>
-
-            <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm mb-0">
-                    <!-- Previous Page -->
-                    <li class="page-item {{ $page <= 1 ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $prevPageUrl }}" aria-label="{{ __('ui.pagination.previous') }}">
-                            <span aria-hidden="true"><i class="fa-solid fa-chevron-left"></i></span>
-                        </a>
-                    </li>
-
-                    <!-- First Page -->
-                    @if($page > 3)
-                    <li class="page-item">
-                        <a class="page-link" href="{{ route('whats-new.showcases', ['page' => 1]) }}">1</a>
-                    </li>
-                    @endif
-
-                    <!-- Ellipsis for skipped pages -->
-                    @if($page > 4)
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                    @endif
-
-                    <!-- Pages before current -->
-                    @for($i = max(1, $page - 2); $i < $page; $i++) <li class="page-item">
-                        <a class="page-link" href="{{ route('whats-new.showcases', ['page' => $i]) }}">{{ $i
-                            }}</a>
-                        </li>
-                        @endfor
-
-                        <!-- Current Page -->
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-
-                        <!-- Pages after current -->
-                        @for($i = $page + 1; $i <= min($totalPages, $page + 2); $i++) <li class="page-item">
-                            <a class="page-link" href="{{ route('whats-new.showcases', ['page' => $i]) }}">{{ $i
-                                }}</a>
-                            </li>
-                            @endfor
-
-                            <!-- Ellipsis for skipped pages -->
-                            @if($page < $totalPages - 3) <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                                </li>
-                                @endif
-
-                                <!-- Last Page -->
-                                @if($page < $totalPages - 2) <li class="page-item">
-                                    <a class="page-link"
-                                        href="{{ route('whats-new.showcases', ['page' => $totalPages]) }}">{{
-                                        $totalPages }}</a>
-                                    </li>
-                                    @endif
-
-                                    <!-- Next Page -->
-                                    <li class="page-item {{ $page >= $totalPages ? 'disabled' : '' }}">
-                                        <a class="page-link" href="{{ $nextPageUrl }}" aria-label="{{ __('ui.pagination.next') }}">
-                                            <span aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
-                                        </a>
-                                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+            @endif
 </div>
 @endsection
 
