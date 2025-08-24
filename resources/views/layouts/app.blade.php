@@ -189,29 +189,25 @@
         <x-footer />
 
     </div>
-
     <!-- Custom Scripts -->
     @stack('scripts')
-
-
     <!-- Footer Scripts -->
     @if(!empty($seo['footer_scripts'] ?? ''))
     {!! $seo['footer_scripts'] !!}
     @endif
-
     <!-- Google Analytics -->
     @if(!empty($seo['google_analytics_id'] ?? ''))
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $seo['google_analytics_id'] }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '{{ $seo['google_analytics_id'] }}');
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $seo['google_analytics_id'] }}');
     </script>
     @endif
 
     <!-- jQuery (Required for Lightbox) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
     <!-- Axios (Required for AJAX requests) -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

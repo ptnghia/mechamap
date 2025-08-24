@@ -13,34 +13,6 @@ class DashboardSeoSeeder extends Seeder
     public function run(): void
     {
         $dashboardSeoData = [
-            // Main Dashboard
-            [
-                'route_name' => 'dashboard',
-                'title' => 'Dashboard - MechaMap',
-                'description' => 'Quản lý tài khoản và hoạt động của bạn trên MechaMap - Cộng đồng kỹ thuật cơ khí Việt Nam',
-                'keywords' => 'dashboard, quản lý tài khoản, mechamap, kỹ thuật cơ khí',
-                'title_i18n' => json_encode([
-                    'vi' => 'Dashboard - MechaMap',
-                    'en' => 'Dashboard - MechaMap'
-                ]),
-                'description_i18n' => json_encode([
-                    'vi' => 'Quản lý tài khoản và hoạt động của bạn trên MechaMap - Cộng đồng kỹ thuật cơ khí Việt Nam',
-                    'en' => 'Manage your account and activities on MechaMap - Vietnamese Mechanical Engineering Community'
-                ]),
-                'keywords_i18n' => json_encode([
-                    'vi' => 'dashboard, quản lý tài khoản, mechamap, kỹ thuật cơ khí',
-                    'en' => 'dashboard, account management, mechamap, mechanical engineering'
-                ]),
-                'og_title' => 'Dashboard - MechaMap',
-                'og_description' => 'Quản lý tài khoản và hoạt động của bạn trên MechaMap',
-                'og_image' => '/images/brand/mechamap-dashboard-banner.jpg',
-                'twitter_title' => 'Dashboard - MechaMap',
-                'twitter_description' => 'Quản lý tài khoản và hoạt động của bạn trên MechaMap',
-                'twitter_image' => '/images/brand/mechamap-dashboard-banner.jpg',
-                'canonical_url' => '/dashboard',
-                'no_index' => false,
-                'is_active' => true,
-            ],
 
             // Profile Management
             [
@@ -233,6 +205,90 @@ class DashboardSeoSeeder extends Seeder
                 'is_active' => true,
             ],
 
+            // Community - Showcases
+            [
+                'route_name' => 'dashboard.community.showcases.index',
+                'title' => 'Quản lý Showcase - Dashboard - MechaMap',
+                'description' => 'Quản lý các dự án showcase kỹ thuật và sản phẩm của bạn trên MechaMap',
+                'keywords' => 'quản lý showcase, dự án kỹ thuật, sản phẩm, portfolio',
+                'title_i18n' => json_encode([
+                    'vi' => 'Quản lý Showcase - Dashboard - MechaMap',
+                    'en' => 'Manage Showcases - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Quản lý các dự án showcase kỹ thuật và sản phẩm của bạn trên MechaMap',
+                    'en' => 'Manage your technical project showcases and products on MechaMap'
+                ]),
+                'og_title' => 'Quản lý Showcase - MechaMap',
+                'og_description' => 'Quản lý dự án showcase kỹ thuật của bạn',
+                'canonical_url' => '/dashboard/community/showcases',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Showcases Create
+            [
+                'route_name' => 'dashboard.community.showcases.create',
+                'title' => 'Tạo Showcase mới - Dashboard - MechaMap',
+                'description' => 'Tạo showcase mới để giới thiệu dự án kỹ thuật và sản phẩm của bạn',
+                'keywords' => 'tạo showcase, dự án mới, giới thiệu sản phẩm, portfolio',
+                'title_i18n' => json_encode([
+                    'vi' => 'Tạo Showcase mới - Dashboard - MechaMap',
+                    'en' => 'Create New Showcase - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Tạo showcase mới để giới thiệu dự án kỹ thuật và sản phẩm của bạn',
+                    'en' => 'Create new showcase to present your technical projects and products'
+                ]),
+                'og_title' => 'Tạo Showcase mới - MechaMap',
+                'og_description' => 'Tạo showcase để giới thiệu dự án kỹ thuật',
+                'canonical_url' => '/dashboard/community/showcases/create',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Showcases Show
+            [
+                'route_name' => 'dashboard.community.showcases.show',
+                'title' => 'Chi tiết Showcase - Dashboard - MechaMap',
+                'description' => 'Xem chi tiết và quản lý showcase dự án kỹ thuật của bạn',
+                'keywords' => 'chi tiết showcase, xem dự án, quản lý showcase',
+                'title_i18n' => json_encode([
+                    'vi' => 'Chi tiết Showcase - Dashboard - MechaMap',
+                    'en' => 'Showcase Details - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Xem chi tiết và quản lý showcase dự án kỹ thuật của bạn',
+                    'en' => 'View details and manage your technical project showcase'
+                ]),
+                'og_title' => 'Chi tiết Showcase - MechaMap',
+                'og_description' => 'Xem chi tiết showcase dự án kỹ thuật',
+                'canonical_url' => '/dashboard/community/showcases/*',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Showcases Edit
+            [
+                'route_name' => 'dashboard.community.showcases.edit',
+                'title' => 'Chỉnh sửa Showcase - Dashboard - MechaMap',
+                'description' => 'Chỉnh sửa và cập nhật thông tin showcase dự án kỹ thuật của bạn',
+                'keywords' => 'chỉnh sửa showcase, cập nhật dự án, sửa thông tin',
+                'title_i18n' => json_encode([
+                    'vi' => 'Chỉnh sửa Showcase - Dashboard - MechaMap',
+                    'en' => 'Edit Showcase - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Chỉnh sửa và cập nhật thông tin showcase dự án kỹ thuật của bạn',
+                    'en' => 'Edit and update your technical project showcase information'
+                ]),
+                'og_title' => 'Chỉnh sửa Showcase - MechaMap',
+                'og_description' => 'Chỉnh sửa showcase dự án kỹ thuật',
+                'canonical_url' => '/dashboard/community/showcases/*/edit',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
             // Marketplace - Orders
             [
                 'route_name' => 'dashboard.marketplace.orders.index',
@@ -313,6 +369,174 @@ class DashboardSeoSeeder extends Seeder
                 'og_title' => 'Bảng điều khiển người bán - MechaMap',
                 'og_description' => 'Quản lý cửa hàng và bán hàng',
                 'canonical_url' => '/dashboard/marketplace/seller',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Ratings
+            [
+                'route_name' => 'dashboard.community.ratings.index',
+                'title' => 'Quản lý đánh giá - Dashboard - MechaMap',
+                'description' => 'Xem và quản lý các đánh giá bạn đã nhận và đưa ra trong cộng đồng MechaMap',
+                'keywords' => 'đánh giá, rating, feedback, cộng đồng, quản lý',
+                'title_i18n' => json_encode([
+                    'vi' => 'Quản lý đánh giá - Dashboard - MechaMap',
+                    'en' => 'Manage Ratings - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Xem và quản lý các đánh giá bạn đã nhận và đưa ra trong cộng đồng MechaMap',
+                    'en' => 'View and manage ratings you have received and given in MechaMap community'
+                ]),
+                'og_title' => 'Quản lý đánh giá - MechaMap',
+                'og_description' => 'Xem và quản lý đánh giá trong cộng đồng',
+                'canonical_url' => '/dashboard/community/ratings',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Threads Followed
+            [
+                'route_name' => 'dashboard.community.threads.followed',
+                'title' => 'Bài viết đang theo dõi - Dashboard - MechaMap',
+                'description' => 'Danh sách các bài viết và thảo luận kỹ thuật mà bạn đang theo dõi',
+                'keywords' => 'theo dõi, followed threads, thảo luận, kỹ thuật',
+                'title_i18n' => json_encode([
+                    'vi' => 'Bài viết đang theo dõi - Dashboard - MechaMap',
+                    'en' => 'Followed Threads - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Danh sách các bài viết và thảo luận kỹ thuật mà bạn đang theo dõi',
+                    'en' => 'List of threads and technical discussions you are following'
+                ]),
+                'og_title' => 'Bài viết đang theo dõi - MechaMap',
+                'og_description' => 'Theo dõi thảo luận kỹ thuật',
+                'canonical_url' => '/dashboard/community/threads/followed',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Community - Threads Participated
+            [
+                'route_name' => 'dashboard.community.threads.participated',
+                'title' => 'Bài viết đã tham gia - Dashboard - MechaMap',
+                'description' => 'Danh sách các bài viết và thảo luận kỹ thuật mà bạn đã tham gia bình luận',
+                'keywords' => 'tham gia, participated, bình luận, thảo luận',
+                'title_i18n' => json_encode([
+                    'vi' => 'Bài viết đã tham gia - Dashboard - MechaMap',
+                    'en' => 'Participated Threads - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Danh sách các bài viết và thảo luận kỹ thuật mà bạn đã tham gia bình luận',
+                    'en' => 'List of threads and technical discussions you have participated in'
+                ]),
+                'og_title' => 'Bài viết đã tham gia - MechaMap',
+                'og_description' => 'Thảo luận đã tham gia',
+                'canonical_url' => '/dashboard/community/threads/participated',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Marketplace - Seller Analytics
+            [
+                'route_name' => 'dashboard.marketplace.seller.analytics.index',
+                'title' => 'Phân tích bán hàng - Dashboard - MechaMap',
+                'description' => 'Xem báo cáo và phân tích hiệu suất bán hàng trên MechaMap Marketplace',
+                'keywords' => 'phân tích, analytics, bán hàng, báo cáo, hiệu suất',
+                'title_i18n' => json_encode([
+                    'vi' => 'Phân tích bán hàng - Dashboard - MechaMap',
+                    'en' => 'Sales Analytics - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Xem báo cáo và phân tích hiệu suất bán hàng trên MechaMap Marketplace',
+                    'en' => 'View reports and analytics of your sales performance on MechaMap Marketplace'
+                ]),
+                'og_title' => 'Phân tích bán hàng - MechaMap',
+                'og_description' => 'Báo cáo hiệu suất bán hàng',
+                'canonical_url' => '/dashboard/marketplace/seller/analytics',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Marketplace - Seller Products
+            [
+                'route_name' => 'dashboard.marketplace.seller.products.index',
+                'title' => 'Quản lý sản phẩm - Dashboard - MechaMap',
+                'description' => 'Quản lý danh sách sản phẩm đang bán trên MechaMap Marketplace',
+                'keywords' => 'quản lý sản phẩm, products, marketplace, bán hàng',
+                'title_i18n' => json_encode([
+                    'vi' => 'Quản lý sản phẩm - Dashboard - MechaMap',
+                    'en' => 'Manage Products - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Quản lý danh sách sản phẩm đang bán trên MechaMap Marketplace',
+                    'en' => 'Manage your product listings on MechaMap Marketplace'
+                ]),
+                'og_title' => 'Quản lý sản phẩm - MechaMap',
+                'og_description' => 'Quản lý sản phẩm marketplace',
+                'canonical_url' => '/dashboard/marketplace/seller/products',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Marketplace - Seller Setup
+            [
+                'route_name' => 'dashboard.marketplace.seller.setup',
+                'title' => 'Thiết lập cửa hàng - Dashboard - MechaMap',
+                'description' => 'Thiết lập thông tin cửa hàng và cấu hình bán hàng trên MechaMap Marketplace',
+                'keywords' => 'thiết lập, setup, cửa hàng, seller, marketplace',
+                'title_i18n' => json_encode([
+                    'vi' => 'Thiết lập cửa hàng - Dashboard - MechaMap',
+                    'en' => 'Store Setup - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Thiết lập thông tin cửa hàng và cấu hình bán hàng trên MechaMap Marketplace',
+                    'en' => 'Set up your store information and sales configuration on MechaMap Marketplace'
+                ]),
+                'og_title' => 'Thiết lập cửa hàng - MechaMap',
+                'og_description' => 'Cấu hình cửa hàng marketplace',
+                'canonical_url' => '/dashboard/marketplace/seller/setup',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Notifications Archive
+            [
+                'route_name' => 'dashboard.notifications.archive',
+                'title' => 'Thông báo đã lưu trữ - Dashboard - MechaMap',
+                'description' => 'Xem các thông báo đã được lưu trữ và quản lý kho lưu trữ thông báo',
+                'keywords' => 'thông báo, archive, lưu trữ, quản lý',
+                'title_i18n' => json_encode([
+                    'vi' => 'Thông báo đã lưu trữ - Dashboard - MechaMap',
+                    'en' => 'Archived Notifications - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Xem các thông báo đã được lưu trữ và quản lý kho lưu trữ thông báo',
+                    'en' => 'View archived notifications and manage notification archive'
+                ]),
+                'og_title' => 'Thông báo đã lưu trữ - MechaMap',
+                'og_description' => 'Quản lý thông báo đã lưu trữ',
+                'canonical_url' => '/dashboard/notifications/archive',
+                'no_index' => true, // Private page
+                'is_active' => true,
+            ],
+
+            // Profile Stats
+            [
+                'route_name' => 'dashboard.profile.stats',
+                'title' => 'Thống kê hồ sơ - Dashboard - MechaMap',
+                'description' => 'Xem thống kê hoạt động và tương tác của hồ sơ cá nhân trên MechaMap',
+                'keywords' => 'thống kê, stats, hồ sơ, hoạt động, tương tác',
+                'title_i18n' => json_encode([
+                    'vi' => 'Thống kê hồ sơ - Dashboard - MechaMap',
+                    'en' => 'Profile Statistics - Dashboard - MechaMap'
+                ]),
+                'description_i18n' => json_encode([
+                    'vi' => 'Xem thống kê hoạt động và tương tác của hồ sơ cá nhân trên MechaMap',
+                    'en' => 'View activity statistics and interactions of your personal profile on MechaMap'
+                ]),
+                'og_title' => 'Thống kê hồ sơ - MechaMap',
+                'og_description' => 'Thống kê hoạt động cá nhân',
+                'canonical_url' => '/dashboard/profile/stats',
                 'no_index' => true, // Private page
                 'is_active' => true,
             ],
