@@ -14,10 +14,10 @@ class BaseController extends Controller
     {
         // Get layout configuration
         $layoutConfig = LayoutHelper::getLayoutConfig($pageType, $layoutOptions);
-        
+
         // Merge layout config with view data
         $viewData = array_merge($layoutConfig, $data);
-        
+
         return view($view, $viewData);
     }
 
@@ -121,7 +121,7 @@ class BaseController extends Controller
         if (!empty($breadcrumbs)) {
             $data['breadcrumbs'] = $this->setBreadcrumbs($breadcrumbs);
         }
-        
+
         return $this->renderWithMasterLayout($view, $data, $pageType);
     }
 
@@ -132,7 +132,7 @@ class BaseController extends Controller
     {
         $data['pageTitle'] = $title;
         $data['pageSubtitle'] = $subtitle;
-        
+
         return $this->renderWithMasterLayout($view, $data, $pageType);
     }
 
@@ -142,7 +142,7 @@ class BaseController extends Controller
     protected function getLayoutConfigForRoute($route = null)
     {
         $route = $route ?: request()->route()->getName();
-        
+
         // Determine page type based on route
         if (str_contains($route, 'admin.')) {
             return 'admin';

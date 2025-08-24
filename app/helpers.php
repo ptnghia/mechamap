@@ -33,6 +33,19 @@ if (!function_exists('highlightSearchQuery')) {
     }
 }
 
+if (!function_exists('breadcrumb')) {
+    /**
+     * Generate breadcrumb for current request
+     *
+     * @return array
+     */
+    function breadcrumb()
+    {
+        $breadcrumbService = app(\App\Services\BreadcrumbService::class);
+        return $breadcrumbService->generate(request());
+    }
+}
+
 if (!function_exists('formatNumber')) {
     /**
      * Format number for display

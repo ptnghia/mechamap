@@ -40,6 +40,15 @@
 
 <!-- Latest Threads -->
 <div class="body_left">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title mb-1">{{ t_homepage('sections.latest_threads') }}</h2>
+            <p class="text-muted mb-0">{{ t_homepage('sections.latest_threads_desc') }}</p>
+        </div>
+        <a href="{{ route('threads.index') }}" class="btn btn-primary">
+            {{ t_ui('buttons.view_all') }} <i class="fas fa-arrow-right"></i>"
+        </a>
+    </div>
     <div class="list-group list-group-flush" id="latest-threads">
         @foreach($latestThreads as $thread)
         @include('partials.thread-item', ['thread' => $thread])
@@ -49,6 +58,40 @@
         <button id="load-more-threads" class="btn btn-outline-primary">{{ t_ui('pagination.load_more') }}</button>
     </div>
 </div>
+
+<!-- Latest Marketplace Products Section -->
+@if(isset($latestProducts) && $latestProducts->count() > 0)
+<section class="latest-products mb-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="section-title mb-1">{{ t_marketplace('sections.latest_products') }}</h2>
+                <p class="text-muted mb-0">{{ t_marketplace('sections.latest_products_desc') }}</p>
+            </div>
+            <a href="{{ route('marketplace.products.index') }}" class="btn btn-main active">
+                {{ t_ui('buttons.view_all') }}
+            </a>
+        </div>
+
+        <!-- Swiper Container -->
+        <div class="swiper products-swiper">
+            <div class="swiper-wrapper pb-5">
+                @foreach($latestProducts as $product)
+                <div class="swiper-slide">
+                    @include('partials.product-item', ['product' => $product])
+                </div>
+                @endforeach
+            </div>
+            <!-- Pagination -->
+            <div class="swiper-pagination products-pagination"></div>
+            <!-- Navigation -->
+            <div class="swiper-button-next products-next"></div>
+            <div class="swiper-button-prev products-prev"></div>
+        </div>
+    </div>
+</section>
+@endif
+
 @endsection
 
 @push('scripts')
@@ -154,6 +197,43 @@ document.addEventListener('DOMContentLoaded', function() {
             1024: {
                 slidesPerView: 2,
                 spaceBetween: 10,
+            }
+        }
+    });
+
+    // Initialize Products Swiper
+    const productsSwiper = new Swiper('.products-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: false,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.products-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.products-next',
+            prevEl: '.products-prev',
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            },
+            1200: {
+                slidesPerView: 5,
+                spaceBetween: 20,
             }
         }
     });

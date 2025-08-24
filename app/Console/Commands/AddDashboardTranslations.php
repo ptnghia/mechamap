@@ -29,7 +29,22 @@ class AddDashboardTranslations extends Command
      * Groups are auto-detected from key prefix (before first dot)
      */
     protected $translations = [
-        // Sidebar User Dashboard - Missing translations
+        // ===== MARKETPLACE TRANSLATIONS =====
+        'marketplace.sections.latest_products' => [
+            'vi' => 'Sản phẩm mới nhất',
+            'en' => 'Latest Products'
+        ],
+        'marketplace.sections.latest_products_desc' => [
+            'vi' => 'Khám phá những sản phẩm kỹ thuật mới nhất từ cộng đồng',
+            'en' => 'Discover the latest technical products from our community'
+        ],
+        'marketplace.labels.by' => [
+            'vi' => 'bởi',
+            'en' => 'by'
+        ],
+
+        // ===== SIDEBAR USER DASHBOARD - MISSING TRANSLATIONS =====
+
         'sidebar.user_dashboard.profile' => [
             'vi' => 'Hồ sơ',
             'en' => 'Profile'
@@ -47,15 +62,15 @@ class AddDashboardTranslations extends Command
             'en' => 'Settings'
         ],
         'sidebar.user_dashboard.showcases' => [
-            'vi' => 'Trưng bày',
-            'en' => 'Showcases'
+            'vi' => 'Showcase của tôi',
+            'en' => 'My Showcases'
         ],
         'sidebar.user_dashboard.all_messages' => [
             'vi' => 'Tất cả tin nhắn',
             'en' => 'All Messages'
         ],
         'sidebar.user_dashboard.group_conversations' => [
-            'vi' => 'Cuộc trò chuyện nhóm',
+            'vi' => 'Nhóm chat',
             'en' => 'Group Conversations'
         ],
         'sidebar.user_dashboard.create_group' => [
@@ -65,6 +80,86 @@ class AddDashboardTranslations extends Command
         'sidebar.user_dashboard.new_message' => [
             'vi' => 'Tin nhắn mới',
             'en' => 'New Message'
+        ],
+
+        // ===== ADDITIONAL DASHBOARD SIDEBAR TRANSLATIONS =====
+
+        'sidebar.user_dashboard.activity' => [
+            'vi' => 'Hoạt động',
+            'en' => 'Activity'
+        ],
+        'sidebar.user_dashboard.bookmarks' => [
+            'vi' => 'Đã lưu',
+            'en' => 'Bookmarks'
+        ],
+        'sidebar.user_dashboard.threads' => [
+            'vi' => 'Bài viết của tôi',
+            'en' => 'My Threads'
+        ],
+        'sidebar.user_dashboard.comments' => [
+            'vi' => 'Bình luận',
+            'en' => 'Comments'
+        ],
+        'sidebar.user_dashboard.following' => [
+            'vi' => 'Đang theo dõi',
+            'en' => 'Following'
+        ],
+
+        // ===== SECTION HEADERS =====
+
+        'sidebar.sections.dashboard' => [
+            'vi' => 'Bảng điều khiển',
+            'en' => 'Dashboard'
+        ],
+        'sidebar.sections.community' => [
+            'vi' => 'Cộng đồng',
+            'en' => 'Community'
+        ],
+        'sidebar.sections.messages' => [
+            'vi' => 'Tin nhắn',
+            'en' => 'Messages'
+        ],
+        'sidebar.sections.quick_actions' => [
+            'vi' => 'Thao tác nhanh',
+            'en' => 'Quick Actions'
+        ],
+
+        // ===== QUICK ACTIONS =====
+
+        'sidebar.quick_actions.new_thread' => [
+            'vi' => 'Bài viết mới',
+            'en' => 'New Thread'
+        ],
+        'sidebar.quick_actions.browse_marketplace' => [
+            'vi' => 'Duyệt sản phẩm',
+            'en' => 'Browse Products'
+        ],
+        'sidebar.quick_actions.create_showcase' => [
+            'vi' => 'Tạo Showcase',
+            'en' => 'Create Showcase'
+        ],
+        'sidebar.quick_actions.browse_forums' => [
+            'vi' => 'Duyệt diễn đàn',
+            'en' => 'Browse Forums'
+        ],
+
+        // ===== HELP & SUPPORT =====
+
+        'sidebar.help.documentation' => [
+            'vi' => 'Tài liệu',
+            'en' => 'Documentation'
+        ],
+        'sidebar.help.contact_support' => [
+            'vi' => 'Liên hệ hỗ trợ',
+            'en' => 'Contact Support'
+        ],
+        'sidebar.help.faq' => [
+            'vi' => 'FAQ',
+            'en' => 'FAQ'
+        ],
+        'sidebar.help.help_support' => [
+            'vi' => 'Trợ giúp & Hỗ trợ',
+            'en' => 'Help & Support'
         ],
     ];
 

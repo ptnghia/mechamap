@@ -18,35 +18,42 @@ class CategoryController extends Controller
      * Display a listing of categories with forums grouped by category.
      * This replaces the old forums index to show proper 3-tier structure.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        // Cache categories with their forums and statistics
-        $categories = Cache::remember('categories.with_forums_stats', 3600, function () {
-            return Category::where('is_active', true)
-                ->whereNull('parent_id') // Only root categories
-                ->with([
-                    'forums' => function ($query) {
-                        $query->where('is_private', false)
-                            ->orderBy('order')
-                            ->withCount(['threads', 'posts']);
-                    },
-                    'forums.media' => function ($query) {
-                        $query->where('mime_type', 'like', 'image/%');
-                    }
-                ])
-                ->orderBy('sort_order')
-                ->orderBy('name')
-                ->get()
-                ->map(function ($category) {
-                    // Calculate category statistics
-                    $category->stats = $this->calculateCategoryStats($category);
+        $searchQuery = $request->get('q');
 
-                    // Get recent threads from this category's forums
-                    $category->recent_threads = $this->getRecentThreadsForCategory($category);
+        if ($searchQuery) {
+            // Search mode: filter categories and forums based on search query
+            $categories = $this->searchCategoriesAndForums($searchQuery);
+        } else {
+            // Normal mode: show all categories with cache
+            $categories = Cache::remember('categories.with_forums_stats', 3600, function () {
+                return Category::where('is_active', true)
+                    ->whereNull('parent_id') // Only root categories
+                    ->with([
+                        'forums' => function ($query) {
+                            $query->where('is_private', false)
+                                ->orderBy('order')
+                                ->withCount(['threads', 'posts']);
+                        },
+                        'forums.media' => function ($query) {
+                            $query->where('mime_type', 'like', 'image/%');
+                        }
+                    ])
+                    ->orderBy('sort_order')
+                    ->orderBy('name')
+                    ->get()
+                    ->map(function ($category) {
+                        // Calculate category statistics
+                        $category->stats = $this->calculateCategoryStats($category);
 
-                    return $category;
-                });
-        });
+                        // Get recent threads from this category's forums
+                        $category->recent_threads = $this->getRecentThreadsForCategory($category);
+
+                        return $category;
+                    });
+            });
+        }
 
         // Cache overall forum statistics
         $stats = Cache::remember('forums.overall_stats', 1800, function () {
@@ -60,7 +67,7 @@ class CategoryController extends Controller
             ];
         });
 
-        return view('forums.index', compact('categories', 'stats'));
+        return view('forums.index', compact('categories', 'stats', 'searchQuery'));
     }
 
     /**
@@ -198,6 +205,68 @@ class CategoryController extends Controller
             ->paginate(20);
 
         return view('categories.search', compact('category', 'threads', 'query'));
+    }
+
+    /**
+     * Search categories and forums based on query
+     */
+    private function searchCategoriesAndForums(string $searchQuery)
+    {
+        return Category::where('is_active', true)
+            ->whereNull('parent_id') // Only root categories
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('name', 'like', "%{$searchQuery}%")
+                    ->orWhere('description', 'like', "%{$searchQuery}%")
+                    ->orWhereHas('forums', function ($forumQuery) use ($searchQuery) {
+                        $forumQuery->where('name', 'like', "%{$searchQuery}%")
+                            ->orWhere('description', 'like', "%{$searchQuery}%");
+                    });
+            })
+            ->with([
+                'forums' => function ($query) use ($searchQuery) {
+                    $query->where('is_private', false)
+                        ->orderBy('order')
+                        ->withCount(['threads', 'posts']);
+                },
+                'forums.media' => function ($query) {
+                    $query->where('mime_type', 'like', 'image/%');
+                }
+            ])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get()
+            ->map(function ($category) use ($searchQuery) {
+                // Check if category name/description matches search query
+                $categoryMatches = str_contains(strtolower($category->name), strtolower($searchQuery)) ||
+                                 str_contains(strtolower($category->description ?? ''), strtolower($searchQuery));
+
+                if ($categoryMatches) {
+                    // If category matches, show ALL forums in this category
+                    $category->search_type = 'category_match';
+                    $category->search_reason = 'Category name or description matches';
+                } else {
+                    // If category doesn't match, filter forums to only matching ones
+                    $category->forums = $category->forums->filter(function ($forum) use ($searchQuery) {
+                        return str_contains(strtolower($forum->name), strtolower($searchQuery)) ||
+                               str_contains(strtolower($forum->description ?? ''), strtolower($searchQuery));
+                    });
+                    $category->search_type = 'forum_match';
+                    $category->search_reason = 'Contains matching forums';
+                }
+
+                // Calculate category statistics
+                $category->stats = $this->calculateCategoryStats($category);
+
+                // Get recent threads from this category's forums
+                $threadLimit = $categoryMatches ? 5 : 3; // More threads for category matches
+                $category->recent_threads = $this->getRecentThreadsForCategory($category, $threadLimit);
+
+                return $category;
+            })
+            ->filter(function ($category) {
+                // Only show categories that have forums after filtering
+                return $category->forums->count() > 0;
+            });
     }
 
     /**

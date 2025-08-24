@@ -82,7 +82,6 @@
         <x-header />
 
 
-
         <!-- Page Heading -->
         @isset($header)
         <header class="sticky-top">
@@ -91,6 +90,9 @@
             </div>
         </header>
         @endisset
+
+        <!-- Dynamic Breadcrumb -->
+        <x-breadcrumb :breadcrumbs="$breadcrumbs ?? []" />
 
         <!-- Page Content -->
         <main class="flex-grow-1">

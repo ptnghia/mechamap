@@ -4,12 +4,6 @@
 --}}
 @props(['showBanner' => true, 'isMarketplace' => false])
 
-<!-- Unified Search CSS -->
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/unified-search.css') }}">
-
-<!-- Mobile Navigation CSS -->
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/components/mobile-nav.css') }}">
-
 <header class="site-header">
     <!-- Banner (optional) -->
     @if($showBanner && get_setting('show_banner', true))
@@ -104,7 +98,7 @@
                                 {{ t_navigation('main.showcase') }}
                             </a>
                         </li>
-k
+
                         <!-- 4. Marketplace - PRIORITY #3 - Always visible for everyone -->
                         <li class="nav-item dropdown mega-menu-dropdown">
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('marketplace.*') ? 'active' : '' }}" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

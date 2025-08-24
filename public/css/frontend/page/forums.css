@@ -8,13 +8,15 @@
 .forums_cate_item_title{padding-right:10px;width:68%}
 .forums_cate_item_title i{color: #fff;}
 .forums_cate_item_title h5{}
-.forums_cate_item_title .text-muted{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.forums_cate_item_title .text-muted{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 12px;}
 .forums_cate_thongke{}
-.forums_cate_thongke{}
+.forums_cate_thongke small{
+    font-size: 12px;
+}
 .forums_list{}
-.forums_list_item{background-color:var(--bs-secondary);border:1px solid var(--bs-secondary);font-weight:500;font-size:13px;padding:5px 10px}
-.forums_list_item .badge{background-color:var(--bs-primary);line-height:12px;border-radius:30px;margin-left:5px!important;font-size:11px;top:0;font-family:"Archivo Narrow",sans-serif}
-.forums_list_item:hover{border:1px solid var(--bs-primary);color:var(--bs-primary)}
+.forums_list_item{background-color:var(--bs-secondary);font-weight:500;font-size: 12px;padding:5px 10px;color: #fff;}
+.forums_list_item .badge{background-color: var(--bs-badge-color);line-height: 10px;border-radius:30px;margin-left:5px!important;font-size: 14px;top:0;font-family:"Archivo Narrow",sans-serif;color: var(--bs-primary);font-weight: 700;padding-left: 5px;padding-right: 5px;}
+.forums_list_item:hover{border:1px solid var(--bs-primary);color: #fff;text-decoration: none;background-color: var(--bs-primary);}
 }
 .list_post_threads_content h6{}
 .btn-link{}
@@ -51,6 +53,12 @@
 .list_thongke_cate{}
 .list_thongke_cate .card-body{font-family:"Archivo Narrow",sans-serif}
 .list_thongke_cate .card-body .text-muted{font-size:16px;font-weight:700}
+.search_forums{
+}
+.search_forums input{box-shadow: none !IMPORTANT;border-radius: 5px 0 0 5px !IMPORTANT;}
+.search_forums button{border-radius: 0 5px 5px 0;padding-left: 20px;padding-right: 20px;transform: none !important;}
+.list_post_threads a.btn-link{border: 1px solid var(--bs-primary);}
+.list_post_threads a.btn-link:hover, .list_post_threads a.btn-link:focus{background-color: var(--bs-primary);color: #ffff;}
 @media (max-width: 768px) {
     .forum-grid-card{margin-bottom:1rem}
     .forum-grid-card .forum-header .d-flex{flex-direction:column;text-align:center}

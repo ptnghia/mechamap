@@ -8,6 +8,7 @@ use App\Models\Forum;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Showcase;
+use App\Models\MarketplaceProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -94,13 +95,22 @@ class HomeController extends Controller
             // Get featured showcases using optimized query
             $featuredShowcases = $this->getFeaturedShowcasesForHome();
 
+            // Get latest marketplace products for slide swiper
+            $latestProducts = MarketplaceProduct::with(['seller.user', 'category'])
+                ->where('status', 'approved')
+                ->where('is_active', true)
+                ->orderBy('created_at', 'desc')
+                ->limit(20)
+                ->get();
+
             return view('home', compact(
                 'latestThreads',
                 'featuredThreads',
                 'topForums',
                 'categories',
                 'topContributors',
-                'featuredShowcases'
+                'featuredShowcases',
+                'latestProducts'
             ));
         } catch (\Exception $e) {
             // Nếu có lỗi, return view đơn giản với dữ liệu trống
@@ -111,7 +121,8 @@ class HomeController extends Controller
                 'topForums' => collect(),
                 'categories' => collect(),
                 'topContributors' => collect(),
-                'featuredShowcases' => collect()
+                'featuredShowcases' => collect(),
+                'latestProducts' => collect()
             ]);
         }
     }

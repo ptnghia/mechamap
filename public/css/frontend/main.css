@@ -1,0 +1,11 @@
+@import "reset.css";
+@import "layout/header.css";
+
+@import "components/showcase.css";
+@import "components/thread.css";
+
+body.user-frontend {background-color: #f3f3f3}
+.div_title_page{
+}
+.div_title_page p{font-size: 14px;}
+.title_page {text-transform: uppercase;font-size: 24px!important;font-weight: 700}

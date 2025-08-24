@@ -34,6 +34,11 @@ require __DIR__.'/dashboard.php';
 // Include test email routes (development only)
 if (app()->environment(['local', 'development'])) {
     require __DIR__.'/test-email.php';
+
+    // Test breadcrumb route
+    Route::get('/test-breadcrumb', function () {
+        return view('test-breadcrumb');
+    })->name('test.breadcrumb');
 }
 
 // Test route để debug - REMOVED (should only be in development)
