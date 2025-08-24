@@ -89,10 +89,7 @@ class WhatsNewController extends Controller
     public function index(Request $request)
     {
         try {
-            $page = $request->input('page', 1);
-            $perPage = 20;
-
-            // Simplified approach - get threads directly like HomeController
+            // Simplified approach - get threads directly like CategoryController
             $threads = Thread::with(['user', 'category', 'forum', 'media'])
                 ->publicVisible()
                 ->whereNull('deleted_at')
@@ -107,46 +104,18 @@ class WhatsNewController extends Controller
                 })
                 ->withCount('allComments as comments_count')
                 ->latest()
-                ->paginate($perPage, ['*'], 'page', $page);
+                ->paginate(20); // Use Laravel pagination like CategoryController
 
-            // Calculate total pages
-            $totalPages = ceil($threads->total() / $perPage);
-
-            // Generate pagination URLs
-            $prevPageUrl = $page > 1
-                ? route('whats-new', ['page' => $page - 1])
-                : '#';
-
-            $nextPageUrl = $page < $totalPages
-                ? route('whats-new', ['page' => $page + 1])
-                : '#';
-
-            return view('whats-new.index', compact(
-                'threads',
-                'page',
-                'totalPages',
-                'prevPageUrl',
-                'nextPageUrl'
-            ));
+            return view('whats-new.index', compact('threads'));
 
         } catch (\Exception $e) {
             // Log error for debugging
             \Log::error('WhatsNew index error: ' . $e->getMessage());
 
             // Return empty result to avoid 500 error
-            $threads = collect();
-            $page = 1;
-            $totalPages = 1;
-            $prevPageUrl = '#';
-            $nextPageUrl = '#';
+            $threads = Thread::whereRaw('1 = 0')->paginate(20); // Empty paginated collection
 
-            return view('whats-new.index', compact(
-                'threads',
-                'page',
-                'totalPages',
-                'prevPageUrl',
-                'nextPageUrl'
-            ));
+            return view('whats-new.index', compact('threads'));
         }
     }
 

@@ -3,7 +3,7 @@
 @section('title', __('common.buttons.popular') . ' - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/whats-new.css') }}">
 @endpush
 
 @section('content')

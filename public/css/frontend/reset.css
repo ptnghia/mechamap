@@ -1249,7 +1249,7 @@ a:focus {
   background-color: var(--bs-primary-bg-subtle);
   border-color: var(--bs-primary-border-subtle);
 }
-
+.page-link:focus{box-shadow: none;}
 .page-item.active .page-link {
   background-color: var(--bs-primary);
   border-color: var(--bs-primary);

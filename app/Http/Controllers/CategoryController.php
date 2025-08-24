@@ -97,7 +97,7 @@ class CategoryController extends Controller
             ->publicVisible()
             ->orderBy('is_sticky', 'desc')
             ->latest()
-            ->paginate(5); // Reduced to 5 for testing pagination
+            ->paginate(10); // Reduced to 5 for testing pagination
 
         // Get trending threads from this category
         $trendingThreads = Thread::whereHas('forum', function ($query) use ($category) {

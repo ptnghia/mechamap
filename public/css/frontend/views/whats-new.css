@@ -2,8 +2,8 @@
 .whats-new-header{margin-bottom:2rem}
 .whats-new-header h1{font-size:2rem;font-weight:700;margin-bottom:1rem}
 .whats-new-tabs{margin-bottom:1.5rem}
-.whats-new-tabs .nav-link{color:#495057;border-radius:0;padding: 7px 5px !important;!i;!;font-weight:500;border:none;position:relative;font-size:14px;border-radius:0;background-color: transparent;margin-right: 5px;border-radius: 7px;}
-.whats-new-tabs .nav-link:hover{color:#7e7656;background-color:rgb(255 255 255)}
+.whats-new-tabs .nav-link{color:#495057;border-radius:0;padding: 7px 5px !important;!i;!;font-weight:500;border:none;position:relative;font-size:14px;border-radius:0;background-color: transparent;margin-right: 0;border-radius: 5px;font-family: var(--bs-font-condensed);}
+.whats-new-tabs .nav-link:hover{color:#7e7656;background-color: transparent;}
 .nav-pills{display:flex;justify-content:space-between}
 .whats-new-tabs .nav-link.active{color: #ffffff;background-color: var(--bs-primary);font-weight:600;width:100%}
 .whats-new-tabs .nav-link.active::after{content:''}

@@ -1,6 +1,7 @@
 @import "reset.css";
 @import "layout/header.css";
 
+@import "components/form.css";
 @import "components/showcase.css";
 @import "components/thread.css";
 @import "components/product.css";
@@ -106,7 +107,7 @@ body.user-frontend {background-color: #f3f3f3}
 
 /* Animation */
 .breadcrumb-container {
-    animation: slideDown 0.3s ease-out;
+    /* animation: slideDown 0.3s ease-out; */
 }
 
 @keyframes slideDown {

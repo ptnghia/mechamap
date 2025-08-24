@@ -12,10 +12,10 @@
     <div class="row align-items-center mb-4">
         <div class="col-md-8">
             <div class="div_title_page">
-            <h1 class="h3 mb-1 title_page">{{ $category->name }}</h1>
-            @if($category->description)
-            <p class="text-muted mb-0">{{ $category->description }}</p>
-            @endif
+                <h1 class="h3 mb-1 title_page">{{ $category->name }}</h1>
+                @if($category->description)
+                <p class="text-muted mb-0">{{ $category->description }}</p>
+                @endif
             </div>
         </div>
         <div class="col-md-4 text-md-end mt-3 mt-md-0">
