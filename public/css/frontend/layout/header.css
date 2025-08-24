@@ -352,4 +352,4 @@
     background-color: #7e7757;
     color: #fff
 }
-.mega-menu-dropdown:hover .mega-menu{display: block;}
+.mega-menu-dropdown:hover .mega-menu{/* display: block; */}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Thread;
 use App\Models\Media;
+use App\Models\PageSeo;
 use App\Services\ShowcaseImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -106,7 +107,10 @@ class WhatsNewController extends Controller
                 ->latest()
                 ->paginate(20); // Use Laravel pagination like CategoryController
 
-            return view('whats-new.index', compact('threads'));
+            // Get SEO data for dynamic title
+            $pageSeo = PageSeo::findByRoute('whats-new');
+
+            return view('whats-new.index', compact('threads', 'pageSeo'));
 
         } catch (\Exception $e) {
             // Log error for debugging
@@ -186,10 +190,14 @@ class WhatsNewController extends Controller
         // Append query parameters to pagination links
         $threads->appends($request->query());
 
+        // Get SEO data for dynamic title
+        $pageSeo = PageSeo::findByRoute('whats-new.popular');
+
         return view('whats-new.popular', compact(
             'threads',
             'timeframe',
-            'sortType'
+            'sortType',
+            'pageSeo'
         ));
     }
 
@@ -205,7 +213,10 @@ class WhatsNewController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('whats-new.threads', compact('threads'));
+        // Get SEO data for dynamic title
+        $pageSeo = PageSeo::findByRoute('whats-new.threads');
+
+        return view('whats-new.threads', compact('threads', 'pageSeo'));
     }
 
     /**
@@ -227,7 +238,10 @@ class WhatsNewController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(20);
 
-            return view('whats-new.media', compact('mediaItems'));
+            // Get SEO data for dynamic title
+            $pageSeo = PageSeo::findByRoute('whats-new.media');
+
+            return view('whats-new.media', compact('mediaItems', 'pageSeo'));
 
         } catch (\Exception $e) {
             // Log error for debugging
@@ -235,8 +249,9 @@ class WhatsNewController extends Controller
 
             // Return empty result to avoid 500 error
             $mediaItems = Media::whereRaw('1 = 0')->paginate(20); // Empty paginated collection
+            $pageSeo = PageSeo::findByRoute('whats-new.media');
 
-            return view('whats-new.media', compact('mediaItems'));
+            return view('whats-new.media', compact('mediaItems', 'pageSeo'));
         }
     }
 
@@ -256,7 +271,10 @@ class WhatsNewController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('whats-new.replies', compact('threads'));
+        // Get SEO data for dynamic title
+        $pageSeo = PageSeo::findByRoute('whats-new.replies');
+
+        return view('whats-new.replies', compact('threads', 'pageSeo'));
     }
 
     /**
@@ -299,7 +317,10 @@ class WhatsNewController extends Controller
             }
         }
 
-        return view('whats-new.showcases', compact('showcases'));
+        // Get SEO data for dynamic title
+        $pageSeo = PageSeo::findByRoute('whats-new.showcases');
+
+        return view('whats-new.showcases', compact('showcases', 'pageSeo'));
     }
 
     /**
@@ -359,7 +380,10 @@ class WhatsNewController extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate(20);
 
-        return view('whats-new.hot-topics', compact('threads'));
+        // Get SEO data for dynamic title
+        $pageSeo = PageSeo::findByRoute('whats-new.hot-topics');
+
+        return view('whats-new.hot-topics', compact('threads', 'pageSeo'));
     }
 
     /**

@@ -9,7 +9,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ __('nav.main.whats_new') }}</h1>
+        <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('showcase.new') }}</h1>
 
         <a href="{{ route('showcase.create') }}" class="btn btn-primary">
             <i class="fa-solid fa-plus me-1"></i> {{ t_common("create_showcase") }}

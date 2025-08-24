@@ -9,7 +9,7 @@
 @section('content')
 <div class="body_page">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ __('nav.main.whats_new') }}</h1>
+        <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('nav.main.whats_new') }}</h1>
 
         <a href="{{ route('threads.create') }}" class="btn btn-primary">
             <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}
@@ -30,7 +30,7 @@
                 <a class="nav-link active" href="{{ route('whats-new') }}"><i class="fas fa-info-circle me-2"></i> {{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.popular') }}"><i class="fas fa-fire me-2"></i>{{ __('ui.common.popular') }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">{{ __('navigation.hot_topics') }}</a>

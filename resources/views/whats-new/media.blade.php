@@ -11,7 +11,7 @@
 @section('content')
 <div class="container_2 mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ __('nav.main.whats_new') }}</h1>
+        <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('media.new') }}</h1>
 
         <a href="{{ route('threads.create') }}" class="btn btn-primary">
             <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}

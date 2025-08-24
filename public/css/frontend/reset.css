@@ -1127,7 +1127,6 @@ a:focus {
   --bs-alert-bg: var(--bs-info-bg-subtle);
   --bs-alert-border-color: #7e775766;
   padding: 10px 15px;
-  text-align: center;
 }
 
 .alert-warning {
