@@ -51,7 +51,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
                     @else
                         {{ $userName }}
                     @endif
-                </strong><br>
+                </strong>
                 <!-- Status badge nếu có -->
                 @if(isset($thread->status) && $thread->status)
                 <!--span class="badge bg-light text-dark"><i class="fas fa-info-circle me-1"></i>{{ $thread->status

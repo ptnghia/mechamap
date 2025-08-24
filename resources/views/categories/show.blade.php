@@ -109,18 +109,14 @@
 
                         {{-- Forum Stats --}}
                         <div class="forum-stats mt-auto">
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
-                                        <div class="stat-number fw-bold text-primary">{{ number_format($forum->threads_count ?? 0) }}</div>
-                                        <div class="stat-label small text-muted">{{ __('forum.threads.threads') }}</div>
-                                    </div>
+                            <div class="d-flex g-2">
+                                <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
+                                    <div class="stat-number fw-bold text-primary">{{ number_format($forum->threads_count ?? 0) }}</div>
+                                    <div class="stat-label small text-muted">{{ __('forum.threads.threads') }}</div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
-                                        <div class="stat-number fw-bold text-success">{{ number_format($forum->posts_count ?? 0) }}</div>
-                                        <div class="stat-label small text-muted">{{ __('forum.threads.title') }}</div>
-                                    </div>
+                                <div class="stat-item text-center p-1 rounded-2" style="background-color: #f8f9fa;">
+                                    <div class="stat-number fw-bold text-success">{{ number_format($forum->posts_count ?? 0) }}</div>
+                                    <div class="stat-label small text-muted">{{ __('common.messages.comments') }}</div>
                                 </div>
                             </div>
                         </div>

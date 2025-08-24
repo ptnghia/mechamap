@@ -2680,9 +2680,10 @@ html {
 
 .title_page_sub {
     text-transform: uppercase;
-    font-size: 18px!important;
+    font-size: 20px!important;
     line-height: 25px;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .showcase-card .rounded {
