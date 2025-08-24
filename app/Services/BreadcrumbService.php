@@ -44,7 +44,7 @@ class BreadcrumbService
             return []; // Return empty array if no home SEO data
         }
 
-        $homeTitle = $this->extractBreadcrumbTitle($homeSeo->getLocalizedTitle(), $request);
+        $homeTitle = $this->getBreadcrumbTitle($homeSeo, $request);
 
         $breadcrumbs[] = [
             'title' => $homeTitle,
@@ -106,7 +106,7 @@ class BreadcrumbService
             // Add current page breadcrumb for hierarchical routes if not already included
             if ($pageSeo && !$this->isCurrentPageInBreadcrumbs($breadcrumbs, $request->url())) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($pageSeo->getLocalizedTitle(), $request),
+                    'title' => $this->getBreadcrumbTitle($pageSeo, $request),
                     'url' => $request->url(),
                     'active' => false
                 ];
@@ -115,7 +115,7 @@ class BreadcrumbService
             // Add current page breadcrumb for non-hierarchical routes
             if ($pageSeo) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($pageSeo->getLocalizedTitle(), $request),
+                    'title' => $this->getBreadcrumbTitle($pageSeo, $request),
                     'url' => $request->url(),
                     'active' => false
                 ];
@@ -157,7 +157,8 @@ class BreadcrumbService
             'marketplace.products.show',
             'showcase.show',
             'users.show',
-            'profile.show'
+            'profile.show',
+            'whats-new.'  // Add whats-new hierarchy support
         ];
 
         foreach ($hierarchicalPatterns as $pattern) {
@@ -183,7 +184,7 @@ class BreadcrumbService
                 $forumsSeo = PageSeo::findByRoute('forums.index');
                 if ($forumsSeo) {
                     $breadcrumbs[] = [
-                        'title' => $this->extractBreadcrumbTitle($forumsSeo->getLocalizedTitle(), $request),
+                        'title' => $this->getBreadcrumbTitle($forumsSeo, $request),
                         'url' => route('forums.index'),
                         'active' => false
                     ];
@@ -215,7 +216,7 @@ class BreadcrumbService
             $marketplaceSeo = PageSeo::findByRoute('marketplace.index');
             if ($marketplaceSeo) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($marketplaceSeo->getLocalizedTitle(), $request),
+                    'title' => $this->getBreadcrumbTitle($marketplaceSeo, $request),
                     'url' => route('marketplace.index'),
                     'active' => false
                 ];
@@ -225,7 +226,7 @@ class BreadcrumbService
                 $productsSeo = PageSeo::findByRoute('marketplace.products.index');
                 if ($productsSeo) {
                     $breadcrumbs[] = [
-                        'title' => $this->extractBreadcrumbTitle($productsSeo->getLocalizedTitle(), $request),
+                        'title' => $this->getBreadcrumbTitle($productsSeo, $request),
                         'url' => route('marketplace.products.index'),
                         'active' => false
                     ];
@@ -238,14 +239,56 @@ class BreadcrumbService
             $usersSeo = PageSeo::findByRoute('users.index');
             if ($usersSeo) {
                 $breadcrumbs[] = [
-                    'title' => $this->extractBreadcrumbTitle($usersSeo->getLocalizedTitle(), $request),
+                    'title' => $this->getBreadcrumbTitle($usersSeo, $request),
                     'url' => route('users.index'),
                     'active' => false
                 ];
             }
         }
 
+        // Whats-New hierarchy: Whats-New > Sub-page
+        elseif (str_starts_with($routeName, 'whats-new.')) {
+            // Only add whats-new main breadcrumb if we're NOT on the main whats-new page itself
+            if ($routeName !== 'whats-new') {
+                $whatsNewSeo = PageSeo::findByRoute('whats-new');
+                if ($whatsNewSeo) {
+                    $breadcrumbs[] = [
+                        'title' => $this->getBreadcrumbTitle($whatsNewSeo, $request),
+                        'url' => route('whats-new'),
+                        'active' => false
+                    ];
+                }
+            }
+        }
+
         return $breadcrumbs;
+    }
+
+    /**
+     * Get breadcrumb title from PageSeo object with i18n support
+     */
+    private function getBreadcrumbTitle(PageSeo $pageSeo, ?Request $request = null): string
+    {
+        $locale = app()->getLocale();
+
+        // Try to get breadcrumb title from i18n data first
+        if ($pageSeo->breadcrumb_title_i18n && isset($pageSeo->breadcrumb_title_i18n[$locale])) {
+            return $pageSeo->breadcrumb_title_i18n[$locale];
+        }
+
+        // Fallback to breadcrumb_title
+        if ($pageSeo->breadcrumb_title) {
+            return $pageSeo->breadcrumb_title;
+        }
+
+        // Fallback to extracting from localized title
+        $localizedTitle = $pageSeo->getLocalizedTitle($locale);
+        if ($localizedTitle) {
+            return $this->extractBreadcrumbTitle($localizedTitle, $request);
+        }
+
+        // Final fallback to title
+        return $pageSeo->title ?: 'Unknown';
     }
 
     /**

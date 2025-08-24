@@ -27,7 +27,7 @@
     <div class="whats-new-tabs mb-4">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
+                <a class="nav-link active" href="{{ route('whats-new') }}"><i class="fas fa-info-circle me-2"></i> {{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
@@ -55,9 +55,6 @@
         {{ $threads->links() }}
     </div>
     @endif
-
-
-
     <!-- Posts List -->
     <div class="body_left">
         <div class="list-group list-group-flush">
