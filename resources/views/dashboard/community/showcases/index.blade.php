@@ -4,6 +4,24 @@
 
 @push('styles')
 <style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-header h3 {
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header .text-muted {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
     .showcase-card {
         border: 1px solid #e9ecef;
         border-radius: 0.5rem;
@@ -139,20 +157,34 @@
 
 @section('dashboard-content')
 <div class="showcases-dashboard">
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3 class="mb-1">
+                    <i class="fas fa-trophy me-2 text-primary"></i>
+                    {{ __('showcase.my_showcases') }}
+                </h3>
+                <p class="mb-0 text-muted">{{ __('showcase.manage_description') }}</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ route('showcase.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    {{ __('showcase.create.title') }}
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Stats Overview -->
     <div class="stats-overview">
         <div class="row align-items-center">
-            <div class="col-md-8">
-                <h3 class="mb-1">{{ __('showcase.my_showcases') }}</h3>
-                <p class="mb-0 opacity-75">{{ __('showcase.manage_description') }}</p>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <a href="{{ route('dashboard.community.showcases.create') }}" class="btn btn-light">
+            <div class="col-md-12">
                     <i class="fas fa-plus me-2"></i>{{ __('showcase.create_new') }}
                 </a>
             </div>
         </div>
-        
+
         <div class="stats-grid mt-4">
             <div class="stat-card">
                 <div class="stat-number">{{ $stats['total'] }}</div>
@@ -194,7 +226,7 @@
                     <option value="rejected" {{ $currentStatus === 'rejected' ? 'selected' : '' }}>{{ __('showcase.status.rejected') }}</option>
                 </select>
             </div>
-            
+
             <div class="col-md-3">
                 <label for="category" class="form-label">{{ __('showcase.filter.category') }}</label>
                 <select name="category" id="category" class="form-select">
@@ -206,13 +238,13 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="col-md-3">
                 <label for="search" class="form-label">{{ __('showcase.filter.search') }}</label>
-                <input type="text" name="search" id="search" class="form-control" 
+                <input type="text" name="search" id="search" class="form-control"
                        value="{{ $search }}" placeholder="{{ __('showcase.filter.search_placeholder') }}">
             </div>
-            
+
             <div class="col-md-3">
                 <label for="sort" class="form-label">{{ __('showcase.filter.sort') }}</label>
                 <select name="sort" id="sort" class="form-select">
@@ -222,7 +254,7 @@
                     <option value="highest_rated" {{ $currentSort === 'highest_rated' ? 'selected' : '' }}>{{ __('showcase.sort.highest_rated') }}</option>
                 </select>
             </div>
-            
+
             <div class="col-12">
                 <button type="submit" class="btn btn-primary me-2">
                     <i class="fas fa-search me-2"></i>{{ __('common.filter') }}
@@ -242,29 +274,29 @@
                     <div class="card showcase-card h-100">
                         <div class="position-relative">
                             @if($showcase->cover_image)
-                                <img src="{{ asset('storage/' . $showcase->cover_image) }}" 
+                                <img src="{{ asset('storage/' . $showcase->cover_image) }}"
                                      class="showcase-image" alt="{{ $showcase->title }}">
                             @else
                                 <div class="showcase-image d-flex align-items-center justify-content-center">
                                     <i class="fas fa-image fa-3x text-muted"></i>
                                 </div>
                             @endif
-                            
+
                             <span class="showcase-status status-{{ $showcase->status }}">
                                 {{ __('showcase.status.' . $showcase->status) }}
                             </span>
                         </div>
-                        
+
                         <div class="card-body">
                             <h6 class="card-title">{{ Str::limit($showcase->title, 50) }}</h6>
                             <p class="card-text text-muted small">
                                 {{ Str::limit($showcase->description, 100) }}
                             </p>
-                            
-                            @if($showcase->category)
-                                <span class="badge bg-secondary mb-2">{{ $showcase->category->name }}</span>
+
+                            @if($showcase->showcaseCategory)
+                                <span class="badge bg-secondary mb-2">{{ $showcase->showcaseCategory->name }}</span>
                             @endif
-                            
+
                             <div class="showcase-stats">
                                 <div class="stat-item">
                                     <i class="fas fa-eye"></i>
@@ -279,23 +311,23 @@
                                     <span>{{ $showcase->like_count ?? 0 }}</span>
                                 </div>
                             </div>
-                            
+
                             <div class="showcase-actions">
-                                <a href="{{ route('dashboard.community.showcases.show', $showcase) }}" 
+                                <a href="{{ route('dashboard.community.showcases.show', $showcase) }}"
                                    class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-eye me-1"></i>{{ __('common.view') }}
                                 </a>
-                                <a href="{{ route('dashboard.community.showcases.edit', $showcase) }}" 
+                                <a href="{{ route('dashboard.community.showcases.edit', $showcase) }}"
                                    class="btn btn-outline-secondary btn-sm">
                                     <i class="fas fa-edit me-1"></i>{{ __('common.edit') }}
                                 </a>
-                                <button type="button" class="btn btn-outline-danger btn-sm" 
+                                <button type="button" class="btn btn-outline-danger btn-sm"
                                         onclick="confirmDelete({{ $showcase->id }})">
                                     <i class="fas fa-trash me-1"></i>{{ __('common.delete') }}
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="card-footer text-muted small">
                             <i class="fas fa-calendar me-1"></i>
                             {{ $showcase->created_at->format('d/m/Y') }}
@@ -304,7 +336,7 @@
                 </div>
             @endforeach
         </div>
-        
+
         <!-- Pagination -->
         <div class="d-flex justify-content-center">
             {{ $showcases->appends(request()->query())->links() }}
@@ -315,7 +347,7 @@
             <i class="fas fa-star"></i>
             <h4>{{ __('showcase.empty.title') }}</h4>
             <p>{{ __('showcase.empty.description') }}</p>
-            <a href="{{ route('dashboard.community.showcases.create') }}" class="btn btn-primary">
+            <a href="{{ route('showcase.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>{{ __('showcase.create_first') }}
             </a>
         </div>
@@ -355,7 +387,7 @@
 function confirmDelete(showcaseId) {
     const deleteForm = document.getElementById('deleteForm');
     deleteForm.action = `{{ route('dashboard.community.showcases.index') }}/${showcaseId}`;
-    
+
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
 }
@@ -364,7 +396,7 @@ function confirmDelete(showcaseId) {
 document.addEventListener('DOMContentLoaded', function() {
     const filterForm = document.querySelector('.filter-section form');
     const selects = filterForm.querySelectorAll('select');
-    
+
     selects.forEach(select => {
         select.addEventListener('change', function() {
             filterForm.submit();

@@ -192,8 +192,6 @@ Route::middleware(['auth'])
         // Showcase management
         Route::prefix('showcases')->name('showcases.')->group(function () {
             Route::get('/', [ShowcaseController::class, 'index'])->name('index');
-            Route::get('/create', [ShowcaseController::class, 'create'])->name('create');
-            Route::post('/', [ShowcaseController::class, 'store'])->name('store');
             Route::get('/{showcase}', [ShowcaseController::class, 'show'])->name('show');
             Route::get('/{showcase}/edit', [ShowcaseController::class, 'edit'])->name('edit');
             Route::patch('/{showcase}', [ShowcaseController::class, 'update'])->name('update');

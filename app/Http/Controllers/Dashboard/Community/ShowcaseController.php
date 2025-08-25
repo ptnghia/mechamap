@@ -26,7 +26,7 @@ class ShowcaseController extends BaseController
         $search = $request->get('search');
         $sort = $request->get('sort', 'newest');
 
-        $query = Showcase::with(['category', 'thread'])
+        $query = Showcase::with(['showcaseCategory', 'showcaseable'])
             ->where('user_id', $this->user->id);
 
         // Apply filters
@@ -35,7 +35,7 @@ class ShowcaseController extends BaseController
         }
 
         if ($category) {
-            $query->where('category_id', $category);
+            $query->where('showcase_category_id', $category);
         }
 
         if ($search) {
@@ -81,60 +81,7 @@ class ShowcaseController extends BaseController
         ]);
     }
 
-    /**
-     * Hiển thị form tạo showcase mới
-     */
-    public function create()
-    {
-        $categories = ShowcaseCategory::orderBy('name')->get();
 
-        return $this->dashboardResponse('dashboard.community.showcases.create', [
-            'categories' => $categories
-        ]);
-    }
-
-    /**
-     * Lưu showcase mới
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:2000',
-            'category_id' => 'required|exists:showcase_categories,id',
-            'thread_id' => 'nullable|exists:threads,id',
-            'images' => 'nullable|array|max:10',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
-            'attachments' => 'nullable|array|max:5',
-            'attachments.*' => 'file|max:10240', // 10MB max
-            'tags' => 'nullable|string|max:500',
-            'is_featured' => 'boolean',
-        ]);
-
-        $showcase = Showcase::create([
-            'user_id' => $this->user->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'thread_id' => $request->thread_id,
-            'tags' => $request->tags ? explode(',', $request->tags) : [],
-            'is_featured' => $request->boolean('is_featured'),
-            'status' => 'pending', // Default to pending approval
-        ]);
-
-        // Handle image uploads
-        if ($request->hasFile('images')) {
-            $this->handleImageUploads($showcase, $request->file('images'));
-        }
-
-        // Handle attachment uploads
-        if ($request->hasFile('attachments')) {
-            $this->handleAttachmentUploads($showcase, $request->file('attachments'));
-        }
-
-        return redirect()->route('dashboard.community.showcases.show', $showcase)
-            ->with('success', 'Showcase created successfully and is pending approval.');
-    }
 
     /**
      * Hiển thị showcase cụ thể

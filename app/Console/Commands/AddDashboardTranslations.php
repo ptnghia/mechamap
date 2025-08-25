@@ -39,6 +39,394 @@ class AddDashboardTranslations extends Command
             'en' => 'Add to Wishlist'
         ],
 
+        // ===== SHOWCASE FORM TRANSLATIONS =====
+        'showcase.form.title' => [
+            'vi' => 'Tiêu đề showcase',
+            'en' => 'Showcase Title'
+        ],
+        'showcase.form.title_placeholder' => [
+            'vi' => 'Tên dự án hoặc sản phẩm bạn muốn showcase',
+            'en' => 'Project or product name you want to showcase'
+        ],
+        'showcase.form.description' => [
+            'vi' => 'Mô tả chi tiết',
+            'en' => 'Detailed Description'
+        ],
+        'showcase.form.description_placeholder' => [
+            'vi' => 'Mô tả chi tiết về dự án: mục tiêu, công nghệ sử dụng, đặc điểm nổi bật, kết quả đạt được...',
+            'en' => 'Detailed project description: objectives, technologies used, key features, results achieved...'
+        ],
+        'showcase.form.description_help' => [
+            'vi' => 'Cung cấp thông tin chi tiết về dự án, công nghệ và kết quả. Hỗ trợ định dạng văn bản, hình ảnh và liên kết.',
+            'en' => 'Provide detailed information about the project, technology and results. Supports text formatting, images and links.'
+        ],
+        'showcase.form.location' => [
+            'vi' => 'Địa điểm',
+            'en' => 'Location'
+        ],
+        'showcase.form.usage' => [
+            'vi' => 'Lĩnh vực ứng dụng',
+            'en' => 'Application Field'
+        ],
+        'showcase.form.cover_image' => [
+            'vi' => 'Hình ảnh đại diện',
+            'en' => 'Cover Image'
+        ],
+        'showcase.form.cover_image_help' => [
+            'vi' => 'Hình ảnh đại diện cho showcase của bạn',
+            'en' => 'Representative image for your showcase'
+        ],
+        'showcase.form.multiple_images' => [
+            'vi' => 'Thư viện hình ảnh',
+            'en' => 'Image Gallery'
+        ],
+        'showcase.form.multiple_images_help' => [
+            'vi' => 'Thêm nhiều hình ảnh để showcase dự án của bạn một cách chi tiết',
+            'en' => 'Add multiple images to showcase your project in detail'
+        ],
+        'showcase.form.file_attachments' => [
+            'vi' => 'File Attachments',
+            'en' => 'File Attachments'
+        ],
+        'showcase.form.file_attachments_help' => [
+            'vi' => 'Thêm các file đính kèm như CAD files, bản vẽ kỹ thuật, tài liệu tính toán, báo cáo',
+            'en' => 'Add attachments like CAD files, technical drawings, calculation documents, reports'
+        ],
+        'showcase.form.software_used' => [
+            'vi' => 'Phần mềm sử dụng',
+            'en' => 'Software Used'
+        ],
+        'showcase.form.software_used_help' => [
+            'vi' => 'Chọn các phần mềm đã sử dụng trong dự án (có thể chọn nhiều)',
+            'en' => 'Select software used in the project (multiple selection allowed)'
+        ],
+        'showcase.form.materials' => [
+            'vi' => 'Vật liệu chính',
+            'en' => 'Main Materials'
+        ],
+        'showcase.form.materials_help' => [
+            'vi' => 'Nhập vật liệu chính hoặc chọn từ gợi ý. Có thể nhập nhiều vật liệu, cách nhau bằng dấu phẩy',
+            'en' => 'Enter main materials or select from suggestions. Multiple materials can be entered, separated by commas'
+        ],
+        'showcase.form.manufacturing_process' => [
+            'vi' => 'Quy trình sản xuất',
+            'en' => 'Manufacturing Process'
+        ],
+        'showcase.form.manufacturing_process_help' => [
+            'vi' => 'Chọn quy trình sản xuất chính được sử dụng trong dự án',
+            'en' => 'Select the main manufacturing process used in the project'
+        ],
+        'showcase.form.complexity_level' => [
+            'vi' => 'Mức độ phức tạp',
+            'en' => 'Complexity Level'
+        ],
+        'showcase.form.complexity_level_help' => [
+            'vi' => 'Chọn mức độ phức tạp phù hợp với dự án của bạn',
+            'en' => 'Select the complexity level appropriate for your project'
+        ],
+        'showcase.form.industry_application' => [
+            'vi' => 'Ứng dụng ngành',
+            'en' => 'Industry Application'
+        ],
+        'showcase.form.industry_application_help' => [
+            'vi' => 'Ngành công nghiệp ứng dụng dự án',
+            'en' => 'Industry application of the project'
+        ],
+        'showcase.form.project_scale' => [
+            'vi' => 'Quy mô/Cấp độ',
+            'en' => 'Scale/Level'
+        ],
+        'showcase.form.category' => [
+            'vi' => 'Danh mục kỹ thuật',
+            'en' => 'Technical Category'
+        ],
+
+        // ===== SHOWCASE FORM SECTIONS =====
+        'showcase.sections.basic_info' => [
+            'vi' => 'Thông Tin Cơ Bản',
+            'en' => 'Basic Information'
+        ],
+        'showcase.sections.technical_info' => [
+            'vi' => 'Thông Tin Kỹ Thuật',
+            'en' => 'Technical Information'
+        ],
+        'showcase.sections.project_features' => [
+            'vi' => 'Tính năng dự án',
+            'en' => 'Project Features'
+        ],
+        'showcase.sections.project_features_help' => [
+            'vi' => 'Chọn các tính năng có trong dự án của bạn',
+            'en' => 'Select features available in your project'
+        ],
+        'showcase.sections.sharing_settings' => [
+            'vi' => 'Cài đặt chia sẻ',
+            'en' => 'Sharing Settings'
+        ],
+        'showcase.sections.sharing_settings_help' => [
+            'vi' => 'Thiết lập quyền truy cập và tương tác với dự án',
+            'en' => 'Set access permissions and interaction with the project'
+        ],
+
+        // ===== SHOWCASE FORM FEATURES =====
+        'showcase.features.has_tutorial' => [
+            'vi' => 'Hướng dẫn step-by-step',
+            'en' => 'Step-by-step Tutorial'
+        ],
+        'showcase.features.has_tutorial_help' => [
+            'vi' => 'Dự án có kèm hướng dẫn chi tiết từng bước',
+            'en' => 'Project includes detailed step-by-step instructions'
+        ],
+        'showcase.features.has_calculations' => [
+            'vi' => 'Tính toán kỹ thuật',
+            'en' => 'Technical Calculations'
+        ],
+        'showcase.features.has_calculations_help' => [
+            'vi' => 'Bao gồm các tính toán và phân tích chi tiết',
+            'en' => 'Includes detailed calculations and analysis'
+        ],
+        'showcase.features.has_cad_files' => [
+            'vi' => 'File CAD đính kèm',
+            'en' => 'CAD Files Attached'
+        ],
+        'showcase.features.has_cad_files_help' => [
+            'vi' => 'File 3D, bản vẽ kỹ thuật có thể tải xuống',
+            'en' => '3D files, technical drawings available for download'
+        ],
+
+        // ===== SHOWCASE FORM SHARING =====
+        'showcase.sharing.is_public' => [
+            'vi' => 'Công khai',
+            'en' => 'Public'
+        ],
+        'showcase.sharing.is_public_help' => [
+            'vi' => 'Cho phép mọi người xem và tìm kiếm dự án',
+            'en' => 'Allow everyone to view and search the project'
+        ],
+        'showcase.sharing.allow_downloads' => [
+            'vi' => 'Cho phép tải xuống',
+            'en' => 'Allow Downloads'
+        ],
+        'showcase.sharing.allow_downloads_help' => [
+            'vi' => 'Người dùng có thể tải file đính kèm',
+            'en' => 'Users can download attached files'
+        ],
+        'showcase.sharing.allow_comments' => [
+            'vi' => 'Cho phép bình luận',
+            'en' => 'Allow Comments'
+        ],
+        'showcase.sharing.allow_comments_help' => [
+            'vi' => 'Người dùng có thể bình luận và thảo luận',
+            'en' => 'Users can comment and discuss'
+        ],
+
+        // ===== SHOWCASE VALIDATION MESSAGES =====
+        'showcase.validation.title_required' => [
+            'vi' => 'Tiêu đề showcase là bắt buộc.',
+            'en' => 'Showcase title is required.'
+        ],
+        'showcase.validation.title_min' => [
+            'vi' => 'Tiêu đề phải có ít nhất 5 ký tự.',
+            'en' => 'Title must be at least 5 characters.'
+        ],
+        'showcase.validation.title_max' => [
+            'vi' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'en' => 'Title must not exceed 255 characters.'
+        ],
+        'showcase.validation.title_regex' => [
+            'vi' => 'Tiêu đề chỉ được chứa chữ cái, số, dấu gạch ngang và khoảng trắng.',
+            'en' => 'Title may only contain letters, numbers, hyphens and spaces.'
+        ],
+        'showcase.validation.description_required' => [
+            'vi' => 'Mô tả chi tiết là bắt buộc.',
+            'en' => 'Detailed description is required.'
+        ],
+        'showcase.validation.description_min' => [
+            'vi' => 'Mô tả phải có ít nhất 50 ký tự để cung cấp thông tin đầy đủ.',
+            'en' => 'Description must be at least 50 characters to provide complete information.'
+        ],
+        'showcase.validation.description_min_words' => [
+            'vi' => 'Mô tả cần có ít nhất 20 từ để cung cấp thông tin đầy đủ.',
+            'en' => 'Description needs at least 20 words to provide complete information.'
+        ],
+        'showcase.validation.description_max' => [
+            'vi' => 'Mô tả không được vượt quá 5000 ký tự.',
+            'en' => 'Description must not exceed 5000 characters.'
+        ],
+        'showcase.validation.cover_image_required' => [
+            'vi' => 'Hình ảnh đại diện là bắt buộc.',
+            'en' => 'Cover image is required.'
+        ],
+        'showcase.validation.cover_image_image' => [
+            'vi' => 'File phải là hình ảnh.',
+            'en' => 'File must be an image.'
+        ],
+        'showcase.validation.cover_image_mimes' => [
+            'vi' => 'Hình ảnh phải có định dạng: JPEG, PNG, JPG, GIF, WebP.',
+            'en' => 'Image must be in format: JPEG, PNG, JPG, GIF, WebP.'
+        ],
+        'showcase.validation.cover_image_max' => [
+            'vi' => 'Hình ảnh không được vượt quá 5MB.',
+            'en' => 'Image must not exceed 5MB.'
+        ],
+        'showcase.validation.cover_image_dimensions' => [
+            'vi' => 'Hình ảnh phải có kích thước tối thiểu 400x300px và tối đa 4000x4000px.',
+            'en' => 'Image must have minimum dimensions of 400x300px and maximum 4000x4000px.'
+        ],
+        'showcase.validation.location_max' => [
+            'vi' => 'Địa điểm không được vượt quá 255 ký tự.',
+            'en' => 'Location must not exceed 255 characters.'
+        ],
+        'showcase.validation.location_regex' => [
+            'vi' => 'Địa điểm chứa ký tự không hợp lệ.',
+            'en' => 'Location contains invalid characters.'
+        ],
+        'showcase.validation.usage_max' => [
+            'vi' => 'Lĩnh vực ứng dụng không được vượt quá 500 ký tự.',
+            'en' => 'Application field must not exceed 500 characters.'
+        ],
+        'showcase.validation.software_used_array' => [
+            'vi' => 'Phần mềm sử dụng phải là danh sách.',
+            'en' => 'Software used must be a list.'
+        ],
+        'showcase.validation.software_used_max' => [
+            'vi' => 'Chỉ được chọn tối đa 10 phần mềm.',
+            'en' => 'Maximum 10 software can be selected.'
+        ],
+        'showcase.validation.software_used_in' => [
+            'vi' => 'Phần mềm được chọn không hợp lệ.',
+            'en' => 'Selected software is invalid.'
+        ],
+        'showcase.validation.materials_max' => [
+            'vi' => 'Vật liệu không được vượt quá 1000 ký tự.',
+            'en' => 'Materials must not exceed 1000 characters.'
+        ],
+        'showcase.validation.materials_regex' => [
+            'vi' => 'Vật liệu chứa ký tự không hợp lệ.',
+            'en' => 'Materials contain invalid characters.'
+        ],
+        'showcase.validation.manufacturing_process_in' => [
+            'vi' => 'Quy trình sản xuất được chọn không hợp lệ.',
+            'en' => 'Selected manufacturing process is invalid.'
+        ],
+        'showcase.validation.complexity_level_in' => [
+            'vi' => 'Mức độ phức tạp được chọn không hợp lệ.',
+            'en' => 'Selected complexity level is invalid.'
+        ],
+        'showcase.validation.industry_application_max' => [
+            'vi' => 'Ứng dụng ngành không được vượt quá 500 ký tự.',
+            'en' => 'Industry application must not exceed 500 characters.'
+        ],
+        'showcase.validation.industry_application_regex' => [
+            'vi' => 'Ứng dụng ngành chứa ký tự không hợp lệ.',
+            'en' => 'Industry application contains invalid characters.'
+        ],
+        'showcase.validation.floors_in' => [
+            'vi' => 'Quy mô dự án được chọn không hợp lệ.',
+            'en' => 'Selected project scale is invalid.'
+        ],
+        'showcase.validation.category_in' => [
+            'vi' => 'Danh mục được chọn không hợp lệ.',
+            'en' => 'Selected category is invalid.'
+        ],
+        'showcase.validation.multiple_images_array' => [
+            'vi' => 'Hình ảnh phải là danh sách.',
+            'en' => 'Images must be a list.'
+        ],
+        'showcase.validation.multiple_images_max' => [
+            'vi' => 'Chỉ được upload tối đa 10 hình ảnh.',
+            'en' => 'Maximum 10 images can be uploaded.'
+        ],
+        'showcase.validation.multiple_images_image' => [
+            'vi' => 'Tất cả file phải là hình ảnh.',
+            'en' => 'All files must be images.'
+        ],
+        'showcase.validation.multiple_images_mimes' => [
+            'vi' => 'Hình ảnh phải có định dạng: JPEG, PNG, JPG, GIF, WebP.',
+            'en' => 'Images must be in format: JPEG, PNG, JPG, GIF, WebP.'
+        ],
+        'showcase.validation.multiple_images_max_size' => [
+            'vi' => 'Mỗi hình ảnh không được vượt quá 10MB.',
+            'en' => 'Each image must not exceed 10MB.'
+        ],
+        'showcase.validation.multiple_images_dimensions' => [
+            'vi' => 'Hình ảnh phải có kích thước tối thiểu 200x200px và tối đa 4000x4000px.',
+            'en' => 'Images must have minimum dimensions of 200x200px and maximum 4000x4000px.'
+        ],
+        'showcase.validation.file_attachments_array' => [
+            'vi' => 'File đính kèm phải là danh sách.',
+            'en' => 'File attachments must be a list.'
+        ],
+        'showcase.validation.file_attachments_max' => [
+            'vi' => 'Chỉ được upload tối đa 10 file đính kèm.',
+            'en' => 'Maximum 10 file attachments can be uploaded.'
+        ],
+        'showcase.validation.file_attachments_file' => [
+            'vi' => 'Tất cả phải là file hợp lệ.',
+            'en' => 'All must be valid files.'
+        ],
+        'showcase.validation.file_attachments_max_size' => [
+            'vi' => 'Mỗi file không được vượt quá 50MB.',
+            'en' => 'Each file must not exceed 50MB.'
+        ],
+        'showcase.validation.file_attachments_mimes' => [
+            'vi' => 'File phải có định dạng: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, DWG, STEP, STP, IGES, IGS, JPG, JPEG, PNG, GIF, ZIP, RAR, 7Z.',
+            'en' => 'Files must be in format: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, DWG, STEP, STP, IGES, IGS, JPG, JPEG, PNG, GIF, ZIP, RAR, 7Z.'
+        ],
+        'showcase.validation.technical_info_required' => [
+            'vi' => 'Vui lòng điền ít nhất một thông tin kỹ thuật (phần mềm, vật liệu hoặc quy trình sản xuất).',
+            'en' => 'Please fill in at least one technical information (software, materials or manufacturing process).'
+        ],
+        'showcase.validation.cad_files_consistency' => [
+            'vi' => 'Bạn đã chọn "File CAD đính kèm" nhưng chưa upload file nào.',
+            'en' => 'You selected "CAD Files Attached" but have not uploaded any files.'
+        ],
+
+        // ===== SHOWCASE UPLOAD MESSAGES =====
+        'showcase.upload.drag_drop_cover' => [
+            'vi' => 'Kéo thả file hoặc click để chọn',
+            'en' => 'Drag and drop file or click to select'
+        ],
+        'showcase.upload.drag_drop_multiple' => [
+            'vi' => 'Kéo thả nhiều file hoặc click để chọn',
+            'en' => 'Drag and drop multiple files or click to select'
+        ],
+        'showcase.upload.drag_drop_attachments' => [
+            'vi' => 'Kéo thả file hoặc click để chọn',
+            'en' => 'Drag and drop files or click to select'
+        ],
+        'showcase.upload.cover_formats' => [
+            'vi' => 'JPG, PNG, WebP (tối đa 5MB)',
+            'en' => 'JPG, PNG, WebP (max 5MB)'
+        ],
+        'showcase.upload.multiple_formats' => [
+            'vi' => 'JPG, PNG, WebP (tối đa 10MB mỗi file, tối đa 10 files)',
+            'en' => 'JPG, PNG, WebP (max 10MB per file, max 10 files)'
+        ],
+        'showcase.upload.attachments_formats' => [
+            'vi' => 'CAD files (DWG, STEP, IGES), Documents (PDF, DOC), Spreadsheets (XLS), Images (JPG, PNG)',
+            'en' => 'CAD files (DWG, STEP, IGES), Documents (PDF, DOC), Spreadsheets (XLS), Images (JPG, PNG)'
+        ],
+        'showcase.upload.attachments_limits' => [
+            'vi' => 'Tối đa 10 files, mỗi file tối đa 50MB',
+            'en' => 'Maximum 10 files, 50MB per file'
+        ],
+        'showcase.upload.attachments_supported' => [
+            'vi' => 'Hỗ trợ các định dạng: CAD files (DWG, STEP, IGES), Documents (PDF, DOC, XLS), Images, Archives (ZIP, RAR)',
+            'en' => 'Supported formats: CAD files (DWG, STEP, IGES), Documents (PDF, DOC, XLS), Images, Archives (ZIP, RAR)'
+        ],
+        'showcase.upload.image_auto_compress' => [
+            'vi' => 'Hình ảnh sẽ được tự động nén để tối ưu tốc độ tải',
+            'en' => 'Images will be automatically compressed for optimal loading speed'
+        ],
+        'showcase.upload.image_gallery_help' => [
+            'vi' => 'Thêm nhiều góc nhìn, chi tiết kỹ thuật, và quá trình thực hiện dự án.',
+            'en' => 'Add multiple views, technical details, and project implementation process.'
+        ],
+        'showcase.upload.image_optimization' => [
+            'vi' => 'Hình ảnh sẽ được tự động nén xuống 1920x1080px để tối ưu hiệu suất mà vẫn giữ chất lượng tốt.',
+            'en' => 'Images will be automatically compressed to 1920x1080px for optimal performance while maintaining good quality.'
+        ],
+
         // ===== SIDEBAR USER DASHBOARD - MISSING TRANSLATIONS =====
 
         'sidebar.user_dashboard.profile' => [
@@ -156,6 +544,76 @@ class AddDashboardTranslations extends Command
         'sidebar.help.help_support' => [
             'vi' => 'Trợ giúp & Hỗ trợ',
             'en' => 'Help & Support'
+        ],
+
+        // ===== SHOWCASE EDIT FORM TRANSLATIONS =====
+        'showcase.edit.category' => [
+            'vi' => 'Danh mục',
+            'en' => 'Category'
+        ],
+        'showcase.edit.select_category' => [
+            'vi' => 'Chọn danh mục',
+            'en' => 'Select Category'
+        ],
+        'showcase.edit.current_status' => [
+            'vi' => 'Trạng thái hiện tại',
+            'en' => 'Current Status'
+        ],
+        'showcase.edit.status_help' => [
+            'vi' => 'Trạng thái này được quản lý bởi admin và không thể thay đổi',
+            'en' => 'This status is managed by admin and cannot be changed'
+        ],
+        'showcase.edit.description' => [
+            'vi' => 'Mô tả chi tiết',
+            'en' => 'Detailed Description'
+        ],
+        'showcase.edit.additional_details' => [
+            'vi' => 'Thông tin bổ sung',
+            'en' => 'Additional Details'
+        ],
+        'showcase.edit.tags' => [
+            'vi' => 'Tags',
+            'en' => 'Tags'
+        ],
+        'showcase.edit.add_tags' => [
+            'vi' => 'Thêm tags (cách nhau bằng dấu phẩy)',
+            'en' => 'Add tags (separated by commas)'
+        ],
+        'showcase.edit.tags_help' => [
+            'vi' => 'Thêm các từ khóa để giúp người khác tìm thấy showcase của bạn dễ dàng hơn',
+            'en' => 'Add keywords to help others find your showcase more easily'
+        ],
+        'showcase.edit.featured' => [
+            'vi' => 'Đánh dấu nổi bật',
+            'en' => 'Mark as Featured'
+        ],
+        'showcase.edit.featured_help' => [
+            'vi' => 'Showcase nổi bật sẽ được hiển thị ưu tiên trong danh sách',
+            'en' => 'Featured showcases will be displayed with priority in listings'
+        ],
+        'showcase.edit.drag_images' => [
+            'vi' => 'Kéo thả hình ảnh vào đây',
+            'en' => 'Drag and drop images here'
+        ],
+        'showcase.edit.image_formats' => [
+            'vi' => 'Hỗ trợ: JPG, PNG, WebP (tối đa 10MB mỗi file)',
+            'en' => 'Supported: JPG, PNG, WebP (max 10MB per file)'
+        ],
+        'showcase.edit.select_images' => [
+            'vi' => 'Chọn hình ảnh',
+            'en' => 'Select Images'
+        ],
+        'showcase.edit.drag_files' => [
+            'vi' => 'Kéo thả file vào đây',
+            'en' => 'Drag and drop files here'
+        ],
+        'showcase.edit.file_formats' => [
+            'vi' => 'Hỗ trợ: CAD files, PDF, DOC, XLS, ZIP (tối đa 50MB mỗi file)',
+            'en' => 'Supported: CAD files, PDF, DOC, XLS, ZIP (max 50MB per file)'
+        ],
+        'showcase.edit.select_files' => [
+            'vi' => 'Chọn file',
+            'en' => 'Select Files'
         ],
     ];
 

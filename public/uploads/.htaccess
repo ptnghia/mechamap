@@ -1,0 +1,248 @@
+# MechaMap Upload Directory Security
+# Prevent execution of PHP and other server-side scripts
+
+# Disable PHP execution
+<Files "*.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.php3">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.php4">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.php5">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.phtml">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable ASP execution
+<Files "*.asp">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.aspx">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable JSP execution
+<Files "*.jsp">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable executable files
+<Files "*.exe">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.bat">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.cmd">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.scr">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.com">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.pif">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable script files
+<Files "*.vbs">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.js">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.jar">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable shell scripts
+<Files "*.sh">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.bash">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.ps1">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable configuration files
+<Files "*.htaccess">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.htpasswd">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.ini">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.conf">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.config">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable database files
+<Files "*.sql">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.db">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.sqlite">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files "*.sqlite3">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Disable directory browsing
+Options -Indexes
+
+# Set security headers for uploaded files
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+    
+    # Prevent files from being embedded in frames
+    Header set X-Frame-Options "DENY"
+    
+    # Enable XSS protection
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # Content Security Policy for uploaded files
+    Header set Content-Security-Policy "default-src 'none'; img-src 'self'; object-src 'none'; script-src 'none'; style-src 'none';"
+    
+    # Prevent caching of potentially sensitive files
+    <FilesMatch "\.(pdf|doc|docx|xls|xlsx|ppt|pptx)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# Force download for certain file types instead of displaying
+<IfModule mod_headers.c>
+    <FilesMatch "\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)$">
+        Header set Content-Disposition "attachment"
+    </FilesMatch>
+</IfModule>
+
+# Limit file upload size (if supported by server)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 100M
+    php_value post_max_size 100M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Block access to hidden files
+<Files ".*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Allow access to .well-known directory (for SSL certificates, etc.)
+<Files ".well-known">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Block access to backup files
+<FilesMatch "\.(bak|backup|old|orig|save|swp|tmp)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Block access to version control files
+<FilesMatch "\.(git|svn|hg|bzr)">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Additional MIME type restrictions
+<IfModule mod_mime.c>
+    # Remove handler for PHP files
+    RemoveHandler .php .php3 .php4 .php5 .phtml
+    RemoveType .php .php3 .php4 .php5 .phtml
+    
+    # Remove handler for ASP files
+    RemoveHandler .asp .aspx
+    RemoveType .asp .aspx
+    
+    # Remove handler for JSP files
+    RemoveHandler .jsp
+    RemoveType .jsp
+    
+    # Set proper MIME types for allowed files
+    AddType image/jpeg .jpg .jpeg
+    AddType image/png .png
+    AddType image/gif .gif
+    AddType image/webp .webp
+    AddType application/pdf .pdf
+    AddType application/zip .zip
+    AddType application/x-rar-compressed .rar
+    AddType application/x-7z-compressed .7z
+</IfModule>
+
+# Error pages for security violations
+ErrorDocument 403 "Access Denied - File type not allowed"
+ErrorDocument 404 "File Not Found"

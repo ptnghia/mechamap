@@ -98,8 +98,8 @@
                     <select id="sidebar_software" name="software" class="form-select form-select-sm">
                         <option value="">{{ __('showcase.all_software') }}</option>
                         @foreach($searchFilters['software_options'] as $software)
-                        <option value="{{ $software }}" {{ request('software') === $software ? 'selected' : '' }}>
-                            {{ $software }}
+                        <option value="{{ $software['value'] }}" {{ request('software') === $software['value'] ? 'selected' : '' }}>
+                            {{ $software['label'] }}
                         </option>
                         @endforeach
                     </select>

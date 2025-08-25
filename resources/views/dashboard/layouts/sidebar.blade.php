@@ -131,7 +131,7 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.community.showcases.create') }}" class="nav-link">
+                    <a href="{{ route('showcase.create') }}" class="nav-link">
                         <i class="fas fa-star"></i>
                         <span class="nav-text">{{ __('sidebar.create_showcase') }}</span>
                     </a>

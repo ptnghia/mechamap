@@ -459,6 +459,8 @@ Route::middleware('auth')->group(function () {
     // Showcase routes (authenticated) - Core functionality only
     Route::get('/showcase/create', [ShowcaseController::class, 'create'])->name('showcase.create');
     Route::post('/showcase', [ShowcaseController::class, 'store'])->name('showcase.store');
+    Route::get('/showcase/{showcase}/edit', [ShowcaseController::class, 'edit'])->name('showcase.edit');
+    Route::patch('/showcase/{showcase}', [ShowcaseController::class, 'update'])->name('showcase.update');
     Route::post('/showcase/{showcase}/comment', [ShowcaseController::class, 'addComment'])->name('showcase.comment');
     Route::delete('/showcase/comment/{comment}', [ShowcaseController::class, 'deleteComment'])->name('showcase.comment.delete');
     Route::post('/showcase/{showcase}/like', [ShowcaseController::class, 'toggleLike'])->name('showcase.toggle-like');
@@ -570,6 +572,9 @@ Route::get('/public-showcase', function () {
 
 // Public Showcase Detail Route (no auth required)
 Route::get('/showcase/{showcase}', [ShowcaseController::class, 'show'])->name('showcase.show');
+
+// Showcase File Download Route (auth required for permission check)
+Route::get('/showcase/{showcase}/download/{file}', [ShowcaseController::class, 'downloadFile'])->name('showcase.download');
 
 // Showcase Rating routes
 Route::post('/showcases/{showcase}/ratings', [App\Http\Controllers\ShowcaseRatingController::class, 'store'])->name('showcase.rating.store');

@@ -7,7 +7,7 @@
                 <i class="fas fa-plus-circle me-2"></i>
                 {{ __('dashboard.create_new_thread') }}
             </a>
-            <a href="{{ route('dashboard.community.showcases.create') }}" class="btn btn-outline-info btn-sm w-100">
+            <a href="{{ route('showcase.create') }}" class="btn btn-outline-info btn-sm w-100">
                 <i class="fas fa-star me-2"></i>
                 {{ __('dashboard.create_showcase') }}
             </a>

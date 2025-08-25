@@ -11,6 +11,10 @@ use App\Models\Thread;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\ShowcaseImageService;
+use App\Services\FileAttachmentService;
+use App\Services\FileUploadSecurityService;
+use App\Services\SecurityMonitoringService;
+use App\Http\Requests\ShowcaseRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -223,30 +227,117 @@ class ShowcaseController extends Controller
     /**
      * Store a newly created showcase item in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(ShowcaseRequest $request): RedirectResponse
     {
         // Validate based on request type
         if ($request->has('title')) {
-            // New showcase creation
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
-                'location' => 'nullable|string|max:255',
-                'usage' => 'nullable|string|max:255',
-                'floors' => 'nullable|integer|min:1|max:5',
-                'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB
-                'category' => 'nullable|string',
-            ]);
+            // New showcase creation - validation handled by ShowcaseRequest
 
             /** @var User $user */
             $user = Auth::user();
 
-            // Upload cover image
+            // Initialize security services
+            $fileSecurityService = new FileUploadSecurityService();
+            $securityMonitoringService = new SecurityMonitoringService();
+
+            // Upload cover image with enhanced security
             $coverImagePath = null;
             if ($request->hasFile('cover_image')) {
                 $coverImage = $request->file('cover_image');
+
+                // Perform security validation
+                $securityResult = $fileSecurityService->validateUpload($coverImage, $user);
+
+                if (!$securityResult['allowed']) {
+                    return back()->withErrors([
+                        'cover_image' => 'File upload blocked: ' . $securityResult['reason']
+                    ])->withInput();
+                }
+
+                // Monitor file upload
+                $securityMonitoringService->monitorFileUpload(
+                    $user,
+                    $coverImage->getClientOriginalName(),
+                    $coverImage->getMimeType(),
+                    $coverImage->getSize()
+                );
+
                 $coverImageName = time() . '_' . $coverImage->getClientOriginalName();
                 $coverImagePath = $coverImage->storeAs('public/uploads/showcases/' . $user->id, $coverImageName);
+            }
+
+            // Upload multiple images with enhanced security
+            $imageGallery = [];
+            if ($request->hasFile('multiple_images')) {
+                $multipleImages = $request->file('multiple_images');
+
+                foreach ($multipleImages as $index => $image) {
+                    // Perform security validation for each image
+                    $securityResult = $fileSecurityService->validateUpload($image, $user);
+
+                    if (!$securityResult['allowed']) {
+                        return back()->withErrors([
+                            'multiple_images' => "Image #" . ($index + 1) . " upload blocked: " . $securityResult['reason']
+                        ])->withInput();
+                    }
+
+                    // Monitor file upload
+                    $securityMonitoringService->monitorFileUpload(
+                        $user,
+                        $image->getClientOriginalName(),
+                        $image->getMimeType(),
+                        $image->getSize()
+                    );
+
+                    $imageName = time() . '_' . $index . '_' . $image->getClientOriginalName();
+                    $imagePath = $image->storeAs('public/uploads/showcases/' . $user->id . '/gallery', $imageName);
+
+                    // Store image info in array
+                    $imageGallery[] = [
+                        'path' => $imagePath,
+                        'name' => $image->getClientOriginalName(),
+                        'size' => $image->getSize(),
+                        'mime_type' => $image->getMimeType(),
+                        'uploaded_at' => now()->toISOString(),
+                        'order' => $index + 1,
+                        'security_scan' => $securityResult['scan_results'] ?? []
+                    ];
+                }
+            }
+
+            // Upload file attachments with enhanced security
+            $fileAttachments = [];
+            if ($request->hasFile('file_attachments')) {
+                $fileAttachmentService = new FileAttachmentService();
+                $attachmentFiles = $request->file('file_attachments');
+
+                // Enhanced security validation for each attachment
+                foreach ($attachmentFiles as $index => $file) {
+                    $securityResult = $fileSecurityService->validateUpload($file, $user);
+
+                    if (!$securityResult['allowed']) {
+                        return back()->withErrors([
+                            'file_attachments' => "Attachment #" . ($index + 1) . " upload blocked: " . $securityResult['reason']
+                        ])->withInput();
+                    }
+
+                    // Monitor file upload
+                    $securityMonitoringService->monitorFileUpload(
+                        $user,
+                        $file->getClientOriginalName(),
+                        $file->getMimeType(),
+                        $file->getSize()
+                    );
+                }
+
+                // Validate files with existing service
+                $validationErrors = $fileAttachmentService->validateFiles($attachmentFiles);
+                if (!empty($validationErrors)) {
+                    return back()->withErrors(['file_attachments' => $validationErrors])->withInput();
+                }
+
+                // Process files
+                $fileAttachments = $fileAttachmentService->processFiles($attachmentFiles, $user->id);
             }
 
             // Create slug from title
@@ -268,6 +359,26 @@ class ShowcaseController extends Controller
                 'cover_image' => $coverImagePath,
                 'status' => 'approved', // Direct approval for regular users
                 'category' => $request->category,
+                // New technical fields
+                'software_used' => $request->software_used ? json_encode($request->software_used) : null,
+                'materials' => $request->materials,
+                'manufacturing_process' => $request->manufacturing_process,
+                'complexity_level' => $request->complexity_level,
+                'industry_application' => $request->industry_application,
+                // Advanced technical fields
+                'technical_specs' => $this->processTechnicalSpecs($request->technical_specs),
+                'learning_objectives' => $this->processLearningObjectives($request->learning_objectives),
+                // Boolean fields with defaults
+                'has_tutorial' => $request->boolean('has_tutorial', false),
+                'has_calculations' => $request->boolean('has_calculations', false),
+                'has_cad_files' => $request->boolean('has_cad_files', false),
+                'is_public' => $request->boolean('is_public', true),
+                'allow_downloads' => $request->boolean('allow_downloads', false),
+                'allow_comments' => $request->boolean('allow_comments', true),
+                // Image gallery
+                'image_gallery' => !empty($imageGallery) ? json_encode($imageGallery) : null,
+                // File attachments
+                'file_attachments' => !empty($fileAttachments) ? json_encode($fileAttachments) : null,
             ]);
 
             return redirect()->route('showcase.show', $showcase)->with('success', 'Showcase đã được tạo thành công!');
@@ -303,7 +414,166 @@ class ShowcaseController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified showcase.
+     */
+    public function edit(Showcase $showcase): View
+    {
+        // Check if user owns the showcase
+        if ($showcase->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
+        // Get categories for sidebar (same as in create method)
+        $categories = [
+            [
+                'name' => 'design',
+                'display_name' => 'Thiết kế',
+                'url' => route('showcase.index', ['category' => 'design']),
+                'count' => 15,
+                'showcase_count' => 15,
+                'avg_rating' => 4.5,
+                'cover_image' => null
+            ],
+            [
+                'name' => 'manufacturing',
+                'display_name' => 'Sản xuất',
+                'url' => route('showcase.index', ['category' => 'manufacturing']),
+                'count' => 12,
+                'showcase_count' => 12,
+                'avg_rating' => 4.2,
+                'cover_image' => null
+            ],
+            [
+                'name' => 'analysis',
+                'display_name' => 'Phân tích',
+                'url' => route('showcase.index', ['category' => 'analysis']),
+                'count' => 8,
+                'showcase_count' => 8,
+                'avg_rating' => 4.7,
+                'cover_image' => null
+            ],
+            [
+                'name' => 'automation',
+                'display_name' => 'Tự động hóa',
+                'url' => route('showcase.index', ['category' => 'automation']),
+                'count' => 10,
+                'showcase_count' => 10,
+                'avg_rating' => 4.3,
+                'cover_image' => null
+            ]
+        ];
+
+        // Get search filters for sidebar
+        $searchFilters = [
+            'categories' => [
+                ['value' => '', 'label' => __('showcase.all_categories')],
+                ['value' => 'design', 'label' => 'Thiết kế'],
+                ['value' => 'manufacturing', 'label' => 'Sản xuất'],
+                ['value' => 'analysis', 'label' => 'Phân tích'],
+                ['value' => 'automation', 'label' => 'Tự động hóa']
+            ],
+            'complexity' => [
+                ['value' => '', 'label' => 'Tất cả'],
+                ['value' => 'beginner', 'label' => 'Cơ bản'],
+                ['value' => 'intermediate', 'label' => 'Trung bình'],
+                ['value' => 'advanced', 'label' => 'Nâng cao']
+            ],
+            'complexity_levels' => [
+                ['value' => '', 'label' => 'Tất cả'],
+                ['value' => 'beginner', 'label' => 'Cơ bản'],
+                ['value' => 'intermediate', 'label' => 'Trung bình'],
+                ['value' => 'advanced', 'label' => 'Nâng cao']
+            ],
+            'project_types' => [
+                ['value' => '', 'label' => 'Tất cả'],
+                ['value' => 'design', 'label' => 'Thiết kế'],
+                ['value' => 'manufacturing', 'label' => 'Sản xuất'],
+                ['value' => 'analysis', 'label' => 'Phân tích'],
+                ['value' => 'automation', 'label' => 'Tự động hóa']
+            ],
+            'software_options' => [
+                ['value' => '', 'label' => 'Tất cả'],
+                ['value' => 'solidworks', 'label' => 'SolidWorks'],
+                ['value' => 'autocad', 'label' => 'AutoCAD'],
+                ['value' => 'ansys', 'label' => 'ANSYS'],
+                ['value' => 'matlab', 'label' => 'MATLAB'],
+                ['value' => 'inventor', 'label' => 'Inventor']
+            ]
+        ];
+
+        // Get all showcases for sidebar stats
+        $allShowcases = Showcase::where('status', 'approved')->paginate(1);
+
+        return view('showcase.edit', compact('showcase', 'categories', 'searchFilters', 'allShowcases'));
+    }
+
+    /**
+     * Update the specified showcase in storage.
+     */
+    public function update(ShowcaseRequest $request, Showcase $showcase): RedirectResponse
+    {
+        // Check if user owns the showcase
+        if ($showcase->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Handle image removal
+        if ($request->has('remove_images')) {
+            $currentImages = $showcase->images ?? [];
+            $removeIndices = $request->remove_images;
+
+            foreach ($removeIndices as $index) {
+                if (isset($currentImages[$index])) {
+                    // Remove from storage if it's a file path
+                    if (strpos($currentImages[$index], '/images/') === 0) {
+                        $filePath = public_path($currentImages[$index]);
+                        if (file_exists($filePath)) {
+                            unlink($filePath);
+                        }
+                    }
+                    unset($currentImages[$index]);
+                }
+            }
+            $showcase->images = array_values($currentImages); // Re-index array
+        }
+
+        // Handle new image uploads
+        if ($request->hasFile('images')) {
+            $this->handleImageUploads($showcase, $request->file('images'));
+        }
+
+        // Handle new attachment uploads
+        if ($request->hasFile('attachments')) {
+            $this->handleAttachmentUploads($showcase, $request->file('attachments'));
+        }
+
+        // Update slug if title changed
+        $slug = $showcase->slug;
+        if ($request->title !== $showcase->title) {
+            $slug = \Illuminate\Support\Str::slug($request->title);
+            $count = Showcase::where('slug', $slug)->where('id', '!=', $showcase->id)->count();
+            if ($count > 0) {
+                $slug = $slug . '-' . ($count + 1);
+            }
+        }
+
+        // Update showcase
+        $showcase->update([
+            'title' => $request->title,
+            'slug' => $slug,
+            'description' => $request->description,
+            'location' => $request->location,
+            'application_field' => $request->application_field,
+            'technical_specs' => $request->technical_specs,
+            'features' => $request->features,
+            'benefits' => $request->benefits,
+            'tags' => $request->tags ? explode(',', $request->tags) : [],
+            'is_featured' => $request->boolean('is_featured', false),
+        ]);
+
+        return redirect()->route('showcase.show', $showcase)->with('success', 'Showcase đã được cập nhật thành công!');
+    }
 
     /**
      * Hiển thị chi tiết showcase với comments, likes, follows.
@@ -579,5 +849,116 @@ class ShowcaseController extends Controller
 
 
 
+    /**
+     * Download file attachment
+     */
+    public function downloadFile(Showcase $showcase, string $file)
+    {
+        // Decode file path
+        $filePath = base64_decode($file);
+
+        // Check if user has permission to download
+        if (!$showcase->allow_downloads && $showcase->user_id !== Auth::id()) {
+            abort(403, 'Không có quyền tải file này.');
+        }
+
+        // Get file attachments
+        $fileAttachments = json_decode($showcase->file_attachments, true) ?? [];
+
+        // Find the requested file
+        $requestedFile = null;
+        foreach ($fileAttachments as $attachment) {
+            if ($attachment['path'] === $filePath) {
+                $requestedFile = $attachment;
+                break;
+            }
+        }
+
+        if (!$requestedFile) {
+            abort(404, 'File không tồn tại.');
+        }
+
+        // Check if file exists in storage
+        if (!\Storage::exists($filePath)) {
+            abort(404, 'File không tồn tại trên server.');
+        }
+
+        // Increment download count (optional)
+        $this->incrementDownloadCount($showcase, $filePath);
+
+        // Return file download
+        return \Storage::download($filePath, $requestedFile['name']);
+    }
+
+    /**
+     * Increment download count for file
+     */
+    private function incrementDownloadCount(Showcase $showcase, string $filePath): void
+    {
+        $fileAttachments = json_decode($showcase->file_attachments, true) ?? [];
+
+        foreach ($fileAttachments as &$attachment) {
+            if ($attachment['path'] === $filePath) {
+                $attachment['download_count'] = ($attachment['download_count'] ?? 0) + 1;
+                break;
+            }
+        }
+
+        $showcase->update([
+            'file_attachments' => json_encode($fileAttachments),
+            'download_count' => $showcase->download_count + 1
+        ]);
+    }
+
+    /**
+     * Process technical specifications from form input
+     */
+    private function processTechnicalSpecs($technicalSpecs): ?string
+    {
+        if (!$technicalSpecs || !is_array($technicalSpecs)) {
+            return null;
+        }
+
+        $processedSpecs = [];
+        foreach ($technicalSpecs as $spec) {
+            // Skip empty specs
+            if (empty($spec['name']) || empty($spec['value'])) {
+                continue;
+            }
+
+            $processedSpecs[] = [
+                'name' => trim($spec['name']),
+                'value' => trim($spec['value']),
+                'unit' => isset($spec['unit']) ? trim($spec['unit']) : ''
+            ];
+        }
+
+        return !empty($processedSpecs) ? json_encode($processedSpecs) : null;
+    }
+
+    /**
+     * Process learning objectives from form input
+     */
+    private function processLearningObjectives($learningObjectives): ?string
+    {
+        if (!$learningObjectives || !is_array($learningObjectives)) {
+            return null;
+        }
+
+        $processedObjectives = [];
+        foreach ($learningObjectives as $objective) {
+            // Skip empty objectives
+            if (empty($objective) || !is_string($objective)) {
+                continue;
+            }
+
+            $trimmedObjective = trim($objective);
+            if (!empty($trimmedObjective)) {
+                $processedObjectives[] = $trimmedObjective;
+            }
+        }
+
+        return !empty($processedObjectives) ? json_encode($processedObjectives) : null;
+    }
 
 }

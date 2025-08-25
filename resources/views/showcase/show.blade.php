@@ -20,7 +20,11 @@
                             <a href="#comments" class="btn-jump"> <i class="fas fa-arrow-right"></i> Đến đánh giá </a>
 
                             @auth
-                            @if($showcase->user_id !== auth()->id())
+                            @if($showcase->user_id === auth()->id())
+                            <a href="{{ route('showcase.edit', $showcase) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </a>
+                            @else
                             <form action="{{ route('showcase.toggle-follow', $showcase) }}" method="POST" class="follow-form d-inline">
                                 @csrf
                                 <button type="submit" class="btn-follow btn btn-mian active">
