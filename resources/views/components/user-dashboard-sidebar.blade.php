@@ -7,44 +7,68 @@
         'dashboard' => [
             'title' => t_sidebar('user_dashboard.dashboard'),
             'icon' => 'fas fa-tachometer-alt',
-            'route' => 'user.dashboard',
+            'route' => 'dashboard',
             'badge' => null,
         ],
         'my-threads' => [
             'title' => t_sidebar('user_dashboard.my_threads'),
             'icon' => 'fas fa-comments',
-            'route' => 'user.my-threads',
+            'route' => 'dashboard.community.threads.index',
             'badge' => $user->threads()->count(),
         ],
         'comments' => [
             'title' => t_sidebar('user_dashboard.my_comments'),
             'icon' => 'fas fa-comment-dots',
-            'route' => 'user.comments',
+            'route' => 'dashboard.community.comments.index',
             'badge' => $user->comments()->count(),
         ],
         'bookmarks' => [
             'title' => t_sidebar('user_dashboard.bookmarks'),
             'icon' => 'fas fa-bookmark',
-            'route' => 'user.bookmarks',
+            'route' => 'dashboard.community.bookmarks.index',
             'badge' => $user->bookmarks()->count(),
         ],
         'activity' => [
             'title' => t_sidebar('user_dashboard.activity'),
             'icon' => 'fas fa-chart-line',
-            'route' => 'user.activity',
+            'route' => 'dashboard.activity',
             'badge' => null,
         ],
         'following' => [
             'title' => t_sidebar('user_dashboard.following'),
             'icon' => 'fas fa-heart',
-            'route' => 'user.following',
+            'route' => 'dashboard.activity',
             'badge' => $user->following()->count(),
         ],
         'ratings' => [
             'title' => t_sidebar('user_dashboard.ratings'),
             'icon' => 'fas fa-star',
-            'route' => 'user.ratings',
+            'route' => 'dashboard.community.ratings.index',
             'badge' => 0, // TODO: Implement ratings count
+        ],
+
+        // Marketplace section
+        'marketplace-divider' => [
+            'type' => 'divider',
+            'title' => 'Marketplace'
+        ],
+        'marketplace-products' => [
+            'title' => 'Quản lý sản phẩm',
+            'icon' => 'fas fa-box',
+            'route' => 'dashboard.marketplace.seller.products.index',
+            'badge' => null,
+        ],
+        'marketplace-orders' => [
+            'title' => 'Đơn hàng',
+            'icon' => 'fas fa-shopping-cart',
+            'route' => 'dashboard.marketplace.seller.orders',
+            'badge' => null,
+        ],
+        'marketplace-analytics' => [
+            'title' => 'Thống kê',
+            'icon' => 'fas fa-chart-bar',
+            'route' => 'dashboard.marketplace.seller.analytics.index',
+            'badge' => null,
         ],
 
     ];
@@ -71,16 +95,22 @@
     <nav class="sidebar-nav">
         <ul class="nav nav-pills flex-column">
             @foreach($menuItems as $key => $item)
-                <li class="nav-item">
-                    <a href="{{ route($item['route']) }}"
-                       class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}">
-                        <i class="{{ $item['icon'] }} me-2"></i>
-                        <span>{{ $item['title'] }}</span>
-                        @if($item['badge'] && $item['badge'] > 0)
-                            <span class="badge bg-primary ms-auto">{{ $item['badge'] }}</span>
-                        @endif
-                    </a>
-                </li>
+                @if(isset($item['type']) && $item['type'] === 'divider')
+                    <li class="nav-divider mt-3 mb-2">
+                        <small class="text-muted fw-bold">{{ $item['title'] }}</small>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route($item['route']) }}"
+                           class="nav-link {{ $currentRoute === $item['route'] ? 'active' : '' }}">
+                            <i class="{{ $item['icon'] }} me-2"></i>
+                            <span>{{ $item['title'] }}</span>
+                            @if($item['badge'] && $item['badge'] > 0)
+                                <span class="badge bg-primary ms-auto">{{ $item['badge'] }}</span>
+                            @endif
+                        </a>
+                    </li>
+                @endif
             @endforeach
         </ul>
     </nav>

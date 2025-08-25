@@ -263,8 +263,12 @@ Route::middleware(['auth', 'marketplace.permission'])
                 Route::prefix('products')->name('products.')->group(function () {
                     Route::get('/', [ProductController::class, 'index'])->name('index');
                     Route::get('/create', [ProductController::class, 'create'])->name('create');
+                    Route::get('/create-advanced', [ProductController::class, 'createAdvanced'])->name('create.advanced');
+                    Route::post('/', [ProductController::class, 'store'])->name('store');
                     Route::get('/{product}', [ProductController::class, 'show'])->name('show');
                     Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+                    Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+                    Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
                     Route::patch('/{product}/status', [ProductController::class, 'updateStatus'])->name('status');
                     Route::post('/{product}/duplicate', [ProductController::class, 'duplicate'])->name('duplicate');
                     Route::post('/bulk-action', [ProductController::class, 'bulkAction'])->name('bulk-action');

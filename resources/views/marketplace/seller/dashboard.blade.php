@@ -16,19 +16,19 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
-                        <a href="{{ route('marketplace.seller.dashboard') }}" class="list-group-item list-group-item-action active">
+                        <a href="{{ route('dashboard.marketplace.seller.dashboard') }}" class="list-group-item list-group-item-action active">
                             <i class="fa-solid fa-chart-line me-2"></i>
                             {{ __('marketplace.dashboard') }}
                         </a>
-                        <a href="{{ route('marketplace.seller.products') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="list-group-item list-group-item-action">
                             <i class="fa-solid fa-box me-2"></i>
                             {{ __('marketplace.my_products') }}
                         </a>
-                        <a href="{{ route('marketplace.seller.orders') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('dashboard.marketplace.seller.orders') }}" class="list-group-item list-group-item-action">
                             <i class="fa-solid fa-shopping-cart me-2"></i>
                             {{ __('marketplace.my_orders') }}
                         </a>
-                        <a href="{{ route('marketplace.seller.analytics') }}" class="list-group-item list-group-item-action">
+                        <a href="{{ route('dashboard.marketplace.seller.analytics.index') }}" class="list-group-item list-group-item-action">
                             <i class="fa-solid fa-chart-bar me-2"></i>
                             {{ __('marketplace.analytics') }}
                         </a>
@@ -72,7 +72,7 @@
                     <p class="text-muted">{{ __('marketplace.seller_dashboard_desc') }}</p>
                 </div>
                 <div>
-                    <a href="{{ route('marketplace.products.create') }}" class="btn btn-primary">
+                    <a href="{{ route('dashboard.marketplace.seller.products.create') }}" class="btn btn-primary">
                         <i class="fa-solid fa-plus me-2"></i>
                         {{ __('marketplace.add_product') }}
                     </a>
@@ -101,7 +101,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h4 class="mb-0">{{ number_format($stats['total_sales']) }} VND</h4>
+                                    <h4 class="mb-0">{{ number_format($stats['total_revenue']) }} VND</h4>
                                     <p class="mb-0">{{ __('marketplace.total_sales') }}</p>
                                 </div>
                                 <div class="align-self-center">
@@ -131,7 +131,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h4 class="mb-0">{{ number_format($stats['this_month_sales']) }} VND</h4>
+                                    <h4 class="mb-0">{{ number_format($stats['this_month_revenue']) }} VND</h4>
                                     <p class="mb-0">{{ __('marketplace.this_month_sales') }}</p>
                                 </div>
                                 <div class="align-self-center">
@@ -152,15 +152,15 @@
                         </div>
                         <div class="card-body">
                             <div class="d-grid gap-2">
-                                <a href="{{ route('marketplace.products.create') }}" class="btn btn-outline-primary">
+                                <a href="{{ route('dashboard.marketplace.seller.products.create') }}" class="btn btn-outline-primary">
                                     <i class="fa-solid fa-plus me-2"></i>
                                     {{ __('marketplace.add_new_product') }}
                                 </a>
-                                <a href="{{ route('marketplace.seller.products') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="btn btn-outline-secondary">
                                     <i class="fa-solid fa-edit me-2"></i>
                                     {{ __('marketplace.manage_products') }}
                                 </a>
-                                <a href="{{ route('marketplace.seller.orders') }}" class="btn btn-outline-info">
+                                <a href="{{ route('dashboard.marketplace.seller.orders') }}" class="btn btn-outline-info">
                                     <i class="fa-solid fa-list me-2"></i>
                                     {{ __('marketplace.view_orders') }}
                                 </a>
@@ -199,12 +199,12 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">{{ __('marketplace.recent_products') }}</h6>
-                            <a href="{{ route('marketplace.seller.products') }}" class="btn btn-sm btn-outline-primary">
+                            <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="btn btn-sm btn-outline-primary">
                                 {{ __('marketplace.view_all') }}
                             </a>
                         </div>
                         <div class="card-body">
-                            @forelse($recentProducts as $product)
+                            @forelse($topProducts as $product)
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="flex-shrink-0">
                                         @if($product->images && count($product->images) > 0)
@@ -233,7 +233,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">{{ __('marketplace.recent_orders') }}</h6>
-                            <a href="{{ route('marketplace.seller.orders') }}" class="btn btn-sm btn-outline-primary">
+                            <a href="{{ route('dashboard.marketplace.seller.orders') }}" class="btn btn-sm btn-outline-primary">
                                 {{ __('marketplace.view_all') }}
                             </a>
                         </div>

@@ -40,14 +40,14 @@ class SellerController extends BaseController
 
         // Get top products
         $topProducts = MarketplaceProduct::where('seller_id', $seller->id)
-            ->orderByDesc('sales_count')
+            ->orderByDesc('purchase_count')
             ->limit(5)
             ->get();
 
         // Get recent reviews
         $recentReviews = collect(); // Placeholder for reviews
 
-        return $this->dashboardResponse('dashboard.marketplace.seller.dashboard', [
+        return $this->dashboardResponse('marketplace.seller.dashboard', [
             'seller' => $seller,
             'stats' => $stats,
             'recentOrders' => $recentOrders,
@@ -63,7 +63,7 @@ class SellerController extends BaseController
     {
         $seller = MarketplaceSeller::where('user_id', $this->user->id)->first();
 
-        return $this->dashboardResponse('dashboard.marketplace.seller.setup', [
+        return $this->dashboardResponse('marketplace.seller.setup', [
             'seller' => $seller
         ]);
     }
@@ -149,7 +149,7 @@ class SellerController extends BaseController
 
         $orderItems = $query->orderBy('created_at', 'desc')->paginate(20);
 
-        return $this->dashboardResponse('dashboard.marketplace.seller.orders', [
+        return $this->dashboardResponse('marketplace.seller.orders', [
             'seller' => $seller,
             'orderItems' => $orderItems,
             'currentStatus' => $status,
@@ -207,14 +207,14 @@ class SellerController extends BaseController
             ->whereHas('order', function($q) {
                 $q->where('payment_status', 'paid');
             })
-            ->sum('total_price');
+            ->sum('total_amount');
 
         $thisMonthRevenue = MarketplaceOrderItem::where('seller_id', $seller->id)
             ->whereHas('order', function($q) {
                 $q->where('payment_status', 'paid');
             })
             ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-            ->sum('total_price');
+            ->sum('total_amount');
 
         $averageOrderValue = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
 
@@ -274,7 +274,7 @@ class SellerController extends BaseController
                     'product_name' => $orderItem->product->name,
                     'quantity' => $orderItem->quantity,
                     'unit_price' => $orderItem->unit_price,
-                    'total_price' => $orderItem->total_price,
+                    'total_amount' => $orderItem->total_amount,
                     'status' => $orderItem->fulfillment_status,
                     'created_at' => $orderItem->created_at->toISOString()];
             });

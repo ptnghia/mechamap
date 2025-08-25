@@ -83,7 +83,19 @@ class ProductStockObserver
 
         // Check if price changed
         if ($product->wasChanged(['price', 'sale_price', 'is_on_sale'])) {
-            PriceDropAlertService::handlePriceChange($product);
+            $oldPrice = $product->getOriginal('price') ?? $product->price;
+            $newPrice = $product->price;
+            $oldSalePrice = $product->getOriginal('sale_price');
+            $newSalePrice = $product->sale_price;
+
+            PriceDropAlertService::handlePriceChange(
+                $product,
+                $oldPrice,
+                $newPrice,
+                $oldSalePrice,
+                $newSalePrice,
+                'Product updated by seller'
+            );
         }
     }
 

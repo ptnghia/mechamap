@@ -41,10 +41,20 @@ class MarketplacePermissionMiddleware
             $hasPermission = false;
             switch ($action) {
                 case 'buy':
-                    $hasPermission = UnifiedMarketplacePermissionService::canBuy($user, $productType);
+                    if ($productType) {
+                        $hasPermission = UnifiedMarketplacePermissionService::canBuy($user, $productType);
+                    } else {
+                        // For general buy access (like viewing marketplace)
+                        $hasPermission = !empty(UnifiedMarketplacePermissionService::getAllowedBuyTypes($user));
+                    }
                     break;
                 case 'sell':
-                    $hasPermission = UnifiedMarketplacePermissionService::canSell($user, $productType);
+                    if ($productType) {
+                        $hasPermission = UnifiedMarketplacePermissionService::canSell($user, $productType);
+                    } else {
+                        // For general sell access (like creating products page)
+                        $hasPermission = !empty(UnifiedMarketplacePermissionService::getAllowedSellTypes($user));
+                    }
                     break;
                 case 'checkout':
                     $hasPermission = UnifiedMarketplacePermissionService::canCheckout($user);

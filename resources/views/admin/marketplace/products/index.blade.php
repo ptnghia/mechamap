@@ -323,15 +323,25 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
+                                            @if($product->status === 'pending')
+                                                <button type="button" class="btn btn-success" onclick="approveProduct('{{ $product->slug }}')" title="Duyệt">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-danger" onclick="rejectProduct('{{ $product->slug }}')" title="Từ chối">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            @endif
                                             <a href="{{ route('admin.marketplace.products.show', $product) }}" class="btn btn-outline-primary" title="Xem chi tiết">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.marketplace.products.edit', $product) }}" class="btn btn-outline-secondary" title="Chỉnh sửa">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-outline-warning" onclick="toggleFeatured({{ $product->id }})" title="Nổi bật">
-                                                <i class="fas fa-star"></i>
-                                            </button>
+                                            @if($product->status === 'approved')
+                                                <button type="button" class="btn btn-outline-warning" onclick="toggleFeatured({{ $product->id }})" title="Nổi bật">
+                                                    <i class="fas fa-star{{ $product->is_featured ? '' : '-o' }}"></i>
+                                                </button>
+                                            @endif
                                             <button type="button" class="btn btn-outline-danger" onclick="deleteProduct({{ $product->id }})" title="Xóa">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -416,11 +426,88 @@ function bulkReject() {
     }
 }
 
+// Approve single product
+function approveProduct(productSlug) {
+    if (confirm('Bạn có chắc chắn muốn duyệt sản phẩm này?')) {
+        fetch(`/admin/marketplace/products/${productSlug}/approve`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast('Sản phẩm đã được duyệt thành công!', 'success');
+                location.reload();
+            } else {
+                showToast('Có lỗi xảy ra: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Có lỗi xảy ra khi duyệt sản phẩm', 'error');
+        });
+    }
+}
+
+// Reject single product
+function rejectProduct(productSlug) {
+    const reason = prompt('Vui lòng nhập lý do từ chối:');
+    if (!reason || reason.trim() === '') {
+        alert('Vui lòng nhập lý do từ chối');
+        return;
+    }
+
+    fetch(`/admin/marketplace/products/${productSlug}/reject`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            rejection_reason: reason.trim()
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Sản phẩm đã được từ chối!', 'success');
+            location.reload();
+        } else {
+            showToast('Có lỗi xảy ra: ' + data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Có lỗi xảy ra khi từ chối sản phẩm', 'error');
+    });
+}
+
 // Toggle featured
 function toggleFeatured(productId) {
     if (confirm('Bạn có muốn thay đổi trạng thái nổi bật của sản phẩm này?')) {
-        // TODO: Implement toggle featured
-        alert('Chức năng đánh dấu nổi bật sẽ được triển khai');
+        fetch(`/admin/marketplace/products/${productId}/toggle-featured`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                location.reload();
+            } else {
+                showToast('Có lỗi xảy ra: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Có lỗi xảy ra khi thay đổi trạng thái nổi bật', 'error');
+        });
     }
 }
 
@@ -436,6 +523,28 @@ function deleteProduct(productId) {
 function getSelectedIds() {
     const checkboxes = document.querySelectorAll('.product-checkbox:checked');
     return Array.from(checkboxes).map(cb => cb.value);
+}
+
+// Show toast notification
+function showToast(message, type = 'info') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    // Add to page
+    document.body.appendChild(toast);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 5000);
 }
 
 // Initialize page

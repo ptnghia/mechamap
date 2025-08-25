@@ -50,7 +50,17 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
     // Test permissions
     Route::get('/test-permissions', function () {
-        return view('admin.test-permissions');
+        $user = Auth::user();
+        $permissions = [
+            'view_products' => $user->hasPermission('view_products'),
+            'role' => $user->role,
+            'role_group' => $user->role_group,
+            'canAccessAdmin' => $user->canAccessAdmin(),
+            'current_guard' => Auth::getDefaultDriver(),
+            'admin_guard_user' => Auth::guard('admin')->user() ? Auth::guard('admin')->user()->id : null,
+            'web_guard_user' => Auth::guard('web')->user() ? Auth::guard('web')->user()->id : null,
+        ];
+        return response()->json($permissions);
     })->name('test-permissions');
 
     // Debug route for marketplace categories permission
@@ -808,9 +818,7 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
 
         // Products (cần quyền view_products)
         Route::middleware(['admin.permission:view_products'])->group(function () {
-            Route::get('/products', function() {
-                return view('admin.marketplace.products-dason');
-            })->name('products.index');
+            Route::get('/products', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'index'])->name('products.index');
 
             // Product approval workflow
             Route::get('/products/pending', [App\Http\Controllers\Admin\MarketplaceProductController::class, 'pending'])->name('products.pending');

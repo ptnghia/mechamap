@@ -58,7 +58,7 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                 \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'new_product') ||
                 \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'used_product'))
             <div class="cta-section mt-3">
-                <a href="{{ route('marketplace.products.create') }}" class="btn btn-success w-100">
+                <a href="{{ route('dashboard.marketplace.seller.products.create') }}" class="btn btn-success w-100">
                     <i class="fas fa-plus me-2"></i>{{ t_sidebar('marketplace.list_product') }}
                 </a>
             </div>

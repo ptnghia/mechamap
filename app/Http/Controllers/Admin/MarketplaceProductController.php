@@ -342,7 +342,7 @@ class MarketplaceProductController extends Controller
             'status' => 'approved',
             'is_active' => true,
             'approved_at' => now(),
-            'approved_by' => Auth::guard('admin')->id(),
+            'approved_by' => Auth::id(),
             'rejection_reason' => null,
         ]);
 
