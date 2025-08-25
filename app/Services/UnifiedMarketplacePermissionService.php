@@ -227,9 +227,15 @@ class UnifiedMarketplacePermissionService
             return false;
         }
 
-        // Check if user has approved business verification application
-        return BusinessVerificationApplication::where('user_id', $user->id)
-            ->where('status', BusinessVerificationApplication::STATUS_APPROVED)
+        // Check marketplace seller verification status first (current system)
+        $seller = \App\Models\MarketplaceSeller::where('user_id', $user->id)->first();
+        if ($seller && $seller->verification_status === 'verified') {
+            return true;
+        }
+
+        // Fallback to business verification application (future system)
+        return \App\Models\BusinessVerificationApplication::where('user_id', $user->id)
+            ->where('status', \App\Models\BusinessVerificationApplication::STATUS_APPROVED)
             ->exists();
     }
 
@@ -326,7 +332,7 @@ class UnifiedMarketplacePermissionService
             // Business Partners - Verified (Full Access)
             'manufacturer_verified' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
-                'sell' => [MarketplaceProduct::TYPE_DIGITAL, MarketplaceProduct::TYPE_NEW_PRODUCT],
+                'sell' => [MarketplaceProduct::TYPE_DIGITAL], // Manufacturers sell technical files only
             ],
             'supplier_verified' => [
                 'buy' => [MarketplaceProduct::TYPE_DIGITAL],
