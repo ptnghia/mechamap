@@ -3,12 +3,12 @@
 @section('title', __('common.buttons.popular') . ' - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/whats-new.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/whats-new.css') }}">
 @endpush
 
 @section('content')
 <div class="body_page">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('common.buttons.popular') }}</h1>
 
         <a href="{{ route('threads.create') }}" class="btn btn-primary">
@@ -52,51 +52,31 @@
     </div>
     <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}"
-                    id="trending-tab" data-bs-toggle="tab" data-bs-target="#trending"
-                    type="button" role="tab" aria-controls="trending"
-                    aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
+            <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}" id="trending-tab" type="button" role="tab" aria-controls="trending" aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
                 <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
             </button>
-            <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}"
-                    id="most-viewed-tab" data-bs-toggle="tab" data-bs-target="#most-viewed"
-                    type="button" role="tab" aria-controls="most-viewed"
-                    aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
-                <i class="fas fa-eye me-1"></i>{{ __('navigation.most_viewed') }}
+            <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}" id="most-viewed-tab" type="button" role="tab" aria-controls="most-viewed" aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
+                {{ __('navigation.most_viewed') }}
             </button>
         </div>
-    </div>
-    <!-- Popular Sub-Navigation -->
-    <div class="popular-sub-nav mb-4">
-        <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-
-                    </li>
-                    <li class="nav-item" role="presentation">
-
-                    </li>
-                </ul>
+        <div class="timeframe-filter mb-4 d-flex justify-content-end">
+            <div class="d-flex align-items-center">
+                <label for="timeframe-select" class="form-label me-2 mb-0">
+                    {{ __('ui.common.timeframe') }}:
+                </label>
+                <select id="timeframe-select" class="form-select" style="width: auto;">
+                    <option value="day" {{ $timeframe == 'day' ? 'selected' : '' }}>{{ __('activity.today') }}</option>
+                    <option value="week" {{ $timeframe == 'week' ? 'selected' : '' }}>{{ __('activity.this_week') }}</option>
+                    <option value="month" {{ $timeframe == 'month' ? 'selected' : '' }}>{{ __('activity.this_month') }}</option>
+                    <option value="year" {{ $timeframe == 'year' ? 'selected' : '' }}>{{ __('common.time.this_year') }}</option>
+                    <option value="all" {{ $timeframe == 'all' ? 'selected' : '' }}>{{ __('activity.all_time') }}</option>
+                </select>
             </div>
         </div>
     </div>
 
     <!-- Timeframe Filter Dropdown -->
-    <div class="timeframe-filter mb-4">
-        <div class="d-flex align-items-center">
-            <label for="timeframe-select" class="form-label me-2 mb-0">
-                <i class="fas fa-clock me-1"></i>{{ __('ui.common.timeframe') }}:
-            </label>
-            <select id="timeframe-select" class="form-select" style="width: auto;">
-                <option value="day" {{ $timeframe == 'day' ? 'selected' : '' }}>{{ __('activity.today') }}</option>
-                <option value="week" {{ $timeframe == 'week' ? 'selected' : '' }}>{{ __('activity.this_week') }}</option>
-                <option value="month" {{ $timeframe == 'month' ? 'selected' : '' }}>{{ __('activity.this_month') }}</option>
-                <option value="year" {{ $timeframe == 'year' ? 'selected' : '' }}>{{ __('common.time.this_year') }}</option>
-                <option value="all" {{ $timeframe == 'all' ? 'selected' : '' }}>{{ __('activity.all_time') }}</option>
-            </select>
-        </div>
-    </div>
+
 
     <!-- Pagination Top -->
     @if($threads->hasPages())

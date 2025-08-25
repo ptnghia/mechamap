@@ -45,6 +45,8 @@
 .page-description{
 }
 .page-description .alert{font-size: 14px;}
+#timeframe-select{
+}
 @media (min-width: 768px) {
     .media-gallery {
         grid-template-columns: repeat(3, 1fr);

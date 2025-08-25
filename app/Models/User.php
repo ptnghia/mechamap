@@ -1578,6 +1578,61 @@ class User extends Authenticatable implements MustVerifyEmail
         return UserFollow::getFollowingCount($this->id);
     }
 
+    // ====================================================================
+    // USER DROPDOWN HELPER METHODS
+    // ====================================================================
+
+    /**
+     * Get unread messages count for dropdown
+     */
+    public function unreadMessagesCount(): int
+    {
+        // Placeholder - implement based on your messaging system
+        return 0;
+    }
+
+    /**
+     * Get unread notifications count for dropdown
+     */
+    public function unreadNotificationsCount(): int
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    /**
+     * Get pending orders count for dropdown
+     */
+    public function pendingOrdersCount(): int
+    {
+        // Placeholder - implement based on your marketplace system
+        return 0;
+    }
+
+    /**
+     * Get wishlist items count for dropdown
+     */
+    public function wishlistItemsCount(): int
+    {
+        // Placeholder - implement based on your marketplace system
+        return 0;
+    }
+
+    /**
+     * Check if user has marketplace permissions
+     */
+    public function hasMarketplacePermission(string $type = null): bool
+    {
+        // Basic marketplace permission check
+        $hasBasicPermission = $this->hasPermission('marketplace.access') ||
+                             $this->role !== 'guest';
+
+        if ($type === 'sell') {
+            return $hasBasicPermission && $this->hasPermission('marketplace.sell');
+        }
+
+        return $hasBasicPermission;
+    }
+
     /**
      * Get user achievements
      */

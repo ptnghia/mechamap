@@ -78,47 +78,29 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             <!-- Action buttons cho authenticated users -->
             @if($isAuthenticated)
             <div class="thread-actions">
-                @if($isBookmarked)
-                <!-- Remove bookmark form -->
-                <form method="POST" action="{{ route('threads.bookmark.remove', $thread) }}" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-primary" title="{{ t_forums('actions.bookmark_remove') }}">
-                        <i class="far fa-bookmark-fill"></i>
-                        <span class="d-none d-md-inline ms-1">{{ t_forums('actions.bookmarked') }}</span>
-                    </button>
-                </form>
-                @else
-                <!-- Add bookmark form -->
-                <form method="POST" action="{{ route('threads.bookmark.add', $thread) }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-primary" title="{{ t_forums('actions.bookmark_add') }}">
-                        <i class="far fa-bookmark"></i>
-                        <span class="d-none d-md-inline ms-1">{{ t_forums('actions.bookmark') }}</span>
-                    </button>
-                </form>
-                @endif
+                <!-- Bookmark button -->
+                <button type="button"
+                        class="btn btn-sm {{ $isBookmarked ? 'btn-primary active' : 'btn-outline-primary' }} btn-bookmark"
+                        data-thread-id="{{ $thread->id }}"
+                        data-bookmarked="{{ $isBookmarked ? 'true' : 'false' }}"
+                        title="{{ $isBookmarked ? t_forums('actions.bookmark_remove') : t_forums('actions.bookmark_add') }}">
+                    <i class="{{ $isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
+                    <span class="d-none d-md-inline ms-1 bookmark-text">
+                        {{ $isBookmarked ? t_forums('actions.bookmarked') : t_forums('actions.bookmark') }}
+                    </span>
+                </button>
 
-                @if($isFollowed)
-                <!-- Unfollow form -->
-                <form method="POST" action="{{ route('threads.follow.remove', $thread) }}" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-success" title="{{ t_forums('actions.unfollow_thread') }}">
-                        <i class="fas fa-bell-fill"></i>
-                        <span class="d-none d-md-inline ms-1">{{ t_forums('actions.following') }}</span>
-                    </button>
-                </form>
-                @else
-                <!-- Follow form -->
-                <form method="POST" action="{{ route('threads.follow.add', $thread) }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-success" title="{{ t_forums('actions.follow_thread') }}">
-                        <i class="fas fa-bell"></i>
-                        <span class="d-none d-md-inline ms-1">{{ t_forums('actions.follow') }}</span>
-                    </button>
-                </form>
-                @endif
+                <!-- Follow button -->
+                <button type="button"
+                        class="btn btn-sm {{ $isFollowed ? 'btn-success active' : 'btn-outline-success' }} btn-follow"
+                        data-thread-id="{{ $thread->id }}"
+                        data-followed="{{ $isFollowed ? 'true' : 'false' }}"
+                        title="{{ $isFollowed ? t_forums('actions.unfollow_thread') : t_forums('actions.follow_thread') }}">
+                    <i class="{{ $isFollowed ? 'fas fa-bell' : 'far fa-bell' }}"></i>
+                    <span class="d-none d-md-inline ms-1 follow-text">
+                        {{ $isFollowed ? t_forums('actions.following') : t_forums('actions.follow') }}
+                    </span>
+                </button>
             </div>
             @endif
         </div>

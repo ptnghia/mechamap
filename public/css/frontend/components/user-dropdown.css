@@ -1,0 +1,257 @@
+/**
+ * MechaMap User Avatar Dropdown Styles
+ * Modern dropdown menu cho user avatar với dashboard navigation
+ */
+
+/* User Dropdown Toggle */
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--bs-nav-link-color);
+}
+
+.user-dropdown:hover {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-nav-link-hover-color);
+    text-decoration: none;
+}
+
+.user-dropdown img {
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.user-dropdown:hover img {
+    border-color: var(--bs-primary);
+}
+
+.user-dropdown .user-name {
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.user-dropdown .badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* Dropdown Menu */
+.user-menu {
+    min-width: 280px;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User Info Header */
+.user-menu .user-info {
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary-dark, #0056b3));
+    color: white;
+    margin: -0.5rem 0 0.5rem 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.user-menu .user-info h6 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.user-menu .user-info small {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+}
+
+.user-menu .user-info img {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Dropdown Items */
+.user-menu .dropdown-item {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--bs-gray-700);
+    transition: all 0.2s ease;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+
+.user-menu .dropdown-item:hover {
+    background-color: var(--bs-gray-50);
+    color: var(--bs-primary);
+    transform: translateX(2px);
+}
+
+.user-menu .dropdown-item:active {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+.user-menu .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.user-menu .dropdown-item:hover i {
+    opacity: 1;
+}
+
+/* Badges */
+.user-menu .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+/* Section Headers */
+.user-menu .dropdown-header {
+    padding: 0.5rem 1.25rem 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--bs-gray-500);
+    margin-top: 0.25rem;
+}
+
+/* Dividers */
+.user-menu .dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: var(--bs-gray-200);
+}
+
+/* Logout Button */
+.user-menu .dropdown-item.text-danger {
+    color: var(--bs-danger) !important;
+    font-weight: 500;
+}
+
+.user-menu .dropdown-item.text-danger:hover {
+    background-color: var(--bs-danger);
+    color: white !important;
+}
+
+.user-menu .dropdown-item.text-danger:hover i {
+    color: white;
+}
+
+/* Special styling for admin items */
+.user-menu .dropdown-item .text-warning {
+    color: var(--bs-warning) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .user-menu {
+        min-width: 260px;
+        margin-top: 0.25rem;
+    }
+    
+    .user-menu .dropdown-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .user-menu .user-info {
+        padding: 0.75rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .user-menu {
+        min-width: 240px;
+        max-width: calc(100vw - 2rem);
+    }
+    
+    .user-dropdown .user-name {
+        display: none;
+    }
+    
+    .user-dropdown .badge {
+        display: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .user-dropdown:hover {
+        background-color: var(--bs-gray-800);
+    }
+    
+    .user-menu {
+        background-color: var(--bs-gray-900);
+        border: 1px solid var(--bs-gray-700);
+    }
+    
+    .user-menu .dropdown-item {
+        color: var(--bs-gray-200);
+    }
+    
+    .user-menu .dropdown-item:hover {
+        background-color: var(--bs-gray-800);
+        color: var(--bs-primary);
+    }
+    
+    .user-menu .dropdown-divider {
+        border-color: var(--bs-gray-700);
+    }
+    
+    .user-menu .dropdown-header {
+        color: var(--bs-gray-400);
+    }
+}
+
+/* Animation for badges */
+.user-menu .badge {
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Hover effects for different badge types */
+.user-menu .dropdown-item:hover .badge.bg-primary {
+    background-color: var(--bs-primary-dark, #0056b3) !important;
+}
+
+.user-menu .dropdown-item:hover .badge.bg-secondary {
+    background-color: var(--bs-secondary-dark, #545b62) !important;
+}
+
+.user-menu .dropdown-item:hover .badge.bg-info {
+    background-color: var(--bs-info-dark, #055160) !important;
+}
+
+.user-menu .dropdown-item:hover .badge.bg-success {
+    background-color: var(--bs-success-dark, #0a3622) !important;
+}

@@ -1,5 +1,6 @@
 
-
+/* Import User Dropdown Styles */
+@import url('components/user-dropdown.css');
 
 .form-control {
     display: block;

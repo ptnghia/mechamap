@@ -358,6 +358,7 @@
 
     <!-- Thread Actions Script -->
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
+    <script src="{{ asset_versioned('js/thread-actions.js') }}"></script>
 
     <!-- Initialize unified WebSocket system after all components are loaded -->
     @auth

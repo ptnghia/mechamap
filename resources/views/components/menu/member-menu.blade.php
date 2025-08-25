@@ -188,42 +188,8 @@
                     </ul>
                 </li>
 
-                <!-- User Profile Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ $user->getAvatarUrl() }}"
-                             alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24"
-                             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1))]) }}'">
-                        <span class="user-name">{{ $user->name }}</span>
-                        <span class="badge bg-{{ $user->role_color ?? 'primary' }} ms-1">{{ $user->role_display_name }}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
-                        @foreach($profileDropdownItems as $key => $item)
-                            @if(Route::has($item['route']))
-                                <li>
-                                    <a class="dropdown-item" href="{{ route($item['route'], $item['params'] ?? []) }}">
-                                        <i class="{{ $item['icon'] }} me-2"></i>
-                                        {{ $item['title'] }}
-                                        @if(isset($item['badge']) && $item['badge'] > 0)
-                                            <span class="badge bg-secondary ms-auto">{{ $item['badge'] }}</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @endif
-                        @endforeach
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="dropdown-item text-danger">
-                                    <i class="fas fa-sign-out-alt me-2"></i>
-                                    {{ t_auth('logout.title') }}
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
+                <!-- User Profile Dropdown - New Dashboard-based Menu -->
+                <x-user-dropdown />
             </ul>
         </div>
     </div>

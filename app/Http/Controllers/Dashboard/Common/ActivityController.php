@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard\Common;
 
 use App\Http\Controllers\Dashboard\BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 /**
@@ -25,9 +26,17 @@ class ActivityController extends BaseController
         $stats = $this->getActivityStats($period);
         $timeline = $this->getActivityTimeline($period);
 
+        // Calculate display stats for cards
+        $displayStats = [
+            'total_activities' => $this->user->threads()->count() + $this->user->comments()->count() + $this->user->bookmarks()->count(),
+            'today_activities' => $this->getTodayActivities(),
+            'week_activities' => $this->getWeekActivities(),
+            'streak_days' => $this->getActivityStreak()
+        ];
+
         return $this->dashboardResponse('dashboard.common.activity.index', [
             'activities' => $activities,
-            'stats' => $stats,
+            'stats' => $displayStats,
             'timeline' => $timeline,
             'currentFilter' => $filter,
             'currentPeriod' => $period
@@ -275,5 +284,87 @@ class ActivityController extends BaseController
     {
         // Placeholder - implement if profile views tracking is available
         return 0;
+    }
+
+    /**
+     * Lấy số hoạt động hôm nay
+     */
+    private function getTodayActivities()
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow();
+
+        $threadsToday = $this->user->threads()
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->count();
+
+        $commentsToday = $this->user->comments()
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->count();
+
+        $bookmarksToday = $this->user->bookmarks()
+            ->whereBetween('created_at', [$today, $tomorrow])
+            ->count();
+
+        return $threadsToday + $commentsToday + $bookmarksToday;
+    }
+
+    /**
+     * Lấy số hoạt động tuần này
+     */
+    private function getWeekActivities()
+    {
+        $weekStart = Carbon::now()->startOfWeek();
+        $weekEnd = Carbon::now()->endOfWeek();
+
+        $threadsWeek = $this->user->threads()
+            ->whereBetween('created_at', [$weekStart, $weekEnd])
+            ->count();
+
+        $commentsWeek = $this->user->comments()
+            ->whereBetween('created_at', [$weekStart, $weekEnd])
+            ->count();
+
+        $bookmarksWeek = $this->user->bookmarks()
+            ->whereBetween('created_at', [$weekStart, $weekEnd])
+            ->count();
+
+        return $threadsWeek + $commentsWeek + $bookmarksWeek;
+    }
+
+    /**
+     * Tính chuỗi hoạt động (streak)
+     */
+    private function getActivityStreak()
+    {
+        $streak = 0;
+        $currentDate = Carbon::today();
+
+        // Kiểm tra từng ngày từ hôm nay trở về trước
+        for ($i = 0; $i < 30; $i++) { // Tối đa 30 ngày
+            $dayStart = $currentDate->copy()->subDays($i)->startOfDay();
+            $dayEnd = $currentDate->copy()->subDays($i)->endOfDay();
+
+            $hasActivity = $this->user->threads()
+                ->whereBetween('created_at', [$dayStart, $dayEnd])
+                ->exists() ||
+                $this->user->comments()
+                ->whereBetween('created_at', [$dayStart, $dayEnd])
+                ->exists() ||
+                $this->user->bookmarks()
+                ->whereBetween('created_at', [$dayStart, $dayEnd])
+                ->exists();
+
+            if ($hasActivity) {
+                $streak++;
+            } else {
+                // Nếu không có hoạt động, dừng streak (trừ ngày đầu tiên)
+                if ($i > 0) {
+                    break;
+                }
+            }
+        }
+
+        return $streak;
     }
 }

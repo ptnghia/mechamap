@@ -1007,20 +1007,34 @@ function initializeThreadActions() {
                     const newSaved = !isSaved;
                     this.dataset.saved = newSaved ? 'true' : 'false';
 
-                    // Update button appearance
-                    const icon = this.querySelector('i');
-                    const text = this.querySelector('.save-text');
+                    // Update button appearance - re-query elements to avoid stale references
+                    const button = document.querySelector('.btn-save');
+                    if (!button) {
+                        console.error('Button not found after response');
+                        return;
+                    }
 
-                    if (newSaved) {
-                        this.classList.add('active');
-                        icon.className = 'fas fa-bookmark';
-                        text.textContent = '{{ __("thread.bookmarked") }}';
-                        this.title = '{{ __("thread.unsave") }}';
+                    const icon = button.querySelector('i');
+                    const text = button.querySelector('.save-text');
+
+                    if (icon && text) {
+                        if (newSaved) {
+                            button.classList.add('active');
+                            icon.className = 'fas fa-bookmark';
+                            text.textContent = '{{ __("thread.bookmarked") }}';
+                            button.title = '{{ __("thread.unsave") }}';
+                        } else {
+                            button.classList.remove('active');
+                            icon.className = 'far fa-bookmark';
+                            text.textContent = '{{ __("thread.bookmark") }}';
+                            button.title = '{{ __("thread.save") }}';
+                        }
                     } else {
-                        this.classList.remove('active');
-                        icon.className = 'far fa-bookmark';
-                        text.textContent = '{{ __("thread.bookmark") }}';
-                        this.title = '{{ __("thread.save") }}';
+                        // Fallback: Force page reload if elements can't be updated
+                        console.warn('Could not update button elements, reloading page...');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
                     }
 
                     // Show success message

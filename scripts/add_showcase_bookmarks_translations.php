@@ -488,6 +488,54 @@ $bookmarkKeys = [
     'bookmarks.index.browse_content' => [
         'vi' => 'Khám phá nội dung',
         'en' => 'Browse Content'
+    ],
+
+    // Missing keys found in testing
+    'bookmarks.index.no_folder' => [
+        'vi' => 'Không có thư mục',
+        'en' => 'No Folder'
+    ],
+    'bookmarks.index.add_favorite' => [
+        'vi' => 'Thêm vào yêu thích',
+        'en' => 'Add to Favorites'
+    ],
+    'bookmarks.index.remove_favorite' => [
+        'vi' => 'Bỏ khỏi yêu thích',
+        'en' => 'Remove from Favorites'
+    ],
+    'bookmarks.index.edit' => [
+        'vi' => 'Chỉnh sửa',
+        'en' => 'Edit'
+    ],
+    'bookmarks.index.delete' => [
+        'vi' => 'Xóa',
+        'en' => 'Delete'
+    ],
+    'bookmarks.index.delete_selected' => [
+        'vi' => 'Xóa đã chọn',
+        'en' => 'Delete Selected'
+    ],
+    'bookmarks.index.error_occurred' => [
+        'vi' => 'Có lỗi xảy ra',
+        'en' => 'An error occurred'
+    ],
+
+    // Bookmark types
+    'bookmarks.types.thread' => [
+        'vi' => 'Bài viết',
+        'en' => 'Thread'
+    ],
+    'bookmarks.types.showcase' => [
+        'vi' => 'Showcase',
+        'en' => 'Showcase'
+    ],
+    'bookmarks.types.product' => [
+        'vi' => 'Sản phẩm',
+        'en' => 'Product'
+    ],
+    'bookmarks.types.comment' => [
+        'vi' => 'Bình luận',
+        'en' => 'Comment'
     ]
 ];
 

@@ -853,6 +853,11 @@ Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () 
     Route::post('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'follow'])->name('ajax.threads.follow');
     Route::delete('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'unfollow'])->name('ajax.threads.unfollow');
     Route::get('/follow-status', [\App\Http\Controllers\ThreadFollowController::class, 'status'])->name('ajax.threads.follow.status');
+
+    // Thread Bookmark AJAX API routes
+    Route::post('/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'store'])->name('ajax.threads.bookmark');
+    Route::delete('/bookmark', [\App\Http\Controllers\ThreadBookmarkController::class, 'destroy'])->name('ajax.threads.bookmark.remove');
+    Route::get('/bookmark-status', [\App\Http\Controllers\ThreadBookmarkController::class, 'status'])->name('ajax.threads.bookmark.status');
 });
 
 // Unified Notification AJAX API routes

@@ -3,7 +3,7 @@
 @section('title', 'What\'s New - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/whats-new.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/whats-new.css') }}">
 @endpush
 
 @section('content')

@@ -24,7 +24,7 @@ class ThreadBookmarkController extends Controller
     {
         try {
             $request->validate([
-                'folder_id' => 'nullable|exists:thread_bookmark_folders,id',
+                'folder_name' => 'nullable|string|max:100',
                 'notes' => 'nullable|string|max:500',
             ]);
 
@@ -47,16 +47,12 @@ class ThreadBookmarkController extends Controller
             $bookmark = ThreadBookmark::create([
                 'user_id' => $user->id,
                 'thread_id' => $thread->id,
-                'folder_id' => $request->folder_id,
+                'folder' => $request->folder_name ?? null,
                 'notes' => $request->notes,
-                'bookmarked_at' => now(),
             ]);
 
             // Increment bookmark count trong thread
             $thread->increment('bookmark_count');
-
-            // Load folder info nếu có
-            $bookmark->load('folder');
 
             return response()->json([
                 'success' => true,
@@ -64,13 +60,9 @@ class ThreadBookmarkController extends Controller
                 'bookmarked' => true,
                 'bookmark' => [
                     'id' => $bookmark->id,
-                    'folder' => $bookmark->folder ? [
-                        'id' => $bookmark->folder->id,
-                        'name' => $bookmark->folder->name,
-                        'color' => $bookmark->folder->color,
-                    ] : null,
+                    'folder' => $bookmark->folder,
                     'notes' => $bookmark->notes,
-                    'bookmarked_at' => $bookmark->bookmarked_at->format('d/m/Y H:i'),
+                    'created_at' => $bookmark->created_at->format('d/m/Y H:i'),
                 ],
                 'bookmark_count' => $thread->fresh()->bookmark_count
             ]);
@@ -142,9 +134,18 @@ class ThreadBookmarkController extends Controller
         try {
             $user = Auth::user();
 
-            $folders = ThreadBookmarkFolder::where('user_id', $user->id)
-                ->orderBy('name')
-                ->get(['id', 'name', 'color', 'description']);
+            // Lấy danh sách folders từ bookmarks hiện có
+            $folders = ThreadBookmark::where('user_id', $user->id)
+                ->whereNotNull('folder')
+                ->distinct()
+                ->pluck('folder')
+                ->map(function ($folder) {
+                    return [
+                        'name' => $folder,
+                        'value' => $folder
+                    ];
+                })
+                ->values();
 
             return response()->json([
                 'success' => true,
@@ -161,22 +162,20 @@ class ThreadBookmarkController extends Controller
     }
 
     /**
-     * Tạo folder mới cho bookmark
+     * Tạo folder mới cho bookmark (đơn giản hóa)
      */
     public function createFolder(Request $request): JsonResponse
     {
         try {
             $request->validate([
                 'name' => 'required|string|max:100',
-                'color' => 'nullable|string|max:7',
-                'description' => 'nullable|string|max:255',
             ]);
 
             $user = Auth::user();
 
             // Kiểm tra tên folder đã tồn tại chưa
-            $existingFolder = ThreadBookmarkFolder::where('user_id', $user->id)
-                ->where('name', $request->name)
+            $existingFolder = ThreadBookmark::where('user_id', $user->id)
+                ->where('folder', $request->name)
                 ->exists();
 
             if ($existingFolder) {
@@ -186,21 +185,12 @@ class ThreadBookmarkController extends Controller
                 ], 409);
             }
 
-            $folder = ThreadBookmarkFolder::create([
-                'user_id' => $user->id,
-                'name' => $request->name,
-                'color' => $request->color ?? '#3B82F6',
-                'description' => $request->description,
-            ]);
-
             return response()->json([
                 'success' => true,
-                'message' => 'Tạo folder thành công',
+                'message' => 'Folder có thể được sử dụng',
                 'folder' => [
-                    'id' => $folder->id,
-                    'name' => $folder->name,
-                    'color' => $folder->color,
-                    'description' => $folder->description,
+                    'name' => $request->name,
+                    'value' => $request->name,
                 ]
             ]);
         } catch (\Exception $e) {
@@ -220,7 +210,7 @@ class ThreadBookmarkController extends Controller
     {
         try {
             $request->validate([
-                'folder_id' => 'nullable|exists:thread_bookmark_folders,id',
+                'folder_name' => 'nullable|string|max:100',
                 'notes' => 'nullable|string|max:500',
             ]);
 
@@ -234,39 +224,18 @@ class ThreadBookmarkController extends Controller
                 ], 403);
             }
 
-            // Nếu có folder_id, kiểm tra folder thuộc về user
-            if ($request->folder_id) {
-                $folder = ThreadBookmarkFolder::where('id', $request->folder_id)
-                    ->where('user_id', $user->id)
-                    ->first();
-
-                if (!$folder) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Folder không tồn tại hoặc không thuộc về bạn'
-                    ], 404);
-                }
-            }
-
             // Cập nhật bookmark
             $bookmark->update([
-                'folder_id' => $request->folder_id,
+                'folder' => $request->folder_name,
                 'notes' => $request->notes,
             ]);
-
-            // Load folder info
-            $bookmark->load('folder');
 
             return response()->json([
                 'success' => true,
                 'message' => 'Cập nhật bookmark thành công',
                 'bookmark' => [
                     'id' => $bookmark->id,
-                    'folder' => $bookmark->folder ? [
-                        'id' => $bookmark->folder->id,
-                        'name' => $bookmark->folder->name,
-                        'color' => $bookmark->folder->color,
-                    ] : null,
+                    'folder' => $bookmark->folder,
                     'notes' => $bookmark->notes,
                 ]
             ]);
@@ -276,6 +245,33 @@ class ThreadBookmarkController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi cập nhật bookmark'
+            ], 500);
+        }
+    }
+
+    /**
+     * Kiểm tra trạng thái bookmark của thread
+     */
+    public function status(Thread $thread): JsonResponse
+    {
+        try {
+            $user = Auth::user();
+
+            $bookmark = ThreadBookmark::where('user_id', $user->id)
+                ->where('thread_id', $thread->id)
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'bookmarked' => $bookmark !== null,
+                'bookmark' => $bookmark,
+                'bookmark_count' => $thread->bookmark_count
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi kiểm tra trạng thái bookmark'
             ], 500);
         }
     }
