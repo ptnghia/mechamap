@@ -25,7 +25,6 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
 @if($sidebarType === 'showcase')
 <!-- Showcase Sidebar -->
 
-
 @elseif($sidebarType === 'marketplace')
 <!-- Marketplace Sidebar -->
 @include('components.sidebar-marketplace', ['user' => auth()->user()])

@@ -239,7 +239,7 @@
     </div>
 
     {{-- Bottom Action Bar --}}
-    <div class="mega-menu-footer">
+    <!--div class="mega-menu-footer">
         <div class="row align-items-center justify-content-center">
             <div class="col-md-4 text-center">
                 <div class="d-flex align-items-center justify-content-center">
@@ -254,7 +254,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 </div>
 
 {{-- JavaScript for functionality --}}

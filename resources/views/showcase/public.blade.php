@@ -1,14 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('showcase.public_showcases') . ' - MechaMap')
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
-<link rel="stylesheet" href="{{ asset('css/frontend/components/sidebar-showcase.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/showcase.css') }}">
 @endpush
 
-@section('full-width-content')
+@section('content')
 <div class="container">
     <div class="row">
         <div class="col-lg-3 col-md-4 slidebar_showcase">

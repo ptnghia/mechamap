@@ -3,7 +3,33 @@
 @section('title', __('forum.create.title'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/thread-form.css') }}">
+@endpush
+
+@push('scripts')
+<script>
+// Translation keys for JavaScript
+window.threadTranslations = {
+    validation: {
+        titleRequired: '{{ __('thread.validation.title_required') }}',
+        categoryRequired: '{{ __('thread.validation.category_required') }}',
+        forumRequired: '{{ __('thread.validation.forum_required') }}',
+        contentRequired: '{{ __('thread.validation.content_required') }}',
+        pollQuestionRequired: '{{ __('thread.validation.poll_question_required') }}',
+        pollMinOptions: '{{ __('thread.validation.poll_min_options') }}',
+        checkInfo: '{{ __('thread.validation.check_info') }}',
+        selectExistingShowcase: '{{ __('thread.validation.select_existing_showcase') }}'
+    },
+    file: {
+        maxFilesError: '{{ __('thread.file.max_files_error') }}',
+        sizeError: '{{ __('thread.file.size_error') }}',
+        typeError: '{{ __('thread.file.type_error') }}'
+    },
+    nav: {
+        creating: '{{ __('thread.nav.creating') }}'
+    }
+};
+</script>
 @endpush
 
 @section('content')
@@ -213,7 +239,7 @@
                     <label for="images" class="form-label-modern">
                         <span class="label-text">
                             <i class="images"></i>
-                            Tải Lên Hình Ảnh
+                            {{ __('thread.upload.image_label') }}
                         </span>
                     </label>
                     <div class="upload-area" id="upload-area">
@@ -222,8 +248,8 @@
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
                             <div class="upload-text">
-                                <h4>Kéo thả hình ảnh vào đây</h4>
-                                <p>hoặc <span class="upload-link">chọn file</span> từ máy tính</p>
+                                <h4>{{ __('thread.upload.drag_drop_title') }}</h4>
+                                <p>{{ __('thread.upload.or_select') }} <span class="upload-link">{{ __('thread.upload.select_files') }}</span> {{ __('thread.upload.from_computer') }}</p>
                             </div>
                             <input type="file" class="upload-input @error('images') is-invalid @enderror" id="images"
                                 name="images[]" multiple accept="image/*">
@@ -231,7 +257,7 @@
                     </div>
                     <div class="form-help-text">
                         <i class="info-circle"></i>
-                        <span>Tối đa 10 hình ảnh, mỗi file không quá 5MB. Hỗ trợ: JPG, PNG, GIF, WebP</span>
+                        <span>{{ __('thread.upload.help_text') }}</span>
                     </div>
                     @error('images')
                     <div class="error-message">
@@ -255,10 +281,10 @@
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
                 <i class="chevron-left"></i>
-                <span>Trước</span>
+                <span>{{ __('thread.nav.previous') }}</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
-                <span>Tiếp Theo</span>
+                <span>{{ __('thread.nav.next') }}</span>
                 <i class="chevron-right"></i>
             </button>
         </div>
@@ -477,10 +503,10 @@
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
                 <i class="chevron-left"></i>
-                <span>Trước</span>
+                <span>{{ __('thread.nav.previous') }}</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
-                <span>Tiếp Theo</span>
+                <span>{{ __('thread.nav.next') }}</span>
                 <i class="chevron-right"></i>
             </button>
         </div>
@@ -492,9 +518,9 @@
             <div class="card-header-modern">
                 <div class="card-title">
                     <i class="bar-chart"></i>
-                    <span>Khảo Sát (Tùy Chọn)</span>
+                    <span>{{ __('thread.poll.title') }}</span>
                 </div>
-                <div class="card-subtitle">Tạo một cuộc khảo sát để thu thập ý kiến từ cộng đồng</div>
+                <div class="card-subtitle">{{ __('thread.poll.subtitle') }}</div>
             </div>
             <div class="card-body-modern">
                 <div class="poll-toggle">
@@ -506,9 +532,8 @@
                                 <div class="toggle-slider"></div>
                             </div>
                             <div class="toggle-text">
-                                <span class="toggle-title">Thêm khảo sát vào chủ đề này</span>
-                                <span class="toggle-subtitle">Cho phép thành viên bình chọn và thể hiện ý
-                                    kiến</span>
+                                <span class="toggle-title">{{ __('thread.poll.enable_title') }}</span>
+                                <span class="toggle-subtitle">{{ __('thread.poll.enable_subtitle') }}</span>
                             </div>
                         </label>
                     </div>
@@ -517,7 +542,7 @@
                 <div class="poll-content" style="{{ old('has_poll') ? '' : 'display: none;' }}">
                     <div class="form-group-modern">
                         <label for="poll_question" class="form-label-modern">
-                            <span class="label-text">Câu Hỏi Khảo Sát</span>
+                            <span class="label-text">{{ __('thread.poll.question_label') }}</span>
                             <span class="label-required">*</span>
                         </label>
                         <div class="input-wrapper">
@@ -538,7 +563,7 @@
 
                     <div class="form-group-modern">
                         <label class="form-label-modern">
-                            <span class="label-text">Các Lựa Chọn</span>
+                            <span class="label-text">{{ __('thread.poll.options_label') }}</span>
                             <span class="label-required">*</span>
                         </label>
                         <div class="poll-options-container" id="poll-options">
@@ -584,7 +609,7 @@
                         </div>
                         <button type="button" class="add-option-btn" id="add-option">
                             <i class="fas fa-plus-circle"></i>
-                            <span>Thêm Lựa Chọn</span>
+                            <span>{{ __('thread.poll.add_option') }}</span>
                         </button>
                         @error('poll_options')
                         <div class="error-message">
@@ -679,10 +704,10 @@
         <div class="step-navigation">
             <button type="button" class="btn btn-secondary btn-modern" onclick="prevStep()">
                 <i class="chevron-left"></i>
-                <span>Trước</span>
+                <span>{{ __('thread.nav.previous') }}</span>
             </button>
             <button type="button" class="btn btn-primary btn-modern" onclick="nextStep()">
-                <span>Tiếp Theo</span>
+                <span>{{ __('thread.nav.next') }}</span>
                 <i class="chevron-right"></i>
             </button>
         </div>
@@ -1134,7 +1159,7 @@ function validateShowcase() {
     if (showcaseType.value === 'existing') {
         const existingShowcaseId = document.getElementById('existing_showcase_id');
         if (!existingShowcaseId.value) {
-            showValidationMessage('Vui lòng chọn showcase có sẵn', 'error');
+            showValidationMessage(window.threadTranslations.validation.selectExistingShowcase, 'error');
             return false;
         }
     } else {
@@ -1250,21 +1275,21 @@ function validateBasicInfo() {
     let isValid = true;
 
     if (!title.value.trim()) {
-        showFieldError(title, 'Vui lòng nhập tiêu đề');
+        showFieldError(title, window.threadTranslations.validation.titleRequired);
         isValid = false;
     } else {
         clearFieldError(title);
     }
 
     if (!category.value) {
-        showFieldError(category, 'Vui lòng chọn danh mục');
+        showFieldError(category, window.threadTranslations.validation.categoryRequired);
         isValid = false;
     } else {
         clearFieldError(category);
     }
 
     if (!forum.value) {
-        showFieldError(forum, 'Vui lòng chọn diễn đàn');
+        showFieldError(forum, window.threadTranslations.validation.forumRequired);
         isValid = false;
     } else {
         clearFieldError(forum);
@@ -1297,7 +1322,7 @@ function validatePoll() {
     let isValid = true;
 
     if (!question.value.trim()) {
-        showFieldError(question, 'Vui lòng nhập câu hỏi khảo sát');
+        showFieldError(question, window.threadTranslations.validation.pollQuestionRequired);
         isValid = false;
     } else {
         clearFieldError(question);
@@ -1311,7 +1336,7 @@ function validatePoll() {
     });
 
     if (validOptions < 2) {
-        showValidationMessage('Khảo sát cần ít nhất 2 lựa chọn', 'error');
+        showValidationMessage(window.threadTranslations.validation.pollMinOptions, 'error');
         isValid = false;
     }
 
@@ -1627,7 +1652,7 @@ function initShowcaseFileUpload() {
     function handleFileSelection(files) {
         // Validate file count
         if (selectedFiles.length + files.length > 10) {
-            showValidationMessage('Tối đa 10 file được phép tải lên', 'error');
+            showValidationMessage(window.threadTranslations.file.maxFilesError, 'error');
             return;
         }
 
@@ -1646,7 +1671,7 @@ function initShowcaseFileUpload() {
     function validateFile(file) {
         // Check file size (50MB max)
         if (file.size > 50 * 1024 * 1024) {
-            showValidationMessage(`File "${file.name}" quá lớn. Tối đa 50MB.`, 'error');
+            showValidationMessage(`File "${file.name}" ${window.threadTranslations.file.sizeError}`, 'error');
             return false;
         }
 
@@ -1660,7 +1685,7 @@ function initShowcaseFileUpload() {
         const fileExtension = file.name.split('.').pop().toLowerCase();
 
         if (!allowedExtensions.includes(fileExtension)) {
-            showValidationMessage(`File "${file.name}" không được hỗ trợ.`, 'error');
+            showValidationMessage(`File "${file.name}" ${window.threadTranslations.file.typeError}`, 'error');
             return false;
         }
 
@@ -1754,7 +1779,7 @@ document.getElementById('thread-form').addEventListener('submit', function(e) {
     // Final validation before submit
     if (!validateBasicInfo() || !validateContent() || !validateShowcase() || !validatePoll()) {
         e.preventDefault();
-        showValidationMessage('Vui lòng kiểm tra lại các thông tin đã nhập', 'error');
+        showValidationMessage(window.threadTranslations.validation.checkInfo, 'error');
         return false;
     }
 
@@ -1762,7 +1787,7 @@ document.getElementById('thread-form').addEventListener('submit', function(e) {
     const submitButton = document.querySelector('.btn-submit');
     if (submitButton) {
         submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="fas fa-hourglass-half"></i> <span>Đang tạo...</span>';
+        submitButton.innerHTML = `<i class="fas fa-hourglass-half"></i> <span>${window.threadTranslations.nav.creating}</span>`;
     }
 });
 </script>

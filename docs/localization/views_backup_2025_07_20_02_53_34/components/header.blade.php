@@ -1220,7 +1220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.loadMiniCart = function() {
         const miniCartItems = document.getElementById('miniCartItems');
         if (!miniCartItems) {
-            console.log('Mini cart not available for this user');
+            //console.log('Mini cart not available for this user');
             return;
         }
 

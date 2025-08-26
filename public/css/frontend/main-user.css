@@ -6,7 +6,7 @@
     display: block;
     width: 100%;
     padding: 10px 15px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
     color: #333333;
@@ -16,7 +16,6 @@
     border-radius: .25rem;
     transition: border-color .2s ease-in-out,box-shadow .2s ease-in-out
 }
-
 .form-control:focus {
     color: #333333;
     background-color: #fff;
@@ -35,18 +34,6 @@
 }
 
 .form-select {
-    display: block;
-    width: 100%;
-    padding: .8rem .75rem;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #333333;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    transition: border-color .2s ease-in-out,box-shadow .2s ease-in-out
 }
 
 .form-select:focus {
@@ -85,7 +72,6 @@
 .form-check {
     display: block;
     margin-bottom: 0;
-    padding-left: 0;
     cursor: pointer
 }
 
@@ -93,7 +79,6 @@
     width: 1rem;
     height: 1rem;
     margin-top: .25rem;
-    margin-left: -1.5rem;
     background-color: #fff;
     background-repeat: no-repeat;
     background-position: center;
@@ -103,12 +88,6 @@
 }
 
 .form-check-input[type="checkbox"] {
-    border-radius: 30px;
-    margin-left: 0;
-    height: 18px;
-    width: 40px;
-    position: relative;
-    cursor: pointer
 }
 
 .form-check-input[type="radio"] {
@@ -3706,7 +3685,7 @@ html {
 .btn-main.active {
     background-color: var(--bs-primary);
     color: #fff;
-    border: 1px solid var(--bs-primary)
+    border: 1px solid var(--bs-primary);
 }
 
 .btn-main.active:hover,.btn-main.active:focus {

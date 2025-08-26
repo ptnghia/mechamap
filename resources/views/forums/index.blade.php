@@ -11,8 +11,8 @@
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="div_title_page">
-            <h1 class="h2 mb-1 title_page">{{ __('forums.title') }}</h1>
-            <p class="text-muted mb-0">{{ __('forums.description') }}</p>
+            <h1 class="h2 mb-1 title_page">{{ seo_title_short() }}</h1>
+            <p class="text-muted mb-0">{{ seo_value('description', __('forums.description'))  }}</p>
         </div>
         @auth
         <div>

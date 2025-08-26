@@ -4,7 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Thread Actions: Initializing...');
+    //console.log('Thread Actions: Initializing...');
 
     // Initialize bookmark buttons
     initializeBookmarkButtons();
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize follow buttons
     initializeFollowButtons();
 
-    console.log('Thread Actions: Initialized successfully');
+    //console.log('Thread Actions: Initialized successfully');
 });
 
 /**
@@ -25,7 +25,7 @@ function initializeBookmarkButtons() {
         button.addEventListener('click', handleBookmarkClick);
     });
 
-    console.log(`Thread Actions: Initialized ${bookmarkButtons.length} bookmark buttons`);
+    //console.log(`Thread Actions: Initialized ${bookmarkButtons.length} bookmark buttons`);
 }
 
 /**
@@ -38,7 +38,7 @@ function initializeFollowButtons() {
         button.addEventListener('click', handleFollowClick);
     });
 
-    console.log(`Thread Actions: Initialized ${followButtons.length} follow buttons`);
+    //console.log(`Thread Actions: Initialized ${followButtons.length} follow buttons`);
 }
 
 /**
@@ -251,7 +251,7 @@ function updateFollowButton(button, isFollowed) {
  * Reinitialize buttons for dynamically loaded content
  */
 window.reinitializeThreadActions = function() {
-    console.log('Thread Actions: Reinitializing for dynamic content...');
+    //console.log('Thread Actions: Reinitializing for dynamic content...');
     initializeBookmarkButtons();
     initializeFollowButtons();
 };

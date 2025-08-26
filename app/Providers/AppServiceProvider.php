@@ -132,6 +132,16 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('user', function ($key) {
             return "<?php echo t_user($key); ?>";
         });
+
+        // @seo directive for SEO data
+        Blade::directive('seo', function ($key) {
+            return "<?php echo seo_value($key); ?>";
+        });
+
+        // @seo_short directive for short title
+        Blade::directive('seo_short', function ($expression) {
+            return "<?php echo seo_title_short($expression); ?>";
+        });
     }
 
     /**
@@ -206,6 +216,111 @@ class AppServiceProvider extends ServiceProvider
             'components.header'
         ], NotificationComposer::class);
 
+        // Register SEO data for all views
+        View::composer('*', function ($view) {
+            try {
+                $seoService = app(\App\Services\MultilingualSeoService::class);
+                $seoData = $seoService->getSeoData(request(), app()->getLocale());
 
+                // Xử lý title để lấy phần đầu tiên trước ký tự "|"
+                $fullTitle = $seoData['title'] ?? $this->getDefaultTitle();
+                $titleParts = explode('-', $fullTitle);
+                $shortTitle = trim($titleParts[0]);
+
+                // Đảm bảo có fallback values cho tất cả các trường
+                $processedSeoData = array_merge([
+                    'title' => $this->getDefaultTitle(),
+                    'description' => $this->getDefaultDescription(),
+                    'keywords' => $this->getDefaultKeywords(),
+                    'og_title' => null,
+                    'og_description' => null,
+                    'og_image' => null,
+                    'twitter_title' => null,
+                    'twitter_description' => null,
+                    'twitter_image' => null,
+                    'canonical_url' => url()->current(),
+                    'no_index' => false,
+                    'extra_meta' => null,
+                ], $seoData);
+
+                $view->with([
+                    'seoData' => $processedSeoData,
+                    'currentSeoTitle' => $shortTitle ?: $this->getDefaultShortTitle(),
+                    'currentSeoDescription' => $processedSeoData['description'],
+                    'currentSeoKeywords' => $processedSeoData['keywords'],
+                ]);
+            } catch (\Exception $e) {
+                // Fallback nếu có lỗi
+                \Log::warning('SEO data loading failed: ' . $e->getMessage());
+                $view->with([
+                    'seoData' => [
+                        'title' => $this->getDefaultTitle(),
+                        'description' => $this->getDefaultDescription(),
+                        'keywords' => $this->getDefaultKeywords(),
+                        'canonical_url' => url()->current(),
+                        'no_index' => false,
+                    ],
+                    'currentSeoTitle' => $this->getDefaultShortTitle(),
+                    'currentSeoDescription' => $this->getDefaultDescription(),
+                    'currentSeoKeywords' => $this->getDefaultKeywords(),
+                ]);
+            }
+        });
+    }
+
+    /**
+     * Get default title based on current locale
+     */
+    private function getDefaultTitle(): string
+    {
+        $locale = app()->getLocale();
+        $defaultTitles = [
+            'vi' => 'MechaMap - Cộng đồng Kỹ thuật Cơ khí Việt Nam',
+            'en' => 'MechaMap - Vietnam Mechanical Engineering Community'
+        ];
+
+        return $defaultTitles[$locale] ?? $defaultTitles['vi'];
+    }
+
+    /**
+     * Get default short title (without site name)
+     */
+    private function getDefaultShortTitle(): string
+    {
+        $locale = app()->getLocale();
+        $defaultShortTitles = [
+            'vi' => 'MechaMap',
+            'en' => 'MechaMap'
+        ];
+
+        return $defaultShortTitles[$locale] ?? $defaultShortTitles['vi'];
+    }
+
+    /**
+     * Get default description based on current locale
+     */
+    private function getDefaultDescription(): string
+    {
+        $locale = app()->getLocale();
+        $defaultDescriptions = [
+            'vi' => 'Nền tảng forum hàng đầu cho cộng đồng kỹ sư cơ khí Việt Nam. Thảo luận CAD/CAM, thiết kế máy móc, công nghệ chế tạo.',
+            'en' => 'Leading forum platform for Vietnam\'s mechanical engineering community. Discuss CAD/CAM, machine design, manufacturing technology.'
+        ];
+
+        return $defaultDescriptions[$locale] ?? $defaultDescriptions['vi'];
+    }
+
+    /**
+     * Get default keywords
+     */
+    private function getDefaultKeywords(): string
+    {
+        $locale = app()->getLocale();
+        $defaultKeywords = [
+            'vi' => 'cơ khí, kỹ thuật, CAD, CAM, thiết kế máy móc, forum, cộng đồng, việt nam',
+            'en' => 'mechanical engineering, CAD, CAM, machine design, forum, community, vietnam'
+        ];
+
+        return $defaultKeywords[$locale] ?? $defaultKeywords['vi'];
     }
 }

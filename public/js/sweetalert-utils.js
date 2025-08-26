@@ -577,4 +577,4 @@ window.ajaxWithCSRFRetry = function(options) {
     return window.retryWithFreshCSRF(requestFunction);
 };
 
-console.log('SweetAlert2 utilities loaded successfully!');
+//console.log('SweetAlert2 utilities loaded successfully!');

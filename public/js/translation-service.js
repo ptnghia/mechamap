@@ -14,7 +14,7 @@ class TranslationService {
             this.translations = window.Laravel.translations;
         }
 
-        console.log('TranslationService initialized with locale:', this.currentLocale);
+        //console.log('TranslationService initialized with locale:', this.currentLocale);
     }
 
     /**
@@ -108,7 +108,7 @@ class TranslationService {
             return Promise.resolve(this.translations);
         }
 
-        console.log('Loading notification translations for locale:', locale);
+        //console.log('Loading notification translations for locale:', locale);
 
         const loadPromise = fetch(`/api/translations/notifications?locale=${locale}`)
             .then(response => {
@@ -265,4 +265,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-console.log('Translation Service loaded successfully');
+//console.log('Translation Service loaded successfully');

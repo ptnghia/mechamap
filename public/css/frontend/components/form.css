@@ -1,10 +1,4 @@
 .select_search {
-    height: 42px;
-    border: 1px solid var(--bs-primary);
-    font-size: 14px;
-    font-weight: 500;
-    color: #444444;
-    padding: 5px 15px
 }
 .input-group.input_group_search input {
     height: 42px;
@@ -44,13 +38,9 @@
 }
 
 .input_search {
-    height: 42px;
-    border-radius: 5px;
-    border: 1px solid var(--bs-primary)
 }
 
 .btn.btn-search {
-    height: 42px
 }
 .input_group_search{position: relative;display: block;}
 .input_group_search input{width: 100% !important;border-radius: 5px !IMPORTANT;padding-right: 60px;}

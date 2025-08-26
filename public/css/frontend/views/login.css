@@ -14,7 +14,7 @@
 }
 .login_page{
 }
-.login_page_left{padding: 10px 30px;width: 100%;}
+.login_page_left{padding: 10px 30px;width: 100%;font-size: 14px;}
 .login_page_right{font-size: 16px;font-weight: 500;}
 .login_page .br_img{background-image: url(../img/br-login.png);background-repeat: no-repeat;background-size: cover;background-position: center;}
 .login_page_left_logo{
@@ -24,10 +24,9 @@
 .login_page_left_logo p{text-transform: uppercase;font-weight: 600;}
 .login_page_left_content{
 }
-.login_page_left_content p{font-size: 18px;margin-bottom: 20px !IMPORTANT;}
+.login_page_left_content p{font-size: 16px;margin-bottom: 20px !IMPORTANT;}
 .login_page_right_title{text-transform: uppercase;font-size: 28px !IMPORTANT;}
-.login_page_right_description{
-}
+.login_page_right_description{font-size: 14px;}
 .login_page_left_content p i{color: #ffffff9c;}
 .svg-google{background-image: url(../img/google.svg);}
 .svg-facebook{background-image: url(../img/facebook.svg);}

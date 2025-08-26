@@ -107,16 +107,17 @@ class ShowcaseController extends Controller
      */
     private function getSearchFiltersData(): array
     {
-        return [
-            'categories' => Showcase::select('category')
-                ->whereNotNull('category')
-                ->where('is_public', true)
-                ->whereIn('status', ['featured', 'approved'])
-                ->groupBy('category')
-                ->pluck('category')
-                ->map(fn($cat) => ['value' => $cat, 'label' => ucfirst($cat)])
-                ->toArray(),
+        $categories = Showcase::select('category')
+            ->whereNotNull('category')
+            ->where('is_public', true)
+            ->whereIn('status', ['featured', 'approved'])
+            ->groupBy('category')
+            ->pluck('category')
+            ->map(fn($cat) => ['value' => $cat, 'label' => ucfirst($cat)])
+            ->toArray();
 
+        return [
+            'categories' => $categories,
             'complexity_levels' => [
                 ['value' => 'beginner', 'label' => 'Beginner'],
                 ['value' => 'intermediate', 'label' => 'Intermediate'],
@@ -138,6 +139,7 @@ class ShowcaseController extends Controller
                 ->filter()
                 ->unique()
                 ->values()
+                ->map(fn($software) => ['value' => $software, 'label' => ucfirst($software)])
                 ->toArray(),
 
             'project_types' => Showcase::select('project_type')

@@ -615,6 +615,234 @@ class AddDashboardTranslations extends Command
             'vi' => 'Chọn file',
             'en' => 'Select Files'
         ],
+
+        // ===== THREAD CREATE FORM TRANSLATIONS =====
+
+        // Upload area
+        'thread.upload.drag_drop_title' => [
+            'vi' => 'Kéo thả hình ảnh vào đây',
+            'en' => 'Drag and drop images here'
+        ],
+        'thread.upload.or_select' => [
+            'vi' => 'hoặc',
+            'en' => 'or'
+        ],
+        'thread.upload.select_files' => [
+            'vi' => 'chọn file',
+            'en' => 'select files'
+        ],
+        'thread.upload.from_computer' => [
+            'vi' => 'từ máy tính',
+            'en' => 'from computer'
+        ],
+        'thread.upload.help_text' => [
+            'vi' => 'Tối đa 10 hình ảnh, mỗi file không quá 5MB. Hỗ trợ: JPG, PNG, GIF, WebP',
+            'en' => 'Maximum 10 images, each file no more than 5MB. Supported: JPG, PNG, GIF, WebP'
+        ],
+        'thread.upload.image_label' => [
+            'vi' => 'Tải Lên Hình Ảnh',
+            'en' => 'Upload Images'
+        ],
+
+        // Navigation buttons
+        'thread.nav.previous' => [
+            'vi' => 'Trước',
+            'en' => 'Previous'
+        ],
+        'thread.nav.next' => [
+            'vi' => 'Tiếp Theo',
+            'en' => 'Next'
+        ],
+        'thread.nav.creating' => [
+            'vi' => 'Đang tạo...',
+            'en' => 'Creating...'
+        ],
+
+        // Poll section
+        'thread.poll.title' => [
+            'vi' => 'Khảo Sát (Tùy Chọn)',
+            'en' => 'Poll (Optional)'
+        ],
+        'thread.poll.subtitle' => [
+            'vi' => 'Tạo một cuộc khảo sát để thu thập ý kiến từ cộng đồng',
+            'en' => 'Create a poll to gather opinions from the community'
+        ],
+        'thread.poll.enable_title' => [
+            'vi' => 'Thêm khảo sát vào chủ đề này',
+            'en' => 'Add poll to this thread'
+        ],
+        'thread.poll.enable_subtitle' => [
+            'vi' => 'Cho phép thành viên bình chọn và thể hiện ý kiến',
+            'en' => 'Allow members to vote and express opinions'
+        ],
+        'thread.poll.question_label' => [
+            'vi' => 'Câu Hỏi Khảo Sát',
+            'en' => 'Poll Question'
+        ],
+        'thread.poll.options_label' => [
+            'vi' => 'Các Lựa Chọn',
+            'en' => 'Options'
+        ],
+        'thread.poll.add_option' => [
+            'vi' => 'Thêm Lựa Chọn',
+            'en' => 'Add Option'
+        ],
+        'thread.poll.max_options_title' => [
+            'vi' => 'Số lựa chọn tối đa',
+            'en' => 'Maximum options'
+        ],
+        'thread.poll.single_choice' => [
+            'vi' => 'Chỉ một lựa chọn',
+            'en' => 'Single choice only'
+        ],
+        'thread.poll.unlimited_choice' => [
+            'vi' => 'Không giới hạn',
+            'en' => 'Unlimited'
+        ],
+        'thread.poll.settings_title' => [
+            'vi' => 'Tùy chọn khảo sát',
+            'en' => 'Poll settings'
+        ],
+        'thread.poll.allow_change_vote' => [
+            'vi' => 'Cho phép thay đổi lựa chọn',
+            'en' => 'Allow changing votes'
+        ],
+        'thread.poll.show_results_public' => [
+            'vi' => 'Hiển thị kết quả công khai',
+            'en' => 'Show results publicly'
+        ],
+        'thread.poll.view_without_vote' => [
+            'vi' => 'Cho phép xem kết quả mà không cần bình chọn',
+            'en' => 'Allow viewing results without voting'
+        ],
+        'thread.poll.close_after_title' => [
+            'vi' => 'Thời gian đóng khảo sát',
+            'en' => 'Poll closing time'
+        ],
+        'thread.poll.close_after' => [
+            'vi' => 'Đóng khảo sát sau',
+            'en' => 'Close poll after'
+        ],
+
+        // Validation messages
+        'thread.validation.title_required' => [
+            'vi' => 'Vui lòng nhập tiêu đề',
+            'en' => 'Please enter title'
+        ],
+        'thread.validation.category_required' => [
+            'vi' => 'Vui lòng chọn danh mục',
+            'en' => 'Please select category'
+        ],
+        'thread.validation.forum_required' => [
+            'vi' => 'Vui lòng chọn diễn đàn',
+            'en' => 'Please select forum'
+        ],
+        'thread.validation.content_required' => [
+            'vi' => 'Vui lòng nhập nội dung cho chủ đề',
+            'en' => 'Please enter content for the thread'
+        ],
+        'thread.validation.poll_question_required' => [
+            'vi' => 'Vui lòng nhập câu hỏi khảo sát',
+            'en' => 'Please enter poll question'
+        ],
+        'thread.validation.poll_min_options' => [
+            'vi' => 'Khảo sát cần ít nhất 2 lựa chọn',
+            'en' => 'Poll needs at least 2 options'
+        ],
+        'thread.validation.check_info' => [
+            'vi' => 'Vui lòng kiểm tra lại các thông tin đã nhập',
+            'en' => 'Please check the information entered'
+        ],
+        'thread.validation.select_existing_showcase' => [
+            'vi' => 'Vui lòng chọn showcase có sẵn',
+            'en' => 'Please select existing showcase'
+        ],
+
+        // Review section
+        'thread.review.no_images' => [
+            'vi' => 'Không có hình ảnh',
+            'en' => 'No images'
+        ],
+        'thread.review.images_count' => [
+            'vi' => 'hình ảnh',
+            'en' => 'images'
+        ],
+        'thread.review.no_poll' => [
+            'vi' => 'Không có khảo sát',
+            'en' => 'No poll'
+        ],
+        'thread.review.has_poll' => [
+            'vi' => 'Có khảo sát',
+            'en' => 'Has poll'
+        ],
+        'thread.review.poll_options' => [
+            'vi' => 'lựa chọn',
+            'en' => 'options'
+        ],
+        'thread.review.no_showcase' => [
+            'vi' => 'Không có showcase',
+            'en' => 'No showcase'
+        ],
+        'thread.review.new_showcase' => [
+            'vi' => 'Showcase mới',
+            'en' => 'New showcase'
+        ],
+        'thread.review.attach_existing' => [
+            'vi' => 'Đính kèm',
+            'en' => 'Attach'
+        ],
+        'thread.review.existing_showcase' => [
+            'vi' => 'Showcase có sẵn',
+            'en' => 'Existing showcase'
+        ],
+
+        // Showcase section
+        'thread.showcase.type_new_subtitle' => [
+            'vi' => 'Tạo showcase mới từ chủ đề này',
+            'en' => 'Create new showcase from this thread'
+        ],
+        'thread.showcase.type_existing_subtitle' => [
+            'vi' => 'Đính kèm showcase đã có sẵn',
+            'en' => 'Attach existing showcase'
+        ],
+        'thread.showcase.select_existing_placeholder' => [
+            'vi' => 'Chọn showcase',
+            'en' => 'Select showcase'
+        ],
+        'thread.showcase.complexity_placeholder' => [
+            'vi' => 'Chọn độ phức tạp',
+            'en' => 'Select complexity'
+        ],
+        'thread.showcase.complexity_basic' => [
+            'vi' => 'Cơ bản',
+            'en' => 'Basic'
+        ],
+        'thread.showcase.complexity_intermediate' => [
+            'vi' => 'Trung bình',
+            'en' => 'Intermediate'
+        ],
+        'thread.showcase.complexity_advanced' => [
+            'vi' => 'Nâng cao',
+            'en' => 'Advanced'
+        ],
+        'thread.showcase.complexity_expert' => [
+            'vi' => 'Chuyên gia',
+            'en' => 'Expert'
+        ],
+
+        // File upload
+        'thread.file.max_files_error' => [
+            'vi' => 'Tối đa 10 file được phép tải lên',
+            'en' => 'Maximum 10 files allowed to upload'
+        ],
+        'thread.file.size_error' => [
+            'vi' => 'quá lớn. Tối đa 50MB.',
+            'en' => 'is too large. Maximum 50MB.'
+        ],
+        'thread.file.type_error' => [
+            'vi' => 'không được hỗ trợ.',
+            'en' => 'is not supported.'
+        ],
     ];
 
     /**

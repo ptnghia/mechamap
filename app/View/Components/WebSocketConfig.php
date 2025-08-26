@@ -162,32 +162,7 @@ class WebSocketConfig extends Component
      */
     public function configJson()
     {
-        try {
-            $config = [
-                'server_url' => $this->serverUrl ?? 'http://localhost:3000',
-                'server_host' => $this->serverHost ?? 'localhost',
-                'server_port' => $this->serverPort ?? 3000,
-                'secure' => $this->secure ?? false,
-                'laravel_url' => $this->laravelUrl ?? config('app.url'),
-                'environment' => app()->environment(),
-                'auto_init' => $this->autoInit ?? true,
-            ];
-
-            return json_encode($config);
-        } catch (\Exception $e) {
-            // Fallback configuration if there's an error
-            \Log::error('WebSocketConfig configJson error: ' . $e->getMessage());
-
-            return json_encode([
-                'server_url' => 'http://localhost:3000',
-                'server_host' => 'localhost',
-                'server_port' => 3000,
-                'secure' => false,
-                'laravel_url' => config('app.url'),
-                'environment' => app()->environment(),
-                'auto_init' => true,
-                'error' => true
-            ]);
-        }
+        // Return the already generated configJson from constructor
+        return $this->configJson ?? $this->generateConfigJson();
     }
 }

@@ -5,7 +5,7 @@
 
 // Notification operations with SweetAlert
 window.NotificationSystem = {
-    
+
     /**
      * Mark notification as read
      */
@@ -21,7 +21,7 @@ window.NotificationSystem = {
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 window.showToast('Đã đánh dấu là đã đọc', 'success');
                 location.reload();
@@ -55,7 +55,7 @@ window.NotificationSystem = {
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     window.showToast('Đã lưu trữ thông báo', 'success');
                     location.reload();
@@ -87,7 +87,7 @@ window.NotificationSystem = {
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     window.showToast('Đã xóa thông báo', 'success');
                     location.reload();
@@ -122,7 +122,7 @@ window.NotificationSystem = {
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     window.showToast('Đã khôi phục thông báo', 'success');
                     location.reload();
@@ -146,7 +146,7 @@ window.NotificationSystem = {
         }
 
         let title, message, confirmText;
-        
+
         switch (operation) {
             case 'mark-read':
                 title = 'Đánh dấu đã đọc';
@@ -188,7 +188,7 @@ window.NotificationSystem = {
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     window.showSuccess('Thành công', data.message);
                     location.reload();
@@ -224,7 +224,7 @@ window.NotificationSystem = {
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     window.showSuccess('Thành công', data.message);
                     location.reload();
@@ -244,18 +244,18 @@ window.NotificationSystem = {
     toggleArchiveView() {
         const currentUrl = new URL(window.location.href);
         const isArchived = currentUrl.searchParams.get('archived') === '1';
-        
+
         if (isArchived) {
             currentUrl.searchParams.delete('archived');
         } else {
             currentUrl.searchParams.set('archived', '1');
         }
-        
+
         window.location.href = currentUrl.toString();
     }
 };
 
 // Initialize notification system when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Notification System with SweetAlert2 initialized');
+    //console.log('Notification System with SweetAlert2 initialized');
 });

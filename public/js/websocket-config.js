@@ -314,7 +314,7 @@ window.MechaMapWebSocket = (function() {
             if (wsManager.socket === socket) {
                 wsManager.socket = null;
                 wsManager.isConnecting = false;
-                wsManager.connectionAttempts = 0;
+                // Don't reset connectionAttempts here to prevent infinite reconnect
                 wsManager.connectionPromise = null;
             }
         });
@@ -511,7 +511,10 @@ window.MechaMapWebSocket = (function() {
         socket.on('connect', () => {
             console.log('✅ WebSocket connected:', socket.id);
             wsManager.isConnected = true;
-            wsManager.connectionAttempts = 0;
+            // Reset connection attempts after successful connection
+            setTimeout(() => {
+                wsManager.connectionAttempts = 0;
+            }, 5000); // Reset after 5 seconds of stable connection
             triggerCallbacks('onConnect', { socket, userId: wsManager.userId });
         });
 
@@ -520,14 +523,14 @@ window.MechaMapWebSocket = (function() {
             wsManager.isConnected = false;
             triggerCallbacks('onDisconnect', { reason });
 
-            // Auto-reconnect if not intentional disconnect
-            if (reason !== 'io client disconnect') {
+            // Auto-reconnect if not intentional disconnect and haven't exceeded max attempts
+            if (reason !== 'io client disconnect' && wsManager.connectionAttempts < wsManager.MAX_CONNECTION_ATTEMPTS) {
+                console.log(`🔄 Reconnecting... (attempt ${wsManager.connectionAttempts + 1}/${wsManager.MAX_CONNECTION_ATTEMPTS})`);
                 setTimeout(() => {
-                    if (wsManager.connectionAttempts < wsManager.MAX_CONNECTION_ATTEMPTS) {
-                        console.log(`🔄 Reconnecting... (attempt ${wsManager.connectionAttempts + 1}/${wsManager.MAX_CONNECTION_ATTEMPTS})`);
-                        initialize();
-                    }
+                    initialize();
                 }, wsManager.reconnectDelay);
+            } else if (wsManager.connectionAttempts >= wsManager.MAX_CONNECTION_ATTEMPTS) {
+                console.log('❌ Maximum reconnection attempts reached. Stopping reconnection.');
             }
         });
 

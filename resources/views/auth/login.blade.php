@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('auth.login.title'))
 
@@ -123,7 +123,7 @@
                                     </div>
 
                                     <!-- Login Button -->
-                                    <button type="submit" class="btn btn-main active w-100 mb-4 position-relative" id="loginBtn">
+                                    <button type="submit" class="btn btn-primary w-100 mb-4 position-relative" id="loginBtn">
                                         <span class="btn-text">
                                             <i class="fas fa-sign-in-alt me-2"></i>
                                             {{ __('auth.login_button') }}

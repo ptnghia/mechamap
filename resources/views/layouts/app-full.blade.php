@@ -72,7 +72,7 @@
 </head>
 
 <body class="user-frontend">
-    <div class="d-flex flex-column min-vh-100">
+    <div>
         <!-- Header -->
         <x-header />
 

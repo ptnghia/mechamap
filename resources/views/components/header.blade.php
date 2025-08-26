@@ -124,87 +124,6 @@
                             </div>
                         </li>
 
-                        {{-- CSS to hide duplicate menu items --}}
-                        <style>
-                        /* Hide the 6th nav item (duplicate {{ t_ui('buttons.add') }} menu) */
-
-                        </style>
-
-                        <!-- 5. Technical Resources - UPDATED (removed showcase) -->
-                        <!--li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['technical.*', 'materials.*', 'standards.*', 'cad.*', 'manufacturing.*']) ? 'active' : '' }}" href="#" id="technicalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-screwdriver-wrench me-1"></i>
-                                {{ __('common.technical.resources') }}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="technicalDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-database me-2"></i>{{ __('common.technical.database') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.materials') }}">
-                                    <i class="fa-solid fa-cube me-2"></i>{{ __('common.technical.materials_database') }}
-                                    <span class="badge bg-primary ms-2">10</span>
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
-                                    <i class="fa-solid fa-certificate me-2"></i>{{ __('common.technical.engineering_standards') }}
-                                    <span class="badge bg-success ms-2">8</span>
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
-                                    <i class="fa-solid fa-gears me-2"></i>{{ __('common.technical.manufacturing_processes') }}
-                                    <span class="badge bg-info ms-2">10</span>
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-drafting-compass me-2"></i>{{ __('common.technical.design_resources') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
-                                    <i class="fa-solid fa-file-code me-2"></i>{{ __('common.technical.cad_library') }}
-                                    <span class="badge bg-warning ms-2">20+</span>
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.technical-docs') }}">
-                                    <i class="fa-solid fa-compass-drafting me-2"></i>{{ __('common.technical.technical_drawings') }}
-                                    <span class="badge bg-secondary ms-2">15+</span>
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-calculator me-2"></i>{{ __('common.technical.tools_calculators') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.material-calculator') }}">
-                                    <i class="fa-solid fa-calculator me-2"></i>{{ __('common.technical.material_cost_calculator') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.process-calculator') }}">
-                                    <i class="fa-solid fa-route me-2"></i>{{ __('common.technical.process_selector') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
-                                    <i class="fa-solid fa-check-circle me-2"></i>{{ __('common.technical.standards_compliance') }}
-                                </a></li>
-                            </ul>
-                        </li-->
-
-                        <!-- 6. Knowledge -->
-                        <!--li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {{ request()->routeIs(['knowledge.*', 'tutorials.*', 'news.*', 'docs.*']) ? 'active' : '' }}" href="#" id="knowledgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-graduation-cap me-1"></i>
-                                {{ __('common.knowledge.title') }}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="knowledgeDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-book me-2"></i>{{ __('common.knowledge.learning_resources') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('knowledge.base.index') }}">
-                                    <i class="fa-solid fa-book-open me-2"></i>{{ __('common.knowledge.knowledge_base') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tutorials.index') }}">
-                                    <i class="fa-solid fa-chalkboard-teacher me-2"></i>{{ __('common.knowledge.tutorials_guides') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('tools.documentation') }}">
-                                    <i class="fa-solid fa-file-lines me-2"></i>{{ __('common.knowledge.technical_documentation') }}
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-newspaper me-2"></i>{{ __('common.knowledge.industry_updates') }}</h6></li>
-                                <li><a class="dropdown-item" href="{{ route('news.industry.index') }}">
-                                    <i class="fa-solid fa-newspaper me-2"></i>{{ __('common.knowledge.industry_news') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('whats-new') }}">
-                                    <i class="fa-solid fa-fire-flame-curved me-2"></i>{{ __('common.knowledge.whats_new') }}
-                                </a></li>
-                                <li><a class="dropdown-item" href="{{ route('reports.industry.index') }}">
-                                    <i class="fa-solid fa-chart-line me-2"></i>{{ __('common.knowledge.industry_reports') }}
-                                </a></li>
-                            </ul>
-                        </li-->
-
                         <!-- Role-based Quick Access -->
                         @auth
                             @if(Auth::user()->hasAnyRole(['admin', 'moderator']))
@@ -278,88 +197,6 @@
                             </li>
                             @endif
                         @endauth
-
-                        <!-- More Dropdown - Enhanced -->
-                        <!--li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis me-1"></i>
-                                {{ t_navigation('main.more') }}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-search me-2"></i>{{ t_navigation('sections.search_discovery') }}</h6></li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('threads.index') }}">
-                                        <i class="fa-brands fa-searchengin me-2"></i>
-                                        {{ __('search.actions.advanced') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('gallery.index') }}">
-                                        <i class="fa-regular fa-images me-2"></i>
-                                        {{ __('navigation.pages.photo_gallery') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('tags.index') }}">
-                                        <i class="fa-solid fa-tags me-2"></i>
-                                        {{ __('navigation.pages.browse_by_tags') }}
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info-circle me-2"></i>{{ t_navigation('sections.help_support') }}</h6></li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('faq.index') }}">
-                                        <i class="fa-solid fa-question me-2"></i>
-                                        {{ __('navigation.pages.faq') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('help.index') }}">
-                                        <i class="fa-solid fa-life-ring me-2"></i>
-                                        {{ __('navigation.pages.help_center') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('contact') }}">
-                                        <i class="fa-solid fa-envelope me-2"></i>
-                                        {{ __('navigation.pages.contact_support') }}
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header"><i class="fa-solid fa-info me-2"></i>{{ t_navigation('sections.about_mechamap') }}</h6></li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('about.index') }}">
-                                        <i class="fa-solid fa-building me-2"></i>
-                                        {{ __('navigation.pages.about_us') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('terms.index') }}">
-                                        <i class="fa-solid fa-file-contract me-2"></i>
-                                        {{ __('navigation.pages.terms_of_service') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('privacy.index') }}">
-                                        <i class="fa-solid fa-shield-halved me-2"></i>
-                                        {{ __('navigation.pages.privacy_policy') }}
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <div class="dropdown-item d-flex justify-content-between align-items-center">
-                                        <span id="themeLabel">
-                                            <i class="fas fa-moon theme-icon-dark me-2"></i>
-                                            <i class="fas fa-sun theme-icon-light me-2 d-none"></i>
-                                            <span class="theme-text">{{ request()->cookie('dark_mode') == 'dark' ? __('messages.header.theme.light_mode') : __('messages.header.theme.dark_mode') }}</span>
-                                        </span>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" data-toggle-theme="dark" {{ request()->cookie('dark_mode') == 'dark' ? 'checked' : '' }}>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li-->
                     </ul>
 
                     <!-- Right Side Actions -->
@@ -1082,7 +919,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.loadMiniCart = function() {
         const miniCartItems = document.getElementById('miniCartItems');
         if (!miniCartItems) {
-            console.log('Mini cart not available for this user');
+            //console.log('Mini cart not available for this user');
             return;
         }
 

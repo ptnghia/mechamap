@@ -1013,6 +1013,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Expose nav instance globally for debugging
     window.MechaMapMobileNav = nav;
 
-    console.log('MechaMap Mobile Navigation initialized successfully');
+    //console.log('MechaMap Mobile Navigation initialized successfully');
 });
 </script>
