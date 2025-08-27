@@ -248,7 +248,7 @@ class WhatsNewController extends Controller
                 ->where('is_public', true) // Only public media
                 ->where('is_approved', true) // Only approved media
                 ->orderBy('created_at', 'desc')
-                ->paginate(12);
+                ->paginate(18);
 
             // Process media items to add computed properties
             $mediaItems->getCollection()->transform(function ($media) {

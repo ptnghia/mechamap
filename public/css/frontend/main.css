@@ -58,3 +58,7 @@ body.user-frontend {background-color: #f3f3f3}
 .darkModeToggle{display: flex;width: 35px;height: 35px;color: #fff;border: 1px solid #ffff;text-align: center;justify-content: center;align-items: center;border-radius: 50%;padding: 0;}
 .darkModeToggle img{
 }
+.tab_mechamap{background-color: #e9e9e9;padding: 5px;}
+.tab_mechamap .nav-item .nav-link, .tab_mechamap .nav-item .nav-link{color: #495057;padding: 10px 3px !important;font-weight: 500;border: none;font-size: 13px;background-color: transparent;margin-right: 0;border-radius: 5px;font-family: var(--bs-font-condensed);position: relative;display: flex;justify-content: center;}
+.tab_mechamap .nav-item .nav-link .badge , .tab_mechamap .nav-item .nav-link .badge{
+}

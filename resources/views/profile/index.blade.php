@@ -1,32 +1,39 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('ui.users.page_title'))
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/users.css') }}">
+@endpush
+
 @section('content')
-<div class="container py-4">
+<div class="body_page">
+
     <div class="row">
         <div class="col-lg-8">
-            <!-- Header with tabs -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3">{{ __('ui.users.page_title') }}</h1>
+                <div class="div_title_page">
+                    <h1 class="h2 mb-1 title_page">{{ seo_title_short(__('ui.users.page_title')) }}</h1>
+                    <p class="text-muted mb-0">{{ seo_value('description', '')  }}</p>
+                </div>
                 <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted">{{ $users->total() }} {{ __('ui.users.member_count') }}</span>
                     <!-- View toggle -->
                     <div class="btn-group" role="group">
                         <a href="{{ request()->fullUrlWithQuery(['view' => 'list']) }}"
-                           class="btn btn-sm {{ request('view', 'list') === 'list' ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            class="btn btn-sm {{ request('view', 'list') === 'list' ? 'btn-primary' : 'btn-outline-secondary' }}">
                             <i class="fas fa-list"></i>
                         </a>
                         <a href="{{ request()->fullUrlWithQuery(['view' => 'grid']) }}"
-                           class="btn btn-sm {{ request('view') === 'grid' ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            class="btn btn-sm {{ request('view') === 'grid' ? 'btn-primary' : 'btn-outline-secondary' }}">
                             <i class="fas fa-th"></i>
                         </a>
                     </div>
-                    <span class="text-muted">{{ $users->total() }} {{ __('ui.users.member_count') }}</span>
                 </div>
             </div>
 
             <!-- Filter tabs -->
-            <ul class="nav nav-tabs mb-4">
+            <ul class="nav nav-pills nav-fill mb-4 tab_mechamap">
                 <li class="nav-item">
                     <a class="nav-link {{ request('filter', 'all') === 'all' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'all']) }}">
@@ -138,13 +145,7 @@
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100">
                                 <div class="card-body text-center">
-                                    <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}"
-                                         class="rounded-circle mb-3" width="80" height="80"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center bg-primary text-white fw-bold"
-                                         style="width: 80px; height: 80px; font-size: 32px; display: none;">
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
-                                    </div>
+                                    <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle mb-3" width="80" height="80">
 
                                     <h5 class="card-title mb-1">
                                         <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">
@@ -233,13 +234,7 @@
                             <div class="list-group-item p-3">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0 me-3">
-                                        <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}"
-                                             class="rounded-circle" width="64" height="64"
-                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold"
-                                             style="width: 64px; height: 64px; font-size: 24px; display: none;">
-                                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                                        </div>
+                                        <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle" width="64" height="64" >
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="d-flex justify-content-between align-items-start">

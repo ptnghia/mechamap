@@ -84,17 +84,20 @@
             </div>
         </header>
         @endisset
-
+        <!-- Dynamic Breadcrumb -->
+        <x-breadcrumb :breadcrumbs="$breadcrumbs ?? []" />
         <!-- Page Content -->
-        <main class="flex-grow-1">
+        <main>
             @if(View::hasSection('full-width-content'))
-                @yield('full-width-content')
+                <div class="container py-4">
+                    @yield('full-width-content')
+                </div>
             @elseif(View::hasSection('content'))
-                <div class="container-fluid py-4">
+                <div class="container py-4">
                     @yield('content')
                 </div>
             @else
-                <div class="container-fluid py-4">
+                <div class="container">
                     <div class="alert alert-info">
                         {{ __('ui.layout.no_content') }}
                     </div>
@@ -125,7 +128,6 @@
     <script src="{{ asset_versioned('js/sweetalert-utils.js') }}"></script>
     <script src="{{ asset_versioned('js/notification-system.js') }}"></script>
     <script src="{{ asset_versioned('js/app.js') }}"></script>
-    <script src="{{ asset_versioned('js/dark-mode.js') }}"></script>
 
     <!-- AJAX Error Handling -->
     <script>
@@ -180,6 +182,7 @@
     <script src="{{ asset_versioned('js/translation-service.js') }}"></script>
     <script src="{{ asset_versioned('js/components.js') }}"></script>
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
+    <script src="{{ asset_versioned('js/thread-actions.js') }}"></script>
 
     <!-- WebSocket Initialization -->
     @auth

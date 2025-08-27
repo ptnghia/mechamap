@@ -110,7 +110,7 @@
 
             <div class="media-item-content">
                 <!-- Title and File Info -->
-                <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6 class="media-item-title mb-0">{{ Str::limit($media->title ?: $media->file_name, 40) }}</h6>
                     <div class="media-file-info">
                         <span class="file-size-badge">{{ formatFileSize($media->file_size ?? 0) }}</span>
@@ -182,32 +182,33 @@
                 </div>
 
                 <!-- Enhanced Actions -->
-                <div class="media-actions-enhanced">
-                    <!-- Quick Preview -->
-                    <button class="action-btn preview-btn" data-bs-toggle="modal" data-bs-target="#mediaPreview{{ $media->id }}">
-                        <i class="fas fa-search-plus me-1"></i>
-                        <span class="d-none d-sm-inline">{{ __('ui.actions.preview') }}</span>
-                    </button>
-
-                    <!-- Download -->
-                    <a href="{{ $media->url }}" download class="action-btn download-btn">
-                        <i class="fas fa-download me-1"></i>
-                        <span class="d-none d-sm-inline">{{ __('ui.actions.download') }}</span>
-                    </a>
-
-                    <!-- View Thread -->
-                    @if($media->mediable)
-                    <a href="{{ route('threads.show', $media->mediable->slug) }}" class="action-btn primary">
-                        <i class="fas fa-external-link-alt me-1"></i>
-                        <span class="d-none d-sm-inline">{{ __('ui.actions.view_thread') }}</span>
-                    </a>
-                    @endif
-
-                    <!-- Share -->
-                    <button class="action-btn share-btn" onclick="shareMedia('{{ $media->url }}', '{{ $media->file_name }}')">
-                        <i class="fas fa-share me-1"></i>
-                        <span class="d-none d-sm-inline">{{ __('ui.actions.share') }}</span>
-                    </button>
+                <div class="media-actions-enhanced d-flex justify-content-between align-items-center">
+                    <div class="d-flex gx-4">
+                         <!-- Quick Preview -->
+                        <button class="action-btn preview-btn" data-bs-toggle="modal" data-bs-target="#mediaPreview{{ $media->id }}">
+                            <i class="fas fa-search-plus me-1"></i>
+                            <span class="d-none d-sm-inline">{{ __('ui.actions.preview') }}</span>
+                        </button>
+                        <!-- View Thread -->
+                        @if($media->mediable)
+                        <a href="{{ route('threads.show', $media->mediable->slug) }}" class="action-btn primary">
+                            <i class="fas fa-external-link-alt me-1"></i>
+                            <span class="d-none d-sm-inline">{{ __('ui.actions.view_thread') }}</span>
+                        </a>
+                        @endif
+                    </div>
+                    <div class="d-flex justify-content-end gx-4 right">
+                        <!-- Download -->
+                        <a href="{{ $media->url }}" download class="action-btn download-btn">
+                            <i class="fas fa-download me-1"></i>
+                            <!--span class="d-none d-sm-inline">{{ __('ui.actions.download') }}</span-->
+                        </a>
+                        <!-- Share -->
+                        <button class="action-btn share-btn" onclick="shareMedia('{{ $media->url }}', '{{ $media->file_name }}')">
+                            <i class="fas fa-share me-1"></i>
+                            <!--span class="d-none d-sm-inline">{{ __('ui.actions.share') }}</span-->
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

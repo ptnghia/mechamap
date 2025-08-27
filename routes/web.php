@@ -33,7 +33,7 @@ require __DIR__.'/dashboard.php';
 
 // Include test email routes (development only)
 if (app()->environment(['local', 'development'])) {
-    require __DIR__.'/test-email.php';
+    //require __DIR__.'/test-email.php';
 
     // Test breadcrumb route
     Route::get('/test-breadcrumb', function () {
