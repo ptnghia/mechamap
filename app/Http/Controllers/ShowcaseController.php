@@ -47,7 +47,7 @@ class ShowcaseController extends Controller
         $categories = $this->getShowcaseCategories();
 
         // 3. SEARCH FILTERS DATA
-        $searchFilters = $this->getSearchFiltersData();
+        $searchFilters = $this->getSearchFilters();
 
         // 4. ALL SHOWCASES LISTING (Paginated)
         $allShowcases = $this->getAllShowcasesWithFilters($request);
@@ -102,56 +102,7 @@ class ShowcaseController extends Controller
         return $categoryStats;
     }
 
-    /**
-     * Get data for search filters.
-     */
-    private function getSearchFiltersData(): array
-    {
-        $categories = Showcase::select('category')
-            ->whereNotNull('category')
-            ->where('is_public', true)
-            ->whereIn('status', ['featured', 'approved'])
-            ->groupBy('category')
-            ->pluck('category')
-            ->map(fn($cat) => ['value' => $cat, 'label' => ucfirst($cat)])
-            ->toArray();
 
-        return [
-            'categories' => $categories,
-            'complexity_levels' => [
-                ['value' => 'beginner', 'label' => 'Beginner'],
-                ['value' => 'intermediate', 'label' => 'Intermediate'],
-                ['value' => 'advanced', 'label' => 'Advanced'],
-                ['value' => 'expert', 'label' => 'Expert']
-            ],
-
-            'software_options' => Showcase::whereNotNull('software_used')
-                ->where('is_public', true)
-                ->whereIn('status', ['featured', 'approved'])
-                ->pluck('software_used')
-                ->flatMap(function($software) {
-                    if (is_string($software)) {
-                        return explode(',', $software);
-                    }
-                    return is_array($software) ? $software : [];
-                })
-                ->map(fn($s) => trim($s))
-                ->filter()
-                ->unique()
-                ->values()
-                ->map(fn($software) => ['value' => $software, 'label' => ucfirst($software)])
-                ->toArray(),
-
-            'project_types' => Showcase::select('project_type')
-                ->whereNotNull('project_type')
-                ->where('is_public', true)
-                ->whereIn('status', ['featured', 'approved'])
-                ->groupBy('project_type')
-                ->pluck('project_type')
-                ->map(fn($type) => ['value' => $type, 'label' => ucfirst($type)])
-                ->toArray()
-        ];
-    }
 
     /**
      * Get all showcases with applied filters and pagination.
@@ -168,7 +119,10 @@ class ShowcaseController extends Controller
             $searchTerm = $request->get('search');
             $query->where(function($q) use ($searchTerm) {
                 $q->where('title', 'like', "%{$searchTerm}%")
-                  ->orWhere('description', 'like', "%{$searchTerm}%");
+                  ->orWhere('description', 'like', "%{$searchTerm}%")
+                  ->orWhere('project_type', 'like', "%{$searchTerm}%")
+                  ->orWhere('materials', 'like', "%{$searchTerm}%")
+                  ->orWhere('industry_application', 'like', "%{$searchTerm}%");
             });
         }
 
@@ -184,24 +138,36 @@ class ShowcaseController extends Controller
             $query->where('project_type', $request->get('project_type'));
         }
 
+        if ($request->filled('industry')) {
+            $query->where('industry_application', 'like', '%' . $request->get('industry') . '%');
+        }
+
+        if ($request->filled('software')) {
+            $software = $request->get('software');
+            $query->where(function($q) use ($software) {
+                $q->where('software_used', 'like', "%{$software}%")
+                  ->orWhereJsonContains('software_used', $software);
+            });
+        }
+
+        if ($request->filled('rating_min')) {
+            $ratingMin = (float) $request->get('rating_min');
+            $query->where('rating_average', '>=', $ratingMin);
+        }
+
         if ($request->filled('has_cad_files')) {
             $query->where('has_cad_files', true);
+        }
+
+        if ($request->filled('has_tutorial')) {
+            $query->where('has_tutorial', true);
         }
 
         if ($request->filled('allow_downloads')) {
             $query->where('allow_downloads', true);
         }
 
-        if ($request->filled('rating_min')) {
-            $query->where('rating_average', '>=', $request->get('rating_min'));
-        }
 
-        if ($request->filled('software')) {
-            $software = $request->get('software');
-            $query->where(function($q) use ($software) {
-                $q->where('software_used', 'like', "%{$software}%");
-            });
-        }
 
         // Apply sorting
         $sort = $request->get('sort', 'newest');
@@ -224,6 +190,86 @@ class ShowcaseController extends Controller
         }
 
         return $query->paginate(18)->withQueryString();
+    }
+
+    /**
+     * Get search filters data for the search form
+     */
+    private function getSearchFilters(): array
+    {
+        $settingService = app(\App\Services\ShowcaseSettingService::class);
+        $filters = $settingService->getSearchFilters();
+
+        // Add categories from showcase_categories table
+        $categories = DB::table('showcase_categories')
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        $filters['categories'] = [
+            'name' => __('showcase.filter_category'),
+            'options' => collect([
+                ['value' => '', 'label' => __('common.all')]
+            ])->concat(
+                $categories->map(function ($category) {
+                    return [
+                        'value' => $category->slug,
+                        'label' => $category->name,
+                        'icon' => 'fas fa-folder'
+                    ];
+                })
+            )->toArray(),
+            'input_type' => 'select',
+            'is_multiple' => false,
+            'group' => 'classification',
+            'icon' => 'fas fa-th-large'
+        ];
+
+        // Add types from showcase_types table
+        $types = DB::table('showcase_types')
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        $filters['types'] = [
+            'name' => __('showcase.filter_type'),
+            'options' => collect([
+                ['value' => '', 'label' => __('common.all')]
+            ])->concat(
+                $types->map(function ($type) {
+                    return [
+                        'value' => $type->slug,
+                        'label' => $type->name,
+                        'icon' => 'fas fa-tag'
+                    ];
+                })
+            )->toArray(),
+            'input_type' => 'select',
+            'is_multiple' => false,
+            'group' => 'classification',
+            'icon' => 'fas fa-tags'
+        ];
+
+        // Add sort options (not managed by settings)
+        $filters['sort_options'] = [
+            ['value' => 'newest', 'label' => __('showcase.sort.newest')],
+            ['value' => 'oldest', 'label' => __('showcase.sort.oldest')],
+            ['value' => 'most_viewed', 'label' => __('showcase.sort.most_viewed')],
+            ['value' => 'highest_rated', 'label' => __('showcase.sort.highest_rated')],
+            ['value' => 'most_downloads', 'label' => __('showcase.sort_most_downloads')],
+            ['value' => 'most_likes', 'label' => __('showcase.sort_most_likes')],
+            ['value' => 'most_comments', 'label' => __('showcase.sort_most_comments')],
+            ['value' => 'most_bookmarks', 'label' => __('showcase.sort_most_bookmarks')],
+            ['value' => 'recently_updated', 'label' => __('showcase.sort_recently_updated')],
+            ['value' => 'alphabetical_az', 'label' => __('showcase.sort_alphabetical_az')],
+            ['value' => 'alphabetical_za', 'label' => __('showcase.sort_alphabetical_za')],
+            ['value' => 'most_featured', 'label' => __('showcase.sort_most_featured')],
+            ['value' => 'trending', 'label' => __('showcase.sort_trending')],
+            ['value' => 'complexity_low_high', 'label' => __('showcase.sort_complexity_low_high')],
+            ['value' => 'complexity_high_low', 'label' => __('showcase.sort_complexity_high_low')],
+        ];
+
+        return $filters;
     }
 
     /**
@@ -467,42 +513,7 @@ class ShowcaseController extends Controller
         ];
 
         // Get search filters for sidebar
-        $searchFilters = [
-            'categories' => [
-                ['value' => '', 'label' => __('showcase.all_categories')],
-                ['value' => 'design', 'label' => 'Thiết kế'],
-                ['value' => 'manufacturing', 'label' => 'Sản xuất'],
-                ['value' => 'analysis', 'label' => 'Phân tích'],
-                ['value' => 'automation', 'label' => 'Tự động hóa']
-            ],
-            'complexity' => [
-                ['value' => '', 'label' => 'Tất cả'],
-                ['value' => 'beginner', 'label' => 'Cơ bản'],
-                ['value' => 'intermediate', 'label' => 'Trung bình'],
-                ['value' => 'advanced', 'label' => 'Nâng cao']
-            ],
-            'complexity_levels' => [
-                ['value' => '', 'label' => 'Tất cả'],
-                ['value' => 'beginner', 'label' => 'Cơ bản'],
-                ['value' => 'intermediate', 'label' => 'Trung bình'],
-                ['value' => 'advanced', 'label' => 'Nâng cao']
-            ],
-            'project_types' => [
-                ['value' => '', 'label' => 'Tất cả'],
-                ['value' => 'design', 'label' => 'Thiết kế'],
-                ['value' => 'manufacturing', 'label' => 'Sản xuất'],
-                ['value' => 'analysis', 'label' => 'Phân tích'],
-                ['value' => 'automation', 'label' => 'Tự động hóa']
-            ],
-            'software_options' => [
-                ['value' => '', 'label' => 'Tất cả'],
-                ['value' => 'solidworks', 'label' => 'SolidWorks'],
-                ['value' => 'autocad', 'label' => 'AutoCAD'],
-                ['value' => 'ansys', 'label' => 'ANSYS'],
-                ['value' => 'matlab', 'label' => 'MATLAB'],
-                ['value' => 'inventor', 'label' => 'Inventor']
-            ]
-        ];
+        $searchFilters = $this->getSearchFilters();
 
         // Get all showcases for sidebar stats
         $allShowcases = Showcase::where('status', 'approved')->paginate(1);

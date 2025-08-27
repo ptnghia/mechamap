@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/showcase.css') }}">
 @endpush
 
+@push('scripts')
+<script src="{{ asset_versioned('js/showcase-search.js') }}"></script>
+@endpush
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -28,6 +32,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- SECTION: ADVANCED SEARCH FORM -->
+            @include('partials.showcase-search-form', ['searchFilters' => $searchFilters])
 
             <!-- SECTION: SEARCH TAGS -->
             @if(request()->hasAny(['search', 'category', 'complexity', 'project_type', 'software', 'rating_min', 'sort']))

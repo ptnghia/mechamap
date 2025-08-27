@@ -233,3 +233,133 @@
         padding: 0.25rem 0.5rem;
     }
 }
+
+/* Advanced Search Form Styles */
+.showcase-search-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: 1px solid #dee2e6;
+}
+
+.search-basic-row {
+    margin-bottom: 0;
+}
+
+.search-input-group {
+    position: relative;
+}
+
+.search-input-group .form-control {
+    padding-left: 3rem;
+    border-radius: 0.5rem;
+    border: 2px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.search-input-group .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    transform: translateY(-1px);
+}
+
+.search-input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.advanced-filters-content {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.showcase-search-form .form-label {
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.showcase-search-form .form-label i {
+    width: 16px;
+    text-align: center;
+}
+
+.showcase-search-form .form-select,
+.showcase-search-form .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    transition: all 0.2s ease;
+}
+
+.showcase-search-form .form-select:focus,
+.showcase-search-form .form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.feature-checkboxes {
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.showcase-search-form .form-check {
+    margin-bottom: 0;
+}
+
+.showcase-search-form .form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.showcase-search-form .form-check-label {
+    font-size: 0.9rem;
+    color: #495057;
+    cursor: pointer;
+}
+
+.showcase-search-form .form-check-label i {
+    color: #6c757d;
+}
+
+#toggle-filters {
+    transition: all 0.3s ease;
+}
+
+#toggle-filters:hover {
+    transform: translateY(-1px);
+}
+
+#toggle-filters[aria-expanded="true"] {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+#toggle-filters[aria-expanded="true"] .filter-toggle-text::after {
+    content: " ▲";
+}
+
+#toggle-filters[aria-expanded="false"] .filter-toggle-text::after {
+    content: " ▼";
+}
+
+/* Animation for collapsible filters */
+.collapse {
+    transition: all 0.35s ease;
+}
+
+.collapsing {
+    transition: height 0.35s ease;
+}

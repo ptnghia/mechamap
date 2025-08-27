@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\PageSeoController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ShowcaseController;
+use App\Http\Controllers\Admin\ShowcaseSettingController;
 use App\Http\Controllers\UnifiedNotificationController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\SearchController;
@@ -705,6 +706,28 @@ Route::middleware(['admin.redirect', App\Http\Middleware\AdminAccessMiddleware::
         Route::post('/{id}/toggle-active', [ShowcaseController::class, 'toggleActive'])->name('toggle-active');
         Route::post('/update-order', [ShowcaseController::class, 'updateOrder'])->name('update-order');
         Route::post('/bulk-action', [ShowcaseController::class, 'bulkAction'])->name('bulk-action');
+    });
+
+    // Showcase Settings management routes (chỉ admin có quyền)
+    Route::middleware(['admin.auth'])->prefix('showcase-settings')->name('showcase-settings.')->group(function () {
+        Route::get('/', [ShowcaseSettingController::class, 'index'])->name('index');
+        Route::get('/create', [ShowcaseSettingController::class, 'create'])->name('create');
+        Route::post('/', [ShowcaseSettingController::class, 'store'])->name('store');
+        Route::get('/{showcaseSetting}', [ShowcaseSettingController::class, 'show'])->name('show');
+        Route::get('/{showcaseSetting}/edit', [ShowcaseSettingController::class, 'edit'])->name('edit');
+        Route::put('/{showcaseSetting}', [ShowcaseSettingController::class, 'update'])->name('update');
+        Route::delete('/{showcaseSetting}', [ShowcaseSettingController::class, 'destroy'])->name('destroy');
+
+        // AJAX routes
+        Route::post('/{showcaseSetting}/toggle-active', [ShowcaseSettingController::class, 'toggleActive'])->name('toggle-active');
+        Route::post('/update-order', [ShowcaseSettingController::class, 'updateOrder'])->name('update-order');
+        Route::post('/clear-cache', [ShowcaseSettingController::class, 'clearCache'])->name('clear-cache');
+        Route::get('/export', [ShowcaseSettingController::class, 'export'])->name('export');
+        Route::post('/import', [ShowcaseSettingController::class, 'import'])->name('import');
+
+        // API routes
+        Route::get('/api/options/{key}', [ShowcaseSettingController::class, 'getOptions'])->name('api.options');
+        Route::post('/api/validate/{key}', [ShowcaseSettingController::class, 'validateValue'])->name('api.validate');
     });
 
     // Search management routes (chỉ admin có quyền manage_system)
