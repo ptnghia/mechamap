@@ -135,19 +135,25 @@
                 <div class="row">
                     @forelse($users as $user)
                         <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card h-100">
-                                <div class="card-body text-center">
-                                    <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle mb-3" width="80" height="80">
-
-                                    <h5 class="card-title mb-1">
+                            <div class="grid_user_item h-100">
+                                <div class="text-center">
+                                    <div class="position-relative d-inline-block mb-3">
+                                        <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle " width="80" height="80">
+                                        @if($user->isOnline())
+                                            <span class="badge bg-success online-badge"></span>
+                                        @else
+                                            <span class="badge bg-secondary offline-badge"></span>
+                                        @endif
+                                    </div>
+                                    <h5 class="grid_user_item_title">
                                         <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">
                                             {{ $user->name }}
                                         </a>
+                                        <div class="text-muted small mb-2">{{ '@'.$user->username }}</div>
                                     </h5>
 
-                                    <div class="text-muted small mb-2">{{ $user->username }}</div>
-
                                     <!-- Role Badge -->
+
                                     @php
                                         $roleInfo = match($user->role) {
                                             'super_admin', 'system_admin', 'content_admin' => ['Admin', 'bg-danger'],
@@ -160,11 +166,19 @@
                                     @endphp
                                     <span class="badge {{ $roleInfo[1] }} mb-2">{{ $roleInfo[0] }}</span>
 
-                                    @if($user->about_me)
-                                        <p class="text-muted small">{{ Str::limit($user->about_me, 80) }}</p>
-                                    @endif
 
-                                    <div class="row text-center small text-muted mb-3">
+                                    @if($user->about_me)
+                                        <p class="">{{ Str::limit($user->about_me, 80) }}</p>
+                                    @endif
+                                    <div class="text-muted small list_user_item_meta">
+                                        <span><i class="fas fa-calendar"></i> {{ __('ui.users.joined') }} {{ $user->created_at->format('d/m/Y') }}</span>
+                                        @if($user->location)
+                                            <span class="mx-1">•</span>
+                                            <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
+                                        @endif
+                                    </div>
+                                    <hr>
+                                    <div class="row text-center small text-muted mb-3 grid_user_item_thongke">
                                         <div class="col-4">
                                             <div class="fw-bold">{{ $user->posts_count ?? 0 }}</div>
                                             <div>{{ __('ui.users.posts') }}</div>
@@ -178,25 +192,21 @@
                                             <div>{{ __('ui.users.followers') }}</div>
                                         </div>
                                     </div>
+                                    <div class="d-flex justify-content-center">
+                                        @auth
+                                            @if(Auth::id() !== $user->id)
+                                                <button type="button"
+                                                    class="btn btn-sm w-100 follow-btn {{ Auth::user()->isFollowing($user) ? 'btn-outline-secondary' : 'btn-outline-primary' }}"
+                                                    data-username="{{ $user->username }}"
+                                                    data-following="{{ Auth::user()->isFollowing($user) ? 'true' : 'false' }}"
+                                                    data-followers-count="{{ $user->followers_count ?? 0 }}">
+                                                    <i class="fas {{ Auth::user()->isFollowing($user) ? 'fa-user-minus' : 'fa-user-plus' }}"></i>
+                                                    <span class="follow-text">{{ Auth::user()->isFollowing($user) ? __('ui.users.unfollow') : __('ui.users.follow') }}</span>
+                                                </button>
+                                            @endif
+                                        @endauth
+                                    </div>
 
-                                    @auth
-                                        @if(Auth::id() !== $user->id)
-                                            <button type="button"
-                                                class="btn btn-sm follow-btn {{ Auth::user()->isFollowing($user) ? 'btn-outline-secondary' : 'btn-outline-primary' }}"
-                                                data-username="{{ $user->username }}"
-                                                data-following="{{ Auth::user()->isFollowing($user) ? 'true' : 'false' }}"
-                                                data-followers-count="{{ $user->followers_count ?? 0 }}">
-                                                <i class="fas {{ Auth::user()->isFollowing($user) ? 'fa-user-minus' : 'fa-user-plus' }}"></i>
-                                                <span class="follow-text">{{ Auth::user()->isFollowing($user) ? __('ui.users.unfollow') : __('ui.users.follow') }}</span>
-                                            </button>
-                                        @endif
-                                    @endauth
-                                </div>
-                                <div class="card-footer text-muted small text-center">
-                                    {{ __('ui.users.joined') }} {{ $user->created_at->format('d/m/Y') }}
-                                    @if($user->isOnline())
-                                        <span class="badge bg-success ms-1">{{ __('ui.users.online') }}</span>
-                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -316,7 +326,7 @@
 
             <!-- Pagination -->
             @if($users->hasPages())
-                <div class="d-flex justify-content-center mt-4">
+                <div class=" mt-4">
                     {{ $users->links() }}
                 </div>
             @endif

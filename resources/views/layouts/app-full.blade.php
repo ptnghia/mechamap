@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/main.css') }}">
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/animation.css') }}">
     <link rel="stylesheet" href="{{ asset_versioned('css/frontend/responsive.css') }}">
-    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/dark-mode.css') }}">
+    <link rel="stylesheet" href="{{ asset_versioned('css/frontend/dark-mode.css') }}" id="darkModeCSS" disabled>
 
     <!-- Custom CSS -->
     @if(!empty($seo['custom_css'] ?? ''))

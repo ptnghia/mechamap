@@ -9,3 +9,13 @@
 .list_user_item>div{gap: 10px;}
 .list_user_item_left .btn{padding: 3px 5px;height: auto;}
 .list_user_item_name{font-size: 16px;display: flex;align-items: center;margin-bottom: 9px !IMPORTANT;}
+.grid_user_item {background-color: #fff;padding: 15px;border-radius: 20px;}
+.grid_user_item_title {align-items: center;}
+.grid_user_item_title a{font-size: 16px;display: block;color: var(--bs-body-color);}
+.grid_user_item_title .small{font-weight: 400;font-size: 14px;margin-bottom: 0 !IMPORTANT;margin-top: 5px;}
+.offline-badge{display: block !important;position: absolute;height: 15px;width: 15px;border-radius: 50%;right: 10px;bottom: 0px;background-color: #ccc !important;}
+.online-badge{display: block !important;position: absolute;height: 15px;width: 15px;border-radius: 50%;right: 10px;bottom: 0px;}
+.grid_user_item_thongke{
+}
+.grid_user_item_thongke .fw-bold{
+}

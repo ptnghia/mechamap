@@ -92,16 +92,19 @@
         document.documentElement.setAttribute('data-bs-theme', theme);
 
         if (theme === 'dark') {
-            darkModeCSS.disabled = false; // bật dark.css
+            if (darkModeCSS) darkModeCSS.disabled = false; // bật dark.css
             document.body.classList.add('dark');
-            darkModeIcon.src = "{{ asset('images/sun.svg') }}";
-            darkModeIcon.alt = "{{ t_footer('tools.light_mode') }}";
+            if (darkModeIcon) {
+                darkModeIcon.src = "{{ asset('images/sun.svg') }}";
+                darkModeIcon.alt = "{{ t_footer('tools.light_mode') }}";
+            }
         } else {
-            // bật dark
-            darkModeCSS.disabled = false;
+            if (darkModeCSS) darkModeCSS.disabled = false; // bật dark.css
             document.body.classList.remove('dark');
-            darkModeIcon.src = "{{ asset('images/moon.svg') }}";
-            darkModeIcon.alt = "{{ t_footer('tools.dark_mode') }}";
+            if (darkModeIcon) {
+                darkModeIcon.src = "{{ asset('images/moon.svg') }}";
+                darkModeIcon.alt = "{{ t_footer('tools.dark_mode') }}";
+            }
         }
 
         localStorage.setItem('theme', theme);
