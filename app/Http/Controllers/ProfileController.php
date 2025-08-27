@@ -137,7 +137,7 @@ class ProfileController extends Controller
         // Always load counts and relationships (use comments as posts in MechaMap)
         $users = $query->withCount(['comments as posts_count', 'threads', 'followers'])
             ->with(['followers'])
-            ->paginate(20)
+            ->paginate(12)
             ->withQueryString();
 
         // Get statistics for sidebar - ẩn nhóm quản trị hệ thống
