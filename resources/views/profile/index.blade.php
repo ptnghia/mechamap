@@ -38,6 +38,7 @@
                     <a class="nav-link {{ request('filter', 'all') === 'all' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'all']) }}">
                         {{ __('ui.users.all_members') }}
+                        <span class="badge bg-success ms-1">{{ $users->total() }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -51,6 +52,7 @@
                     <a class="nav-link {{ request('filter') === 'staff' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'staff']) }}">
                         {{ __('ui.users.staff') }}
+                        <span class="badge bg-success ms-1">{{ $users->total() }}</span>
                     </a>
                 </li>
                 <li class="nav-item">

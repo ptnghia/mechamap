@@ -40,7 +40,7 @@ class CommunityStatsController extends Controller
     {
         $count = Cache::remember('online_users_count', 60, function () {
             // Users active in last 15 minutes
-            return User::where('last_activity', '>=', now()->subMinutes(15))->count();
+            return User::where('last_seen_at', '>=', now()->subMinutes(15))->count();
         });
 
         return response()->json([

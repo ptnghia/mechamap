@@ -96,7 +96,7 @@ class ProfileController extends Controller
         // Apply filters
         switch ($filter) {
             case 'online':
-                $query->where('last_activity', '>=', now()->subMinutes(15));
+                $query->where('last_seen_at', '>=', now()->subMinutes(15));
                 break;
             case 'staff':
                 $query->whereIn('role', [

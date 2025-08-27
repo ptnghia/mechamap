@@ -62,3 +62,4 @@ body.user-frontend {background-color: #f3f3f3}
 .tab_mechamap .nav-item .nav-link, .tab_mechamap .nav-item .nav-link{color: #495057;padding: 10px 3px !important;font-weight: 500;border: none;font-size: 13px;background-color: transparent;margin-right: 0;border-radius: 5px;font-family: var(--bs-font-condensed);position: relative;display: flex;justify-content: center;}
 .tab_mechamap .nav-item .nav-link .badge , .tab_mechamap .nav-item .nav-link .badge{
 }
+.tab_mechamap .nav-link.active, .tab_mechamap .show>.nav-link{color: #ffffff;background-color: var(--bs-primary);font-weight: 600;width: 100%;}
