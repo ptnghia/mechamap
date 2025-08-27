@@ -31,6 +31,7 @@
             "app/Helpers/SettingHelper.php",
             "app/Helpers/ImageHelper.php",
             "app/Helpers/FileHelper.php",
+            "app/Helpers/MediaHelper.php",
             "app/Helpers/SeoHelper.php",
             "app/Helpers/functions.php",
             "app/helpers.php"

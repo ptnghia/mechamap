@@ -230,16 +230,51 @@ class WhatsNewController extends Controller
 
             // Get recent media with optimized eager loading using polymorphic relationship
             $mediaItems = Media::with([
-                'user:id,name,avatar',
-                'mediable' // This will load the related model (Thread, Comment, etc.)
+                'user:id,name,avatar,role', // Include role for role_display
+                'mediable' => function ($morphTo) {
+                    $morphTo->morphWith([
+                        'App\Models\Thread' => ['user:id,name', 'category:id,name', 'forum:id,name'],
+                        'App\Models\Comment' => ['user:id,name', 'thread:id,title,slug']
+                    ]);
+                }
             ])
                 ->where('mediable_type', 'App\\Models\\Thread') // Only media attached to threads
                 ->whereHasMorph('mediable', ['App\\Models\\Thread'], function ($query) {
                     $query->where('is_locked', false)
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at')
+                        ->where('status', '!=', 'cancelled')
+                        ->where('status', '!=', 'rejected');
                 })
+                ->where('is_public', true) // Only public media
+                ->where('is_approved', true) // Only approved media
                 ->orderBy('created_at', 'desc')
                 ->paginate(12);
+
+            // Process media items to add computed properties
+            $mediaItems->getCollection()->transform(function ($media) {
+                // Add file size formatted
+                $media->file_size_formatted = formatFileSize($media->file_size ?? 0);
+
+                // Add file category
+                $media->file_category_computed = getFileCategory($media->file_extension ?? '');
+
+                // Add quality badge for images
+                if ($media->width && $media->height) {
+                    $media->quality_badge = getQualityBadge($media->width, $media->height);
+                }
+
+                // Add user role display
+                if ($media->user) {
+                    $media->user->role_display = $this->getUserRoleDisplay($media->user);
+                }
+
+                // Add thread reference for easier access
+                if ($media->mediable_type === 'App\\Models\\Thread' && $media->mediable) {
+                    $media->thread = $media->mediable;
+                }
+
+                return $media;
+            });
 
             // Calculate total pages for pagination input
             $totalPages = $mediaItems->lastPage();
@@ -261,6 +296,32 @@ class WhatsNewController extends Controller
 
             return view('whats-new.media', compact('mediaItems', 'pageSeo', 'page', 'totalPages'));
         }
+    }
+
+    /**
+     * Get user role display name
+     */
+    private function getUserRoleDisplay($user)
+    {
+        if (!$user || !$user->role) {
+            return 'Member';
+        }
+
+        $roleDisplayMap = [
+            'super_admin' => 'Super Admin',
+            'admin' => 'Administrator',
+            'moderator' => 'Moderator',
+            'content_moderator' => 'Content Moderator',
+            'senior_member' => 'Senior Member',
+            'active_member' => 'Active Member',
+            'member' => 'Member',
+            'manufacturer' => 'Manufacturer',
+            'supplier' => 'Supplier',
+            'brand' => 'Brand Partner',
+            'guest' => 'Guest'
+        ];
+
+        return $roleDisplayMap[$user->role] ?? ucfirst(str_replace('_', ' ', $user->role));
     }
 
     /**

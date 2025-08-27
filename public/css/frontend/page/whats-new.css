@@ -224,6 +224,285 @@
     height: 200px;
 }
 
+/* Enhanced Media Item Styles */
+.media-item-enhanced {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.media-item-enhanced:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.media-thumbnail-enhanced {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+}
+
+.file-type-overlay {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.quality-indicator {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+}
+
+.processing-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 3;
+}
+
+.media-context {
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.85rem;
+}
+
+.media-context a {
+    color: #495057;
+    text-decoration: none;
+}
+
+.media-context a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.media-item-content {
+    padding: 12px;
+}
+
+.media-file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.file-size-badge, .dimensions-badge {
+    background: #e9ecef;
+    color: #495057;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.media-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f3f4;
+    margin-bottom: 8px;
+}
+
+.author-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e9ecef;
+}
+
+.author-details {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+    text-decoration: none;
+    display: block;
+    line-height: 1.2;
+}
+
+.author-name:hover {
+    color: #007bff;
+}
+
+.author-role {
+    font-size: 0.75rem;
+    color: #6c757d;
+    display: block;
+}
+
+.upload-time {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+.media-technical-info {
+    padding: 8px 12px;
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 8px;
+}
+
+.tech-item {
+    font-size: 0.8rem;
+    color: #1976d2;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tech-item:last-child {
+    margin-bottom: 0;
+}
+
+.media-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    background: #f8f9fa;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.stat-item i {
+    color: #adb5bd;
+}
+
+.media-actions-enhanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 6px;
+}
+
+.action-btn {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: white;
+    color: #6c757d;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.action-btn.primary {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.action-btn.primary:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Modal Enhancements */
+.modal-xl .modal-dialog {
+    max-width: 90vw;
+}
+
+.audio-preview, .file-preview-placeholder {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .media-gallery {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .media-author {
+        flex-wrap: wrap;
+    }
+
+    .upload-time {
+        width: 100%;
+        text-align: left;
+        margin-top: 4px;
+    }
+
+    .media-actions-enhanced {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .action-btn span {
+        display: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .media-file-info {
+        align-items: flex-start;
+    }
+
+    .media-item-title {
+        font-size: 0.85rem;
+    }
+
+    .media-technical-info {
+        padding: 6px 8px;
+    }
+
+    .tech-item {
+        font-size: 0.75rem;
+    }
+}
+
 .media-loading-spinner {
     width: 40px;
     height: 40px;
