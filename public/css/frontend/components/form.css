@@ -44,4 +44,4 @@
 }
 .input_group_search{position: relative;display: block;}
 .input_group_search input{width: 100% !important;border-radius: 5px !IMPORTANT;padding-right: 60px;}
-.input_group_search button{position: absolute !important;top: 2px;bottom: 2px;right: 2px;width: 50px;z-index: 10 !IMPORTANT;}
+.input_group_search button{position: absolute !important;top: 2px;bottom: 2px;right: 2px;width: 50px;z-index: 10 !IMPORTANT;height: 38px;}

@@ -6,6 +6,10 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/whats-new.css') }}">
 @endpush
 
+@push('scripts')
+<script src="{{ asset_versioned('js/showcase-actions.js') }}"></script>
+@endpush
+
 @section('content')
 <div class="body_page">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -74,7 +78,36 @@
                                     <small class="text-muted">{{ $showcase->created_at->diffForHumans()
                                         }}</small>
                                 </div>
+
+                                @auth
+                                <!-- Action Buttons -->
+                                <div class="d-flex gap-2">
+                                    <!-- Bookmark Button -->
+                                    <button type="button"
+                                            class="btn btn-sm showcase-bookmark-btn {{ $showcase->isBookmarkedBy(auth()->id()) ? 'btn-warning bookmarked' : 'btn-outline-secondary' }}"
+                                            data-showcase-id="{{ $showcase->slug }}"
+                                            data-bookmarked="{{ $showcase->isBookmarkedBy(auth()->id()) ? 'true' : 'false' }}"
+                                            title="{{ $showcase->isBookmarkedBy(auth()->id()) ? __('ui.tooltips.remove_bookmark_showcase') : __('ui.tooltips.bookmark_showcase') }}">
+                                        <i class="{{ $showcase->isBookmarkedBy(auth()->id()) ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
+                                        <span class="btn-text">{{ $showcase->isBookmarkedBy(auth()->id()) ? __('ui.actions.bookmarked') : __('ui.actions.bookmark') }}</span>
+                                    </button>
+
+                                    <!-- Follow Button (only if not own showcase) -->
+                                    @if($showcase->user_id !== auth()->id())
+                                    <button type="button"
+                                            class="btn btn-sm showcase-follow-btn {{ $showcase->isFollowedBy(auth()->id()) ? 'btn-success following' : 'btn-outline-primary' }}"
+                                            data-showcase-id="{{ $showcase->slug }}"
+                                            data-following="{{ $showcase->isFollowedBy(auth()->id()) ? 'true' : 'false' }}"
+                                            title="{{ $showcase->isFollowedBy(auth()->id()) ? __('ui.tooltips.unfollow_showcase_author') : __('ui.tooltips.follow_showcase_author') }}">
+                                        <i class="{{ $showcase->isFollowedBy(auth()->id()) ? 'fas fa-user-check' : 'fas fa-user-plus' }}"></i>
+                                        <span class="btn-text">{{ $showcase->isFollowedBy(auth()->id()) ? __('ui.actions.following') : __('ui.actions.follow') }}</span>
+                                    </button>
+                                    @endif
+                                </div>
+                                @else
+                                <!-- Login Required Badge -->
                                 <span class="badge bg-primary">{{ __('common.' . strtolower($showcase->showcase_type)) }}</span>
+                                @endauth
                             </div>
                         </div>
 
@@ -157,4 +190,9 @@
 @endsection
 
 @push('styles')
+@endpush
+
+@push('scripts')
+{{-- Showcase Actions JavaScript --}}
+<script src="{{ asset('js/showcase-actions.js') }}"></script>
 @endpush

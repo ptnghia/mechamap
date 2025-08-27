@@ -865,6 +865,14 @@ Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () 
     Route::get('/bookmark-status', [\App\Http\Controllers\ThreadBookmarkController::class, 'status'])->name('ajax.threads.bookmark.status');
 });
 
+// Showcase Follow & Bookmark AJAX API routes
+Route::middleware(['auth'])->prefix('ajax/showcases/{showcase}')->group(function () {
+    Route::post('/bookmark', [\App\Http\Controllers\ShowcaseController::class, 'toggleBookmark'])->name('ajax.showcases.bookmark');
+    Route::delete('/bookmark', [\App\Http\Controllers\ShowcaseController::class, 'toggleBookmark'])->name('ajax.showcases.bookmark.remove');
+    Route::post('/follow', [\App\Http\Controllers\ShowcaseController::class, 'toggleFollow'])->name('ajax.showcases.follow');
+    Route::delete('/follow', [\App\Http\Controllers\ShowcaseController::class, 'toggleFollow'])->name('ajax.showcases.follow.remove');
+});
+
 // Unified Notification AJAX API routes
 Route::middleware(['auth'])->prefix('ajax/notifications')->group(function () {
     // Unified endpoints
@@ -975,6 +983,7 @@ if (app()->environment('local') || config('app.debug')) {
         Route::get('/translations/data', [DevTranslationController::class, 'getData'])->name('translations.data');
         Route::post('/translations', [DevTranslationController::class, 'store'])->name('translations.store');
         Route::put('/translations/{id}', [DevTranslationController::class, 'update'])->name('translations.update');
+        Route::patch('/translations/inline', [DevTranslationController::class, 'updateInline'])->name('translations.update-inline');
         Route::delete('/translations/{id}', [DevTranslationController::class, 'destroy'])->name('translations.destroy');
         Route::post('/translations/generate-english', [DevTranslationController::class, 'generateMissingEnglish'])->name('translations.generate-english');
     });

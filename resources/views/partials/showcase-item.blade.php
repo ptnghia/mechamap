@@ -14,7 +14,7 @@ $createdAt = isset($showcase->created_at) && $showcase->created_at instanceof \C
     : '';
 
 // Image handling with fallback
-$coverImageUrl = 'https://via.placeholder.com/400x200/f8f9fa/6c757d?text=No+Image';
+$coverImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
 try {
     if (method_exists($showcase, 'getCoverImageUrl')) {
         $coverImageUrl = $showcase->getCoverImageUrl();
@@ -48,7 +48,8 @@ $allowDownloads = $showcase->allow_downloads ?? false;
 
 <div class="showcase-card h-100">
     <div class="showcase-image">
-        <img src="{{ $coverImageUrl }}" alt="{{ $showcaseTitle }}" class="img-fluid">
+        <img src="{{ $coverImageUrl }}" alt="{{ $showcaseTitle }}" class="img-fluid"
+             onerror="this.src='{{ asset('images/placeholder.svg') }}'">
 
         {{-- Enhanced: Overlay badges --}}
         <div class="showcase-badges">
@@ -76,6 +77,41 @@ $allowDownloads = $showcase->allow_downloads ?? false;
                 <a href="{{ $showcaseUrl }}" class="btn btn-light btn-sm">
                     <i class="fas fa-eye"></i> {{ t_ui('buttons.view_details') }}
                 </a>
+
+                @auth
+                {{-- Bookmark Button --}}
+                @php
+                    $isBookmarked = auth()->user()->bookmarks()
+                        ->where('bookmarkable_type', 'App\Models\Showcase')
+                        ->where('bookmarkable_id', $showcase->id)
+                        ->exists();
+                @endphp
+                <button class="btn btn-outline-warning btn-sm showcase-bookmark-btn"
+                        data-showcase-id="{{ $showcase->slug }}"
+                        data-bookmarked="{{ $isBookmarked ? 'true' : 'false' }}">
+                    <i class="fas fa-bookmark"></i>
+                    <span class="bookmark-text">
+                        {{ $isBookmarked ? t_ui('buttons.bookmarked') : t_ui('buttons.bookmark') }}
+                    </span>
+                </button>
+
+                {{-- Follow Button (Follow Author) --}}
+                @if($showcase->user_id !== auth()->id())
+                @php
+                    $isFollowing = auth()->user()->following()
+                        ->where('following_id', $showcase->user_id)
+                        ->exists();
+                @endphp
+                <button class="btn btn-outline-info btn-sm showcase-follow-btn"
+                        data-showcase-id="{{ $showcase->slug }}"
+                        data-following="{{ $isFollowing ? 'true' : 'false' }}">
+                    <i class="fas fa-bell"></i>
+                    <span class="follow-text">
+                        {{ $isFollowing ? t_ui('buttons.following') : t_ui('buttons.follow') }}
+                    </span>
+                </button>
+                @endif
+                @endauth
             </div>
         </div>
     </div>

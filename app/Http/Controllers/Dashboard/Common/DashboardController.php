@@ -80,20 +80,25 @@ class DashboardController extends BaseController
 
         // Bookmark activities
         $recentBookmarks = $this->user->bookmarks()
-            ->with(['thread'])
+            ->with(['bookmarkable'])
             ->latest()
             ->take(3)
             ->get()
             ->map(function ($bookmark) {
-                return [
-                    'type' => 'thread_bookmarked',
-                    'title' => 'Bookmarked: ' . $bookmark->thread->title,
-                    'url' => route('threads.show', $bookmark->thread),
-                    'created_at' => $bookmark->created_at,
-                    'icon' => 'fas fa-bookmark',
-                    'color' => 'warning'
-                ];
-            });
+                // Only process thread bookmarks for now
+                if ($bookmark->bookmarkable_type === 'App\\Models\\Thread' && $bookmark->bookmarkable) {
+                    return [
+                        'type' => 'thread_bookmarked',
+                        'title' => 'Bookmarked: ' . $bookmark->bookmarkable->title,
+                        'url' => route('threads.show', $bookmark->bookmarkable),
+                        'created_at' => $bookmark->created_at,
+                        'icon' => 'fas fa-bookmark',
+                        'color' => 'warning'
+                    ];
+                }
+                return null; // Skip non-thread bookmarks
+            })
+            ->filter(); // Remove null values
 
         return $activities
             ->merge($recentThreads)

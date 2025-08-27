@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+// Import models for relationships
+use App\Models\Bookmark;
+use App\Models\ShowcaseFollow;
 
 /**
  *
@@ -340,6 +343,17 @@ class Showcase extends Model
     {
         return ShowcaseFollow::where('follower_id', $userId)
             ->where('following_id', $this->user_id)
+            ->exists();
+    }
+
+    /**
+     * Kiểm tra user hiện tại đã bookmark showcase này chưa.
+     */
+    public function isBookmarkedBy($userId): bool
+    {
+        return Bookmark::where('user_id', $userId)
+            ->where('bookmarkable_type', self::class)
+            ->where('bookmarkable_id', $this->id)
             ->exists();
     }
 

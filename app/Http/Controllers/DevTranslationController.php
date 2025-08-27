@@ -52,27 +52,57 @@ class DevTranslationController extends Controller
             return response()->json(['error' => 'Not available in production'], 403);
         }
 
-        $query = Translation::where('locale', 'vi')
-            ->select(['id', 'key', 'content', 'group_name', 'is_active', 'created_at', 'updated_at']);
+        // Build query to get Vietnamese translations with English counterparts
+        $query = Translation::where('translations.locale', 'vi')
+            ->leftJoin('translations as en_translations', function ($join) {
+                $join->on('translations.key', '=', 'en_translations.key')
+                     ->where('en_translations.locale', '=', 'en');
+            })
+            ->select([
+                'translations.id',
+                'translations.key',
+                'translations.content as vi_content',
+                'en_translations.content as en_content',
+                'en_translations.id as en_id',
+                'translations.group_name',
+                'translations.is_active',
+                'translations.created_at',
+                'translations.updated_at'
+            ]);
 
         // Handle DataTables search
         if ($request->has('search') && !empty($request->search['value'])) {
             $searchValue = $request->search['value'];
             $query->where(function ($q) use ($searchValue) {
-                $q->where('key', 'LIKE', "%{$searchValue}%")
-                  ->orWhere('content', 'LIKE', "%{$searchValue}%")
-                  ->orWhere('group_name', 'LIKE', "%{$searchValue}%");
+                $q->where('translations.key', 'LIKE', "%{$searchValue}%")
+                  ->orWhere('translations.content', 'LIKE', "%{$searchValue}%")
+                  ->orWhere('en_translations.content', 'LIKE', "%{$searchValue}%")
+                  ->orWhere('translations.group_name', 'LIKE', "%{$searchValue}%");
             });
         }
 
         // Handle DataTables ordering
         if ($request->has('order')) {
-            $columns = ['id', 'key', 'content', 'group_name', 'is_active', 'created_at'];
+            $columns = ['id', 'key', 'vi_content', 'en_content', 'group_name', 'is_active', 'created_at', 'updated_at'];
             $orderColumn = $columns[$request->order[0]['column']] ?? 'key';
             $orderDirection = $request->order[0]['dir'] ?? 'asc';
-            $query->orderBy($orderColumn, $orderDirection);
+
+            // Map column names to actual database columns
+            $columnMap = [
+                'vi_content' => 'translations.content',
+                'en_content' => 'en_translations.content',
+                'key' => 'translations.key',
+                'group_name' => 'translations.group_name',
+                'is_active' => 'translations.is_active',
+                'created_at' => 'translations.created_at',
+                'updated_at' => 'translations.updated_at',
+                'id' => 'translations.id'
+            ];
+
+            $actualColumn = $columnMap[$orderColumn] ?? 'translations.key';
+            $query->orderBy($actualColumn, $orderDirection);
         } else {
-            $query->orderBy('group_name')->orderBy('key');
+            $query->orderBy('translations.group_name')->orderBy('translations.key');
         }
 
         // Get total count before pagination
@@ -91,7 +121,9 @@ class DevTranslationController extends Controller
             return [
                 'id' => $translation->id,
                 'key' => $translation->key,
-                'content' => $translation->content,
+                'vi_content' => $translation->vi_content,
+                'en_content' => $translation->en_content ?? '', // Default to empty if no English translation
+                'en_id' => $translation->en_id,
                 'group_name' => $translation->group_name,
                 'is_active' => $translation->is_active ? 'Active' : 'Inactive',
                 'created_at' => $translation->created_at->format('Y-m-d H:i:s'),
@@ -249,6 +281,94 @@ class DevTranslationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Translation updated successfully!',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating translation: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Update translation content inline (AJAX)
+     * This method handles updating both Vietnamese and English content for a translation key
+     */
+    public function updateInline(Request $request)
+    {
+        if (!$this->isDevelopmentEnvironment()) {
+            return response()->json(['error' => 'Not available in production'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'key' => 'required|string|max:255',
+            'locale' => 'required|in:vi,en',
+            'content' => 'required|string',
+        ], [
+            'key.required' => 'Translation key is required',
+            'locale.required' => 'Locale is required',
+            'locale.in' => 'Locale must be either vi or en',
+            'content.required' => 'Content is required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            // Find the translation by key and locale
+            $translation = Translation::where('key', $request->key)
+                ->where('locale', $request->locale)
+                ->first();
+
+            if (!$translation) {
+                // If translation doesn't exist, create it
+                $translation = Translation::create([
+                    'key' => $request->key,
+                    'content' => $request->content,
+                    'locale' => $request->locale,
+                    'group_name' => $request->group_name ?? 'general',
+                    'is_active' => true,
+                    'created_by' => 1, // System user for dev
+                    'updated_by' => 1,
+                ]);
+
+                $message = 'Translation created successfully!';
+            } else {
+                // Update existing translation
+                $oldContent = $translation->content;
+
+                $translation->update([
+                    'content' => $request->content,
+                    'updated_by' => 1,
+                ]);
+
+                // Record history if content changed
+                if ($oldContent !== $request->content) {
+                    try {
+                        $translation->recordHistory($oldContent, $request->content, 'Updated via inline editing');
+                    } catch (\Exception $historyError) {
+                        // Continue without history if table doesn't exist
+                    }
+                }
+
+                $message = 'Translation updated successfully!';
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'data' => [
+                    'id' => $translation->id,
+                    'key' => $translation->key,
+                    'content' => $translation->content,
+                    'locale' => $translation->locale,
+                    'updated_at' => $translation->updated_at->format('Y-m-d H:i:s'),
+                ],
             ]);
 
         } catch (\Exception $e) {

@@ -23,7 +23,7 @@
 .forum-grid-card{transition:all .3s ease;border:1px solid #e9ecef!important;position:relative;overflow:hidden}
 .forum-grid-card:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,0,0,0.1)!important;border-color:var(--bs-primary)!important}
 .forum-grid-card .forum-header{position:relative}
-.forum-grid-card .forum-title{font-size:1rem;line-height:1.3;color:#212529;transition:color .2s ease}
+.forum-grid-card .forum-title{font-size: 14px;line-height: 24px;color:#212529;transition:color .2s ease}
 .forum-grid-card:hover .forum-title{color:var(--bs-primary)}
 .forum-grid-card .forum-meta{font-size:.75rem;opacity:.8}
 .forum-grid-card .forum-description{min-height:2.5rem;display:flex;align-items:flex-start;margin-bottom: 5px !IMPORTANT;}
@@ -33,7 +33,7 @@
 .forum-grid-card:hover .stat-item{background-color:#f1f3f4!important}
 .forum-grid-card .stat-number{font-size: 15px;font-weight:700!important;text-align:center!important;display:block!important;font-family:"Archivo Narrow",sans-serif;margin-bottom:0;margin-right: 4px;}
 .forum-grid-card .stat-label{font-size:.7rem;letter-spacing:.5px;font-size: 13px !important;font-family: var(--bs-font-condensed);text-transform: capitalize;}
-.forum-grid-card .forum-activity{border-top:1px solid #f8f9fa;padding-top:.75rem}
+.forum-grid-card .forum-activity{border-top:1px solid #f8f9fa;padding-top: 0;}
 .forum-grid-card .icon-circle{transition:all .3s ease;}
 .forum-grid-card .icon-circle i{
 }

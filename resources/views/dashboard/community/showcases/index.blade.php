@@ -275,7 +275,8 @@
                         <div class="position-relative">
                             @if($showcase->cover_image)
                                 <img src="{{ asset('storage/' . $showcase->cover_image) }}"
-                                     class="showcase-image" alt="{{ $showcase->title }}">
+                                     class="showcase-image" alt="{{ $showcase->title }}"
+                                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                             @else
                                 <div class="showcase-image d-flex align-items-center justify-content-center">
                                     <i class="fas fa-image fa-3x text-muted"></i>

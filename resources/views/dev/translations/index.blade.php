@@ -47,6 +47,122 @@
             border-left: 4px solid #ff6b6b;
             background-color: #fff5f5;
         }
+
+        /* Inline Editing Styles */
+        .editable-cell {
+            position: relative;
+        }
+
+        .editable-content {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            min-height: 20px;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .editable-content:hover {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .editable-content.empty-content:hover {
+            background-color: #e3f2fd;
+            border: 1px solid #2196f3;
+        }
+
+        .editable-content.editing {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+
+        .editable-content.saving {
+            background-color: #d1ecf1;
+            border: 2px solid #17a2b8;
+            position: relative;
+        }
+
+        .editable-content.saving::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid #17a2b8;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .editable-content.success {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            animation: successPulse 0.6s ease-out;
+        }
+
+        .editable-content.error {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            animation: errorShake 0.6s ease-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .inline-edit-input {
+            width: 100%;
+            border: 2px solid #ffc107;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            resize: vertical;
+            min-height: 36px;
+            background-color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+
+        .inline-edit-input:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+
+        .vi-content .editable-content::before {
+            content: '🇻🇳';
+            margin-right: 6px;
+            font-size: 12px;
+        }
+
+        .en-content .editable-content::before {
+            content: '🇬🇧';
+            margin-right: 6px;
+            font-size: 12px;
+        }
+
+        .empty-content {
+            font-style: italic;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -136,10 +252,10 @@
                 <div class="table-container p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0">
-                            <i class="fas fa-table me-2"></i>Vietnamese Translations
+                            <i class="fas fa-table me-2"></i>Translation Manager
                         </h5>
                         <div class="text-muted">
-                            <small><i class="fas fa-info-circle me-1"></i>Click on any row to edit</small>
+                            <small><i class="fas fa-info-circle me-1"></i>Click on content cells to edit inline</small>
                         </div>
                     </div>
 
@@ -149,7 +265,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Key</th>
-                                    <th>Content</th>
+                                    <th>Vietnamese Content</th>
+                                    <th>English Content</th>
                                     <th>Group</th>
                                     <th>Status</th>
                                     <th>Created</th>
@@ -322,18 +439,40 @@
                 },
                 columns: [
                     { data: 'id', width: '60px' },
-                    { data: 'key', width: '25%' },
+                    { data: 'key', width: '20%' },
                     {
-                        data: 'content',
-                        width: '30%',
+                        data: 'vi_content',
+                        width: '25%',
+                        className: 'editable-cell vi-content',
                         render: function(data, type, row) {
-                            if (type === 'display' && data.length > 100) {
-                                return data.substr(0, 100) + '...';
+                            if (type === 'display') {
+                                const fullContent = data || '';
+                                const truncated = fullContent.length > 80 ? fullContent.substr(0, 80) + '...' : fullContent;
+                                // Escape HTML attributes properly
+                                const escapedContent = fullContent.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                                return `<div class="editable-content" data-key="${row.key}" data-locale="vi" data-full-content="${escapedContent}" title="Click to edit">${truncated}</div>`;
                             }
-                            return data;
+                            return data || '';
                         }
                     },
-                    { data: 'group_name', width: '15%' },
+                    {
+                        data: 'en_content',
+                        width: '25%',
+                        className: 'editable-cell en-content',
+                        render: function(data, type, row) {
+                            if (type === 'display') {
+                                const fullContent = data || '';
+                                const truncated = fullContent.length > 80 ? fullContent.substr(0, 80) + '...' : '';
+                                const placeholder = fullContent ? '' : '<span class="text-muted fst-italic">Click to add English translation</span>';
+                                const content = fullContent ? truncated : '';
+                                // Escape HTML attributes properly
+                                const escapedContent = fullContent.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                                return `<div class="editable-content ${fullContent ? '' : 'empty-content'}" data-key="${row.key}" data-locale="en" data-full-content="${escapedContent}" title="Click to edit">${content}${placeholder}</div>`;
+                            }
+                            return data || '';
+                        }
+                    },
+                    { data: 'group_name', width: '12%' },
                     {
                         data: 'is_active',
                         width: '80px',
@@ -343,16 +482,16 @@
                                 : '<span class="badge bg-secondary">Inactive</span>';
                         }
                     },
-                    { data: 'created_at', width: '120px' },
-                    { data: 'updated_at', width: '120px' },
+                    { data: 'created_at', width: '100px' },
+                    { data: 'updated_at', width: '100px' },
                     {
                         data: 'actions',
                         orderable: false,
                         searchable: false,
-                        width: '100px'
+                        width: '80px'
                     }
                 ],
-                order: [[3, 'asc'], [1, 'asc']], // Sort by group, then key
+                order: [[4, 'asc'], [1, 'asc']], // Sort by group, then key
                 pageLength: 25,
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
                 language: {
@@ -364,6 +503,301 @@
                     lengthMenu: 'Show _MENU_ translations per page',
                     search: 'Search translations:',
                     zeroRecords: 'No matching translations found'
+                }
+            });
+
+            // Inline Editing Functionality
+            let currentEditingElement = null;
+            let originalContent = '';
+
+            // Handle click on editable content
+            $(document).on('click', '.editable-content', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // If already editing another element, save it first
+                if (currentEditingElement && currentEditingElement !== this) {
+                    saveInlineEdit(currentEditingElement);
+                }
+
+                // If clicking on the same element that's already being edited, do nothing
+                if (currentEditingElement === this) {
+                    return;
+                }
+
+                startInlineEdit(this);
+            });
+
+            // Helper function to decode HTML entities
+            function decodeHtmlEntities(str) {
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = str;
+                return textarea.value;
+            }
+
+            // Start inline editing
+            function startInlineEdit(element) {
+                const $element = $(element);
+                const key = $element.data('key');
+                const locale = $element.data('locale');
+
+                // Get the full content from data attribute, fallback to visible text content
+                let fullContent = $element.data('full-content') || '';
+
+                // Decode HTML entities if present
+                if (fullContent) {
+                    fullContent = decodeHtmlEntities(fullContent);
+                }
+
+                // If fullContent is still empty, try to get from the visible text (removing emoji and extra spaces)
+                if (!fullContent) {
+                    const visibleText = $element.text().trim();
+                    // Remove flag emoji and clean up text
+                    fullContent = visibleText.replace(/^🇻🇳|^🇬🇧/, '').trim();
+                    // Remove placeholder text for empty English content
+                    if (fullContent.includes('Click to add English translation') || fullContent.includes('Click to add content')) {
+                        fullContent = '';
+                    }
+                }
+
+                // Store references
+                currentEditingElement = element;
+                originalContent = fullContent;
+
+                // Add editing class
+                $element.addClass('editing').removeClass('empty-content');
+
+                // Create textarea using vanilla JS for better control
+                const textarea = document.createElement('textarea');
+                textarea.className = 'inline-edit-input';
+                textarea.setAttribute('data-key', key);
+                textarea.setAttribute('data-locale', locale);
+                textarea.value = fullContent;
+
+                // Convert to jQuery object
+                const $textarea = $(textarea);
+
+                // Replace content with textarea
+                $element.html($textarea);
+
+                // Focus and select all text
+                $textarea.focus().select();
+
+                // Auto-resize textarea based on content
+                autoResizeTextarea($textarea[0]);
+
+                // Handle textarea events
+                $textarea.on('input', function() {
+                    autoResizeTextarea(this);
+                });
+
+                $textarea.on('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        saveInlineEdit(element);
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelInlineEdit(element);
+                    }
+                });
+
+                $textarea.on('blur', function() {
+                    // Small delay to allow for other click events
+                    setTimeout(() => {
+                        if (currentEditingElement === element) {
+                            saveInlineEdit(element);
+                        }
+                    }, 150);
+                });
+            }
+
+            // Auto-resize textarea
+            function autoResizeTextarea(textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.max(36, textarea.scrollHeight) + 'px';
+            }
+
+            // Save inline edit
+            function saveInlineEdit(element) {
+                const $element = $(element);
+                const textarea = $element.find('.inline-edit-input');
+
+                if (textarea.length === 0) return;
+
+                const newContent = textarea.val().trim();
+                const key = textarea.data('key');
+                const locale = textarea.data('locale');
+
+                // If content hasn't changed, just cancel
+                if (newContent === originalContent) {
+                    cancelInlineEdit(element);
+                    return;
+                }
+
+                // Validate content
+                if (newContent === '') {
+                    showInlineError(element, 'Content cannot be empty');
+                    return;
+                }
+
+                // Show saving state
+                $element.removeClass('editing').addClass('saving');
+                $element.html('<span>Saving...</span>');
+
+                // Make AJAX request
+                $.ajax({
+                    url: '{{ route("dev.translations.update-inline") }}',
+                    type: 'PATCH',
+                    data: {
+                        key: key,
+                        locale: locale,
+                        content: newContent,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            showInlineSuccess(element, newContent);
+
+                            // Update the data attribute
+                            $element.data('full-content', newContent);
+
+                            // Show success notification
+                            showNotification('success', response.message);
+                        } else {
+                            showInlineError(element, response.message || 'Update failed');
+                        }
+                    },
+                    error: function(xhr) {
+                        const response = xhr.responseJSON;
+                        let errorMessage = 'An error occurred';
+
+                        if (response && response.errors) {
+                            errorMessage = Object.values(response.errors).flat().join(', ');
+                        } else if (response && response.message) {
+                            errorMessage = response.message;
+                        }
+
+                        showInlineError(element, errorMessage);
+                    }
+                });
+            }
+
+            // Cancel inline edit
+            function cancelInlineEdit(element) {
+                const $element = $(element);
+
+                // Restore original content
+                restoreOriginalContent(element, originalContent);
+
+                // Clear editing state
+                currentEditingElement = null;
+                originalContent = '';
+            }
+
+            // Show inline success
+            function showInlineSuccess(element, newContent) {
+                const $element = $(element);
+
+                $element.removeClass('saving editing').addClass('success');
+
+                // Display truncated content
+                const truncated = newContent.length > 80 ? newContent.substr(0, 80) + '...' : newContent;
+                $element.html(truncated);
+
+                // Remove success class after animation
+                setTimeout(() => {
+                    $element.removeClass('success');
+                    currentEditingElement = null;
+                    originalContent = '';
+                }, 1000);
+            }
+
+            // Show inline error
+            function showInlineError(element, message) {
+                const $element = $(element);
+
+                $element.removeClass('saving').addClass('error');
+
+                // Show error message briefly, then restore edit mode
+                $element.html(`<span class="text-danger">${message}</span>`);
+
+                setTimeout(() => {
+                    $element.removeClass('error');
+
+                    // Restore textarea for continued editing
+                    const textarea = $('<textarea>', {
+                        class: 'inline-edit-input',
+                        'data-key': $element.data('key'),
+                        'data-locale': $element.data('locale')
+                    }).text(originalContent);
+
+                    $element.addClass('editing').html(textarea);
+                    textarea.focus();
+                    autoResizeTextarea(textarea[0]);
+
+                    // Re-attach events
+                    textarea.on('keydown', function(e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            saveInlineEdit(element);
+                        } else if (e.key === 'Escape') {
+                            e.preventDefault();
+                            cancelInlineEdit(element);
+                        }
+                    });
+
+                    textarea.on('blur', function() {
+                        setTimeout(() => {
+                            if (currentEditingElement === element) {
+                                saveInlineEdit(element);
+                            }
+                        }, 150);
+                    });
+
+                }, 2000);
+
+                showNotification('error', message);
+            }
+
+            // Restore original content
+            function restoreOriginalContent(element, content) {
+                const $element = $(element);
+                const locale = $element.data('locale');
+
+                $element.removeClass('editing saving success error');
+
+                if (content) {
+                    const truncated = content.length > 80 ? content.substr(0, 80) + '...' : content;
+                    $element.html(truncated);
+                } else {
+                    $element.addClass('empty-content');
+                    const placeholder = locale === 'en' ?
+                        '<span class="text-muted fst-italic">Click to add English translation</span>' :
+                        '<span class="text-muted fst-italic">Click to add content</span>';
+                    $element.html(placeholder);
+                }
+            }
+
+            // Show notification
+            function showNotification(type, message) {
+                const icon = type === 'success' ? 'success' : 'error';
+                const title = type === 'success' ? 'Success!' : 'Error!';
+
+                Swal.fire({
+                    icon: icon,
+                    title: title,
+                    text: message,
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            }
+
+            // Handle clicks outside to save current edit
+            $(document).on('click', function(e) {
+                if (currentEditingElement && !$(e.target).closest('.editable-content, .inline-edit-input').length) {
+                    saveInlineEdit(currentEditingElement);
                 }
             });
 

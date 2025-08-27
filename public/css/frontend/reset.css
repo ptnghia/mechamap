@@ -998,7 +998,7 @@ a:focus {
   border-radius: var(--bs-input-border-radius);
   border-color: var(--bs-border-color);
   font-family: var(--bs-font-heading);
-  height: 48px;
+  height: 42px;
   font-size: 16px;
 }
 
@@ -1038,7 +1038,7 @@ a:focus {
 }
 
 .card-title {
-  font-family: var(--bs-font-heading);
+  font-family: var(--bs-font-condensed);
   font-weight: 600;
   color: var(--bs-emphasis-color);
 }

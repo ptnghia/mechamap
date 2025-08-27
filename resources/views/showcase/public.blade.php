@@ -259,4 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+
+{{-- Showcase Actions JavaScript --}}
+<script src="{{ asset('js/showcase-actions.js') }}"></script>
 @endpush

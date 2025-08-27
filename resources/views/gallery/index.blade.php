@@ -45,7 +45,8 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <a href="{{ route('gallery.show', $media) }}">
-                                    <img src="{{ $media->url }}" alt="{{ $media->title }}" class="img-fluid rounded">
+                                    <img src="{{ $media->url }}" alt="{{ $media->title }}" class="img-fluid rounded"
+                                         onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                                 </a>
                             </div>
                             <div class="col-md-10">
@@ -89,7 +90,8 @@
                     <div class="col-md-3 mb-4">
                         <div class="card h-100">
                             <a href="{{ route('gallery.show', $media) }}">
-                                <img src="{{ $media->url }}" class="card-img-top" alt="{{ $media->title }}">
+                                <img src="{{ $media->url }}" class="card-img-top" alt="{{ $media->title }}"
+                                     onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                             </a>
                             <div class="card-body">
                                 <h6 class="card-title">
