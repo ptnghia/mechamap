@@ -38,21 +38,21 @@
                     <a class="nav-link {{ request('filter', 'all') === 'all' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'all']) }}">
                         {{ __('ui.users.all_members') }}
-                        <span class="badge bg-success ms-1">{{ $users->total() }}</span>
+                        <span class="badge bg-danger ms-1">{{ $users->total() }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request('filter') === 'online' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'online']) }}">
                         {{ __('ui.users.online_members') }}
-                        <span class="badge bg-success ms-1">{{ $stats['online_members'] }}</span>
+                        <span class="badge bg-danger ms-1">{{ $stats['online_members'] }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request('filter') === 'staff' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'staff']) }}">
                         {{ __('ui.users.staff') }}
-                        <span class="badge bg-success ms-1">{{ $users->total() }}</span>
+                        <span class="badge bg-danger ms-1">{{ $users->total() }}</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -69,69 +69,59 @@
                         <!-- Preserve current filter and view -->
                         <input type="hidden" name="filter" value="{{ request('filter', 'all') }}">
                         <input type="hidden" name="view" value="{{ request('view', 'list') }}">
+                        <div class="col-md-9">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="search" name="search"  value="{{ request('search') }}" placeholder="Tên, username hoặc email...">
+                                </div>
 
-                        <div class="col-md-4">
-                            <label for="search" class="form-label">{{ __('ui.users.search_profiles') }}</label>
-                            <input type="text" class="form-control" id="search" name="search"
-                                   value="{{ request('search') }}" placeholder="Tên, username hoặc email...">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="role" name="role">
+                                        <option value="">{{ __('ui.users.all_roles') }}</option>
+
+                                        <!-- Community Management Group -->
+                                        <optgroup label="{{ __('ui.users.community_management_group') }}">
+                                            <option value="community_management" {{ request('role') == 'community_management' ? 'selected' : '' }}>{{ __('ui.users.all_moderator') }}</option>
+                                            <option value="content_moderator" {{ request('role') == 'content_moderator' ? 'selected' : '' }}>Content Moderator</option>
+                                            <option value="marketplace_moderator" {{ request('role') == 'marketplace_moderator' ? 'selected' : '' }}>Marketplace Moderator</option>
+                                            <option value="community_moderator" {{ request('role') == 'community_moderator' ? 'selected' : '' }}>Community Moderator</option>
+                                        </optgroup>
+
+                                        <!-- Community Members Group -->
+                                        <optgroup label="{{ __('ui.users.community_members_group') }}">
+                                            <option value="community_members" {{ request('role') == 'community_members' ? 'selected' : '' }}>{{ __('ui.users.all_members_role') }}</option>
+                                            <option value="senior_member" {{ request('role') == 'senior_member' ? 'selected' : '' }}>Senior Member</option>
+                                            <option value="member" {{ request('role') == 'member' ? 'selected' : '' }}>Member</option>
+                                            <option value="guest" {{ request('role') == 'guest' ? 'selected' : '' }}>Guest</option>
+                                        </optgroup>
+
+                                        <!-- Business Partners Group -->
+                                        <optgroup label="{{ __('ui.users.business_partners_group') }}">
+                                            <option value="business_partners" {{ request('role') == 'business_partners' ? 'selected' : '' }}>{{ __('ui.users.all_partners') }}</option>
+                                            <option value="verified_partner" {{ request('role') == 'verified_partner' ? 'selected' : '' }}>Verified Partner</option>
+                                            <option value="manufacturer" {{ request('role') == 'manufacturer' ? 'selected' : '' }}>Manufacturer</option>
+                                            <option value="supplier" {{ request('role') == 'supplier' ? 'selected' : '' }}>Supplier</option>
+                                            <option value="brand" {{ request('role') == 'brand' ? 'selected' : '' }}>Brand</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <select class="form-select" id="sort" name="sort">
+                                        <option value="latest" {{ request('sort', 'latest') == 'latest' ? 'selected' : '' }}>{{ __('ui.users.newest') }}</option>
+                                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('ui.users.oldest') }}</option>
+                                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('ui.users.by_name') }}</option>
+                                        <option value="posts" {{ request('sort') == 'posts' ? 'selected' : '' }}>{{ __('ui.users.by_posts') }}</option>
+                                        <option value="threads" {{ request('sort') == 'threads' ? 'selected' : '' }}>{{ __('ui.users.by_threads') }}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <label for="role" class="form-label">{{ __('ui.users.filter_by_role') }}</label>
-                            <select class="form-select" id="role" name="role">
-                                <option value="">{{ __('ui.users.all_roles') }}</option>
-
-                                <!-- System Management Group -->
-                                <optgroup label="{{ __('ui.users.system_management_group') }}">
-                                    <option value="system_management" {{ request('role') == 'system_management' ? 'selected' : '' }}>{{ __('ui.users.all_admin') }}</option>
-                                    <option value="super_admin" {{ request('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
-                                    <option value="system_admin" {{ request('role') == 'system_admin' ? 'selected' : '' }}>System Admin</option>
-                                    <option value="content_admin" {{ request('role') == 'content_admin' ? 'selected' : '' }}>Content Admin</option>
-                                </optgroup>
-
-                                <!-- Community Management Group -->
-                                <optgroup label="{{ __('ui.users.community_management_group') }}">
-                                    <option value="community_management" {{ request('role') == 'community_management' ? 'selected' : '' }}>{{ __('ui.users.all_moderator') }}</option>
-                                    <option value="content_moderator" {{ request('role') == 'content_moderator' ? 'selected' : '' }}>Content Moderator</option>
-                                    <option value="marketplace_moderator" {{ request('role') == 'marketplace_moderator' ? 'selected' : '' }}>Marketplace Moderator</option>
-                                    <option value="community_moderator" {{ request('role') == 'community_moderator' ? 'selected' : '' }}>Community Moderator</option>
-                                </optgroup>
-
-                                <!-- Community Members Group -->
-                                <optgroup label="{{ __('ui.users.community_members_group') }}">
-                                    <option value="community_members" {{ request('role') == 'community_members' ? 'selected' : '' }}>{{ __('ui.users.all_members_role') }}</option>
-                                    <option value="senior_member" {{ request('role') == 'senior_member' ? 'selected' : '' }}>Senior Member</option>
-                                    <option value="member" {{ request('role') == 'member' ? 'selected' : '' }}>Member</option>
-                                    <option value="guest" {{ request('role') == 'guest' ? 'selected' : '' }}>Guest</option>
-                                </optgroup>
-
-                                <!-- Business Partners Group -->
-                                <optgroup label="{{ __('ui.users.business_partners_group') }}">
-                                    <option value="business_partners" {{ request('role') == 'business_partners' ? 'selected' : '' }}>{{ __('ui.users.all_partners') }}</option>
-                                    <option value="verified_partner" {{ request('role') == 'verified_partner' ? 'selected' : '' }}>Verified Partner</option>
-                                    <option value="manufacturer" {{ request('role') == 'manufacturer' ? 'selected' : '' }}>Manufacturer</option>
-                                    <option value="supplier" {{ request('role') == 'supplier' ? 'selected' : '' }}>Supplier</option>
-                                    <option value="brand" {{ request('role') == 'brand' ? 'selected' : '' }}>Brand</option>
-                                </optgroup>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="sort" class="form-label">{{ __('ui.users.sort_by') }}</label>
-                            <select class="form-select" id="sort" name="sort">
-                                <option value="latest" {{ request('sort', 'latest') == 'latest' ? 'selected' : '' }}>{{ __('ui.users.newest') }}</option>
-                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('ui.users.oldest') }}</option>
-                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('ui.users.by_name') }}</option>
-                                <option value="posts" {{ request('sort') == 'posts' ? 'selected' : '' }}>{{ __('ui.users.by_posts') }}</option>
-                                <option value="threads" {{ request('sort') == 'threads' ? 'selected' : '' }}>{{ __('ui.users.by_threads') }}</option>
-                            </select>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary btn-sm">
                                 <i class="fas fa-search"></i> {{ __('ui.users.search') }}
                             </button>
-                            <a href="{{ route('users.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('users.index') }}" class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-undo"></i> {{ __('ui.users.reset') }}
                             </a>
                         </div>

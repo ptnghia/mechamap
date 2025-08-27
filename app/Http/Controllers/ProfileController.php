@@ -99,8 +99,8 @@ class ProfileController extends Controller
                 $query->where('last_seen_at', '>=', now()->subMinutes(15));
                 break;
             case 'staff':
+                // Chỉ hiển thị nhóm quản trị cộng đồng, ẩn nhóm quản trị hệ thống
                 $query->whereIn('role', [
-                    'super_admin', 'system_admin', 'content_admin',
                     'content_moderator', 'marketplace_moderator', 'community_moderator'
                 ]);
                 break;
@@ -153,9 +153,9 @@ class ProfileController extends Controller
             ->take(5)
             ->get();
 
-        // Get staff members
+        // Get staff members - chỉ hiển thị nhóm quản trị cộng đồng
         $staffMembers = User::whereIn('role', [
-                'super_admin', 'system_admin', 'content_admin'
+                'content_moderator', 'marketplace_moderator', 'community_moderator'
             ])
             ->take(10)
             ->get();
