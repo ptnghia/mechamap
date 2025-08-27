@@ -8,58 +8,53 @@
 
 @section('content')
 <div class="body_page">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('common.buttons.popular') }}</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4 gx-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page">{{ seo_title_short(__('common.buttons.popular')) }}</h1>
+            <p class="text-muted mb-0">{{ seo_value('description', __('ui.whats_new.popular.description'))  }}</p>
+        </div>
 
         <a href="{{ route('threads.create') }}" class="btn btn-primary">
             <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}
         </a>
     </div>
 
-    <!-- Page Description -->
-    <div class="page-description mb-4">
-        <div class="alert alert-warning border-0">
-            <i class="fas fa-fire me-2"></i>
-            <strong>{{ __('ui.whats_new.popular.title') }}:</strong> {{ __('ui.whats_new.popular.description') }}
-        </div>
-    </div>
-
     <!-- Navigation Tabs -->
     <div class="whats-new-tabs mb-4">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new') }}"><i class="fas fa-info-circle me-2"></i>{{ __('forum.posts.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new') }}"><i class="fas fa-info-circle me-1"></i>{{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('whats-new.popular') }}"><i class="fas fa-fire me-2"></i>{{ __('ui.common.popular') }}</a>
+                <a class="nav-link active" href="{{ route('whats-new.popular') }}"><i class="fas fa-fire me-1"></i>{{ __('ui.common.popular') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">{{ __('whats_new.hot_topics') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.hot-topics') }}"><i class="fa-solid fa-fire-flame-curved me-1"></i>{{ __('whats_new.hot_topics') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.threads') }}"><i class="fa-solid fa-rss me-1"></i>{{ __('forum.threads.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.showcases') }}"><i class="fa-solid fa-compass-drafting me-1"></i>{{ __('showcase.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('media.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.media') }}"><i class="fa-solid fa-photo-film me-1"></i>{{ __('media.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.replies') }}">{{ __('forum.threads.looking_for_replies') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.replies') }}"><i class="fa-solid fa-question me-1"></i>{{ __('forum.threads.looking_for_replies') }}</a>
             </li>
         </ul>
     </div>
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center sub_cate_whatnew">
             <button class="nav-link {{ ($sortType ?? 'trending') == 'trending' ? 'active' : '' }}" id="trending-tab" type="button" role="tab" aria-controls="trending" aria-selected="{{ ($sortType ?? 'trending') == 'trending' ? 'true' : 'false' }}">
                 <i class="fas fa-fire me-1"></i>{{ __('navigation.trending') }}
             </button>
             <button class="nav-link {{ ($sortType ?? 'trending') == 'most_viewed' ? 'active' : '' }}" id="most-viewed-tab" type="button" role="tab" aria-controls="most-viewed" aria-selected="{{ ($sortType ?? 'trending') == 'most_viewed' ? 'true' : 'false' }}">
-                {{ __('navigation.most_viewed') }}
+                <i class="fa-regular fa-eye"></i> {{ __('navigation.most_viewed') }}
             </button>
         </div>
-        <div class="timeframe-filter mb-4 d-flex justify-content-end">
+        <div class="timeframe-filter d-flex justify-content-end">
             <div class="d-flex align-items-center">
                 <label for="timeframe-select" class="form-label me-2 mb-0">
                     {{ __('ui.common.timeframe') }}:

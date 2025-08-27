@@ -3,70 +3,64 @@
 @section('title', __('showcase.new') . ' - MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/whats-new.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/whats-new.css') }}">
 @endpush
 
 @section('content')
-<div class="container mt-4">
+<div class="body_page">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0 title_page">{{ $pageSeo ? $pageSeo->getLocalizedTitle() : __('showcase.new') }}</h1>
-
-        <a href="{{ route('showcase.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-plus me-1"></i> {{ t_common("create_showcase") }}
-        </a>
-    </div>
-
-    <!-- Page Description -->
-    <div class="page-description mb-4">
-        <div class="alert alert-secondary border-0">
-            <i class="fas fa-trophy me-2"></i>
-            <strong>{{ __('ui.whats_new.showcases.title') }}:</strong> {{ __('ui.whats_new.showcases.description') }}
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page">{{ seo_title_short(__('forum.threads.new')) }}</h1>
+            <p class="text-muted mb-0">{{ seo_value('description', __('ui.whats_new.showcases.description'))  }}</p>
         </div>
+
+        <a href="{{ route('threads.create') }}" class="btn btn-primary">
+            <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}
+        </a>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="whats-new-tabs mb-4">
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new') }}">{{ __('forum.posts.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new') }}"><i class="fas fa-info-circle me-1"></i>{{ __('forum.posts.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.popular') }}">{{ __('ui.common.popular') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.popular') }}"><i class="fas fa-fire me-1"></i>{{ __('ui.common.popular') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.hot-topics') }}">{{ __('navigation.hot_topics') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.hot-topics') }}"><i class="fa-solid fa-fire-flame-curved me-1"></i>{{ __('whats_new.hot_topics') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.threads') }}">{{ __('forum.threads.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.threads') }}"><i class="fa-solid fa-rss me-1"></i>{{ __('forum.threads.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('whats-new.showcases') }}">{{ __('showcase.new') }}</a>
+                <a class="nav-link active" href="{{ route('whats-new.showcases') }}"><i class="fa-solid fa-compass-drafting me-1"></i>{{ __('showcase.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.media') }}">{{ __('media.new') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.media') }}"><i class="fa-solid fa-photo-film me-1"></i>{{ __('media.new') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('whats-new.replies') }}">{{ __('forum.threads.looking_for_replies') }}</a>
+                <a class="nav-link" href="{{ route('whats-new.replies') }}"><i class="fa-solid fa-question me-1"></i>{{ __('forum.threads.looking_for_replies') }}</a>
             </li>
         </ul>
     </div>
 
     <!-- Pagination Top -->
-            @if($showcases->hasPages())
-            <div class="text-center mt-4">
-                {{ $showcases->links() }}
-            </div>
-            @endif
+    @if($showcases->hasPages())
+    <div class="text-center mt-4">
+        {{ $showcases->links() }}
+    </div>
+    @endif
 
     <!-- Showcases Grid -->
     <div class="body_left">
-
         @if($showcases->count() > 0)
         <div class="card-body p-0">
             <div class="row g-3">
                 @foreach($showcases as $showcase)
                 <div class="col-md-6 col-lg-6">
-                    <div class="card h-100 border-0 showcase-card">
+                    <div class="card h-100 border-0 showcase-card showcase_thead">
                         <!-- Showcase Header -->
                         <div class="card-header bg-transparent border-bottom">
                             <div class="d-flex align-items-center">
@@ -153,12 +147,13 @@
     </div>
 
     <!-- Pagination Bottom -->
-            @if($showcases->hasPages())
-            <div class="text-center mt-4">
-                {{ $showcases->links() }}
-            </div>
-            @endif
+    @if($showcases->hasPages())
+    <div class="text-center mt-4">
+        {{ $showcases->links() }}
+    </div>
+    @endif
 </div>
+
 @endsection
 
 @push('styles')

@@ -140,8 +140,7 @@
 .thread-user-name {
     font-size: 15px
 }
-.thread-user-name a{
-}
+.thread-user-name a{display: block;}
 .thread-category-badges {
     display: flex;
     gap: .5rem;

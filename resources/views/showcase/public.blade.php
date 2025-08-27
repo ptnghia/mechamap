@@ -10,8 +10,8 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-lg-3 col-md-4 slidebar_showcase">
-            @include('showcase.partials.sidebar')
+        <div class="col-lg-3 col-md-4">
+            <x-sidebar />
         </div>
         <div class="col-lg-9 col-md-8">
             <!-- Page Header -->

@@ -191,9 +191,16 @@ class BreadcrumbService
                 }
             }
 
-            // Add category if available
+            // Get route parameters
             $routeParams = $request->route() ? $request->route()->parameters() : [];
-            if (isset($routeParams['forum']) && $routeParams['forum']->category) {
+
+            // Handle categories.show route - direct category parameter
+            if ($routeName === 'categories.show' && isset($routeParams['category'])) {
+                // For categories.show, we don't add the category to breadcrumb since it's the current page
+                // The category name will be handled by the current page breadcrumb
+            }
+            // Handle forum routes - category through forum relationship
+            elseif (isset($routeParams['forum']) && $routeParams['forum']->category) {
                 $breadcrumbs[] = [
                     'title' => $routeParams['forum']->category->name,
                     'url' => route('categories.show', $routeParams['forum']->category->slug),
@@ -270,25 +277,32 @@ class BreadcrumbService
     private function getBreadcrumbTitle(PageSeo $pageSeo, ?Request $request = null): string
     {
         $locale = app()->getLocale();
+        $title = null;
 
         // Try to get breadcrumb title from i18n data first
         if ($pageSeo->breadcrumb_title_i18n && isset($pageSeo->breadcrumb_title_i18n[$locale])) {
-            return $pageSeo->breadcrumb_title_i18n[$locale];
+            $title = $pageSeo->breadcrumb_title_i18n[$locale];
         }
-
         // Fallback to breadcrumb_title
-        if ($pageSeo->breadcrumb_title) {
-            return $pageSeo->breadcrumb_title;
+        elseif ($pageSeo->breadcrumb_title) {
+            $title = $pageSeo->breadcrumb_title;
         }
-
         // Fallback to extracting from localized title
-        $localizedTitle = $pageSeo->getLocalizedTitle($locale);
-        if ($localizedTitle) {
-            return $this->extractBreadcrumbTitle($localizedTitle, $request);
+        else {
+            $localizedTitle = $pageSeo->getLocalizedTitle($locale);
+            if ($localizedTitle) {
+                return $this->extractBreadcrumbTitle($localizedTitle, $request);
+            }
+            // Final fallback to title
+            $title = $pageSeo->title ?: 'Unknown';
         }
 
-        // Final fallback to title
-        return $pageSeo->title ?: 'Unknown';
+        // Replace dynamic placeholders if request is provided and title contains placeholders
+        if ($request && $title && str_contains($title, '{')) {
+            $title = $this->replaceDynamicPlaceholders($title, $request);
+        }
+
+        return $title;
     }
 
     /**

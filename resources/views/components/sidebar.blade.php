@@ -11,9 +11,7 @@ $isProfessionalMode = request()->get('professional', true); // Enable by default
 
 // Determine sidebar type based on current route
 $sidebarType = 'default';
-if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), 'showcase')) {
-    $sidebarType = 'showcase';
-} elseif (str_contains($currentRoute, 'marketplace') || str_contains(request()->path(), 'marketplace')) {
+if (str_contains($currentRoute, 'marketplace') || str_contains(request()->path(), 'marketplace')) {
     $sidebarType = 'marketplace';
 } elseif ($currentRoute === 'threads.create') {
     $sidebarType = 'thread-creation';
@@ -22,10 +20,7 @@ if (str_contains($currentRoute, 'showcase') || str_contains(request()->path(), '
 }
 @endphp
 
-@if($sidebarType === 'showcase')
-<!-- Showcase Sidebar -->
-
-@elseif($sidebarType === 'marketplace')
+@if($sidebarType === 'marketplace')
 <!-- Marketplace Sidebar -->
 @include('components.sidebar-marketplace', ['user' => auth()->user()])
 @elseif($sidebarType === 'thread-creation')

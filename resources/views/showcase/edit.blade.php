@@ -357,7 +357,7 @@
 
         <!-- Sidebar -->
         <div class="col-lg-4">
-            @include('showcase.partials.sidebar')
+            <x-sidebar />
         </div>
     </div>
 </div>
