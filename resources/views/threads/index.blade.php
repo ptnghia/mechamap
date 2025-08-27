@@ -3,154 +3,150 @@
 @section('title', __('forum.forums.title'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/threads.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads.css') }}">
 @endpush
 
 @section('content')
 <div class="body_page">
+
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2 mb-1 title_page">{{ __('forum.forums.title') }}</h1>
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page">{{ seo_title_short(__('forum.forums.title')) }}</h1>
+            <p class="text-muted mb-0">{{ seo_value('description', '')  }}</p>
+        </div>
         @auth
-        <a href="{{ route('threads.create') }}" class="btn btn-link">
+        <a href="{{ route('threads.create') }}" class="btn btn-primary">
             <i class="fa-solid fa-plus me-1"></i> {{ __('forum.threads.create') }}
         </a>
         @endauth
     </div>
 
     <!-- Advanced Filters -->
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0">{{ __('ui.actions.filters') }}</h6>
-            <button type="button" class="btn btn-sm btn-outline-secondary" id="toggleAdvancedFilters">
-                <i class="fas fa-cog me-1"></i> {{ __('forum.search.advanced') }}
-            </button>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('threads.index') }}" method="GET" id="threadFiltersForm">
-                <!-- Quick Filter Buttons -->
-                <div class="mb-3">
-                    <div class="btn-group" role="group" aria-label="Quick filters">
-                        <input type="radio" class="btn-check" name="quick_filter" id="filter_all" value="" {{ !request('quick_filter') ? 'checked' : '' }}>
-                        <label class="btn btn-outline-primary" for="filter_all">{{ __('common.buttons.all') }}</label>
+    <div class="body_search mb-4">
+        <form action="{{ route('threads.index') }}" method="GET" id="threadFiltersForm">
+            <!-- Quick Filter Buttons -->
+            <div class="mb-3 d-flex justify-content-between">
+                <div class="btn-group" role="group" aria-label="Quick filters">
+                    <input type="radio" class="btn-check" name="quick_filter" id="filter_all" value="" {{ !request('quick_filter') ? 'checked' : '' }}>
+                    <label class="btn btn-sm btn-outline-primary" for="filter_all">{{ __('common.buttons.all') }}</label>
 
-                        <input type="radio" class="btn-check" name="quick_filter" id="filter_today" value="today" {{ request('quick_filter') == 'today' ? 'checked' : '' }}>
-                        <label class="btn btn-outline-primary" for="filter_today">{{ __('common.time.today') }}</label>
+                    <input type="radio" class="btn-check" name="quick_filter" id="filter_today" value="today" {{ request('quick_filter') == 'today' ? 'checked' : '' }}>
+                    <label class="btn btn-sm btn-outline-primary" for="filter_today">{{ __('common.time.today') }}</label>
 
-                        <input type="radio" class="btn-check" name="quick_filter" id="filter_week" value="week" {{ request('quick_filter') == 'week' ? 'checked' : '' }}>
-                        <label class="btn btn-outline-primary" for="filter_week">{{ __('common.time.this_week') }}</label>
+                    <input type="radio" class="btn-check" name="quick_filter" id="filter_week" value="week" {{ request('quick_filter') == 'week' ? 'checked' : '' }}>
+                    <label class="btn btn-sm btn-outline-primary" for="filter_week">{{ __('common.time.this_week') }}</label>
 
-                        <input type="radio" class="btn-check" name="quick_filter" id="filter_month" value="month" {{ request('quick_filter') == 'month' ? 'checked' : '' }}>
-                        <label class="btn btn-outline-primary" for="filter_month">{{ __('common.time.this_month') }}</label>
+                    <input type="radio" class="btn-check" name="quick_filter" id="filter_month" value="month" {{ request('quick_filter') == 'month' ? 'checked' : '' }}>
+                    <label class="btn btn-sm btn-outline-primary" for="filter_month">{{ __('common.time.this_month') }}</label>
 
-                        <input type="radio" class="btn-check" name="quick_filter" id="filter_featured" value="" {{ request('featured') ? 'checked' : '' }}>
-                        <label class="btn btn-outline-success" for="filter_featured">{{ __('forum.threads.featured') }}</label>
-                        @if(request('featured'))
-                            <input type="hidden" name="featured" value="1">
-                        @endif
-                    </div>
+                    <input type="radio" class="btn-check" name="quick_filter" id="filter_featured" value="" {{ request('featured') ? 'checked' : '' }}>
+                    <label class="btn btn-sm btn-outline-primary" for="filter_featured">{{ __('forum.threads.featured') }}</label>
+                    @if(request('featured'))
+                        <input type="hidden" name="featured" value="1">
+                    @endif
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="toggleAdvancedFilters">
+                    <i class="fas fa-cog me-1"></i> {{ __('forum.search.advanced') }}
+                </button>
+            </div>
+
+            <!-- Basic Filters Row -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control input_search" id="q" name="q"
+                        value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('forum.search.placeholder') }}">
                 </div>
 
-                <!-- Basic Filters Row -->
+                <div class="col-md-3">
+                    <select class="form-select select_search" id="category" name="category">
+                        <option value="">{{ __('marketplace.categories.all') }}</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ ($filters['category'] ?? '') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select class="form-select select_search" id="forum" name="forum">
+                        <option value="">{{ __('forum.forums.all') }}</option>
+                        @foreach($forums as $forum)
+                        <option value="{{ $forum->id }}" {{ ($filters['forum'] ?? '') == $forum->id ? 'selected' : '' }}>
+                            {{ $forum->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <!-- Advanced Filters (Collapsible) -->
+            <div id="advancedFilters" class="collapse">
+                <hr>
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label for="q" class="form-label">{{ __('ui.actions.search') }}</label>
-                        <input type="text" class="form-control input_search" id="q" name="q"
-                            value="{{ $filters['q'] ?? '' }}" placeholder="{{ __('forum.search.placeholder') }}">
+                    <div class="col-md-4">
+                        <label for="author" class="form-label">{{ __('forum.search.author') }}</label>
+                        <input type="text" class="form-control" id="author" name="author"
+                            value="{{ $filters['author'] ?? '' }}" placeholder="{{ __('forum.search.author_placeholder') }}">
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="category" class="form-label">{{ __('common.labels.category') }}</label>
-                        <select class="form-select select_search" id="category" name="category">
-                            <option value="">{{ __('marketplace.categories.all') }}</option>
-                            @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ ($filters['category'] ?? '') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
+                    <div class="col-md-4">
+                        <label for="date_from" class="form-label">{{ __('forum.search.date_from') }}</label>
+                        <input type="date" class="form-control" id="date_from" name="date_from"
+                            value="{{ $filters['date_from'] ?? '' }}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="date_to" class="form-label">{{ __('forum.search.date_to') }}</label>
+                        <input type="date" class="form-control" id="date_to" name="date_to"
+                            value="{{ $filters['date_to'] ?? '' }}">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label for="sort" class="form-label">{{ __('ui.actions.sort') }}</label>
+                        <select class="form-select select_search" id="sort" name="sort">
+                            <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>
+                                {{ __('common.buttons.latest') }}
                             </option>
-                            @endforeach
+                            <option value="oldest" {{ $sort == 'oldest' ? 'selected' : '' }}>
+                                {{ t_common("oldest") }}
+                            </option>
+                            <option value="most_viewed" {{ $sort == 'most_viewed' ? 'selected' : '' }}>
+                                {{ t_common("most_viewed") }}
+                            </option>
+                            <option value="most_commented" {{ $sort == 'most_commented' ? 'selected' : '' }}>
+                                {{ t_common("most_commented") }}
+                            </option>
+                            <option value="relevance" {{ $sort == 'relevance' ? 'selected' : '' }}>
+                                {{ __('forum.search.relevance') }}
+                            </option>
                         </select>
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="forum" class="form-label">{{ __('forum.forums.title') }}</label>
-                        <select class="form-select select_search" id="forum" name="forum">
-                            <option value="">{{ __('forum.forums.all') }}</option>
-                            @foreach($forums as $forum)
-                            <option value="{{ $forum->id }}" {{ ($filters['forum'] ?? '') == $forum->id ? 'selected' : '' }}>
-                                {{ $forum->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Advanced Filters (Collapsible) -->
-                <div id="advancedFilters" class="collapse">
-                    <hr>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label for="author" class="form-label">{{ __('forum.search.author') }}</label>
-                            <input type="text" class="form-control" id="author" name="author"
-                                value="{{ $filters['author'] ?? '' }}" placeholder="{{ __('forum.search.author_placeholder') }}">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="date_from" class="form-label">{{ __('forum.search.date_from') }}</label>
-                            <input type="date" class="form-control" id="date_from" name="date_from"
-                                value="{{ $filters['date_from'] ?? '' }}">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="date_to" class="form-label">{{ __('forum.search.date_to') }}</label>
-                            <input type="date" class="form-control" id="date_to" name="date_to"
-                                value="{{ $filters['date_to'] ?? '' }}">
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label for="sort" class="form-label">{{ __('ui.actions.sort') }}</label>
-                            <select class="form-select select_search" id="sort" name="sort">
-                                <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>
-                                    {{ __('common.buttons.latest') }}
-                                </option>
-                                <option value="oldest" {{ $sort == 'oldest' ? 'selected' : '' }}>
-                                    {{ t_common("oldest") }}
-                                </option>
-                                <option value="most_viewed" {{ $sort == 'most_viewed' ? 'selected' : '' }}>
-                                    {{ t_common("most_viewed") }}
-                                </option>
-                                <option value="most_commented" {{ $sort == 'most_commented' ? 'selected' : '' }}>
-                                    {{ t_common("most_commented") }}
-                                </option>
-                                <option value="relevance" {{ $sort == 'relevance' ? 'selected' : '' }}>
-                                    {{ __('forum.search.relevance') }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-check mt-4">
-                                <input class="form-check-input" type="checkbox" id="has_poll" name="has_poll" value="1"
-                                    {{ ($filters['has_poll'] ?? false) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="has_poll">
-                                    {{ __('forum.threads.has_poll') }}
-                                </label>
-                            </div>
+                    <div class="col-md-4">
+                        <div class="form-check mt-4">
+                            <input class="form-check-input" type="checkbox" id="has_poll" name="has_poll" value="1"
+                                {{ ($filters['has_poll'] ?? false) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="has_poll">
+                                {{ __('forum.threads.has_poll') }}
+                            </label>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Action Buttons -->
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary btn-search">
-                        <i class="fas fa-search me-1"></i> {{ __('ui.actions.search') }}
-                    </button>
-                    <a href="{{ route('threads.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-times me-1"></i> {{ __('ui.actions.clear_filters') }}
-                    </a>
-                </div>
-            </form>
-        </div>
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-primary btn-search">
+                    <i class="fas fa-search me-1"></i> {{ __('ui.actions.search') }}
+                </button>
+                <a href="{{ route('threads.index') }}" class="btn btn-sm  btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i> {{ __('ui.actions.clear_filters') }}
+                </a>
+            </div>
+        </form>
     </div>
 
     <!-- Search Condition Tags -->
@@ -168,8 +164,8 @@
 
     @if($hasConditions)
     <div class="search-conditions mb-4">
-        <div class="d-flex flex-wrap align-items-center">
-            <span class="me-2 mb-2 fw-medium text-muted">{{ __('forum.search.conditions') }}:</span>
+        <div class="d-flex flex-wrap align-items-center g-4">
+            <span class="fw-medium text-muted">{{ __('forum.search.conditions') }}:</span>
 
             <!-- Quick Filter Tags -->
             @if(request('quick_filter'))
@@ -306,7 +302,7 @@
             @endif
 
             <!-- Clear All Button -->
-            <a href="{{ route('threads.index') }}" class="clear-all-btn ms-2 mb-2">
+            <a href="{{ route('threads.index') }}" class="clear-all-btn">
                 <i class="fas fa-times-circle me-1"></i>
                 {{ __('forum.search.clear_all_conditions') }}
             </a>
@@ -328,7 +324,7 @@
         @endforeach
     </div>
 
-    <div class="list_post_threads_footer">
+    <div class="">
         {{ $threads->links() }}
     </div>
     @else

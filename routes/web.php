@@ -854,7 +854,7 @@ Route::middleware(['webapi', 'auth'])->prefix('api/threads/{thread}')->group(fun
 });
 
 // Thread Follow AJAX API routes
-Route::middleware(['auth'])->prefix('ajax/threads/{thread}')->group(function () {
+Route::middleware(['auth', 'log.thread.requests'])->prefix('ajax/threads/{thread}')->group(function () {
     Route::post('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'follow'])->name('ajax.threads.follow');
     Route::delete('/follow', [\App\Http\Controllers\ThreadFollowController::class, 'unfollow'])->name('ajax.threads.unfollow');
     Route::get('/follow-status', [\App\Http\Controllers\ThreadFollowController::class, 'status'])->name('ajax.threads.follow.status');

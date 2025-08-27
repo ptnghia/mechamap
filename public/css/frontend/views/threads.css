@@ -1,7 +1,7 @@
 .detail_thread{
 }
 .detail_thread_body{font-family: "Roboto Condensed", sans-serif;padding: 15px;background-color: #fff;border-radius: 15px;margin-bottom: 20px;}
-.thread-actions{width: 250px;justify-content: end;}
+.thread-actions{/* width: 250px; */justify-content: end;}
 .thread-actions .btn{background-color: var(--bs-primary);color: #fff;}
 .thread-actions  .follower-count.badge{
 }
@@ -261,12 +261,12 @@
 .search-conditions .condition-tag {
     display: inline-flex;
     align-items: center;
-    background-color: #e3f2fd;
-    color: #1976d2;
-    border: 1px solid #bbdefb;
-    border-radius: 20px;
+    background-color: var(--bs-border-color);
+    color: var(--bs-primary);
+    border: 1px solid var(--bs-primary);
+    border-radius: 5px;
     padding: 0.25rem 0.75rem;
-    margin: 0.25rem 0.25rem 0.25rem 0;
+    margin: 0;
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -280,7 +280,7 @@
 .search-conditions .condition-tag .remove-condition {
     background: none;
     border: none;
-    color: #1976d2;
+    color: var(--bs-link-color);
     margin-left: 0.5rem;
     padding: 0;
     font-size: 1rem;
@@ -320,19 +320,19 @@
 .search-conditions .condition-tag.featured .remove-condition {
     color: #f57c00;
 }
-
+.body_search{background-color: #fff;padding: 15px;border-radius: 20px;}
 .search-conditions .clear-all-btn {
     background-color: #ffebee;
     color: #d32f2f;
     border: 1px solid #ffcdd2;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 0.25rem 0.75rem;
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s ease;
 }
-
+.search-conditions>div{gap: 4px;}
 .search-conditions .clear-all-btn:hover {
     background-color: #ffcdd2;
     color: #d32f2f;
@@ -345,5 +345,24 @@
     .search-conditions .condition-tag {
         margin-bottom: 0.5rem;
         font-size: 0.8rem;
+    }
+}
+
+/* Search Keyword Highlighting */
+.highlight {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+    border: 1px solid #ffeaa7;
+}
+
+/* Dark mode support for highlight */
+@media (prefers-color-scheme: dark) {
+    .highlight {
+        background-color: #664d03;
+        color: #fff3cd;
+        border-color: #997404;
     }
 }

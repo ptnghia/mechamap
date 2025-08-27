@@ -50,24 +50,22 @@ async function handleBookmarkClick(event) {
     const button = event.currentTarget;
     const isBookmarked = button.dataset.bookmarked === 'true';
 
-    // Lấy slug từ URL của thread title link
-    const threadItem = button.closest('.thread-item');
-    const titleLink = threadItem ? threadItem.querySelector('.thread-title a') : null;
-
-    if (!titleLink) {
-        console.error('Thread title link not found');
+    // Lấy thread slug từ container (ưu tiên slug, fallback về ID)
+    const threadContainer = button.closest('[data-thread-id]');
+    if (!threadContainer) {
+        console.error('Thread container not found');
         if (window.showNotification) {
             window.showNotification('Không tìm thấy thông tin bài viết', 'error');
         }
         return;
     }
 
-    const threadUrl = titleLink.href;
-    const urlParts = threadUrl.split('/');
-    const threadSlug = urlParts[urlParts.length - 1]; // Lấy slug từ URL
+    const threadSlug = threadContainer.getAttribute('data-thread-slug');
+    const threadId = threadContainer.getAttribute('data-thread-id');
+    const threadIdentifier = threadSlug || threadId;
 
-    if (!threadSlug) {
-        console.error('Thread slug not found');
+    if (!threadIdentifier) {
+        console.error('Thread identifier not found');
         if (window.showNotification) {
             window.showNotification('Không tìm thấy thông tin bài viết', 'error');
         }
@@ -78,7 +76,7 @@ async function handleBookmarkClick(event) {
     button.disabled = true;
 
     try {
-        const response = await fetch(`/ajax/threads/${threadSlug}/bookmark`, {
+        const response = await fetch(`/ajax/threads/${threadIdentifier}/bookmark`, {
             method: isBookmarked ? 'DELETE' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,17 +97,37 @@ async function handleBookmarkClick(event) {
                 window.showNotification(message, 'success');
             }
         } else {
-            throw new Error(data.message || 'Có lỗi xảy ra khi xử lý bookmark');
+            // Handle specific error cases
+            if (response.status === 404) {
+                throw new Error('Thread không tồn tại hoặc đã bị xóa');
+            } else if (response.status === 401) {
+                throw new Error('Bạn cần đăng nhập để sử dụng tính năng này');
+            } else {
+                throw new Error(data.message || 'Có lỗi xảy ra khi xử lý bookmark');
+            }
         }
 
     } catch (error) {
         console.error('Bookmark error:', error);
 
-        // Show error message
+        // Show specific error message
+        let errorMessage = 'Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.';
+        if (error.message.includes('Thread không tồn tại')) {
+            errorMessage = 'Thread không tồn tại hoặc đã bị xóa. Trang sẽ được tải lại.';
+            // Reload page after showing error for deleted threads
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else if (error.message.includes('đăng nhập')) {
+            errorMessage = 'Bạn cần đăng nhập để sử dụng tính năng này.';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+
         if (window.showNotification) {
-            window.showNotification('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.', 'error');
+            window.showNotification(errorMessage, 'error');
         } else {
-            alert('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.');
+            alert(errorMessage);
         }
     } finally {
         // Re-enable button
@@ -126,24 +144,22 @@ async function handleFollowClick(event) {
     const button = event.currentTarget;
     const isFollowed = button.dataset.followed === 'true';
 
-    // Lấy slug từ URL của thread title link
-    const threadItem = button.closest('.thread-item');
-    const titleLink = threadItem ? threadItem.querySelector('.thread-title a') : null;
-
-    if (!titleLink) {
-        console.error('Thread title link not found');
+    // Lấy thread slug từ container (ưu tiên slug, fallback về ID)
+    const threadContainer = button.closest('[data-thread-id]');
+    if (!threadContainer) {
+        console.error('Thread container not found');
         if (window.showNotification) {
             window.showNotification('Không tìm thấy thông tin bài viết', 'error');
         }
         return;
     }
 
-    const threadUrl = titleLink.href;
-    const urlParts = threadUrl.split('/');
-    const threadSlug = urlParts[urlParts.length - 1]; // Lấy slug từ URL
+    const threadSlug = threadContainer.getAttribute('data-thread-slug');
+    const threadId = threadContainer.getAttribute('data-thread-id');
+    const threadIdentifier = threadSlug || threadId;
 
-    if (!threadSlug) {
-        console.error('Thread slug not found');
+    if (!threadIdentifier) {
+        console.error('Thread identifier not found');
         if (window.showNotification) {
             window.showNotification('Không tìm thấy thông tin bài viết', 'error');
         }
@@ -154,7 +170,7 @@ async function handleFollowClick(event) {
     button.disabled = true;
 
     try {
-        const response = await fetch(`/ajax/threads/${threadSlug}/follow`, {
+        const response = await fetch(`/ajax/threads/${threadIdentifier}/follow`, {
             method: isFollowed ? 'DELETE' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -175,17 +191,37 @@ async function handleFollowClick(event) {
                 window.showNotification(message, 'success');
             }
         } else {
-            throw new Error(data.message || 'Có lỗi xảy ra khi xử lý theo dõi');
+            // Handle specific error cases
+            if (response.status === 404) {
+                throw new Error('Thread không tồn tại hoặc đã bị xóa');
+            } else if (response.status === 401) {
+                throw new Error('Bạn cần đăng nhập để sử dụng tính năng này');
+            } else {
+                throw new Error(data.message || 'Có lỗi xảy ra khi xử lý theo dõi');
+            }
         }
 
     } catch (error) {
         console.error('Follow error:', error);
 
-        // Show error message
+        // Show specific error message
+        let errorMessage = 'Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.';
+        if (error.message.includes('Thread không tồn tại')) {
+            errorMessage = 'Thread không tồn tại hoặc đã bị xóa. Trang sẽ được tải lại.';
+            // Reload page after showing error for deleted threads
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else if (error.message.includes('đăng nhập')) {
+            errorMessage = 'Bạn cần đăng nhập để sử dụng tính năng này.';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+
         if (window.showNotification) {
-            window.showNotification('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.', 'error');
+            window.showNotification(errorMessage, 'error');
         } else {
-            alert('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.');
+            alert(errorMessage);
         }
     } finally {
         // Re-enable button

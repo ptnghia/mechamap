@@ -53,14 +53,6 @@
     </div>
     @endif
 
-    <!-- Media Description -->
-    <div class="media-description mb-4">
-        <div class="alert alert-info">
-            <i class="fa-solid fa-info-circle me-2"></i>
-            <strong>{{ __('media.new') }}:</strong> {{ __('media.description') }}
-        </div>
-    </div>
-
     <!-- Modern Media Gallery -->
     @if(count($mediaItems) > 0)
     <div class="media-gallery">
@@ -119,50 +111,37 @@
                 {{ $mediaItems->links() }}
             </div>
             @endif
-
-    <!-- Go to Page Input -->
-    <div class="go-to-page mt-3">
-        <div class="input-group input-group-sm" style="max-width: 200px; margin: 0 auto;">
-            <input type="number" class="form-control" id="pageInput" min="1" max="{{ $totalPages ?? 1 }}" value="{{ $page ?? 1 }}">
-            <button class="btn btn-outline-secondary" type="button" id="goToPageBtn">{{ __('ui.pagination.go_to_page') }}</button>
-        </div>
-    </div>
 </div>
 @endsection
 
 @push('scripts')
-<!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.0/dist/fancybox/fancybox.umd.js"></script>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Fancybox
-        Fancybox.bind("[data-fancybox]", {
-            // Options
+document.addEventListener('DOMContentLoaded', function() {
+    // Go to page functionality
+    const pageInput = document.getElementById('pageInput');
+    const goToPageBtn = document.getElementById('goToPageBtn');
+
+    if (pageInput && goToPageBtn) {
+        goToPageBtn.addEventListener('click', function() {
+            const pageNumber = parseInt(pageInput.value);
+            const maxPages = parseInt(pageInput.getAttribute('max'));
+
+            if (pageNumber >= 1 && pageNumber <= maxPages) {
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('page', pageNumber);
+                window.location.href = currentUrl.toString();
+            } else {
+                alert('{{ __("ui.pagination.invalid_page_number") }}');
+            }
         });
 
-        // Go to page functionality
-        const goToPageBtn = document.getElementById('goToPageBtn');
-        const pageInput = document.getElementById('pageInput');
-
-        if (goToPageBtn && pageInput) {
-
-
-
-        }
-
-        // Loading animation for images
-        const images = document.querySelectorAll('.media-item-image img');
-        images.forEach(function(img) {
-            img.addEventListener('load', function() {
-                this.style.opacity = '1';
-            });
-
-            img.addEventListener('error', function() {
-                this.src = '{{ asset("images/placeholder.jpg") }}';
-                this.alt = '{{ __("messages.image_not_found") }}';
-            });
+        // Allow Enter key to trigger go to page
+        pageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                goToPageBtn.click();
+            }
         });
-    });
+    }
+});
 </script>
 @endpush

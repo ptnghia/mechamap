@@ -23,6 +23,14 @@ class ThreadBookmarkController extends Controller
     public function store(Request $request, Thread $thread): JsonResponse
     {
         try {
+            // Validate thread exists and is accessible
+            if (!$thread || !$thread->exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thread không tồn tại hoặc đã bị xóa'
+                ], 404);
+            }
+
             $request->validate([
                 'folder_name' => 'nullable|string|max:100',
                 'notes' => 'nullable|string|max:500',
@@ -66,9 +74,14 @@ class ThreadBookmarkController extends Controller
                 ],
                 'bookmark_count' => $thread->fresh()->bookmark_count
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thread không tồn tại'
+            ], 404);
         } catch (\Exception $e) {
             Log::error('Lỗi khi bookmark thread: ' . $e->getMessage(), [
-                'thread_id' => $thread->id,
+                'thread_id' => $thread->id ?? 'unknown',
                 'user_id' => Auth::id(),
                 'error' => $e->getTraceAsString()
             ]);
@@ -86,6 +99,14 @@ class ThreadBookmarkController extends Controller
     public function destroy(Thread $thread): JsonResponse
     {
         try {
+            // Validate thread exists and is accessible
+            if (!$thread || !$thread->exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thread không tồn tại hoặc đã bị xóa'
+                ], 404);
+            }
+
             $user = Auth::user();
 
             $bookmark = ThreadBookmark::where('user_id', $user->id)
@@ -112,9 +133,14 @@ class ThreadBookmarkController extends Controller
                 'bookmarked' => false,
                 'bookmark_count' => $thread->fresh()->bookmark_count
             ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thread không tồn tại'
+            ], 404);
         } catch (\Exception $e) {
             Log::error('Lỗi khi xóa bookmark thread: ' . $e->getMessage(), [
-                'thread_id' => $thread->id,
+                'thread_id' => $thread->id ?? 'unknown',
                 'user_id' => Auth::id(),
                 'error' => $e->getTraceAsString()
             ]);

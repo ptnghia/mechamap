@@ -33,7 +33,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 }
 @endphp
 
-<div class="thread-item thread-item-container" data-thread-id="{{ $thread->id ?? '' }}">
+<div class="thread-item thread-item-container" data-thread-id="{{ $thread->id ?? '' }}" data-thread-slug="{{ $thread->slug ?? '' }}">
     <!-- Thread Header với user info và badges -->
     <div class="thread-item-header">
         <div class="thread-user-info">
@@ -112,7 +112,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             <div class="thread-title-section">
                 <div class="thread-title">
                     <a href="{{ $threadUrl }}">
-                        @if(request()->routeIs('forums.search') && str_contains($thread->title, '<span class="highlight">'))
+                        @if((request()->routeIs('forums.search') || request()->routeIs('threads.index')) && str_contains($thread->title, '<span class="highlight">'))
                             {!! $thread->title !!}
                         @else
                             {{ $thread->title }}
@@ -125,8 +125,8 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
             <!-- Mô tả ngắn thread -->
             @if($contentPreview)
             <div class="thread-content">
-                @if(request()->routeIs('forums.search') && isset($thread->content) && str_contains($thread->content, '<span class="highlight">'))
-                    {!! Str::limit($thread->content, 220) !!}
+                @if((request()->routeIs('forums.search') || request()->routeIs('threads.index')) && isset($thread->has_highlighted_content) && $thread->has_highlighted_content)
+                    {!! $thread->content !!}
                 @else
                     {{ $contentPreview }}
                 @endif
@@ -138,7 +138,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         @if($hasImage)
         <div class="col-md-3 col-sm-4 col-3">
             <div class="thread-image-container">
-                <img src="{{ $threadImage }}" alt="{{ $thread->title }}" class="img-fluid rounded"
+                <img src="{{ $threadImage }}" alt="{{ $thread->original_title ?? strip_tags($thread->title) }}" class="img-fluid rounded"
                     onerror="this.style.display='none'">
             </div>
         </div>

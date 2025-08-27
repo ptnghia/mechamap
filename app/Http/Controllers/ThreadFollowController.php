@@ -75,6 +75,14 @@ class ThreadFollowController extends Controller
     public function follow(Request $request, Thread $thread): JsonResponse
     {
         try {
+            // Validate thread exists and is accessible
+            if (!$thread || !$thread->exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thread không tồn tại hoặc đã bị xóa'
+                ], 404);
+            }
+
             $user = Auth::user();
 
             if (!$user) {
@@ -113,10 +121,15 @@ class ThreadFollowController extends Controller
                 'follower_count' => $followerCount
             ]);
 
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thread không tồn tại'
+            ], 404);
         } catch (\Exception $e) {
             Log::error('Thread follow failed', [
                 'user_id' => Auth::id(),
-                'thread_id' => $thread->id,
+                'thread_id' => $thread->id ?? 'unknown',
                 'error' => $e->getMessage()
             ]);
 
@@ -133,6 +146,14 @@ class ThreadFollowController extends Controller
     public function unfollow(Request $request, Thread $thread): JsonResponse
     {
         try {
+            // Validate thread exists and is accessible
+            if (!$thread || !$thread->exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Thread không tồn tại hoặc đã bị xóa'
+                ], 404);
+            }
+
             $user = Auth::user();
 
             if (!$user) {
@@ -165,10 +186,15 @@ class ThreadFollowController extends Controller
                 'follower_count' => $followerCount
             ]);
 
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Thread không tồn tại'
+            ], 404);
         } catch (\Exception $e) {
             Log::error('Thread unfollow failed', [
                 'user_id' => Auth::id(),
-                'thread_id' => $thread->id,
+                'thread_id' => $thread->id ?? 'unknown',
                 'error' => $e->getMessage()
             ]);
 

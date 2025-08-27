@@ -45,6 +45,9 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->ip());
         });
 
+        // Custom route model bindings
+        $this->configureRouteModelBindings();
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -57,6 +60,30 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('admin')
                 ->name('admin.')
                 ->group(base_path('routes/admin.php'));
+        });
+    }
+
+    /**
+     * Configure custom route model bindings.
+     */
+    protected function configureRouteModelBindings(): void
+    {
+        // Custom Thread binding - support both slug and ID
+        Route::bind('thread', function ($value) {
+            // Try to find by slug first (primary route key)
+            $thread = \App\Models\Thread::where('slug', $value)->first();
+
+            // If not found by slug and value looks like an ID, try by ID
+            if (!$thread && is_numeric($value)) {
+                $thread = \App\Models\Thread::find($value);
+            }
+
+            // If still not found, throw 404
+            if (!$thread) {
+                abort(404, 'Thread not found');
+            }
+
+            return $thread;
         });
     }
 }

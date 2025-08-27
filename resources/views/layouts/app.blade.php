@@ -244,6 +244,7 @@
     <script src="{{ asset_versioned('js/translation-service.js') }}"></script>
     <script src="{{ asset_versioned('js/components.js') }}"></script>
     <script src="{{ asset_versioned('js/threads.js') }}"></script>
+    <script src="{{ asset_versioned('js/thread-actions.js') }}"></script>
 
     <!-- WebSocket Initialization -->
     @auth

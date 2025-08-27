@@ -59,7 +59,8 @@ class ThreadController extends Controller
         ]);
 
         $query = Thread::with('user', 'forum', 'category')
-            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings']);
+            ->withCount(['allComments as comments_count', 'bookmarks', 'ratings'])
+            ->select('threads.*'); // Ensure all thread fields are selected including slug
 
         // Search query (support both 'q' and 'search' parameters)
         $searchQuery = $request->get('q') ?: $request->get('search');
@@ -160,7 +161,24 @@ class ThreadController extends Controller
                 break;
         }
 
-        $threads = $query->paginate(15)->withQueryString();
+        $threads = $query->paginate(12)->withQueryString();
+
+        // Highlight search keywords in results
+        if ($searchQuery) {
+            $threads->getCollection()->transform(function ($thread) use ($searchQuery) {
+                // Store original title for alt attributes
+                $thread->original_title = $thread->title;
+                $thread->title = $this->highlightKeywords($thread->title, $searchQuery);
+                if ($thread->content) {
+                    // Highlight keywords first, then safely limit the content
+                    $highlightedContent = $this->highlightKeywords($thread->content, $searchQuery);
+                    $thread->content = $this->limitHtml($highlightedContent, 220);
+                    $thread->has_highlighted_content = true;
+                }
+                return $thread;
+            });
+        }
+
         $categories = Category::all();
         $forums = Forum::all();
 
@@ -940,5 +958,168 @@ class ThreadController extends Controller
         }
 
         return 'other';
+    }
+
+    /**
+     * Highlight search keywords in text
+     *
+     * @param string $text
+     * @param string $keywords
+     * @return string
+     */
+    private function highlightKeywords($text, $keywords)
+    {
+        if (empty($text) || empty($keywords)) {
+            return $text;
+        }
+
+        // Split keywords by space to handle multiple words
+        $keywordArray = array_filter(explode(' ', $keywords));
+
+        foreach ($keywordArray as $keyword) {
+            $keyword = trim($keyword);
+            if (strlen($keyword) >= 2) { // Only highlight keywords with 2+ characters
+                // Use case-insensitive replacement with word boundaries
+                $pattern = '/\b(' . preg_quote($keyword, '/') . ')\b/iu';
+                $text = preg_replace($pattern, '<span class="highlight">$1</span>', $text);
+            }
+        }
+
+        return $text;
+    }
+
+    /**
+     * Safely limit HTML content without breaking tags or UTF-8 characters
+     *
+     * @param string $html
+     * @param int $limit
+     * @param string $end
+     * @return string
+     */
+    private function limitHtml($html, $limit = 220, $end = '...')
+    {
+        if (empty($html)) {
+            return $html;
+        }
+
+        // If no HTML tags, use UTF-8 safe limit
+        if (!str_contains($html, '<')) {
+            return $this->limitUtf8($html, $limit, $end);
+        }
+
+        // Strip HTML tags to count actual text length (UTF-8 safe)
+        $plainText = strip_tags($html);
+
+        // If plain text is within limit, return original HTML
+        if (mb_strlen($plainText, 'UTF-8') <= $limit) {
+            return $html;
+        }
+
+        // Find safe cut position that doesn't break HTML tags or UTF-8
+        $cutPosition = $limit;
+        $inTag = false;
+        $tagStack = [];
+        $textLength = 0;
+        $i = 0;
+
+        // Use mb_str_split for proper UTF-8 handling
+        $chars = mb_str_split($html, 1, 'UTF-8');
+        $totalChars = count($chars);
+
+        while ($i < $totalChars && $textLength < $limit) {
+            $char = $chars[$i];
+
+            if ($char === '<') {
+                $inTag = true;
+                // Check if it's a closing tag
+                if (isset($chars[$i + 1]) && $chars[$i + 1] === '/') {
+                    // Find the tag name
+                    $tagEnd = $this->findTagEnd($chars, $i);
+                    if ($tagEnd !== false) {
+                        $tagName = $this->extractTagName($chars, $i + 2, $tagEnd);
+                        // Remove from stack
+                        if (($key = array_search($tagName, $tagStack)) !== false) {
+                            unset($tagStack[$key]);
+                        }
+                    }
+                } else {
+                    // Opening tag - find tag name
+                    $tagEnd = $this->findTagEnd($chars, $i);
+                    if ($tagEnd !== false) {
+                        $tagName = $this->extractTagName($chars, $i + 1, $tagEnd);
+                        $tagContent = implode('', array_slice($chars, $i + 1, $tagEnd - $i - 1));
+                        // Add to stack if not self-closing
+                        if (!str_ends_with($tagContent, '/') && !in_array($tagName, ['br', 'hr', 'img', 'input'])) {
+                            $tagStack[] = $tagName;
+                        }
+                    }
+                }
+            } elseif ($char === '>') {
+                $inTag = false;
+            } elseif (!$inTag) {
+                // Only count non-tag characters
+                $textLength++;
+            }
+
+            $i++;
+        }
+
+        // Cut the HTML at safe position (UTF-8 safe)
+        $cutHtml = implode('', array_slice($chars, 0, $i));
+
+        // Close any unclosed tags
+        foreach (array_reverse($tagStack) as $tag) {
+            $cutHtml .= "</{$tag}>";
+        }
+
+        return $cutHtml . $end;
+    }
+
+    /**
+     * UTF-8 safe string limit
+     *
+     * @param string $text
+     * @param int $limit
+     * @param string $end
+     * @return string
+     */
+    private function limitUtf8($text, $limit = 220, $end = '...')
+    {
+        if (mb_strlen($text, 'UTF-8') <= $limit) {
+            return $text;
+        }
+
+        return mb_substr($text, 0, $limit, 'UTF-8') . $end;
+    }
+
+    /**
+     * Find the end position of an HTML tag
+     *
+     * @param array $chars
+     * @param int $start
+     * @return int|false
+     */
+    private function findTagEnd($chars, $start)
+    {
+        for ($i = $start; $i < count($chars); $i++) {
+            if ($chars[$i] === '>') {
+                return $i;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Extract tag name from character array
+     *
+     * @param array $chars
+     * @param int $start
+     * @param int $end
+     * @return string
+     */
+    private function extractTagName($chars, $start, $end)
+    {
+        $tagContent = implode('', array_slice($chars, $start, $end - $start));
+        return explode(' ', trim($tagContent))[0];
     }
 }

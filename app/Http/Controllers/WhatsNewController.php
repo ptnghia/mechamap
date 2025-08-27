@@ -105,7 +105,7 @@ class WhatsNewController extends Controller
                 })
                 ->withCount('allComments as comments_count')
                 ->latest()
-                ->paginate(20); // Use Laravel pagination like CategoryController
+                ->paginate(12); // Use Laravel pagination like CategoryController
 
             // Get SEO data for dynamic title
             $pageSeo = PageSeo::findByRoute('whats-new');
@@ -117,7 +117,7 @@ class WhatsNewController extends Controller
             \Log::error('WhatsNew index error: ' . $e->getMessage());
 
             // Return empty result to avoid 500 error
-            $threads = Thread::whereRaw('1 = 0')->paginate(20); // Empty paginated collection
+            $threads = Thread::whereRaw('1 = 0')->paginate(12); // Empty paginated collection
 
             return view('whats-new.index', compact('threads'));
         }
@@ -184,7 +184,7 @@ class WhatsNewController extends Controller
             ) as trending_score');
 
             $threads = $query->orderBy('trending_score', 'desc')
-                ->paginate(20);
+                ->paginate(6);
         }
 
         // Append query parameters to pagination links
@@ -211,7 +211,7 @@ class WhatsNewController extends Controller
             ->withCount('allComments as comment_count')
             ->where('is_locked', false)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(12);
 
         // Get SEO data for dynamic title
         $pageSeo = PageSeo::findByRoute('whats-new.threads');
@@ -225,6 +225,9 @@ class WhatsNewController extends Controller
     public function media(Request $request)
     {
         try {
+            // Get current page
+            $page = $request->get('page', 1);
+
             // Get recent media with optimized eager loading using polymorphic relationship
             $mediaItems = Media::with([
                 'user:id,name,avatar',
@@ -236,22 +239,27 @@ class WhatsNewController extends Controller
                         ->whereNull('deleted_at');
                 })
                 ->orderBy('created_at', 'desc')
-                ->paginate(20);
+                ->paginate(12);
+
+            // Calculate total pages for pagination input
+            $totalPages = $mediaItems->lastPage();
 
             // Get SEO data for dynamic title
             $pageSeo = PageSeo::findByRoute('whats-new.media');
 
-            return view('whats-new.media', compact('mediaItems', 'pageSeo'));
+            return view('whats-new.media', compact('mediaItems', 'pageSeo', 'page', 'totalPages'));
 
         } catch (\Exception $e) {
             // Log error for debugging
             \Log::error('WhatsNew media error: ' . $e->getMessage());
 
             // Return empty result to avoid 500 error
-            $mediaItems = Media::whereRaw('1 = 0')->paginate(20); // Empty paginated collection
+            $mediaItems = Media::whereRaw('1 = 0')->paginate(12); // Empty paginated collection
             $pageSeo = PageSeo::findByRoute('whats-new.media');
+            $page = 1;
+            $totalPages = 1;
 
-            return view('whats-new.media', compact('mediaItems', 'pageSeo'));
+            return view('whats-new.media', compact('mediaItems', 'pageSeo', 'page', 'totalPages'));
         }
     }
 
@@ -282,11 +290,17 @@ class WhatsNewController extends Controller
      */
     public function showcases(Request $request)
     {
+        // Get current page
+        $page = $request->get('page', 1);
+
         // Get recent showcases
         $showcases = \App\Models\Showcase::with(['user', 'showcaseable', 'media'])
             ->whereHas('showcaseable') // Ensure showcaseable exists
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(12);
+
+        // Calculate total pages for pagination input
+        $totalPages = $showcases->lastPage();
 
         // Process featured images using unified service
         ShowcaseImageService::processFeaturedImages($showcases->getCollection());
@@ -320,7 +334,7 @@ class WhatsNewController extends Controller
         // Get SEO data for dynamic title
         $pageSeo = PageSeo::findByRoute('whats-new.showcases');
 
-        return view('whats-new.showcases', compact('showcases', 'pageSeo'));
+        return view('whats-new.showcases', compact('showcases', 'pageSeo', 'page', 'totalPages'));
     }
 
     /**
