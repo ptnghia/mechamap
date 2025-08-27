@@ -7,7 +7,7 @@
                 <span class="badge bg-secondary ms-2">{{ $portfolioItems->count() }}</span>
             @endif
         </h5>
-        @if(Auth::id() == $user->id)
+        @if(Auth::check() && Auth::id() == $user->id)
             <a href="{{ route('showcase.create') }}" class="btn btn-sm btn-primary">
                 <i class="fas fa-plus"></i> {{ __('profile.add_project') }}
             </a>
@@ -19,22 +19,27 @@
                 <div class="row">
                     @foreach($portfolioItems as $item)
                         <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="portfolio-item card h-100">
+                            @if($item instanceof \App\Models\Showcase)
+                                {{-- Use showcase-item partial for showcases --}}
+                                @include('partials.showcase-item', ['showcase' => $item])
+                            @else
+                                {{-- Custom display for threads with attachments --}}
+                                <div class="portfolio-item card h-100">
                                 {{-- Project Image/Preview --}}
                                 <div class="portfolio-image">
                                     @if($item->featured_image)
-                                        <img src="{{ $item->featured_image }}" alt="{{ $item->title }}" 
+                                        <img src="{{ $item->featured_image }}" alt="{{ $item->title }}"
                                              class="card-img-top" style="height: 200px; object-fit: cover;">
                                     @elseif($item->images && $item->images->count() > 0)
-                                        <img src="{{ $item->images->first()->url }}" alt="{{ $item->title }}" 
+                                        <img src="{{ $item->images->first()->url }}" alt="{{ $item->title }}"
                                              class="card-img-top" style="height: 200px; object-fit: cover;">
                                     @else
-                                        <div class="placeholder-image card-img-top d-flex align-items-center justify-content-center bg-light" 
+                                        <div class="placeholder-image card-img-top d-flex align-items-center justify-content-center bg-light"
                                              style="height: 200px;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
                                         </div>
                                     @endif
-                                    
+
                                     {{-- Project Type Badge --}}
                                     <div class="project-type-badge">
                                         @if($item instanceof \App\Models\Showcase)
@@ -48,7 +53,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+
                                 <div class="card-body">
                                     {{-- Project Title --}}
                                     <h6 class="card-title">
@@ -62,14 +67,14 @@
                                             </a>
                                         @endif
                                     </h6>
-                                    
+
                                     {{-- Project Description --}}
                                     @if($item->description || $item->excerpt)
                                         <p class="card-text text-muted small">
                                             {{ Str::limit($item->description ?? $item->excerpt, 100) }}
                                         </p>
                                     @endif
-                                    
+
                                     {{-- Project Category --}}
                                     @if($item->category)
                                         <div class="project-category mb-2">
@@ -78,7 +83,7 @@
                                             </span>
                                         </div>
                                     @endif
-                                    
+
                                     {{-- Project Tags --}}
                                     @if($item->tags && $item->tags->count() > 0)
                                         <div class="project-tags mb-2">
@@ -90,7 +95,7 @@
                                             @endif
                                         </div>
                                     @endif
-                                    
+
                                     {{-- Project Stats --}}
                                     <div class="project-stats d-flex justify-content-between align-items-center">
                                         <div class="stats-left">
@@ -113,7 +118,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {{-- Project Files/Attachments --}}
                                 @if(($item->attachments && $item->attachments->count() > 0) || ($item->files && $item->files->count() > 0))
                                     <div class="card-footer bg-light">
@@ -125,7 +130,7 @@
                                                 @endphp
                                                 {{ $filesCount }} {{ __('profile.files') }}
                                             </small>
-                                            
+
                                             {{-- File Type Icons --}}
                                             <div class="file-types mt-1">
                                                 @php
@@ -134,7 +139,7 @@
                                                         return strtolower(pathinfo($filename, PATHINFO_EXTENSION));
                                                     })->unique()->take(4);
                                                 @endphp
-                                                
+
                                                 @foreach($fileTypes as $type)
                                                     @switch($type)
                                                         @case('pdf')
@@ -167,11 +172,12 @@
                                     </div>
                                 @endif
                             </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
             </div>
-            
+
             {{-- View All Projects Link --}}
             @if($portfolioItems->count() >= 6)
                 <div class="text-center mt-4">
@@ -247,7 +253,7 @@
     .portfolio-grid .col-md-6 {
         margin-bottom: 1rem;
     }
-    
+
     .portfolio-image {
         height: 150px !important;
     }

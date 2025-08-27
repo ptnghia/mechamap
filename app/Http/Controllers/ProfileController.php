@@ -223,6 +223,9 @@ class ProfileController extends Controller
         // Phân biệt user type để hiển thị stats phù hợp
         $isBusinessUser = in_array($user->role, ['manufacturer', 'supplier', 'brand']);
 
+        // Determine if this is a seller user (has products)
+        $isSellerUser = in_array($user->role, ['manufacturer', 'supplier', 'brand']);
+
         if ($isBusinessUser) {
             // Stats cho Business User
             $stats = [
@@ -262,6 +265,9 @@ class ProfileController extends Controller
         // Lấy portfolio items (từ showcases + threads có attachments)
         $portfolioItems = $this->getPortfolioItems($user);
 
+        // Get user products (fake data for demo)
+        $userProducts = $this->getUserProducts($user);
+
         // Kiểm tra tiến độ thiết lập tài khoản
         $setupProgress = $this->calculateSetupProgress($user);
 
@@ -274,8 +280,10 @@ class ProfileController extends Controller
             'userThreads',
             'activities',
             'portfolioItems',
+            'userProducts',
             'setupProgress',
-            'isBusinessUser'
+            'isBusinessUser',
+            'isSellerUser'
         ));
     }
 
@@ -545,16 +553,14 @@ class ProfileController extends Controller
     {
         $portfolioItems = collect();
 
-        // Get showcases if user has them (tạm thời bỏ qua, sẽ implement sau)
-        // if (method_exists($user, 'showcases')) {
-        //     $showcases = $user->showcases()
-        //         ->with(['images', 'category', 'tags'])
-        //         ->published()
-        //         ->latest()
-        //         ->take(6)
-        //         ->get();
-        //     $portfolioItems = $portfolioItems->merge($showcases);
-        // }
+        // Get showcases from user
+        $showcases = $user->showcaseItems()
+            ->with(['media', 'showcaseCategory'])
+            ->whereIn('status', ['published', 'approved'])
+            ->latest()
+            ->take(6)
+            ->get();
+        $portfolioItems = $portfolioItems->merge($showcases);
 
         // Get threads with attachments
         $threadsWithAttachments = $user->threads()
@@ -567,6 +573,82 @@ class ProfileController extends Controller
 
         // Sort by created_at and limit
         return $portfolioItems->sortByDesc('created_at')->take(12);
+    }
+
+    /**
+     * Get user products (fake data for demo)
+     */
+    private function getUserProducts(User $user)
+    {
+        // Only return products for seller users
+        if (!in_array($user->role, ['manufacturer', 'supplier', 'brand'])) {
+            return collect();
+        }
+
+        // Create fake products for demo
+        $fakeProducts = collect();
+
+        if ($user->username === 'manufacturer01') {
+            $fakeProducts = collect([
+                (object) [
+                    'id' => 1,
+                    'name' => 'Bộ truyền động servo chính xác',
+                    'description' => 'Bộ truyền động servo độ chính xác cao cho máy CNC, công suất 2.5kW, tốc độ 3000 rpm',
+                    'price' => 15500000,
+                    'original_price' => 18000000,
+                    'status' => 'active',
+                    'featured_image' => 'https://via.placeholder.com/300x200/007bff/ffffff?text=Servo+Drive',
+                    'views_count' => 245,
+                    'orders_count' => 12,
+                    'created_at' => now()->subDays(15),
+                    'category' => (object) ['name' => 'Động cơ & Truyền động']
+                ],
+                (object) [
+                    'id' => 2,
+                    'name' => 'Đầu dao phay carbide chuyên dụng',
+                    'description' => 'Đầu dao phay carbide cho gia công thép cứng, độ bền cao, phủ coating TiAlN',
+                    'price' => 850000,
+                    'original_price' => null,
+                    'status' => 'active',
+                    'featured_image' => 'https://via.placeholder.com/300x200/28a745/ffffff?text=Carbide+Tool',
+                    'views_count' => 189,
+                    'orders_count' => 28,
+                    'created_at' => now()->subDays(8),
+                    'category' => (object) ['name' => 'Dụng cụ cắt']
+                ],
+                (object) [
+                    'id' => 3,
+                    'name' => 'Hệ thống làm mát CNC',
+                    'description' => 'Hệ thống làm mát tuần hoàn cho máy CNC, lưu lượng 50L/phút, có bộ lọc tự động',
+                    'price' => 12800000,
+                    'original_price' => null,
+                    'status' => 'pending',
+                    'featured_image' => 'https://via.placeholder.com/300x200/ffc107/000000?text=Cooling+System',
+                    'views_count' => 156,
+                    'orders_count' => 5,
+                    'created_at' => now()->subDays(3),
+                    'category' => (object) ['name' => 'Phụ kiện máy']
+                ]
+            ]);
+        } elseif ($user->username === 'supplier01') {
+            $fakeProducts = collect([
+                (object) [
+                    'id' => 4,
+                    'name' => 'Thép không gỉ 316L tấm',
+                    'description' => 'Thép không gỉ 316L độ dày 3mm, kích thước 1000x2000mm, chất lượng cao',
+                    'price' => 2850000,
+                    'original_price' => null,
+                    'status' => 'active',
+                    'featured_image' => 'https://via.placeholder.com/300x200/6c757d/ffffff?text=Steel+Sheet',
+                    'views_count' => 312,
+                    'orders_count' => 45,
+                    'created_at' => now()->subDays(20),
+                    'category' => (object) ['name' => 'Vật liệu']
+                ]
+            ]);
+        }
+
+        return $fakeProducts;
     }
 
     /**

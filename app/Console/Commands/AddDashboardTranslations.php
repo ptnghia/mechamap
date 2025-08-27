@@ -282,6 +282,68 @@ class AddDashboardTranslations extends Command
             'vi' => 'chưa chia sẻ dự án nào',
             'en' => 'hasn\'t shared any projects yet'
         ],
+
+        // Products tab translations
+        'profile.products' => [
+            'vi' => 'Sản phẩm',
+            'en' => 'Products'
+        ],
+        'profile.add_product' => [
+            'vi' => 'Thêm sản phẩm',
+            'en' => 'Add Product'
+        ],
+        'profile.no_products' => [
+            'vi' => 'Chưa có sản phẩm nào',
+            'en' => 'No products yet'
+        ],
+        'profile.no_products_own' => [
+            'vi' => 'Bạn chưa có sản phẩm nào. Hãy tạo sản phẩm đầu tiên!',
+            'en' => 'You don\'t have any products yet. Create your first product!'
+        ],
+        'profile.no_products_user' => [
+            'vi' => 'chưa có sản phẩm nào',
+            'en' => 'doesn\'t have any products yet'
+        ],
+        'profile.create_first_product' => [
+            'vi' => 'Tạo sản phẩm đầu tiên',
+            'en' => 'Create First Product'
+        ],
+        'profile.active' => [
+            'vi' => 'Đang bán',
+            'en' => 'Active'
+        ],
+        'profile.pending' => [
+            'vi' => 'Chờ duyệt',
+            'en' => 'Pending'
+        ],
+        'profile.inactive' => [
+            'vi' => 'Tạm dừng',
+            'en' => 'Inactive'
+        ],
+        'profile.edit' => [
+            'vi' => 'Chỉnh sửa',
+            'en' => 'Edit'
+        ],
+        'profile.deactivate' => [
+            'vi' => 'Tạm dừng',
+            'en' => 'Deactivate'
+        ],
+        'profile.activate' => [
+            'vi' => 'Kích hoạt',
+            'en' => 'Activate'
+        ],
+        'profile.view_all_products' => [
+            'vi' => 'Xem tất cả sản phẩm',
+            'en' => 'View All Products'
+        ],
+        'profile.confirm_status_change' => [
+            'vi' => 'Bạn có chắc chắn muốn thay đổi trạng thái sản phẩm này?',
+            'en' => 'Are you sure you want to change this product status?'
+        ],
+        'profile.status_change_error' => [
+            'vi' => 'Có lỗi xảy ra khi thay đổi trạng thái sản phẩm',
+            'en' => 'Error occurred while changing product status'
+        ],
     ];
 
     /**

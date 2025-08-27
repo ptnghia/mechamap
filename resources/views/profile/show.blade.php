@@ -100,6 +100,14 @@
                             <i class="fas fa-briefcase"></i> {{ __('profile.portfolio') }}
                         </a>
                     </li>
+
+                    @if($isSellerUser)
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products" data-tab="products">
+                            <i class="fas fa-box"></i> {{ __('profile.products') }}
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </div>
 
@@ -142,6 +150,13 @@
                 <div id="portfolio" class="tab-pane d-none">
                     @include('profile.partials.portfolio-section', ['user' => $user, 'portfolioItems' => $portfolioItems])
                 </div>
+
+                @if($isSellerUser)
+                <!-- Products Tab -->
+                <div id="products" class="tab-pane d-none">
+                    @include('profile.partials.products-section', ['user' => $user])
+                </div>
+                @endif
             </div>
         </div>
     </div>

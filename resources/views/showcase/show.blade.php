@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', $showcase->title)
 
@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
 @endpush
 
-@section('full-width-content')
+@section('content')
 <div class="container my-4" data-showcase-id="{{ $showcase->id }}">
     <div class="row">
         <div class="col-lg-8 col-md-12">
