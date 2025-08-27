@@ -4,7 +4,8 @@
     padding: 15px;
     border-radius: 20px;
 }
-.list_user_item_name a{
-}
-.list_user_item_name .badge {
-}
+.list_user_item_name a{color: var(--bs-body-color);}
+.list_user_item_name .badge {display: inline-block;font-size: 12px;font-weight: 400;padding: 5px 10px;border-radius: 30px;}
+.list_user_item>div{gap: 10px;}
+.list_user_item_left .btn{padding: 3px 5px;height: auto;}
+.list_user_item_name{font-size: 16px;display: flex;align-items: center;margin-bottom: 9px !IMPORTANT;}

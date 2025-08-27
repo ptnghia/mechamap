@@ -410,6 +410,72 @@ class ProfileController extends Controller
     }
 
     /**
+     * AJAX theo dõi một người dùng.
+     */
+    public function ajaxFollow(User $user)
+    {
+        $currentUser = Auth::user();
+
+        // Không thể tự theo dõi chính mình
+        if ($currentUser->id === $user->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn không thể theo dõi chính mình.'
+            ], 400);
+        }
+
+        // Kiểm tra xem đã theo dõi chưa
+        if ($currentUser->isFollowing($user)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn đã theo dõi người dùng này rồi.'
+            ], 400);
+        }
+
+        // Thêm vào danh sách theo dõi
+        $currentUser->following()->attach($user->id);
+
+        // Cập nhật số lượng followers
+        $followersCount = $user->followers()->count();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã theo dõi người dùng thành công.',
+            'followers_count' => $followersCount,
+            'is_following' => true
+        ]);
+    }
+
+    /**
+     * AJAX hủy theo dõi một người dùng.
+     */
+    public function ajaxUnfollow(User $user)
+    {
+        $currentUser = Auth::user();
+
+        // Kiểm tra xem đã theo dõi chưa
+        if (!$currentUser->isFollowing($user)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn chưa theo dõi người dùng này.'
+            ], 400);
+        }
+
+        // Xóa khỏi danh sách theo dõi
+        $currentUser->following()->detach($user->id);
+
+        // Cập nhật số lượng followers
+        $followersCount = $user->followers()->count();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã hủy theo dõi người dùng thành công.',
+            'followers_count' => $followersCount,
+            'is_following' => false
+        ]);
+    }
+
+    /**
      * Đăng bài viết lên trang cá nhân của người dùng.
      */
     public function storeProfilePost(Request $request, User $user)

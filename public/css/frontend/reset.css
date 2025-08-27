@@ -187,13 +187,14 @@ a:focus {
   --bs-btn-active-color: #fff;
   --bs-btn-active-bg: linear-gradient(135deg, #5d5940 0%, #7a7757 50%, #4a4533 100%);
   --bs-btn-active-border-color: transparent;
-
   background: var(--bs-btn-bg);
   border: none;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(126, 119, 87, 0.2);
+  display: flex;
+  gap: 5px;
 }
 
 .btn-primary::before {

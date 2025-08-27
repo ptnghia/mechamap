@@ -417,6 +417,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user:username}/follow', [ProfileController::class, 'follow'])->name('profile.follow');
     Route::delete('/users/{user:username}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
 
+    // AJAX Follow/unfollow routes
+    Route::post('/ajax/users/{user:username}/follow', [ProfileController::class, 'ajaxFollow'])->name('ajax.profile.follow');
+    Route::delete('/ajax/users/{user:username}/unfollow', [ProfileController::class, 'ajaxUnfollow'])->name('ajax.profile.unfollow');
+
     // Profile post routes
     Route::post('/users/{user:username}/posts', [ProfileController::class, 'storeProfilePost'])->name('profile.posts.store');
 

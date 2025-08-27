@@ -10,7 +10,7 @@
 <div class="body_page">
 
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-9 col-md-8">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="div_title_page">
                     <h1 class="h2 mb-1 title_page">{{ seo_title_short(__('ui.users.page_title')) }}</h1>
@@ -174,29 +174,21 @@
                                             <div>{{ __('ui.users.threads') }}</div>
                                         </div>
                                         <div class="col-4">
-                                            <div class="fw-bold">{{ $user->followers_count ?? 0 }}</div>
+                                            <div class="fw-bold followers-count" data-username="{{ $user->username }}">{{ $user->followers_count ?? 0 }}</div>
                                             <div>{{ __('ui.users.followers') }}</div>
                                         </div>
                                     </div>
 
                                     @auth
                                         @if(Auth::id() !== $user->id)
-                                            @if(Auth::user()->isFollowing($user))
-                                                <form action="{{ route('profile.unfollow', $user->username) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                        <i class="fas fa-user-minus"></i> {{ __('ui.users.unfollow') }}
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('profile.follow', $user->username) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-user-plus"></i> {{ __('ui.users.follow') }}
-                                                    </button>
-                                                </form>
-                                            @endif
+                                            <button type="button"
+                                                class="btn btn-sm follow-btn {{ Auth::user()->isFollowing($user) ? 'btn-outline-secondary' : 'btn-outline-primary' }}"
+                                                data-username="{{ $user->username }}"
+                                                data-following="{{ Auth::user()->isFollowing($user) ? 'true' : 'false' }}"
+                                                data-followers-count="{{ $user->followers_count ?? 0 }}">
+                                                <i class="fas {{ Auth::user()->isFollowing($user) ? 'fa-user-minus' : 'fa-user-plus' }}"></i>
+                                                <span class="follow-text">{{ Auth::user()->isFollowing($user) ? __('ui.users.unfollow') : __('ui.users.follow') }}</span>
+                                            </button>
                                         @endif
                                     @endauth
                                 </div>
@@ -223,33 +215,13 @@
             <div class="list-group list-group-flush">
                 <div class="row g-3">
                     @forelse($users as $user)
-                    <div class="col-md-6">
+                    <div class="col-lg-12">
                         <div class="list_user_item">
                             <div class="d-flex gx-4">
-                                <div>
-                                    <div class="flex-shrink-0">
+                                <div class="text-center list_user_item_left">
+                                    <div class="flex-shrink-0 text-center mb-3">
                                         <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle" width="64" height="64" >
                                     </div>
-                                    @auth
-                                        @if(Auth::id() !== $user->id)
-                                            @if(Auth::user()->isFollowing($user))
-                                                <form action="{{ route('profile.unfollow', $user->username) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                        <i class="fas fa-user-minus"></i> {{ __('ui.users.unfollow') }}
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('profile.follow', $user->username) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-user-plus"></i> {{ __('ui.users.follow') }}
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        @endif
-                                    @endauth
                                 </div>
 
                                 <div class="flex-grow-1">
@@ -286,7 +258,7 @@
                                                 @endif
                                             </h5>
                                             <div class="text-muted small list_user_item_meta">
-                                                <span>{{ $user->username }}</span>
+                                                <span>{{ '@'.$user->username }}</span>
                                                 <span class="mx-1">•</span>
                                                 <span>{{ __('ui.users.joined') }} {{ $user->created_at->format('d/m/Y') }}</span>
                                                 @if($user->location)
@@ -312,10 +284,22 @@
                                         </div>
                                         <div class="me-3">
                                             <i class="fas fa-users"></i>
-                                            <span>{{ $user->followers_count ?? 0 }} {{ __('ui.users.followers') }}</span>
+                                            <span><span class="followers-count" data-username="{{ $user->username }}">{{ $user->followers_count ?? 0 }}</span> {{ __('ui.users.followers') }}</span>
                                         </div>
                                     </div>
                                 </div>
+                                @auth
+                                @if(Auth::id() !== $user->id)
+                                    <button type="button"
+                                        class="btn btn-sm follow-btn {{ Auth::user()->isFollowing($user) ? 'btn-outline-secondary' : 'btn-outline-primary' }}"
+                                        data-username="{{ $user->username }}"
+                                        data-following="{{ Auth::user()->isFollowing($user) ? 'true' : 'false' }}"
+                                        data-followers-count="{{ $user->followers_count ?? 0 }}">
+                                        <i class="fas {{ Auth::user()->isFollowing($user) ? 'fa-user-minus' : 'fa-user-plus' }}"></i>
+                                        <span class="follow-text">{{ Auth::user()->isFollowing($user) ? __('ui.users.unfollow') : __('ui.users.follow') }}</span>
+                                    </button>
+                                @endif
+                            @endauth
                             </div>
                         </div>
                     </div>
@@ -338,7 +322,7 @@
             @endif
         </div>
 
-        <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="col-lg-3 col-md-4">
             <!-- Community Stats -->
             <div class="card mb-4">
                 <div class="card-header">
@@ -462,3 +446,99 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // AJAX Follow/Unfollow functionality
+    const followButtons = document.querySelectorAll('.follow-btn');
+
+    followButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const username = this.dataset.username;
+            const isFollowing = this.dataset.following === 'true';
+            const followersCount = parseInt(this.dataset.followersCount) || 0;
+
+            // Disable button during request
+            this.disabled = true;
+            const originalText = this.querySelector('.follow-text').textContent;
+            this.querySelector('.follow-text').textContent = 'Đang xử lý...';
+
+            // Determine URL and method
+            const url = isFollowing
+                ? `/ajax/users/${username}/unfollow`
+                : `/ajax/users/${username}/follow`;
+            const method = isFollowing ? 'DELETE' : 'POST';
+
+            // Make AJAX request
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button state
+                    const newIsFollowing = data.is_following;
+                    this.dataset.following = newIsFollowing ? 'true' : 'false';
+                    this.dataset.followersCount = data.followers_count;
+
+                    // Update button appearance
+                    if (newIsFollowing) {
+                        this.className = 'btn btn-sm follow-btn btn-outline-secondary';
+                        this.querySelector('i').className = 'fas fa-user-minus';
+                        this.querySelector('.follow-text').textContent = '{{ __("ui.users.unfollow") }}';
+                    } else {
+                        this.className = 'btn btn-sm follow-btn btn-outline-primary';
+                        this.querySelector('i').className = 'fas fa-user-plus';
+                        this.querySelector('.follow-text').textContent = '{{ __("ui.users.follow") }}';
+                    }
+
+                    // Update followers count in all places for this user
+                    const followersElements = document.querySelectorAll(`.followers-count[data-username="${username}"]`);
+                    followersElements.forEach(element => {
+                        element.textContent = data.followers_count;
+                    });
+
+                    // Show success message (optional)
+                    if (window.showNotification) {
+                        window.showNotification(data.message, 'success');
+                    }
+                } else {
+                    // Show error message
+                    if (window.showNotification) {
+                        window.showNotification(data.message || 'Có lỗi xảy ra', 'error');
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra');
+                    }
+
+                    // Restore original text
+                    this.querySelector('.follow-text').textContent = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+                // Show error message
+                if (window.showNotification) {
+                    window.showNotification('Có lỗi xảy ra khi xử lý yêu cầu', 'error');
+                } else {
+                    alert('Có lỗi xảy ra khi xử lý yêu cầu');
+                }
+
+                // Restore original text
+                this.querySelector('.follow-text').textContent = originalText;
+            })
+            .finally(() => {
+                // Re-enable button
+                this.disabled = false;
+            });
+        });
+    });
+});
+</script>
+@endpush
