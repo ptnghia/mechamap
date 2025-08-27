@@ -1,73 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', 'Profile ' . $user->name . ' | MechaMap')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/frontend/views/profile.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/users.css') }}">
 @endpush
 
 @section('content')
-<div class="container py-4">
+<div class="body_page">
     <!-- Profile Header -->
     <div class="card mb-4">
         <div class="card-body">
-            <div class="row">
-                <!-- Avatar and User Info -->
-                <div class="col-md-3 text-center">
-                    <div class="avatar-container mb-3">
-                        <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" width="150" height="150">
-                        <div class="avatar-letter">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
-                    </div>
-                    <h4 class="mb-1">{{ $user->name }}</h4>
-                    <p class="text-muted mb-2">{{ $user->username }}</p>
-                    <p class="card-text">
-                        <span class="badge bg-success">active</span>
-                        <span class="badge bg-{{ $user->role === 'admin' ? 'danger' : ($user->role === 'moderator' ? 'warning' : 'info') }}">
-                            {{ ucfirst($user->role) }}
-                        </span>
-                    </p>
-                    <p class="small mb-1">
-                        {{ __('profile.last_seen') }}
-                        @if($user->last_seen_at)
-                            <span title="{{ $user->last_seen_at->format('M d, Y H:i') }}">{{ $user->last_seen_at->diffForHumans() }}</span>
-                        @else
-                            {{ __('profile.never') }}
-                        @endif
-                    </p>
-
-                    @if(Auth::check() && Auth::id() != $user->id)
-                        <div class="mt-3">
-                            <button class="btn btn-sm btn-primary me-2">Follow</button>
-                            <button class="btn btn-sm btn-outline-secondary me-2">Contact</button>
-                            <button class="btn btn-sm btn-outline-danger">Report</button>
-                        </div>
-                    @endif
-                </div>
-
-                <!-- User Stats -->
-                <div class="col-md-9">
-                    <div class="row text-center">
-                        <div class="col-md-4">
-                            <div class="stat-item">
-                                <div class="stat-value">{{ $stats['replies'] ?? 15 }}</div>
-                                <div class="stat-label">{{ __('profile.replies') }}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-item">
-                                <div class="stat-value">{{ $stats['discussions_created'] ?? 5 }}</div>
-                                <div class="stat-label">{{ __('profile.threads') }}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-item">
-                                <div class="stat-value">{{ $stats['reactions'] ?? 22 }}</div>
-                                <div class="stat-label">{{ __('profile.reactions') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @if(isset($isBusinessUser) && $isBusinessUser)
+                @include('profile.partials.header-business', ['user' => $user, 'stats' => $stats])
+            @else
+                @include('profile.partials.header-personal', ['user' => $user, 'stats' => $stats])
+            @endif
         </div>
     </div>
 
@@ -124,19 +72,33 @@
             <div class="profile-tabs mb-4">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#overview" data-tab="overview">Overview</a>
+                        <a class="nav-link active" href="#overview" data-tab="overview">
+                            <i class="fas fa-home"></i> {{ __('profile.overview') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about" data-tab="about">About</a>
+                        <a class="nav-link" href="#professional" data-tab="professional">
+                            @if(isset($isBusinessUser) && $isBusinessUser)
+                                <i class="fas fa-building"></i> {{ __('profile.business_info') }}
+                            @else
+                                <i class="fas fa-user-tie"></i> {{ __('profile.professional_info') }}
+                            @endif
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#profile-posts" data-tab="profile-posts">Profile posts</a>
+                        <a class="nav-link" href="#my-threads" data-tab="my-threads">
+                            <i class="fas fa-comments"></i> {{ __('profile.my_threads') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#activity" data-tab="activity">Activity</a>
+                        <a class="nav-link" href="#activity" data-tab="activity">
+                            <i class="fas fa-chart-line"></i> {{ __('profile.activity') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#gallery" data-tab="gallery">Gallery</a>
+                        <a class="nav-link" href="#portfolio" data-tab="portfolio">
+                            <i class="fas fa-briefcase"></i> {{ __('profile.portfolio') }}
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -145,21 +107,30 @@
             <div class="tab-content">
                 <!-- Overview Tab -->
                 <div id="overview" class="tab-pane active">
-                    <!-- About Section (Overview) -->
-                    @include('profile.partials.about-section', ['user' => $user])
+                    <!-- Professional Info Section (Overview) -->
+                    @include('profile.partials.professional-info-section', [
+                        'user' => $user,
+                        'followers' => $followers,
+                        'following' => $following
+                    ])
 
                     <!-- Activity Section (Overview) -->
                     @include('profile.partials.activity-section', ['user' => $user, 'activities' => $activities])
                 </div>
 
-                <!-- About Tab -->
-                <div id="about" class="tab-pane d-none">
-                    @include('profile.partials.about-section', ['user' => $user, 'showAll' => true])
+                <!-- Professional Info Tab -->
+                <div id="professional" class="tab-pane d-none">
+                    @include('profile.partials.professional-info-section', [
+                        'user' => $user,
+                        'followers' => $followers,
+                        'following' => $following,
+                        'showAll' => true
+                    ])
                 </div>
 
-                <!-- Profile Posts Tab -->
-                <div id="profile-posts" class="tab-pane d-none">
-                    @include('profile.partials.profile-posts-section', ['user' => $user, 'profilePosts' => $profilePosts])
+                <!-- My Threads Tab -->
+                <div id="my-threads" class="tab-pane d-none">
+                    @include('profile.partials.my-threads-section', ['user' => $user, 'userThreads' => $userThreads])
                 </div>
 
                 <!-- Activity Tab -->
@@ -167,16 +138,9 @@
                     @include('profile.partials.activity-section', ['user' => $user, 'activities' => $activities, 'showAll' => true])
                 </div>
 
-                <!-- Gallery Tab -->
-                <div id="gallery" class="tab-pane d-none">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">{{ __('profile.gallery') }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted text-center py-5">{{ __('profile.no_media_to_display') }}</p>
-                        </div>
-                    </div>
+                <!-- Portfolio Tab -->
+                <div id="portfolio" class="tab-pane d-none">
+                    @include('profile.partials.portfolio-section', ['user' => $user, 'portfolioItems' => $portfolioItems])
                 </div>
             </div>
         </div>

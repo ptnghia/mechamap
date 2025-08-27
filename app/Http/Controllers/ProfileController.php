@@ -220,23 +220,35 @@ class ProfileController extends Controller
      */
     public function show(User $user): View
     {
-        // Lấy thông tin thống kê (use comments as replies in MechaMap)
-        $stats = [
-            'replies' => $user->comments()->count(),
-            'discussions_created' => $user->threads()->count(),
-            'reaction_score' => $user->reaction_score,
-            'points' => $user->points,
-        ];
+        // Phân biệt user type để hiển thị stats phù hợp
+        $isBusinessUser = in_array($user->role, ['manufacturer', 'supplier', 'brand']);
 
-        // Lấy danh sách người theo dõi
+        if ($isBusinessUser) {
+            // Stats cho Business User
+            $stats = [
+                'products_count' => 0, // Tạm thời set 0, sẽ implement sau
+                'total_reviews' => $user->total_reviews ?? 0,
+                'business_rating' => $user->business_rating ?? 0,
+                'business_score' => $this->calculateBusinessScore($user),
+            ];
+        } else {
+            // Stats cho Personal User
+            $stats = [
+                'replies' => $user->comments()->count(),
+                'discussions_created' => $user->threads()->count(),
+                'reaction_score' => $user->reaction_score ?? 0,
+                'profile_views' => $user->profile_views ?? 0,
+            ];
+        }
+
+        // Lấy danh sách người theo dõi và đang theo dõi
         $followers = $user->followers()->count();
-
-        // Lấy danh sách người đang theo dõi
         $following = $user->following()->count();
 
-        // Lấy các bài viết trên trang cá nhân
-        $profilePosts = $user->receivedProfilePosts()
-            ->with('user')
+        // Lấy threads của user (thay thế profile posts)
+        $userThreads = $user->threads()
+            ->withCount(['comments', 'reactions'])
+            ->with(['category', 'attachments', 'tags'])
             ->latest()
             ->paginate(10);
 
@@ -247,6 +259,9 @@ class ProfileController extends Controller
             ->take(10)
             ->get();
 
+        // Lấy portfolio items (từ showcases + threads có attachments)
+        $portfolioItems = $this->getPortfolioItems($user);
+
         // Kiểm tra tiến độ thiết lập tài khoản
         $setupProgress = $this->calculateSetupProgress($user);
 
@@ -256,9 +271,11 @@ class ProfileController extends Controller
             'stats',
             'followers',
             'following',
-            'profilePosts',
+            'userThreads',
             'activities',
-            'setupProgress'
+            'portfolioItems',
+            'setupProgress',
+            'isBusinessUser'
         ));
     }
 
@@ -493,6 +510,63 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'Đã đăng bài viết thành công.');
+    }
+
+    /**
+     * Calculate business score for business users
+     */
+    private function calculateBusinessScore(User $user): int
+    {
+        $score = 0;
+
+        // Base score from verification
+        if ($user->is_verified_business) {
+            $score += 50;
+        }
+
+        // Score from rating
+        if ($user->business_rating) {
+            $score += ($user->business_rating * 10);
+        }
+
+        // Score from reviews count
+        $score += min(($user->total_reviews ?? 0) * 2, 50);
+
+        // Score from products count (tạm thời bỏ qua, sẽ implement sau)
+        // $score += min($user->products()->count() * 5, 100);
+
+        return min($score, 500); // Cap at 500
+    }
+
+    /**
+     * Get portfolio items from showcases and threads with attachments
+     */
+    private function getPortfolioItems(User $user)
+    {
+        $portfolioItems = collect();
+
+        // Get showcases if user has them (tạm thời bỏ qua, sẽ implement sau)
+        // if (method_exists($user, 'showcases')) {
+        //     $showcases = $user->showcases()
+        //         ->with(['images', 'category', 'tags'])
+        //         ->published()
+        //         ->latest()
+        //         ->take(6)
+        //         ->get();
+        //     $portfolioItems = $portfolioItems->merge($showcases);
+        // }
+
+        // Get threads with attachments
+        $threadsWithAttachments = $user->threads()
+            ->whereHas('attachments')
+            ->with(['attachments', 'category', 'tags'])
+            ->latest()
+            ->take(6)
+            ->get();
+        $portfolioItems = $portfolioItems->merge($threadsWithAttachments);
+
+        // Sort by created_at and limit
+        return $portfolioItems->sortByDesc('created_at')->take(12);
     }
 
     /**
