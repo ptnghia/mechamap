@@ -33,7 +33,7 @@
             </div>
 
             <!-- Filter tabs -->
-            <ul class="nav nav-pills nav-fill mb-4 tab_mechamap">
+            <ul class="nav nav-pills nav-fill mb-3 tab_mechamap">
                 <li class="nav-item">
                     <a class="nav-link {{ request('filter', 'all') === 'all' ? 'active' : '' }}"
                        href="{{ request()->fullUrlWithQuery(['filter' => 'all']) }}">
@@ -63,7 +63,7 @@
             </ul>
 
             <!-- Advanced Filters -->
-            <div class="card mb-4">
+            <div class="card mb-3">
                 <div class="card-body">
                     <form action="{{ route('users.index') }}" method="GET" class="row g-3">
                         <!-- Preserve current filter and view -->
@@ -117,8 +117,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-sm">
+                        <div class="col-md-3 d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary btn-sm w-100 me-3">
                                 <i class="fas fa-search"></i> {{ __('ui.users.search') }}
                             </button>
                             <a href="{{ route('users.index') }}" class="btn btn-sm btn-outline-secondary">
@@ -219,112 +219,115 @@
                     @endforelse
                 </div>
             @else
-                <!-- List View -->
-                <div class="card">
-                    <div class="list-group list-group-flush">
-                        @forelse($users as $user)
-                            <div class="list-group-item p-3">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
+            <!-- List View -->
+            <div class="list-group list-group-flush">
+                <div class="row g-3">
+                    @forelse($users as $user)
+                    <div class="col-md-6">
+                        <div class="list_user_item">
+                            <div class="d-flex gx-4">
+                                <div>
+                                    <div class="flex-shrink-0">
                                         <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle" width="64" height="64" >
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h5 class="mb-1">
-                                                    <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">
-                                                        {{ $user->name }}
-                                                    </a>
+                                    @auth
+                                        @if(Auth::id() !== $user->id)
+                                            @if(Auth::user()->isFollowing($user))
+                                                <form action="{{ route('profile.unfollow', $user->username) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-user-minus"></i> {{ __('ui.users.unfollow') }}
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('profile.follow', $user->username) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-user-plus"></i> {{ __('ui.users.follow') }}
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endif
+                                    @endauth
+                                </div>
 
-                                                    <!-- Enhanced Role Badge -->
-                                                    @php
-                                                        $roleInfo = match($user->role) {
-                                                            'super_admin' => ['Super Admin', 'bg-danger'],
-                                                            'system_admin' => ['System Admin', 'bg-danger'],
-                                                            'content_admin' => ['Content Admin', 'bg-danger'],
-                                                            'content_moderator' => ['Content Moderator', 'bg-success'],
-                                                            'marketplace_moderator' => ['Marketplace Moderator', 'bg-success'],
-                                                            'community_moderator' => ['Community Moderator', 'bg-success'],
-                                                            'verified_partner' => ['Verified Partner', 'bg-warning'],
-                                                            'manufacturer' => ['Manufacturer', 'bg-warning'],
-                                                            'supplier' => ['Supplier', 'bg-warning'],
-                                                            'brand' => ['Brand', 'bg-warning'],
-                                                            'senior_member' => ['Senior Member', 'bg-info'],
-                                                            'student' => ['Student', 'bg-secondary'],
-                                                            'guest' => ['Guest', 'bg-light text-dark'],
-                                                            default => ['Member', 'bg-primary']
-                                                        };
-                                                    @endphp
-                                                    <span class="badge {{ $roleInfo[1] }} ms-1">{{ $roleInfo[0] }}</span>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h5 class="mb-1 list_user_item_name">
+                                                <a href="{{ route('profile.show', $user->username) }}" class="text-decoration-none">
+                                                    {{ $user->name }}
+                                                </a>
 
-                                                    @if($user->isOnline())
-                                                        <span class="badge bg-success ms-1">{{ __('ui.users.online') }}</span>
-                                                    @endif
-                                                </h5>
-                                                <div class="text-muted small">
-                                                    <span>{{ $user->username }}</span>
+                                                <!-- Enhanced Role Badge -->
+                                                @php
+                                                    $roleInfo = match($user->role) {
+                                                        'super_admin' => ['Super Admin', 'bg-danger'],
+                                                        'system_admin' => ['System Admin', 'bg-danger'],
+                                                        'content_admin' => ['Content Admin', 'bg-danger'],
+                                                        'content_moderator' => ['Content Moderator', 'bg-success'],
+                                                        'marketplace_moderator' => ['Marketplace Moderator', 'bg-success'],
+                                                        'community_moderator' => ['Community Moderator', 'bg-success'],
+                                                        'verified_partner' => ['Verified Partner', 'bg-warning'],
+                                                        'manufacturer' => ['Manufacturer', 'bg-warning'],
+                                                        'supplier' => ['Supplier', 'bg-warning'],
+                                                        'brand' => ['Brand', 'bg-warning'],
+                                                        'senior_member' => ['Senior Member', 'bg-info'],
+                                                        'student' => ['Student', 'bg-secondary'],
+                                                        'guest' => ['Guest', 'bg-light text-dark'],
+                                                        default => ['Member', 'bg-primary']
+                                                    };
+                                                @endphp
+                                                <span class="badge {{ $roleInfo[1] }} ms-1">{{ $roleInfo[0] }}</span>
+
+                                                @if($user->isOnline())
+                                                    <span class="badge bg-success ms-1">{{ __('ui.users.online') }}</span>
+                                                @endif
+                                            </h5>
+                                            <div class="text-muted small list_user_item_meta">
+                                                <span>{{ $user->username }}</span>
+                                                <span class="mx-1">•</span>
+                                                <span>{{ __('ui.users.joined') }} {{ $user->created_at->format('d/m/Y') }}</span>
+                                                @if($user->location)
                                                     <span class="mx-1">•</span>
-                                                    <span>{{ __('ui.users.joined') }} {{ $user->created_at->format('d/m/Y') }}</span>
-                                                    @if($user->location)
-                                                        <span class="mx-1">•</span>
-                                                        <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="text-end">
-                                                @auth
-                                                    @if(Auth::id() !== $user->id)
-                                                        @if(Auth::user()->isFollowing($user))
-                                                            <form action="{{ route('profile.unfollow', $user->username) }}" method="POST" class="d-inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                                                    <i class="fas fa-user-minus"></i> {{ __('ui.users.unfollow') }}
-                                                                </button>
-                                                            </form>
-                                                        @else
-                                                            <form action="{{ route('profile.follow', $user->username) }}" method="POST" class="d-inline">
-                                                                @csrf
-                                                                <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                                    <i class="fas fa-user-plus"></i> {{ __('ui.users.follow') }}
-                                                                </button>
-                                                            </form>
-                                                        @endif
-                                                    @endif
-                                                @endauth
+                                                    <i class="fas fa-map-marker-alt"></i> {{ $user->location }}
+                                                @endif
                                             </div>
                                         </div>
+                                    </div>
 
-                                        @if($user->about_me)
-                                            <p class="text-muted small mt-2 mb-2">{{ Str::limit($user->about_me, 150) }}</p>
-                                        @endif
+                                    @if($user->about_me)
+                                        <p class="text-muted small mt-2 mb-2">{{ Str::limit($user->about_me, 150) }}</p>
+                                    @endif
 
-                                        <div class="d-flex mt-2 text-muted small">
-                                            <div class="me-3">
-                                                <i class="fas fa-comment"></i>
-                                                <span>{{ $user->posts_count ?? 0 }} {{ __('ui.users.posts') }}</span>
-                                            </div>
-                                            <div class="me-3">
-                                                <i class="fas fa-file-alt"></i>
-                                                <span>{{ $user->threads_count ?? 0 }} {{ __('ui.users.threads') }}</span>
-                                            </div>
-                                            <div class="me-3">
-                                                <i class="fas fa-users"></i>
-                                                <span>{{ $user->followers_count ?? 0 }} {{ __('ui.users.followers') }}</span>
-                                            </div>
+                                    <div class="d-flex mt-2 text-muted small">
+                                        <div class="me-3">
+                                            <i class="fas fa-comment"></i>
+                                            <span>{{ $user->posts_count ?? 0 }} {{ __('ui.users.posts') }}</span>
+                                        </div>
+                                        <div class="me-3">
+                                            <i class="fas fa-file-alt"></i>
+                                            <span>{{ $user->threads_count ?? 0 }} {{ __('ui.users.threads') }}</span>
+                                        </div>
+                                        <div class="me-3">
+                                            <i class="fas fa-users"></i>
+                                            <span>{{ $user->followers_count ?? 0 }} {{ __('ui.users.followers') }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @empty
-                            <div class="list-group-item p-4 text-center">
-                                <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                                <h5>{{ __('ui.users.no_members_found') }}</h5>
-                                <p class="text-muted mb-0">{{ __('ui.users.try_different_filters') }}</p>
-                            </div>
-                        @endforelse
+                        </div>
                     </div>
+                    @empty
+                    <div class="list-group-item p-4 text-center">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h5>{{ __('ui.users.no_members_found') }}</h5>
+                        <p class="text-muted mb-0">{{ __('ui.users.try_different_filters') }}</p>
+                    </div>
+                    @endforelse
                 </div>
+            </div>
             @endif
 
             <!-- Pagination -->

@@ -1,0 +1,10 @@
+.list_user_item {
+    background-color: #ffff;
+    height: 100%;
+    padding: 15px;
+    border-radius: 20px;
+}
+.list_user_item_name a{
+}
+.list_user_item_name .badge {
+}

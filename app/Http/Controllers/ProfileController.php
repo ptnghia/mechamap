@@ -106,7 +106,10 @@ class ProfileController extends Controller
                 break;
             case 'all':
             default:
-                // No additional filter
+                // Ẩn nhóm quản trị hệ thống khỏi danh sách công khai
+                $query->whereNotIn('role', [
+                    'super_admin', 'system_admin', 'content_admin'
+                ]);
                 break;
         }
 
@@ -137,10 +140,14 @@ class ProfileController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        // Get statistics for sidebar
+        // Get statistics for sidebar - ẩn nhóm quản trị hệ thống
         $stats = [
-            'total_members' => User::count(),
-            'newest_member' => User::latest()->first(),
+            'total_members' => User::whereNotIn('role', [
+                'super_admin', 'system_admin', 'content_admin'
+            ])->count(),
+            'newest_member' => User::whereNotIn('role', [
+                'super_admin', 'system_admin', 'content_admin'
+            ])->latest()->first(),
             'online_members' => User::where('last_seen_at', '>=', now()->subMinutes(15))->count(),
         ];
 
