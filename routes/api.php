@@ -41,6 +41,16 @@ Route::middleware('web')->group(function () {
         Route::post('/like', [App\Http\Controllers\Api\ShowcaseRatingReplyController::class, 'toggleLike'])
             ->name('api.replies.like');
     });
+
+    // Comment Image Upload API routes
+    Route::prefix('comments/images')->middleware('auth')->group(function () {
+        Route::post('/upload', [App\Http\Controllers\Api\CommentImageUploadController::class, 'upload'])
+            ->name('api.comments.images.upload');
+        Route::delete('/{mediaId}', [App\Http\Controllers\Api\CommentImageUploadController::class, 'delete'])
+            ->name('api.comments.images.delete');
+        Route::get('/progress', [App\Http\Controllers\Api\CommentImageUploadController::class, 'progress'])
+            ->name('api.comments.images.progress');
+    });
     Route::get('/auth/token', function (Request $request) {
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthenticated'], 401);

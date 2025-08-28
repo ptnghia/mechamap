@@ -451,18 +451,14 @@
 
                                 <!-- New Image Upload -->
                                 <div class="mb-3">
-                                    <x-advanced-file-upload
-                                        name="new_attachments[]"
-                                        id="new-attachments-{{ $comment->id }}"
-                                        :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
-                                        max-size="5MB"
+                                    <x-comment-image-upload
                                         :max-files="5"
-                                        :multiple="true"
+                                        max-size="5MB"
                                         context="comment"
                                         upload-text="{{ __('thread.add_new_images') }}"
                                         accept-description="{{ __('thread.images_only') }}"
                                         :show-preview="true"
-                                        class="compact-upload"
+                                        :compact="true"
                                     />
                                 </div>
 
@@ -595,18 +591,14 @@
 
                                                 <!-- New Image Upload -->
                                                 <div class="mb-3">
-                                                    <x-advanced-file-upload
-                                                        name="new_attachments[]"
-                                                        id="new-attachments-{{ $reply->id }}"
-                                                        :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
-                                                        max-size="5MB"
+                                                    <x-comment-image-upload
                                                         :max-files="3"
-                                                        :multiple="true"
-                                                        context="comment"
+                                                        max-size="5MB"
+                                                        context="reply"
                                                         upload-text="{{ __('thread.add_new_images') }}"
                                                         accept-description="{{ __('thread.images_only') }}"
                                                         :show-preview="true"
-                                                        class="compact-upload small"
+                                                        :compact="true"
                                                     />
                                                 </div>
 
@@ -1242,7 +1234,7 @@ function initializeEventHandlers() {
     }
 
     // Handle comment edit form submissions
-    document.addEventListener('submit', function(e) {
+    document.addEventListener('submit', async function(e) {
         if (e.target.classList.contains('comment-edit-form')) {
             e.preventDefault();
 
@@ -1273,15 +1265,24 @@ function initializeEventHandlers() {
             updateFormData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
             updateFormData.append('_method', 'PUT');
 
-            // Add new attachments
-            const fileInputs = form.querySelectorAll('input[type="file"]');
-            fileInputs.forEach(input => {
-                if (input.files.length > 0) {
-                    Array.from(input.files).forEach(file => {
-                        updateFormData.append('new_attachments[]', file);
+            // Handle image uploads from comment-image-upload component
+            const uploadComponent = form.querySelector('.comment-image-upload');
+            let uploadedImages = [];
+
+            if (uploadComponent && uploadComponent.commentImageUpload && uploadComponent.commentImageUpload.hasFiles()) {
+                try {
+                    // Upload images first
+                    uploadedImages = await uploadComponent.commentImageUpload.uploadFiles();
+
+                    // Add uploaded image URLs to form data
+                    uploadedImages.forEach(image => {
+                        updateFormData.append('uploaded_images[]', image.url);
                     });
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                    // Continue with comment update even if image upload fails
                 }
-            });
+            }
 
             // Function to make API request with CSRF token refresh on 419 error
             const makeUpdateRequest = (retryCount = 0) => {

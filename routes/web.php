@@ -52,6 +52,11 @@ if (app()->environment(['local', 'development'])) {
         Route::get('/files', [App\Http\Controllers\TestUploadController::class, 'listFiles'])->name('files');
         Route::post('/cleanup', [App\Http\Controllers\TestUploadController::class, 'testCleanup'])->name('cleanup');
     });
+
+    // Test Comment Image Upload Component
+    Route::get('/test-comment-upload', function () {
+        return view('test.comment-image-upload');
+    })->middleware('auth')->name('test.comment-upload');
 }
 
 // Test route để debug - REMOVED (should only be in development)
