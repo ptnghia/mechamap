@@ -189,20 +189,25 @@
                                     @csrf
                                     <input type="hidden" name="content" id="reply-content-{{ $rating->id }}">
 
-                                    <x-ckeditor5-comment
+                                    <x-tinymce-editor
                                         name="reply_content_editor"
-                                        placeholder="Trả lời đánh giá này..."
                                         :id="'reply-editor-' . $rating->id"
+                                        placeholder="Trả lời đánh giá này..."
+                                        context="comment"
+                                        :height="80"
                                         :required="true"
-                                        minHeight="80px"
                                     />
 
-                                    <x-enhanced-image-upload
+                                    <x-advanced-file-upload
                                         name="images"
                                         :id="'reply-upload-' . $rating->id"
+                                        :file-types="['jpg', 'png', 'gif', 'webp']"
+                                        max-size="5MB"
                                         :max-files="5"
-                                        max-size="5"
                                         :multiple="true"
+                                        context="showcase"
+                                        upload-text="Thêm hình ảnh cho phản hồi"
+                                        accept-description="Hình ảnh minh họa"
                                     />
 
                                     <div class="reply-actions mt-2 d-flex justify-content-end gap-2">

@@ -75,10 +75,14 @@ class ThreadSaveController extends Controller
         }
 
         if ($request->ajax()) {
+            // Refresh thread to get updated saves count
+            $thread->refresh();
+
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'is_saved' => $isSaved
+                'is_saved' => $isSaved,
+                'saves_count' => $thread->saves_count
             ]);
         }
 

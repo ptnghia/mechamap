@@ -14,13 +14,16 @@
                                 @csrf
 
                                 <!-- File Upload Component -->
-                                <x-file-upload
+                                <x-advanced-file-upload
                                     name="file"
                                     :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
                                     max-size="5MB"
                                     :required="true"
-                                    label="{{ __('gallery.select_file') }} <span class='text-danger'>*</span>"
+                                    :multiple="false"
                                     id="gallery-file-upload"
+                                    context="showcase"
+                                    upload-text="{{ __('gallery.select_file') }}"
+                                    accept-description="Hình ảnh cho gallery"
                                 />
                                 @error('file')
                                     <div class="text-danger small mt-2">

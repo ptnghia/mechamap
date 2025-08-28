@@ -39,8 +39,7 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
         <div class="thread-user-info">
             <div class="flex-shrink-0 me-3 d-none d-sm-block">
                 <img src="{{ $userAvatar }}" alt="{{ $userName }}" class="rounded-circle" width="50" height="50"
-                    style="object-fit: cover;"
-                    onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
+                    style="object-fit: cover;">
             </div>
             <div>
                 <strong class="thread-user-name">

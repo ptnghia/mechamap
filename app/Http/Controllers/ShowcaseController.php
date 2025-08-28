@@ -14,6 +14,7 @@ use App\Services\ShowcaseImageService;
 use App\Services\FileAttachmentService;
 use App\Services\FileUploadSecurityService;
 use App\Services\SecurityMonitoringService;
+use App\Services\UnifiedUploadService;
 use App\Http\Requests\ShowcaseRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,18 @@ use Illuminate\View\View;
 
 class ShowcaseController extends Controller
 {
+    /**
+     * The unified upload service instance.
+     */
+    protected UnifiedUploadService $uploadService;
 
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(UnifiedUploadService $uploadService)
+    {
+        $this->uploadService = $uploadService;
+    }
 
     /**
      * Display the public showcase page with new 4-section layout.
@@ -736,18 +748,24 @@ class ShowcaseController extends Controller
 
             // Xử lý upload hình ảnh nếu có
             if ($hasMedia) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('showcase-comment-images', 'public');
-                    $comment->attachments()->create([
-                        'user_id' => Auth::id(),
-                        'file_path' => $path,
-                        'file_name' => $image->getClientOriginalName(),
-                        'mime_type' => $image->getMimeType(),
-                        'file_size' => $image->getSize(),
-                        'file_extension' => $image->getClientOriginalExtension(),
-                        'file_category' => 'comment_image',
+                $uploadedFiles = $this->uploadService->uploadMultipleFiles(
+                    $request->file('images'),
+                    Auth::user(),
+                    'showcase_comment_images',
+                    [
+                        'mediable_type' => ShowcaseComment::class,
+                        'mediable_id' => $comment->id,
                         'is_public' => true,
                         'is_approved' => true,
+                    ]
+                );
+
+                // Log successful uploads
+                if (!empty($uploadedFiles)) {
+                    \Log::info('Showcase comment images uploaded successfully', [
+                        'comment_id' => $comment->id,
+                        'files_count' => count($uploadedFiles),
+                        'user_id' => Auth::id()
                     ]);
                 }
             }
@@ -756,33 +774,7 @@ class ShowcaseController extends Controller
         });
     }
 
-    /**
-     * Xử lý upload ảnh cho comment.
-     */
-    private function handleCommentImages($images, $comment)
-    {
-        foreach ($images as $image) {
-            if ($image->isValid()) {
-                // Tạo tên file unique
-                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-                // Lưu ảnh vào thư mục public/images/comments
-                $path = $image->move(public_path('images/comments'), $filename);
-
-                // Lưu thông tin ảnh vào database (nếu có bảng comment_images)
-                // Hoặc lưu vào field images của comment (JSON format)
-                $existingImages = json_decode($comment->images ?? '[]', true);
-                $existingImages[] = [
-                    'filename' => $filename,
-                    'original_name' => $image->getClientOriginalName(),
-                    'size' => $image->getSize(),
-                    'uploaded_at' => now()->toISOString()
-                ];
-
-                $comment->update(['images' => json_encode($existingImages)]);
-            }
-        }
-    }
 
     /**
      * Xóa comment.

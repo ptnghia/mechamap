@@ -92,10 +92,14 @@ class GalleryController extends Controller
             $media = $user->media()->create([
                 'file_name' => $fileName,
                 'file_path' => $filePath,
-                'file_type' => $file->getMimeType(),
+                'mime_type' => $file->getMimeType(),
                 'file_size' => $file->getSize(),
+                'file_extension' => $file->getClientOriginalExtension(),
+                'file_category' => 'image',
                 'title' => $request->title,
                 'description' => $request->description,
+                'is_public' => true,
+                'is_approved' => true,
             ]);
 
             return redirect()->route('gallery.show', $media)

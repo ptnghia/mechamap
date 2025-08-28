@@ -68,6 +68,8 @@ Route::middleware('web')->group(function () {
         ]);
     });
 
+
+
 // Get Sanctum token for WebSocket authentication (following realtime server documentation)
 Route::middleware(['web'])->get('/user/websocket-token', function (Request $request) {
     if (!Auth::check()) {
@@ -1081,6 +1083,18 @@ Route::prefix('v1')->group(function () {
     Route::post('/analytics', [App\Http\Controllers\Api\AnalyticsController::class, 'store']);
     Route::get('/pages/{pageId}/view-count', [App\Http\Controllers\Api\AnalyticsController::class, 'getViewCount']);
     Route::get('/analytics/dashboard', [App\Http\Controllers\Api\AnalyticsController::class, 'getDashboardData']);
+});
+
+// Web-based API routes for JavaScript calls (with CSRF protection and web session auth)
+Route::middleware(['web', 'auth'])->prefix('api/comments')->group(function () {
+    Route::post('/', [App\Http\Controllers\Api\CommentController::class, 'store']);
+    Route::put('/{id}', [App\Http\Controllers\Api\CommentController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\Api\CommentController::class, 'destroy']);
+    Route::post('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'like']);
+    Route::delete('/{id}/like', [App\Http\Controllers\Api\CommentController::class, 'unlike']);
+    Route::post('/{id}/dislike', [App\Http\Controllers\Api\CommentController::class, 'dislike']);
+    Route::delete('/{id}/dislike', [App\Http\Controllers\Api\CommentController::class, 'undislike']);
+    Route::post('/{id}/report', [App\Http\Controllers\Api\CommentController::class, 'report']);
 });
 
 // WebSocket API routes removed - now handled by Node.js WebSocket server

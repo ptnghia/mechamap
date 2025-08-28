@@ -118,8 +118,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
     <div class="showcase-content">
         <div class="showcase-meta">
             <img src="{{ $userAvatar }}" alt="{{ $userName }}" class="author-avatar rounded-circle"
-                 width="40" height="40" style="object-fit: cover;"
-                 onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
+                 width="40" height="40" style="object-fit: cover;">
             <div class="author-info">
                 <h6 class="author-name">{{ $userName }}</h6>
                 <small class="text-muted">{{ $createdAt }}</small>

@@ -156,8 +156,13 @@ class Media extends Model
                 return $this->file_path;
             }
 
-            // Nếu file_path bắt đầu bằng /images/ thì dùng asset() trực tiếp
-            if (strpos($this->file_path, '/images/') === 0) {
+            // Nếu file_path bắt đầu bằng /images/ hoặc /uploads/ thì dùng asset() trực tiếp
+            if (strpos($this->file_path, '/images/') === 0 || strpos($this->file_path, '/uploads/') === 0) {
+                return asset($this->file_path);
+            }
+
+            // Nếu file_path bắt đầu bằng uploads/ (không có slash đầu)
+            if (strpos($this->file_path, 'uploads/') === 0) {
                 return asset($this->file_path);
             }
 

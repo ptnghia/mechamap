@@ -43,13 +43,16 @@
                         </div>
 
                         <!-- Document File Upload Component -->
-                        <x-file-upload
+                        <x-advanced-file-upload
                             name="document_file"
                             :file-types="['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'zip', 'rar']"
                             max-size="10MB"
                             :required="true"
-                            label="File Tài Liệu <span class='text-danger'>*</span>"
+                            :multiple="false"
                             id="document-file-upload"
+                            context="document"
+                            upload-text="File Tài Liệu"
+                            accept-description="PDF, Word, Excel, PowerPoint, Archive"
                         />
                         @error('document_file')
                             <div class="text-danger small mt-2">

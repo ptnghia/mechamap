@@ -9,6 +9,8 @@ use App\Models\CommentLike;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class CommentController extends Controller
@@ -88,7 +90,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Update a comment
+     * Update a comment with attachments support
      *
      * @param Request $request
      * @param int $id
@@ -97,49 +99,115 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            \Log::info('Comment update request received', [
+                'comment_id' => $id,
+                'user_id' => Auth::id(),
+                'request_data' => $request->all(),
+                'method' => $request->method(),
+                'content_type' => $request->header('Content-Type')
+            ]);
+
             $comment = Comment::findOrFail($id);
 
             // Check if user is authorized to update this comment
             if (Auth::id() !== $comment->user_id && !Auth::user()->hasRole(['admin', 'moderator'])) {
+                \Log::warning('Unauthorized comment update attempt', [
+                    'comment_id' => $id,
+                    'comment_user_id' => $comment->user_id,
+                    'current_user_id' => Auth::id()
+                ]);
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Bạn không có quyền cập nhật bình luận này.'
+                    'message' => __('thread.unauthorized_edit')
                 ], 403);
             }
 
             // Validate request
             $request->validate([
-                'content' => 'required|string',
+                'content' => 'required|string|min:1|max:10000',
+                'new_attachments' => 'nullable|array|max:5',
+                'new_attachments.*' => 'file|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
             ]);
 
-            // Update comment
-            $comment->content = $request->content;
-            $comment->save();
+            return DB::transaction(function () use ($request, $comment) {
+                $hasNewMedia = $request->hasFile('new_attachments');
 
-            // Create user activity
-            UserActivity::create([
-                'user_id' => Auth::id(),
-                'type' => 'comment_update',
-                'subject_id' => $comment->id,
-                'subject_type' => Comment::class,
-            ]);
+                // Update comment content and media flag
+                $comment->update([
+                    'content' => $request->content,
+                    'has_media' => $comment->has_media || $hasNewMedia,
+                    'updated_at' => now()
+                ]);
 
-            // Load relationships
-            $comment->load(['user']);
+                // Handle new attachments
+                if ($hasNewMedia) {
+                    $uploadService = app(\App\Services\UnifiedUploadService::class);
+                    $uploadedFiles = $uploadService->uploadMultipleFiles(
+                        $request->file('new_attachments'),
+                        Auth::user(),
+                        'comments',
+                        [
+                            'mediable_type' => Comment::class,
+                            'mediable_id' => $comment->id,
+                            'is_public' => true,
+                            'is_approved' => true,
+                        ]
+                    );
 
-            // Add user avatar URL
-            if ($comment->user) {
-                $comment->user->avatar_url = $comment->user->getAvatarUrl();
-            }
+                    if (!empty($uploadedFiles)) {
+                        \Log::info('Comment attachments uploaded successfully', [
+                            'comment_id' => $comment->id,
+                            'files_count' => count($uploadedFiles),
+                            'user_id' => Auth::id()
+                        ]);
+                    }
+                }
 
-            // Fire real-time event
-            event(new \App\Events\CommentUpdated($comment));
+                // Update has_media flag
+                $hasMedia = $comment->attachments()->exists();
+                $comment->update(['has_media' => $hasMedia]);
 
-            return response()->json([
-                'success' => true,
-                'data' => $comment,
-                'message' => 'Cập nhật bình luận thành công.'
-            ]);
+                // Create user activity
+                UserActivity::create([
+                    'user_id' => Auth::id(),
+                    'activity_type' => 'comment_update',
+                    'activity_id' => $comment->id,
+                ]);
+
+                // Load relationships for response
+                $comment->load(['user', 'attachments']);
+
+                // Add user avatar URL
+                if ($comment->user) {
+                    $comment->user->avatar_url = $comment->user->getAvatarUrl();
+                }
+
+                // Format attachments for response
+                $attachments = $comment->attachments->map(function ($attachment) {
+                    return [
+                        'id' => $attachment->id,
+                        'url' => $attachment->url,
+                        'file_name' => $attachment->file_name,
+                        'file_size' => $attachment->file_size,
+                    ];
+                });
+
+                // Fire real-time event
+                event(new \App\Events\CommentUpdated($comment));
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('thread.comment_updated_successfully'),
+                    'comment' => [
+                        'id' => $comment->id,
+                        'content' => $comment->content,
+                        'attachments' => $attachments,
+                        'has_media' => $comment->has_media,
+                        'updated_at' => $comment->updated_at->diffForHumans(),
+                    ]
+                ], 200, ['Content-Type' => 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+            });
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,

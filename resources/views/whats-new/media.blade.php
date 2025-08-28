@@ -124,8 +124,7 @@
                 @if($media->user)
                 <div class="media-author">
                     <img src="{{ $media->user->getAvatarUrl() }}"
-                         alt="{{ $media->user->name }}" class="author-avatar"
-                         onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($media->user->name, 0, 1))]) }}'">
+                         alt="{{ $media->user->name }}" class="author-avatar">
                     <div class="author-details">
                         <a href="{{ route('profile.show', $media->user->id) }}" class="author-name">
                             {{ $media->user->name }}

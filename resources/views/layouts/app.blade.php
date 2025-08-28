@@ -234,8 +234,6 @@
         });
     </script>
 
-    <!-- CKEditor5 CDN -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     <!-- HC-MobileNav JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/hc-offcanvas-nav@6.1.5/dist/hc-offcanvas-nav.js"></script>

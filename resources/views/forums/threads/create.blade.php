@@ -165,14 +165,16 @@
                         </div>
 
                         <!-- File Attachments Component -->
-                        <x-file-upload
+                        <x-advanced-file-upload
                             name="attachments"
                             :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'txt']"
                             max-size="10MB"
                             :multiple="true"
                             :max-files="5"
-                            label="Attachments"
                             id="thread-attachments-upload"
+                            context="thread"
+                            upload-text="Đính kèm file cho thảo luận"
+                            accept-description="Hình ảnh, tài liệu, file văn bản"
                         />
                         @error('attachments.*')
                             <div class="text-danger small mt-2">

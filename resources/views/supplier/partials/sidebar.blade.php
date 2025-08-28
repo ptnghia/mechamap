@@ -7,8 +7,7 @@
                  alt="{{ auth()->user()->name }}"
                  class="rounded-circle mb-3"
                  width="80" height="80"
-                 style="object-fit: cover;"
-                 onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr(auth()->user()->name, 0, 1))]) }}'">
+                 style="object-fit: cover;">
             <h6 class="fw-bold mb-1">{{ auth()->user()->name }}</h6>
             <span class="badge bg-primary">{{ __('roles.supplier') }}</span>
         </div>

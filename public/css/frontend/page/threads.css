@@ -2,9 +2,8 @@
 }
 .detail_thread_body{padding: 15px;background-color: #fff;border-radius: 15px;margin-bottom: 20px;}
 .thread-actions{/* width: 250px; */justify-content: end;}
-.thread-actions .btn{background-color: var(--bs-primary);color: #fff;}
-.thread-actions  .follower-count.badge{
-}
+.thread-actions .btn{/* background-color: var(--bs-primary); *//* color: #fff; */}
+.thread-actions .follower-count.badge, .btn-save .badge{font-family: var(--bs-font-sans-serif);font-size: 13px;background-color: var(--bs-danger) !important;!i;!;color: #fff !important;!i;!;border-radius: 30px;}
 .detail_thread .thread-meta{margin-bottom: 15px;justify-content: space-between;}
 .bookmark-btn,.follow-btn{display:flex;align-items:center;white-space:nowrap;border-radius:20px;font-size:.875rem;padding:.375rem .75rem;transition:all .2s ease-in-out}
 .bookmark-btn:hover,.follow-btn:hover{transform:translateY(-1px)}
@@ -62,7 +61,9 @@
 .showcase-section-body .showcase-meta{
 }
 .showcase-section-body .showcase-meta a{color: var(--bs-primary);}
-.threads-footer{margin-top: 20px;}
+.threads-footer{margin-top: 20px;font-size: 14px;}
+.threads-footer .btn{font-size: 14px;}
+.threads-footer .btn i{margin-right: 5px !important;!i;!;}
 .createShowcaseModal{
 }
 .createShowcaseModal .modal-title{
@@ -85,7 +86,7 @@
 }
 .comment_item_avatar img{width: 55px;height: 55px;}
 .comment_item_body{flex: 1;}
-.comment_item_user{margin-bottom: 10px;}
+.comment_item_user{margin-bottom: 5px;}
 .comment_item_user a{
 }
 .comment_item_user .text-muted{

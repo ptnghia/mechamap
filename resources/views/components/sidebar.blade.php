@@ -88,8 +88,7 @@ if (str_contains($currentRoute, 'marketplace') || str_contains(request()->path()
                     <div class="d-flex">
                         <div class="flex-shrink-0 me-2">
                             <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
-                                class="rounded-circle" width="32" height="32"
-                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1))]) }}'"
+                                class="rounded-circle" width="32" height="32">
                         </div>
                         <div>
                             <h6 class="mb-1 text-truncate" style="max-width: 100%;">{{ $thread->title }}</h6>
@@ -170,8 +169,7 @@ if (str_contains($currentRoute, 'marketplace') || str_contains(request()->path()
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0 me-2">
                             <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="rounded-circle"
-                                width="32" height="32"
-                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1))]) }}'"
+                                width="32" height="32">
                         </div>
                         <div>
                             <h6 class="mb-1">{{ $user->name }}</h6>

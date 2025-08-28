@@ -26,6 +26,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\BusinessRegistrationController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\DevTranslationController;
+use App\Http\Controllers\TestUploadController;
 use Illuminate\Support\Facades\Route;
 
 // Include dashboard routes
@@ -39,6 +40,18 @@ if (app()->environment(['local', 'development'])) {
     Route::get('/test-breadcrumb', function () {
         return view('test-breadcrumb');
     })->name('test.breadcrumb');
+
+    // Test Unified Upload Service routes
+    Route::middleware('auth')->prefix('test-upload')->name('test-upload.')->group(function () {
+        Route::get('/', [App\Http\Controllers\TestUploadController::class, 'index'])->name('index');
+        Route::post('/single', [App\Http\Controllers\TestUploadController::class, 'testSingleUpload'])->name('single');
+        Route::post('/multiple', [App\Http\Controllers\TestUploadController::class, 'testMultipleUpload'])->name('multiple');
+        Route::post('/validation', [App\Http\Controllers\TestUploadController::class, 'testValidation'])->name('validation');
+        Route::get('/stats', [App\Http\Controllers\TestUploadController::class, 'getUserStats'])->name('stats');
+        Route::post('/delete', [App\Http\Controllers\TestUploadController::class, 'testDelete'])->name('delete');
+        Route::get('/files', [App\Http\Controllers\TestUploadController::class, 'listFiles'])->name('files');
+        Route::post('/cleanup', [App\Http\Controllers\TestUploadController::class, 'testCleanup'])->name('cleanup');
+    });
 }
 
 // Test route để debug - REMOVED (should only be in development)
@@ -678,6 +691,12 @@ Route::post('/threads/{thread}/comments', [\App\Http\Controllers\CommentControll
 Route::put('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'update'])->name('comments.update')->middleware('auth');
 Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
 Route::post('/comments/{comment}/like', [\App\Http\Controllers\CommentController::class, 'like'])->name('comments.like')->middleware('auth');
+Route::delete('/comments/{comment}/images/{mediaId}', [\App\Http\Controllers\CommentController::class, 'deleteImage'])->name('comments.images.delete')->middleware('auth');
+
+// API Comment routes with CSRF protection
+Route::put('/api/comments/{id}', [App\Http\Controllers\Api\CommentController::class, 'update'])
+    ->name('api.comments.update')
+    ->middleware('auth');
 
 // Thread like/save/follow routes
 Route::post('/threads/{thread}/like', [\App\Http\Controllers\ThreadLikeController::class, 'toggle'])->name('threads.like')->middleware('auth');

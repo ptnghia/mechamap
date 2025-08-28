@@ -11,14 +11,14 @@
                 class="rounded-circle" width="40" height="40" alt="Avatar của bạn">
 
             <div class="flex-grow-1">
-                {{-- Rich Text Editor Component --}}
-                <x-rich-text-editor
+                {{-- TinyMCE Editor Component --}}
+                <x-tinymce-editor
                     name="content"
-                    placeholder="{{ $placeholder ?? 'Viết bình luận của bạn...' }}"
                     id="comment-editor-{{ $formId ?? 'main' }}"
+                    placeholder="{{ $placeholder ?? 'Viết bình luận của bạn...' }}"
+                    context="comment"
+                    :height="100"
                     :required="true"
-                    :allowImages="true"
-                    minHeight="100px"
                     value=""
                 />
 

@@ -5,8 +5,7 @@
         <div class="col-md-8">
             <div class="d-flex align-items-center mb-3">
                 <img src="{{ $comment->user->getAvatarUrl() }}"
-                    alt="Avatar" class="rounded-circle me-3" style="width: 50px; height: 50px;"
-                    onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1))]) }}'">
+                    alt="Avatar" class="rounded-circle me-3" style="width: 50px; height: 50px;">
                 <div>
                     <h5 class="mb-1">{{ $comment->user->name }}</h5>
                     <small class="text-muted">{{ $comment->user->email }}</small>
@@ -112,8 +111,7 @@
             <div class="border-start border-3 border-info ps-3">
                 <div class="d-flex align-items-center mb-2">
                     <img src="{{ $comment->parent->user->getAvatarUrl() }}"
-                        alt="Avatar" class="rounded-circle me-2" style="width: 24px; height: 24px;"
-                        onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->parent->user->name, 0, 1))]) }}'">
+                        alt="Avatar" class="rounded-circle me-2" style="width: 24px; height: 24px;">
                     <strong>{{ $comment->parent->user->name }}</strong>
                     <small class="text-muted ms-2">{{ $comment->parent->created_at->diffForHumans() }}</small>
                 </div>
@@ -223,8 +221,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <div class="d-flex align-items-center">
                         <img src="{{ $report->reporter->getAvatarUrl() }}"
-                            alt="Avatar" class="rounded-circle me-2" style="width: 24px; height: 24px;"
-                            onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($report->reporter->name, 0, 1))]) }}'">
+                            alt="Avatar" class="rounded-circle me-2" style="width: 24px; height: 24px;">
                         <strong>{{ $report->reporter->name }}</strong>
                     </div>
                     <small class="text-muted">{{ $report->created_at->diffForHumans() }}</small>

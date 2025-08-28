@@ -293,8 +293,7 @@
                                         <div class="d-flex align-items-center">
                                             <img src="{{ $comment->user->getAvatarUrl() }}"
                                                 alt="Avatar" class="rounded-circle me-2"
-                                                style="width: 32px; height: 32px;"
-                                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1))]) }}'">
+                                                style="width: 32px; height: 32px;">
                                             <div>
                                                 <div class="fw-medium">{{ $comment->user->name }}</div>
                                                 <small class="text-muted">{{ $comment->user->email }}</small>

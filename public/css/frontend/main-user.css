@@ -1114,18 +1114,6 @@
     flex-shrink: 0
 }
 
-.upload-area {
-    border: 3px dashed var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    text-align: center;
-    background: #fafbfc;
-    transition: var(--transition);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden
-}
-
 .upload-area:hover {
     border-color: var(--primary-color);
     background: #f0f7ff
@@ -3632,20 +3620,7 @@ html {
     color: var(--bs-primary)
 }
 
-.btn_meta {
-    padding: 4px 0;
-    color: #898686;
-    border: none;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    margin-right: 19px
-}
 
-.btn_meta .badge {
-    margin-left: 5px;
-    padding: 3px 5px
-}
 
 .btn-main.no-border {
     border: none
@@ -4128,7 +4103,10 @@ a {
 
 .btn_meta.active,.btn_meta:hover {
     color: var(--bs-primary);
-    font-weight: 700
+    font-weight: 500;
+    background-color: var(--bs-primary);
+    color: #ffff;
+    height: auto;
 }
 
 
@@ -4218,31 +4196,6 @@ a.btn:hover {
 
 .business-categories .form-check {
     margin-bottom: .5rem
-}
-
-.upload-area {
-    border: 2px dashed #dee2e6;
-    border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
-    transition: all .3s ease;
-    cursor: pointer
-}
-
-.upload-area:hover {
-    border-color: #007bff;
-    background-color: #f8f9fa
-}
-
-.upload-area.dragover {
-    border-color: #007bff;
-    background-color: #e3f2fd
-}
-
-.upload-icon {
-    font-size: 3rem;
-    color: #6c757d;
-    margin-bottom: 1rem
 }
 
 .file-item {

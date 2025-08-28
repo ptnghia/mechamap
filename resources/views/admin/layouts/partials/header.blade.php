@@ -256,8 +256,7 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="{{ $avatar }}" alt="{{ $userName }}" style="width: 32px; height: 32px;"
-                         onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
+                    <img class="rounded-circle header-profile-user" src="{{ $avatar }}" alt="{{ $userName }}" style="width: 32px; height: 32px;">
                     <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ $userName }}</span>
                     <i class="fas fa-chevron-down d-none d-xl-inline-block ms-1"></i>
                 </button>

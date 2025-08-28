@@ -20,8 +20,7 @@ $joinedDate = $user->created_at ? $user->created_at->format('M Y') : 'N/A';
                  class="rounded-circle mb-3"
                  width="80"
                  height="80"
-                 style="object-fit: cover;"
-                 onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($userName, 0, 1))]) }}'">
+                 style="object-fit: cover;">
 
             <!-- User Name -->
             <h5 class="card-title mb-1">

@@ -122,8 +122,7 @@
     <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button"
        data-bs-toggle="dropdown" aria-expanded="false">
         <img src="{{ $user->getAvatarUrl() }}"
-             alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24"
-             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1))]) }}'">
+             alt="{{ $user->name }}" class="rounded-circle me-1" width="24" height="24">
         <span class="user-name d-none d-md-inline">{{ $user->name }}</span>
         <span class="badge bg-{{ $user->role_color ?? 'primary' }} ms-1 d-none d-lg-inline">{{ $user->role_display_name }}</span>
     </a>
@@ -133,8 +132,7 @@
         <li class="dropdown-header user-info">
             <div class="d-flex align-items-center">
                 <img src="{{ $user->getAvatarUrl() }}"
-                     alt="{{ $user->name }}" class="rounded-circle me-3" width="40" height="40"
-                     onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($user->name, 0, 1))]) }}'">
+                     alt="{{ $user->name }}" class="rounded-circle me-3" width="40" height="40">
                 <div>
                     <h6 class="mb-0">{{ $user->name }}</h6>
                     <small class="text-muted">{{ $user->role_display_name }}</small>

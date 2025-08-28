@@ -224,10 +224,15 @@ class ShowcaseController extends BaseController
             $path = $attachment->store('showcases/attachments', 'public');
 
             $showcase->attachments()->create([
+                'user_id' => Auth::id(),
                 'file_path' => $path,
                 'file_name' => $attachment->getClientOriginalName(),
                 'file_size' => $attachment->getSize(),
                 'mime_type' => $attachment->getMimeType(),
+                'file_extension' => $attachment->getClientOriginalExtension(),
+                'file_category' => 'other',
+                'is_public' => true,
+                'is_approved' => true,
             ]);
         }
     }

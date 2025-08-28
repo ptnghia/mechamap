@@ -254,8 +254,8 @@
     padding: 2rem 0;
 }
 
-/* Rich Text Editor in Tabs */
-.tab-pane .rich-text-editor {
+/* TinyMCE Editor in Tabs */
+.tab-pane .tinymce-editor-wrapper {
     margin-bottom: 1rem;
 }
 

@@ -20,11 +20,11 @@
                     <div class="row align-items-center">
                         <div class="col-md-3 text-center">
                             <div class="profile-avatar-container">
-                                <img src="{{ $user->getAvatarUrl() }}" 
-                                     alt="{{ $user->name }}" 
+                                <img src="{{ $user->getAvatarUrl() }}"
+                                     alt="{{ $user->name }}"
                                      class="profile-avatar rounded-circle">
                                 <div class="avatar-overlay">
-                                    <button class="btn btn-sm btn-light rounded-circle" 
+                                    <button class="btn btn-sm btn-light rounded-circle"
                                             onclick="changeAvatar()" title="Change Avatar">
                                         <i class="bx bx-camera"></i>
                                     </button>
@@ -60,7 +60,7 @@
                             @if($user->bio)
                             <p class="mb-3">{{ $user->bio }}</p>
                             @endif
-                            
+
                             <!-- Contact Info -->
                             <div class="contact-info">
                                 @if($user->email_public || auth()->id() === $user->id)
@@ -308,7 +308,7 @@
                     <div class="progress mb-3" style="height: 8px;">
                         <div class="progress-bar" style="width: {{ $profileCompletion }}%"></div>
                     </div>
-                    
+
                     @if($profileCompletion < 100)
                     <div class="profile-suggestions">
                         <h6 class="small text-muted mb-2">SUGGESTIONS TO IMPROVE</h6>
@@ -408,15 +408,19 @@
             <div class="modal-body">
                 <form id="avatarForm" enctype="multipart/form-data">
                     @csrf
-                    <div class="text-center mb-3">
-                        <img id="avatarPreview" src="{{ $user->getAvatarUrl() }}" 
-                             alt="Avatar Preview" class="rounded-circle" width="120" height="120">
-                    </div>
-                    <div class="mb-3">
-                        <label for="avatar" class="form-label">Choose New Avatar</label>
-                        <input type="file" class="form-control" id="avatar" name="avatar" 
-                               accept="image/*" onchange="previewAvatar(this)">
-                        <div class="form-text">Maximum file size: 2MB. Supported formats: JPG, PNG, GIF</div>
+                    <div class="text-center">
+                        <x-avatar-upload
+                            name="avatar"
+                            id="profile-avatar-upload"
+                            :current-avatar="$user->getAvatarUrl()"
+                            :size="120"
+                            max-size="2MB"
+                            :required="true"
+                            shape="circle"
+                            :show-remove="true"
+                            placeholder-text="Click để thay đổi avatar"
+                            upload-url="{{ route('profile.avatar.upload') }}"
+                        />
                     </div>
                 </form>
             </div>
@@ -550,7 +554,7 @@
         width: 100px;
         height: 100px;
     }
-    
+
     .achievements-grid {
         grid-template-columns: 1fr;
     }
@@ -577,7 +581,7 @@ function previewAvatar(input) {
 
 function uploadAvatar() {
     const formData = new FormData(document.getElementById('avatarForm'));
-    
+
     fetch('{{ route("users.profile.avatar") }}', {
         method: 'POST',
         body: formData,

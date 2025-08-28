@@ -8,6 +8,7 @@ use App\Models\CommentLike;
 use App\Models\Media;
 use App\Services\UnifiedNotificationService;
 use App\Services\UserActivityService;
+use App\Services\UnifiedUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,17 +21,21 @@ class CommentController extends Controller
      */
     protected UserActivityService $activityService;
 
-
+    /**
+     * The unified upload service instance.
+     */
+    protected UnifiedUploadService $uploadService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserActivityService $activityService)
+    public function __construct(UserActivityService $activityService, UnifiedUploadService $uploadService)
     {
         $this->middleware('auth');
         $this->activityService = $activityService;
+        $this->uploadService = $uploadService;
     }
 
     /**
@@ -45,8 +50,16 @@ class CommentController extends Controller
         $request->validate([
             'content' => 'required|string',
             'parent_id' => 'nullable|exists:comments,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
+            'edit_mode' => 'nullable|boolean',
+            'comment_id' => 'nullable|exists:comments,id',
         ]);
+
+        // Check if this is edit mode
+        if ($request->edit_mode && $request->comment_id) {
+            return $this->updateComment($request, $request->comment_id);
+        }
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
         return DB::transaction(function () use ($request, $thread) {
@@ -63,14 +76,24 @@ class CommentController extends Controller
 
             // Xử lý upload hình ảnh nếu có
             if ($hasMedia) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('comment-images', 'public');
-                    $comment->attachments()->create([
-                        'user_id' => Auth::id(),
-                        'file_path' => $path,
-                        'file_name' => $image->getClientOriginalName(),
-                        'file_type' => $image->getMimeType(),
-                        'file_size' => $image->getSize(),
+                $uploadedFiles = $this->uploadService->uploadMultipleFiles(
+                    $request->file('images'),
+                    Auth::user(),
+                    'comment_images',
+                    [
+                        'mediable_type' => Comment::class,
+                        'mediable_id' => $comment->id,
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]
+                );
+
+                // Log successful uploads
+                if (!empty($uploadedFiles)) {
+                    \Log::info('Comment images uploaded successfully', [
+                        'comment_id' => $comment->id,
+                        'files_count' => count($uploadedFiles),
+                        'user_id' => Auth::id()
                     ]);
                 }
             }
@@ -127,7 +150,9 @@ class CommentController extends Controller
                 ]);
             }
 
-            return back()->with('success', 'Bình luận đã được đăng thành công.');
+            return back()
+                ->with('success', 'Phản hồi đã được đăng thành công!')
+                ->with('scroll_to_comment', $comment->id);
         });
     }
 
@@ -144,7 +169,8 @@ class CommentController extends Controller
 
         $request->validate([
             'content' => 'required|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
         ]);
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
@@ -158,14 +184,24 @@ class CommentController extends Controller
 
             // Xử lý upload hình ảnh nếu có
             if ($hasMedia) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('comment-images', 'public');
-                    $comment->attachments()->create([
-                        'user_id' => Auth::id(),
-                        'file_path' => $path,
-                        'file_name' => $image->getClientOriginalName(),
-                        'file_type' => $image->getMimeType(),
-                        'file_size' => $image->getSize(),
+                $uploadedFiles = $this->uploadService->uploadMultipleFiles(
+                    $request->file('images'),
+                    Auth::user(),
+                    'comment_images',
+                    [
+                        'mediable_type' => Comment::class,
+                        'mediable_id' => $comment->id,
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]
+                );
+
+                // Log successful uploads
+                if (!empty($uploadedFiles)) {
+                    \Log::info('Comment images updated successfully', [
+                        'comment_id' => $comment->id,
+                        'files_count' => count($uploadedFiles),
+                        'user_id' => Auth::id()
                     ]);
                 }
             }
@@ -200,8 +236,7 @@ class CommentController extends Controller
             // Xóa các file đính kèm nếu có
             if ($comment->has_media) {
                 foreach ($comment->attachments as $attachment) {
-                    Storage::disk('public')->delete($attachment->file_path);
-                    $attachment->delete();
+                    $this->uploadService->deleteFile($attachment);
                 }
             }
 
@@ -267,5 +302,205 @@ class CommentController extends Controller
         }
 
         return back()->with('success', $message);
+    }
+
+    /**
+     * Delete a specific image from a comment
+     *
+     * @param  \App\Models\Comment  $comment
+     * @param  int  $mediaId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteImage(Comment $comment, $mediaId)
+    {
+        // Check if user can edit this comment
+        if ($comment->user_id !== Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bạn không có quyền xóa hình ảnh này.'
+            ], 403);
+        }
+
+        // Find media that belongs to this comment
+        $media = $comment->attachments()->where('id', $mediaId)->first();
+
+        if (!$media) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy hình ảnh này.'
+            ], 404);
+        }
+
+        try {
+            // Delete physical file if path exists
+            if ($media->file_path && Storage::exists($media->file_path)) {
+                Storage::delete($media->file_path);
+            }
+
+            // Delete database record
+            $media->delete();
+
+            // Update has_media flag if no more images
+            $hasMedia = $comment->attachments()->where('file_category', 'image')->exists();
+            $comment->update(['has_media' => $hasMedia]);
+
+            \Log::info('Comment image deleted successfully', [
+                'comment_id' => $comment->id,
+                'media_id' => $mediaId,
+                'user_id' => Auth::id()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Đã xóa hình ảnh thành công.'
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting comment image', [
+                'comment_id' => $comment->id,
+                'media_id' => $mediaId,
+                'error' => $e->getMessage(),
+                'user_id' => Auth::id()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi xóa hình ảnh.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Update comment via store method (for edit mode)
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $commentId
+     * @return \Illuminate\Http\Response
+     */
+    private function updateComment(Request $request, $commentId)
+    {
+        $comment = Comment::findOrFail($commentId);
+
+        // Check if user can edit this comment
+        if ($comment->user_id !== Auth::id()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền chỉnh sửa bình luận này.'
+                ], 403);
+            }
+            return back()->with('error', 'Bạn không có quyền chỉnh sửa bình luận này.');
+        }
+
+        return DB::transaction(function () use ($request, $comment) {
+            // Update comment content
+            $comment->update([
+                'content' => $request->content,
+                'updated_at' => now()
+            ]);
+
+            // Handle deleted images
+            if ($request->filled('deleted_images')) {
+                $deletedImageIds = explode(',', $request->deleted_images);
+                $deletedImageIds = array_filter($deletedImageIds); // Remove empty values
+
+                if (!empty($deletedImageIds)) {
+                    // Delete media records and files
+                    $mediaToDelete = $comment->attachments()->whereIn('id', $deletedImageIds)->get();
+
+                    foreach ($mediaToDelete as $media) {
+                        // Delete physical file
+                        if (Storage::exists($media->path)) {
+                            Storage::delete($media->path);
+                        }
+
+                        // Delete database record
+                        $media->delete();
+                    }
+
+                    \Log::info('Comment images deleted', [
+                        'comment_id' => $comment->id,
+                        'deleted_count' => count($mediaToDelete),
+                        'user_id' => Auth::id()
+                    ]);
+                }
+            }
+
+            // Handle new image uploads if any
+            if ($request->hasFile('images')) {
+                $uploadedFiles = $this->uploadService->uploadMultipleFiles(
+                    $request->file('images'),
+                    Auth::user(),
+                    'comment_images',
+                    [
+                        'mediable_type' => Comment::class,
+                        'mediable_id' => $comment->id,
+                        'is_public' => true,
+                        'is_approved' => true,
+                    ]
+                );
+
+                // Log successful uploads
+                if (!empty($uploadedFiles)) {
+                    \Log::info('Comment images updated successfully', [
+                        'comment_id' => $comment->id,
+                        'files_count' => count($uploadedFiles),
+                        'user_id' => Auth::id()
+                    ]);
+                }
+            }
+
+            // Update has_media flag based on remaining media
+            $hasMedia = $comment->attachments()->where('type', 'image')->exists();
+            $comment->update(['has_media' => $hasMedia]);
+
+            // Fire real-time event for comment update
+            event(new \App\Events\CommentUpdated($comment));
+
+            // Handle AJAX request
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Bình luận đã được cập nhật thành công.',
+                    'comment' => $comment->load(['user', 'media']),
+                    'redirect' => route('threads.show', $comment->thread) . '#comment-' . $comment->id
+                ]);
+            }
+
+            return back()
+                ->with('success', 'Bình luận đã được cập nhật thành công!')
+                ->with('scroll_to_comment', $comment->id);
+        });
+    }
+
+    /**
+     * Get images for a comment (for edit mode)
+     *
+     * @param  \App\Models\Comment  $comment
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getImages(Comment $comment)
+    {
+        // Check if user can edit this comment
+        if ($comment->user_id !== Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $images = $comment->media()->where('type', 'image')->get()->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'filename' => $media->filename,
+                'url' => Storage::url($media->path),
+                'size' => $media->size ?? 0
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'images' => $images
+        ]);
     }
 }

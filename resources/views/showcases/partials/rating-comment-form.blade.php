@@ -43,7 +43,7 @@
                             </div>
                         </div>
 
-                        {{-- Phần nhận xét với CKEditor --}}
+                        {{-- Phần nhận xét với TinyMCE --}}
                         <div class="comment-section mb-4">
                             <h6 class="form-section-title">
                                 <i class="fas fa-comment text-primary"></i>
@@ -55,12 +55,13 @@
                                     alt="Avatar"
                                     onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=48'">
                                 <div class="flex-grow-1">
-                                    <x-ckeditor5-comment
+                                    <x-tinymce-editor
                                         name="review"
-                                        placeholder="Chia sẻ nhận xét chi tiết về showcase này..."
                                         id="rating-comment-editor"
+                                        placeholder="Chia sẻ nhận xét chi tiết về showcase này..."
+                                        context="comment"
+                                        :height="120"
                                         :required="false"
-                                        minHeight="120px"
                                     />
                                 </div>
                             </div>
@@ -72,12 +73,16 @@
                                 <i class="fas fa-images text-success"></i>
                                 Hình ảnh minh họa (tùy chọn)
                             </h6>
-                            <x-enhanced-image-upload
+                            <x-advanced-file-upload
                                 name="images"
                                 id="rating-comment-upload"
+                                :file-types="['jpg', 'png', 'gif', 'webp']"
+                                max-size="5MB"
                                 :max-files="10"
-                                max-size="5"
                                 :multiple="true"
+                                context="showcase"
+                                upload-text="Kéo thả hình ảnh vào đây hoặc click để chọn"
+                                accept-description="Hình ảnh minh họa cho đánh giá"
                             />
                         </div>
 
@@ -300,10 +305,11 @@ function resetForm() {
         }
     });
 
-    // Reset CKEditor if available
+    // Reset TinyMCE if available
     const editorId = 'rating-comment-editor';
-    if (window[`ckeditor_${editorId}`]) {
-        window[`ckeditor_${editorId}`].setData('');
+    const editor = tinymce.get(editorId);
+    if (editor) {
+        editor.setContent('');
     }
 
     // Reset file upload if available

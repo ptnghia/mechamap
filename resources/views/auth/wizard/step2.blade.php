@@ -252,19 +252,21 @@
                 {{ __('auth.register.verification_docs_description') }}
             </p>
 
-            <x-file-upload
+            <x-advanced-file-upload
                 name="verification_documents"
                 :file-types="['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx']"
                 max-size="10MB"
                 :multiple="true"
                 :max-files="5"
                 :required="false"
-                label="{{ __('auth.register.verification_docs_title') }}"
-                help-text="{{ __('auth.register.verification_docs_description') }}"
                 :show-progress="true"
                 :show-preview="true"
                 :drag-drop="true"
-                id="verification-docs-upload" />
+                id="verification-docs-upload"
+                context="document"
+                upload-text="{{ __('auth.register.verification_docs_title') }}"
+                accept-description="{{ __('auth.register.verification_docs_description') }}"
+            />
 
             @error('verification_documents')
                 <div class="invalid-feedback d-block mt-2">

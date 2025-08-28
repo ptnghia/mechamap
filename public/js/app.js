@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ========================================
 
 window.addEventListener('error', function(e) {
-    console.error('JavaScript Error:', e.error);
+    //console.error('JavaScript Error:', e.error);
     // Có thể gửi lỗi về server để tracking
 });
 

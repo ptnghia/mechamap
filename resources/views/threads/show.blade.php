@@ -4,6 +4,158 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/threads.css') }}">
+<style>
+.highlight-comment {
+    background-color: #fff3cd !important;
+    border-left: 4px solid #ffc107 !important;
+    transition: all 0.3s ease;
+    animation: highlightPulse 2s ease-in-out;
+}
+
+@keyframes highlightPulse {
+    0% { background-color: #fff3cd; }
+    50% { background-color: #ffeaa7; }
+    100% { background-color: #fff3cd; }
+}
+
+/* Inline Edit Form Styles */
+.inline-edit-form {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.inline-edit-form .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.existing-attachments .attachment-item {
+    transition: opacity 0.3s ease;
+}
+
+
+
+.compact-upload {
+    border: 2px dashed #dee2e6;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    background: #fff;
+}
+
+.compact-upload.small {
+    padding: 8px;
+    font-size: 0.9em;
+}
+
+.inline-edit-form .btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.inline-edit-form .d-flex.gap-2 {
+    gap: 0.5rem !important;
+}
+
+/* Image Preview Styles for Edit Mode */
+.image-preview-item {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.image-preview-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.image-preview-item:hover .image-overlay {
+    opacity: 1;
+}
+
+.remove-image-btn {
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.image-info {
+    padding: 5px;
+    text-align: center;
+    background: white;
+}
+
+.image-info small {
+    font-size: 11px;
+    word-break: break-all;
+    line-height: 1.2;
+}
+
+/* Cancel button for edit mode - should be visible */
+.cancel-edit-btn {
+    display: inline-block;
+}
+
+/* Comment image delete button */
+.comment-image-wrapper {
+    position: relative;
+}
+
+.delete-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.comment-image-wrapper:hover .delete-image-btn {
+    opacity: 1;
+}
+</style>
 @endpush
 
 @section('content')
@@ -13,7 +165,7 @@
         <div class="detail_thread_body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="d-flex align-items-center thread_user">
-                    <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}" class="rounded-circle me-2" width="40" height="40" onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1))]) }}'">
+                    <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}" class="rounded-circle me-2" width="40" height="40">
                     <div>
                         <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}" class="fw-bold text-decoration-none">{{ $thread->user->name }}</a>
                         <div class="text-muted small">
@@ -24,8 +176,30 @@
                 </div>
                 <div class="thread-actions d-flex gap-2 align-items-center">
                     <x-thread-follow-button :thread="$thread" size="normal" />
-                    <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="fas fa-arrow-down"></i> {{ __('thread.go_to_end') }}
+                    <!-- Save Button -->
+                    @auth
+                    <button type="button" class="btn btn-sm  {{ $isSaved ? 'btn-primary ' : 'btn-outline-primary' }} btn-save" data-thread-id="{{ $thread->id }}"
+                            data-thread-slug="{{ $thread->slug }}"
+                            data-saved="{{ $isSaved ? 'true' : 'false' }}"
+                            title="{{ $isSaved ? __('thread.unsave') : __('thread.save') }}">
+                        <i class="{{ $isSaved ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark' }} me-1"></i>
+                        <span class="save-text">{{ $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}</span>
+                        @if($thread->saves_count > 0)
+                        <span class="badge bg-danger text-dark ms-1 save-count">{{ number_format($thread->saves_count) }}</span>
+                        @endif
+                    </button>
+                    @else
+                    <button type="button"  class="btn btn-sm btn-outline-primary btn-save ms-2" onclick="showLoginModal()" title="{{ __('thread.login_to_save') }}">
+                        <i class="far fa-bookmark"></i>
+                        <span class="save-text">{{ __('thread.bookmark') }}</span>
+                        @if($thread->saves_count > 0)
+                        <span class="badge bg-light text-dark ms-1 save-count">{{ number_format($thread->saves_count) }}</span>
+                        @endif
+                    </button>
+                    @endauth
+
+                    <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-arrow-down me-1"></i> {{ __('thread.go_to_end') }}
                     </a>
                 </div>
             </div>
@@ -57,9 +231,9 @@
             <!-- Thread Featured Image -->
             @if($thread->featured_image)
             <div class="thread-featured-image mb-3">
-                <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid rounded shadow"
-                    style="max-height: 400px; width: 100%; object-fit: cover;"
-                    onerror="this.src='{{ asset('images/placeholder.svg') }}'">
+                @if ($thread->featured_image)
+                <img src="{{ $thread->featured_image }}" alt="{{ $thread->title }}" class="img-fluid" style="max-height: 400px; width: 100%; object-fit: cover;" >
+                @endif
             </div>
             @endif
 
@@ -77,15 +251,9 @@
                 <div class="row g-3">
                     @foreach($thread->media as $media)
                     @if($media->file_category === 'image' || str_starts_with($media->mime_type ?? '', 'image/'))
-                    <div class="col-md-4 col-sm-6 mb-3">
-                        <a href="{{ asset($media->file_path) }}"
-                            data-fancybox="thread-images"
-                            data-caption="{{ $media->file_name }}">
-                            <img src="{{ asset($media->file_path) }}"
-                                alt="{{ $media->file_name }}"
-                                class="img-fluid rounded shadow-sm"
-                                style="width: 100%; height: 200px; object-fit: cover; cursor: pointer;"
-                                onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                    <div class="col-md-3 col-sm-4 col-6">
+                        <a href="{{ asset($media->file_path) }}" data-fancybox="thread-images" data-caption="{{ $media->file_name }}">
+                            <img src="{{ asset($media->file_path) }}" alt="{{ $media->file_name }}"class="img-fluid rounded shadow-sm" style="width: 100%; height: 200px; object-fit: cover; cursor: pointer;" onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
                         </a>
                     </div>
                     @endif
@@ -104,70 +272,23 @@
                             data-thread-slug="{{ $thread->slug }}"
                             data-liked="{{ $isLiked ? 'true' : 'false' }}"
                             title="{{ $isLiked ? __('thread.unlike') : __('thread.like') }}">
-                        <i class="fas fa-thumbs-up"></i>
+                        <i class="fas fa-thumbs-up me-1"></i>
                         {{ __('thread.like') }}
-                        <span class="badge bg-secondary like-count">{{ $thread->likes_count ?? 0 }}</span>
+                        <span class="badge bg-danger like-count">{{ $thread->likes_count ?? 0 }}</span>
                     </button>
                     @else
-                    <button type="button"
-                            class="btn btn-sm btn_meta btn-like"
-                            onclick="showLoginModal()"
-                            title="{{ __('thread.login_to_like') }}">
+                    <button type="button" class="btn btn-sm btn_meta btn-like" onclick="showLoginModal()" title="{{ __('thread.login_to_like') }}">
                         <i class="fas fa-thumbs-up"></i>
                         {{ __('thread.like') }}
                         <span class="badge bg-secondary like-count">{{ $thread->likes_count ?? 0 }}</span>
                     </button>
                     @endauth
-
-                    <!-- Save Button -->
-                    @auth
-                    <button type="button"
-                            class="btn btn-sm btn_meta {{ $isSaved ? 'active' : '' }} btn-save ms-2"
-                            data-thread-id="{{ $thread->id }}"
-                            data-thread-slug="{{ $thread->slug }}"
-                            data-saved="{{ $isSaved ? 'true' : 'false' }}"
-                            title="{{ $isSaved ? __('thread.unsave') : __('thread.save') }}">
-                        <i class="{{ $isSaved ? 'fas fa-bookmark' : 'far fa-bookmark' }}"></i>
-                        <span class="save-text">{{ $isSaved ? __('thread.bookmarked') : __('thread.bookmark') }}</span>
-                    </button>
-                    @else
-                    <button type="button"
-                            class="btn btn-sm btn_meta btn-save ms-2"
-                            onclick="showLoginModal()"
-                            title="{{ __('thread.login_to_save') }}">
-                        <i class="far fa-bookmark"></i>
-                        <span class="save-text">{{ __('thread.bookmark') }}</span>
-                    </button>
-                    @endauth
-
-                    <!-- Follow Button -->
-                    @php
-                    $isFollowed = Auth::check() && $thread->isFollowedBy(Auth::user());
-                    @endphp
-                    @if($isFollowed)
-                    <form action="{{ route('threads.follow.remove', $thread) }}" method="POST" class="d-inline ms-2">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-theodoi btn_meta active">
-                            <i class="fas fa-bell-fill"></i>
-                            {{ __('thread.following') }}
-                        </button>
-                    </form>
-                    @else
-                    <form action="{{ route('threads.follow.add', $thread) }}" method="POST" class="d-inline ms-2">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-theodoi btn_meta">
-                            <i class="fas fa-bell"></i>
-                            {{ __('thread.follow') }}
-                        </button>
-                    </form>
-                    @endif
                 </div>
 
                 <div class="d-flex align-items-center">
                     <!-- Share Button -->
                     <div class="dropdown dropdown-button d-inline">
-                        <button class="btn btn-sm btn-main no-border dropdown-toggle btn-share" type="button"
+                        <button class="btn btn-sm no-border dropdown-toggle btn-share" type="button"
                             id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-share-alt"></i> {{ __('thread.share') }}
                         </button>
@@ -199,7 +320,7 @@
                     </div>
 
                     <!-- Reply Button -->
-                    <a href="#reply-form" class="btn btn-sm btn-primary ms-2 btn-traloi">
+                    <a href="#reply-form" class="btn btn-sm  ms-2 btn-traloi">
                         <i class="fas fa-reply"></i> {{ __('thread.reply') }}
                     </a>
 
@@ -285,16 +406,13 @@
                     </button>
                 </div>
             </div>
-
             <!-- Comments List -->
             <div id="comments-container">
             @forelse($comments as $comment)
             <div class="comment_item mb-3" id="comment-{{ $comment->id }}">
                 <div class="d-flex">
                     <div class="comment_item_avatar">
-                        <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}"
-                                class="rounded-circle me-2" width="40" height="40"
-                                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($comment->user->name, 0, 1)), 'size' => 40]) }}'">
+                        <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="40" height="40">
                     </div>
                     <div class="comment_item_body">
                         <div class="comment_item_user">
@@ -306,20 +424,80 @@
                                 <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
                             </div>
                         </div>
-                        <div class="comment_item_content">
+                        <div class="comment_item_content" id="comment-content-{{ $comment->id }}">
                             {!! $comment->content !!}
+                        </div>
+
+                        <!-- Inline Edit Form (Hidden by default) -->
+                        <div class="inline-edit-form" id="edit-form-{{ $comment->id }}" style="display: none;">
+                            <form class="comment-edit-form" data-comment-id="{{ $comment->id }}">
+                                @csrf
+                                <input type="hidden" name="_method" value="PUT">
+
+                                <!-- Rich Text Editor -->
+                                <div class="mb-3">
+                                    <x-tinymce-editor
+                                        name="content"
+                                        id="edit-content-{{ $comment->id }}"
+                                        :value="$comment->content"
+                                        context="comment"
+                                        :height="200"
+                                        placeholder="{{ __('thread.edit_comment_placeholder') }}"
+                                        :required="true"
+                                    />
+                                </div>
+
+
+
+                                <!-- New Image Upload -->
+                                <div class="mb-3">
+                                    <x-advanced-file-upload
+                                        name="new_attachments[]"
+                                        id="new-attachments-{{ $comment->id }}"
+                                        :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+                                        max-size="5MB"
+                                        :max-files="5"
+                                        :multiple="true"
+                                        context="comment"
+                                        upload-text="{{ __('thread.add_new_images') }}"
+                                        accept-description="{{ __('thread.images_only') }}"
+                                        :show-preview="true"
+                                        class="compact-upload"
+                                    />
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
+                                        <i class="fas fa-save me-1"></i>
+                                        {{ __('thread.save_changes') }}
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
+                                            data-comment-id="{{ $comment->id }}">
+                                        <i class="fas fa-times me-1"></i>
+                                        {{ __('common.cancel') }}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                         @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
                         <div class="comment-attachments mt-3">
                             <div class="row g-2">
                                 @foreach($comment->attachments as $attachment)
                                 <div class="col-md-3 col-sm-4 col-6">
-                                    <a href="{{ $attachment->url }}" class="d-block"
-                                        data-fancybox="comment-{{ $comment->id }}-images"
-                                        data-caption="{{ $attachment->file_name }}">
-                                        <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
-                                            class="img-fluid rounded">
-                                    </a>
+                                    <div class="comment-image-wrapper position-relative">
+                                        <a href="{{ $attachment->url }}" class="d-block" data-fancybox="comment-{{ $comment->id }}-images" data-caption="{{ $attachment->file_name }}">
+                                            <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}" class="img-fluid rounded">
+                                        </a>
+                                        @can('update', $comment)
+                                        <button type="button" class="btn btn-danger btn-sm delete-image-btn position-absolute"
+                                                data-image-id="{{ $attachment->id }}"
+                                                data-comment-id="{{ $comment->id }}"
+                                                title="Xóa hình ảnh">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        @endcan
+                                    </div>
                                 </div>
                                 @endforeach
                             </div>
@@ -327,51 +505,46 @@
                         @endif
                         <div class="comment_item_meta d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
+                                <span class="btn btn-sm btn_meta text-muted"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
                                 <!-- Like Button -->
                                 @auth
-                                <button type="button"
-                                        class="btn btn-sm btn_meta comment-like-btn {{ $comment->isLikedBy(auth()->user()) ? 'active' : '' }}"
+                                <button type="button" class="btn  text-muted btn-sm btn_meta comment-like-btn {{ $comment->isLikedBy(auth()->user()) ? 'active' : '' }}"
                                         data-comment-id="{{ $comment->id }}"
                                         data-liked="{{ $comment->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
                                         title="{{ $comment->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
-                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $comment->like_count }}</span> {{ __('thread.like') }}
+                                    <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count me-1">{{ $comment->like_count }}</span> {{ __('thread.like') }}
                                 </button>
                                 @else
-                                <button type="button"
-                                        class="btn btn-sm btn_meta comment-like-btn"
-                                        onclick="showLoginModal()"
-                                        title="{{ __('thread.login_to_like') }}">
-                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $comment->like_count }}</span> {{ __('thread.like') }}
+                                <button type="button" class="btn text-muted btn-sm btn_meta comment-like-btn" onclick="showLoginModal()" title="{{ __('thread.login_to_like') }}">
+                                    <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count me-1">{{ $comment->like_count }}</span> {{ __('thread.like') }}
                                 </button>
                                 @endauth
                             </div>
                             <div>
                                 <!-- Quote Button -->
-                                <button class="btn btn-main no-border quote-button" data-comment-id="{{ $comment->id }}"
-                                    data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
-                                    <i class="fa-solid fa-quote-left"></i> {{ __('thread.quote') }}
+                                <button class="btn btn-sm text-muted no-border quote-button" data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
+                                    <i class="fa-solid fa-quote-left me-1"></i> {{ __('thread.quote') }}
                                 </button>
 
                                 <!-- Reply Button -->
-                                <button class="btn btn-main no-border reply-button ms-2"
+                                <button class="btn text-muted btn-sm no-border reply-button ms-2"
                                     data-parent-id="{{ $comment->id }}">
-                                    <i class="fas fa-reply"></i> {{ __('thread.reply') }}
+                                    <i class="fas fa-reply me-1"></i> {{ __('thread.reply') }}
                                 </button>
 
                                 <!-- Edit/Delete Buttons (if owner) -->
                                 @can('update', $comment)
                                 <div class="btn-group ms-2">
-                                    <button class="btn btn-main active edit-comment-button"
-                                        data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}">
-                                        <i class="fas fa-edit"></i>
+                                    <button class="btn btn-sm btn-primary inline-edit-comment-btn"
+                                            data-comment-id="{{ $comment->id }}"
+                                            title="{{ __('thread.edit_comment') }}">
+                                        <i class="fas fa-edit me-1"></i>
                                     </button>
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-danger delete-comment-btn"
+                                    <button type="button" class="btn btn-sm btn-danger delete-comment-btn"
                                             data-comment-id="{{ $comment->id }}"
                                             data-comment-type="comment"
                                             title="{{ __('thread.delete_comment') }}">
-                                        <i class="fas fa-trash"></i>
+                                        <i class="fas fa-trash me-1"></i>
                                     </button>
                                 </div>
                                 @endcan
@@ -383,7 +556,7 @@
                             <div class="comment_item mb-3">
                                 <div class="d-flex">
                                     <div class="comment_item_avatar">
-                                        <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}" class="rounded-circle me-2" width="30" height="30" onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($reply->user->name, 0, 1)), 'size' => 40]) }}'">
+                                        <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}" class="rounded-circle me-2" width="30" height="30">
                                     </div>
                                     <div class="comment_item_body sub">
                                         <div class="comment_item_user">
@@ -395,8 +568,61 @@
                                                 <span>{{ __('thread.joined') }} {{ $reply->user->created_at->format('M Y') }}</span>
                                             </div>
                                         </div>
-                                        <div class="comment_item_content">
+                                        <div class="comment_item_content" id="comment-content-{{ $reply->id }}">
                                             {!! $reply->content !!}
+                                        </div>
+
+                                        <!-- Inline Edit Form for Reply (Hidden by default) -->
+                                        <div class="inline-edit-form" id="edit-form-{{ $reply->id }}" style="display: none;">
+                                            <form class="comment-edit-form" data-comment-id="{{ $reply->id }}">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="PUT">
+
+                                                <!-- Rich Text Editor -->
+                                                <div class="mb-3">
+                                                    <x-tinymce-editor
+                                                        name="content"
+                                                        id="edit-content-{{ $reply->id }}"
+                                                        :value="$reply->content"
+                                                        context="comment"
+                                                        :height="150"
+                                                        placeholder="{{ __('thread.edit_reply_placeholder') }}"
+                                                        :required="true"
+                                                    />
+                                                </div>
+
+
+
+                                                <!-- New Image Upload -->
+                                                <div class="mb-3">
+                                                    <x-advanced-file-upload
+                                                        name="new_attachments[]"
+                                                        id="new-attachments-{{ $reply->id }}"
+                                                        :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
+                                                        max-size="5MB"
+                                                        :max-files="3"
+                                                        :multiple="true"
+                                                        context="comment"
+                                                        upload-text="{{ __('thread.add_new_images') }}"
+                                                        accept-description="{{ __('thread.images_only') }}"
+                                                        :show-preview="true"
+                                                        class="compact-upload small"
+                                                    />
+                                                </div>
+
+                                                <!-- Form Actions -->
+                                                <div class="d-flex gap-2">
+                                                    <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
+                                                        <i class="fas fa-save me-1"></i>
+                                                        {{ __('thread.save_changes') }}
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
+                                                            data-comment-id="{{ $reply->id }}">
+                                                        <i class="fas fa-times me-1"></i>
+                                                        {{ __('common.cancel') }}
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                         @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
                                         <div class="reply-attachments mt-2">
@@ -445,8 +671,9 @@
                                                 <!-- Edit/Delete Buttons (if owner) -->
                                                 @can('update', $reply)
                                                 <div class="btn-group ms-2">
-                                                    <button class="btn btn-sm btn-main active edit-comment-button"
-                                                        data-comment-id="{{ $reply->id }}" data-comment-content="{{ $reply->content }}">
+                                                    <button class="btn btn-sm btn-main inline-edit-comment-btn"
+                                                            data-comment-id="{{ $reply->id }}"
+                                                            title="{{ __('thread.edit_reply') }}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button type="button"
@@ -527,13 +754,16 @@
                 </div>
 
                 <!-- File Upload Component -->
-                <x-file-upload
+                <x-advanced-file-upload
                     name="images"
                     :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
                     max-size="5MB"
                     :multiple="true"
                     :max-files="10"
                     id="thread-reply-images"
+                    context="thread"
+                    upload-text="Đính kèm hình ảnh cho phản hồi"
+                    accept-description="Hình ảnh minh họa"
                 />
 
                 @error('images.*')
@@ -598,10 +828,29 @@
 @push('scripts')
 <!-- TinyMCE is now handled by the component -->
 <script>
-    // Initialize event handlers when DOM is ready
+// Initialize event handlers when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initializeEventHandlers();
     initializeRealTimeComments();
+
+    // Auto-scroll to new comment if specified
+    @if(session('scroll_to_comment'))
+        const commentId = {{ session('scroll_to_comment') }};
+        const commentElement = document.getElementById('comment-' + commentId);
+        if (commentElement) {
+            setTimeout(() => {
+                commentElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                // Add highlight effect
+                commentElement.classList.add('highlight-comment');
+                setTimeout(() => {
+                    commentElement.classList.remove('highlight-comment');
+                }, 3000);
+            }, 500);
+        }
+    @endif
 });
 
 // File upload functionality is now handled by the FileUploadComponent
@@ -848,60 +1097,422 @@ function initializeEventHandlers() {
         });
     });
 
-    // Handle edit comment buttons
-    document.querySelectorAll('.edit-comment-button').forEach(button => {
+    // Handle inline edit comment buttons
+    document.querySelectorAll('.inline-edit-comment-btn').forEach(button => {
         button.addEventListener('click', function() {
             const commentId = this.getAttribute('data-comment-id');
-            const commentContent = this.getAttribute('data-comment-content');
 
-            // Create edit form with TinyMCE
-            const commentCard = this.closest('.card');
-            const commentBody = commentCard.querySelector('.card-body');
-            const originalContent = commentBody.innerHTML;
+            // Get content directly from DOM element
+            const contentElement = document.querySelector(`#comment-content-${commentId}`);
+            if (!contentElement) {
+                console.error('Content element not found for comment:', commentId);
+                showNotification('{{ __("thread.content_not_found") }}', 'error');
+                return;
+            }
 
-            const editForm = document.createElement('form');
-            editForm.setAttribute('action', `/comments/${commentId}`);
-            editForm.setAttribute('method', 'POST');
-            editForm.classList.add('edit-comment-form');
+            const content = contentElement.innerHTML;
+            showInlineEditForm(commentId, content);
+        });
+    });
 
-            editForm.innerHTML = `
-                @csrf
-                @method('PUT')
-                <div class="mb-3">
-                    <label for="edit-content-${commentId}" class="form-label">Chỉnh sửa bình luận của bạn</label>
-                    <textarea id="edit-content-${commentId}" name="content">${commentContent}</textarea>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-outline-secondary me-2 cancel-edit-button">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                </div>
-            `;
+    // Function to show inline edit form
+    function showInlineEditForm(commentId, content) {
+        // Hide comment content and show edit form
+        const commentContent = document.getElementById(`comment-content-${commentId}`);
+        const editForm = document.getElementById(`edit-form-${commentId}`);
 
-            commentBody.innerHTML = '';
-            commentBody.appendChild(editForm);
+        if (commentContent && editForm) {
+            // Store original content for cancel functionality
+            editForm.setAttribute('data-original-content', content);
 
-            // Initialize TinyMCE for edit form
-            tinymce.init({
-                selector: `#edit-content-${commentId}`,
-                height: 150,
-                menubar: false,
-                branding: false,
-                plugins: 'advlist autolink lists link textcolor',
-                toolbar: 'bold italic underline | bullist numlist | link',
-                placeholder: 'Chỉnh sửa bình luận...',
-                content_style: `
-                    body {
-                        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-                        font-size: 14px;
-                        line-height: 1.6;
+            commentContent.style.display = 'none';
+            editForm.style.display = 'block';
+
+            // Initialize TinyMCE for this specific editor if not already initialized
+            const editorId = `edit-content-${commentId}`;
+
+            // Wait a bit for the form to be visible, then initialize TinyMCE
+            setTimeout(() => {
+                if (!tinymce.get(editorId)) {
+                    // Initialize TinyMCE for this editor
+                    initializeTinyMCEEditor(editorId, 'comment', {
+                        height: commentContent.closest('.comment_item_body.sub') ? 150 : 200,
+                        placeholder: 'Chỉnh sửa nội dung...',
+                        required: true,
+                        setup: function(editor) {
+                            // Set content after editor is ready
+                            editor.on('init', function() {
+                                editor.setContent(content);
+                            });
+
+                            // Add Escape key handler
+                            editor.on('keydown', function(e) {
+                                if (e.keyCode === 27) { // Escape key
+                                    e.preventDefault();
+                                    hideInlineEditForm(commentId);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    // Editor already exists, just set content
+                    tinymce.get(editorId).setContent(content);
+                }
+
+                // Focus the editor
+                setTimeout(() => {
+                    if (tinymce.get(editorId)) {
+                        tinymce.get(editorId).focus();
                     }
-                `
+                }, 100);
+            }, 100);
+        }
+    }
+
+    // Handle cancel edit buttons and click outside
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('cancel-edit-btn') || e.target.closest('.cancel-edit-btn')) {
+            const button = e.target.classList.contains('cancel-edit-btn') ? e.target : e.target.closest('.cancel-edit-btn');
+            const commentId = button.getAttribute('data-comment-id');
+            hideInlineEditForm(commentId);
+        }
+
+        // Handle click outside edit form to cancel
+        const activeEditForms = document.querySelectorAll('[id^="edit-form-"]:not([style*="display: none"])');
+        activeEditForms.forEach(form => {
+            if (!form.contains(e.target) && !e.target.closest('.inline-edit-comment-btn')) {
+                const commentId = form.id.replace('edit-form-', '');
+                hideInlineEditForm(commentId);
+            }
+        });
+    });
+
+    // Global Escape key handler for inline edit forms
+    document.addEventListener('keydown', function(e) {
+        if (e.keyCode === 27) { // Escape key
+            const activeEditForms = document.querySelectorAll('[id^="edit-form-"]:not([style*="display: none"])');
+            activeEditForms.forEach(form => {
+                const commentId = form.id.replace('edit-form-', '');
+                hideInlineEditForm(commentId);
+            });
+        }
+    });
+
+
+
+    // Function to hide inline edit form
+    function hideInlineEditForm(commentId) {
+        const commentContent = document.getElementById(`comment-content-${commentId}`);
+        const editForm = document.getElementById(`edit-form-${commentId}`);
+
+        if (commentContent && editForm) {
+            commentContent.style.display = 'block';
+            editForm.style.display = 'none';
+
+
+
+            // Remove TinyMCE instance to prevent memory leaks
+            const editorId = `edit-content-${commentId}`;
+            if (tinymce.get(editorId)) {
+                tinymce.get(editorId).remove();
+            }
+
+            // Clear any uploaded files in the upload component
+            const uploadComponent = editForm.querySelector('.advanced-file-upload');
+            if (uploadComponent) {
+                // Clear file input
+                const fileInput = uploadComponent.querySelector('input[type="file"]');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+
+                // Clear preview area
+                const previewArea = uploadComponent.querySelector('.file-preview-area');
+                if (previewArea) {
+                    previewArea.innerHTML = '';
+                }
+
+                // Reset upload text
+                const uploadText = uploadComponent.querySelector('.upload-text');
+                if (uploadText) {
+                    uploadText.style.display = 'block';
+                }
+            }
+        }
+    }
+
+    // Handle comment edit form submissions
+    document.addEventListener('submit', function(e) {
+        if (e.target.classList.contains('comment-edit-form')) {
+            e.preventDefault();
+
+            const form = e.target;
+            const commentId = form.getAttribute('data-comment-id');
+            const editorId = `edit-content-${commentId}`;
+
+            // Get content from TinyMCE
+            let content = '';
+            if (tinymce.get(editorId)) {
+                content = tinymce.get(editorId).getContent();
+            }
+
+            if (!content.trim()) {
+                alert('{{ __("thread.content_required") }}');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = form.querySelector('.save-comment-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> {{ __("thread.saving") }}';
+            submitBtn.disabled = true;
+
+            // Prepare FormData for POST request with method spoofing
+            const updateFormData = new FormData();
+            updateFormData.append('content', content);
+            updateFormData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+            updateFormData.append('_method', 'PUT');
+
+            // Add new attachments
+            const fileInputs = form.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    Array.from(input.files).forEach(file => {
+                        updateFormData.append('new_attachments[]', file);
+                    });
+                }
             });
 
-            // Handle cancel edit
-            commentBody.querySelector('.cancel-edit-button').addEventListener('click', function() {
-                tinymce.remove(`#edit-content-${commentId}`);
-                commentBody.innerHTML = originalContent;
+            // Function to make API request with CSRF token refresh on 419 error
+            const makeUpdateRequest = (retryCount = 0) => {
+                return fetch(`/api/comments/${commentId}`, {
+                    method: 'POST',
+                    body: updateFormData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    // Handle 419 CSRF token mismatch
+                    if (response.status === 419 && retryCount === 0) {
+                        console.log('CSRF token expired, refreshing page...');
+                        // For CSRF token mismatch, refresh the page to get new token
+                        showNotification('Phiên làm việc đã hết hạn. Đang tải lại trang...', 'info');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                        return Promise.reject(new Error('CSRF token expired, refreshing page'));
+                    }
+
+                    return response.json();
+                });
+            };
+
+            // Submit via AJAX with CSRF error handling
+            makeUpdateRequest()
+            .then(data => {
+                if (data.success) {
+                    // Update comment content in DOM
+                    updateCommentInDOM(commentId, data.comment);
+
+                    // Hide edit form
+                    hideInlineEditForm(commentId);
+
+                    // Show success message
+                    showNotification('{{ __("thread.comment_updated_successfully") }}', 'success');
+                } else {
+                    throw new Error(data.message || '{{ __("thread.update_failed") }}');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (!error.message.includes('CSRF token expired')) {
+                    showNotification(error.message || '{{ __("thread.update_failed") }}', 'error');
+                }
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+    });
+
+
+
+    // Function to update comment in DOM after successful edit
+    function updateCommentInDOM(commentId, commentData) {
+        const commentContent = document.getElementById(`comment-content-${commentId}`);
+        if (commentContent) {
+            // Update content
+            commentContent.innerHTML = commentData.content;
+
+            // Update attachments if provided
+            if (commentData.attachments) {
+                // Find existing attachments container
+                let attachmentsContainer = commentContent.parentNode.querySelector('.comment-attachments, .reply-attachments');
+
+                if (commentData.attachments.length > 0) {
+                    // Create or update attachments container
+                    if (!attachmentsContainer) {
+                        attachmentsContainer = document.createElement('div');
+                        attachmentsContainer.className = commentContent.closest('.comment_item_body.sub') ? 'reply-attachments mt-2' : 'comment-attachments mt-3';
+                        commentContent.parentNode.insertBefore(attachmentsContainer, commentContent.nextSibling);
+                    }
+
+                    // Build attachments HTML
+                    const attachmentsHTML = `
+                        <div class="row g-2">
+                            ${commentData.attachments.map(attachment => `
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <a href="${attachment.url}" class="d-block"
+                                       data-fancybox="comment-${commentId}-images"
+                                       data-caption="${attachment.file_name}">
+                                        <img src="${attachment.url}" alt="${attachment.file_name}" class="img-fluid rounded">
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    attachmentsContainer.innerHTML = attachmentsHTML;
+                } else if (attachmentsContainer) {
+                    // Remove attachments container if no attachments
+                    attachmentsContainer.remove();
+                }
+            }
+        }
+    }
+
+    // Function to show notification
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+
+
+    // Function to clear uploaded images
+    function clearUploadedImages() {
+        const imagePreview = document.getElementById('image-preview');
+        if (imagePreview) {
+            imagePreview.innerHTML = '';
+        }
+
+        // Reset file input
+        const fileInput = document.getElementById('images');
+        if (fileInput) {
+            fileInput.value = '';
+        }
+
+        // Clear deleted images list
+        const deletedImages = document.getElementById('deleted-images');
+        if (deletedImages) {
+            deletedImages.remove();
+        }
+    }
+}
+
+// Function to initialize delete image buttons
+function initializeDeleteImageButtons() {
+    document.querySelectorAll('.delete-image-btn').forEach(button => {
+        // Remove existing listeners to avoid duplicates
+        button.replaceWith(button.cloneNode(true));
+    });
+
+    document.querySelectorAll('.delete-image-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const imageId = this.getAttribute('data-image-id');
+            const commentId = this.getAttribute('data-comment-id');
+            const imageWrapper = this.closest('.comment-image-wrapper').parentElement;
+            const deleteButton = this;
+
+            // Use SweetAlert2 for confirmation
+            Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn xóa hình ảnh này không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Disable button during request
+                    deleteButton.disabled = true;
+                    deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                    // Send delete request
+                    fetch(`/comments/${commentId}/images/${imageId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Remove image from DOM with animation
+                            imageWrapper.style.transition = 'opacity 0.3s ease';
+                            imageWrapper.style.opacity = '0';
+                            setTimeout(() => {
+                                imageWrapper.remove();
+
+                                // Check if no more images left in this comment
+                                const attachmentsContainer = document.querySelector(`#comment-${commentId} .comment-attachments`);
+                                if (attachmentsContainer && attachmentsContainer.querySelectorAll('.col-md-3, .col-sm-4, .col-6').length === 0) {
+                                    attachmentsContainer.remove();
+                                }
+                            }, 300);
+
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Đã xóa hình ảnh thành công.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Lỗi!',
+                                text: data.message || 'Có lỗi xảy ra khi xóa hình ảnh.',
+                                icon: 'error'
+                            });
+                            deleteButton.disabled = false;
+                            deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi xóa hình ảnh.',
+                            icon: 'error'
+                        });
+                        deleteButton.disabled = false;
+                        deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                    });
+                }
             });
         });
     });
@@ -1012,6 +1623,7 @@ function initializeThreadActions() {
 
                     const icon = button.querySelector('i');
                     const text = button.querySelector('.save-text');
+                    let countBadge = button.querySelector('.save-count');
 
                     if (icon && text) {
                         if (newSaved) {
@@ -1024,6 +1636,22 @@ function initializeThreadActions() {
                             icon.className = 'far fa-bookmark';
                             text.textContent = '{{ __("thread.bookmark") }}';
                             button.title = '{{ __("thread.save") }}';
+                        }
+
+                        // Update save count badge
+                        if (data.saves_count !== undefined) {
+                            if (data.saves_count > 0) {
+                                if (!countBadge) {
+                                    countBadge = document.createElement('span');
+                                    countBadge.className = 'badge bg-light text-dark ms-1 save-count';
+                                    button.appendChild(countBadge);
+                                }
+                                countBadge.textContent = new Intl.NumberFormat().format(data.saves_count);
+                            } else {
+                                if (countBadge) {
+                                    countBadge.remove();
+                                }
+                            }
                         }
                     } else {
                         // Fallback: Force page reload if elements can't be updated
@@ -1114,59 +1742,66 @@ function initializeThreadActions() {
 
     // Handle delete comment button clicks
     document.querySelectorAll('.delete-comment-btn').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             const commentId = this.dataset.commentId;
             const commentType = this.dataset.commentType;
             const confirmMessage = commentType === 'reply' ?
                 '{{ __("thread.delete_reply_message") }}' :
                 '{{ __("thread.delete_comment_message") }}';
 
-            if (!confirm(confirmMessage)) {
-                return;
-            }
-
-            // Disable button during request
-            this.disabled = true;
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-            // Make AJAX request
-            fetch(`/comments/${commentId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+            // Use SweetAlert2 for confirmation
+            window.showDeleteConfirm(confirmMessage).then((result) => {
+                if (!result.isConfirmed) {
+                    return;
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Remove comment element from DOM
-                    const commentElement = document.querySelector(`#comment-${commentId}`);
-                    if (commentElement) {
-                        commentElement.style.transition = 'opacity 0.3s ease';
-                        commentElement.style.opacity = '0';
 
-                        setTimeout(() => {
-                            commentElement.remove();
-                        }, 300);
+                // Proceed with deletion
+                const button = this;
+
+                // Disable button during request
+                button.disabled = true;
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                // Make AJAX request
+                fetch(`/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove comment element from DOM
+                        const commentElement = document.querySelector(`#comment-${commentId}`);
+                        if (commentElement) {
+                            commentElement.style.transition = 'opacity 0.3s ease';
+                            commentElement.style.opacity = '0';
 
-                    // Show success message
-                    showToast(data.message, 'success');
-                } else {
-                    throw new Error(data.message || 'Server error');
-                }
-            })
-            .catch(error => {
-                console.error('Delete comment error:', error);
-                showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+                            setTimeout(() => {
+                                commentElement.remove();
+                            }, 300);
+                        }
 
-                // Reset button state
-                this.disabled = false;
-                this.innerHTML = originalContent;
+                        // Show success message
+                        showToast(data.message, 'success');
+                    } else {
+                        throw new Error(data.message || 'Server error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Delete comment error:', error);
+                    showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+
+                    // Reset button state
+                    button.disabled = false;
+                    button.innerHTML = originalContent;
+                });
             });
         });
     });
@@ -1237,6 +1872,9 @@ function initializeThreadActions() {
             });
         });
     });
+
+    // Initialize delete image buttons on page load
+    initializeDeleteImageButtons();
 }
 
 // Initialize comment interactions (likes, delete, etc.) for dynamically loaded content
@@ -1313,59 +1951,66 @@ function initializeCommentInteractions() {
         const newButton = button.cloneNode(true);
         button.parentNode.replaceChild(newButton, button);
 
-        newButton.addEventListener('click', function() {
+        newButton.addEventListener('click', function(e) {
+            e.preventDefault();
             const commentId = this.dataset.commentId;
             const commentType = this.dataset.commentType;
             const confirmMessage = commentType === 'reply' ?
                 '{{ __("thread.delete_reply_message") }}' :
                 '{{ __("thread.delete_comment_message") }}';
 
-            if (!confirm(confirmMessage)) {
-                return;
-            }
-
-            // Disable button during request
-            this.disabled = true;
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-            // Make AJAX request
-            fetch(`/comments/${commentId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+            // Use SweetAlert2 for confirmation
+            window.showDeleteConfirm(confirmMessage).then((result) => {
+                if (!result.isConfirmed) {
+                    return;
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Remove comment element from DOM
-                    const commentElement = document.querySelector(`#comment-${commentId}`);
-                    if (commentElement) {
-                        commentElement.style.transition = 'opacity 0.3s ease';
-                        commentElement.style.opacity = '0';
 
-                        setTimeout(() => {
-                            commentElement.remove();
-                        }, 300);
+                // Proceed with deletion
+                const button = this;
+
+                // Disable button during request
+                button.disabled = true;
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                // Make AJAX request
+                fetch(`/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove comment element from DOM
+                        const commentElement = document.querySelector(`#comment-${commentId}`);
+                        if (commentElement) {
+                            commentElement.style.transition = 'opacity 0.3s ease';
+                            commentElement.style.opacity = '0';
 
-                    // Show success message
-                    showToast(data.message, 'success');
-                } else {
-                    throw new Error(data.message || 'Server error');
-                }
-            })
-            .catch(error => {
-                console.error('Delete comment error:', error);
-                showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+                            setTimeout(() => {
+                                commentElement.remove();
+                            }, 300);
+                        }
 
-                // Reset button state
-                this.disabled = false;
-                this.innerHTML = originalContent;
+                        // Show success message
+                        showToast(data.message, 'success');
+                    } else {
+                        throw new Error(data.message || 'Server error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Delete comment error:', error);
+                    showToast(error.message || '{{ __("thread.request_error") }}', 'error');
+
+                    // Reset button state
+                    button.disabled = false;
+                    button.innerHTML = originalContent;
+                });
             });
         });
     });
@@ -1568,8 +2213,7 @@ function createCommentHtml(comment) {
             <div class="d-flex">
                 <div class="comment_item_avatar">
                     <img src="${comment.user.avatar_url}" alt="${comment.user.name}"
-                         class="rounded-circle me-2" width="${avatarSize}" height="${avatarSize}"
-                         onerror="this.src='{{ route('avatar.generate', ['initial' => 'U']) }}'">
+                         class="rounded-circle me-2" width="${avatarSize}" height="${avatarSize}">
                 </div>
                 <div class="comment_item_body ${isReply ? 'sub' : ''}">
                     <div class="comment_item_user">

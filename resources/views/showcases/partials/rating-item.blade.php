@@ -3,8 +3,7 @@
     <div class="d-flex gap-3">
         <a href="{{ route('profile.show', $rating->user->username) }}">
             <img src="{{ $rating->user->getAvatarUrl() }}" class="rounded-circle" width="40" height="40"
-                alt="Avatar của {{ $rating->user->display_name }}"
-                onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($rating->user->name, 0, 1))]) }}'">
+                alt="Avatar của {{ $rating->user->display_name }}">
         </a>
         <div class="flex-grow-1">
             <div class="rating-content bg-light p-3 rounded">

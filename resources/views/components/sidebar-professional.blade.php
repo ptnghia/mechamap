@@ -99,9 +99,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
                 <div class="discussion-item">
                     <div class="discussion-avatar">
                         <img src="{{ $thread['author']['avatar_url'] ?? 'https://ui-avatars.com/api/?name=' . urlencode(strtoupper(substr($thread['author']['name'], 0, 1))) . '&background=6366f1&color=fff&size=200' }}"
-                             alt="{{ $thread['author']['name'] }}"
-
-                             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread['author']['name'], 0, 1))]) }}'">
+                             alt="{{ $thread['author']['name'] }}">
                     </div>
                     <div class="discussion-content">
                         <h6 class="discussion-title"><a href="{{ route('threads.show', [$thread['slug']]) }}" class="text-decoration-none">{{ Str::limit($thread['title'], 60) }}</a></h6>
@@ -151,8 +149,7 @@ $sidebarData = $sidebarService->getSidebarData($user);
                 <a href="#" class="engineer-item">
                     <div class="engineer-rank">#{{ $index + 1 }}</div>
                     <div class="engineer-avatar">
-                        <img src="{{ $member['avatar'] }}" alt="{{ $member['name'] }}" class="rounded-circle"
-                             onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($member['name'], 0, 1))]) }}'">
+                        <img src="{{ $member['avatar'] }}" alt="{{ $member['name'] }}" class="rounded-circle">
                         @if($member['is_recently_active'])
                         <div class="online-indicator"></div>
                         @endif
