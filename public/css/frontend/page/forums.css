@@ -7,8 +7,10 @@
 .forums_cate_item{}
 .forums_cate_item_title{padding-right:10px;width:68%}
 .forums_cate_item_title i{color: #fff;}
-.forums_cate_item_title h5{}
-.forums_cate_item_title .text-muted{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 14px;}
+.forums_cate_item_title h5{
+    color: var(--bs-body-color);
+}
+.forums_cate_item_title .text-muted{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;font-size: 14px;text-transform: capitalize;}
 .forums_cate_thongke{}
 .forums_cate_thongke small{
     font-size: 12px;

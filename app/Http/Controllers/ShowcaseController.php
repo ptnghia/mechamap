@@ -77,41 +77,110 @@ class ShowcaseController extends Controller
     }
 
     /**
-     * Get showcase categories with statistics.
+     * Get showcase categories with statistics from showcase_categories table.
      */
     private function getShowcaseCategories(): array
     {
-        $categories = Showcase::select('category')
-            ->whereNotNull('category')
-            ->where('is_public', true)
-            ->whereIn('status', ['featured', 'approved'])
-            ->groupBy('category')
+        // Lấy categories từ bảng showcase_categories
+        $categories = \DB::table('showcase_categories')
+            ->where('is_active', true)
+            ->orderBy('name')
             ->get();
 
         $categoryStats = [];
-        foreach ($categories as $cat) {
-            $showcases = Showcase::where('category', $cat->category)
-                ->where('is_public', true)
+
+        foreach ($categories as $category) {
+            // Tính thống kê cho mỗi category
+            $showcases = Showcase::where('is_public', true)
                 ->whereIn('status', ['featured', 'approved'])
+                ->where(function($query) use ($category) {
+                    // Map old category values to new category IDs
+                    $oldCategoryMapping = [
+                        'thiet-ke-co-khi' => 'design',
+                        'san-xuat-gia-cong' => 'manufacturing',
+                        'phan-tich-fea-cfd' => 'analysis',
+                        'design' => 'design',
+                        'manufacturing' => 'manufacturing',
+                        'analysis' => 'analysis'
+                    ];
+
+                    if (isset($oldCategoryMapping[$category->slug])) {
+                        $query->where('category', $oldCategoryMapping[$category->slug]);
+                    }
+
+                    // Also check by showcase_category_id if available
+                    $query->orWhere('showcase_category_id', $category->id);
+                })
                 ->get();
+
+            $totalFiles = 0;
+            $totalDownloads = 0;
+
+            foreach ($showcases as $showcase) {
+                // Đếm files từ file_attachments JSON
+                if ($showcase->file_attachments) {
+                    // Kiểm tra xem file_attachments đã là array hay vẫn là JSON string
+                    $files = is_string($showcase->file_attachments)
+                        ? json_decode($showcase->file_attachments, true)
+                        : $showcase->file_attachments;
+
+                    if (is_array($files)) {
+                        $totalFiles += count($files);
+                        foreach ($files as $file) {
+                            $totalDownloads += $file['download_count'] ?? 0;
+                        }
+                    }
+                }
+                // Cộng download_count của showcase
+                $totalDownloads += $showcase->download_count ?? 0;
+            }
 
             // Get representative showcase for category image
             $representativeShowcase = $showcases->sortByDesc('view_count')->first();
+            $avgRating = $showcases->where('rating_count', '>', 0)->avg('rating_average') ?? 0;
 
             $categoryStats[] = [
-                'name' => $cat->category,
-                'display_name' => ucfirst($cat->category),
+                'id' => $category->id,
+                'name' => $category->slug,
+                'display_name' => $category->name,
+                'description' => $category->description,
+                'url' => route('showcase.index', ['category' => $category->slug]),
                 'showcase_count' => $showcases->count(),
-                'total_ratings' => $showcases->sum('rating_count'),
-                'avg_rating' => $showcases->where('rating_count', '>', 0)->avg('rating_average') ?? 0,
-                'total_views' => $showcases->sum('view_count'),
-                'featured_count' => $showcases->where('status', 'featured')->count(),
+                'file_count' => $totalFiles,
+                'download_count' => $totalDownloads,
+                'avg_rating' => round($avgRating, 1),
                 'cover_image' => $representativeShowcase ? $representativeShowcase->featured_image : null,
-                'url' => route('showcase.index', ['category' => $cat->category])
+                'icon' => $this->getCategoryIcon($category->slug)
             ];
         }
 
+        // Sắp xếp theo số lượng showcase giảm dần
+        usort($categoryStats, function($a, $b) {
+            return $b['showcase_count'] <=> $a['showcase_count'];
+        });
+
         return $categoryStats;
+    }
+
+    /**
+     * Get FontAwesome icon for category
+     */
+    private function getCategoryIcon(string $slug): string
+    {
+        $iconMapping = [
+            'thiet-ke-co-khi' => 'fas fa-drafting-compass',
+            'phan-tich-fea-cfd' => 'fas fa-chart-line',
+            'cad-cam' => 'fas fa-cube',
+            'san-xuat-gia-cong' => 'fas fa-industry',
+            'tu-dong-hoa' => 'fas fa-robot',
+            'in-3d-additive-manufacturing' => 'fas fa-print',
+            'design' => 'fas fa-drafting-compass',
+            'manufacturing' => 'fas fa-industry',
+            'analysis' => 'fas fa-chart-line',
+            'automation' => 'fas fa-robot'
+        ];
+
+        return $iconMapping[$slug] ?? 'fas fa-folder';
     }
 
 

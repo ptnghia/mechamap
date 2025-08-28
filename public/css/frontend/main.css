@@ -1,5 +1,6 @@
 @import "reset.css";
 @import "layout/header.css";
+@import "layout/slidebar.css";
 
 @import "components/form.css";
 @import "components/showcase.css";

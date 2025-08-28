@@ -3,11 +3,31 @@
 /* Category Card Hover Effects */
 .category-card-hover {
     transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
 }
 
 .category-card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
+    border-color: #007bff;
+}
+
+.category-card-hover:hover .card-img-top {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%) !important;
+}
+
+.category-card-hover:hover i {
+    transform: scale(1.1);
+    color: #0056b3 !important;
+}
+
+.category-card-hover .card-img-top {
+    transition: all 0.3s ease;
+    border-radius: 8px 8px 0 0;
+}
+
+.category-card-hover .card-img-top i {
+    transition: all 0.3s ease;
 }
 
 /* Swiper Customizations for Bootstrap 5 */
@@ -362,4 +382,50 @@
 
 .collapsing {
     transition: height 0.35s ease;
+}
+
+.showcases-swiper .swiper-button-next,
+.showcases-swiper .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    color: #6c757d;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.showcases-swiper .swiper-button-next:hover,
+.showcases-swiper .swiper-button-prev:hover {
+    background: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+}
+.showcases-swiper .swiper-button-next::after,
+.showcases-swiper .swiper-button-prev::after {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.showcases_categories-swiper .swiper-button-next,
+.showcases_categories-swiper .swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    color: #6c757d;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.showcases_categories-swiper .swiper-button-next:hover,
+.showcases_categories-swiper .swiper-button-prev:hover {
+    background: var(--bs-primary);
+    color: white;
+    border-color: var(--bs-primary);
+}
+.showcases_categories-swiper .swiper-button-next::after,
+.showcases_categories-swiper .swiper-button-prev::after {
+    font-size: 16px;
+    font-weight: bold;
 }

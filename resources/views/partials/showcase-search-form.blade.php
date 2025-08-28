@@ -1,5 +1,5 @@
 {{-- Advanced Search Form for Showcase --}}
-<div class="showcase-search-container mb-4">
+<div class="showcase-search-container mb-3">
     <form id="showcase-search-form" method="GET" action="{{ route('showcase.index') }}" class="showcase-search-form">
         {{-- Basic Search Row --}}
         <div class="search-basic-row">

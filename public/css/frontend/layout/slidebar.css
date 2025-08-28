@@ -1,0 +1,33 @@
+.sidebar-card {
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all .3s ease;
+    overflow: hidden
+}
+
+.sidebar-card:hover {
+    box-shadow: var(--shadow-lg)
+}
+
+.sidebar-card .card-header {
+    background: #fff;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-left: 15px
+}
+
+.sidebar-card .card-header h6 {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--bs-black);
+}
+
+.sidebar-card .card-body {
+    padding: 1rem
+}
