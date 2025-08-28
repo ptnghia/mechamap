@@ -51,8 +51,7 @@ body.user-frontend {background-color: #f3f3f3}
     color: #6c757d;
     font-weight: 500;
 }
-.div_title_page{
-}
+.div_title_page{padding-right: 30px;}
 .mxh-f{gap: 10px;}
 .mxh-f a{display: flex;width: 35px;height: 35px;color: #fff;border: 1px solid #ffff;text-align: center;justify-content: center;align-items: center;border-radius: 50%;padding: 0;}
 .darkModeToggle{display: flex;width: 35px;height: 35px;color: #fff;border: 1px solid #ffff;text-align: center;justify-content: center;align-items: center;border-radius: 50%;padding: 0;}
@@ -63,3 +62,6 @@ body.user-frontend {background-color: #f3f3f3}
 .tab_mechamap .nav-item .nav-link .badge , .tab_mechamap .nav-item .nav-link .badge{height: 22px;min-width: 30px;border-radius: 20px;padding: 0;display: flex;justify-content: center;align-items: center;font-size: 12px;padding-left: 7px;padding-right: 7px;font-family: var(--bs-font-sans-serif);}
 .tab_mechamap .nav-link.active, .tab_mechamap .show>.nav-link{color: #ffffff;background-color: var(--bs-primary);font-weight: 600;width: 100%;}
 .form-sm{height: 37px;font-size: 14px;}
+.card-header{
+}
+.card-header h5{font-size: 18px;font-weight: 500;text-transform: uppercase;}

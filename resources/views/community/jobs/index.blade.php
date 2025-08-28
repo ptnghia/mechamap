@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', 'Bảng Việc Làm - Đang Phát Triển')
 
-@section('full-width-content')
+@section('content')
 <div class="container mt-4 mb-4">
     <!-- Header Section -->
     <!--div class="row mb-4">

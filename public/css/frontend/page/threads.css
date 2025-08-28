@@ -1,6 +1,6 @@
 .detail_thread{
 }
-.detail_thread_body{font-family: "Roboto Condensed", sans-serif;padding: 15px;background-color: #fff;border-radius: 15px;margin-bottom: 20px;}
+.detail_thread_body{padding: 15px;background-color: #fff;border-radius: 15px;margin-bottom: 20px;}
 .thread-actions{/* width: 250px; */justify-content: end;}
 .thread-actions .btn{background-color: var(--bs-primary);color: #fff;}
 .thread-actions  .follower-count.badge{

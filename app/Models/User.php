@@ -831,8 +831,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id')
-            ->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_follows', 'following_id', 'follower_id')
+            ->withTimestamps()
+            ->withPivot('followed_at');
     }
 
 

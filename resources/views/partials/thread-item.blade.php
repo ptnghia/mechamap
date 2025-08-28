@@ -77,10 +77,10 @@ $isFollowed = \App\Models\ThreadFollow::where('user_id', $user->id)
 
             <!-- Action buttons cho authenticated users -->
             @if($isAuthenticated)
-            <div class="thread-actions">
+            <div class="thread-actions d-flex gx-2">
                 <!-- Bookmark button -->
                 <button type="button"
-                        class="btn btn-sm {{ $isBookmarked ? 'btn-primary active' : 'btn-outline-primary' }} btn-bookmark"
+                        class="btn btn-sm {{ $isBookmarked ? 'btn-primary active' : 'btn-outline-primary' }} btn-bookmark me-2"
                         data-thread-id="{{ $thread->id }}"
                         data-bookmarked="{{ $isBookmarked ? 'true' : 'false' }}"
                         title="{{ $isBookmarked ? t_forums('actions.bookmark_remove') : t_forums('actions.bookmark_add') }}">

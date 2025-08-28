@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         spaceBetween: 20,
         loop: false, // Tắt loop để tránh warning khi ít slides
         autoplay: {
-            delay: 5000,
+           delay: 5000,
             disableOnInteraction: false,
         },
         navigation: {

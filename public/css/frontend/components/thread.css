@@ -47,6 +47,7 @@
     align-items: center;
     gap: .25rem;
     justify-content: end;
+    flex: 1;
 }
 
 .thread_status {

@@ -3,7 +3,7 @@
 @section('title', $thread->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/threads.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/threads.css') }}">
 @endpush
 
 @section('content')
@@ -13,13 +13,9 @@
         <div class="detail_thread_body">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="d-flex align-items-center thread_user">
-                    <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}"
-                        class="rounded-circle me-2" width="40" height="40"
-                        onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1))]) }}'">
+                    <img src="{{ $thread->user->getAvatarUrl() }}" alt="{{ $thread->user->name }}" class="rounded-circle me-2" width="40" height="40" onerror="this.src='{{ route('avatar.generate', ['initial' => strtoupper(substr($thread->user->name, 0, 1))]) }}'">
                     <div>
-                        <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}"
-                            class="fw-bold text-decoration-none">{{
-                            $thread->user->name }}</a>
+                        <a href="{{ route('profile.show', $thread->user->username ?? $thread->user->id) }}" class="fw-bold text-decoration-none">{{ $thread->user->name }}</a>
                         <div class="text-muted small">
                             <span>{{ $thread->user->threads_count ?? 0 }} {{ __('thread.posts') }}</span> ·
                             <span>{{ __('thread.joined') }} {{ $thread->user->created_at->format('M Y') }}</span>

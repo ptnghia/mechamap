@@ -20,9 +20,9 @@
 
 .products-swiper .swiper-button-next:hover,
 .products-swiper .swiper-button-prev:hover {
-    background: #0d6efd;
+    background: var(--bs-primary);
     color: white;
-    border-color: #0d6efd;
+    border-color: var(--bs-primary);
 }
 
 .products-swiper .swiper-button-next::after,

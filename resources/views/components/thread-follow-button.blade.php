@@ -15,7 +15,7 @@
 <div class="thread-follow-wrapper" data-thread-id="{{ $thread->id }}" data-thread-slug="{{ $thread->slug }}">
     @auth
         <button type="button"
-                class="btn {{ $isFollowing ? 'btn-success' : 'btn-outline-primary' }} thread-follow-btn {{ $buttonClass }}"
+                class="btn btn-sm {{ $isFollowing ? 'btn-success' : 'btn-outline-primary' }} thread-follow-btn {{ $buttonClass }}"
                 data-thread-id="{{ $thread->id }}"
                 data-thread-slug="{{ $thread->slug }}"
                 data-following="{{ $isFollowing ? 'true' : 'false' }}"
@@ -26,7 +26,7 @@
         </button>
     @else
         <button type="button"
-                class="btn btn-outline-primary {{ $buttonClass }}"
+                class="btn btn-sm btn-outline-primary {{ $buttonClass }}"
                 onclick="showLoginModal()"
                 title="{{ __('thread.login_to_follow') }}">
             <i class="fas fa-bell-slash me-1"></i>
