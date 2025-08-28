@@ -1,126 +1,114 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('technical.processes.title'))
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-gears text-primary me-2"></i>
-                        {{ __('technical.processes.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('technical.processes.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.processes') }}" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-route me-1"></i>
-                        {{ __('technical.processes.process_selector') }}
-                    </a>
-                    <a href="{{ route('tools.processes') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-calculator me-1"></i>
-                        {{ __('technical.processes.cost_calculator') }}
-                    </a>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-download me-1"></i>
-                            {{ __('technical.processes.export') }}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>CSV Format
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
-                                <i class="fa-solid fa-file-code me-2"></i>JSON Format
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-gears text-primary me-2"></i>  {{ __('technical.processes.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('technical.processes.description') }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.processes') }}" class="btn btn-outline-primary">
+                <i class="fa-solid fa-route me-1"></i>
+                {{ __('technical.processes.process_selector') }}
+            </a>
+            <a href="{{ route('tools.processes') }}" class="btn btn-outline-success">
+                <i class="fa-solid fa-calculator me-1"></i>
+                {{ __('technical.processes.cost_calculator') }}
+            </a>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-download me-1"></i>
+                    {{ __('technical.processes.export') }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
+                        <i class="fa-solid fa-file-csv me-2"></i>CSV Format
+                    </a></li>
+                    <li><a class="dropdown-item" href="{{ route('tools.processes') }}">
+                        <i class="fa-solid fa-file-code me-2"></i>JSON Format
+                    </a></li>
+                </ul>
             </div>
         </div>
     </div>
 
+
     <!-- Filters Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="GET" action="{{ route('tools.processes') }}" class="row g-3">
-                        <div class="col-md-4">
-                            <label for="search" class="form-label">{{ __('technical.processes.search_processes') }}</label>
-                            <input type="text" class="form-control" id="search" name="search"
-                                   value="{{ request('search') }}"
-                                   placeholder="{{ __('technical.processes.search_placeholder') }}">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="category" class="form-label">{{ __('technical.processes.category') }}</label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">{{ __('technical.processes.all_categories') }}</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                    {{ ucfirst($category) }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="skill_level" class="form-label">{{ __('technical.processes.skill_level') }}</label>
-                            <select class="form-select" id="skill_level" name="skill_level">
-                                <option value="">{{ __('technical.processes.all_levels') }}</option>
-                                @foreach($skillLevels as $level)
-                                <option value="{{ $level }}" {{ request('skill_level') == $level ? 'selected' : '' }}>
-                                    {{ ucfirst($level) }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-search"></i>
-                                </button>
-                                <a href="{{ route('tools.processes') }}" class="btn btn-outline-secondary">
-                                    <i class="fa-solid fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="GET" action="{{ route('tools.processes') }}" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">{{ __('technical.processes.search_processes') }}</label>
+                    <input type="text" class="form-control" id="search" name="search"
+                            value="{{ request('search') }}"
+                            placeholder="{{ __('technical.processes.search_placeholder') }}">
                 </div>
-            </div>
+                <div class="col-md-3">
+                    <label for="category" class="form-label">{{ __('technical.processes.category') }}</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">{{ __('technical.processes.all_categories') }}</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                            {{ ucfirst($category) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="skill_level" class="form-label">{{ __('technical.processes.skill_level') }}</label>
+                    <select class="form-select" id="skill_level" name="skill_level">
+                        <option value="">{{ __('technical.processes.all_levels') }}</option>
+                        @foreach($skillLevels as $level)
+                        <option value="{{ $level }}" {{ request('skill_level') == $level ? 'selected' : '' }}>
+                            {{ ucfirst($level) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fa-solid fa-search"></i>
+                        </button>
+                        <a href="{{ route('tools.processes') }}" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Results Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <span class="text-muted">
-                        {{ __('technical.processes.showing_results') }} {{ $processes->firstItem() ?? 0 }} {{ __('technical.processes.to') }} {{ $processes->lastItem() ?? 0 }}
-                        {{ __('technical.processes.of') }} {{ $processes->total() }} {{ __('technical.processes.processes') }}
-                    </span>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <label for="sort" class="form-label mb-0 text-muted">{{ __('technical.processes.sort_by') }}</label>
-                    <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.processes.name') }}</option>
-                        <option value="category" {{ request('sort') == 'category' ? 'selected' : '' }}>{{ __('technical.processes.category') }}</option>
-                        <option value="cost_per_hour" {{ request('sort') == 'cost_per_hour' ? 'selected' : '' }}>{{ __('technical.processes.cost') }}</option>
-                        <option value="production_rate" {{ request('sort') == 'production_rate' ? 'selected' : '' }}>{{ __('technical.processes.production_rate') }}</option>
-                    </select>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <span class="text-muted">
+                {{ __('technical.processes.showing_results') }} {{ $processes->firstItem() ?? 0 }} {{ __('technical.processes.to') }} {{ $processes->lastItem() ?? 0 }}
+                {{ __('technical.processes.of') }} {{ $processes->total() }} {{ __('technical.processes.processes') }}
+            </span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <label for="sort" class="form-label mb-0 text-muted text-nowrap">{{ __('technical.processes.sort_by') }}</label>
+            <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
+                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.processes.name') }}</option>
+                <option value="category" {{ request('sort') == 'category' ? 'selected' : '' }}>{{ __('technical.processes.category') }}</option>
+                <option value="cost_per_hour" {{ request('sort') == 'cost_per_hour' ? 'selected' : '' }}>{{ __('technical.processes.cost') }}</option>
+                <option value="production_rate" {{ request('sort') == 'production_rate' ? 'selected' : '' }}>{{ __('technical.processes.production_rate') }}</option>
+            </select>
         </div>
     </div>
 
     <!-- Processes Grid -->
-    <div class="row">
+    <div class="row g-3">
         @forelse($processes as $process)
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-4 col-sm-6 ">
             <div class="card h-100 process-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="card-title mb-0">{{ $process->name }}</h6>

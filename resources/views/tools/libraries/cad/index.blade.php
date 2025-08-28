@@ -1,46 +1,41 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('cad.library.title'))
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-file-code text-primary me-2"></i>
-                        {{ __('cad.library.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('cad.library.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    @auth
-                    <a href="{{ route('tools.cad-library') }}" class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-folder me-1"></i>
-                        {{ __('cad.library.my_files') }}
-                    </a>
-                    <a href="{{ route('tools.cad-library') }}" class="btn btn-primary">
-                        <i class="fa-solid fa-upload me-1"></i>
-                        {{ __('cad.library.upload_file') }}
-                    </a>
-                    @endauth
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-download me-1"></i>
-                            {{ __('cad.library.export') }}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>CSV Format
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
-                                <i class="fa-solid fa-file-code me-2"></i>JSON Format
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-file-code text-primary me-2"></i>  {{ __('cad.library.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('cad.library.description') }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            @auth
+            <a href="{{ route('tools.cad-library') }}" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-folder me-1"></i>
+                {{ __('cad.library.my_files') }}
+            </a>
+            <a href="{{ route('tools.cad-library') }}" class="btn btn-primary">
+                <i class="fa-solid fa-upload me-1"></i>
+                {{ __('cad.library.upload_file') }}
+            </a>
+            @endauth
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-download me-1"></i>
+                    {{ __('cad.library.export') }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
+                        <i class="fa-solid fa-file-csv me-2"></i>CSV Format
+                    </a></li>
+                    <li><a class="dropdown-item" href="{{ route('tools.cad-library') }}">
+                        <i class="fa-solid fa-file-code me-2"></i>JSON Format
+                    </a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -157,95 +152,10 @@
     </div>
 
     <!-- CAD Files Grid -->
-    <div class="row">
+    <div class="row g-3">
         @forelse($cadFiles ?? [] as $file)
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 cad-file-card">
-                @if($file->cover_image ?? false)
-                <img src="{{ asset($file->cover_image) }}" class="card-img-top" alt="{{ $file->title }}" style="height: 200px; object-fit: cover;">
-                @else
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                    <i class="fa-solid fa-file-code text-muted" style="font-size: 3rem;"></i>
-                </div>
-                @endif
-
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span class="badge bg-primary">{{ strtoupper($file->file_type ?? 'CAD') }}</span>
-                    <span class="badge bg-info">{{ ucfirst($file->complexity_level ?? 'intermediate') }}</span>
-                </div>
-
-                <div class="card-body">
-                    <h6 class="card-title">{{ $file->title ?? 'Sample CAD File' }}</h6>
-                    <p class="card-text text-muted small">
-                        {{ Str::limit($file->description ?? 'Professional CAD file for mechanical engineering projects', 100) }}
-                    </p>
-
-                    <div class="row g-2 mb-3">
-                        <div class="col-6">
-                            <small class="text-muted">{{ __('cad.library.views') }}</small>
-                            <div class="fw-medium">{{ $file->view_count ?? 0 }}</div>
-                        </div>
-                        <div class="col-6">
-                            <small class="text-muted">{{ __('cad.library.downloads') }}</small>
-                            <div class="fw-medium">{{ $file->download_count ?? 0 }}</div>
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                        <div class="col-6">
-                            <small class="text-muted">{{ __('cad.library.rating') }}</small>
-                            <div class="fw-medium">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <i class="fa-solid fa-star {{ $i <= ($file->rating ?? 4.5) ? 'text-warning' : 'text-muted' }}"></i>
-                                @endfor
-                                <small class="text-muted">({{ $file->rating ?? 4.5 }})</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <small class="text-muted">{{ __('cad.library.category') }}</small>
-                            <div class="fw-medium">
-                                <span class="badge bg-secondary">
-                                    {{ $file->category->name ?? ucfirst($file->industry_application ?? 'General') }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($file->file_attachments ?? false)
-                    <div class="mb-2">
-                        <small class="text-muted">{{ __('cad.library.files') }}:</small><br>
-                        @foreach((is_array($file->file_attachments) ? $file->file_attachments : []) as $attachment)
-                        <span class="badge bg-light text-dark me-1">{{ basename($attachment) }}</span>
-                        @endforeach
-                    </div>
-                    @endif
-                </div>
-
-                <div class="card-footer bg-transparent">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            {{ __('cad.library.by') }} {{ $file->user->name ?? 'MechaMap User' }}
-                        </small>
-                        <div class="d-flex gap-1">
-                            <a href="{{ route('showcase.show', $file->showcase_slug ?: $file->showcase_id) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fa-solid fa-eye me-1"></i>
-                                {{ __('cad.library.view') }}
-                            </a>
-                            @auth
-                            <a href="{{ route('showcase.show', $file->showcase_slug ?: $file->showcase_id) }}" class="btn btn-sm btn-primary">
-                                <i class="fa-solid fa-download me-1"></i>
-                                {{ __('cad.library.download') }}
-                            </a>
-                            @else
-                            <a href="{{ route('login') }}" class="btn btn-sm btn-primary">
-                                <i class="fa-solid fa-sign-in-alt me-1"></i>
-                                {{ __('cad.library.login') }}
-                            </a>
-                            @endauth
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            @include('partials.showcase-item', ['showcase' => $file])
         </div>
         @empty
         <!-- Empty State -->

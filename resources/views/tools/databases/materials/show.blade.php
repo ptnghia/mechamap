@@ -1,46 +1,34 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', $material->name . ' - Material Details')
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tools.materials') }}">Materials Database</a></li>
-                    <li class="breadcrumb-item active">{{ $material->name }}</li>
-                </ol>
-            </nav>
-
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-cube text-primary me-2"></i>
-                        {{ $material->name }}
-                        <span class="badge bg-primary ms-2">{{ $material->code }}</span>
-                    </h1>
-                    <p class="text-muted mb-0">{{ $material->description }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.material-calculator') }}" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-calculator me-1"></i>
-                        Cost Calculator
-                    </a>
-                    <a href="{{ route('tools.material-calculator') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-balance-scale me-1"></i>
-                        Compare
-                    </a>
-                    <button class="btn btn-outline-secondary" onclick="window.print()">
-                        <i class="fa-solid fa-print me-1"></i>
-                        Print
-                    </button>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-cube text-primary me-2"></i>  {{ $material->name }} <span class="badge bg-primary ms-2">{{ $material->code }}</span></h1>
+            <p class="text-muted mb-0">{{ $material->description }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.material-calculator') }}" class="btn btn-sm btn-outline-primary">
+                <i class="fa-solid fa-calculator me-1"></i>
+                Cost Calculator
+            </a>
+            <a href="{{ route('tools.material-calculator') }}" class="btn btn-sm btn-outline-success">
+                <i class="fa-solid fa-balance-scale me-1"></i>
+                Compare
+            </a>
+            <button class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                <i class="fa-solid fa-print me-1"></i>
+                Print
+            </button>
         </div>
     </div>
+
+
 
     <div class="row">
         <!-- Main Content -->

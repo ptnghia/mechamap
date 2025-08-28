@@ -206,9 +206,19 @@ class ToolController extends Controller
      */
     public function documentation(Request $request)
     {
-        // Get documentation with filters (only published)
-        $query = Documentation::with('category')
-                              ->where('status', 'published');
+        // Get featured documentation
+        $featuredDocs = Documentation::with(['category', 'author'])
+                                    ->where('status', 'published')
+                                    ->where('is_featured', true)
+                                    ->where('is_public', true)
+                                    ->orderBy('created_at', 'desc')
+                                    ->limit(4)
+                                    ->get();
+
+        // Get recent documentation with filters
+        $query = Documentation::with(['category', 'author'])
+                              ->where('status', 'published')
+                              ->where('is_public', true);
 
         if ($request->filled('search')) {
             $search = $request->get('search');
@@ -223,29 +233,58 @@ class ToolController extends Controller
             $query->where('category_id', $request->get('category'));
         }
 
-        $documentation = $query->orderBy('created_at', 'desc')->paginate(12);
+        if ($request->filled('content_type')) {
+            $query->where('content_type', $request->get('content_type'));
+        }
+
+        if ($request->filled('difficulty_level')) {
+            $query->where('difficulty_level', $request->get('difficulty_level'));
+        }
+
+        // Sort options
+        $sortBy = $request->get('sort', 'newest');
+        switch ($sortBy) {
+            case 'popular':
+                $query->orderBy('view_count', 'desc');
+                break;
+            case 'downloads':
+                $query->orderBy('download_count', 'desc');
+                break;
+            case 'rating':
+                $query->orderBy('rating_average', 'desc');
+                break;
+            case 'title':
+                $query->orderBy('title', 'asc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+        }
+
+        $documentation = $query->paginate(12);
 
         // Get categories with document counts
         $categories = DocumentationCategory::where('is_active', true)
+                                         ->where('is_public', true)
                                          ->withCount(['documentations' => function($query) {
-                                             $query->where('status', 'published');
+                                             $query->where('status', 'published')
+                                                   ->where('is_public', true);
                                          }])
-                                         ->orderBy('name')
+                                         ->orderBy('sort_order')
                                          ->get();
 
         // Calculate statistics
-        $totalDocs = Documentation::where('status', 'published')->count();
-        $totalCategories = DocumentationCategory::where('is_active', true)->count();
-        $totalViews = Documentation::where('status', 'published')->sum('view_count');
-        $totalDownloads = Documentation::where('status', 'published')->sum('download_count');
+        $stats = [
+            'total_docs' => Documentation::where('status', 'published')->where('is_public', true)->count(),
+            'total_categories' => $categories->count(),
+            'total_views' => Documentation::where('status', 'published')->where('is_public', true)->sum('view_count'),
+            'total_downloads' => Documentation::where('status', 'published')->where('is_public', true)->sum('download_count'),
+        ];
 
         return view('tools.libraries.documentation.index', compact(
             'documentation',
+            'featuredDocs',
             'categories',
-            'totalDocs',
-            'totalCategories',
-            'totalViews',
-            'totalDownloads'
+            'stats'
         ));
     }
 
@@ -254,6 +293,51 @@ class ToolController extends Controller
      */
     public function documentationShow(Documentation $documentation)
     {
-        return view('tools.libraries.documentation.show', compact('documentation'));
+        // Check access permission
+        if (!$documentation->is_public && (!auth()->check() || !$documentation->canAccess(auth()->user()))) {
+            abort(403, 'Bạn không có quyền truy cập tài liệu này.');
+        }
+
+        // Record view if user is authenticated
+        if (auth()->check()) {
+            $documentation->recordView(auth()->user());
+        } else {
+            // Increment view count for anonymous users
+            $documentation->increment('view_count');
+        }
+
+        // Load relationships
+        $documentation->load(['category', 'author']);
+
+        // Get user rating if authenticated
+        $userRating = null;
+        if (auth()->check()) {
+            $userRating = $documentation->ratings()
+                                      ->where('user_id', auth()->id())
+                                      ->first();
+        }
+
+        // Get comments with pagination
+        $comments = $documentation->comments()
+                                 ->with(['user', 'replies.user'])
+                                 ->whereNull('parent_id')
+                                 ->orderBy('created_at', 'desc')
+                                 ->paginate(10);
+
+        // Get related documents (same category, excluding current)
+        $relatedDocs = Documentation::where('status', 'published')
+                                   ->where('is_public', true)
+                                   ->where('id', '!=', $documentation->id)
+                                   ->where('category_id', $documentation->category_id)
+                                   ->orderBy('view_count', 'desc')
+                                   ->limit(5)
+                                   ->get();
+
+        return view('tools.libraries.documentation.show', compact(
+            'documentation',
+            'userRating',
+            'comments',
+            'relatedDocs'
+        ));
     }
 }

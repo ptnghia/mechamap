@@ -207,12 +207,6 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('tools.technical-docs') }}" class="tool-link">
-                                            <i class="fa-solid fa-wrench me-2"></i>
-                                            {{ __('navigation.tools.technical_resources') }}
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="{{ route('tools.documentation') }}" class="tool-link">
                                             <i class="fa-solid fa-book me-2"></i>
                                             {{ __('navigation.tools.documentation') }}

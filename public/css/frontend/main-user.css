@@ -2573,12 +2573,6 @@ html {
     animation: fadeIn .15s ease-in-out
 }
 
-
-
-.card-body {
-    border: none
-}
-
 .card {
     border: none
 }
@@ -2904,9 +2898,6 @@ html {
 }
 
 .search-results-dropdown {
-}
-
-.showcase-rating {
 }
 
 

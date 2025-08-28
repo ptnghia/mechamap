@@ -62,6 +62,10 @@ body.user-frontend {background-color: #f3f3f3}
 .tab_mechamap .nav-item .nav-link .badge , .tab_mechamap .nav-item .nav-link .badge{height: 22px;min-width: 30px;border-radius: 20px;padding: 0;display: flex;justify-content: center;align-items: center;font-size: 12px;padding-left: 7px;padding-right: 7px;font-family: var(--bs-font-sans-serif);}
 .tab_mechamap .nav-link.active, .tab_mechamap .show>.nav-link{color: #ffffff;background-color: var(--bs-primary);font-weight: 600;width: 100%;}
 .form-sm{height: 37px;font-size: 14px;}
-.card-header{
-}
+.card-header{border-bottom: none;text-transform: uppercase;background: linear-gradient(135deg, #7e7757 0%, #9a9270 50%, #6a6449 100%);color: #fff;padding: 12px 15px;}
+.card-header h2, .card-header h3, .card-header h4, .card-header h5, .card-header h6{color: #ffff;}
+.card-body{border: none !important;padding: 15px;background-color: #fff;}
 .card-header h5{font-size: 18px;font-weight: 500;text-transform: uppercase;}
+.card{box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);border-radius: 15px !IMPORTANT;overflow: hidden;}
+.table-sm>:not(caption)>*>*{padding: 7px 10px;}
+.list-group-flush>.list-group-item {border-bottom: 1px dashed var(--bs-primary);padding: 12px 15px;}

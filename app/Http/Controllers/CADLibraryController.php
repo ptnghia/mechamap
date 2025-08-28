@@ -153,35 +153,50 @@ class CADLibraryController extends Controller
         // Get first CAD file extension for file type
         $fileType = 'unknown';
         foreach ($fileAttachments as $file) {
-            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if (in_array($ext, ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'])) {
-                $fileType = $ext;
-                break;
+            // Ensure $file is a string before using pathinfo
+            if (is_string($file)) {
+                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                if (in_array($ext, ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'])) {
+                    $fileType = $ext;
+                    break;
+                }
+            } elseif (is_array($file) && isset($file['file_path'])) {
+                // Handle case where file is an object/array with file_path
+                $ext = strtolower(pathinfo($file['file_path'], PATHINFO_EXTENSION));
+                if (in_array($ext, ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'])) {
+                    $fileType = $ext;
+                    break;
+                }
+            } elseif (is_array($file) && isset($file['original_filename'])) {
+                // Handle case where file is an object/array with original_filename
+                $ext = strtolower(pathinfo($file['original_filename'], PATHINFO_EXTENSION));
+                if (in_array($ext, ['dwg', 'step', 'iges', 'stl', 'obj', 'sldasm', 'sldprt', 'ipt', 'iam', 'f3d'])) {
+                    $fileType = $ext;
+                    break;
+                }
             }
         }
 
-        return (object) [
-            'id' => $showcase->id,
-            'title' => $showcase->title,
-            'description' => $showcase->description,
-            'file_type' => $fileType,
-            'file_size' => 'N/A', // Not available from showcase
-            'software_used' => implode(', ', $softwareUsed),
-            'tags' => $fileAttachments, // Use file attachments as tags
-            'download_count' => $showcase->download_count,
-            'view_count' => $showcase->view_count,
-            'rating' => $showcase->rating_average,
-            'created_at' => $showcase->created_at,
-            'updated_at' => $showcase->updated_at,
-            'user' => $showcase->user,
-            'category' => (object) ['name' => ucfirst($showcase->category)],
-            'cover_image' => $showcase->cover_image,
-            'file_attachments' => $fileAttachments,
-            'showcase_slug' => $showcase->slug ?: $showcase->id, // Fallback to ID if no slug
-            'showcase_id' => $showcase->id, // Add ID for safety
-            'complexity_level' => $showcase->complexity_level,
-            'industry_application' => $showcase->industry_application,
-        ];
+        // Create meaningful tags from file attachments
+        $tags = [];
+        foreach ($fileAttachments as $file) {
+            if (is_string($file)) {
+                $tags[] = pathinfo($file, PATHINFO_FILENAME);
+            } elseif (is_array($file) && isset($file['original_filename'])) {
+                $tags[] = pathinfo($file['original_filename'], PATHINFO_FILENAME);
+            } elseif (is_array($file) && isset($file['file_path'])) {
+                $tags[] = pathinfo($file['file_path'], PATHINFO_FILENAME);
+            }
+        }
+
+        // Add computed properties to the showcase model instead of creating new object
+        $showcase->file_type = $fileType;
+        $showcase->file_size = 'N/A';
+        $showcase->software_used_string = implode(', ', $softwareUsed);
+        $showcase->tags = $tags;
+        $showcase->rating = $showcase->rating_average;
+
+        return $showcase;
     }
 
     /**

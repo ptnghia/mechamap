@@ -13,13 +13,13 @@
 .showcase-categories{width: auto;flex: 1;display: flex;justify-content: end;}
 .showcase-image {
     position: relative;
-    height: 250px;
+    height: 200px;
     overflow: hidden
 }
 
 .showcase-image img {
     width: 100%;
-    height: 250px;
+    height: 200px;
     object-fit: cover;
     transition: transform .3s ease
 }
@@ -57,19 +57,19 @@
 }
 
 .showcase-content {
-    padding: 15px;
+    padding: 10px 15px;
 }
 
 .showcase-meta {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem
+    margin-bottom: 10px;
 }
 .showcase-rating .rating-display {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 13px
+    font-size: 12px;
 }
 
 .showcase-rating .rating-display .rating-text {
@@ -96,10 +96,10 @@
     align-items: center
 }
 .showcase-title {
-    margin-bottom: 5px;
+    margin-bottom: 0;
     font-weight: 600;
     line-height: 1.3;
-    font-size: 16px
+    font-size: 14px;
 }
 
 .showcase-title a {
@@ -114,7 +114,7 @@
 
 .showcase-description {
     color: #6c757d;
-    font-size: .9rem;
+    font-size: 13px;
     line-height: 1.5;
     margin-bottom: 7px;
     overflow: hidden;
@@ -122,7 +122,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    margin-top: 10px
+    margin-top: 5px;
 }
 
 .showcase-stats {
@@ -165,7 +165,7 @@
     background-color: #fcf9ec!important;
     color: #7e7757
 }
-
+.showcase-rating {margin-bottom: 0 !IMPORTANT;}
 .showcase-card .card-text {
     margin-bottom: 0;
     overflow: hidden;

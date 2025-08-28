@@ -1,110 +1,98 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('technical.materials.title'))
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-cube text-primary me-2"></i>
-                        {{ __('technical.materials.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('technical.materials.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.material-calculator') }}" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-calculator me-1"></i>
-                        {{ __('technical.materials.cost_calculator') }}
-                    </a>
-                    <a href="{{ route('tools.material-calculator') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-balance-scale me-1"></i>
-                        {{ __('technical.materials.compare_materials') }}
-                    </a>
-                    <button class="btn btn-outline-secondary" disabled>
-                        <i class="fa-solid fa-download me-1"></i>
-                        {{ __('technical.materials.export') }}
-                    </button>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-cube text-primary me-2"></i>  {{ __('technical.materials.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('technical.materials.description') }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.material-calculator') }}" class="btn btn-sm btn-outline-primary">
+                <i class="fa-solid fa-calculator me-1"></i>
+                {{ __('technical.materials.cost_calculator') }}
+            </a>
+            <a href="{{ route('tools.material-calculator') }}" class="btn btn-sm btn-outline-success">
+                <i class="fa-solid fa-balance-scale me-1"></i>
+                {{ __('technical.materials.compare_materials') }}
+            </a>
+            <button class="btn btn-sm btn-outline-secondary" disabled>
+                <i class="fa-solid fa-download me-1"></i>
+                {{ __('technical.materials.export') }}
+            </button>
         </div>
     </div>
 
+
     <!-- Filters Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="GET" action="{{ route('tools.materials') }}" class="row g-3">
-                        <div class="col-md-4">
-                            <label for="search" class="form-label">{{ __('technical.materials.search_materials') }}</label>
-                            <input type="text" class="form-control" id="search" name="search"
-                                   value="{{ request('search') }}"
-                                   placeholder="{{ __('technical.materials.search_placeholder') }}">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="category" class="form-label">{{ __('technical.materials.category') }}</label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">{{ __('technical.materials.all_categories') }}</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                    {{ ucfirst($category) }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="category" class="form-label">{{ __('technical.materials.category') }}</label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">{{ __('technical.materials.all_categories') }}</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                    {{ ucfirst($category) }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-search"></i>
-                                </button>
-                                <a href="{{ route('tools.materials') }}" class="btn btn-outline-secondary">
-                                    <i class="fa-solid fa-times"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+    <div class="card mb-3">
+        <div class="card-body">
+            <form method="GET" action="{{ route('tools.materials') }}" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">{{ __('technical.materials.search_materials') }}</label>
+                    <input type="text" class="form-control" id="search" name="search"
+                            value="{{ request('search') }}"
+                            placeholder="{{ __('technical.materials.search_placeholder') }}">
                 </div>
-            </div>
+                <div class="col-md-3">
+                    <label for="category" class="form-label">{{ __('technical.materials.category') }}</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">{{ __('technical.materials.all_categories') }}</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                            {{ ucfirst($category) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="category" class="form-label">{{ __('technical.materials.category') }}</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">{{ __('technical.materials.all_categories') }}</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                            {{ ucfirst($category) }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fa-solid fa-search"></i>
+                        </button>
+                        <a href="{{ route('tools.materials') }}" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Results Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <span class="text-muted">
-                        {{ __('technical.materials.showing_results') }} {{ $materials->firstItem() ?? 0 }} {{ __('technical.materials.to') }} {{ $materials->lastItem() ?? 0 }}
-                        {{ __('technical.materials.of') }} {{ $materials->total() }} {{ __('technical.materials.materials') }}
-                    </span>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <label for="sort" class="form-label mb-0 text-muted">{{ __('technical.materials.sort_by') }}</label>
-                    <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.materials.name') }}</option>
-                        <option value="code" {{ request('sort') == 'code' ? 'selected' : '' }}>{{ __('technical.materials.code') }}</option>
-                        <option value="density" {{ request('sort') == 'density' ? 'selected' : '' }}>{{ __('technical.materials.density') }}</option>
-                        <option value="tensile_strength" {{ request('sort') == 'tensile_strength' ? 'selected' : '' }}>{{ __('technical.materials.tensile_strength') }}</option>
-                        <option value="cost_per_kg" {{ request('sort') == 'cost_per_kg' ? 'selected' : '' }}>{{ __('technical.materials.cost') }}</option>
-                    </select>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <span class="text-muted">
+                {{ __('technical.materials.showing_results') }} {{ $materials->firstItem() ?? 0 }} {{ __('technical.materials.to') }} {{ $materials->lastItem() ?? 0 }}
+                {{ __('technical.materials.of') }} {{ $materials->total() }} {{ __('technical.materials.materials') }}
+            </span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <label for="sort" class="form-label mb-0 text-muted text-nowrap">{{ __('technical.materials.sort_by') }}</label>
+            <select class="form-select form-select-sm" id="sort" onchange="updateSort(this.value)">
+                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>{{ __('technical.materials.name') }}</option>
+                <option value="code" {{ request('sort') == 'code' ? 'selected' : '' }}>{{ __('technical.materials.code') }}</option>
+                <option value="density" {{ request('sort') == 'density' ? 'selected' : '' }}>{{ __('technical.materials.density') }}</option>
+                <option value="tensile_strength" {{ request('sort') == 'tensile_strength' ? 'selected' : '' }}>{{ __('technical.materials.tensile_strength') }}</option>
+                <option value="cost_per_kg" {{ request('sort') == 'cost_per_kg' ? 'selected' : '' }}>{{ __('technical.materials.cost') }}</option>
+            </select>
         </div>
     </div>
 
@@ -164,7 +152,7 @@
                                 {{ __('technical.materials.compare') }}
                             </label>
                         </div>
-                        <a href="{{ route('tools.materials.show', $material) }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('tools.materials.show', $material) }}" class="btn btn-sm btn-primary">
                             {{ __('technical.materials.view_details') }}
                         </a>
                     </div>
@@ -172,16 +160,14 @@
             </div>
         </div>
         @empty
-        <div class="col-12">
-            <div class="text-center py-5">
-                <i class="fa-solid fa-cube text-muted" style="font-size: 4rem;"></i>
-                <h4 class="mt-3 text-muted">No materials found</h4>
-                <p class="text-muted">Try adjusting your search criteria or filters</p>
-                <a href="{{ route('tools.materials') }}" class="btn btn-primary">
-                    <i class="fa-solid fa-refresh me-1"></i>
-                    Reset Filters
-                </a>
-            </div>
+        <div class="text-center py-5">
+            <i class="fa-solid fa-cube text-muted" style="font-size: 4rem;"></i>
+            <h4 class="mt-3 text-muted">No materials found</h4>
+            <p class="text-muted">Try adjusting your search criteria or filters</p>
+            <a href="{{ route('tools.materials') }}" class="btn btn-primary">
+                <i class="fa-solid fa-refresh me-1"></i>
+                Reset Filters
+            </a>
         </div>
         @endforelse
     </div>
@@ -251,14 +237,4 @@ function compareMaterials() {
 }
 </script>
 
-<style>
-.material-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.material-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-</style>
 @endsection

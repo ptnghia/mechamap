@@ -1,47 +1,43 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('technical.standards.title'))
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-certificate text-primary me-2"></i>
-                        {{ __('technical.standards.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('technical.standards.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.standards') }}" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-balance-scale me-1"></i>
-                        {{ __('technical.standards.compare_standards') }}
-                    </a>
-                    <a href="{{ route('tools.standards') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-check-circle me-1"></i>
-                        {{ __('technical.standards.compliance_checker') }}
-                    </a>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-download me-1"></i>
-                            {{ __('technical.standards.export') }}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
-                                <i class="fa-solid fa-file-csv me-2"></i>CSV Format
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
-                                <i class="fa-solid fa-file-code me-2"></i>JSON Format
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-certificate text-primary me-2"></i>  {{ __('technical.standards.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('technical.standards.description') }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.standards') }}" class="btn btn-sm btn-outline-primary">
+                <i class="fa-solid fa-balance-scale me-1"></i>
+                {{ __('technical.standards.compare_standards') }}
+            </a>
+            <a href="{{ route('tools.standards') }}" class="btn btn-sm btn-outline-success">
+                <i class="fa-solid fa-check-circle me-1"></i>
+                {{ __('technical.standards.compliance_checker') }}
+            </a>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-download me-1"></i>
+                    {{ __('technical.standards.export') }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
+                        <i class="fa-solid fa-file-csv me-2"></i>CSV Format
+                    </a></li>
+                    <li><a class="dropdown-item" href="{{ route('tools.standards') }}">
+                        <i class="fa-solid fa-file-code me-2"></i>JSON Format
+                    </a></li>
+                </ul>
             </div>
         </div>
     </div>
+
 
     <!-- Quick Stats -->
     <div class="row mb-4">
@@ -120,7 +116,7 @@
                         <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary w-100">
                                     <i class="fa-solid fa-search"></i>
                                 </button>
                                 <a href="{{ route('tools.standards') }}" class="btn btn-outline-secondary">
@@ -137,7 +133,7 @@
     <!-- Standards Grid -->
     <div class="row">
         @forelse($standards ?? [] as $standard)
-        <div class="col-lg-6 col-md-12 mb-4">
+        <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 standard-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="card-title mb-0">{{ $standard->standard_number ?? 'ISO 9001:2015' }}</h6>
@@ -231,7 +227,7 @@
         @endphp
 
         @foreach($mockStandards as $index => $standard)
-        <div class="col-lg-6 col-md-12 mb-4">
+        <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100 standard-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="card-title mb-0">{{ $standard['number'] }}</h6>

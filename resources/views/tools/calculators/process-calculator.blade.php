@@ -1,41 +1,30 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('tools.process_calculator.title'))
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('tools.breadcrumb.home') }}</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tools.processes') }}">{{ __('tools.breadcrumb.manufacturing_processes') }}</a></li>
-                    <li class="breadcrumb-item active">{{ __('tools.breadcrumb.process_calculator') }}</li>
-                </ol>
-            </nav>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-calculator text-primary me-2"></i>  {{ __('tools.process_calculator.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('tools.process_calculator.description') }}</p>
+        </div>
 
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-calculator text-primary me-2"></i>
-                        {{ __('tools.process_calculator.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('tools.process_calculator.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.processes') }}" class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-list me-1"></i>
-                        {{ __('tools.process_calculator.view_processes') }}
-                    </a>
-                    <a href="{{ route('tools.processes') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-balance-scale me-1"></i>
-                        {{ __('tools.process_calculator.compare_processes') }}
-                    </a>
-                </div>
-            </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.processes') }}" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-list me-1"></i>
+                {{ __('tools.process_calculator.view_processes') }}
+            </a>
+            <a href="{{ route('tools.processes') }}" class="btn btn-outline-success">
+                <i class="fa-solid fa-balance-scale me-1"></i>
+                {{ __('tools.process_calculator.compare_processes') }}
+            </a>
         </div>
     </div>
+
 
     <div class="row">
         <!-- Calculator Form -->
@@ -140,11 +129,11 @@
                         <!-- Calculate Button -->
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                                <button type="submit" class="btn btn-sm btn-primary btn-lg">
                                     <i class="fa-solid fa-calculator me-2"></i>
                                     {{ __('tools.process_calculator.calculate_process') }}
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary btn-lg ms-2" onclick="resetForm()">
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-lg ms-2" onclick="resetForm()">
                                     <i class="fa-solid fa-refresh me-2"></i>
                                     Reset
                                 </button>
@@ -232,7 +221,7 @@
                         <i class="fa-solid fa-history me-2"></i>
                         {{ __('tools.process_calculator.calculation_history') }}
                     </h5>
-                    <button class="btn btn-sm btn-outline-danger" onclick="clearHistory()">
+                    <button class="btn btn-sm btn-outline-warning" onclick="clearHistory()">
                         <i class="fa-solid fa-trash me-1"></i>
                         {{ __('tools.process_calculator.clear_history') }}
                     </button>
@@ -486,36 +475,4 @@ function clearHistory() {
 }
 </script>
 
-<style>
-.card {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: none;
-}
-
-.card-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
-
-.btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-}
-
-.btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
-}
-
-@media (max-width: 768px) {
-    .col-md-3, .col-md-4, .col-md-6 {
-        margin-bottom: 1rem;
-    }
-}
-</style>
 @endsection

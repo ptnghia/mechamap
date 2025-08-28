@@ -1,40 +1,29 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', 'Cơ sở dữ liệu tiêu chuẩn')
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
 @section('content')
-<div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('tools.index') }}">Công cụ</a></li>
-                    <li class="breadcrumb-item active">Cơ sở dữ liệu tiêu chuẩn</li>
-                </ol>
-            </nav>
-
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h2 mb-2">
-                        <i class="fa-solid fa-book-open me-2"></i>
-                        Cơ sở dữ liệu tiêu chuẩn
-                    </h1>
-                    <p class="text-muted mb-0">Thư viện toàn diện các tiêu chuẩn kỹ thuật quốc tế và thông số kỹ thuật</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('tools.standards') }}" class="btn btn-outline-primary">
-                        <i class="fa-solid fa-balance-scale me-1"></i>
-                        So sánh tiêu chuẩn
-                    </a>
-                    <a href="{{ route('tools.standards') }}" class="btn btn-outline-success">
-                        <i class="fa-solid fa-check-circle me-1"></i>
-                        Kiểm tra tuân thủ
-                    </a>
-                </div>
-            </div>
+<div class="body_page">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-certificate text-primary me-2"></i>  Cơ sở dữ liệu tiêu chuẩn</h1>
+            <p class="text-muted mb-0">Thư viện toàn diện các tiêu chuẩn kỹ thuật quốc tế và thông số kỹ thuật</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('tools.standards') }}" class="btn btn-outline-primary">
+                <i class="fa-solid fa-balance-scale me-1"></i>
+                So sánh tiêu chuẩn
+            </a>
+            <a href="{{ route('tools.standards') }}" class="btn btn-outline-success">
+                <i class="fa-solid fa-check-circle me-1"></i>
+                Kiểm tra tuân thủ
+            </a>
         </div>
     </div>
+
 
     <!-- Statistics Cards -->
     <div class="row mb-4">
@@ -110,7 +99,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" name="search" 
+                                    <input type="text" class="form-control" name="search"
                                            placeholder="Tìm theo số tiêu chuẩn, tiêu đề hoặc mô tả..."
                                            value="{{ request('search') }}">
                                 </div>

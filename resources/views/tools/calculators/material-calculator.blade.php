@@ -1,35 +1,31 @@
-@extends('layouts.app')
+@extends('layouts.app-full')
 
 @section('title', __('tools.material_calculator.title'))
-
-@section('full-width-content')
-<div class="container">
+@push('styles')
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/tool.css') }}">
+@endpush
+@section('content')
+<div class="body_page">
     <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-1">
-                        <i class="fa-solid fa-calculator text-primary me-2"></i>
-                        {{ __('tools.material_calculator.title') }}
-                    </h1>
-                    <p class="text-muted mb-0">{{ __('tools.material_calculator.description') }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-secondary" onclick="saveCalculation()">
-                        <i class="fa-solid fa-save me-1"></i>
-                        {{ __('tools.material_calculator.save_calculation') }}
-                    </button>
-                    <button class="btn btn-outline-primary" onclick="exportResults()">
-                        <i class="fa-solid fa-download me-1"></i>
-                        {{ __('tools.material_calculator.export_results') }}
-                    </button>
-                    <button class="btn btn-outline-info" onclick="showHistory()">
-                        <i class="fa-solid fa-history me-1"></i>
-                        {{ __('tools.material_calculator.history') }}
-                    </button>
-                </div>
-            </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="div_title_page">
+            <h1 class="h2 mb-1 title_page"><i class="fa-solid fa-calculator text-primary me-2"></i>{{__('tools.material_calculator.title') }}</h1>
+            <p class="text-muted mb-0">{{ __('tools.material_calculator.description')  }}</p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="saveCalculation()">
+                <i class="fa-solid fa-save me-1"></i>
+                {{ __('tools.material_calculator.save_calculation') }}
+            </button>
+            <button class="btn btn-sm btn-outline-primary" onclick="exportResults()">
+                <i class="fa-solid fa-download me-1"></i>
+                {{ __('tools.material_calculator.export_results') }}
+            </button>
+            <button class="btn btn-sm btn-outline-success" onclick="showHistory()">
+                <i class="fa-solid fa-history me-1"></i>
+                {{ __('tools.material_calculator.history') }}
+            </button>
         </div>
     </div>
 
@@ -495,15 +491,6 @@ function updateUnits() {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-.card {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 </style>
 @endsection
