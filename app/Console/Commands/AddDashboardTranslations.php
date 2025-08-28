@@ -29,321 +29,645 @@ class AddDashboardTranslations extends Command
      * Groups are auto-detected from key prefix (before first dot)
      */
     protected $translations = [
-        // ===== PROFILE ENHANCEMENT TRANSLATIONS =====
+        // ===== MARKETPLACE DIGITAL PRODUCTS TRANSLATIONS =====
 
-        // Profile Header
-        'profile.follow' => [
-            'vi' => 'Theo dõi',
-            'en' => 'Follow'
+        // Digital Products Create Page
+        'marketplace.digital_products.create_title' => [
+            'vi' => 'Tạo Sản Phẩm Số',
+            'en' => 'Create Digital Product'
         ],
-        'profile.contact' => [
-            'vi' => 'Liên hệ',
-            'en' => 'Contact'
+        'marketplace.digital_products.create' => [
+            'vi' => 'Tạo sản phẩm số',
+            'en' => 'Create digital product'
         ],
-        'profile.report' => [
-            'vi' => 'Báo cáo',
-            'en' => 'Report'
+        'marketplace.digital_products.info_title' => [
+            'vi' => 'Thông tin sản phẩm số',
+            'en' => 'Digital Product Information'
         ],
-        'profile.active' => [
-            'vi' => 'Hoạt động',
-            'en' => 'Active'
+        'marketplace.digital_products.info_description' => [
+            'vi' => 'Sản phẩm số bao gồm file CAD, bản vẽ kỹ thuật, tài liệu và phần mềm có thể tải xuống.',
+            'en' => 'Digital products include CAD files, technical drawings, documents and downloadable software.'
         ],
-        'profile.verified' => [
-            'vi' => 'Đã xác thực',
-            'en' => 'Verified'
+
+        // Basic Information
+        'marketplace.products.basic_info' => [
+            'vi' => 'Thông tin cơ bản',
+            'en' => 'Basic Information'
         ],
-        'profile.verified_business' => [
-            'vi' => 'Doanh nghiệp đã xác thực',
-            'en' => 'Verified Business'
+        'marketplace.products.name' => [
+            'vi' => 'Tên sản phẩm',
+            'en' => 'Product Name'
         ],
-        'profile.phone' => [
-            'vi' => 'Điện thoại',
-            'en' => 'Phone'
+        'marketplace.digital_products.name_help' => [
+            'vi' => 'Nhập tên mô tả rõ ràng cho sản phẩm số của bạn',
+            'en' => 'Enter a clear descriptive name for your digital product'
         ],
-        'profile.business_phone' => [
-            'vi' => 'Điện thoại doanh nghiệp',
-            'en' => 'Business Phone'
+        'marketplace.products.short_description' => [
+            'vi' => 'Mô tả ngắn',
+            'en' => 'Short Description'
         ],
-        'profile.business_email' => [
-            'vi' => 'Email doanh nghiệp',
-            'en' => 'Business Email'
+        'marketplace.products.short_description_help' => [
+            'vi' => 'Mô tả ngắn gọn về sản phẩm (tối đa 500 ký tự)',
+            'en' => 'Brief description of the product (max 500 characters)'
         ],
-        'profile.profile_views' => [
-            'vi' => 'Lượt xem',
-            'en' => 'Profile Views'
+        'marketplace.products.description' => [
+            'vi' => 'Mô tả chi tiết',
+            'en' => 'Detailed Description'
         ],
-        'profile.products' => [
+        'marketplace.digital_products.description_help' => [
+            'vi' => 'Mô tả chi tiết về sản phẩm, bao gồm tính năng và ứng dụng',
+            'en' => 'Detailed description of the product, including features and applications'
+        ],
+
+        // Digital Files
+        'marketplace.digital_products.files' => [
+            'vi' => 'File Số',
+            'en' => 'Digital Files'
+        ],
+        'marketplace.digital_products.upload_files' => [
+            'vi' => 'Tải lên file',
+            'en' => 'Upload Files'
+        ],
+        'marketplace.digital_products.files_help' => [
+            'vi' => 'Chọn các file số để bán. Hỗ trợ nhiều file cùng lúc.',
+            'en' => 'Select digital files to sell. Multiple files supported.'
+        ],
+        'marketplace.digital_products.supported_formats' => [
+            'vi' => 'Định dạng hỗ trợ',
+            'en' => 'Supported Formats'
+        ],
+        'marketplace.digital_products.max_size' => [
+            'vi' => 'Kích thước tối đa',
+            'en' => 'Maximum Size'
+        ],
+        'marketplace.digital_products.selected_files' => [
+            'vi' => 'File đã chọn',
+            'en' => 'Selected Files'
+        ],
+
+        // Technical Specifications
+        'marketplace.digital_products.technical_specs' => [
+            'vi' => 'Thông số kỹ thuật',
+            'en' => 'Technical Specifications'
+        ],
+        'marketplace.digital_products.file_formats' => [
+            'vi' => 'Định dạng file',
+            'en' => 'File Formats'
+        ],
+        'marketplace.digital_products.file_formats_help' => [
+            'vi' => 'Nhập các định dạng file, cách nhau bằng dấu phẩy hoặc Enter',
+            'en' => 'Enter file formats, separated by comma or Enter'
+        ],
+        'marketplace.digital_products.software_compatibility' => [
+            'vi' => 'Tương thích phần mềm',
+            'en' => 'Software Compatibility'
+        ],
+        'marketplace.digital_products.software_help' => [
+            'vi' => 'Nhập các phần mềm tương thích, cách nhau bằng dấu phẩy hoặc Enter',
+            'en' => 'Enter compatible software, separated by comma or Enter'
+        ],
+        'marketplace.digital_products.download_limit' => [
+            'vi' => 'Giới hạn tải xuống',
+            'en' => 'Download Limit'
+        ],
+        'marketplace.digital_products.download_limit_help' => [
+            'vi' => 'Số lần tối đa khách hàng có thể tải xuống sau khi mua',
+            'en' => 'Maximum number of times customer can download after purchase'
+        ],
+
+        // Images
+        'marketplace.products.images' => [
+            'vi' => 'Hình ảnh',
+            'en' => 'Images'
+        ],
+        'marketplace.products.featured_image' => [
+            'vi' => 'Hình ảnh đại diện',
+            'en' => 'Featured Image'
+        ],
+        'marketplace.products.featured_image_help' => [
+            'vi' => 'Chọn hình ảnh chính cho sản phẩm',
+            'en' => 'Select main image for the product'
+        ],
+        'marketplace.products.gallery_images' => [
+            'vi' => 'Thư viện ảnh',
+            'en' => 'Gallery Images'
+        ],
+        'marketplace.products.gallery_images_help' => [
+            'vi' => 'Chọn nhiều hình ảnh để hiển thị trong thư viện',
+            'en' => 'Select multiple images to display in gallery'
+        ],
+
+        // Pricing
+        'marketplace.products.pricing' => [
+            'vi' => 'Giá cả',
+            'en' => 'Pricing'
+        ],
+        'marketplace.products.price' => [
+            'vi' => 'Giá bán',
+            'en' => 'Price'
+        ],
+        'marketplace.products.sale_price' => [
+            'vi' => 'Giá khuyến mãi',
+            'en' => 'Sale Price'
+        ],
+        'marketplace.products.sale_price_help' => [
+            'vi' => 'Giá khuyến mãi (tùy chọn)',
+            'en' => 'Sale price (optional)'
+        ],
+
+        // Category
+        'marketplace.products.category' => [
+            'vi' => 'Danh mục',
+            'en' => 'Category'
+        ],
+        'marketplace.products.select_category' => [
+            'vi' => 'Chọn danh mục',
+            'en' => 'Select Category'
+        ],
+        'marketplace.products.choose_category' => [
+            'vi' => 'Chọn danh mục...',
+            'en' => 'Choose category...'
+        ],
+
+        // SEO & Tags
+        'marketplace.products.seo_tags' => [
+            'vi' => 'SEO & Tags',
+            'en' => 'SEO & Tags'
+        ],
+        'marketplace.products.tags' => [
+            'vi' => 'Tags',
+            'en' => 'Tags'
+        ],
+        'marketplace.products.tags_help' => [
+            'vi' => 'Nhập các từ khóa, cách nhau bằng dấu phẩy',
+            'en' => 'Enter keywords, separated by commas'
+        ],
+        'marketplace.products.meta_title' => [
+            'vi' => 'Meta Title',
+            'en' => 'Meta Title'
+        ],
+        'marketplace.products.meta_description' => [
+            'vi' => 'Meta Description',
+            'en' => 'Meta Description'
+        ],
+
+        // Actions
+        'marketplace.digital_products.create_product' => [
+            'vi' => 'Tạo sản phẩm',
+            'en' => 'Create Product'
+        ],
+        'common.cancel' => [
+            'vi' => 'Hủy',
+            'en' => 'Cancel'
+        ],
+        'common.dashboard' => [
+            'vi' => 'Dashboard',
+            'en' => 'Dashboard'
+        ],
+        'marketplace.products.title' => [
             'vi' => 'Sản phẩm',
             'en' => 'Products'
         ],
-        'profile.reviews' => [
-            'vi' => 'Đánh giá',
-            'en' => 'Reviews'
-        ],
-        'profile.rating' => [
-            'vi' => 'Xếp hạng',
-            'en' => 'Rating'
-        ],
-        'profile.business_score' => [
-            'vi' => 'Điểm doanh nghiệp',
-            'en' => 'Business Score'
-        ],
-        'profile.more' => [
-            'vi' => 'thêm',
-            'en' => 'more'
+        'common.error' => [
+            'vi' => 'Lỗi',
+            'en' => 'Error'
         ],
 
-        // Experience levels
-        'profile.experience_0_1' => [
-            'vi' => 'Mới bắt đầu (0-1 năm)',
-            'en' => 'Beginner (0-1 years)'
+        // Sidebar translations
+        't_sidebar.marketplace.digital_product' => [
+            'vi' => 'Sản phẩm số',
+            'en' => 'Digital Product'
         ],
-        'profile.experience_1_3' => [
-            'vi' => 'Cơ bản (1-3 năm)',
-            'en' => 'Junior (1-3 years)'
-        ],
-        'profile.experience_3_5' => [
-            'vi' => 'Trung cấp (3-5 năm)',
-            'en' => 'Mid-level (3-5 years)'
-        ],
-        'profile.experience_5_10' => [
-            'vi' => 'Cao cấp (5-10 năm)',
-            'en' => 'Senior (5-10 years)'
-        ],
-        'profile.experience_10+' => [
-            'vi' => 'Chuyên gia (10+ năm)',
-            'en' => 'Expert (10+ years)'
+        't_sidebar.marketplace.physical_product' => [
+            'vi' => 'Sản phẩm vật lý',
+            'en' => 'Physical Product'
         ],
 
-        // Tab Navigation
-        'profile.overview' => [
-            'vi' => 'Tổng quan',
-            'en' => 'Overview'
+        // ===== PHYSICAL PRODUCTS TRANSLATIONS =====
+
+        // Physical Products Create Page
+        'marketplace.physical_products.create_title' => [
+            'vi' => 'Tạo Sản Phẩm Vật Lý',
+            'en' => 'Create Physical Product'
         ],
-        'profile.business_info' => [
-            'vi' => 'Thông tin doanh nghiệp',
-            'en' => 'Business Info'
+        'marketplace.physical_products.create' => [
+            'vi' => 'Tạo sản phẩm vật lý',
+            'en' => 'Create physical product'
         ],
-        'profile.professional_info' => [
-            'vi' => 'Thông tin chuyên môn',
-            'en' => 'Professional Info'
+        'marketplace.physical_products.info_title' => [
+            'vi' => 'Thông tin sản phẩm vật lý',
+            'en' => 'Physical Product Information'
         ],
-        'profile.my_threads' => [
-            'vi' => 'Bài viết của tôi',
-            'en' => 'My Threads'
+        'marketplace.physical_products.info_description' => [
+            'vi' => 'Sản phẩm vật lý bao gồm thiết bị, linh kiện, máy móc và vật liệu kỹ thuật có thể vận chuyển.',
+            'en' => 'Physical products include equipment, components, machinery and technical materials that can be shipped.'
         ],
-        'profile.portfolio' => [
-            'vi' => 'Portfolio',
-            'en' => 'Portfolio'
+        'marketplace.physical_products.name_help' => [
+            'vi' => 'Nhập tên mô tả rõ ràng cho sản phẩm vật lý của bạn',
+            'en' => 'Enter a clear descriptive name for your physical product'
+        ],
+        'marketplace.physical_products.description_help' => [
+            'vi' => 'Mô tả chi tiết về sản phẩm, tình trạng và ứng dụng',
+            'en' => 'Detailed description of the product, condition and applications'
         ],
 
-        // Professional Info Section
-        'profile.business_information' => [
-            'vi' => 'Thông tin doanh nghiệp',
-            'en' => 'Business Information'
+        // Product Type & Condition
+        'marketplace.physical_products.type_condition' => [
+            'vi' => 'Loại sản phẩm & Tình trạng',
+            'en' => 'Product Type & Condition'
         ],
-        'profile.professional_information' => [
-            'vi' => 'Thông tin chuyên môn',
-            'en' => 'Professional Information'
+        'marketplace.physical_products.product_type' => [
+            'vi' => 'Loại sản phẩm',
+            'en' => 'Product Type'
         ],
-        'profile.company_name' => [
-            'vi' => 'Tên công ty',
-            'en' => 'Company Name'
+        'marketplace.physical_products.choose_type' => [
+            'vi' => 'Chọn loại sản phẩm...',
+            'en' => 'Choose product type...'
         ],
-        'profile.business_type' => [
-            'vi' => 'Loại hình doanh nghiệp',
-            'en' => 'Business Type'
+        'marketplace.physical_products.new_product' => [
+            'vi' => 'Sản phẩm mới',
+            'en' => 'New Product'
         ],
-        'profile.business_description' => [
-            'vi' => 'Mô tả doanh nghiệp',
-            'en' => 'Business Description'
+        'marketplace.physical_products.used_product' => [
+            'vi' => 'Sản phẩm đã qua sử dụng',
+            'en' => 'Used Product'
         ],
-        'profile.business_categories' => [
-            'vi' => 'Danh mục kinh doanh',
-            'en' => 'Business Categories'
+        'marketplace.physical_products.condition' => [
+            'vi' => 'Tình trạng',
+            'en' => 'Condition'
         ],
-        'profile.verification_status' => [
-            'vi' => 'Trạng thái xác thực',
-            'en' => 'Verification Status'
+        'marketplace.physical_products.choose_condition' => [
+            'vi' => 'Chọn tình trạng...',
+            'en' => 'Choose condition...'
         ],
-        'profile.verified_on' => [
-            'vi' => 'Đã xác thực vào',
-            'en' => 'Verified on'
+        'marketplace.physical_products.condition_new' => [
+            'vi' => 'Mới (chưa sử dụng)',
+            'en' => 'New (unused)'
         ],
-        'profile.pending_verification' => [
-            'vi' => 'Chờ xác thực',
-            'en' => 'Pending Verification'
+        'marketplace.physical_products.condition_like_new' => [
+            'vi' => 'Như mới',
+            'en' => 'Like New'
         ],
-        'profile.no_categories_specified' => [
-            'vi' => 'Chưa chỉ định danh mục',
-            'en' => 'No categories specified'
+        'marketplace.physical_products.condition_good' => [
+            'vi' => 'Tốt',
+            'en' => 'Good'
         ],
-        'profile.job_title' => [
-            'vi' => 'Chức vụ',
-            'en' => 'Job Title'
+        'marketplace.physical_products.condition_fair' => [
+            'vi' => 'Khá',
+            'en' => 'Fair'
         ],
-        'profile.company' => [
-            'vi' => 'Công ty',
-            'en' => 'Company'
-        ],
-        'profile.experience_years' => [
-            'vi' => 'Kinh nghiệm',
-            'en' => 'Experience'
-        ],
-        'profile.bio' => [
-            'vi' => 'Tiểu sử',
-            'en' => 'Bio'
-        ],
-        'profile.skills' => [
-            'vi' => 'Kỹ năng',
-            'en' => 'Skills'
-        ],
-        'profile.no_skills_listed' => [
-            'vi' => 'Chưa liệt kê kỹ năng',
-            'en' => 'No skills listed'
+        'marketplace.physical_products.condition_poor' => [
+            'vi' => 'Kém',
+            'en' => 'Poor'
         ],
 
-        // My Threads Section
-        'profile.create_new_thread' => [
-            'vi' => 'Tạo bài viết mới',
-            'en' => 'Create New Thread'
+        // Physical Specifications
+        'marketplace.physical_products.physical_specs' => [
+            'vi' => 'Thông số vật lý',
+            'en' => 'Physical Specifications'
         ],
-        'profile.pinned' => [
-            'vi' => 'Đã ghim',
-            'en' => 'Pinned'
+        'marketplace.physical_products.weight' => [
+            'vi' => 'Trọng lượng',
+            'en' => 'Weight'
         ],
-        'profile.locked' => [
-            'vi' => 'Đã khóa',
-            'en' => 'Locked'
+        'marketplace.physical_products.length' => [
+            'vi' => 'Chiều dài',
+            'en' => 'Length'
         ],
-        'profile.updated' => [
-            'vi' => 'Cập nhật',
-            'en' => 'Updated'
+        'marketplace.physical_products.width' => [
+            'vi' => 'Chiều rộng',
+            'en' => 'Width'
         ],
-        'profile.views' => [
-            'vi' => 'Lượt xem',
-            'en' => 'Views'
+        'marketplace.physical_products.height' => [
+            'vi' => 'Chiều cao',
+            'en' => 'Height'
         ],
-        'profile.attachments' => [
-            'vi' => 'Tệp đính kèm',
-            'en' => 'Attachments'
+        'marketplace.physical_products.material' => [
+            'vi' => 'Chất liệu',
+            'en' => 'Material'
         ],
-        'profile.no_threads_yet' => [
-            'vi' => 'Chưa có bài viết nào',
-            'en' => 'No threads yet'
-        ],
-        'profile.create_first_thread_message' => [
-            'vi' => 'Hãy tạo bài viết đầu tiên để chia sẻ kiến thức với cộng đồng',
-            'en' => 'Create your first thread to share knowledge with the community'
-        ],
-        'profile.create_first_thread' => [
-            'vi' => 'Tạo bài viết đầu tiên',
-            'en' => 'Create First Thread'
-        ],
-        'profile.hasnt_created_threads_yet' => [
-            'vi' => 'chưa tạo bài viết nào',
-            'en' => 'hasn\'t created any threads yet'
+        'marketplace.physical_products.material_help' => [
+            'vi' => 'Ví dụ: Thép không gỉ, Nhôm, Nhựa ABS',
+            'en' => 'Example: Stainless steel, Aluminum, ABS plastic'
         ],
 
-        // Portfolio Section
-        'profile.portfolio_projects' => [
-            'vi' => 'Portfolio & Dự án',
-            'en' => 'Portfolio & Projects'
+        // Stock Management
+        'marketplace.physical_products.stock_quantity' => [
+            'vi' => 'Số lượng tồn kho',
+            'en' => 'Stock Quantity'
         ],
-        'profile.add_project' => [
-            'vi' => 'Thêm dự án',
-            'en' => 'Add Project'
-        ],
-        'profile.files' => [
-            'vi' => 'tệp',
-            'en' => 'files'
-        ],
-        'profile.view_all_projects' => [
-            'vi' => 'Xem tất cả dự án',
-            'en' => 'View All Projects'
-        ],
-        'profile.no_portfolio_items' => [
-            'vi' => 'Chưa có dự án nào',
-            'en' => 'No portfolio items'
-        ],
-        'profile.showcase_your_work_message' => [
-            'vi' => 'Hãy showcase công việc của bạn để thu hút sự chú ý',
-            'en' => 'Showcase your work to attract attention'
-        ],
-        'profile.create_showcase' => [
-            'vi' => 'Tạo Showcase',
-            'en' => 'Create Showcase'
-        ],
-        'profile.create_thread' => [
-            'vi' => 'Tạo bài viết',
-            'en' => 'Create Thread'
-        ],
-        'profile.hasnt_shared_projects_yet' => [
-            'vi' => 'chưa chia sẻ dự án nào',
-            'en' => 'hasn\'t shared any projects yet'
+        'marketplace.physical_products.stock_help' => [
+            'vi' => 'Số lượng sản phẩm có sẵn để bán',
+            'en' => 'Number of products available for sale'
         ],
 
-        // Products tab translations
-        'profile.products' => [
-            'vi' => 'Sản phẩm',
-            'en' => 'Products'
+        // Actions
+        'marketplace.physical_products.create_product' => [
+            'vi' => 'Tạo sản phẩm',
+            'en' => 'Create Product'
         ],
-        'profile.add_product' => [
-            'vi' => 'Thêm sản phẩm',
-            'en' => 'Add Product'
+        'marketplace.physical_products.created_successfully' => [
+            'vi' => 'Sản phẩm vật lý đã được tạo thành công!',
+            'en' => 'Physical product created successfully!'
         ],
-        'profile.no_products' => [
-            'vi' => 'Chưa có sản phẩm nào',
-            'en' => 'No products yet'
+        'marketplace.physical_products.creation_failed' => [
+            'vi' => 'Không thể tạo sản phẩm vật lý',
+            'en' => 'Failed to create physical product'
         ],
-        'profile.no_products_own' => [
-            'vi' => 'Bạn chưa có sản phẩm nào. Hãy tạo sản phẩm đầu tiên!',
-            'en' => 'You don\'t have any products yet. Create your first product!'
+
+        // ===== EDIT PRODUCTS TRANSLATIONS =====
+
+        // Digital Products Edit
+        'marketplace.digital_products.edit_title' => [
+            'vi' => 'Chỉnh Sửa Sản Phẩm Số',
+            'en' => 'Edit Digital Product'
         ],
-        'profile.no_products_user' => [
-            'vi' => 'chưa có sản phẩm nào',
-            'en' => 'doesn\'t have any products yet'
+        'marketplace.digital_products.edit' => [
+            'vi' => 'Chỉnh sửa sản phẩm số',
+            'en' => 'Edit digital product'
         ],
-        'profile.create_first_product' => [
-            'vi' => 'Tạo sản phẩm đầu tiên',
-            'en' => 'Create First Product'
+        'marketplace.digital_products.edit_info_title' => [
+            'vi' => 'Chỉnh sửa thông tin sản phẩm số',
+            'en' => 'Edit Digital Product Information'
         ],
-        'profile.active' => [
-            'vi' => 'Đang bán',
+        'marketplace.digital_products.edit_info_description' => [
+            'vi' => 'Cập nhật thông tin, file và hình ảnh cho sản phẩm số của bạn.',
+            'en' => 'Update information, files and images for your digital product.'
+        ],
+        'marketplace.digital_products.current_files' => [
+            'vi' => 'File hiện tại',
+            'en' => 'Current Files'
+        ],
+        'marketplace.digital_products.upload_new_files' => [
+            'vi' => 'Tải lên file mới',
+            'en' => 'Upload New Files'
+        ],
+        'marketplace.digital_products.per_file' => [
+            'vi' => 'mỗi file',
+            'en' => 'per file'
+        ],
+        'marketplace.digital_products.confirm_remove_file' => [
+            'vi' => 'Bạn có chắc chắn muốn xóa file này?',
+            'en' => 'Are you sure you want to remove this file?'
+        ],
+        'marketplace.digital_products.update_product' => [
+            'vi' => 'Cập nhật sản phẩm',
+            'en' => 'Update Product'
+        ],
+        'marketplace.digital_products.updated_successfully' => [
+            'vi' => 'Sản phẩm số đã được cập nhật thành công!',
+            'en' => 'Digital product updated successfully!'
+        ],
+        'marketplace.digital_products.update_failed' => [
+            'vi' => 'Không thể cập nhật sản phẩm số',
+            'en' => 'Failed to update digital product'
+        ],
+
+        // Physical Products Edit
+        'marketplace.physical_products.edit_title' => [
+            'vi' => 'Chỉnh Sửa Sản Phẩm Vật Lý',
+            'en' => 'Edit Physical Product'
+        ],
+        'marketplace.physical_products.edit' => [
+            'vi' => 'Chỉnh sửa sản phẩm vật lý',
+            'en' => 'Edit physical product'
+        ],
+        'marketplace.physical_products.edit_info_title' => [
+            'vi' => 'Chỉnh sửa thông tin sản phẩm vật lý',
+            'en' => 'Edit Physical Product Information'
+        ],
+        'marketplace.physical_products.edit_info_description' => [
+            'vi' => 'Cập nhật thông tin, thông số và hình ảnh cho sản phẩm vật lý của bạn.',
+            'en' => 'Update information, specifications and images for your physical product.'
+        ],
+        'marketplace.physical_products.update_product' => [
+            'vi' => 'Cập nhật sản phẩm',
+            'en' => 'Update Product'
+        ],
+        'marketplace.physical_products.updated_successfully' => [
+            'vi' => 'Sản phẩm vật lý đã được cập nhật thành công!',
+            'en' => 'Physical product updated successfully!'
+        ],
+        'marketplace.physical_products.update_failed' => [
+            'vi' => 'Không thể cập nhật sản phẩm vật lý',
+            'en' => 'Failed to update physical product'
+        ],
+
+        // Common Product Fields
+        'marketplace.products.status' => [
+            'vi' => 'Trạng thái',
+            'en' => 'Status'
+        ],
+        'marketplace.products.status_active' => [
+            'vi' => 'Đang hoạt động',
             'en' => 'Active'
         ],
-        'profile.pending' => [
+        'marketplace.products.status_pending' => [
             'vi' => 'Chờ duyệt',
             'en' => 'Pending'
         ],
-        'profile.inactive' => [
+        'marketplace.products.status_inactive' => [
             'vi' => 'Tạm dừng',
             'en' => 'Inactive'
         ],
-        'profile.edit' => [
-            'vi' => 'Chỉnh sửa',
-            'en' => 'Edit'
+        'marketplace.products.created' => [
+            'vi' => 'Ngày tạo',
+            'en' => 'Created'
         ],
-        'profile.deactivate' => [
-            'vi' => 'Tạm dừng',
-            'en' => 'Deactivate'
+        'marketplace.products.updated' => [
+            'vi' => 'Cập nhật',
+            'en' => 'Updated'
         ],
-        'profile.activate' => [
-            'vi' => 'Kích hoạt',
-            'en' => 'Activate'
+        'marketplace.products.current_featured_image' => [
+            'vi' => 'Hình ảnh đại diện hiện tại',
+            'en' => 'Current Featured Image'
         ],
-        'profile.view_all_products' => [
-            'vi' => 'Xem tất cả sản phẩm',
-            'en' => 'View All Products'
+        'marketplace.products.remove_featured_image' => [
+            'vi' => 'Xóa hình ảnh đại diện',
+            'en' => 'Remove featured image'
         ],
-        'profile.confirm_status_change' => [
-            'vi' => 'Bạn có chắc chắn muốn thay đổi trạng thái sản phẩm này?',
-            'en' => 'Are you sure you want to change this product status?'
+        'marketplace.products.current_gallery_images' => [
+            'vi' => 'Hình ảnh thư viện hiện tại',
+            'en' => 'Current Gallery Images'
         ],
-        'profile.status_change_error' => [
-            'vi' => 'Có lỗi xảy ra khi thay đổi trạng thái sản phẩm',
-            'en' => 'Error occurred while changing product status'
+        'marketplace.products.confirm_remove_image' => [
+            'vi' => 'Bạn có chắc chắn muốn xóa hình ảnh này?',
+            'en' => 'Are you sure you want to remove this image?'
         ],
+        'marketplace.products.sale_price_validation' => [
+            'vi' => 'Giá khuyến mãi phải nhỏ hơn giá gốc',
+            'en' => 'Sale price must be less than regular price'
+        ],
+
+        // ===== PRODUCTS INDEX PAGE TRANSLATIONS =====
+
+        'marketplace.products.title' => [
+            'vi' => 'Sản Phẩm Của Tôi',
+            'en' => 'My Products'
+        ],
+        'marketplace.products.total_products' => [
+            'vi' => 'Tổng sản phẩm',
+            'en' => 'Total Products'
+        ],
+        'marketplace.products.active_products' => [
+            'vi' => 'Sản phẩm đang bán',
+            'en' => 'Active Products'
+        ],
+        'marketplace.products.total_views' => [
+            'vi' => 'Tổng lượt xem',
+            'en' => 'Total Views'
+        ],
+        'marketplace.products.total_sales' => [
+            'vi' => 'Tổng lượt bán',
+            'en' => 'Total Sales'
+        ],
+        'marketplace.products.this_month' => [
+            'vi' => 'tháng này',
+            'en' => 'this month'
+        ],
+        'marketplace.products.of_total' => [
+            'vi' => 'của tổng số',
+            'en' => 'of total'
+        ],
+        'marketplace.products.avg_per_product' => [
+            'vi' => 'trung bình/sản phẩm',
+            'en' => 'avg per product'
+        ],
+        'marketplace.products.product_types' => [
+            'vi' => 'Loại sản phẩm',
+            'en' => 'Product Types'
+        ],
+        'marketplace.products.type_digital' => [
+            'vi' => 'Sản phẩm số',
+            'en' => 'Digital Products'
+        ],
+        'marketplace.products.type_physical' => [
+            'vi' => 'Sản phẩm vật lý',
+            'en' => 'Physical Products'
+        ],
+        'marketplace.products.no_products_yet' => [
+            'vi' => 'Chưa có sản phẩm nào',
+            'en' => 'No products yet'
+        ],
+        'marketplace.products.quick_actions' => [
+            'vi' => 'Thao tác nhanh',
+            'en' => 'Quick Actions'
+        ],
+        'marketplace.products.status_overview' => [
+            'vi' => 'Tổng quan trạng thái',
+            'en' => 'Status Overview'
+        ],
+        'marketplace.products.draft' => [
+            'vi' => 'Bản nháp',
+            'en' => 'Draft'
+        ],
+        'marketplace.products.pending' => [
+            'vi' => 'Chờ duyệt',
+            'en' => 'Pending'
+        ],
+        'marketplace.products.active' => [
+            'vi' => 'Đang bán',
+            'en' => 'Active'
+        ],
+        'marketplace.products.rejected' => [
+            'vi' => 'Bị từ chối',
+            'en' => 'Rejected'
+        ],
+        'marketplace.products.my_products' => [
+            'vi' => 'Sản phẩm của tôi',
+            'en' => 'My Products'
+        ],
+        'marketplace.products.filter' => [
+            'vi' => 'Lọc',
+            'en' => 'Filter'
+        ],
+        'marketplace.products.all_status' => [
+            'vi' => 'Tất cả trạng thái',
+            'en' => 'All Status'
+        ],
+        'marketplace.products.product' => [
+            'vi' => 'Sản phẩm',
+            'en' => 'Product'
+        ],
+        'marketplace.products.type' => [
+            'vi' => 'Loại',
+            'en' => 'Type'
+        ],
+        'marketplace.products.stats' => [
+            'vi' => 'Thống kê',
+            'en' => 'Stats'
+        ],
+        'marketplace.products.uncategorized' => [
+            'vi' => 'Chưa phân loại',
+            'en' => 'Uncategorized'
+        ],
+        'marketplace.products.status_approved' => [
+            'vi' => 'Đã duyệt',
+            'en' => 'Approved'
+        ],
+        'marketplace.products.status_draft' => [
+            'vi' => 'Bản nháp',
+            'en' => 'Draft'
+        ],
+        'marketplace.products.status_pending' => [
+            'vi' => 'Chờ duyệt',
+            'en' => 'Pending'
+        ],
+        'marketplace.products.status_rejected' => [
+            'vi' => 'Bị từ chối',
+            'en' => 'Rejected'
+        ],
+        'marketplace.products.no_products' => [
+            'vi' => 'Chưa có sản phẩm nào',
+            'en' => 'No products found'
+        ],
+        'marketplace.products.no_products_description' => [
+            'vi' => 'Bạn chưa tạo sản phẩm nào. Hãy bắt đầu bằng cách tạo sản phẩm đầu tiên của bạn.',
+            'en' => 'You haven\'t created any products yet. Start by creating your first product.'
+        ],
+        'marketplace.products.confirm_delete' => [
+            'vi' => 'Xác nhận xóa sản phẩm',
+            'en' => 'Confirm Delete Product'
+        ],
+        'marketplace.products.confirm_delete_message' => [
+            'vi' => 'Bạn có chắc chắn muốn xóa sản phẩm này? Hành động này không thể hoàn tác.',
+            'en' => 'Are you sure you want to delete this product? This action cannot be undone.'
+        ],
+        'marketplace.products.type_new_product' => [
+            'vi' => 'Sản phẩm mới',
+            'en' => 'New Product'
+        ],
+        'marketplace.products.type_used_product' => [
+            'vi' => 'Sản phẩm cũ',
+            'en' => 'Used Product'
+        ],
+
+        // ===== PHYSICAL PRODUCTS EDIT TRANSLATIONS =====
+
+        'marketplace.physical_products.edit_title' => [
+            'vi' => 'Chỉnh Sửa Sản Phẩm Vật Lý',
+            'en' => 'Edit Physical Product'
+        ],
+        'marketplace.physical_products.edit' => [
+            'vi' => 'Chỉnh sửa sản phẩm vật lý',
+            'en' => 'Edit physical product'
+        ],
+        'marketplace.physical_products.edit_info_title' => [
+            'vi' => 'Chỉnh sửa sản phẩm vật lý',
+            'en' => 'Edit Physical Product'
+        ],
+        'marketplace.physical_products.edit_info_description' => [
+            'vi' => 'Cập nhật thông tin sản phẩm vật lý của bạn. Hãy đảm bảo thông tin chính xác để thu hút khách hàng.',
+            'en' => 'Update your physical product information. Make sure the information is accurate to attract customers.'
+        ],
+        'marketplace.physical_products.update_product' => [
+            'vi' => 'Cập Nhật Sản Phẩm',
+            'en' => 'Update Product'
+        ],
+        'marketplace.products.current_images' => [
+            'vi' => 'Hình ảnh hiện tại',
+            'en' => 'Current Images'
+        ]
     ];
 
     /**

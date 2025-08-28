@@ -44,7 +44,14 @@ class MarketplacePermissionMiddleware
                     $hasPermission = UnifiedMarketplacePermissionService::canBuy($user, $productType);
                     break;
                 case 'sell':
-                    $hasPermission = UnifiedMarketplacePermissionService::canSell($user, $productType);
+                    // For sell action, if no specific product type, check if user can sell any type
+                    if ($productType) {
+                        $hasPermission = UnifiedMarketplacePermissionService::canSell($user, $productType);
+                    } else {
+                        // Check if user can sell any product type
+                        $allowedTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
+                        $hasPermission = !empty($allowedTypes);
+                    }
                     break;
                 case 'checkout':
                     $hasPermission = UnifiedMarketplacePermissionService::canCheckout($user);

@@ -241,6 +241,21 @@ class BreadcrumbService
             }
         }
 
+        // Showcase hierarchy: Showcase > Showcase Detail
+        elseif (str_starts_with($routeName, 'showcase.')) {
+            // Only add showcase.index breadcrumb if we're NOT on the showcase.index page itself
+            if ($routeName !== 'showcase.index') {
+                $showcaseSeo = PageSeo::findByRoute('showcase.index');
+                if ($showcaseSeo) {
+                    $breadcrumbs[] = [
+                        'title' => $this->getBreadcrumbTitle($showcaseSeo, $request),
+                        'url' => route('showcase.index'),
+                        'active' => false
+                    ];
+                }
+            }
+        }
+
         // User hierarchy: Users > User Profile
         elseif (str_starts_with($routeName, 'users.') || str_starts_with($routeName, 'profile.')) {
             $usersSeo = PageSeo::findByRoute('users.index');
@@ -369,6 +384,9 @@ class BreadcrumbService
                 }
                 if ($key === 'product' && isset($value->name)) {
                     $title = str_replace('{product_name}', $value->name, $title);
+                }
+                if ($key === 'showcase' && isset($value->title)) {
+                    $title = str_replace('{project_title}', $value->title, $title);
                 }
 
                 // Handle model objects (generic patterns)

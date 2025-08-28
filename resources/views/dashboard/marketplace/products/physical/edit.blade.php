@@ -1,0 +1,500 @@
+@extends('layouts.user-dashboard')
+
+@section('title', __('marketplace.physical_products.edit_title'))
+
+@section('content')
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">
+                    <i class="fas fa-edit me-2 text-primary"></i>
+                    {{ __('marketplace.physical_products.edit_title') }}
+                </h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('dashboard') }}">{{ __('common.dashboard') }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('dashboard.marketplace.seller.products.index') }}">{{ __('marketplace.products.title') }}</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{ __('marketplace.physical_products.edit') }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Info Alert -->
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm mb-4">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle fs-4"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="alert-heading">{{ __('marketplace.physical_products.edit_info_title') }}</h5>
+                        <p class="mb-0">{{ __('marketplace.physical_products.edit_info_description') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="{{ route('dashboard.marketplace.seller.products.physical.update', $product) }}" method="POST" enctype="multipart/form-data" id="physicalProductEditForm">
+        @csrf
+        @method('PUT')
+
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Basic Information -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            {{ __('marketplace.products.basic_info') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">{{ __('marketplace.products.name') }} <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $product->name) }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.physical_products.name_help') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="short_description" class="form-label">{{ __('marketplace.products.short_description') }}</label>
+                                    <textarea class="form-control @error('short_description') is-invalid @enderror" id="short_description" name="short_description" rows="2" maxlength="500">{{ old('short_description', $product->short_description) }}</textarea>
+                                    @error('short_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.products.short_description_help') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">{{ __('marketplace.products.description') }} <span class="text-danger">*</span></label>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="6" required>{{ old('description', $product->description) }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.physical_products.description_help') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Type & Condition -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-cog me-2"></i>
+                            {{ __('marketplace.physical_products.type_condition') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="product_type" class="form-label">{{ __('marketplace.physical_products.product_type') }} <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('product_type') is-invalid @enderror" id="product_type" name="product_type" required>
+                                        <option value="">{{ __('marketplace.physical_products.choose_type') }}</option>
+                                        @if(in_array('new_product', $canSellPhysical))
+                                            <option value="new_product" {{ old('product_type', $product->product_type) == 'new_product' ? 'selected' : '' }}>
+                                                {{ __('marketplace.physical_products.new_product') }}
+                                            </option>
+                                        @endif
+                                        @if(in_array('used_product', $canSellPhysical))
+                                            <option value="used_product" {{ old('product_type', $product->product_type) == 'used_product' ? 'selected' : '' }}>
+                                                {{ __('marketplace.physical_products.used_product') }}
+                                            </option>
+                                        @endif
+                                    </select>
+                                    @error('product_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="condition" class="form-label">{{ __('marketplace.physical_products.condition') }} <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('condition') is-invalid @enderror" id="condition" name="condition" required>
+                                        <option value="">{{ __('marketplace.physical_products.choose_condition') }}</option>
+                                        <option value="new" {{ old('condition', $product->condition) == 'new' ? 'selected' : '' }}>
+                                            {{ __('marketplace.physical_products.condition_new') }}
+                                        </option>
+                                        <option value="like_new" {{ old('condition', $product->condition) == 'like_new' ? 'selected' : '' }}>
+                                            {{ __('marketplace.physical_products.condition_like_new') }}
+                                        </option>
+                                        <option value="good" {{ old('condition', $product->condition) == 'good' ? 'selected' : '' }}>
+                                            {{ __('marketplace.physical_products.condition_good') }}
+                                        </option>
+                                        <option value="fair" {{ old('condition', $product->condition) == 'fair' ? 'selected' : '' }}>
+                                            {{ __('marketplace.physical_products.condition_fair') }}
+                                        </option>
+                                        <option value="poor" {{ old('condition', $product->condition) == 'poor' ? 'selected' : '' }}>
+                                            {{ __('marketplace.physical_products.condition_poor') }}
+                                        </option>
+                                    </select>
+                                    @error('condition')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Physical Specifications -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-ruler me-2"></i>
+                            {{ __('marketplace.physical_products.physical_specs') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="weight" class="form-label">{{ __('marketplace.physical_products.weight') }}</label>
+                                            <input type="number" step="0.01" class="form-control @error('weight') is-invalid @enderror" id="weight" name="weight" value="{{ old('weight', $product->weight) }}">
+                                            @error('weight')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <div class="form-text">kg</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="length" class="form-label">{{ __('marketplace.physical_products.length') }}</label>
+                                            <input type="number" step="0.01" class="form-control @error('length') is-invalid @enderror" id="length" name="length" value="{{ old('length', $product->length) }}">
+                                            @error('length')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <div class="form-text">cm</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="width" class="form-label">{{ __('marketplace.physical_products.width') }}</label>
+                                            <input type="number" step="0.01" class="form-control @error('width') is-invalid @enderror" id="width" name="width" value="{{ old('width', $product->width) }}">
+                                            @error('width')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <div class="form-text">cm</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="height" class="form-label">{{ __('marketplace.physical_products.height') }}</label>
+                                            <input type="number" step="0.01" class="form-control @error('height') is-invalid @enderror" id="height" name="height" value="{{ old('height', $product->height) }}">
+                                            @error('height')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <div class="form-text">cm</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="material" class="form-label">{{ __('marketplace.physical_products.material') }}</label>
+                                            <input type="text" class="form-control @error('material') is-invalid @enderror" id="material" name="material" value="{{ old('material', $product->material) }}">
+                                            @error('material')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <div class="form-text">{{ __('marketplace.physical_products.material_help') }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Images -->
+                @if($product->featured_image || $product->images->count() > 0)
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-images me-2"></i>
+                            {{ __('marketplace.products.current_images') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if($product->featured_image)
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h6>{{ __('marketplace.products.current_featured_image') }}</h6>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ Storage::url($product->featured_image) }}" alt="Featured Image" class="img-thumbnail me-3" style="max-width: 150px;">
+                                    <div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFeaturedImage()">
+                                            <i class="fas fa-trash me-1"></i>{{ __('marketplace.products.remove_featured_image') }}
+                                        </button>
+                                        <input type="hidden" name="remove_featured_image" id="remove_featured_image" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($product->images && is_array($product->images) && count($product->images) > 0)
+                        <div class="row">
+                            <div class="col-12">
+                                <h6>{{ __('marketplace.products.current_gallery_images') }}</h6>
+                                <div class="row">
+                                    @foreach($product->images as $index => $imagePath)
+                                    <div class="col-md-3 mb-3" id="image-{{ $index }}">
+                                        <div class="position-relative">
+                                            <img src="{{ Storage::url($imagePath) }}" alt="Gallery Image" class="img-thumbnail w-100">
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" onclick="removeImage({{ $index }})">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <input type="hidden" name="remove_images" id="remove_images" value="">
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- New Images -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-upload me-2"></i>
+                            {{ __('marketplace.products.images') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="featured_image" class="form-label">{{ __('marketplace.products.featured_image') }}</label>
+                                    <input type="file" class="form-control @error('featured_image') is-invalid @enderror" id="featured_image" name="featured_image" accept="image/*">
+                                    @error('featured_image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.products.featured_image_help') }}</div>
+                                </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Pricing & Stock -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-dollar-sign me-2"></i>
+                            {{ __('marketplace.products.pricing') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">{{ __('marketplace.products.price') }} (VND) <span class="text-danger">*</span></label>
+                                    <input type="number" step="1" min="0" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $product->price) }}" required>
+                                    @error('price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="sale_price" class="form-label">{{ __('marketplace.products.sale_price') }} (VND)</label>
+                                    <input type="number" step="1" min="0" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
+                                    @error('sale_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.products.sale_price_help') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="stock_quantity" class="form-label">{{ __('marketplace.physical_products.stock_quantity') }} <span class="text-danger">*</span></label>
+                                    <input type="number" step="1" min="0" class="form-control @error('stock_quantity') is-invalid @enderror" id="stock_quantity" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity) }}" required>
+                                    @error('stock_quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.physical_products.stock_help') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-tags me-2"></i>
+                            {{ __('marketplace.products.category') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="product_category_id" class="form-label">{{ __('marketplace.products.select_category') }} <span class="text-danger">*</span></label>
+                            <select class="form-select @error('product_category_id') is-invalid @enderror" id="product_category_id" name="product_category_id" required>
+                                <option value="">{{ __('marketplace.products.choose_category') }}</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('product_category_id', $product->product_category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('product_category_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO & Tags -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-search me-2"></i>
+                            {{ __('marketplace.products.seo_tags') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="tags" class="form-label">{{ __('marketplace.products.tags') }}</label>
+                                    <input type="text" class="form-control @error('tags') is-invalid @enderror" id="tags" name="tags" value="{{ old('tags', $product->tags) }}">
+                                    @error('tags')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.products.tags_help') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="meta_title" class="form-label">{{ __('marketplace.products.meta_title') }}</label>
+                                    <input type="text" class="form-control @error('meta_title') is-invalid @enderror" id="meta_title" name="meta_title" value="{{ old('meta_title', $product->meta_title) }}">
+                                    @error('meta_title')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="meta_description" class="form-label">{{ __('marketplace.products.meta_description') }}</label>
+                                    <textarea class="form-control @error('meta_description') is-invalid @enderror" id="meta_description" name="meta_description" rows="3">{{ old('meta_description', $product->meta_description) }}</textarea>
+                                    @error('meta_description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Actions -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                {{ __('marketplace.physical_products.update_product') }}
+                            </button>
+                            <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                {{ __('common.cancel') }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@push('styles')
+<style>
+.condition-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-calculate sale price validation
+    const priceInput = document.getElementById('price');
+    const salePriceInput = document.getElementById('sale_price');
+
+    function validateSalePrice() {
+        const price = parseFloat(priceInput.value) || 0;
+        const salePrice = parseFloat(salePriceInput.value) || 0;
+
+        if (salePrice > 0 && salePrice >= price) {
+            salePriceInput.setCustomValidity('{{ __('marketplace.products.sale_price_validation') }}');
+        } else {
+            salePriceInput.setCustomValidity('');
+        }
+    }
+
+    priceInput.addEventListener('input', validateSalePrice);
+    salePriceInput.addEventListener('input', validateSalePrice);
+});
+
+// Remove featured image
+function removeFeaturedImage() {
+    if (confirm('{{ __('marketplace.products.confirm_remove_image') }}')) {
+        document.getElementById('remove_featured_image').value = '1';
+        document.querySelector('[onclick="removeFeaturedImage()"]').closest('.row').style.display = 'none';
+    }
+}
+
+// Remove gallery image
+let removedImages = [];
+function removeImage(imageIndex) {
+    if (confirm('{{ __('marketplace.products.confirm_remove_image') }}')) {
+        removedImages.push(imageIndex);
+        document.getElementById('remove_images').value = removedImages.join(',');
+        document.getElementById('image-' + imageIndex).style.display = 'none';
+    }
+}
+</script>
+@endpush
+@endsection
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="images" class="form-label">{{ __('marketplace.products.gallery_images') }}</label>
+                                    <input type="file" class="form-control @error('images') is-invalid @enderror" id="images" name="images[]" accept="image/*" multiple>
+                                    @error('images')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="form-text">{{ __('marketplace.products.gallery_images_help') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

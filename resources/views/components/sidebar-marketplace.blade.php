@@ -58,9 +58,19 @@ $sidebarData = $sidebarService->getMarketplaceSidebarData($user);
                 \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'new_product') ||
                 \App\Services\UnifiedMarketplacePermissionService::canSell(auth()->user(), 'used_product'))
             <div class="cta-section mt-3">
-                <a href="{{ route('marketplace.products.create') }}" class="btn btn-success w-100">
-                    <i class="fas fa-plus me-2"></i>{{ t_sidebar('marketplace.list_product') }}
-                </a>
+                <div class="dropdown">
+                    <button class="btn btn-success w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-plus me-2"></i>{{ t_sidebar('marketplace.list_product') }}
+                    </button>
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" href="{{ route('dashboard.marketplace.seller.products.digital.create') }}">
+                            <i class="fas fa-file-code me-2"></i>{{ t_sidebar('marketplace.digital_product') }}
+                        </a></li>
+                        <li><a class="dropdown-item" href="{{ route('dashboard.marketplace.seller.products.physical.create') }}">
+                            <i class="fas fa-box me-2"></i>{{ t_sidebar('marketplace.physical_product') }}
+                        </a></li>
+                    </ul>
+                </div>
             </div>
             @endif
             @else

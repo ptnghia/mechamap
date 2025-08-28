@@ -37,9 +37,9 @@
                     </a>
                 @endif
                 @if($currentUser->hasMarketplacePermission('sell'))
-                    <a href="{{ route('dashboard.marketplace.seller.products.create') }}" class="btn btn-outline-primary btn-sm w-100">
+                    <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="btn btn-outline-primary btn-sm w-100">
                         <i class="fas fa-box me-2"></i>
-                        Add New Product
+                        Manage Products
                     </a>
                     <a href="{{ route('dashboard.marketplace.seller.dashboard') }}" class="btn btn-outline-dark btn-sm w-100">
                         <i class="fas fa-store me-2"></i>

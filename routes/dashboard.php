@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\Marketplace\WishlistController;
 use App\Http\Controllers\Dashboard\Marketplace\SellerController;
 use App\Http\Controllers\Dashboard\Marketplace\ProductController;
 use App\Http\Controllers\Dashboard\Marketplace\AnalyticsController;
+use App\Models\MarketplaceProduct;
 use App\Http\Controllers\Dashboard\MessagesController;
 use App\Http\Controllers\Dashboard\GroupConversationController;
 
@@ -257,15 +258,47 @@ Route::middleware(['auth', 'marketplace.permission'])
                 Route::patch('/orders/{orderItem}/status', [SellerController::class, 'updateOrderStatus'])->name('orders.status');
                 Route::get('/export', [SellerController::class, 'exportData'])->name('export');
 
-                // Product management
+                // Product management - General routes
                 Route::prefix('products')->name('products.')->group(function () {
                     Route::get('/', [ProductController::class, 'index'])->name('index');
-                    Route::get('/create', [ProductController::class, 'create'])->name('create');
                     Route::get('/{product}', [ProductController::class, 'show'])->name('show');
-                    Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
                     Route::patch('/{product}/status', [ProductController::class, 'updateStatus'])->name('status');
                     Route::post('/{product}/duplicate', [ProductController::class, 'duplicate'])->name('duplicate');
                     Route::post('/bulk-action', [ProductController::class, 'bulkAction'])->name('bulk-action');
+
+                    // Redirect old create/edit routes to new specialized routes
+                    Route::get('/create', function () {
+                        return redirect()->route('dashboard.marketplace.seller.products.index')
+                            ->with('info', 'Vui lòng chọn loại sản phẩm cụ thể để tạo mới.');
+                    })->name('create');
+
+                    Route::get('/{product}/edit', function (MarketplaceProduct $product) {
+                        // Redirect based on product type
+                        if ($product->product_type === 'digital') {
+                            return redirect()->route('dashboard.marketplace.seller.products.digital.edit', $product);
+                        } elseif (in_array($product->product_type, ['new_product', 'used_product'])) {
+                            return redirect()->route('dashboard.marketplace.seller.products.physical.edit', $product);
+                        } else {
+                            return redirect()->route('dashboard.marketplace.seller.products.index')
+                                ->with('error', 'Loại sản phẩm không được hỗ trợ.');
+                        }
+                    })->name('edit');
+                });
+
+                // Digital Products - Files, software, documents
+                Route::prefix('products/digital')->name('products.digital.')->group(function () {
+                    Route::get('/create', [App\Http\Controllers\Dashboard\Marketplace\DigitalProductController::class, 'create'])->name('create');
+                    Route::post('/store', [App\Http\Controllers\Dashboard\Marketplace\DigitalProductController::class, 'store'])->name('store');
+                    Route::get('/{product}/edit', [App\Http\Controllers\Dashboard\Marketplace\DigitalProductController::class, 'edit'])->name('edit');
+                    Route::put('/{product}', [App\Http\Controllers\Dashboard\Marketplace\DigitalProductController::class, 'update'])->name('update');
+                });
+
+                // Physical Products - New and used physical items
+                Route::prefix('products/physical')->name('products.physical.')->group(function () {
+                    Route::get('/create', [App\Http\Controllers\Dashboard\Marketplace\PhysicalProductController::class, 'create'])->name('create');
+                    Route::post('/store', [App\Http\Controllers\Dashboard\Marketplace\PhysicalProductController::class, 'store'])->name('store');
+                    Route::get('/{product}/edit', [App\Http\Controllers\Dashboard\Marketplace\PhysicalProductController::class, 'edit'])->name('edit');
+                    Route::put('/{product}', [App\Http\Controllers\Dashboard\Marketplace\PhysicalProductController::class, 'update'])->name('update');
                 });
 
                 // Analytics

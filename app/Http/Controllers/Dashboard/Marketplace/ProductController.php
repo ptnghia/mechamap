@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Dashboard\Marketplace;
 use App\Http\Controllers\Dashboard\BaseController;
 use App\Models\MarketplaceProduct;
 use App\Models\MarketplaceSeller;
-use App\Models\MarketplaceCategory;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 /**
  * Product Controller cho Dashboard Marketplace
- * 
+ *
  * Quản lý products của seller trong dashboard
  */
 class ProductController extends BaseController
@@ -96,7 +96,7 @@ class ProductController extends BaseController
         $products = $query->paginate(20);
 
         // Get categories for filter
-        $categories = MarketplaceCategory::orderBy('name')->get();
+        $categories = ProductCategory::orderBy('name')->get();
 
         // Get statistics
         $stats = $this->getProductStats($seller);
@@ -113,23 +113,7 @@ class ProductController extends BaseController
             'currentSort' => $sort]);
     }
 
-    /**
-     * Hiển thị form tạo product mới
-     */
-    public function create()
-    {
-        $seller = MarketplaceSeller::where('user_id', $this->user->id)->first();
-
-        if (!$seller) {
-            return redirect()->route('dashboard.marketplace.seller.setup');
-        }
-
-        $categories = MarketplaceCategory::orderBy('name')->get();
-
-        return $this->dashboardResponse('dashboard.marketplace.products.create', [
-            'seller' => $seller,
-            'categories' => $categories]);
-    }
+    // NOTE: create() method removed - use DigitalProductController or PhysicalProductController instead
 
     /**
      * Hiển thị chi tiết product
@@ -149,24 +133,7 @@ class ProductController extends BaseController
             'product' => $product]);
     }
 
-    /**
-     * Hiển thị form chỉnh sửa product
-     */
-    public function edit(MarketplaceProduct $product)
-    {
-        $seller = MarketplaceSeller::where('user_id', $this->user->id)->first();
-
-        if (!$seller || $product->seller_id !== $seller->id) {
-            abort(403, 'You can only edit your own products.');
-        }
-
-        $categories = MarketplaceCategory::orderBy('name')->get();
-
-        return $this->dashboardResponse('dashboard.marketplace.products.edit', [
-            'seller' => $seller,
-            'product' => $product,
-            'categories' => $categories]);
-    }
+    // NOTE: edit() method removed - use DigitalProductController or PhysicalProductController instead
 
     /**
      * Cập nhật product status
@@ -303,26 +270,26 @@ class ProductController extends BaseController
             ->where('status', 'rejected')->count();
 
         $totalViews = MarketplaceProduct::where('seller_id', $seller->id)->sum('view_count');
-        $totalSales = MarketplaceProduct::where('seller_id', $seller->id)->sum('sales_count');
+        $totalSales = MarketplaceProduct::where('seller_id', $seller->id)->sum('purchase_count');
 
         $productTypes = MarketplaceProduct::where('seller_id', $seller->id)
             ->selectRaw('product_type, COUNT(*) as count')
             ->groupBy('product_type')
-            ->pluck('count', 'product_type')
-            ->toArray();
+            ->get();
 
         return [
-            'total' => $total,
-            'active' => $active,
-            'inactive' => $total - $active,
-            'draft' => $draft,
-            'pending' => $pending,
-            'rejected' => $rejected,
+            'total_products' => $total,
+            'active_products' => $active,
+            'inactive_products' => $total - $active,
+            'draft_products' => $draft,
+            'pending_products' => $pending,
+            'rejected_products' => $rejected,
             'total_views' => $totalViews,
             'total_sales' => $totalSales,
             'product_types' => $productTypes,
-            'this_month' => MarketplaceProduct::where('seller_id', $seller->id)
+            'this_month_products' => MarketplaceProduct::where('seller_id', $seller->id)
                 ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
-                ->count()];
+                ->count()
+        ];
     }
 }

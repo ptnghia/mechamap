@@ -7,45 +7,45 @@
         'dashboard' => [
             'title' => t_sidebar('user_dashboard.dashboard'),
             'icon' => 'fas fa-tachometer-alt',
-            'route' => 'user.dashboard',
+            'route' => 'dashboard',
             'badge' => null,
         ],
         'my-threads' => [
             'title' => t_sidebar('user_dashboard.my_threads'),
             'icon' => 'fas fa-comments',
-            'route' => 'user.my-threads',
+            'route' => 'dashboard.community.threads.index',
             'badge' => $user->threads()->count(),
         ],
         'comments' => [
             'title' => t_sidebar('user_dashboard.my_comments'),
             'icon' => 'fas fa-comment-dots',
-            'route' => 'user.comments',
+            'route' => 'dashboard.community.comments.index',
             'badge' => $user->comments()->count(),
         ],
         'bookmarks' => [
             'title' => t_sidebar('user_dashboard.bookmarks'),
             'icon' => 'fas fa-bookmark',
-            'route' => 'user.bookmarks',
+            'route' => 'dashboard.community.bookmarks.index',
             'badge' => $user->bookmarks()->count(),
         ],
         'activity' => [
             'title' => t_sidebar('user_dashboard.activity'),
             'icon' => 'fas fa-chart-line',
-            'route' => 'user.activity',
+            'route' => 'dashboard.activity',
             'badge' => null,
         ],
-        'following' => [
-            'title' => t_sidebar('user_dashboard.following'),
-            'icon' => 'fas fa-heart',
-            'route' => 'user.following',
-            'badge' => $user->following()->count(),
-        ],
-        'ratings' => [
-            'title' => t_sidebar('user_dashboard.ratings'),
-            'icon' => 'fas fa-star',
-            'route' => 'user.ratings',
-            'badge' => 0, // TODO: Implement ratings count
-        ],
+        // 'following' => [
+        //     'title' => t_sidebar('user_dashboard.following'),
+        //     'icon' => 'fas fa-heart',
+        //     'route' => 'dashboard.community.following.index',
+        //     'badge' => $user->following()->count(),
+        // ],
+        // 'ratings' => [
+        //     'title' => t_sidebar('user_dashboard.ratings'),
+        //     'icon' => 'fas fa-star',
+        //     'route' => 'dashboard.community.ratings.index',
+        //     'badge' => 0, // TODO: Implement ratings count
+        // ],
 
     ];
 

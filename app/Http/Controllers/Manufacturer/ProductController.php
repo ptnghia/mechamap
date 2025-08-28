@@ -77,7 +77,7 @@ class ProductController extends Controller
         }
 
         // Get allowed product types for manufacturer
-        $allowedTypes = MarketplacePermissionService::getAllowedSellTypes($user->role);
+        $allowedTypes = UnifiedMarketplacePermissionService::getAllowedSellTypes($user);
         if (empty($allowedTypes)) {
             return redirect()->route('manufacturer.products.index')
                 ->with('error', 'Bạn không có quyền bán sản phẩm nào.');

@@ -124,7 +124,7 @@
                 @endif
                 @if($currentUser->canSell())
                     <li class="nav-item">
-                        <a href="{{ route('dashboard.marketplace.seller.products.create') }}" class="nav-link">
+                        <a href="{{ route('dashboard.marketplace.seller.products.index') }}" class="nav-link">
                             <i class="fas fa-box"></i>
                             <span class="nav-text">{{ __('sidebar.add_product') }}</span>
                         </a>
