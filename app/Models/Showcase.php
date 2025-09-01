@@ -347,6 +347,36 @@ class Showcase extends Model
     }
 
     /**
+     * Get cover image URL with fallback
+     */
+    public function getCoverImageUrlAttribute(): string
+    {
+        // Check if cover_image exists and file exists
+        if ($this->cover_image && file_exists(public_path('storage/' . $this->cover_image))) {
+            return asset('storage/' . $this->cover_image);
+        }
+
+        // Check image_gallery for first image
+        if ($this->image_gallery && is_array($this->image_gallery) && !empty($this->image_gallery)) {
+            $firstImage = $this->image_gallery[0];
+            if (file_exists(public_path('storage/' . $firstImage))) {
+                return asset('storage/' . $firstImage);
+            }
+        }
+
+        // Check media relationship
+        if ($this->media && $this->media->count() > 0) {
+            $firstMedia = $this->media->first();
+            if ($firstMedia && file_exists(public_path('storage/' . $firstMedia->path))) {
+                return asset('storage/' . $firstMedia->path);
+            }
+        }
+
+        // Fallback to placeholder
+        return asset('images/placeholder-showcase.svg');
+    }
+
+    /**
      * Kiểm tra user hiện tại đã bookmark showcase này chưa.
      */
     public function isBookmarkedBy($userId): bool

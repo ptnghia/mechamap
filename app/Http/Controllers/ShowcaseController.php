@@ -270,7 +270,7 @@ class ShowcaseController extends Controller
                 break;
         }
 
-        return $query->paginate(18)->withQueryString();
+        return $query->paginate(16)->withQueryString();
     }
 
     /**
@@ -691,11 +691,110 @@ class ShowcaseController extends Controller
         // Lấy các showcase khác của tác giả
         $otherShowcases = Showcase::where('user_id', $showcase->user_id)
             ->where('id', '!=', $showcase->id)
-            ->latest()
+            ->where('is_public', true)
+            ->whereIn('status', ['approved', 'featured'])
+            ->with('user')
+            ->orderByDesc('view_count')
             ->take(5)
             ->get();
 
-        return view('showcase.show', compact('showcase', 'comments', 'otherShowcases'));
+        // Lấy thống kê tác giả
+        $authorStats = $this->getAuthorStats($showcase->user_id);
+
+        // Lấy showcases nổi bật (loại trừ showcase hiện tại và của cùng tác giả)
+        $featuredShowcases = $this->getFeaturedShowcases($showcase->id, $showcase->user_id);
+
+        // Lấy top contributors
+        $topContributors = $this->getTopContributors();
+
+        return view('showcase.show', compact(
+            'showcase',
+            'comments',
+            'otherShowcases',
+            'authorStats',
+            'featuredShowcases',
+            'topContributors'
+        ));
+    }
+
+    /**
+     * Lấy thống kê của tác giả showcase
+     */
+    private function getAuthorStats(int $userId): array
+    {
+        $cacheKey = "author_stats_{$userId}";
+
+        return cache()->remember($cacheKey, 3600, function () use ($userId) {
+            $showcases = Showcase::where('user_id', $userId)
+                ->where('is_public', true)
+                ->whereIn('status', ['approved', 'featured'])
+                ->get();
+
+            $totalViews = $showcases->sum('view_count');
+            $totalShowcases = $showcases->count();
+            $avgRating = $showcases->where('rating_average', '>', 0)->avg('rating_average');
+
+            return [
+                'total_showcases' => $totalShowcases,
+                'total_views' => $totalViews,
+                'avg_rating' => $avgRating ? round($avgRating, 1) : 0,
+            ];
+        });
+    }
+
+    /**
+     * Lấy showcases nổi bật
+     */
+    private function getFeaturedShowcases(int $currentShowcaseId, int $authorUserId): \Illuminate\Database\Eloquent\Collection
+    {
+        $cacheKey = "featured_showcases_{$currentShowcaseId}_{$authorUserId}";
+
+        return cache()->remember($cacheKey, 1800, function () use ($currentShowcaseId, $authorUserId) {
+            return Showcase::where('id', '!=', $currentShowcaseId)
+                ->where('user_id', '!=', $authorUserId)
+                ->where('is_public', true)
+                ->whereIn('status', ['featured', 'approved'])
+                ->with('user')
+                ->orderByDesc('rating_average')
+                ->orderByDesc('view_count')
+                ->take(6)
+                ->get();
+        });
+    }
+
+    /**
+     * Lấy top contributors
+     */
+    private function getTopContributors(): \Illuminate\Database\Eloquent\Collection
+    {
+        $cacheKey = "top_showcase_contributors";
+
+        return cache()->remember($cacheKey, 7200, function () {
+            return User::select([
+                    'users.id',
+                    'users.name',
+                    'users.username',
+                    'users.avatar',
+                    'users.created_at'
+                ])
+                ->selectRaw('COUNT(showcases.id) as showcases_count')
+                ->selectRaw('SUM(showcases.view_count) as total_views')
+                ->join('showcases', 'users.id', '=', 'showcases.user_id')
+                ->where('showcases.is_public', true)
+                ->whereIn('showcases.status', ['approved', 'featured'])
+                ->groupBy([
+                    'users.id',
+                    'users.name',
+                    'users.username',
+                    'users.avatar',
+                    'users.created_at'
+                ])
+                ->having('showcases_count', '>', 0)
+                ->orderByDesc('showcases_count')
+                ->orderByDesc('total_views')
+                ->take(7)
+                ->get();
+        });
     }
 
     /**

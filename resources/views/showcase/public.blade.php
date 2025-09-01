@@ -31,21 +31,13 @@
                 @foreach($categories as $category)
                 <div class="swiper-slide">
                     <a href="{{ $category['url'] }}" class="text-decoration-none">
-                        <div class="card h-100 shadow-sm border-0 category-card-hover">
+                        <div class="card h-100 shadow-sm border-0 category-card-hover showcases_categories_item">
                             <!-- Category Image/Icon -->
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center position-relative" style="height: 140px;">
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center position-relative" style="height: 120px;">
                                 @if($category['cover_image'])
-                                    <img src="{{ $category['cover_image'] }}" alt="{{ $category['display_name'] }}"
-                                        class="img-fluid rounded" style="max-height: 120px; object-fit: cover;">
+                                    <img src="{{ $category['cover_image'] }}" alt="{{ $category['display_name'] }}" class="img-fluid rounded" style="max-height: 120px; object-fit: cover;">
                                 @else
                                     <i class="{{ $category['icon'] }} text-primary" style="font-size: 3rem;"></i>
-                                @endif
-
-                                <!-- Showcase Count Badge -->
-                                @if($category['showcase_count'] > 0)
-                                <span class="position-absolute top-0 end-0 badge bg-primary rounded-pill m-2">
-                                    {{ $category['showcase_count'] }}
-                                </span>
                                 @endif
                             </div>
 
@@ -65,21 +57,21 @@
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-project-diagram text-primary mb-1" style="font-size: 0.8rem;"></i>
                                             <span class="fw-bold text-dark" style="font-size: 0.75rem;">{{ $category['showcase_count'] }}</span>
-                                            <span class="text-muted" style="font-size: 0.65rem;">{{ __('showcase.projects') }}</span>
+                                            <span class="text-muted d-none" style="font-size: 0.65rem;">{{ __('showcase.projects') }}</span>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-file-alt text-success mb-1" style="font-size: 0.8rem;"></i>
                                             <span class="fw-bold text-dark" style="font-size: 0.75rem;">{{ $category['file_count'] }}</span>
-                                            <span class="text-muted" style="font-size: 0.65rem;">{{ __('showcase.files') }}</span>
+                                            <span class="text-muted d-none" style="font-size: 0.65rem;">{{ __('showcase.files') }}</span>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="d-flex flex-column align-items-center">
                                             <i class="fas fa-download text-info mb-1" style="font-size: 0.8rem;"></i>
                                             <span class="fw-bold text-dark" style="font-size: 0.75rem;">{{ $category['download_count'] }}</span>
-                                            <span class="text-muted" style="font-size: 0.65rem;">{{ __('showcase.downloads') }}</span>
+                                            <span class="text-muted d-none" style="font-size: 0.65rem;">{{ __('showcase.downloads') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -103,9 +95,8 @@
 
     <!-- SECTION 1: FEATURED SHOWCASES with Bootstrap 5 -->
     <section class="mb-3">
-        <div class="d-flex align-items-center mb-4">
-            <i class="fas fa-star text-warning me-3 fs-4"></i>
-            <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.featured_projects') }}</h2>
+        <div class="text-center mb-4 title_page_sub">
+            <h2 class="h3 text-dark mb-0">{{ __('showcase.featured_projects') }}</h2>
         </div>
 
         @if($featuredShowcases->count() > 0)
@@ -126,118 +117,18 @@
 
     <!-- SECTION: ADVANCED SEARCH FORM -->
     @include('partials.showcase-search-form', ['searchFilters' => $searchFilters])
-    <!-- SECTION: SEARCH TAGS -->
-    @if(request()->hasAny(['search', 'category', 'complexity', 'project_type', 'software', 'rating_min', 'sort']))
-    <div class="search-tags-container mb-4">
-        <div class="d-flex align-items-center flex-wrap gap-2">
-            <span class="search-tags-label">
-                <i class="fas fa-filter me-1"></i>{{ __('showcase.active_filters') }}:
-            </span>
 
-            @if(request('search'))
-            <span class="search-tag">
-                <i class="fas fa-search me-1"></i>
-                "{{ request('search') }}"
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('search')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('category'))
-            <span class="search-tag">
-                <i class="fas fa-th-large me-1"></i>
-                {{ collect($searchFilters['categories'])->firstWhere('value', request('category'))['label'] ?? request('category') }}
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('category')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('complexity'))
-            <span class="search-tag">
-                <i class="fas fa-layer-group me-1"></i>
-                {{ collect($searchFilters['complexity_levels'])->firstWhere('value', request('complexity'))['label'] ?? request('complexity') }}
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('complexity')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('project_type'))
-            <span class="search-tag">
-                <i class="fas fa-cube me-1"></i>
-                {{ collect($searchFilters['project_types'])->firstWhere('value', request('project_type'))['label'] ?? request('project_type') }}
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('project_type')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('software'))
-            <span class="search-tag">
-                <i class="fas fa-cogs me-1"></i>
-                {{ request('software') }}
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('software')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('rating_min'))
-            <span class="search-tag">
-                <i class="fas fa-star me-1"></i>
-                {{ request('rating_min') }}+ {{ __('showcase.stars') }}
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('rating_min')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            @if(request('sort') && request('sort') !== 'newest')
-            <span class="search-tag">
-                <i class="fas fa-sort me-1"></i>
-                @switch(request('sort'))
-                    @case('most_viewed')
-                        {{ __('showcase.most_viewed') }}
-                        @break
-                    @case('highest_rated')
-                        {{ __('showcase.highest_rated') }}
-                        @break
-                    @case('most_downloads')
-                        {{ __('showcase.most_downloads') }}
-                        @break
-                    @case('oldest')
-                        {{ __('showcase.oldest') }}
-                        @break
-                    @default
-                        {{ request('sort') }}
-                @endswitch
-                <button type="button" class="search-tag-remove" onclick="removeSearchFilter('sort')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </span>
-            @endif
-
-            <button type="button" class="btn btn-outline-secondary btn-sm ms-2" onclick="clearAllFilters()">
-                <i class="fas fa-times-circle me-1"></i>{{ __('showcase.clear_all') }}
-            </button>
-        </div>
-    </div>
-    @endif
 
 
 
     <!-- SECTION 4: ALL SHOWCASES LISTING with Bootstrap 5 -->
     <section class="mb-5">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-list text-secondary me-3 fs-4"></i>
-                <h2 class="h3 fw-bold text-dark mb-0">{{ __('showcase.all_projects') }}</h2>
-                @if(request()->hasAny(['search', 'category', 'complexity', 'project_type', 'software', 'rating_min']))
-                <span class="badge bg-primary ms-3">{{ $allShowcases->total() }} {{ __('showcase.results') }}</span>
+        <div class="text-center title_page_sub mt-5 d-flex align-items-center justify-content-center">
+            <h2 class="h3 text-dark mb-0 d-flex align-content-center">{{ __('showcase.all_projects') }}
+                @if(request('category'))
+                {{ collect($searchFilters['categories'])->firstWhere('value', request('category'))['label'] ?? request('category') }}
                 @endif
-            </div>
+            </h2>
         </div>
 
         @if($allShowcases->count() > 0)
@@ -250,7 +141,7 @@
         </div>
 
         <!-- Bootstrap 5 Pagination -->
-        <div class="d-flex justify-content-center">
+        <div class="">
             {{ $allShowcases->links() }}
         </div>
         @else
@@ -266,7 +157,6 @@
         </div>
         @endif
     </section>
-
 </div>
 
 @endsection
@@ -296,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const featuredSwiper = new Swiper('.showcases-swiper', {
         slidesPerView: 1,
         spaceBetween: 20,
-        loop: false, // Tắt loop để tránh warning khi ít slides
+        loop: true, // Tắt loop để tránh warning khi ít slides
         autoplay: {
            delay: 5000,
             disableOnInteraction: false,
@@ -350,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 spaceBetween: 10,
             },
             1366: {
-                slidesPerView: 7,
+                slidesPerView: 6,
                 spaceBetween: 10,
             }
         }

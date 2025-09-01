@@ -1049,6 +1049,24 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get user avatar URL with fallback
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar && file_exists(public_path('storage/' . $this->avatar))) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        // Generate avatar using first letter of name
+        $name = $this->name ?? 'User';
+        $firstLetter = strtoupper(substr($name, 0, 1));
+
+        // Use a service like UI Avatars or generate locally
+        return "https://ui-avatars.com/api/?name=" . urlencode($name) .
+               "&size=200&background=3498db&color=ffffff&font-size=0.6&rounded=true";
+    }
+
+    /**
      * Get the thread follows created by the user.
      */
     public function threadFollows(): HasMany

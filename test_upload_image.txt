@@ -1,2 +1,0 @@
-This is a test file to simulate image upload for inline edit comment feature testing.
-File created for testing purposes only.

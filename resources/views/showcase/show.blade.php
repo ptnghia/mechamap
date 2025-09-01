@@ -3,60 +3,73 @@
 @section('title', $showcase->title)
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/showcase.css') }}">
+<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase-sidebar.css') }}">
 @endpush
 
 @section('content')
-<div class="container my-4" data-showcase-id="{{ $showcase->id }}">
+<div class="body_page" data-showcase-id="{{ $showcase->id }}">
     <div class="row">
         <div class="col-lg-8 col-md-12">
             <div class="mb-4 showcase_detail p-3 bg-white">
                 <!-- Showcase Header -->
                 <div class="showcase_detail_header">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h1 class="thread-title">{{ $showcase->title }}</h1>
+                        <div>
+                             <h1 class="showcas-title mb-2">{{ $showcase->title }}</h1>
+                            <!-- Showcase Meta  -->
+                            <div class="Showcase_meta d-flex justify-content-start gap-2">
+                                <div class="thread-meta-item">
+                                    <i class="fas fa-eye"></i> {{ number_format($showcase->view_count ?? 0) }} <span class="d-none d-md-inline">Lượt xem</span>
+                                </div>
+                                <div class="thread-meta-item">
+                                    <i class="fas fa-star"></i> {{ number_format($showcase->average_rating, 1) }} <span class="d-none d-md-inline">Đánh giá</span>
+                                </div>
+                                <div class="thread-meta-item">
+                                    <i class="fas fa-comment"></i> {{ number_format($showcase->commentsCount()) }} <span class="d-none d-md-inline">Bình luận</span>
+                                </div>
+                                <div class="thread-meta-item">
+                                    <i class="heart"></i> {{ number_format($showcase->likesCount()) }} <span class="d-none d-md-inline">Thích</span>
+                                </div>
+                            </div>
+                            <!-- End Showcase Meta  -->
+                        </div>
 
                         <div class="thread-actions">
-                            <a href="#comments" class="btn-jump"> <i class="fas fa-arrow-right"></i> Đến đánh giá </a>
-
                             @auth
                             @if($showcase->user_id === auth()->id())
                             <a href="{{ route('showcase.edit', $showcase) }}" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-edit"></i> Chỉnh sửa
                             </a>
                             @else
+                            {{-- Nút bookmark --}}
+                            <form action="{{ route('showcase.bookmark', $showcase) }}" method="POST"
+                                class="bookmark-form d-inline">
+                                @csrf
+                                @php
+                                $isBookmarked = auth()->user()->bookmarks()
+                                ->where('bookmarkable_type', App\Models\Showcase::class)
+                                ->where('bookmarkable_id', $showcase->id)
+                                ->exists();
+                                @endphp
+                                <button type="submit"
+                                    class="btn btn-sm {{ $isBookmarked ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    <i class="fas {{ $isBookmarked ? 'fa-bookmark' : 'fa-bookmark' }} me-1"></i>
+                                    {{ $isBookmarked ? 'Đã lưu' : t_feature('showcase.actions.save') }}
+                                </button>
+                            </form>
+                            {{-- Nút follow --}}
                             <form action="{{ route('showcase.toggle-follow', $showcase) }}" method="POST" class="follow-form d-inline">
                                 @csrf
-                                <button type="submit" class="btn-follow btn btn-mian active">
-                                    <i class="{{ $showcase->isFollowedBy(auth()->user()) ? 'fas fa-bell-fill' : 'fas fa-bell' }}"></i>
+                                <button type="submit" class="btn-follow btn btn-sm {{ $showcase->isFollowedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    <i class="{{ $showcase->isFollowedBy(auth()->user()) ? 'fas fa-bell-fill' : 'fas fa-bell' }} me-1"></i>
                                     {{ $showcase->isFollowedBy(auth()->user()) ? 'Đang theo dõi' : 'Theo dõi' }}
                                 </button>
                             </form>
                             @endif
                             @endauth
-
                         </div>
                     </div>
-
-                    <!-- Showcase Meta  -->
-                    <div class="Showcase_meta mb-4">
-                        <div class="d-flex justify-content-start g-3">
-                            <div class="thread-meta-item">
-                                <i class="fas fa-eye"></i> {{ number_format($showcase->view_count ?? 0) }} Lượt xem
-                            </div>
-                            <div class="thread-meta-item">
-                                <i class="fas fa-star"></i> {{ number_format($showcase->average_rating, 1) }} Đánh giá
-                            </div>
-                            <div class="thread-meta-item">
-                                <i class="fas fa-comment"></i> {{ number_format($showcase->commentsCount()) }} Bình luận
-                            </div>
-                            <div class="thread-meta-item">
-                                <i class="heart"></i> {{ number_format($showcase->likesCount()) }} Thích
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Showcase Meta  -->
-
                     <!-- Author Info -->
                     <div class="d-flex justify-content-between align-items-center showcase-author">
                         <div class="d-flex align-items-center">
@@ -81,8 +94,8 @@
                 <div class="showcase-body">
                     {{-- Mô tả --}}
                     @if($showcase->description)
-                    <div class="showcase-description mb-4">
-                        <p class="text-muted">{{ $showcase->description }}</p>
+                    <div class="showcase-description mb-3">
+                        {{ $showcase->description }}
                     </div>
                     @endif
 
@@ -94,47 +107,13 @@
 
                     @if($featuredImage)
                     <div class="showcase-main-image mb-4">
-                        <div class="showcase-image-gallery">
+                        <div class="showcase-image">
                             <a href="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}" data-fancybox="showcase-gallery" data-caption="{{ $showcase->title }}">
-                                <img src="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}" class="img-fluid rounded shadow" alt="{{ $showcase->title }}" lass="showcase-featured-image" onerror="this.src='{{ asset('images/placeholder.svg') }}'">
+                                <img src="{{ $featuredImage->url ?? asset('images/placeholder.svg') }}" class="img-fluid rounded" alt="{{ $showcase->title }}" lass="showcase-featured-image" onerror="this.src='{{ asset('images/placeholder.svg') }}'">
                             </a>
                         </div>
                     </div>
                     @endif
-
-                    {{-- Gallery của showcase media --}}
-                    @if($showcase->media && $showcase->media->count() > 0)
-                    <div class="showcase-media-gallery mb-4">
-                        <h5><i class="fas fa-images"></i> {{__('media.image_gallery') }}</h5>
-                        <div class="row showcase-image-gallery">
-                            @foreach($showcase->media as $media)
-                            @if(str_starts_with($media->mime_type ?? '', 'image/'))
-                            <div class="col-md-4 col-sm-6 mb-3">
-                                <a href="{{ $media->url }}" data-fancybox="showcase-gallery" data-caption="{{ $media->title ?? $showcase->title }}">
-                                    <img src="{{ $media->url }}"  class="img-fluid rounded shadow-sm showcase-gallery-image" alt="{{ $media->title ?? __('showcase.show.image_alt') }}" onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
-                                </a>
-                            </div>
-                            @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-
-                </div>
-                <!-- End Showcase body -->
-            </div>
-            <div class="card mb-4">
-
-
-
-                {{-- Main Content --}}
-                <div class="card-body">
-
-
-
-
-
-
                     {{-- Nội dung chi tiết --}}
                     @if($showcase->content)
                     <div class="showcase-content mb-4">
@@ -145,6 +124,26 @@
                         </div>
                     </div>
                     @endif
+                    {{-- End Nội dung chi tiết --}}
+
+                    {{-- Gallery của showcase media --}}
+                    @if($showcase->media && $showcase->media->count() > 0)
+                    <div class="showcase-media-gallery mb-4">
+                        <h5><i class="fas fa-images"></i> {{__('media.image_gallery') }}</h5>
+                        <div class="row g-3 showcase-image-gallery">
+                            @foreach($showcase->media as $media)
+                            @if(str_starts_with($media->mime_type ?? '', 'image/'))
+                            <div class="col-md-4 col-sm-6 mb-3 col-lg-3">
+                                <a href="{{ $media->url }}" data-fancybox="showcase-gallery" data-caption="{{ $media->title ?? $showcase->title }}">
+                                    <img src="{{ $media->url }}"  class="img-fluid rounded showcase-gallery-image" alt="{{ $media->title ?? __('showcase.show.image_alt') }}" onerror="this.src='{{ asset('images/placeholders/300x200.png') }}'">
+                                </a>
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                    {{-- End Gallery của showcase media --}}
 
                     {{-- File đính kèm (non-image files) --}}
                     @php
@@ -205,214 +204,170 @@
                         </div>
                     </div>
                     @endif
+                </div>
+                <!-- End Showcase body -->
 
-                    {{-- Thống kê tương tác và Social Sharing --}}
-                    <div class="showcase-stats mb-4">
-                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                            <div class="d-flex align-items-center gap-4">
-                                @auth
-                                {{-- Nút thích --}}
-                                <form action="{{ route('showcase.toggle-like', $showcase) }}" method="POST"
-                                    class="like-form d-inline">
-                                    @csrf
-                                    <button type="submit"
-                                        class="btn btn-sm {{ $showcase->isLikedBy(auth()->user()) ? 'btn-danger' : 'btn-outline-danger' }}">
-                                        <i class="fas fa-heart"></i>
-                                        {{ $showcase->likesCount() }} Thích
-                                    </button>
-                                </form>
-
-                                {{-- Nút bookmark --}}
-                                <form action="{{ route('showcase.bookmark', $showcase) }}" method="POST"
-                                    class="bookmark-form d-inline">
-                                    @csrf
-                                    @php
-                                    $isBookmarked = auth()->user()->bookmarks()
-                                    ->where('bookmarkable_type', App\Models\Showcase::class)
-                                    ->where('bookmarkable_id', $showcase->id)
-                                    ->exists();
-                                    @endphp
-                                    <button type="submit"
-                                        class="btn btn-sm {{ $isBookmarked ? 'btn-warning' : 'btn-outline-warning' }}">
-                                        <i class="fas {{ $isBookmarked ? 'fa-bookmark' : 'fa-bookmark' }}"></i>
-                                        {{ $isBookmarked ? 'Đã lưu' : t_feature('showcase.actions.save') }}
-                                    </button>
-                                </form>
-                                @else
-                                <span class="text-muted">
-                                    <i class="fas fa-heart"></i>
+                {{-- Thống kê tương tác và Social Sharing --}}
+                <div class="showcase-stats">
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            @auth
+                            {{-- Nút thích --}}
+                            <form action="{{ route('showcase.toggle-like', $showcase) }}" method="POST"
+                                class="like-form d-inline">
+                                @csrf
+                                <button type="submit"
+                                    class="btn btn-sm btn-like-showcase {{ $showcase->isLikedBy(auth()->user()) ? 'btn-primary' : 'btn-outline-primary' }}">
+                                    <i class="fas fa-heart me-1"></i>
                                     {{ $showcase->likesCount() }} Thích
-                                </span>
-                                @endauth
+                                </button>
+                            </form>
 
-                                {{-- Các thống kê khác --}}
-                                <span class="text-muted">
-                                    <i class="fas fa-comment"></i>
-                                    {{ $showcase->commentsCount() }} Bình luận
-                                </span>
 
-                                <span class="text-muted">
-                                    <i class="fas fa-users"></i>
-                                    {{ $showcase->followsCount() }} Người theo dõi
-                                </span>
+                            @else
+                            <span class="text-muted">
+                                <i class="fas fa-heart"></i>
+                                {{ $showcase->likesCount() }} Thích
+                            </span>
+                            @endauth
 
-                                @if($showcase->views_count)
-                                <span class="text-muted">
-                                    <i class="fas fa-eye"></i>
-                                    {{ number_format($showcase->views_count) }} Lượt xem
-                                </span>
-                                @endif
-                            </div>
+                            {{-- Các thống kê khác --}}
+                            <span class="text-muted">
+                                <i class="fas fa-comment"></i>
+                                {{ $showcase->commentsCount() }} Bình luận
+                            </span>
 
-                            {{-- Social Sharing Buttons --}}
-                            <div class="social-share-buttons">
-                                <div class="btn-group" role="group" aria-label="{{ __('showcase.show.share_options') }}">
-                                    <button class="btn btn-sm btn-outline-primary" onclick="shareOnFacebook()">
-                                        <i class="fab fa-facebook-f"></i> Facebook
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info" onclick="shareOnTwitter()">
-                                        <i class="fab fa-twitter"></i> Twitter
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-success" onclick="shareOnWhatsApp()">
-                                        <i class="fab fa-whatsapp"></i> WhatsApp
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard()">
-                                        <i class="fas fa-link"></i> Copy Link
-                                    </button>
-                                </div>
-                            </div>
+                            <span class="text-muted">
+                                <i class="fas fa-users"></i>
+                                {{ $showcase->followsCount() }} Người theo dõi
+                            </span>
+
+                            @if($showcase->views_count)
+                            <span class="text-muted">
+                                <i class="fas fa-eye"></i>
+                                {{ number_format($showcase->views_count) }} Lượt xem
+                            </span>
+                            @endif
                         </div>
-                    </div>
-
-                    <hr>
-
-                    {{-- Tab Navigation --}}
-                    <div class="showcase-tabs">
-                        <ul class="nav nav-tabs" id="showcaseTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="ratings-tab" data-bs-toggle="tab" data-bs-target="#ratings"
-                                    type="button" role="tab" aria-controls="ratings" aria-selected="true">
-                                    <i class="fas fa-star"></i>
-                                    Đánh giá ({{ $showcase->ratings_count ?? 0 }})
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments"
-                                    type="button" role="tab" aria-controls="comments" aria-selected="false">
-                                    <i class="fas fa-comments"></i>
-                                    Bình luận ({{ $showcase->commentsCount() }})
-                                </button>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content" id="showcaseTabsContent">
-                            {{-- Tab Đánh giá --}}
-                            <div class="tab-pane fade show active" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
-                                <div class="tab-content-wrapper">
-                                    {{-- Rating Summary --}}
-                                    <div class="rating-summary mb-4">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-4">
-                                                <div class="overall-rating text-center">
-                                                    <div class="rating-number">{{ number_format($showcase->average_rating, 1) }}</div>
-                                                    <div class="rating-stars mb-2">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                            <i class="fas fa-star {{ $i <= round($showcase->average_rating) ? 'text-warning' : 'text-muted' }}"></i>
-                                                        @endfor
-                                                    </div>
-                                                    <div class="rating-count text-muted">
-                                                        {{ $showcase->ratings_count }} đánh giá
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="rating-breakdown">
-                                                    @php $categories = $showcase->getCategoryAverages(); @endphp
-                                                    @foreach(\App\Models\ShowcaseRating::getCategoryNames() as $key => $name)
-                                                        <div class="rating-category mb-2">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <span class="category-name">{{ $name }}</span>
-                                                                <div class="category-rating">
-                                                                    <div class="stars-small">
-                                                                        @for($i = 1; $i <= 5; $i++)
-                                                                            <i class="fas fa-star {{ $i <= round($categories[$key]) ? 'text-warning' : 'text-muted' }}"></i>
-                                                                        @endfor
-                                                                    </div>
-                                                                    <span class="rating-value ms-2">{{ number_format($categories[$key], 1) }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- Integrated Rating & Comment Form --}}
-                                    @php $userRating = auth()->check() ? $showcase->getUserRating(auth()->user()) : null; @endphp
-                                    @include('showcases.partials.rating-comment-form', [
-                                        'showcase' => $showcase,
-                                        'userRating' => $userRating
-                                    ])
-
-                                    <hr>
-
-                                    {{-- Ratings List --}}
-                                    @php
-                                        $ratings = $showcase->ratings()
-                                            ->with(['user' => function($query) {
-                                                $query->withCount(['showcaseItems', 'showcaseRatings']);
-                                            }])
-                                            ->latest()
-                                            ->get();
-                                    @endphp
-                                    @include('showcases.partials.ratings-list', [
-                                        'ratings' => $ratings,
-                                        'showcase' => $showcase
-                                    ])
-                                </div>
-                            </div>
-
-                            {{-- Tab Bình luận --}}
-                            <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                                <div class="tab-content-wrapper">
-                                    <div class="comments-section">
-                                        <div class="alert alert-info d-flex align-items-center">
-                                            <i class="fas fa-info-circle me-3 fs-4"></i>
-                                            <div>
-                                                <h6 class="alert-heading mb-1">Hệ thống bình luận đã được tích hợp</h6>
-                                                <p class="mb-0">
-                                                    Bình luận và đánh giá đã được gộp chung trong tab <strong>Đánh giá</strong>.
-                                                    Bạn có thể vừa đánh giá vừa để lại nhận xét chi tiết cùng hình ảnh minh họa.
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center py-4">
-                                            <button class="btn btn-primary" onclick="switchToRatingsTab()">
-                                                <i class="fas fa-star"></i>
-                                                Chuyển đến tab Đánh giá
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
+                        <!-- Share Button -->
+                        <div class="dropdown dropdown-button d-inline">
+                            <button class="btn btn-sm no-border dropdown-toggle btn-share" type="button"
+                                id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-share-alt me-1"></i> {{ __('thread.share') }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="shareDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="shareOnFacebook(); return false;" target="_blank">
+                                        <i class="fab fa-facebook-f me-2"></i>Facebook
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="shareOnTwitter(); return false;" target="_blank">
+                                        <i class="fab fa-twitter me-2"></i>Twitter
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="shareOnWhatsApp(); return false;">
+                                        <i class="fab fa-whatsapp me-2"></i>WhatsApp
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="copyToClipboard(); return false;">
+                                        <i class="fas fa-clipboard me-2"></i>{{ __('thread.copy_link') }}
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                {{-- End Main Content Column --}}
+                {{-- End Thống kê tương tác và Social Sharing --}}
+
+                {{-- Rating Summary --}}
+                <div class="rating-summary mb-4">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-md-3">
+                            <div class="overall-rating text-center">
+                                <div class="rating-number">{{ number_format($showcase->average_rating, 1) }}</div>
+                                <div class="rating-stars mb-2">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star {{ $i <= round($showcase->average_rating) ? 'text-warning' : 'text-muted' }}"></i>
+                                    @endfor
+                                </div>
+                                <div class="rating-count text-muted">
+                                    {{ $showcase->ratings_count }} đánh giá
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="rating-breakdown">
+                            @php $categories = $showcase->getCategoryAverages(); @endphp
+                            @foreach(\App\Models\ShowcaseRating::getCategoryNames() as $key => $name)
+                                <div class="rating-category mb-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="category-name">{{ $name }}</span>
+                                        <div class="category-rating">
+                                            <div class="stars-small">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star {{ $i <= round($categories[$key]) ? 'text-warning' : 'text-muted' }}"></i>
+                                                @endfor
+                                            </div>
+                                            <span class="rating-value ms-2">{{ number_format($categories[$key], 1) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        </div>
+                    </div>
                 </div>
+                {{-- End Rating Summary --}}
             </div>
+            {{-- Integrated Rating & Comment Form --}}
+            @php $userRating = auth()->check() ? $showcase->getUserRating(auth()->user()) : null; @endphp
+            @include('showcases.partials.rating-comment-form', [
+                'showcase' => $showcase,
+                'userRating' => $userRating
+            ])
+
+            <hr>
+
+            {{-- Ratings List --}}
+            @php
+                $ratings = $showcase->ratings()
+                    ->with(['user' => function($query) {
+                        $query->withCount(['showcaseItems', 'showcaseRatings']);
+                    }])
+                    ->latest()
+                    ->get();
+            @endphp
+
+            @include('showcases.partials.ratings-list', [
+                'ratings' => $ratings,
+                'showcase' => $showcase
+            ])
+
+            {{-- Integrated Rating & Comment Form --}}
+
         </div>
         <div class="col-lg-4 col-md-12">
-            <x-sidebar />
+            <div class="showcase_slidbar sidebar-professional" id="professional-sidebar">
+                {{--
+                @include('showcases.partials.sidebar-safe', [
+                    'showcase' => $showcase,
+                    'authorStats' => $authorStats ?? [],
+                    'otherShowcases' => $otherShowcases ?? collect(),
+                    'featuredShowcases' => $featuredShowcases ?? collect(),
+                    'topContributors' => $topContributors ?? collect()
+                ])
+                --}}
+            </div>
         </div>
     </div>
 </div>
+
 
 @push('styles')
 <style>
@@ -513,7 +468,6 @@
                 ratingsPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         };
-    }
     }
 
 // Social Sharing Functions
@@ -932,6 +886,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Showcase Rating System JavaScript -->
 <script src="{{ asset('js/showcase-rating-system.js') }}"></script>
+
+<!-- Showcase Sidebar JavaScript -->
+<script src="{{ asset('js/showcase-sidebar.js') }}"></script>
 @endpush
 
 @endsection

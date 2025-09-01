@@ -2,8 +2,34 @@
 // Thiết lập các biến cần thiết cho showcase item với error handling
 $showcaseUrl = route('showcase.show', $showcase);
 $userName = $showcase->user->name ?? 'Người dùng';
-// Sử dụng method getAvatarUrl() để đảm bảo logic nhất quán
-$userAvatar = isset($showcase->user) ? $showcase->user->getAvatarUrl() : route('avatar.generate', ['initial' => 'U']);
+// Simplified avatar logic to avoid conflicts between method and accessor
+$userAvatar = route('avatar.generate', ['initial' => 'U']);
+if (isset($showcase->user)) {
+    $user = $showcase->user;
+    if (!empty($user->avatar)) {
+        if (strpos($user->avatar, 'http') === 0) {
+            $userAvatar = $user->avatar;
+        } elseif (strpos($user->avatar, '/images/') === 0) {
+            $userAvatar = asset($user->avatar);
+        } else {
+            $cleanPath = ltrim($user->avatar, '/');
+            $userAvatar = asset('images/' . $cleanPath);
+        }
+    } else {
+        // Generate initials for avatar
+        $name = $user->name ?: $user->username ?: $user->email ?: 'User';
+        $initials = strtoupper(substr($name, 0, 1));
+        if (strpos($name, ' ') !== false) {
+            $nameParts = array_filter(explode(' ', trim($name)));
+            if (count($nameParts) >= 2) {
+                $firstInitial = strtoupper(substr($nameParts[0], 0, 1));
+                $lastInitial = strtoupper(substr(end($nameParts), 0, 1));
+                $initials = $firstInitial . $lastInitial;
+            }
+        }
+        $userAvatar = route('avatar.generate', ['initial' => $initials]);
+    }
+}
 
 $showcaseTitle = $showcase->title ?? 'Untitled Showcase';
 $showcaseDescription = isset($showcase->description) ? Str::limit($showcase->description, 100) : '';
@@ -13,15 +39,19 @@ $createdAt = isset($showcase->created_at) && $showcase->created_at instanceof \C
     ? $showcase->created_at->diffForHumans()
     : '';
 
-// Image handling with fallback
-$coverImageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
+// Image handling with fallback - simplified to avoid infinite loops
+$coverImageUrl = asset('images/placeholder.svg');
 try {
-    if (method_exists($showcase, 'getCoverImageUrl')) {
-        $coverImageUrl = $showcase->getCoverImageUrl();
-    } elseif (isset($showcase->cover_image)) {
-        $coverImageUrl = $showcase->cover_image;
-    } elseif (isset($showcase->featured_image)) {
-        $coverImageUrl = $showcase->featured_image;
+    if (!empty($showcase->cover_image)) {
+        // Direct cover image handling without file_exists checks
+        if (filter_var($showcase->cover_image, FILTER_VALIDATE_URL)) {
+            $coverImageUrl = $showcase->cover_image;
+        } elseif (strpos($showcase->cover_image, '/images/') === 0) {
+            $coverImageUrl = asset($showcase->cover_image);
+        } else {
+            $cleanPath = ltrim(str_replace('public/', '', $showcase->cover_image), '/');
+            $coverImageUrl = asset('storage/' . $cleanPath);
+        }
     }
 } catch (\Exception $e) {
     // Use fallback image
@@ -49,7 +79,7 @@ $allowDownloads = $showcase->allow_downloads ?? false;
 <div class="showcase-card h-100">
     <div class="showcase-image">
         <img src="{{ $coverImageUrl }}" alt="{{ $showcaseTitle }}" class="img-fluid"
-             onerror="this.src='{{ asset('images/placeholder.svg') }}'">
+             onerror="if(this.src!='{{ asset('images/placeholder.svg') }}' && this.src!='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='){this.src='{{ asset('images/placeholder.svg') }}'}else if(this.src=='{{ asset('images/placeholder.svg') }}'){this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='}">
 
         {{-- Enhanced: Overlay badges --}}
         <div class="showcase-badges">

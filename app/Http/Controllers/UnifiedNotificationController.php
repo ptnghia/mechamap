@@ -469,19 +469,24 @@ class UnifiedNotificationController extends Controller
      */
     private function getNotificationTypeLabel(string $type): string
     {
-        // Convert type to lowercase and replace underscores with underscores for translation key
-        $translationKey = 'notifications.types.' . strtolower($type);
+        // Use the correct translation key format that matches our database keys
+        $translationKey = 'notifications.' . strtolower($type) . '.title';
 
         // Try to get translation
         $translation = __($translationKey);
 
-        // If translation found, return it
-        if ($translation !== $translationKey) {
-            return $translation;
+        // If new format not found, try old format for backward compatibility
+        if ($translation === $translationKey) {
+            $oldFormatKey = 'notifications.types.' . strtolower($type);
+            $translation = __($oldFormatKey);
+
+            // If old format also not found, return fallback
+            if ($translation === $oldFormatKey) {
+                return str_replace('_', ' ', ucwords(strtolower($type), '_'));
+            }
         }
 
-        // Fallback: convert type to readable format
-        return str_replace('_', ' ', ucwords(strtolower($type), '_'));
+        return $translation;
     }
 
     /**

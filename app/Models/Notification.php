@@ -335,42 +335,49 @@ class Notification extends Model
      */
     public function getTypeLabel(): string
     {
-        $translationKey = "notifications.types.{$this->type}";
+        // Use the correct translation key format that matches our database keys
+        $translationKey = "notifications.{$this->type}.title";
 
-        // Try to get translation, fallback to hardcoded values if not found
+        // Try to get translation, fallback to old format if not found
         $translation = __($translationKey);
 
-        // If translation key not found, return fallback
+        // If new format not found, try old format for backward compatibility
         if ($translation === $translationKey) {
-            return match($this->type) {
-                'thread_created' => 'Thread mới',
-                'thread_replied' => 'Reply thread',
-                'comment_mention' => 'Được nhắc đến',
-                'login_from_new_device' => 'Đăng nhập thiết bị mới',
-                'password_changed' => 'Đổi mật khẩu',
-                'product_out_of_stock' => 'Hết hàng',
-                'price_drop_alert' => 'Giảm giá',
-                'wishlist_available' => 'Wishlist có hàng',
-                'review_received' => 'Nhận đánh giá',
-                'seller_message' => 'Tin nhắn seller',
-                'message_received' => 'Tin nhắn mới',
-                'user_followed' => 'Được theo dõi',
-                'achievement_unlocked' => 'Thành tựu mới',
-                'weekly_digest' => 'Tổng hợp tuần',
-                'system_announcement' => 'Thông báo hệ thống',
-                'product_approved' => 'Sản phẩm được duyệt',
-                'business_verified' => 'Doanh nghiệp được xác minh',
-                'commission_paid' => 'Hoa hồng đã thanh toán',
-                'quote_request' => 'Yêu cầu báo giá',
-                'role_changed' => 'Vai trò được cập nhật',
-                'order_update' => 'Cập nhật đơn hàng',
-                'forum_activity' => 'Hoạt động diễn đàn',
-                'marketplace_activity' => 'Hoạt động marketplace',
-                'security_alert' => 'Cảnh báo bảo mật',
-                'user_registered' => 'Người dùng mới',
-                'order_status_changed' => 'Trạng thái đơn hàng',
-                default => ucfirst(str_replace('_', ' ', $this->type))
-            };
+            $oldFormatKey = "notifications.types.{$this->type}";
+            $translation = __($oldFormatKey);
+
+            // If old format also not found, return fallback
+            if ($translation === $oldFormatKey) {
+                return match($this->type) {
+                    'thread_created' => 'Chủ đề mới',
+                    'thread_replied' => 'Trả lời chủ đề',
+                    'comment_mention' => 'Được nhắc đến',
+                    'login_from_new_device' => 'Đăng nhập từ thiết bị mới',
+                    'password_changed' => 'Mật khẩu đã thay đổi',
+                    'product_out_of_stock' => 'Sản phẩm hết hàng',
+                    'price_drop_alert' => 'Cảnh báo giảm giá',
+                    'wishlist_available' => 'Sản phẩm yêu thích có sẵn',
+                    'review_received' => 'Nhận được đánh giá',
+                    'seller_message' => 'Tin nhắn từ người bán',
+                    'message_received' => 'Tin nhắn mới',
+                    'user_followed' => 'Người theo dõi mới',
+                    'achievement_unlocked' => 'Thành tựu mới',
+                    'weekly_digest' => 'Tổng hợp tuần',
+                    'system_announcement' => 'Thông báo hệ thống',
+                    'product_approved' => 'Sản phẩm được duyệt',
+                    'business_verified' => 'Doanh nghiệp được xác minh',
+                    'commission_paid' => 'Hoa hồng đã thanh toán',
+                    'quote_request' => 'Yêu cầu báo giá',
+                    'role_changed' => 'Vai trò được cập nhật',
+                    'order_update' => 'Cập nhật đơn hàng',
+                    'order_status_changed' => 'Trạng thái đơn hàng thay đổi',
+                    'forum_activity' => 'Hoạt động diễn đàn',
+                    'marketplace_activity' => 'Hoạt động thị trường',
+                    'security_alert' => 'Cảnh báo bảo mật',
+                    'user_registered' => 'Người dùng đăng ký',
+                    default => ucfirst(str_replace('_', ' ', $this->type))
+                };
+            }
         }
 
         return $translation;

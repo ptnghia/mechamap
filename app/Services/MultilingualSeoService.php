@@ -153,6 +153,9 @@ class MultilingualSeoService
                 if ($key === 'product' && isset($value->name)) {
                     $text = str_replace('{product_name}', $value->name, $text);
                 }
+                if ($key === 'showcase' && isset($value->title)) {
+                    $text = str_replace('{project_title}', $value->title, $text);
+                }
 
                 // Handle model objects (generic patterns)
                 if (isset($value->name)) {

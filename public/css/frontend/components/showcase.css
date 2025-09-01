@@ -2,7 +2,7 @@
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.05);
     transition: all .3s ease;
     position: relative;
@@ -19,7 +19,7 @@
 
 .showcase-image img {
     width: 100%;
-    height: 200px;
+    max-height: 200px;
     object-fit: cover;
     transition: transform .3s ease
 }
@@ -105,7 +105,13 @@
 .showcase-title a {
     color: #2c3e50;
     text-decoration: none;
-    transition: color .3s ease
+    transition: color .3s ease;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .showcase-title a:hover {
@@ -198,7 +204,7 @@
 }
 
 .showcase-stats .badge {
-    font-size: .75rem;
+    font-size: 11px;
     padding: 8px 10px;
     font-family: "Roboto Condensed",sans-serif;
     border-radius: 5px

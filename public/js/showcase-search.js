@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleFiltersBtn = document.getElementById('toggle-filters');
     const advancedFilters = document.getElementById('advanced-filters');
     const searchInput = document.getElementById('search-input');
-    
+
     if (!searchForm) return;
 
     // Initialize search functionality
@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFilterToggle();
     initializeAutoSubmit();
     initializeSearchTags();
+
+    // Check if we need to scroll to search form after page load
+    checkScrollToSearchForm();
 
     /**
      * Initialize main search form functionality
@@ -26,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Let the form submit normally for now
             // Can be enhanced with AJAX later
             showLoadingState();
+
+            // Store scroll target in sessionStorage for after page reload
+            sessionStorage.setItem('scrollToSearchForm', 'true');
         });
 
         // Handle search input enhancements
@@ -42,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Handle Enter key
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
+                    // Store scroll target before form submission
+                    sessionStorage.setItem('scrollToSearchForm', 'true');
                     searchForm.submit();
                 }
             });
@@ -124,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const button = e.target.closest('.search-tag-remove');
                 const filterName = button.getAttribute('onclick')?.match(/removeSearchFilter\('(.+?)'\)/)?.[1];
-                
+
                 if (filterName) {
                     removeSearchFilter(filterName);
                 }
@@ -150,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang tìm kiếm...';
             btn.disabled = true;
-            
+
             // Restore button after a delay (in case of page reload)
             setTimeout(() => {
                 btn.innerHTML = originalText;
@@ -172,6 +180,37 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    /**
+     * Check if we need to scroll to search form after page load
+     */
+    function checkScrollToSearchForm() {
+        // Check if we should scroll to search form
+        if (sessionStorage.getItem('scrollToSearchForm') === 'true') {
+            // Remove the flag
+            sessionStorage.removeItem('scrollToSearchForm');
+
+            // Wait a bit for page to fully load, then scroll
+            setTimeout(() => {
+                const searchFormElement = document.getElementById('showcase-search-form');
+                if (searchFormElement) {
+                    searchFormElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Optional: Add a subtle highlight effect
+                    searchFormElement.style.transition = 'box-shadow 0.3s ease';
+                    searchFormElement.style.boxShadow = '0 0 20px rgba(0, 123, 255, 0.3)';
+
+                    // Remove highlight after 2 seconds
+                    setTimeout(() => {
+                        searchFormElement.style.boxShadow = '';
+                    }, 2000);
+                }
+            }, 100);
+        }
     }
 
     /**
@@ -232,7 +271,42 @@ window.ShowcaseSearch = {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Showcase search form initialized');
+        // Check if we need to scroll to search form after page load
+        checkScrollToSearchFormGlobal();
     });
 } else {
     console.log('Showcase search form initialized');
+    // Check if we need to scroll to search form after page load
+    checkScrollToSearchFormGlobal();
+}
+
+/**
+ * Global function to check scroll to search form
+ */
+function checkScrollToSearchFormGlobal() {
+    // Check if we should scroll to search form
+    if (sessionStorage.getItem('scrollToSearchForm') === 'true') {
+        // Remove the flag
+        sessionStorage.removeItem('scrollToSearchForm');
+
+        // Wait a bit for page to fully load, then scroll
+        setTimeout(() => {
+            const searchFormElement = document.getElementById('showcase-search-form');
+            if (searchFormElement) {
+                searchFormElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Optional: Add a subtle highlight effect
+                searchFormElement.style.transition = 'box-shadow 0.3s ease';
+                searchFormElement.style.boxShadow = '0 0 20px rgba(0, 123, 255, 0.3)';
+
+                // Remove highlight after 2 seconds
+                setTimeout(() => {
+                    searchFormElement.style.boxShadow = '';
+                }, 2000);
+            }
+        }, 300); // Increased delay to ensure page is fully loaded
+    }
 }
