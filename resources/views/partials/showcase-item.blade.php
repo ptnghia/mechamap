@@ -2,34 +2,8 @@
 // Thiết lập các biến cần thiết cho showcase item với error handling
 $showcaseUrl = route('showcase.show', $showcase);
 $userName = $showcase->user->name ?? 'Người dùng';
-// Simplified avatar logic to avoid conflicts between method and accessor
-$userAvatar = route('avatar.generate', ['initial' => 'U']);
-if (isset($showcase->user)) {
-    $user = $showcase->user;
-    if (!empty($user->avatar)) {
-        if (strpos($user->avatar, 'http') === 0) {
-            $userAvatar = $user->avatar;
-        } elseif (strpos($user->avatar, '/images/') === 0) {
-            $userAvatar = asset($user->avatar);
-        } else {
-            $cleanPath = ltrim($user->avatar, '/');
-            $userAvatar = asset('images/' . $cleanPath);
-        }
-    } else {
-        // Generate initials for avatar
-        $name = $user->name ?: $user->username ?: $user->email ?: 'User';
-        $initials = strtoupper(substr($name, 0, 1));
-        if (strpos($name, ' ') !== false) {
-            $nameParts = array_filter(explode(' ', trim($name)));
-            if (count($nameParts) >= 2) {
-                $firstInitial = strtoupper(substr($nameParts[0], 0, 1));
-                $lastInitial = strtoupper(substr(end($nameParts), 0, 1));
-                $initials = $firstInitial . $lastInitial;
-            }
-        }
-        $userAvatar = route('avatar.generate', ['initial' => $initials]);
-    }
-}
+// Sử dụng method getAvatarUrl() để đảm bảo logic nhất quán
+$userAvatar = $showcase->user->getAvatarUrl();
 
 $showcaseTitle = $showcase->title ?? 'Untitled Showcase';
 $showcaseDescription = isset($showcase->description) ? Str::limit($showcase->description, 100) : '';

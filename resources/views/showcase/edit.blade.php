@@ -364,8 +364,8 @@
 @endsection
 
 @push('scripts')
-<!-- TinyMCE -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE - Self-hosted -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -262,8 +262,8 @@
 @endsection
 
 @push('scripts')
-<!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE Editor - Self-hosted -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize TinyMCE

@@ -4,7 +4,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/showcase.css') }}">
-<link rel="stylesheet" href="{{ asset_versioned('css/frontend/views/showcase-sidebar.css') }}">
 @endpush
 
 @section('content')
@@ -257,17 +256,17 @@
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="shareDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="#" onclick="shareOnFacebook(); return false;" target="_blank">
+                                    <a class="dropdown-item share-facebook" href="#" data-action="facebook">
                                         <i class="fab fa-facebook-f me-2"></i>Facebook
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" onclick="shareOnTwitter(); return false;" target="_blank">
+                                    <a class="dropdown-item share-twitter" href="#" data-action="twitter">
                                         <i class="fab fa-twitter me-2"></i>Twitter
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" onclick="shareOnWhatsApp(); return false;">
+                                    <a class="dropdown-item share-whatsapp" href="#" data-action="whatsapp">
                                         <i class="fab fa-whatsapp me-2"></i>WhatsApp
                                     </a>
                                 </li>
@@ -275,7 +274,7 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#" onclick="copyToClipboard(); return false;">
+                                    <a class="dropdown-item copy-link" href="#" data-action="copy">
                                         <i class="fas fa-clipboard me-2"></i>{{ __('thread.copy_link') }}
                                     </a>
                                 </li>
@@ -354,15 +353,14 @@
         </div>
         <div class="col-lg-4 col-md-12">
             <div class="showcase_slidbar sidebar-professional" id="professional-sidebar">
-                {{--
-                @include('showcases.partials.sidebar-safe', [
+
+                @include('showcases.partials.sidebar', [
                     'showcase' => $showcase,
                     'authorStats' => $authorStats ?? [],
                     'otherShowcases' => $otherShowcases ?? collect(),
                     'featuredShowcases' => $featuredShowcases ?? collect(),
                     'topContributors' => $topContributors ?? collect()
                 ])
-                --}}
             </div>
         </div>
     </div>
@@ -370,65 +368,12 @@
 
 
 @push('styles')
-<style>
-/* Rating Summary Styles */
-.rating-summary {
-    background: #f8f9fa;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-}
 
-.overall-rating .rating-number {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #ffc107;
-    line-height: 1;
-}
-
-.overall-rating .rating-stars .fa-star {
-    font-size: 1.5rem;
-    margin: 0 2px;
-}
-
-.overall-rating .rating-count {
-    font-size: 0.9rem;
-}
-
-.rating-breakdown .rating-category {
-    padding: 0.25rem 0;
-}
-
-.rating-breakdown .category-name {
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #5a5c69;
-}
-
-.rating-breakdown .stars-small .fa-star {
-    font-size: 0.8rem;
-    margin: 0 1px;
-}
-
-.rating-breakdown .rating-value {
-    font-weight: 600;
-    color: #495057;
-    font-size: 0.85rem;
-}
-
-/* Tab switching button */
-.btn-switch-tab {
-    transition: all 0.2s ease;
-}
-
-.btn-switch-tab:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-</style>
 @endpush
 
 @push('scripts')
+<!-- Showcase Interactions JavaScript -->
+<script src="{{ asset_versioned('js/showcase-interactions.js') }}"></script>
 <script src="{{ asset('js/rating.js') }}"></script>
 <script>
     // Showcase Rating & Comments System
@@ -438,9 +383,6 @@
     });
 
     function initializeShowcaseSystem() {
-        // Initialize rating & comment interactions
-        console.log('CKEditor5 and Enhanced Upload ready');
-
         // Initialize tab switching
         initializeTabSwitching();
     }
@@ -470,360 +412,54 @@
         };
     }
 
-// Social Sharing Functions
+// Utility Functions for backward compatibility
 function shareOnFacebook() {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+    if (window.showcaseInteractions) {
+        window.showcaseInteractions.shareOnFacebook();
+    }
 }
 
 function shareOnTwitter() {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
+    if (window.showcaseInteractions) {
+        window.showcaseInteractions.shareOnTwitter();
+    }
 }
 
 function shareOnWhatsApp() {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    window.open(`https://wa.me/?text=${title} ${url}`, '_blank');
+    if (window.showcaseInteractions) {
+        window.showcaseInteractions.shareOnWhatsApp();
+    }
 }
 
 function copyToClipboard() {
-    navigator.clipboard.writeText(window.location.href).then(function() {
-        // Show success message
-        const button = event.target.closest('button');
-        const originalHtml = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i> Đã sao chép!';
-        button.classList.add('btn-success');
-        button.classList.remove('btn-outline-secondary');
-
-        setTimeout(() => {
-            button.innerHTML = originalHtml;
-            button.classList.remove('btn-success');
-            button.classList.add('btn-outline-secondary');
-        }, 2000);
-    }).catch(function(err) {
-        console.error('Could not copy text: ', err);
-    });
+    if (window.showcaseInteractions) {
+        window.showcaseInteractions.copyToClipboard();
+    }
 }
 
 // Reply form toggle
 function toggleReplyForm(commentId) {
     const replyForm = document.getElementById('reply-form-' + commentId);
-    if (replyForm.style.display === 'none' || replyForm.style.display === '') {
-        replyForm.style.display = 'block';
-        // Focus on rich text editor content
-        const editorContent = replyForm.querySelector('.editor-content');
-        if (editorContent) {
-            editorContent.focus();
+    if (replyForm) {
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        if (replyForm.style.display === 'block') {
+            const editorContent = replyForm.querySelector('.editor-content');
+            if (editorContent) editorContent.focus();
         }
-    } else {
-        replyForm.style.display = 'none';
     }
 }
 
-// AJAX Interactions
+// Legacy AJAX interactions - now handled by ShowcaseInteractions class
+// Keeping this section for any custom logic that might be needed
+
+
+
+
+
+
+// Additional utility functions
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle like button with AJAX
-    const likeForm = document.querySelector('.like-form');
-    if (likeForm) {
-        likeForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const button = this.querySelector('button');
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-
-            // Set timeout để tránh button bị stuck
-            const timeoutId = setTimeout(() => {
-                console.warn('Like request timeout - resetting button state');
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }, 10000); // 10 giây timeout
-
-            // Tạo AbortController để có thể cancel request
-            const controller = new AbortController();
-            const timeoutController = setTimeout(() => controller.abort(), 8000); // 8 giây abort
-
-            fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({}),
-                signal: controller.signal
-            })
-            .then(response => {
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    button.innerHTML = `<i class="fas fa-heart"></i> ${data.likes_count} Thích`;
-                    button.className = data.is_liked ? 'btn btn-sm btn-danger' : 'btn btn-sm btn-outline-danger';
-
-                    // Update stats in sidebar
-                    const statsCard = document.querySelector('.card-body .fw-bold.text-danger');
-                    if (statsCard) {
-                        statsCard.textContent = data.likes_count;
-                    }
-
-                    // Show success toast
-                    showToast(data.message || 'Cập nhật thành công!', 'success');
-                } else {
-                    button.innerHTML = originalText;
-                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
-                }
-            })
-            .catch(error => {
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                console.error('Like request error:', error);
-                button.innerHTML = originalText;
-
-                if (error.name === 'AbortError') {
-                    showToast('Yêu cầu bị hủy do timeout!', 'warning');
-                } else {
-                    showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
-                }
-            })
-            .finally(() => {
-                button.disabled = false;
-            });
-        });
-    }
-
-    // Handle bookmark button with AJAX
-    const bookmarkForm = document.querySelector('.bookmark-form');
-    if (bookmarkForm) {
-        bookmarkForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const button = this.querySelector('button');
-
-            // Disable button to prevent double clicks but keep original text
-            button.disabled = true;
-
-            // Set timeout để tránh button bị stuck
-            const timeoutId = setTimeout(() => {
-                console.warn('Bookmark request timeout - resetting button state');
-                button.disabled = false;
-            }, 10000); // 10 giây timeout
-
-            // Tạo AbortController để có thể cancel request
-            const controller = new AbortController();
-            const timeoutController = setTimeout(() => controller.abort(), 8000); // 8 giây abort
-
-            fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({}),
-                signal: controller.signal
-            })
-            .then(response => {
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const icon = data.is_bookmarked ? 'fa-bookmark' : 'fa-bookmark';
-                    const text = data.is_bookmarked ? 'Đã lưu' : 'Lưu';
-                    const btnClass = data.is_bookmarked ? 'btn btn-sm btn-warning' : 'btn btn-sm btn-outline-warning';
-
-                    button.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
-                    button.className = btnClass;
-
-                    // Show success toast
-                    showToast(data.message || 'Cập nhật thành công!', 'success');
-                } else {
-                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
-                }
-            })
-            .catch(error => {
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                console.error('Bookmark request error:', error);
-
-                if (error.name === 'AbortError') {
-                    showToast('Yêu cầu bị hủy do timeout!', 'warning');
-                } else {
-                    showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
-                }
-            })
-            .finally(() => {
-                button.disabled = false;
-            });
-        });
-    }
-
-    // Handle follow button with AJAX
-    const followForm = document.querySelector('.follow-form');
-    if (followForm) {
-        // Remove any existing event listeners to prevent duplicates
-        const newFollowForm = followForm.cloneNode(true);
-        followForm.parentNode.replaceChild(newFollowForm, followForm);
-
-        newFollowForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const button = this.querySelector('button');
-            const originalText = button.innerHTML;
-
-            // Create unique namespace for this request to avoid conflicts
-            const requestId = 'follow_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            console.log('Starting follow request:', requestId);
-
-            // Disable button to prevent double clicks but keep original text
-            button.disabled = true;
-
-            // Set timeout để tránh button bị stuck với unique ID
-            const timeoutId = setTimeout(() => {
-                console.warn('Follow request timeout - resetting button state:', requestId);
-                if (button.getAttribute('data-request-id') === requestId) {
-                    button.disabled = false;
-                    button.setAttribute('data-request-status', 'timeout');
-                    button.removeAttribute('data-request-id');
-                    showToast('Yêu cầu timeout - vui lòng thử lại!', 'warning');
-                }
-            }, 10000); // 10 giây timeout
-
-            // Tạo AbortController để có thể cancel request
-            const controller = new AbortController();
-            const timeoutController = setTimeout(() => {
-                console.warn('Follow request abort timeout:', requestId);
-                controller.abort();
-            }, 8000); // 8 giây abort
-
-            // Mark button as processing
-            button.setAttribute('data-request-id', requestId);
-            button.setAttribute('data-request-status', 'processing');
-
-            fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({}),
-                signal: controller.signal
-            })
-            .then(response => {
-                console.log('Follow request response received:', requestId, response.status);
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                // Check if this request is still valid (not timed out)
-                if (button.getAttribute('data-request-id') !== requestId) {
-                    console.warn('Follow request outdated, ignoring response:', requestId);
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Double check request is still valid
-                if (button.getAttribute('data-request-id') !== requestId) {
-                    console.warn('Follow request outdated, ignoring data:', requestId);
-                    return;
-                }
-
-                console.log('Follow request completed successfully:', requestId, data);
-
-                if (data.success) {
-                    const icon = data.is_following ? 'fa-bell-fill' : 'fa-bell';
-                    const text = data.is_following ? 'Đang theo dõi' : 'Theo dõi';
-
-                    button.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
-                    button.setAttribute('data-request-status', 'success');
-
-                    // Update follow count in sidebar
-                    const followStats = document.querySelector('.card-body .fw-bold.text-success');
-                    if (followStats) {
-                        followStats.textContent = data.follows_count;
-                    }
-
-                    // Show success toast
-                    showToast(data.message || 'Cập nhật thành công!', 'success');
-                } else {
-                    button.setAttribute('data-request-status', 'error');
-                    showToast(data.message || 'Có lỗi xảy ra!', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Follow request error:', requestId, error);
-                clearTimeout(timeoutId);
-                clearTimeout(timeoutController);
-
-                // Only process error if this request is still valid
-                if (button.getAttribute('data-request-id') === requestId) {
-                    button.setAttribute('data-request-status', 'error');
-
-                    if (error.name === 'AbortError') {
-                        showToast('Yêu cầu bị hủy do timeout!', 'warning');
-                    } else {
-                        showToast('Có lỗi xảy ra khi xử lý yêu cầu!', 'error');
-                    }
-                } else {
-                    console.warn('Follow request error ignored (outdated):', requestId);
-                }
-            })
-            .finally(() => {
-                // Only reset if this request is still valid
-                if (button.getAttribute('data-request-id') === requestId) {
-                    button.disabled = false;
-                    button.removeAttribute('data-request-id');
-                    console.log('Follow request finalized:', requestId);
-                } else {
-                    console.warn('Follow request finalization ignored (outdated):', requestId);
-                }
-            });
-        });
-    }
-
-    // Fallback protection: Reset any stuck buttons after 15 seconds
-    setInterval(() => {
-        const stuckButtons = document.querySelectorAll('button[data-request-status="processing"]');
-        stuckButtons.forEach(button => {
-            const requestId = button.getAttribute('data-request-id');
-            const requestTime = requestId ? parseInt(requestId.split('_')[1]) : 0;
-            const currentTime = Date.now();
-
-            // If button has been processing for more than 15 seconds, reset it
-            if (currentTime - requestTime > 15000) {
-                console.warn('Force resetting stuck button:', requestId);
-                button.disabled = false;
-                button.removeAttribute('data-request-id');
-                button.removeAttribute('data-request-status');
-                showToast('Yêu cầu đã bị timeout và được reset!', 'warning');
-            }
-        });
-    }, 5000); // Check every 5 seconds
-
-    // Auto-expand textareas (optimized)
+    // Auto-expand textareas
     document.addEventListener('input', function(e) {
         if (e.target.tagName === 'TEXTAREA') {
             e.target.style.height = 'auto';
@@ -831,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Smooth scroll to comments (optimized)
+    // Smooth scroll to comments
     document.addEventListener('click', function(e) {
         const link = e.target.closest('a[href^="#comment-"]');
         if (link) {
@@ -844,12 +480,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
-    // Toast notification function (will be replaced by showcase-rating-system.js)
-    window.showToast = function(message, type = 'info') {
-        // Fallback for compatibility - the new system will override this
-        console.log(`Toast: ${message} (${type})`);
-    };
 });
 
     // Add optimized CSS for showcase interactions
@@ -875,20 +505,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
-    // Legacy function for compatibility (will be handled by new system)
-    window.toggleReplyForm = function(commentId) {
-        console.log('toggleReplyForm called for:', commentId);
-        // New system will handle this
-    };
 
-    console.log('✅ Showcase page optimized JavaScript loaded');
 </script>
 
 <!-- Showcase Rating System JavaScript -->
 <script src="{{ asset('js/showcase-rating-system.js') }}"></script>
 
-<!-- Showcase Sidebar JavaScript -->
-<script src="{{ asset('js/showcase-sidebar.js') }}"></script>
 @endpush
 
 @endsection

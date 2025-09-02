@@ -31,7 +31,7 @@ class CommentImageUploadController extends Controller
             $validator = Validator::make($request->all(), [
                 'images' => 'required|array|max:5',
                 'images.*' => 'required|file|mimes:jpeg,jpg,png,gif,webp|max:5120', // 5MB max
-                'context' => 'nullable|string|in:comment,reply',
+                'context' => 'nullable|string|in:comment,reply,showcase-rating',
                 'comment_id' => 'nullable|integer|exists:comments,id'
             ]);
 
@@ -46,7 +46,7 @@ class CommentImageUploadController extends Controller
             $user = Auth::user();
             $context = $request->input('context', 'comment');
             $commentId = $request->input('comment_id');
-            
+
             // Upload files
             $uploadedFiles = $this->uploadService->uploadMultipleFiles(
                 $request->file('images'),
@@ -118,7 +118,7 @@ class CommentImageUploadController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             // Find media record
             $media = \App\Models\Media::where('id', $mediaId)
                 ->where('user_id', $user->id)

@@ -54,8 +54,8 @@
 {{-- Push TinyMCE scripts to the end of the page (only once) --}}
 @once
 @push('scripts')
-{{-- TinyMCE CDN --}}
-<script src="https://cdn.tiny.cloud/1/m3nymn6hdlv8nqnf4g88r0ccz9n86ks2aw92v0opuy7sx20y/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+{{-- TinyMCE Self-hosted --}}
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 
 {{-- TinyMCE Configuration and Uploader --}}
 <script src="{{ asset('js/tinymce-config.js') }}"></script>

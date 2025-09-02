@@ -305,8 +305,8 @@
 @push('scripts')
 <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
-<!-- TinyMCE Editor -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE Editor - Self-hosted -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 <script>
 $(document).ready(function() {
     // Initialize TinyMCE

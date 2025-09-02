@@ -173,7 +173,9 @@ class Showcase extends Model
         'learning_objectives' => 'array',
         'image_gallery' => 'array',
         'file_attachments' => 'array',
-        'software_used' => 'array', // Cast software_used to array
+        'software_used' => 'array',
+        'materials' => 'array',
+        'manufacturing_process' => 'array',
         'has_tutorial' => 'boolean',
         'has_calculations' => 'boolean',
         'has_cad_files' => 'boolean',
@@ -351,29 +353,26 @@ class Showcase extends Model
      */
     public function getCoverImageUrlAttribute(): string
     {
-        // Check if cover_image exists and file exists
-        if ($this->cover_image && file_exists(public_path('storage/' . $this->cover_image))) {
-            return asset('storage/' . $this->cover_image);
-        }
+        // Image handling with fallback - simplified to avoid infinite loops
+        $coverImageUrl = asset('images/placeholder.svg');
 
-        // Check image_gallery for first image
-        if ($this->image_gallery && is_array($this->image_gallery) && !empty($this->image_gallery)) {
-            $firstImage = $this->image_gallery[0];
-            if (file_exists(public_path('storage/' . $firstImage))) {
-                return asset('storage/' . $firstImage);
+        try {
+            if (!empty($this->cover_image)) {
+                // Direct cover image handling without file_exists checks
+                if (filter_var($this->cover_image, FILTER_VALIDATE_URL)) {
+                    $coverImageUrl = $this->cover_image;
+                } elseif (strpos($this->cover_image, '/images/') === 0) {
+                    $coverImageUrl = asset($this->cover_image);
+                } else {
+                    $cleanPath = ltrim(str_replace('public/', '', $this->cover_image), '/');
+                    $coverImageUrl = asset('storage/' . $cleanPath);
+                }
             }
+        } catch (\Exception $e) {
+            // Use fallback image
         }
 
-        // Check media relationship
-        if ($this->media && $this->media->count() > 0) {
-            $firstMedia = $this->media->first();
-            if ($firstMedia && file_exists(public_path('storage/' . $firstMedia->path))) {
-                return asset('storage/' . $firstMedia->path);
-            }
-        }
-
-        // Fallback to placeholder
-        return asset('images/placeholder-showcase.svg');
+        return $coverImageUrl;
     }
 
     /**

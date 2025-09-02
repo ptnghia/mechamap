@@ -73,16 +73,14 @@
                                 <i class="fas fa-images text-success"></i>
                                 Hình ảnh minh họa (tùy chọn)
                             </h6>
-                            <x-advanced-file-upload
-                                name="images"
-                                id="rating-comment-upload"
-                                :file-types="['jpg', 'png', 'gif', 'webp']"
-                                max-size="5MB"
+                            <x-comment-image-upload
                                 :max-files="10"
-                                :multiple="true"
-                                context="showcase"
+                                max-size="5MB"
+                                context="showcase-rating"
                                 upload-text="Kéo thả hình ảnh vào đây hoặc click để chọn"
-                                accept-description="Hình ảnh minh họa cho đánh giá"
+                                accept-description="Tối đa 10 file • 5MB mỗi file • JPG, PNG, GIF, WEBP"
+                                :show-preview="true"
+                                :compact="false"
                             />
                         </div>
 
@@ -312,19 +310,88 @@ function resetForm() {
         editor.setContent('');
     }
 
-    // Reset file upload if available
-    const uploadContainer = document.getElementById('rating-comment-upload');
-    if (uploadContainer) {
-        const previewContainer = uploadContainer.querySelector('.upload-preview');
-        if (previewContainer) {
-            previewContainer.innerHTML = '';
+    // Reset comment image upload component
+    const uploadComponents = document.querySelectorAll('.comment-image-upload');
+    uploadComponents.forEach(component => {
+        if (component.commentImageUpload) {
+            component.commentImageUpload.clearFiles();
         }
-    }
+    });
 }
 
-function submitRatingComment() {
-    // Implementation will be added in the next part
-    console.log('Submit rating comment form');
+async function submitRatingComment() {
+    const form = document.getElementById('rating-comment-form');
+    if (!form) return;
+
+    // Validate ratings - sử dụng đúng field names từ model
+    const requiredRatings = ['technical_quality', 'innovation', 'usefulness', 'documentation'];
+    const missingRatings = [];
+
+    requiredRatings.forEach(category => {
+        const input = document.getElementById(category);
+        if (!input || !input.value) {
+            missingRatings.push(category);
+        }
+    });
+
+    if (missingRatings.length > 0) {
+        alert('Vui lòng đánh giá đầy đủ tất cả các tiêu chí.');
+        return;
+    }
+
+    try {
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+
+        // Get uploaded images from comment-image-upload component
+        const uploadComponent = document.querySelector('.comment-image-upload');
+        let uploadedImages = [];
+
+        if (uploadComponent && uploadComponent.commentImageUpload && uploadComponent.commentImageUpload.hasFiles()) {
+            uploadedImages = await uploadComponent.commentImageUpload.uploadFiles();
+        }
+
+        // Prepare form data
+        const formData = new FormData(form);
+
+        // Add uploaded image data
+        if (uploadedImages.length > 0) {
+            uploadedImages.forEach((image, index) => {
+                formData.append(`uploaded_images[${index}]`, JSON.stringify(image));
+            });
+        }
+
+        // Submit form
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Success - reload page or update UI
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Có lỗi xảy ra khi gửi đánh giá');
+        }
+
+    } catch (error) {
+        console.error('Submit error:', error);
+        alert(error.message || 'Có lỗi xảy ra khi gửi đánh giá');
+
+        // Reset button state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
 }
 
 function deleteRating(ratingId) {

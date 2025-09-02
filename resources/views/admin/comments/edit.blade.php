@@ -27,7 +27,7 @@
             <form action="{{ route('admin.comments.update', $comment) }}" method="POST">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="mb-3">
                     <label for="content" class="form-label">{{ 'Nội dung' }}</label>
                     <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="5" required>{{ old('content', $comment->content) }}</textarea>
@@ -35,7 +35,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_flagged" name="is_flagged" {{ old('is_flagged', $comment->is_flagged) ? 'checked' : '' }}>
@@ -45,7 +45,7 @@
                         <div class="form-text">{{ 'Bình luận bị đánh dấu sẽ được đánh dấu để xem xét thêm.' }}</div>
                     </div>
                 </div>
-                
+
                 <div class="mb-3">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="is_hidden" name="is_hidden" {{ old('is_hidden', $comment->is_hidden) ? 'checked' : '' }}>
@@ -55,7 +55,7 @@
                         <div class="form-text">{{ 'Bình luận bị ẩn sẽ không hiển thị cho người dùng.' }}</div>
                     </div>
                 </div>
-                
+
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('admin.comments.show', $comment) }}" class="btn btn-secondary">{{ 'Hủy' }}</a>
                     <button type="submit" class="btn btn-primary">{{ 'Cập nhật' }}</button>
@@ -63,7 +63,7 @@
             </form>
         </div>
     </div>
-    
+
     <div class="card mt-4">
         <div class="card-header">
             <h5 class="card-title mb-0">{{ 'Thông tin bình luận' }}</h5>
@@ -106,7 +106,7 @@
                                 @if($comment->is_flagged)
                                     <span class="badge bg-warning">{{ 'Đã đánh dấu' }}</span>
                                 @endif
-                                
+
                                 @if($comment->is_hidden)
                                     <span class="badge bg-danger">{{ 'Đã ẩn' }}</span>
                                 @endif
@@ -120,7 +120,8 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- TinyMCE Editor - Self-hosted -->
+<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 <script>
     tinymce.init({
         selector: '#content',
