@@ -1,0 +1,135 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - img "Banner" [ref=e5]
+    - navigation [ref=e7]:
+      - generic [ref=e8]:
+        - link "MechaMap" [ref=e9] [cursor=pointer]:
+          - /url: https://mechamap.test
+          - img "MechaMap" [ref=e10] [cursor=pointer]
+        - text: 
+        - generic [ref=e11]:
+          - generic [ref=e12]:
+            - generic [ref=e13]:
+              - textbox "Search" [ref=e14]
+              - button "" [ref=e15] [cursor=pointer]:
+                - generic [ref=e16] [cursor=pointer]: 
+            - text:     
+          - list [ref=e17]:
+            - listitem [ref=e18]:
+              - button " Community" [ref=e19] [cursor=pointer]:
+                - generic [ref=e20] [cursor=pointer]: 
+                - text: Community
+              - text:                      
+            - listitem [ref=e21]:
+              - link " Showcase" [ref=e22] [cursor=pointer]:
+                - /url: https://mechamap.test/showcase
+                - generic [ref=e23] [cursor=pointer]: 
+                - text: Showcase
+            - listitem [ref=e24]:
+              - button " Marketplace" [ref=e25] [cursor=pointer]:
+                - generic [ref=e26] [cursor=pointer]: 
+                - text: Marketplace
+              - text:                  
+            - listitem [ref=e27]:
+              - button "+ Add" [ref=e28] [cursor=pointer]:
+                - generic [ref=e29] [cursor=pointer]: +
+                - text: Add
+              - text:                ?
+          - list [ref=e30]:
+            - listitem [ref=e31]:
+              - generic [ref=e32]:
+                - button "Switch Language" [ref=e33] [cursor=pointer]
+                - text: 
+            - listitem [ref=e35]:
+              - link "Login" [ref=e36] [cursor=pointer]:
+                - /url: https://mechamap.test/login
+                - generic [ref=e37] [cursor=pointer]: 
+                - generic [ref=e38] [cursor=pointer]: Login
+    - text:       
+  - text:                          ?         
+  - main [ref=e39]:
+    - generic [ref=e46]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - img "MechaMap" [ref=e50]
+          - paragraph [ref=e51]: Cộng đồng Kỹ thuật Cơ khí Việt Nam
+        - generic [ref=e52]:
+          - paragraph [ref=e53]:
+            - generic [ref=e54]: 
+            - generic [ref=e55]: Connect Engineers
+          - paragraph [ref=e56]:
+            - generic [ref=e57]: 
+            - generic [ref=e58]: Join Discussions
+          - paragraph [ref=e59]:
+            - generic [ref=e60]: 
+            - generic [ref=e61]: Share Experience
+          - paragraph [ref=e62]:
+            - generic [ref=e63]: 
+            - generic [ref=e64]: Marketplace Products
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - heading "Login" [level=2] [ref=e68]
+          - paragraph [ref=e69]: Chào mừng bạn đến với MechaMap - Cộng đồng kỹ thuật cơ khí hàng đầu Việt Nam. Tham gia ngay để kết nối với hàng nghìn kỹ sư và chuyên gia trong ngành!
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: Email or Username
+            - generic [ref=e73]:
+              - generic [ref=e74]: 
+              - textbox "Email or Username" [active] [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]: Password
+            - generic [ref=e78]:
+              - generic [ref=e79]: 
+              - textbox "Password" [ref=e80]
+              - button "" [ref=e81] [cursor=pointer]:
+                - generic [ref=e82] [cursor=pointer]: 
+          - generic [ref=e83]:
+            - generic [ref=e84] [cursor=pointer]:
+              - checkbox "Remember me" [ref=e85]
+              - generic [ref=e86]: Remember me
+            - link "Forgot password?" [ref=e87] [cursor=pointer]:
+              - /url: https://mechamap.test/forgot-password
+          - button " Login" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89] [cursor=pointer]:
+              - generic [ref=e90] [cursor=pointer]: 
+              - text: Login
+        - generic [ref=e91]:
+          - separator [ref=e92]
+          - generic [ref=e93]: or login with
+        - generic [ref=e94]:
+          - link "Login with Google" [ref=e96] [cursor=pointer]:
+            - /url: https://mechamap.test/auth/google
+            - text: Login with Google
+          - link "Login with Facebook" [ref=e99] [cursor=pointer]:
+            - /url: https://mechamap.test/auth/facebook
+            - text: Login with Facebook
+        - paragraph [ref=e102]:
+          - text: Don't have an account?
+          - link "Register now" [ref=e103] [cursor=pointer]:
+            - /url: https://mechamap.test/register
+  - contentinfo [ref=e104]:
+    - generic [ref=e106]:
+      - paragraph [ref=e108]: © 2025 MechaMap. All rights reserved.
+      - generic [ref=e110]:
+        - link "" [ref=e111] [cursor=pointer]:
+          - /url: https://facebook.com/mechamap.vietnam
+          - generic [ref=e112] [cursor=pointer]: 
+        - link "" [ref=e113] [cursor=pointer]:
+          - /url: https://twitter.com/mechamap_vn
+          - generic [ref=e114] [cursor=pointer]: 
+        - link "" [ref=e115] [cursor=pointer]:
+          - /url: https://instagram.com/mechamap.vietnam
+          - generic [ref=e116] [cursor=pointer]: 
+        - link "" [ref=e117] [cursor=pointer]:
+          - /url: https://linkedin.com/company/mechamap-vietnam
+          - generic [ref=e118] [cursor=pointer]: 
+        - link "" [ref=e119] [cursor=pointer]:
+          - /url: https://youtube.com/@MechaMapVietnam
+          - generic [ref=e120] [cursor=pointer]: 
+        - button "Dark mode Toggle navigation" [ref=e121] [cursor=pointer]:
+          - img "Dark mode" [ref=e122] [cursor=pointer]
+          - generic [ref=e123] [cursor=pointer]: Toggle navigation
+```

@@ -6,6 +6,7 @@
 @import "components/showcase.css";
 @import "components/thread.css";
 @import "components/product.css";
+@import "components/comment-image-upload.css";
 
 body.user-frontend {background-color: #f3f3f3}
 .div_title_page{

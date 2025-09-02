@@ -1103,8 +1103,6 @@
 }
 
 .upload-area:hover {
-    border-color: var(--primary-color);
-    background: #f0f7ff
 }
 
 .upload-area.dragover {
@@ -1119,9 +1117,6 @@
 }
 
 .upload-icon {
-    font-size: 3rem;
-    color: var(--primary-color);
-    margin-bottom: 1rem
 }
 
 .upload-text h4 {
@@ -1131,8 +1126,6 @@
 }
 
 .upload-text p {
-    color: #6c757d;
-    margin: 0
 }
 
 .upload-link {
@@ -3628,10 +3621,6 @@ html {
 }
 
 .upload-icon {
-    font-size: 3rem;
-    color: var(--bs-primary);
-    margin-bottom: 1rem;
-    animation: float 2s ease-in-out infinite
 }
 
 .upload-text h6 {
@@ -3641,9 +3630,6 @@ html {
 }
 
 .upload-text p {
-    color: #6b7280;
-    margin-bottom: .5rem;
-    font-size: .9rem
 }
 
 .upload-text .text-primary {

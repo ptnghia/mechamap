@@ -260,6 +260,73 @@ class UnifiedUploadService
     }
 
     /**
+     * Create media record from existing URL (for pre-uploaded files)
+     */
+    public function createMediaFromUrl(
+        string $url,
+        User $user,
+        string $category,
+        array $options = []
+    ): ?Media {
+        try {
+            // Extract file path from URL
+            $parsedUrl = parse_url($url);
+            $filePath = ltrim($parsedUrl['path'] ?? '', '/');
+
+            // Get full file path
+            $fullPath = public_path($filePath);
+
+            if (!File::exists($fullPath)) {
+                \Log::warning('File not found for URL', ['url' => $url, 'path' => $fullPath]);
+                return null;
+            }
+
+            // Get file info
+            $fileInfo = pathinfo($fullPath);
+            $fileName = $fileInfo['basename'];
+            $extension = $fileInfo['extension'] ?? '';
+            $fileSize = File::size($fullPath);
+            $mimeType = File::mimeType($fullPath) ?: 'application/octet-stream';
+
+            // Map category to valid enum values
+            $mappedCategory = $this->mapCategoryToEnum($category, $mimeType);
+
+            $data = [
+                'user_id' => $user->id,
+                'file_name' => $fileName,
+                'file_path' => $filePath,
+                'file_size' => $fileSize,
+                'mime_type' => $mimeType,
+                'file_extension' => $extension,
+                'file_category' => $mappedCategory,
+                'is_public' => $options['is_public'] ?? true,
+                'is_approved' => $options['is_approved'] ?? true,
+                'processing_status' => 'completed',
+                'virus_scanned' => 0,
+                'download_count' => 0,
+                'disk' => 'public',
+                'mediable_type' => $options['mediable_type'] ?? 'App\\Models\\User',
+                'mediable_id' => $options['mediable_id'] ?? $user->id,
+            ];
+
+            // Only add description if it's provided and the column exists
+            if (isset($options['description']) && \Schema::hasColumn('media', 'description')) {
+                $data['description'] = $options['description'];
+            }
+
+            return Media::create($data);
+
+        } catch (\Exception $e) {
+            \Log::error('Create media from URL failed: ' . $e->getMessage(), [
+                'url' => $url,
+                'user_id' => $user->id,
+                'category' => $category
+            ]);
+            return null;
+        }
+    }
+
+    /**
      * Get file URL
      */
     public function getFileUrl(Media $media): string

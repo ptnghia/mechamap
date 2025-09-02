@@ -4,9 +4,7 @@
     border-radius: 8px;
     background: #f8f9fa;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-
 .comment-image-upload.compact {
     border-radius: 6px;
 }
@@ -21,18 +19,19 @@
 }
 
 .upload-area {
-    flex: 1;
+    /* flex: 1; */
     padding: 20px;
     border-right: 1px solid #dee2e6;
 }
 
 .comment-image-upload.compact .upload-area {
-    padding: 15px;
+    padding: 10px;
+    width: 270px;
 }
 
 .upload-dropzone {
     height: 100%;
-    border: 2px dashed #adb5bd;
+    border: 1px dashed #adb5bd;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -43,11 +42,12 @@
     transition: all 0.3s ease;
     background: #fff;
     position: relative;
+    padding: 5px;
 }
 
 .upload-dropzone:hover,
 .upload-dropzone.dragover {
-    border-color: #007bff;
+    border-color: var(--bs-primary);
     background: #f0f8ff;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
@@ -67,13 +67,13 @@
 }
 
 .upload-dropzone:hover .upload-icon {
-    color: #007bff;
+    color: var(--bs-primary);
     transform: scale(1.1);
 }
 
 .comment-image-upload.compact .upload-icon {
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .upload-dropzone.loading .upload-icon {
@@ -102,6 +102,8 @@
 
 .comment-image-upload.compact .upload-description {
     font-size: 0.8rem;
+    margin-bottom: 3px;
+    color: #6b7280;
 }
 
 .upload-hint {
@@ -112,7 +114,7 @@
 }
 
 .upload-link {
-    color: #007bff;
+    color: var(--bs-primary);
     text-decoration: underline;
     cursor: pointer;
     font-weight: 500;
@@ -174,12 +176,16 @@
     flex: 1;
     padding: 20px;
     background: #fff;
-    max-width: 300px;
 }
 
 .comment-image-upload.compact .preview-area {
     padding: 15px;
-    max-width: 250px;
+    flex
+Specifies the components of a flexible length: the flex grow factor and flex shrink factor, and the flex basis.
+Learn more
+
+Don't show
+: 1;';
 }
 
 .preview-header {
@@ -325,24 +331,24 @@
     .upload-container {
         flex-direction: column;
     }
-    
+
     .upload-area {
         border-right: none;
         border-bottom: 1px solid #dee2e6;
     }
-    
+
     .preview-area {
         max-width: none;
     }
-    
+
     .preview-grid {
         grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     }
-    
+
     .upload-icon {
         font-size: 2rem !important;
     }
-    
+
     .upload-text strong {
         font-size: 1rem !important;
     }
@@ -375,26 +381,26 @@
         background: #2d3748;
         border-color: #4a5568;
     }
-    
+
     .upload-dropzone {
         background: #1a202c;
         border-color: #4a5568;
     }
-    
+
     .upload-dropzone:hover,
     .upload-dropzone.dragover {
         background: #2d3748;
     }
-    
+
     .preview-area {
         background: #1a202c;
     }
-    
+
     .upload-text strong,
     .preview-header h6 {
         color: #e2e8f0;
     }
-    
+
     .upload-description,
     .upload-hint,
     .progress-text {
@@ -418,7 +424,7 @@
     .upload-dropzone {
         border-width: 3px;
     }
-    
+
     .preview-item {
         border-width: 2px;
     }

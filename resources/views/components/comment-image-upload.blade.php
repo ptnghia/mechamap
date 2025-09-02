@@ -58,10 +58,6 @@
     </div>
 </div>
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/comment-image-upload.css') }}">
-@endpush
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const uploadComponent = document.getElementById('{{ $uniqueId }}');

@@ -52,6 +52,8 @@ class CommentController extends Controller
             'parent_id' => 'nullable|exists:comments,id',
             'images' => 'nullable|array|max:10',
             'images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,avif|max:5120', // 5MB max per image
+            'uploaded_images' => 'nullable|array|max:10',
+            'uploaded_images.*' => 'nullable|string|url',
             'edit_mode' => 'nullable|boolean',
             'comment_id' => 'nullable|exists:comments,id',
         ]);
@@ -63,7 +65,7 @@ class CommentController extends Controller
 
         // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
         return DB::transaction(function () use ($request, $thread) {
-            $hasMedia = $request->hasFile('images');
+            $hasMedia = $request->hasFile('images') || $request->has('uploaded_images');
 
             $comment = new Comment([
                 'content' => $request->content,
@@ -75,7 +77,7 @@ class CommentController extends Controller
             $thread->comments()->save($comment);
 
             // Xử lý upload hình ảnh nếu có
-            if ($hasMedia) {
+            if ($request->hasFile('images')) {
                 $uploadedFiles = $this->uploadService->uploadMultipleFiles(
                     $request->file('images'),
                     Auth::user(),
@@ -95,6 +97,20 @@ class CommentController extends Controller
                         'files_count' => count($uploadedFiles),
                         'user_id' => Auth::id()
                     ]);
+                }
+            }
+
+            // Xử lý uploaded_images (pre-uploaded URLs)
+            if ($request->has('uploaded_images') && is_array($request->uploaded_images)) {
+                foreach ($request->uploaded_images as $imageUrl) {
+                    if (!empty($imageUrl)) {
+                        $this->uploadService->createMediaFromUrl(
+                            $imageUrl,
+                            Auth::user(),
+                            $comment,
+                            'comments'
+                        );
+                    }
                 }
             }
 
@@ -142,10 +158,35 @@ class CommentController extends Controller
 
             // Handle AJAX request
             if ($request->ajax()) {
+                // Load comment with full user info and attachments
+                $comment->load(['user', 'attachments']);
+
+                // Add additional user info using unified avatar mechanism
+                $comment->user->comments_count = $comment->user->comments()->count();
+                $comment->user->avatar_url = $comment->user->getAvatarUrl();
+                $comment->user->created_at_formatted = $comment->user->created_at->format('M Y');
+                $comment->user->username = $comment->user->username ?? $comment->user->id;
+
+                // Add likes count
+                $comment->likes_count = $comment->likes()->count();
+
+                // Format attachments for frontend
+                if ($comment->attachments) {
+                    $comment->attachments = $comment->attachments->map(function ($attachment) {
+                        return [
+                            'id' => $attachment->id,
+                            'name' => $attachment->name,
+                            'url' => $attachment->getUrl(),
+                            'mime_type' => $attachment->mime_type,
+                        ];
+                    });
+                }
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Bình luận đã được đăng thành công.',
-                    'comment' => $comment->load(['user', 'attachments']),
+                    'comment' => $comment,
+                    'comment_count' => $thread->comments()->count(),
                     'redirect' => route('threads.show', $thread) . '#comment-' . $comment->id
                 ]);
             }

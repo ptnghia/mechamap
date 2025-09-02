@@ -128,19 +128,22 @@ class CommentController extends Controller
                 'content' => 'required|string|min:1|max:10000',
                 'new_attachments' => 'nullable|array|max:5',
                 'new_attachments.*' => 'file|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+                'uploaded_images' => 'nullable|array|max:5',
+                'uploaded_images.*' => 'nullable|string', // URLs from pre-uploaded images
             ]);
 
             return DB::transaction(function () use ($request, $comment) {
                 $hasNewMedia = $request->hasFile('new_attachments');
+                $hasUploadedImages = $request->has('uploaded_images') && !empty($request->uploaded_images);
 
                 // Update comment content and media flag
                 $comment->update([
                     'content' => $request->content,
-                    'has_media' => $comment->has_media || $hasNewMedia,
+                    'has_media' => $comment->has_media || $hasNewMedia || $hasUploadedImages,
                     'updated_at' => now()
                 ]);
 
-                // Handle new attachments
+                // Handle new file attachments
                 if ($hasNewMedia) {
                     $uploadService = app(\App\Services\UnifiedUploadService::class);
                     $uploadedFiles = $uploadService->uploadMultipleFiles(
@@ -162,6 +165,34 @@ class CommentController extends Controller
                             'user_id' => Auth::id()
                         ]);
                     }
+                }
+
+                // Handle pre-uploaded images (from comment-image-upload component)
+                if ($hasUploadedImages) {
+                    $uploadService = app(\App\Services\UnifiedUploadService::class);
+
+                    foreach ($request->uploaded_images as $imageUrl) {
+                        if (!empty($imageUrl)) {
+                            // Create media record for pre-uploaded image
+                            $uploadService->createMediaFromUrl(
+                                $imageUrl,
+                                Auth::user(),
+                                'comments',
+                                [
+                                    'mediable_type' => Comment::class,
+                                    'mediable_id' => $comment->id,
+                                    'is_public' => true,
+                                    'is_approved' => true,
+                                ]
+                            );
+                        }
+                    }
+
+                    \Log::info('Comment pre-uploaded images linked successfully', [
+                        'comment_id' => $comment->id,
+                        'images_count' => count($request->uploaded_images),
+                        'user_id' => Auth::id()
+                    ]);
                 }
 
                 // Update has_media flag
