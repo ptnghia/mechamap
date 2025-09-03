@@ -29,6 +29,40 @@ class AddDashboardTranslations extends Command
      * Groups are auto-detected from key prefix (before first dot)
      */
     protected $translations = [
+        // ===== THREADS FUNCTIONALITY TRANSLATIONS =====
+
+        // UI Actions - Additional keys for threads functionality
+        'ui.actions.unlike' => [
+            'vi' => 'Bỏ thích',
+            'en' => 'Unlike'
+        ],
+        'ui.actions.unsave' => [
+            'vi' => 'Bỏ lưu',
+            'en' => 'Unsave'
+        ],
+        'ui.actions.unfollow' => [
+            'vi' => 'Bỏ theo dõi',
+            'en' => 'Unfollow'
+        ],
+
+        // Thread notifications and real-time updates
+        'thread.liked_thread' => [
+            'vi' => 'đã thích bài viết này',
+            'en' => 'liked this thread'
+        ],
+        'thread.liked_comment' => [
+            'vi' => 'đã thích bình luận',
+            'en' => 'liked a comment'
+        ],
+        'thread.replies' => [
+            'vi' => 'phản hồi',
+            'en' => 'replies'
+        ],
+        'thread.participants' => [
+            'vi' => 'người tham gia',
+            'en' => 'participants'
+        ],
+
         // ===== NOTIFICATION SYSTEM TRANSLATIONS =====
 
         // Notification UI Actions

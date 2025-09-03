@@ -14,7 +14,7 @@ class TranslationService {
             this.translations = window.Laravel.translations;
         }
 
-        //console.log('TranslationService initialized with locale:', this.currentLocale);
+        console.log('TranslationService initialized with locale:', this.currentLocale);
     }
 
     /**
@@ -25,10 +25,26 @@ class TranslationService {
      * @returns {string} Translated text
      */
     trans(key, replacements = {}, fallback = null) {
+        // First try to get from nested structure (cached translations)
         let translation = this.getNestedValue(this.translations, key);
 
+        // If not found in nested structure, try direct key lookup
+        if (!translation && this.translations) {
+            translation = this.getDirectKeyValue(this.translations, key);
+        }
+
+        // If still not found, check if we need to load the group
         if (!translation) {
-            translation = fallback || key;
+            const group = key.split('.')[0];
+            if (group && !this.isLoaded(group)) {
+                // Load the group asynchronously and return key for now
+                this.loadTranslationsAsync(group);
+                // For now, return the fallback or key
+                translation = fallback || key;
+            } else {
+                // Group is loaded but key not found
+                translation = fallback || key;
+            }
         }
 
         // Handle replacements
@@ -186,6 +202,123 @@ class TranslationService {
         return key.split('.').reduce((current, k) => {
             return current && current[k] !== undefined ? current[k] : null;
         }, obj);
+    }
+
+    /**
+     * Get value by direct key lookup (for flat structure)
+     * @param {object} obj - Object to search in
+     * @param {string} key - Direct key
+     * @returns {*} Value or null if not found
+     */
+    getDirectKeyValue(obj, key) {
+        // Search through all nested objects for the direct key
+        const searchInObject = (searchObj) => {
+            if (!searchObj || typeof searchObj !== 'object') return null;
+
+            // Check if key exists directly
+            if (searchObj[key] !== undefined) {
+                return searchObj[key];
+            }
+
+            // Search recursively in nested objects
+            for (const prop in searchObj) {
+                if (typeof searchObj[prop] === 'object') {
+                    const result = searchInObject(searchObj[prop]);
+                    if (result !== null) return result;
+                }
+            }
+            return null;
+        };
+
+        return searchInObject(obj);
+    }
+
+    /**
+     * Load translations asynchronously for a group
+     * @param {string} group - Translation group to load
+     */
+    loadTranslationsAsync(group) {
+        // Check if already loading this group
+        if (this.loadingGroups && this.loadingGroups.has(group)) {
+            return;
+        }
+
+        // Initialize loading tracker
+        if (!this.loadingGroups) {
+            this.loadingGroups = new Set();
+        }
+
+        this.loadingGroups.add(group);
+
+        // Load the group asynchronously
+        this.loadTranslations([group])
+            .then(() => {
+                console.log(`Asynchronously loaded translations for group: ${group}`);
+                this.loadingGroups.delete(group);
+
+                // Trigger a re-render or update if needed
+                this.notifyTranslationsLoaded(group);
+            })
+            .catch(error => {
+                console.warn(`Failed to load translations for group: ${group}`, error);
+                this.loadingGroups.delete(group);
+            });
+    }
+
+    /**
+     * Notify that translations have been loaded for a group
+     * @param {string} group - The group that was loaded
+     */
+    notifyTranslationsLoaded(group) {
+        // Dispatch a custom event that components can listen to
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('translationsLoaded', {
+                detail: { group, locale: this.currentLocale }
+            }));
+        }
+    }
+
+    /**
+     * Load translations synchronously for immediate use (deprecated)
+     * @param {string} group - Translation group
+     * @param {string} key - Specific key being requested
+     */
+    loadTranslationsSync(group, key) {
+        console.warn('loadTranslationsSync is deprecated. Use loadTranslationsAsync instead.');
+        // Fallback to async loading
+        this.loadTranslationsAsync(group);
+    }
+
+    /**
+     * Check if a translation group has been loaded
+     * @param {string} group - Group name to check
+     * @returns {boolean} True if group is loaded
+     */
+    isLoaded(group) {
+        return this.translations && this.translations[group] &&
+               Object.keys(this.translations[group]).length > 0;
+    }
+
+    /**
+     * Deep merge two objects
+     * @param {object} target - Target object
+     * @param {object} source - Source object
+     * @returns {object} Merged object
+     */
+    deepMerge(target, source) {
+        const result = { ...target };
+
+        for (const key in source) {
+            if (source.hasOwnProperty(key)) {
+                if (typeof source[key] === 'object' && source[key] !== null && !Array.isArray(source[key])) {
+                    result[key] = this.deepMerge(result[key] || {}, source[key]);
+                } else {
+                    result[key] = source[key];
+                }
+            }
+        }
+
+        return result;
     }
 
     /**

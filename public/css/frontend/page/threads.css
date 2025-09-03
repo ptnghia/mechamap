@@ -64,7 +64,8 @@
 .threads-footer{margin-top: 20px;font-size: 14px;}
 .threads-footer .btn{font-size: 14px;}
 .threads-footer .btn i{margin-right: 5px !important;text-decoration: none !IMPORTANT;}
-.threads-footer .btn:hover{background-color: transparent;color: var(--bs-primary);text-decoration: underline;}
+.threads-footer .btn:hover{background-color: transparent;color: var(--bs-primary);/* text-decoration: underline; */}
+.threads-footer .btn:hover .text{text-decoration: underline;}
 .threads-footer .btn:hover i{text-decoration: none !IMPORTANT;}
 .createShowcaseModal{
 }
