@@ -1,0 +1,63 @@
+.tinymce-editor-wrapper {
+    position: relative;
+}
+
+.tinymce-loading {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background: #f8f9fa;
+    min-height: 100px;
+}
+
+/* TinyMCE drag over styling */
+.tinymce-drag-over .tox-tinymce {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+/* TinyMCE validation styling */
+.tox-tinymce.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.tox-tinymce.is-invalid .tox-toolbar,
+.tox-tinymce.is-invalid .tox-statusbar {
+    border-color: #dc3545 !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .tox-tinymce {
+        min-width: 100% !important;
+    }
+
+    .tox-toolbar__group {
+        flex-wrap: wrap;
+    }
+}
+
+/* Custom button styling */
+.tox .tox-tbtn--enabled {
+    background: #007bff;
+    color: white;
+}
+
+.tox .tox-tbtn--enabled:hover {
+    background: #0056b3;
+}
+
+/* Content area styling */
+.tox .tox-edit-area__iframe {
+    background: white;
+}
+
+/* Placeholder styling */
+.tox .tox-edit-area__iframe body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+    color: #6c757d;
+    font-style: italic;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+}
+.mce-content-body{
+}

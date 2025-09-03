@@ -374,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize TinyMCE
     tinymce.init({
+        license_key: 'gpl',
         selector: '.tinymce-editor',
         height: 300,
         menubar: false,

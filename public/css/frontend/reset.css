@@ -82,7 +82,7 @@
 
   /* Font Sizes */
   --bs-root-font-size: 16px;
-  --bs-body-font-size: 1rem;
+  --bs-body-font-size: 14px;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
 
@@ -983,7 +983,7 @@ a:focus {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-.btn-sm {font-size: 14px;padding: 7px 10px;height: 37px;}
+.btn-sm {font-size: 14px;padding: 7px 15px;height: 37px;}
 .btn-lg {font-size: 16px;padding: .75rem 1.5rem;height: 48px;}
 @keyframes spin {
   0% { transform: rotate(0deg); }

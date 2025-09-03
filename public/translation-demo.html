@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation API Demo - MechaMap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            min-height: 50px;
+        }
+        .loading {
+            color: #6c757d;
+            font-style: italic;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .language-item {
+            padding: 5px 10px;
+            background-color: #e9ecef;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="text-center mb-4">Translation API Demo</h1>
+        <p class="text-center text-muted">Test các chức năng dịch thuật từ API realtime.mechamap.com</p>
+
+        <!-- Translation Demo -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Dịch từ Tiếng Việt</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="vietnameseInput" class="form-label">Nhập text tiếng Việt:</label>
+                    <textarea class="form-control" id="vietnameseInput" rows="3" 
+                              placeholder="Nhập text tiếng Việt cần dịch...">Xin chào, tôi là một lập trình viên. Tôi đang phát triển ứng dụng web cho cộng đồng kỹ sư cơ khí Việt Nam.</textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="targetLanguage" class="form-label">Chọn ngôn ngữ đích:</label>
+                    <select class="form-select" id="targetLanguage">
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="zh">中文</option>
+                        <option value="es">Español</option>
+                        <option value="it">Italiano</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Loại nội dung:</label>
+                    <div>
+                        <input type="radio" id="contentText" name="contentType" value="text" checked>
+                        <label for="contentText">Text thường</label>
+                        <input type="radio" id="contentHtml" name="contentType" value="html" class="ms-3">
+                        <label for="contentHtml">HTML</label>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="testTranslation()">Dịch Text</button>
+                
+                <div id="translationResult" class="result-box" style="display: none;">
+                    <strong>Kết quả dịch:</strong>
+                    <div id="translatedText"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Language Detection Demo -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Nhận diện Ngôn ngữ</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="detectInput" class="form-label">Nhập text để nhận diện ngôn ngữ:</label>
+                    <textarea class="form-control" id="detectInput" rows="2" 
+                              placeholder="Nhập text bất kỳ...">Hello, I am a software developer from Vietnam.</textarea>
+                </div>
+                
+                <button class="btn btn-success" onclick="testLanguageDetection()">Nhận diện Ngôn ngữ</button>
+                
+                <div id="detectionResult" class="result-box" style="display: none;">
+                    <strong>Ngôn ngữ được nhận diện:</strong>
+                    <div id="detectedLanguage"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supported Languages Demo -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Ngôn ngữ được Hỗ trợ</h3>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-info" onclick="testSupportedLanguages()">Lấy danh sách Ngôn ngữ</button>
+                
+                <div id="languagesResult" class="result-box" style="display: none;">
+                    <strong>Thông tin ngôn ngữ hỗ trợ:</strong>
+                    <div id="languagesInfo"></div>
+                    <div id="languagesList" class="language-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Log -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Console Log</h3>
+                <button class="btn btn-sm btn-secondary float-end" onclick="clearConsoleLog()">Clear</button>
+            </div>
+            <div class="card-body">
+                <div id="consoleLog" style="background-color: #000; color: #00ff00; padding: 10px; border-radius: 5px; font-family: monospace; height: 200px; overflow-y: auto;">
+                    Console ready...<br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/translation-service.js"></script>
+    <script src="/js/translation-demo.js"></script>
+    
+    <script>
+        // Helper function để log ra console div
+        function logToConsole(message, type = 'info') {
+            const consoleDiv = document.getElementById('consoleLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff0000' : type === 'success' ? '#00ff00' : '#ffffff';
+            consoleDiv.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span><br>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        function clearConsoleLog() {
+            document.getElementById('consoleLog').innerHTML = 'Console cleared...<br>';
+        }
+
+        // Test translation function
+        async function testTranslation() {
+            const input = document.getElementById('vietnameseInput').value;
+            const targetLang = document.getElementById('targetLanguage').value;
+            const contentType = document.querySelector('input[name="contentType"]:checked').value;
+            const resultDiv = document.getElementById('translationResult');
+            const textDiv = document.getElementById('translatedText');
+            
+            if (!input.trim()) {
+                alert('Vui lòng nhập text cần dịch!');
+                return;
+            }
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result-box loading';
+            textDiv.innerHTML = 'Đang dịch...';
+            
+            logToConsole(`Translating: "${input}" to ${targetLang}`);
+            
+            try {
+                const result = await translateVietnamese(input, targetLang, contentType);
+                resultDiv.className = 'result-box success';
+                textDiv.innerHTML = result;
+                logToConsole(`Translation successful: "${result}"`, 'success');
+            } catch (error) {
+                resultDiv.className = 'result-box error';
+                textDiv.innerHTML = `Lỗi: ${error.message}`;
+                logToConsole(`Translation error: ${error.message}`, 'error');
+            }
+        }
+
+        // Test language detection
+        async function testLanguageDetection() {
+            const input = document.getElementById('detectInput').value;
+            const resultDiv = document.getElementById('detectionResult');
+            const langDiv = document.getElementById('detectedLanguage');
+            
+            if (!input.trim()) {
+                alert('Vui lòng nhập text để nhận diện!');
+                return;
+            }
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result-box loading';
+            langDiv.innerHTML = 'Đang nhận diện...';
+            
+            logToConsole(`Detecting language for: "${input}"`);
+            
+            try {
+                const result = await detectLanguage(input);
+                resultDiv.className = 'result-box success';
+                langDiv.innerHTML = `<code>${result}</code>`;
+                logToConsole(`Language detected: ${result}`, 'success');
+            } catch (error) {
+                resultDiv.className = 'result-box error';
+                langDiv.innerHTML = `Lỗi: ${error.message}`;
+                logToConsole(`Language detection error: ${error.message}`, 'error');
+            }
+        }
+
+        // Test supported languages
+        async function testSupportedLanguages() {
+            const resultDiv = document.getElementById('languagesResult');
+            const infoDiv = document.getElementById('languagesInfo');
+            const listDiv = document.getElementById('languagesList');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result-box loading';
+            infoDiv.innerHTML = 'Đang tải danh sách ngôn ngữ...';
+            listDiv.innerHTML = '';
+            
+            logToConsole('Getting supported languages...');
+            
+            try {
+                const result = await getSupportedLanguages();
+                resultDiv.className = 'result-box success';
+                infoDiv.innerHTML = `
+                    <div>Tổng số ngôn ngữ: <strong>${result.total}</strong></div>
+                    <div>Ngôn ngữ nguồn: <strong>${result.sourceLanguages.length}</strong></div>
+                    <div>Ngôn ngữ đích: <strong>${result.targetLanguages.length}</strong></div>
+                `;
+                
+                // Hiển thị một số ngôn ngữ phổ biến
+                const popularLangs = result.targetLanguages.slice(0, 20);
+                listDiv.innerHTML = popularLangs.map(lang => 
+                    `<div class="language-item">${lang}</div>`
+                ).join('');
+                
+                logToConsole(`Supported languages loaded: ${result.total} total`, 'success');
+            } catch (error) {
+                resultDiv.className = 'result-box error';
+                infoDiv.innerHTML = `Lỗi: ${error.message}`;
+                logToConsole(`Get supported languages error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-load supported languages when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            logToConsole('Translation Demo page loaded');
+            logToConsole('Ready to test translation functions');
+        });
+    </script>
+</body>
+</html>

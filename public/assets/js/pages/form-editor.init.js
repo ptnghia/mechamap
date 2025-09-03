@@ -15,6 +15,7 @@ File: Form editor Init Js File - Updated for TinyMCE
 // This replaces the old CKEditor implementation
 if (typeof tinymce !== 'undefined' && document.querySelector('#tinymce-classic')) {
     tinymce.init({
+        license_key: 'gpl',
         selector: '#tinymce-classic',
         height: 200,
         menubar: false,

@@ -311,6 +311,7 @@
 $(document).ready(function() {
     // Initialize TinyMCE
     tinymce.init({
+        license_key: 'gpl',
         selector: '#content',
         height: 400,
         menubar: false,

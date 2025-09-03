@@ -4,176 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_versioned('css/frontend/page/threads.css') }}">
-<style>
-.highlight-comment {
-    background-color: #fff3cd !important;
-    border-left: 4px solid #ffc107 !important;
-    transition: all 0.3s ease;
-    animation: highlightPulse 2s ease-in-out;
-}
 
-@keyframes highlightPulse {
-    0% { background-color: #fff3cd; }
-    50% { background-color: #ffeaa7; }
-    100% { background-color: #fff3cd; }
-}
-
-/* Inline Edit Form Styles */
-.inline-edit-form {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.inline-edit-form .form-label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 8px;
-}
-
-.existing-attachments .attachment-item {
-    transition: opacity 0.3s ease;
-}
-
-
-
-.compact-upload {
-    border: 2px dashed #dee2e6;
-    border-radius: 6px;
-    padding: 10px;
-    text-align: center;
-    background: #fff;
-}
-
-.compact-upload.small {
-    padding: 8px;
-    font-size: 0.9em;
-}
-
-.inline-edit-form .btn-sm {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.875rem;
-}
-
-.inline-edit-form .d-flex.gap-2 {
-    gap: 0.5rem !important;
-}
-
-/* Image Preview Styles for Edit Mode */
-.image-preview-item {
-    position: relative;
-    display: inline-block;
-    margin: 5px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #f8f9fa;
-}
-
-.image-preview-wrapper {
-    position: relative;
-    width: 120px;
-    height: 120px;
-}
-
-.preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.image-preview-item:hover .image-overlay {
-    opacity: 1;
-}
-
-.remove-image-btn {
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-}
-
-.image-info {
-    padding: 5px;
-    text-align: center;
-    background: white;
-}
-
-.image-info small {
-    font-size: 11px;
-    word-break: break-all;
-    line-height: 1.2;
-}
-
-/* Cancel button for edit mode - should be visible */
-.cancel-edit-btn {
-    display: inline-block;
-}
-
-/* Comment image delete button */
-.comment-image-wrapper {
-    position: relative;
-}
-
-.delete-image-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    z-index: 10;
-}
-
-.comment-image-wrapper:hover .delete-image-btn {
-    opacity: 1;
-}
-
-/* Highlight effect for new comments */
-.highlight-new {
-    background: linear-gradient(90deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
-    border-left: 4px solid #28a745;
-    animation: highlightFade 3s ease-out;
-}
-
-@keyframes highlightFade {
-    0% {
-        background: linear-gradient(90deg, rgba(40, 167, 69, 0.2) 0%, rgba(40, 167, 69, 0.1) 100%);
-        transform: scale(1.01);
-    }
-    100% {
-        background: linear-gradient(90deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
-        transform: scale(1);
-    }
-}
-</style>
 @endpush
 
 @section('content')
@@ -208,17 +39,13 @@
                     </button>
                     @else
                     <button type="button"  class="btn btn-sm btn-outline-primary btn-save ms-2" onclick="showLoginModal()" title="{{ __('thread.login_to_save') }}">
-                        <i class="far fa-bookmark"></i>
+                        <i class="far fa-bookmark me-1"></i>
                         <span class="save-text">{{ __('thread.bookmark') }}</span>
                         @if($thread->saves_count > 0)
                         <span class="badge bg-light text-dark ms-1 save-count">{{ number_format($thread->saves_count) }}</span>
                         @endif
                     </button>
                     @endauth
-
-                    <a href="#comment-{{ $comments->count() > 0 ? $comments->last()->id : '' }}" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-arrow-down me-1"></i> {{ __('thread.go_to_end') }}
-                    </a>
                 </div>
             </div>
             <div class="thread-header">
@@ -389,444 +216,412 @@
         @include('threads.partials.showcase')
         </div>
 
-        <div class="comments-section mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <h3 class="title_page_sub mb-2"><i class="fa-regular fa-comment-dots me-1"></i>{{ $comments->total() }} {{ __('thread.replies') }}</h3>
-                    <div class="thread-meta-item me-0">
-                        {{ __('thread.last_post_by') }}
-                        <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
-                            {{ $thread->lastCommenter->name ?? $thread->user->name }}
-                        </a>
-                        <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
-                            $thread->created_at->diffForHumans() }}</span>
-                    </div>
-                </div>
-                <!-- Sort Options -->
-                <div class="btn-group" id="comments-sort-options">
-                    <button type="button"
-                            class="btn btn-sm sort-btn {{ request('sort', 'oldest') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}"
-                            data-sort="oldest"
-                            data-thread-id="{{ $thread->id }}">
-                        {{ __('thread.sort_oldest') }}
-                    </button>
-                    <button type="button"
-                            class="btn btn-sm sort-btn {{ request('sort') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}"
-                            data-sort="newest"
-                            data-thread-id="{{ $thread->id }}">
-                        {{ __('thread.sort_newest') }}
-                    </button>
-                    <button type="button"
-                            class="btn btn-sm sort-btn {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}"
-                            data-sort="reactions"
-                            data-thread-id="{{ $thread->id }}">
-                        {{ __('thread.sort_reactions') }}
-                    </button>
-                </div>
-            </div>
-            <!-- Comments List -->
-            <div id="comments-container">
-            @forelse($comments as $comment)
-                <div class="comment_item mb-3" id="comment-{{ $comment->id }}">
-                    <div class="d-flex">
-                        <div class="comment_item_avatar">
-                            <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="40" height="40">
+        <!-- Reply Form (Hidden - Using Inline Reply Instead) -->
+
+        <div class="card_coment_thread" id="reply-form">
+            @auth
+            <h4 class="title_page_sub"><i class="fas fa-comment text-primary"></i> {{ __('thread.post_reply') }}</h4>
+            <div class="card_coment_thread_body">
+                <form action="{{ route('threads.comments.store', $thread) }}" method="POST" enctype="multipart/form-data"
+                    id="reply-form-element">
+                    @csrf
+                    <input type="hidden" name="parent_id" id="parent_id" value="">
+                    <div class="d-flex gap-3">
+                        <div class="avatar_user">
+                            <img src="{{ auth()->user()->getAvatarUrl() }}"  class="user-avatar" alt="Avatar">
                         </div>
-                        <div class="comment_item_body">
-                            <div class="comment_item_user">
-                                <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
-                                    {{ $comment->user->name }}
-                                </a>
-                                <div class="text-muted small">
-                                    <span>{{ $comment->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
-                                    <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
+
+                        <div class="flex-grow-1">
+                            <div class="mb-3">
+                                <x-tinymce-editor
+                                    name="content"
+                                    id="content"
+                                    :value="old('content')"
+                                    :placeholder="__('thread.reply_content_placeholder')"
+                                    context="comment"
+                                    :height="200"
+                                    :required="true"
+                                    class="@error('content') is-invalid @enderror"
+                                />
+                                @error('content')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <div id="content-error" class="invalid-feedback" style="display: none;">
+                                    {{ __('thread.reply_content_required') }}
                                 </div>
                             </div>
-                            <div class="comment_item_content" id="comment-content-{{ $comment->id }}">
-                                {!! $comment->content !!}
-                            </div>
-
-                            <!-- Inline Edit Form (Hidden by default) -->
-                            <div class="inline-edit-form" id="edit-form-{{ $comment->id }}" style="display: none;">
-                                <form class="comment-edit-form" data-comment-id="{{ $comment->id }}">
-                                    @csrf
-                                    <input type="hidden" name="_method" value="PUT">
-
-                                    <!-- Rich Text Editor -->
-                                    <div class="mb-3">
-                                        <x-tinymce-editor
-                                            name="content"
-                                            id="edit-content-{{ $comment->id }}"
-                                            :value="$comment->content"
-                                            context="comment"
-                                            :height="200"
-                                            placeholder="{{ __('thread.edit_comment_placeholder') }}"
-                                            :required="true"
-                                        />
-                                    </div>
-                                    <!-- New Image Upload -->
-                                    <div class="mb-3">
-                                        <x-comment-image-upload
-                                            :max-files="5"
-                                            max-size="5MB"
-                                            context="comment"
-                                            upload-text="{{ __('thread.add_new_images') }}"
-                                            accept-description="{{ __('thread.images_only') }}"
-                                            :show-preview="true"
-                                            :compact="true"
-                                        />
-                                    </div>
-
-                                    <!-- Form Actions -->
-                                    <div class="d-flex gap-2">
-                                        <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
-                                            <i class="fas fa-save me-1"></i>
-                                            {{ __('thread.save_changes') }}
-                                        </button>
-                                        <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
-                                                data-comment-id="{{ $comment->id }}">
-                                            <i class="fas fa-times me-1"></i>
-                                            {{ __('common.cancel') }}
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
-                            <div class="comment-attachments mt-3">
-                                <div class="row g-2">
-                                    @foreach($comment->attachments as $attachment)
-                                    <div class="col-md-3 col-sm-4 col-6">
-                                        <div class="comment-image-wrapper position-relative">
-                                            <a href="{{ $attachment->url }}" class="d-block" data-fancybox="comment-{{ $comment->id }}-images" data-caption="{{ $attachment->file_name }}">
-                                                <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}" class="img-fluid rounded">
-                                            </a>
-                                            @can('update', $comment)
-                                            <button type="button" class="btn btn-danger btn-sm delete-image-btn position-absolute"
-                                                    data-image-id="{{ $attachment->id }}"
-                                                    data-comment-id="{{ $comment->id }}"
-                                                    title="Xóa hình ảnh">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                            @endcan
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-                            <div class="comment_item_meta d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <span class="btn btn-sm btn_meta text-muted"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
-                                    <!-- Like Button -->
-                                    @auth
-                                    <button type="button" class="btn  text-muted btn-sm btn_meta comment-like-btn {{ $comment->isLikedBy(auth()->user()) ? 'active' : '' }}"
-                                            data-comment-id="{{ $comment->id }}"
-                                            data-liked="{{ $comment->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
-                                            title="{{ $comment->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
-                                        <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count me-1">{{ $comment->like_count }}</span> {{ __('thread.like') }}
-                                    </button>
-                                    @else
-                                    <button type="button" class="btn text-muted btn-sm btn_meta comment-like-btn" onclick="showLoginModal()" title="{{ __('thread.login_to_like') }}">
-                                        <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count me-1">{{ $comment->like_count }}</span> {{ __('thread.like') }}
-                                    </button>
-                                    @endauth
-                                </div>
-                                <div>
-                                    <!-- Quote Button -->
-                                    <button class="btn btn-sm text-muted no-border quote-button" data-comment-id="{{ $comment->id }}" data-comment-content="{{ $comment->content }}" data-user-name="{{ $comment->user->name }}">
-                                        <i class="fa-solid fa-quote-left me-1"></i> {{ __('thread.quote') }}
-                                    </button>
-
-                                    <!-- Reply Button -->
-                                    <button class="btn text-muted btn-sm no-border reply-button ms-2"
-                                        data-parent-id="{{ $comment->id }}">
-                                        <i class="fas fa-reply me-1"></i> {{ __('thread.reply') }}
-                                    </button>
-
-                                    <!-- Edit/Delete Buttons (if owner) -->
-                                    @can('update', $comment)
-                                    <div class="btn-group ms-2">
-                                        <button class="btn btn-sm btn-primary inline-edit-comment-btn"
-                                                data-comment-id="{{ $comment->id }}"
-                                                title="{{ __('thread.edit_comment') }}">
-                                            <i class="fas fa-edit me-1"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger delete-comment-btn"
-                                                data-comment-id="{{ $comment->id }}"
-                                                data-comment-type="comment"
-                                                title="{{ __('thread.delete_comment') }}">
-                                            <i class="fas fa-trash me-1"></i>
-                                        </button>
-                                    </div>
-                                    @endcan
-                                </div>
-                            </div>
-
-                            <!-- Inline Reply Form -->
-                            <x-inline-reply-form
-                                :comment-id="$comment->id"
-                                :thread-id="$thread->id"
-                                :parent-user="$comment->user->name"
-                                :parent-content="$comment->content"
+                            <!-- File Upload Component -->
+                            <x-comment-image-upload
+                                :max-files="5"
+                                max-size="5MB"
+                                context="thread"
+                                upload-text="{{ __('thread.add_new_images') }}"
+                                accept-description="{{ __('thread.images_only') }}"
+                                :show-preview="true"
+                                :compact="true"
                             />
-
-                            <div class="comment_sub">
-                                @if(isset($comment->replies) && count($comment->replies) > 0)
-                                @foreach($comment->replies as $reply)
-                                <div class="comment_item mb-3">
-                                    <div class="d-flex">
-                                        <div class="comment_item_avatar">
-                                            <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}" class="rounded-circle me-2" width="30" height="30">
-                                        </div>
-                                        <div class="comment_item_body sub">
-                                            <div class="comment_item_user">
-                                                <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
-                                                    {{ $reply->user->name }}
-                                                </a>
-                                                <div class="text-muted small">
-                                                    <span>{{ $reply->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
-                                                    <span>{{ __('thread.joined') }} {{ $reply->user->created_at->format('M Y') }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="comment_item_content" id="comment-content-{{ $reply->id }}">
-                                                {!! $reply->content !!}
-                                            </div>
-
-                                            <!-- Inline Edit Form for Reply (Hidden by default) -->
-                                            <div class="inline-edit-form" id="edit-form-{{ $reply->id }}" style="display: none;">
-                                                <form class="comment-edit-form" data-comment-id="{{ $reply->id }}">
-                                                    @csrf
-                                                    <input type="hidden" name="_method" value="PUT">
-
-                                                    <!-- Rich Text Editor -->
-                                                    <div class="mb-3">
-                                                        <x-tinymce-editor
-                                                            name="content"
-                                                            id="edit-content-{{ $reply->id }}"
-                                                            :value="$reply->content"
-                                                            context="comment"
-                                                            :height="150"
-                                                            placeholder="{{ __('thread.edit_reply_placeholder') }}"
-                                                            :required="true"
-                                                        />
-                                                    </div>
-
-
-
-                                                    <!-- New Image Upload -->
-                                                    <div class="mb-3">
-                                                        <x-comment-image-upload
-                                                            :max-files="3"
-                                                            max-size="5MB"
-                                                            context="reply"
-                                                            upload-text="{{ __('thread.add_new_images') }}"
-                                                            accept-description="{{ __('thread.images_only') }}"
-                                                            :show-preview="true"
-                                                            :compact="true"
-                                                        />
-                                                    </div>
-
-                                                    <!-- Form Actions -->
-                                                    <div class="d-flex gap-2">
-                                                        <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
-                                                            <i class="fas fa-save me-1"></i>
-                                                            {{ __('thread.save_changes') }}
-                                                        </button>
-                                                        <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
-                                                                data-comment-id="{{ $reply->id }}">
-                                                            <i class="fas fa-times me-1"></i>
-                                                            {{ __('common.cancel') }}
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
-                                            <div class="reply-attachments mt-2">
-                                                <div class="row g-2">
-                                                    @foreach($reply->attachments as $attachment)
-                                                    <div class="col-md-3 col-sm-4 col-6">
-                                                        <a href="{{ $attachment->url }}" class="d-block"
-                                                            data-fancybox="reply-{{ $reply->id }}-images"
-                                                            data-caption="{{ $attachment->file_name }}">
-                                                            <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
-                                                                class="img-fluid rounded">
-                                                        </a>
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                            @endif
-                                            <div class="comment_item_meta d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $reply->created_at->diffForHumans() }}</span>
-                                                    <!-- Like Button -->
-                                                    @auth
-                                                    <button type="button"
-                                                            class="btn btn-sm btn_meta comment-like-btn {{ $reply->isLikedBy(auth()->user()) ? 'active' : '' }}"
-                                                            data-comment-id="{{ $reply->id }}"
-                                                            data-liked="{{ $reply->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
-                                                            title="{{ $reply->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
-                                                        <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $reply->like_count }}</span> {{ __('thread.like') }}
-                                                    </button>
-                                                    @else
-                                                    <button type="button"
-                                                            class="btn btn-sm btn_meta comment-like-btn"
-                                                            onclick="showLoginModal()"
-                                                            title="{{ __('thread.login_to_like') }}">
-                                                        <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">{{ $reply->like_count }}</span> {{ __('thread.like') }}
-                                                    </button>
-                                                    @endauth
-                                                </div>
-                                                <div>
-                                                    <!-- Reply Button -->
-                                                    <button class="btn btn-sm btn-main no-border reply-button"
-                                                        data-parent-id="{{ $comment->id }}">
-                                                        <i class="fas fa-reply"></i> {{ __('thread.reply') }}
-                                                    </button>
-
-                                                    <!-- Edit/Delete Buttons (if owner) -->
-                                                    @can('update', $reply)
-                                                    <div class="btn-group ms-2">
-                                                        <button class="btn btn-sm btn-main inline-edit-comment-btn"
-                                                                data-comment-id="{{ $reply->id }}"
-                                                                title="{{ __('thread.edit_reply') }}">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                                class="btn btn-sm btn-outline-danger delete-comment-btn"
-                                                                data-comment-id="{{ $reply->id }}"
-                                                                data-comment-type="reply"
-                                                                title="{{ __('thread.delete_reply') }}">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                    @endcan
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                                @endif
+                            @error('images.*')
+                            <div class="text-danger small mt-2">
+                                <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
                             </div>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <div class="alert alert-info">
-                    {{ __('thread.no_comments') }}
-                </div>
-                @endforelse
-                <!-- Pagination -->
-                <div class="d-flex justify-content-center" id="comments-pagination">
-                    {{ $comments->links() }}
-                </div>
-            </div> <!-- End comments-container -->
-        </div>
-    </div>
-
-    <!-- Reply Form (Hidden - Using Inline Reply Instead) -->
-    @auth
-    <div class="card" id="reply-form">
-        <div class="card-header">
-            <h4>{{ __('thread.post_reply') }}</h4>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('threads.comments.store', $thread) }}" method="POST" enctype="multipart/form-data"
-                id="reply-form-element">
-                @csrf
-                <input type="hidden" name="parent_id" id="parent_id" value="">
-
-                <div class="mb-3">
-                    <label for="content" class="form-label">
-                        <i class="fas fa-comment-text me-2"></i>{{ __('thread.reply_content') }} <span class="text-danger">*</span>
-                    </label>
-                    <x-tinymce-editor
-                        name="content"
-                        id="content"
-                        :value="old('content')"
-                        :placeholder="__('thread.reply_content_placeholder')"
-                        context="comment"
-                        :height="300"
-                        :required="true"
-                        class="@error('content') is-invalid @enderror"
-                    />
-                    @error('content')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <div id="content-error" class="invalid-feedback" style="display: none;">
-                        {{ __('thread.reply_content_required') }}
-                    </div>
-                </div>
-
-                <!-- File Upload Component -->
-                <x-comment-image-upload
-                    :max-files="5"
-                    max-size="5MB"
-                    context="thread"
-                    upload-text="{{ __('thread.add_new_images') }}"
-                    accept-description="{{ __('thread.images_only') }}"
-                    :show-preview="true"
-                    :compact="true"
-                />
-                {{--
-                <x-advanced-file-upload
-                    name="images"
-                    :file-types="['jpg', 'jpeg', 'png', 'gif', 'webp']"
-                    max-size="5MB"
-                    :multiple="true"
-                    :max-files="10"
-                    id="thread-reply-images"
-                    context="thread"
-                    upload-text="Đính kèm hình ảnh cho phản hồi"
-                    accept-description="Hình ảnh minh họa"
-                />
-                    --}}
-                @error('images.*')
-                <div class="text-danger small mt-2">
-                    <i class="fas fa-exclamation-triangle me-1"></i>{{ $message }}
-                </div>
-                @enderror
-
-                <!-- Reply to info section -->
-                <div id="reply-to-info" class="mb-3" style="display: none;">
-                    <div class="card border-start border-primary border-3 bg-light">
-                        <div class="card-body py-2 px-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="flex-grow-1">
-                                    <small class="text-muted">
-                                        <i class="fas fa-reply me-1"></i>{{ __('thread.replying_to') }}: <strong id="reply-to-name"></strong>
-                                    </small>
-                                    <div id="reply-to-content" class="mt-1 text-muted small" style="max-height: 100px; overflow-y: auto;">
-                                        <!-- Original comment content will be inserted here -->
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="cancel-reply">
-                                    <i class="fas fa-times"></i> {{ __('thread.cancel') }}
+                            @enderror
+                            <div class="d-flex justify-content-end align-items-center mt-3">
+                                <button type="submit" class="btn btn-sm btn-primary" id="submit-reply-btn">
+                                    <i class="fas fa-paper-plane me-1"></i> {{ __('thread.send_reply') }}
                                 </button>
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+             @else
+            <div class="alert alert-info">
+                {!! __('thread.login_required', [
+                    'login' => '<a href="' . route('login') . '">' . __('thread.login') . '</a>',
+                    'register' => '<a href="' . route('register') . '">' . __('thread.register') . '</a>'
+                ]) !!}
+            </div>
+            @endauth
+            <hr>
+            <!-- Comments Section -->
+            <div class="comments-section mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h3 class="title_page_sub mb-2"><i class="fa-regular fa-comment-dots me-1"></i>{{ $comments->total() }} {{ __('thread.replies') }}</h3>
+                        <div class="thread-meta-item me-0">
+                            {{ __('thread.last_post_by') }}
+                            <a href="{{ route('profile.show', $thread->lastCommenter) }}" class="ms-1 fw-semibold">
+                                {{ $thread->lastCommenter->name ?? $thread->user->name }}
+                            </a>
+                            <span class="ms-1">{{ $thread->lastCommentAt ? $thread->lastCommentAt->diffForHumans() :
+                                $thread->created_at->diffForHumans() }}</span>
+                        </div>
+                    </div>
+                    <!-- Sort Options -->
+                    <div class="btn-group" id="comments-sort-options">
+                        <button type="button"
+                                class="btn btn-sm sort-btn {{ request('sort') == 'oldest' ? 'btn-primary' : 'btn-outline-primary' }}"
+                                data-sort="oldest"
+                                data-thread-id="{{ $thread->id }}">
+                            {{ __('thread.sort_oldest') }}
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm sort-btn {{ request('sort', 'newest') == 'newest' ? 'btn-primary' : 'btn-outline-primary' }}"
+                                data-sort="newest"
+                                data-thread-id="{{ $thread->id }}">
+                            {{ __('thread.sort_newest') }}
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm sort-btn {{ request('sort') == 'reactions' ? 'btn-primary' : 'btn-outline-primary' }}"
+                                data-sort="reactions"
+                                data-thread-id="{{ $thread->id }}">
+                            {{ __('thread.sort_reactions') }}
+                        </button>
+                    </div>
                 </div>
+                <!-- Comments List -->
+                <div id="comments-container">
+                @forelse($comments as $comment)
+                    <div class="comment_item mb-3" id="comment-{{ $comment->id }}">
+                        <div class="d-flex">
+                            <div class="comment_item_avatar">
+                                <img src="{{ $comment->user->getAvatarUrl() }}" alt="{{ $comment->user->name }}" class="rounded-circle me-2" width="40" height="40">
+                            </div>
+                            <div class="comment_item_body">
+                                <div class="comment_item_user">
+                                    <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
+                                        {{ $comment->user->name }}
+                                    </a>
+                                    <div class="text-muted small">
+                                        <span>{{ $comment->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
+                                        <span>{{ __('thread.joined') }} {{ $comment->user->created_at->format('M Y') }}</span>
+                                    </div>
+                                </div>
+                                <div class="comment_item_content" id="comment-content-{{ $comment->id }}">
+                                    {!! $comment->content !!}
+                                </div>
 
-                <div class="d-flex justify-content-between align-items-center">
+                                 @auth
+                                <!-- Inline Edit Form (Hidden by default) -->
+                                <div class="inline-edit-form" id="edit-form-{{ $comment->id }}" style="display: none;">
+                                    <form class="comment-edit-form" data-comment-id="{{ $comment->id }}">
+                                        @csrf
+                                        <input type="hidden" name="_method" value="PUT">
 
-                    <button type="submit" class="btn btn-primary" id="submit-reply-btn">
-                        <i class="fas fa-paper-plane"></i> {{ __('thread.send_reply') }}
-                    </button>
-                </div>
-            </form>
+                                        <!-- Rich Text Editor Placeholder -->
+                                        <div class="mb-3">
+                                            <textarea
+                                                name="content"
+                                                id="edit-content-{{ $comment->id }}"
+                                                class="form-control"
+                                                rows="6"
+                                                style="display: none;"
+                                            >{{ $comment->content }}</textarea>
+                                            <div id="tinymce-loading-{{ $comment->id }}" class="text-center p-3" style="display: none;">
+                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                    <span class="visually-hidden">Đang tải...</span>
+                                                </div>
+                                                <span class="ms-2">Đang khởi tạo editor...</span>
+                                            </div>
+                                        </div>
+                                        <!-- New Image Upload -->
+                                        <div class="mb-3">
+                                            <x-comment-image-upload
+                                                :max-files="5"
+                                                max-size="5MB"
+                                                context="comment"
+                                                upload-text="{{ __('thread.add_new_images') }}"
+                                                accept-description="{{ __('thread.images_only') }}"
+                                                :show-preview="true"
+                                                :compact="true"
+                                            />
+                                        </div>
+
+                                        <!-- Form Actions -->
+                                        <div class="d-flex gap-2">
+                                            <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
+                                                <i class="fas fa-save me-1"></i>
+                                                {{ __('thread.save_changes') }}
+                                            </button>
+                                            <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
+                                                    data-comment-id="{{ $comment->id }}">
+                                                <i class="fas fa-times me-1"></i>
+                                                {{ __('common.cancel') }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                @endauth
+
+                                @if($comment->has_media && isset($comment->attachments) && count($comment->attachments) > 0)
+                                <div class="comment-attachments mt-3">
+                                    <div class="row g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+                                        @foreach($comment->attachments as $attachment)
+                                        <div class="col">
+                                            <div class="comment-image-wrapper position-relative">
+                                                <a href="{{ $attachment->url }}" class="d-block" data-fancybox="comment-{{ $comment->id }}-images" data-caption="{{ $attachment->file_name }}">
+                                                    <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}" class="img-fluid rounded">
+                                                </a>
+                                                @can('update', $comment)
+                                                <button type="button" class="btn btn-danger btn-sm delete-image-btn position-absolute"
+                                                        data-image-id="{{ $attachment->id }}"
+                                                        data-comment-id="{{ $comment->id }}"
+                                                        title="Xóa hình ảnh">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="comment_item_meta d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <span class="btn btn-sm btn_meta text-muted"><i class="fa-regular fa-clock me-1"></i> {{ $comment->created_at->diffForHumans() }}</span>
+                                        <!-- Like Button -->
+                                        @auth
+                                        <button type="button" class="btn text-muted btn-sm no-border btn_meta comment-like-btn {{ $comment->isLikedBy(auth()->user()) ? 'active' : '' }}"
+                                                data-comment-id="{{ $comment->id }}"
+                                                data-liked="{{ $comment->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
+                                                title="{{ $comment->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
+                                            <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-{{ $comment->id }} me-1">{{ $comment->like_count }}</span> <span class="text">{{ __('thread.like') }}</span>
+                                        </button>
+                                        @else
+                                        <button type="button" class="btn text-muted btn-sm no-border btn_meta comment-like-btn" onclick="showLoginModal()" title="{{ __('thread.login_to_like') }}">
+                                            <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-{{ $comment->id }} me-1">{{ $comment->like_count }}</span> <span class="text">{{ __('thread.like') }}</span>
+                                        </button>
+                                        @endauth
+                                    </div>
+                                    <div class="d-flex">
+                                        <!-- Quote Button -->
+                                        <button class="btn btn-sm text-muted no-border btn_meta quote-button" data-comment-id="{{ $comment->id }}" data-user-name="{{ $comment->user->name }}">
+                                            <i class="fa-solid fa-quote-left me-1"></i> <span class="text">{{ __('thread.quote') }}</span>
+                                        </button>
+
+                                        <!-- Reply Button -->
+                                        <button class="btn text-muted btn-sm no-border btn_meta reply-button ms-2"  data-parent-id="{{ $comment->id }}">
+                                            <i class="fas fa-reply me-1"></i> <span class="text">{{ __('thread.reply') }}</span>
+                                        </button>
+
+                                        <!-- Edit/Delete Buttons (if owner) -->
+                                        @can('update', $comment)
+                                        <button class="btn text-warning btn-sm no-border btn_meta inline-edit-comment-btn"  data-comment-id="{{ $comment->id }}" title="{{ __('thread.edit_comment') }}">
+                                            <i class="fas fa-edit me-1"></i> <span class="text">{{ __('thread.edit') }}</span>
+                                        </button>
+                                        <button type="button" class="btn text-danger btn-sm no-border btn_meta delete-comment-btn"  data-comment-id="{{ $comment->id }}"  data-comment-type="comment"  title="{{ __('thread.delete_comment') }}">
+                                            <i class="fas fa-trash me-1"></i> <span class="text">{{ __('thread.delete') }}</span>
+                                        </button>
+                                        @endcan
+                                    </div>
+                                </div>
+
+                                <!-- Inline Reply Form -->
+                                <x-inline-reply-form
+                                    :comment-id="$comment->id"
+                                    :thread-id="$thread->id"
+                                    :parent-user="$comment->user->name"
+                                    :parent-content="$comment->content"
+                                />
+
+                                <div class="comment_sub">
+                                    @if(isset($comment->replies) && count($comment->replies) > 0)
+                                    @foreach($comment->replies as $reply)
+                                    <div class="comment_item mb-3">
+                                        <div class="d-flex">
+                                            <div class="comment_item_avatar">
+                                                <img src="{{ $reply->user->getAvatarUrl() }}" alt="{{ $reply->user->name }}" class="rounded-circle me-2" width="30" height="30">
+                                            </div>
+                                            <div class="comment_item_body sub">
+                                                <div class="comment_item_user">
+                                                    <a href="{{ route('profile.show', $comment->user) }}" class="fw-bold text-decoration-none">
+                                                        {{ $reply->user->name }}
+                                                    </a>
+                                                    <div class="text-muted small">
+                                                        <span>{{ $reply->user->comments_count ?? 0 }} {{ __('thread.comments') }}</span> ·
+                                                        <span>{{ __('thread.joined') }} {{ $reply->user->created_at->format('M Y') }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="comment_item_content" id="comment-content-{{ $reply->id }}">
+                                                    {!! $reply->content !!}
+                                                </div>
+
+                                                <!-- Inline Edit Form for Reply (Hidden by default) -->
+                                                <div class="inline-edit-form" id="edit-form-{{ $reply->id }}" style="display: none;">
+                                                    <form class="comment-edit-form" data-comment-id="{{ $reply->id }}">
+                                                        @csrf
+                                                        <input type="hidden" name="_method" value="PUT">
+
+                                                        <!-- Rich Text Editor Placeholder -->
+                                                        <div class="mb-3">
+                                                            <textarea
+                                                                name="content"
+                                                                id="edit-content-{{ $reply->id }}"
+                                                                class="form-control"
+                                                                rows="4"
+                                                                style="display: none;"
+                                                            >{{ $reply->content }}</textarea>
+                                                            <div id="tinymce-loading-{{ $reply->id }}" class="text-center p-3" style="display: none;">
+                                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                                    <span class="visually-hidden">Đang tải...</span>
+                                                                </div>
+                                                                <span class="ms-2">Đang khởi tạo editor...</span>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <!-- New Image Upload -->
+                                                        <div class="mb-3">
+                                                            <x-comment-image-upload
+                                                                :max-files="3"
+                                                                max-size="5MB"
+                                                                context="reply"
+                                                                upload-text="{{ __('thread.add_new_images') }}"
+                                                                accept-description="{{ __('thread.images_only') }}"
+                                                                :show-preview="true"
+                                                                :compact="true"
+                                                            />
+                                                        </div>
+
+                                                        <!-- Form Actions -->
+                                                        <div class="d-flex gap-2">
+                                                            <button type="submit" class="btn btn-primary btn-sm save-comment-btn">
+                                                                <i class="fas fa-save me-1"></i>
+                                                                {{ __('thread.save_changes') }}
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary btn-sm cancel-edit-btn"
+                                                                    data-comment-id="{{ $reply->id }}">
+                                                                <i class="fas fa-times me-1"></i>
+                                                                {{ __('common.cancel') }}
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                @if($reply->has_media && isset($reply->attachments) && count($reply->attachments) > 0)
+                                                <div class="reply-attachments mt-2">
+                                                    <div class="row g-2">
+                                                        @foreach($reply->attachments as $attachment)
+                                                        <div class="col-md-3 col-sm-4 col-6">
+                                                            <a href="{{ $attachment->url }}" class="d-block"
+                                                                data-fancybox="reply-{{ $reply->id }}-images"
+                                                                data-caption="{{ $attachment->file_name }}">
+                                                                <img src="{{ $attachment->url }}" alt="{{ $attachment->file_name }}"
+                                                                    class="img-fluid rounded">
+                                                            </a>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                <div class="comment_item_meta d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="btn text-muted btn-sm no-border btn_meta"><i class="fa-regular fa-clock me-1"></i> {{ $reply->created_at->diffForHumans() }}</span>
+                                                        <!-- Like Button -->
+                                                        @auth
+                                                        <button type="button"
+                                                                class="btn text-muted btn-sm no-border btn_meta comment-like-btn {{ $reply->isLikedBy(auth()->user()) ? 'active' : '' }}"
+                                                                data-comment-id="{{ $reply->id }}"
+                                                                data-liked="{{ $reply->isLikedBy(auth()->user()) ? 'true' : 'false' }}"
+                                                                title="{{ $reply->isLikedBy(auth()->user()) ? __('thread.unlike') : __('thread.like') }}">
+                                                            <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-{{ $reply->id }} me-1">{{ $reply->like_count }}</span> <span class="text">{{ __('thread.like') }}</span>
+                                                        </button>
+                                                        @else
+                                                        <button type="button"
+                                                                class="btn text-muted btn-sm no-border btn_meta  comment-like-btn"
+                                                                onclick="showLoginModal()"
+                                                                title="{{ __('thread.login_to_like') }}">
+                                                            <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-{{ $reply->id }} me-1">{{ $reply->like_count }}</span> <span class="text">{{ __('thread.like') }}</span>
+                                                        </button>
+                                                        @endauth
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <!-- Reply Button -->
+                                                        <button class="btn text-muted btn-sm no-border btn_meta no-border reply-button"
+                                                            data-parent-id="{{ $comment->id }}">
+                                                            <i class="fas fa-reply m-1"></i> {{ __('thread.reply') }}
+                                                        </button>
+
+                                                        <!-- Edit/Delete Buttons (if owner) -->
+                                                        @can('update', $reply)
+                                                        <button class="btn text-warning btn-sm no-border btn_meta  inline-edit-comment-btn"
+                                                                data-comment-id="{{ $reply->id }}"
+                                                                title="{{ __('thread.edit_reply') }}">
+                                                            <i class="fas fa-edit me-1"></i> {{ __('thread.edit') }}
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn text-danger btn-sm no-border btn_meta  delete-comment-btn"
+                                                                data-comment-id="{{ $reply->id }}"
+                                                                data-comment-type="reply"
+                                                                title="{{ __('thread.delete_reply') }}">
+                                                            <i class="fas fa-trash me-1"></i> {{ __('thread.delete') }}
+                                                        </button>
+                                                        @endcan
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="alert alert-info">
+                        {{ __('thread.no_comments') }}
+                    </div>
+                    @endforelse
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center" id="comments-pagination">
+                        {{ $comments->links() }}
+                    </div>
+                </div> <!-- End comments-container -->
+            </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-info">
-        {!! __('thread.login_required', [
-            'login' => '<a href="' . route('login') . '">' . __('thread.login') . '</a>',
-            'register' => '<a href="' . route('register') . '">' . __('thread.register') . '</a>'
-        ]) !!}
-    </div>
-    @endauth
-
     <!-- Related Threads -->
     @if(count($relatedThreads) > 0)
     <div class="related-threads mt-4">
@@ -842,8 +637,11 @@
 @endsection
 
 @push('scripts')
-<!-- TinyMCE is now handled by the component -->
+@auth
+<script src="{{ asset_versioned('js/frontend/page/threads.js') }}"></script>
+@endauth
 <script>
+@auth
 // Initialize event handlers when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initializeEventHandlers();
@@ -930,6 +728,12 @@ function initializeFormSubmission() {
         // Prepare form data
         const formData = new FormData(form);
 
+        // Debug: Log FormData contents
+        console.log('FormData contents:');
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+
         // Submit form via AJAX
         fetch(form.action, {
             method: 'POST',
@@ -958,6 +762,7 @@ function initializeFormSubmission() {
                 if (parentIdInput) parentIdInput.value = '';
                 if (replyToInfo) replyToInfo.style.display = 'none';
 
+
                 // Clear file upload component
                 const fileUploadComponent = document.querySelector('.file-upload-component');
                 if (fileUploadComponent && window.FileUploadComponent) {
@@ -965,6 +770,21 @@ function initializeFormSubmission() {
                     if (componentInstance) {
                         componentInstance.clearFiles();
                     }
+                }
+
+                // Backup: Clear dropzone manually if FileUploadComponent doesn't work
+                const dropzoneElement = document.querySelector('.dropzone');
+                if (dropzoneElement && window.Dropzone) {
+                    const dropzoneInstance = window.Dropzone.forElement(dropzoneElement);
+                    if (dropzoneInstance) {
+                        dropzoneInstance.removeAllFiles(true);
+                    }
+                }
+
+                // Also clear any preview images
+                const previewContainer = document.querySelector('.preview-grid');
+                if (previewContainer) {
+                    previewContainer.innerHTML = '';
                 }
 
                 // Add new comment to DOM instead of reloading page
@@ -1185,11 +1005,16 @@ function initializeEventHandlers() {
         });
     });
 
-    // Handle quote buttons
-    document.querySelectorAll('.quote-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const commentContent = this.getAttribute('data-comment-content');
-            const userName = this.getAttribute('data-user-name');
+    // Handle quote buttons using event delegation
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.quote-button')) {
+            const button = e.target.closest('.quote-button');
+            const commentId = button.getAttribute('data-comment-id');
+            const userName = button.getAttribute('data-user-name');
+
+            // Get comment content from DOM
+            const commentContentElement = document.getElementById(`comment-content-${commentId}`);
+            const commentContent = commentContentElement ? commentContentElement.innerHTML : '';
 
             const quoteHTML = `
                 <blockquote>
@@ -1212,7 +1037,7 @@ function initializeEventHandlers() {
                     }, 100);
                 }
             }
-        });
+        }
     });
 
     // Handle inline edit comment buttons
@@ -1246,8 +1071,15 @@ function initializeEventHandlers() {
             commentContent.style.display = 'none';
             editForm.style.display = 'block';
 
-            // Initialize TinyMCE for this specific editor if not already initialized
+            // Initialize TinyMCE dynamically for this specific editor
             const editorId = `edit-content-${commentId}`;
+            const loadingDiv = document.getElementById(`tinymce-loading-${commentId}`);
+            const textarea = document.getElementById(editorId);
+
+            // Show loading indicator
+            if (loadingDiv) {
+                loadingDiv.style.display = 'block';
+            }
 
             // Wait a bit for the form to be visible, then initialize TinyMCE
             setTimeout(() => {
@@ -1258,9 +1090,13 @@ function initializeEventHandlers() {
                         placeholder: 'Chỉnh sửa nội dung...',
                         required: true,
                         setup: function(editor) {
-                            // Set content after editor is ready
+                            // Hide loading indicator when editor is ready
                             editor.on('init', function() {
+                                if (loadingDiv) {
+                                    loadingDiv.style.display = 'none';
+                                }
                                 editor.setContent(content);
+                                editor.focus();
                             });
 
                             // Add Escape key handler
@@ -1274,15 +1110,12 @@ function initializeEventHandlers() {
                     });
                 } else {
                     // Editor already exists, just set content
-                    tinymce.get(editorId).setContent(content);
-                }
-
-                // Focus the editor
-                setTimeout(() => {
-                    if (tinymce.get(editorId)) {
-                        tinymce.get(editorId).focus();
+                    if (loadingDiv) {
+                        loadingDiv.style.display = 'none';
                     }
-                }, 100);
+                    tinymce.get(editorId).setContent(content);
+                    tinymce.get(editorId).focus();
+                }
             }, 100);
         }
     }
@@ -1573,16 +1406,7 @@ function initializeDeleteImageButtons() {
             const deleteButton = this;
 
             // Use SweetAlert2 for confirmation
-            Swal.fire({
-                title: 'Xác nhận',
-                text: 'Bạn có chắc chắn muốn xóa hình ảnh này không?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Xác nhận',
-                cancelButtonText: 'Hủy bỏ'
-            }).then((result) => {
+            window.showDeleteConfirm('hình ảnh này').then((result) => {
                 if (result.isConfirmed) {
                     // Disable button during request
                     deleteButton.disabled = true;
@@ -1599,6 +1423,9 @@ function initializeDeleteImageButtons() {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
+                            // Show success message
+                            window.showSuccess('Thành công!', 'Đã xóa hình ảnh thành công.');
+
                             // Remove image from DOM with animation
                             imageWrapper.style.transition = 'opacity 0.3s ease';
                             imageWrapper.style.opacity = '0';
@@ -1607,35 +1434,19 @@ function initializeDeleteImageButtons() {
 
                                 // Check if no more images left in this comment
                                 const attachmentsContainer = document.querySelector(`#comment-${commentId} .comment-attachments`);
-                                if (attachmentsContainer && attachmentsContainer.querySelectorAll('.col-md-3, .col-sm-4, .col-6').length === 0) {
+                                if (attachmentsContainer && attachmentsContainer.querySelectorAll('.col').length === 0) {
                                     attachmentsContainer.remove();
                                 }
                             }, 300);
-
-                            Swal.fire({
-                                title: 'Thành công!',
-                                text: 'Đã xóa hình ảnh thành công.',
-                                icon: 'success',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
                         } else {
-                            Swal.fire({
-                                title: 'Lỗi!',
-                                text: data.message || 'Có lỗi xảy ra khi xóa hình ảnh.',
-                                icon: 'error'
-                            });
+                            window.showError('Lỗi!', data.message || 'Có lỗi xảy ra khi xóa hình ảnh.');
                             deleteButton.disabled = false;
                             deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Lỗi!',
-                            text: 'Có lỗi xảy ra khi xóa hình ảnh.',
-                            icon: 'error'
-                        });
+                        window.showError('Lỗi!', 'Có lỗi xảy ra khi xóa hình ảnh.');
                         deleteButton.disabled = false;
                         deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
                     });
@@ -1816,7 +1627,7 @@ function initializeThreadActions() {
             // Disable button during request
             this.disabled = true;
             const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+            //this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
 
             // Make AJAX request
             fetch(`/comments/${commentId}/like`, {
@@ -1845,9 +1656,10 @@ function initializeThreadActions() {
                     }
 
                     // Update like count
-                    const likeCountElement = this.querySelector('.comment-like-count');
+                    const likeCountElement = $('.comment-like-count-'+commentId);
                     if (likeCountElement) {
-                        likeCountElement.textContent = data.like_count;
+                        console.log('Like count: ', data.like_count);
+                        likeCountElement.text(data.like_count);
                     }
 
                     // Show success message
@@ -1862,7 +1674,7 @@ function initializeThreadActions() {
             })
             .finally(() => {
                 this.disabled = false;
-                this.innerHTML = originalContent;
+                //this.innerHTML = originalContent;
             });
         });
     });
@@ -2020,8 +1832,8 @@ function initializeCommentInteractions() {
 
             // Disable button during request
             this.disabled = true;
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
+            //const originalContent = this.innerHTML;
+            //this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("thread.processing") }}';
 
             // Make AJAX request
             fetch(`/comments/${commentId}/like`, {
@@ -2050,7 +1862,7 @@ function initializeCommentInteractions() {
                     }
 
                     // Update like count
-                    const likeCountElement = this.querySelector('.comment-like-count');
+                    const likeCountElement = this.querySelector('.comment-like-count-'+commentId);
                     if (likeCountElement) {
                         likeCountElement.textContent = data.like_count;
                     }
@@ -2334,10 +2146,10 @@ function addNewCommentToDOM(comment) {
     if (!commentsContainer) return;
 
     // Create new comment HTML
-    const commentHtml = createMainCommentHtml(comment);
+    const commentHtml = createCommentHtml(comment);
 
     // Add to top of comments list (newest first if sorted by newest)
-    const currentSort = new URLSearchParams(window.location.search).get('sort') || 'oldest';
+    const currentSort = new URLSearchParams(window.location.search).get('sort') || 'newest';
     if (currentSort === 'newest') {
         commentsContainer.insertAdjacentHTML('afterbegin', commentHtml);
     } else {
@@ -2351,97 +2163,6 @@ function addNewCommentToDOM(comment) {
     }
 }
 
-// Create HTML for main comment (not reply)
-function createMainCommentHtml(comment) {
-    const avatarUrl = comment.user.avatar_url;
-    const canEdit = {{ Auth::check() ? 'true' : 'false' }} && ({{ Auth::id() }} === comment.user.id || {{ Auth::user() && Auth::user()->hasRole(['admin', 'moderator']) ? 'true' : 'false' }});
-    const canDelete = canEdit;
-
-    let attachmentsHtml = '';
-    if (comment.attachments && comment.attachments.length > 0) {
-        attachmentsHtml = '<div class="comment-attachments mt-2">';
-        comment.attachments.forEach(attachment => {
-            attachmentsHtml += `
-                <div class="comment-image-wrapper d-inline-block me-2 mb-2">
-                    <a href="${attachment.url}" data-fancybox="comment-${comment.id}">
-                        <img src="${attachment.url}" alt="${attachment.name}" class="comment-image">
-                    </a>
-                </div>
-            `;
-        });
-        attachmentsHtml += '</div>';
-    }
-
-    return `
-        <div class="comment-item" id="comment-${comment.id}">
-            <div class="comment-avatar">
-                <img src="${avatarUrl}" alt="${comment.user.name}"
-                     class="rounded-circle" width="40" height="40"
-                     onerror="this.src='{{ route('avatar.generate', ['initial' => 'U']) }}'">
-            </div>
-            <div class="comment-content">
-                <div class="comment-header">
-                    <div class="comment-user-info">
-                        <a href="/users/${comment.user.username || comment.user.id}" class="comment-username">${comment.user.name}</a>
-                        <span class="comment-meta">${comment.user.comments_count || 0} bình luận · Tham gia ${comment.user.created_at_formatted || 'recently'}</span>
-                    </div>
-                    ${canEdit || canDelete ? `
-                        <div class="comment-actions">
-                            ${canEdit ? `
-                                <button class="btn btn-sm btn-primary inline-edit-comment-btn"
-                                        data-comment-id="${comment.id}"
-                                        title="{{ __('thread.edit_comment') }}">
-                                    <i class="fas fa-edit me-1"></i>
-                                </button>
-                            ` : ''}
-                            ${canDelete ? `
-                                <button type="button" class="btn btn-sm btn-danger delete-comment-btn"
-                                        data-comment-id="${comment.id}"
-                                        data-comment-type="comment"
-                                        title="{{ __('thread.delete_comment') }}">
-                                    <i class="fas fa-trash me-1"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="comment-body">
-                    ${comment.content}
-                </div>
-                ${attachmentsHtml}
-                <div class="comment-footer">
-                    <div class="comment-time-likes">
-                        <span class="comment-time" title="${comment.created_at}">
-                            <i class="fas fa-clock me-1"></i>
-                            vừa xong
-                        </span>
-                        <button class="btn btn-sm btn-outline-primary comment-like-btn"
-                                data-comment-id="${comment.id}"
-                                data-liked="false">
-                            <i class="fas fa-heart me-1"></i>
-                            <span class="like-count">${comment.likes_count || 0}</span>
-                            Thích
-                        </button>
-                    </div>
-                    <div class="comment-reply-actions">
-                        <button class="btn btn-sm btn-outline-secondary quote-comment-btn"
-                                data-comment-id="${comment.id}"
-                                title="{{ __('thread.quote_comment') }}">
-                            <i class="fas fa-quote-left me-1"></i>
-                            Trích dẫn
-                        </button>
-                        <button class="btn btn-sm btn-outline-success inline-reply-btn"
-                                data-comment-id="${comment.id}"
-                                title="{{ __('thread.reply_to_comment') }}">
-                            <i class="fas fa-reply me-1"></i>
-                            Trả lời
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
 
 // Update comment count in UI
 function updateCommentCount(change) {
@@ -2473,11 +2194,17 @@ function createCommentHtml(comment) {
     const currentUserId = {{ Auth::id() ?? 'null' }};
     const isAuthenticated = currentUserId !== null;
 
+    // Format join date to match Blade template
+    const joinDate = new Date(comment.user.created_at || Date.now()).toLocaleDateString('vi-VN', {
+        month: 'short',
+        year: 'numeric'
+    });
+
     return `
         <div class="comment_item mb-3" id="comment-${comment.id}">
             <div class="d-flex">
                 <div class="comment_item_avatar">
-                    <img src="${comment.user.avatar_url}" alt="${comment.user.name}"
+                    <img src="{{ auth()->user()->getAvatarUrl() }}" alt="${comment.user.name}"
                          class="rounded-circle me-2" width="${avatarSize}" height="${avatarSize}">
                 </div>
                 <div class="comment_item_body ${isReply ? 'sub' : ''}">
@@ -2486,42 +2213,70 @@ function createCommentHtml(comment) {
                             ${comment.user.name}
                         </a>
                         <div class="text-muted small">
-                            <span>0 {{ __('thread.comments') }}</span> ·
-                            <span>{{ __('thread.joined') }} ${new Date(comment.user.created_at || Date.now()).toLocaleDateString('vi-VN', {month: 'short', year: 'numeric'})}</span>
+                            <span>${comment.user.comments_count || 0} {{ __('thread.comments') }}</span> ·
+                            <span>{{ __('thread.joined') }} ${joinDate}</span>
                         </div>
                     </div>
-                    <div class="comment_item_content">
+                    <div class="comment_item_content" id="comment-content-${comment.id}">
                         ${comment.content}
                     </div>
+                    ${comment.attachments && comment.attachments.length > 0 ? `
+                    <div class="comment-attachments mt-3">
+                        <div class="row g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+                            ${comment.attachments.map(attachment => `
+                                <div class="col">
+                                    <div class="comment-image-wrapper position-relative">
+                                        <a href="${attachment.url}" class="d-block" data-fancybox="comment-${comment.id}-images" data-caption="${attachment.file_name}">
+                                            <img src="${attachment.url}" alt="${attachment.file_name}" class="img-fluid rounded">
+                                        </a>
+                                        ${comment.user.id === currentUserId ? `
+                                        <button type="button" class="btn btn-danger btn-sm delete-image-btn position-absolute"
+                                                data-image-id="${attachment.id}"
+                                                data-comment-id="${comment.id}"
+                                                style="top: 5px; right: 5px; padding: 2px 6px; font-size: 10px;"
+                                                title="{{ __('thread.delete_image') }}">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
                     <div class="comment_item_meta d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <span class="btn btn-sm btn_meta"><i class="fa-regular fa-clock me-1"></i> ${timeAgo}</span>
+                            <span class="btn btn-sm btn_meta text-muted"><i class="fa-regular fa-clock me-1"></i> ${timeAgo}</span>
                             ${isAuthenticated ? `
-                            <button type="button"
-                                    class="btn btn-sm btn_meta comment-like-btn"
+                            <button type="button" class="btn text-muted btn-sm no-border btn_meta comment-like-btn"
                                     data-comment-id="${comment.id}"
                                     data-liked="false"
                                     title="{{ __('thread.like') }}">
-                                <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">0</span> {{ __('thread.like') }}
+                                <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-${comment.id} me-1">${comment.like_count || 0}</span> <span class="text">{{ __('thread.like') }}</span>
                             </button>
                             ` : `
-                            <button type="button"
-                                    class="btn btn-sm btn_meta comment-like-btn"
+                            <button type="button" class="btn text-muted btn-sm no-border btn_meta comment-like-btn"
                                     onclick="showLoginModal()"
                                     title="{{ __('thread.login_to_like') }}">
-                                <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">0</span> {{ __('thread.like') }}
+                                <i class="fas fa-thumbs-up me-1"></i> <span class="comment-like-count-${comment.id} me-1">${comment.like_count || 0}</span> <span class="text">{{ __('thread.like') }}</span>
                             </button>
                             `}
                         </div>
-                        <div>
-                            <button class="btn btn-main no-border quote-button" data-comment-id="${comment.id}"
-                                data-comment-content="${comment.content}" data-user-name="${comment.user.name}">
-                                <i class="fa-solid fa-quote-left"></i> {{ __('thread.quote') }}
+                        <div class="d-flex">
+                            <button class="btn btn-sm text-muted no-border btn_meta quote-button" data-comment-id="${comment.id}" data-user-name="${comment.user.name}">
+                                <i class="fa-solid fa-quote-left me-1"></i> <span class="text">{{ __('thread.quote') }}</span>
                             </button>
-                            <button class="btn btn-main no-border reply-button ms-2"
-                                data-parent-id="${comment.parent_id || comment.id}">
-                                <i class="fas fa-reply"></i> {{ __('thread.reply') }}
+                            <button class="btn text-muted btn-sm no-border btn_meta reply-button ms-2" data-parent-id="${comment.id}">
+                                <i class="fas fa-reply me-1"></i> <span class="text">{{ __('thread.reply') }}</span>
                             </button>
+                            ${comment.user.id === currentUserId ? `
+                            <button class="btn text-warning btn-sm no-border btn_meta inline-edit-comment-btn" data-comment-id="${comment.id}" title="{{ __('thread.edit_comment') }}">
+                                <i class="fas fa-edit me-1"></i> <span class="text">{{ __('thread.edit') }}</span>
+                            </button>
+                            <button type="button" class="btn text-danger btn-sm no-border btn_meta delete-comment-btn" data-comment-id="${comment.id}" data-comment-type="comment" title="{{ __('thread.delete_comment') }}">
+                                <i class="fas fa-trash me-1"></i> <span class="text">{{ __('thread.delete') }}</span>
+                            </button>
+                            ` : ''}
                         </div>
                     </div>
                     ${!isReply ? '<div class="comment_sub"></div>' : ''}
@@ -2674,9 +2429,7 @@ function createReplyHtml(comment) {
         <div class="comment_item mb-3" id="comment-${comment.id}">
             <div class="d-flex">
                 <div class="comment_item_avatar">
-                    <img src="${avatarUrl}" alt="${comment.user.name}"
-                         class="rounded-circle me-2" width="30" height="30"
-                         onerror="this.src='{{ route('avatar.generate', ['initial' => 'U']) }}'">
+                    <img src="{{ auth()->user()->getAvatarUrl() }}" alt="${comment.user.name}" class="rounded-circle me-2">
                 </div>
                 <div class="comment_item_body sub">
                     <div class="comment_item_user">
@@ -2703,14 +2456,14 @@ function createReplyHtml(comment) {
                                         data-comment-id="${comment.id}"
                                         data-liked="false"
                                         title="{{ __('thread.like') }}">
-                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">${comment.likes_count || 0}</span> {{ __('thread.like') }}
+                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count-${comment.id}">${comment.likes_count || 0}</span> {{ __('thread.like') }}
                                 </button>
                             ` : `
                                 <button type="button"
                                         class="btn btn-sm btn_meta comment-like-btn"
                                         onclick="showLoginModal()"
                                         title="{{ __('thread.login_to_like') }}">
-                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count">${comment.likes_count || 0}</span> {{ __('thread.like') }}
+                                    <i class="fas fa-thumbs-up"></i> <span class="comment-like-count-${comment.id}">${comment.likes_count || 0}</span> {{ __('thread.like') }}
                                 </button>
                             `}
                         </div>
@@ -2737,7 +2490,7 @@ function initializeCommentLikeButton(likeBtn) {
 
         const commentId = this.getAttribute('data-comment-id');
         const isLiked = this.getAttribute('data-liked') === 'true';
-        const likeCountSpan = this.querySelector('.comment-like-count');
+        const likeCountSpan = this.querySelector('.comment-like-count-'+commentId);
 
         // Disable button during request
         this.disabled = true;
@@ -2966,7 +2719,7 @@ function handleCommentLikeUpdate(data) {
     // Update comment like count
     const commentElement = document.querySelector(`#comment-${data.comment_id}`);
     if (commentElement) {
-        const likeCountElement = commentElement.querySelector('.comment-like-count');
+        const likeCountElement = commentElement.querySelector('.comment-like-count-'+data.comment_id);
         if (likeCountElement) {
             likeCountElement.textContent = data.like_count;
         }
@@ -3029,6 +2782,7 @@ function handleThreadStatsUpdate(data) {
         });
     }
 }
+@endauth
 </script>
 @endpush
 

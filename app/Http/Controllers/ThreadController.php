@@ -395,7 +395,7 @@ class ThreadController extends Controller
         $thread->incrementViewCount();
 
         // Get comments with pagination
-        $sort = request('sort', 'oldest');
+        $sort = request('sort', 'newest');
         $commentsQuery = $thread->comments()->with([
             'user' => function ($q) {
                 $q->withCount('comments');

@@ -72,11 +72,11 @@ class CommentImageUploadController extends Controller
             foreach ($uploadedFiles as $media) {
                 $responseData[] = [
                     'id' => $media->id,
-                    'url' => asset($media->file_path),
+                    'url' => $media->url, // Sử dụng getUrlAttribute() từ Media model
                     'filename' => $media->file_name,
                     'size' => $media->file_size,
                     'mime_type' => $media->mime_type,
-                    'thumbnail_url' => $this->generateThumbnailUrl($media->file_path)
+                    'thumbnail_url' => $media->url // Sử dụng cùng URL cho thumbnail
                 ];
             }
 

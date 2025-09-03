@@ -55,6 +55,7 @@ class TinyMCEEditor extends Component
     public function getConfig(): array
     {
         $baseConfig = [
+            'license_key' => 'gpl',
             'selector' => "#{$this->id}",
             'height' => $this->height,
             'placeholder' => $this->placeholder,

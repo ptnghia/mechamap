@@ -158,17 +158,24 @@ document.addEventListener('DOMContentLoaded', function() {
             previewItem.className = 'preview-item';
             previewItem.innerHTML = `
                 <img src="${e.target.result}" alt="Preview" class="preview-image">
-                <button type="button" class="preview-remove" onclick="removeFile('${file.name}', this)">
+                <button type="button" class="preview-remove" data-filename="${file.name}">
                     <i class="fas fa-times"></i>
                 </button>
             `;
+
+            // Add event listener to remove button
+            const removeButton = previewItem.querySelector('.preview-remove');
+            removeButton.addEventListener('click', function() {
+                removeFile(file.name, this);
+            });
+
             previewGrid.appendChild(previewItem);
         };
         reader.readAsDataURL(file);
     }
 
-    // Global function for removing files
-    window.removeFile = function(fileName, button) {
+    // Instance-specific function for removing files
+    function removeFile(fileName, button) {
         const index = selectedFiles.findIndex(f => f.name === fileName);
         if (index > -1) {
             selectedFiles.splice(index, 1);
@@ -176,7 +183,10 @@ document.addEventListener('DOMContentLoaded', function() {
             updateFileCount();
             updateFormData();
         }
-    };
+    }
+
+    // Expose removeFile function to this component instance
+    uploadComponent.removeFile = removeFile;
 
     function updateFileCount() {
         if (fileCountSpan) {

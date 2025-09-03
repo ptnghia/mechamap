@@ -52,8 +52,7 @@
                             <div class="d-flex gap-3">
                                 <img src="{{ auth()->user()->getAvatarUrl() }}"
                                     class="user-avatar"
-                                    alt="Avatar"
-                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(strtoupper(substr(auth()->user()->name, 0, 1))) }}&background=6366f1&color=fff&size=48'">
+                                    alt="Avatar">
                                 <div class="flex-grow-1">
                                     <x-tinymce-editor
                                         name="review"

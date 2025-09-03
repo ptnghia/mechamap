@@ -230,6 +230,139 @@ class TranslationService {
     getAllTranslations() {
         return this.translations;
     }
+
+    /**
+     * Translate Vietnamese text to target language using external API
+     * @param {string} vietnameseText - Vietnamese text to translate
+     * @param {string} targetLanguage - Target language code (e.g., 'en', 'fr', 'de')
+     * @param {string} contentType - Content type: 'text' or 'html' (default: 'text')
+     * @returns {Promise<string>} Promise that resolves with translated text
+     */
+    async translateVietnamese(vietnameseText, targetLanguage, contentType = 'text') {
+        // Validate input
+        if (!vietnameseText || typeof vietnameseText !== 'string') {
+            throw new Error('Vietnamese text is required and must be a string');
+        }
+
+        if (!targetLanguage || typeof targetLanguage !== 'string') {
+            throw new Error('Target language is required and must be a string');
+        }
+
+        // Check text length limit
+        if (vietnameseText.length > 5000) {
+            throw new Error('Text content exceeds maximum length of 5000 characters');
+        }
+
+        // Validate content type
+        if (!['text', 'html'].includes(contentType)) {
+            throw new Error('Content type must be either "text" or "html"');
+        }
+
+        try {
+            const response = await fetch('https://realtime.mechamap.com/api/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    sourceLanguage: 'vi',
+                    targetLanguage: targetLanguage,
+                    content: vietnameseText,
+                    contentType: contentType
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Check if translation was successful
+            if (!data.success) {
+                throw new Error(data.message || 'Translation failed');
+            }
+
+            // Return the translated text
+            return data.data.translatedText;
+
+        } catch (error) {
+            console.error('Translation error:', error);
+            throw new Error(`Translation failed: ${error.message}`);
+        }
+    }
+
+    /**
+     * Detect language of text content using external API
+     * @param {string} content - Text content to detect language
+     * @returns {Promise<string>} Promise that resolves with detected language code
+     */
+    async detectLanguage(content) {
+        if (!content || typeof content !== 'string') {
+            throw new Error('Content is required and must be a string');
+        }
+
+        try {
+            const response = await fetch('https://realtime.mechamap.com/api/detect-language', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: content
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || 'Language detection failed');
+            }
+
+            return data.data.detectedLanguage;
+
+        } catch (error) {
+            console.error('Language detection error:', error);
+            throw new Error(`Language detection failed: ${error.message}`);
+        }
+    }
+
+    /**
+     * Get list of supported languages for translation
+     * @returns {Promise<object>} Promise that resolves with supported languages object
+     */
+    async getSupportedLanguages() {
+        try {
+            const response = await fetch('https://realtime.mechamap.com/api/supported-languages', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || 'Failed to get supported languages');
+            }
+
+            return data.data;
+
+        } catch (error) {
+            console.error('Get supported languages error:', error);
+            throw new Error(`Failed to get supported languages: ${error.message}`);
+        }
+    }
 }
 
 // Create global instance
@@ -242,6 +375,19 @@ window.trans = function(key, replacements = {}, fallback = null) {
 
 window.__ = function(key, replacements = {}, fallback = null) {
     return window.translationService.trans(key, replacements, fallback);
+};
+
+// Global helper functions for external translation API
+window.translateVietnamese = function(vietnameseText, targetLanguage, contentType = 'text') {
+    return window.translationService.translateVietnamese(vietnameseText, targetLanguage, contentType);
+};
+
+window.detectLanguage = function(content) {
+    return window.translationService.detectLanguage(content);
+};
+
+window.getSupportedLanguages = function() {
+    return window.translationService.getSupportedLanguages();
 };
 
 // Auto-load notification translations when service is ready

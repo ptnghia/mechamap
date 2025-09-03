@@ -6,6 +6,9 @@
 class TinyMCEConfig {
     constructor() {
         this.baseConfig = {
+            // License key for open source usage
+            license_key: 'gpl',
+
             // Core settings
             height: 300,
             readonly: false,

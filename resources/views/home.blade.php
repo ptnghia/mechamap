@@ -18,7 +18,7 @@
             <h2 class="section-title mb-1">{{ t_homepage('sections.featured_showcases') }}</h2>
             <p class="text-muted mb-0">{{ t_homepage('sections.featured_showcases_desc') }}</p>
         </div>
-        <a href="{{ route('showcase.index') }}" class="btn btn-main active">
+        <a href="{{ route('showcase.index') }}" class="btn btn-sm btn-primary">
             {{ t_ui('buttons.view_all') }}  <i class="fas fa-arrow-right ms-2"></i>
         </a>
     </div>
@@ -46,7 +46,7 @@
             <h2 class="section-title mb-1">{{ t_homepage('sections.latest_threads') }}</h2>
             <p class="text-muted mb-0">{{ t_homepage('sections.latest_threads_desc') }}</p>
         </div>
-        <a href="{{ route('threads.index') }}" class="btn btn-primary">
+        <a href="{{ route('threads.index') }}" class="btn btn-sm btn-primary">
             {{ t_ui('buttons.view_all') }} <i class="fas fa-arrow-right ms-2"></i>
         </a>
     </div>
@@ -68,7 +68,7 @@
             <h2 class="section-title mb-1">{{ t_marketplace('sections.latest_products') }}</h2>
             <p class="text-muted mb-0">{{ t_marketplace('sections.latest_products_desc') }}</p>
         </div>
-        <a href="{{ route('marketplace.products.index') }}" class="btn btn-main active">
+        <a href="{{ route('marketplace.products.index') }}" class="btn btn-sm btn-primary">
             {{ t_ui('buttons.view_all') }}  <i class="fas fa-arrow-right ms-2"></i>
         </a>
     </div>

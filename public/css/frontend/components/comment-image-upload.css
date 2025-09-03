@@ -26,7 +26,8 @@
 
 .comment-image-upload.compact .upload-area {
     padding: 10px;
-    width: 270px;
+    width: 240px;
+    height: 150px;
 }
 
 .upload-dropzone {
@@ -84,13 +85,14 @@
 .upload-text strong {
     display: block;
     color: #495057;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
 .comment-image-upload.compact .upload-text strong {
-    font-size: 1rem;
+    font-size: 14px;
+    display: none;
 }
 
 .upload-description {
@@ -139,7 +141,7 @@
 }
 
 .progress-bar {
-    background: linear-gradient(90deg, #007bff, #0056b3);
+    background: linear-gradient(90deg, #817a5a, #968e6d);
     border-radius: 4px;
     transition: width 0.6s ease;
     position: relative;
@@ -179,7 +181,7 @@
 }
 
 .comment-image-upload.compact .preview-area {
-    padding: 15px;
+    padding: 10px;
     flex
 Specifies the components of a flexible length: the flex grow factor and flex shrink factor, and the flex basis.
 Learn more
@@ -192,7 +194,7 @@ Don't show
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #dee2e6;
 }
@@ -206,14 +208,14 @@ Don't show
 
 .file-count {
     font-weight: 700;
-    color: #007bff;
+    color: var(--bs-primary);
 }
 
 .preview-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
-    max-height: 300px;
+    max-height: 100px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #dee2e6 transparent;
@@ -233,9 +235,10 @@ Don't show
 }
 
 .comment-image-upload.compact .preview-grid {
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 8px;
-    max-height: 200px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    height: 88px;
+    overflow-x: hidden;
 }
 
 .preview-item {
@@ -247,12 +250,12 @@ Don't show
     background: #f8f9fa;
     transition: all 0.3s ease;
     animation: fadeInScale 0.3s ease;
+    overflow: hidden;
+    height: 88px;
+    width: 100%;
 }
 
 .preview-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-color: #007bff;
 }
 
 .preview-image {
@@ -261,7 +264,9 @@ Don't show
     object-fit: cover;
     transition: all 0.3s ease;
 }
-
+.preview-item:hover .preview-image{
+     transform: scale(1.05);
+}
 .preview-remove {
     position: absolute;
     top: 4px;
