@@ -397,6 +397,10 @@ Route::prefix('translations')->group(function () {
     Route::get('/keys', [App\Http\Controllers\TranslationController::class, 'getSpecificKeys']);
     Route::get('/notifications', [App\Http\Controllers\TranslationController::class, 'getNotificationTranslations']);
     Route::post('/clear-cache', [App\Http\Controllers\TranslationController::class, 'clearCache']);
+    Route::get('/manifest', [App\Http\Controllers\TranslationController::class, 'manifest']);
+    Route::get('/group', [App\Http\Controllers\TranslationController::class, 'group']);
+    Route::post('/delta', [App\Http\Controllers\TranslationController::class, 'delta']);
+    Route::post('/force-bump', [App\Http\Controllers\TranslationController::class, 'forceBump']);
 });
 
 // Notification Test API endpoints (public for testing)

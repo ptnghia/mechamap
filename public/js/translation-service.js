@@ -1,20 +1,36 @@
 /**
- * Translation Service for MechaMap
- * Handles loading and caching translations from database
+ * Translation Service (Refactored w/ Manifest & Versioned Groups)
+ * Features:
+ *  - Manifest (group hashes + version)
+ *  - Group-level lazy loading with batching
+ *  - Flat index for O(1) lookups
+ *  - localStorage persistence (per locale + version)
+ *  - Backward compatible: still supports legacy endpoints
  */
 class TranslationService {
     constructor() {
-        this.translations = {};
+        this.translations = {};       // Nested (group -> keys...)
+        this.flat = {};               // Flat index: full.key.path -> value
         this.currentLocale = document.documentElement.lang || 'vi';
-        this.cache = new Map();
-        this.loadPromises = new Map();
+    this.fallbackLocale = (window.Laravel && window.Laravel.fallbackLocale) || document.documentElement.getAttribute('data-fallback-locale') || 'en';
+        this.cache = new Map();       // Ephemeral group cache
+        this.loadPromises = new Map();// Composite load promises
+        this.manifest = null;         // { version, groups:{group:hash}, ... }
+        this.manifestPromise = null;
+        this.pendingGroups = new Set();
+        this.batchTimer = null;
+        this.localStorageKeyPrefix = 'mm_tr';
+    this.metrics = { lookups:0, hits:0, misses:0, network:{requests:0, bytes:0, timeMs:0} };
+    this.fallbackFlat = {}; // separate flat map for fallback locale
 
-        // Initialize with any existing translations
         if (window.Laravel && window.Laravel.translations) {
-            this.translations = window.Laravel.translations;
+            this.mergeTranslations(window.Laravel.translations, { rebuildIndex: true });
         }
 
-        console.log('TranslationService initialized with locale:', this.currentLocale);
+        this.restorePersisted();
+        console.log('[TranslationService] Initialized locale=', this.currentLocale);
+
+    this.registerServiceWorker();
     }
 
     /**
@@ -25,37 +41,72 @@ class TranslationService {
      * @returns {string} Translated text
      */
     trans(key, replacements = {}, fallback = null) {
-        // First try to get from nested structure (cached translations)
-        let translation = this.getNestedValue(this.translations, key);
-
-        // If not found in nested structure, try direct key lookup
-        if (!translation && this.translations) {
-            translation = this.getDirectKeyValue(this.translations, key);
-        }
-
-        // If still not found, check if we need to load the group
-        if (!translation) {
+        this.metrics.lookups++;
+        let val = this.flat[key];
+        if (val == null) {
             const group = key.split('.')[0];
             if (group && !this.isLoaded(group)) {
-                // Load the group asynchronously and return key for now
-                this.loadTranslationsAsync(group);
-                // For now, return the fallback or key
-                translation = fallback || key;
+                this.queueGroupLoad(group);
+            }
+            // Try plural auto-detection if count provided
+            if (replacements && typeof replacements.count !== 'undefined') {
+                const pluralVal = this.resolvePlural(key, replacements.count);
+                if (pluralVal != null) {
+                    val = pluralVal;
+                }
+            }
+            if (val == null) {
+                // Try fallback locale flat if available
+                const fb = this.fallbackFlat[key];
+                if (fb != null) {
+                    val = fb;
+                }
+            }
+            if (val == null) {
+                this.metrics.misses++;
+                val = fallback || key;
             } else {
-                // Group is loaded but key not found
-                translation = fallback || key;
+                this.metrics.hits++;
+            }
+        } else {
+            this.metrics.hits++;
+        }
+        if (typeof val === 'string' && replacements && Object.keys(replacements).length) {
+            for (const k in replacements) {
+                if (!Object.prototype.hasOwnProperty.call(replacements, k)) continue;
+                const re = new RegExp(`:${k}\\b`, 'g');
+                val = val.replace(re, replacements[k]);
             }
         }
+        return val;
+    }
 
-        // Handle replacements
-        if (typeof translation === 'string' && Object.keys(replacements).length > 0) {
-            Object.keys(replacements).forEach(placeholder => {
-                const regex = new RegExp(`:${placeholder}`, 'g');
-                translation = translation.replace(regex, replacements[placeholder]);
-            });
+    transCount(baseKey, count, replacements = {}, fallback = null) {
+        replacements.count = count;
+        const pluralResolved = this.resolvePlural(baseKey, count);
+        if (pluralResolved != null) {
+            return this.trans(baseKey, replacements, fallback); // trans will pick up plural variant already in flat if present
         }
+        return this.trans(baseKey, replacements, fallback);
+    }
 
-        return translation;
+    resolvePlural(baseKey, count) {
+        // Pattern: baseKey.one / .other or .zero
+        const forms = ['zero','one','two','few','many','other'];
+        const available = forms.filter(f => this.flat[`${baseKey}.${f}`] != null);
+        if (!available.length) return null;
+        try {
+            const pr = new Intl.PluralRules(this.currentLocale);
+            let category = pr.select(count);
+            if (!available.includes(category)) {
+                category = available.includes('other') ? 'other' : available[0];
+            }
+            const key = `${baseKey}.${category}`;
+            return this.flat[key];
+        } catch(_) {
+            const key = `${baseKey}.other`;
+            return this.flat[key] || null;
+        }
     }
 
     /**
@@ -66,44 +117,21 @@ class TranslationService {
      */
     async loadTranslations(groups = ['notifications'], locale = null) {
         locale = locale || this.currentLocale;
-        const groupsArray = Array.isArray(groups) ? groups : [groups];
-        const cacheKey = `${locale}_${groupsArray.join('_')}`;
-
-        // Return existing promise if already loading
-        if (this.loadPromises.has(cacheKey)) {
-            return this.loadPromises.get(cacheKey);
+        const gArr = Array.isArray(groups) ? groups : [groups];
+        await this.ensureManifest(locale);
+        // Attempt delta endpoint for efficiency when many groups
+        if (gArr.length > 3 && locale === this.currentLocale) {
+            try {
+                await this.loadDelta(gArr, locale);
+            } catch (e) {
+                console.warn('[TranslationService] delta fallback -> individual', e);
+                await Promise.all(gArr.map(g => this.loadGroup(g, locale)));
+            }
+        } else {
+            await Promise.all(gArr.map(g => this.loadGroup(g, locale)));
         }
-
-        // Return cached translations if available
-        if (this.cache.has(cacheKey)) {
-            this.translations = { ...this.translations, ...this.cache.get(cacheKey) };
-            return Promise.resolve(this.translations);
-        }
-
-        console.log('Loading translations for groups:', groupsArray, 'locale:', locale);
-
-        const loadPromise = this.fetchTranslations(groupsArray, locale)
-            .then(translations => {
-                // Cache the translations
-                this.cache.set(cacheKey, translations);
-
-                // Merge with existing translations
-                this.translations = { ...this.translations, ...translations };
-
-                console.log('Translations loaded successfully:', translations);
-                return this.translations;
-            })
-            .catch(error => {
-                console.error('Failed to load translations:', error);
-                throw error;
-            })
-            .finally(() => {
-                // Remove from loading promises
-                this.loadPromises.delete(cacheKey);
-            });
-
-        this.loadPromises.set(cacheKey, loadPromise);
-        return loadPromise;
+        this.persist();
+        return this.translations;
     }
 
     /**
@@ -112,54 +140,7 @@ class TranslationService {
      * @returns {Promise} Promise that resolves when notification translations are loaded
      */
     async loadNotificationTranslations(locale = null) {
-        locale = locale || this.currentLocale;
-        const cacheKey = `notifications_${locale}`;
-
-        if (this.loadPromises.has(cacheKey)) {
-            return this.loadPromises.get(cacheKey);
-        }
-
-        if (this.cache.has(cacheKey)) {
-            this.translations = { ...this.translations, ...this.cache.get(cacheKey) };
-            return Promise.resolve(this.translations);
-        }
-
-        //console.log('Loading notification translations for locale:', locale);
-
-        const loadPromise = fetch(`/api/translations/notifications?locale=${locale}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Handle wrapped response format
-                let responseData = data;
-                if (data.data && data.data.success && data.data.translations) {
-                    responseData = data.data;
-                } else if (data.success && data.translations) {
-                    responseData = data;
-                } else {
-                    console.error('Invalid response format:', data);
-                    throw new Error('Invalid response format');
-                }
-
-                this.cache.set(cacheKey, responseData.translations);
-                this.translations = { ...this.translations, ...responseData.translations };
-                console.log('Notification translations loaded:', responseData.translations);
-                return this.translations;
-            })
-            .catch(error => {
-                console.error('Failed to load notification translations:', error);
-                throw error;
-            })
-            .finally(() => {
-                this.loadPromises.delete(cacheKey);
-            });
-
-        this.loadPromises.set(cacheKey, loadPromise);
-        return loadPromise;
+        return this.loadTranslations(['notifications'], locale);
     }
 
     /**
@@ -171,25 +152,10 @@ class TranslationService {
     async fetchTranslations(groups, locale) {
         const groupsParam = groups.join(',');
         const response = await fetch(`/api/translations/js?locale=${locale}&groups=${groupsParam}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
         const data = await response.json();
-
-        // Handle wrapped response format
-        let responseData = data;
-        if (data.data && data.data.success && data.data.translations) {
-            responseData = data.data;
-        } else if (data.success && data.translations) {
-            responseData = data;
-        } else {
-            console.error('Invalid response format:', data);
-            throw new Error('Invalid response format');
-        }
-
-        return responseData.translations;
+        if (!data.success || !data.translations) throw new Error('Invalid response format');
+        return data.translations;
     }
 
     /**
@@ -198,11 +164,7 @@ class TranslationService {
      * @param {string} key - Dot notation key
      * @returns {*} Value or null if not found
      */
-    getNestedValue(obj, key) {
-        return key.split('.').reduce((current, k) => {
-            return current && current[k] !== undefined ? current[k] : null;
-        }, obj);
-    }
+    getNestedValue(obj, key) { return key.split('.').reduce((c,k)=> c && c[k]!==undefined ? c[k] : null, obj); }
 
     /**
      * Get value by direct key lookup (for flat structure)
@@ -210,59 +172,26 @@ class TranslationService {
      * @param {string} key - Direct key
      * @returns {*} Value or null if not found
      */
-    getDirectKeyValue(obj, key) {
-        // Search through all nested objects for the direct key
-        const searchInObject = (searchObj) => {
-            if (!searchObj || typeof searchObj !== 'object') return null;
-
-            // Check if key exists directly
-            if (searchObj[key] !== undefined) {
-                return searchObj[key];
-            }
-
-            // Search recursively in nested objects
-            for (const prop in searchObj) {
-                if (typeof searchObj[prop] === 'object') {
-                    const result = searchInObject(searchObj[prop]);
-                    if (result !== null) return result;
-                }
-            }
-            return null;
-        };
-
-        return searchInObject(obj);
-    }
+    getDirectKeyValue() { return null; } // deprecated
 
     /**
      * Load translations asynchronously for a group
      * @param {string} group - Translation group to load
      */
-    loadTranslationsAsync(group) {
-        // Check if already loading this group
-        if (this.loadingGroups && this.loadingGroups.has(group)) {
-            return;
-        }
+    loadTranslationsAsync(group) { this.queueGroupLoad(group); }
 
-        // Initialize loading tracker
-        if (!this.loadingGroups) {
-            this.loadingGroups = new Set();
-        }
-
-        this.loadingGroups.add(group);
-
-        // Load the group asynchronously
-        this.loadTranslations([group])
-            .then(() => {
-                console.log(`Asynchronously loaded translations for group: ${group}`);
-                this.loadingGroups.delete(group);
-
-                // Trigger a re-render or update if needed
-                this.notifyTranslationsLoaded(group);
-            })
-            .catch(error => {
-                console.warn(`Failed to load translations for group: ${group}`, error);
-                this.loadingGroups.delete(group);
-            });
+    queueGroupLoad(group) {
+        if (this.isLoaded(group)) return;
+        this.pendingGroups.add(group);
+        if (this.batchTimer) return;
+        this.batchTimer = requestAnimationFrame(() => {
+            const toLoad = Array.from(this.pendingGroups);
+            this.pendingGroups.clear();
+            this.batchTimer = null;
+            this.loadTranslations(toLoad).then(() => {
+                toLoad.forEach(g => this.notifyTranslationsLoaded(g));
+            }).catch(e => console.warn('[TranslationService] batch load failed', e));
+        });
     }
 
     /**
@@ -294,10 +223,7 @@ class TranslationService {
      * @param {string} group - Group name to check
      * @returns {boolean} True if group is loaded
      */
-    isLoaded(group) {
-        return this.translations && this.translations[group] &&
-               Object.keys(this.translations[group]).length > 0;
-    }
+    isLoaded(group) { return !!(this.translations && this.translations[group]); }
 
     /**
      * Deep merge two objects
@@ -344,7 +270,10 @@ class TranslationService {
     clearCache() {
         this.cache.clear();
         this.loadPromises.clear();
-        console.log('Translation cache cleared');
+        this.manifest = null;
+        this.flat = {};
+        try { localStorage.removeItem(this.localStorageNamespace()); } catch(_) {}
+        console.log('[TranslationService] cache cleared');
     }
 
     /**
@@ -352,16 +281,208 @@ class TranslationService {
      * @param {string} group - Translation group
      * @returns {boolean} True if loaded
      */
-    isLoaded(group) {
-        return this.getNestedValue(this.translations, group) !== null;
-    }
+    // duplicate isLoaded removed
 
     /**
      * Get all loaded translations
      * @returns {object} All translations
      */
-    getAllTranslations() {
-        return this.translations;
+    getAllTranslations() { return this.translations; }
+
+    async ensureManifest(locale = this.currentLocale) {
+        if (this.manifest && this.manifest.locale === locale) return this.manifest;
+        if (!this.manifestPromise) {
+            this.manifestPromise = fetch(`/api/translations/manifest?locale=${locale}`)
+                .then(r => { if (!r.ok) throw new Error('Manifest HTTP '+r.status); return r.json(); })
+                .then(data => {
+                    if (!data.success) throw new Error('Manifest invalid');
+                    this.manifest = data;
+                    const persisted = this.getPersistedMeta();
+                    if (persisted && persisted.version !== data.version) {
+                        this.clearCache();
+                    }
+                    return data;
+                })
+                .finally(() => { this.manifestPromise = null; });
+        }
+        return this.manifestPromise;
+    }
+
+    async loadGroup(group, locale = this.currentLocale) {
+        if (this.isLoaded(group) && locale === this.currentLocale) return;
+        const existingHash = this.manifest && this.manifest.groups ? this.manifest.groups[group] : undefined;
+        const url = new URL('/api/translations/group', window.location.origin);
+        url.searchParams.set('locale', locale);
+        url.searchParams.set('group', group);
+        if (existingHash && locale === this.currentLocale) {
+            url.searchParams.set('hash', existingHash);
+        }
+        const t0 = performance.now();
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error('Group HTTP '+res.status);
+        const data = await res.json();
+        const t1 = performance.now();
+        this.metrics.network.requests++;
+        this.metrics.network.timeMs += (t1 - t0);
+        const size = (res.headers.get('Content-Length') ? parseInt(res.headers.get('Content-Length'),10) : JSON.stringify(data).length) || 0;
+        this.metrics.network.bytes += size;
+        if (!data.success) throw new Error('Group response invalid');
+        if (data.unchanged) {
+            // No action needed
+            return {};
+        }
+        if (locale === this.currentLocale) {
+            const wrapper = { [group]: data.translations };
+            this.mergeTranslations(wrapper, { rebuildIndex: true });
+            // Update manifest hash for this group
+            if (this.manifest && this.manifest.groups) {
+                this.manifest.groups[group] = data.hash;
+                this.manifest.version = data.version; // may or may not change
+            }
+        } else if (locale === this.fallbackLocale) {
+            // index into fallbackFlat without polluting main locale
+            this.indexFallback(group, data.translations);
+        }
+        return data.translations;
+    }
+
+    async loadDelta(groups, locale = this.currentLocale) {
+        const payload = { locale, groups: {} };
+        groups.forEach(g => {
+            const existingHash = this.manifest && this.manifest.groups ? this.manifest.groups[g] : null;
+            payload.groups[g] = existingHash || null;
+        });
+        const t0 = performance.now();
+        const res = await fetch('/api/translations/delta', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('Delta HTTP '+res.status);
+        const data = await res.json();
+        const t1 = performance.now();
+        this.metrics.network.requests++;
+        this.metrics.network.timeMs += (t1 - t0);
+        const size = (res.headers.get('Content-Length') ? parseInt(res.headers.get('Content-Length'),10) : JSON.stringify(data).length) || 0;
+        this.metrics.network.bytes += size;
+    if (!data || data.success !== true) throw new Error('Delta response invalid (success flag)');
+        if (!data.groups || typeof data.groups !== 'object') {
+            console.warn('[TranslationService] delta response missing groups – falling back to individual loads', data);
+            return {};
+        }
+        const changed = (data.groups.changed && typeof data.groups.changed === 'object') ? data.groups.changed : {};
+        Object.keys(changed).forEach(group => {
+            const entry = changed[group];
+            if (!entry || !entry.translations) return; // skip malformed
+            const wrapper = { [group]: entry.translations };
+            this.mergeTranslations(wrapper, { rebuildIndex: true });
+            if (this.manifest && this.manifest.groups) {
+                this.manifest.groups[group] = entry.hash;
+            }
+        });
+        if (this.manifest) {
+            this.manifest.version = data.version;
+        }
+        // Dispatch events for changed groups only
+        Object.keys(changed).forEach(g => this.notifyTranslationsLoaded(g));
+        return changed;
+    }
+
+    mergeTranslations(obj, { rebuildIndex = false } = {}) {
+        this.translations = this.deepMerge(this.translations, obj);
+        if (rebuildIndex) {
+            this.rebuildFlatIndex();
+        } else {
+            this.incrementalIndex(obj);
+        }
+    }
+
+    rebuildFlatIndex() {
+        this.flat = {};
+        this.incrementalIndex(this.translations);
+    }
+
+    incrementalIndex(obj, prefix = '') {
+        for (const k in obj) {
+            if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+            const val = obj[k];
+            const full = prefix ? `${prefix}.${k}` : k;
+            if (val && typeof val === 'object' && !Array.isArray(val)) {
+                this.incrementalIndex(val, full);
+            } else {
+                this.flat[full] = val;
+            }
+        }
+    }
+
+    persist() {
+        try {
+            if (!this.manifest) return;
+            const payload = { meta: { version: this.manifest.version, locale: this.currentLocale, ts: Date.now() }, translations: this.translations };
+            localStorage.setItem(this.localStorageNamespace(), JSON.stringify(payload));
+        } catch (_) {}
+    }
+
+    restorePersisted() {
+        try {
+            const raw = localStorage.getItem(this.localStorageNamespace());
+            if (!raw) return;
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.translations) {
+                this.translations = parsed.translations;
+                this.rebuildFlatIndex();
+            }
+        } catch (_) {}
+    }
+
+    getPersistedMeta() {
+        try {
+            const raw = localStorage.getItem(this.localStorageNamespace());
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return parsed.meta || null;
+        } catch (_) { return null; }
+    }
+
+    localStorageNamespace() { return `${this.localStorageKeyPrefix}:${this.currentLocale}`; }
+
+    indexFallback(group, obj) {
+        // Flatten into fallbackFlat
+        const stack = [{ prefix: group, value: obj }];
+        while (stack.length) {
+            const { prefix, value } = stack.pop();
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                for (const k in value) {
+                    if (!Object.prototype.hasOwnProperty.call(value, k)) continue;
+                    const v = value[k];
+                    const full = `${prefix}.${k}`;
+                    if (v && typeof v === 'object' && !Array.isArray(v)) {
+                        stack.push({ prefix: full, value: v });
+                    } else {
+                        if (this.flat[full] == null) { // don't override main locale
+                            this.fallbackFlat[full] = v;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        // Avoid multiple registrations
+        const swUrl = '/sw-translations.js';
+        navigator.serviceWorker.getRegistrations().then(regs => {
+            const already = regs.some(r => r.active && r.active.scriptURL.endsWith('sw-translations.js'));
+            if (already) return;
+            navigator.serviceWorker.register(swUrl).catch(()=>{});
+        });
+    }
+
+    logMetrics() {
+        if (console && console.debug) {
+            console.debug('[TranslationService][metrics]', this.metrics);
+        }
     }
 
     /**
@@ -523,24 +644,28 @@ window.getSupportedLanguages = function() {
     return window.translationService.getSupportedLanguages();
 };
 
-// Auto-load notification translations when service is ready
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.translationService) {
-        window.translationService.loadNotificationTranslations()
-            .then(() => {
-                console.log('Notification translations auto-loaded');
-
-                // Trigger custom event for components that need translations
-                document.dispatchEvent(new CustomEvent('translationsLoaded', {
-                    detail: {
-                        service: window.translationService,
-                        translations: window.translationService.getAllTranslations()
-                    }
-                }));
-            })
-            .catch(error => {
-                console.error('Failed to auto-load notification translations:', error);
-            });
+// Auto-load critical groups per manifest
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!window.translationService) return;
+    try {
+        const svc = window.translationService;
+        const manifest = await svc.ensureManifest();
+        let critical = manifest.critical_groups || ['common','notifications'];
+        if (Array.isArray(window.TRANSLATION_CRITICAL_EXTRA)) {
+            critical = Array.from(new Set(critical.concat(window.TRANSLATION_CRITICAL_EXTRA)));
+        }
+        await svc.loadTranslations(critical);
+        // Preload fallback groups lightly (async, no blocking)
+        if (svc.fallbackLocale && svc.fallbackLocale !== svc.currentLocale) {
+            critical.forEach(g => svc.loadGroup(g, svc.fallbackLocale).catch(()=>{}));
+        }
+        document.dispatchEvent(new CustomEvent('translationsLoaded', {
+            detail: { service: svc, translations: svc.getAllTranslations() }
+        }));
+        console.log('[TranslationService] Critical groups loaded', critical);
+        setTimeout(()=> svc.logMetrics(), 3000);
+    } catch (e) {
+        console.warn('[TranslationService] Critical preload failed', e);
     }
 });
 

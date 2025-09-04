@@ -641,6 +641,58 @@
 @auth
 <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 @endauth
+@php
+    // Translation keys required by threads.js (keep list minimal for payload efficiency)
+    $threadJsKeys = [
+        'thread.replies',
+        'thread.comments',
+        'thread.joined',
+        'thread.unlike',
+        'thread.like',
+        'thread.login_to_like',
+        'thread.quote',
+        'thread.reply',
+        'thread.edit',
+        'thread.delete',
+        'thread.delete_image',
+        'thread.reply_content_required',
+        'thread.sending',
+        'thread.reply_posted_successfully',
+        'thread.reply_posting_error',
+        'thread.comment_updated_successfully',
+        'thread.content_required',
+        'thread.saving',
+        'thread.update_failed',
+        'features.threads.delete_reply_message',
+        'features.threads.delete_comment_message',
+        'thread.comment_deleted_successfully',
+        'thread.request_error',
+        'ui.confirmations.delete_image',
+        'ui.messages.delete_image_success',
+        'ui.messages.delete_image_error',
+        'ui.status.processing',
+        'ui.actions.saved',
+        'ui.actions.save',
+        'ui.actions.following',
+        'ui.actions.follow',
+        'ui.status.loading_comments',
+        'ui.messages.comments_sorted',
+        'ui.messages.request_error',
+        'thread.participants',
+    ];
+    $threadJsTranslations = [];
+    foreach ($threadJsKeys as $k) {
+        $threadJsTranslations[$k] = __($k);
+    }
+@endphp
+<script>
+// Preloaded translations for thread page JS (generated server-side)
+window.ThreadTranslations = Object.assign({}, window.ThreadTranslations || {}, @json($threadJsTranslations, JSON_UNESCAPED_UNICODE));
+// Lightweight lookup used inside threads.js
+window.transSafe = function(key){
+    return (window.ThreadTranslations && window.ThreadTranslations[key]) || key;
+};
+</script>
 <script>
 window.ThreadPageConfig = {
     threadId: {{ $thread->id }},

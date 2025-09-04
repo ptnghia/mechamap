@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
+use App\Services\TranslationVersionService;
 
 class Translation extends Model
 {
@@ -37,10 +38,12 @@ class Translation extends Model
         // Clear cache when translation is updated
         static::saved(function ($translation) {
             $translation->clearCache();
+            TranslationVersionService::bump($translation->locale, [$translation->group_name]);
         });
 
         static::deleted(function ($translation) {
             $translation->clearCache();
+            TranslationVersionService::bump($translation->locale, [$translation->group_name]);
         });
     }
 

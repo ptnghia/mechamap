@@ -775,3 +775,24 @@ if (!function_exists('t_forum')) {
         return __("forum.$key", $replace, $locale);
     }
 }
+
+if (!function_exists('trans_e')) {
+    /**
+     * Escape translated string for safe HTML output (alias: trans_e)
+     * Example: {!! trans_e('notifications.ui.header') !!}
+     */
+    function trans_e($key, $replace = [], $locale = null)
+    {
+        return e(__($key, $replace, $locale));
+    }
+}
+
+if (!function_exists('trans_raw')) {
+    /**
+     * Return raw translation without escaping (explicit)
+     */
+    function trans_raw($key, $replace = [], $locale = null)
+    {
+        return __($key, $replace, $locale);
+    }
+}

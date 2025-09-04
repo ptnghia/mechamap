@@ -18,8 +18,10 @@
 
     /* ====================== Utilities ====================== */
 
-    function transSafe(key) {
-        try { if (typeof trans === 'function') return trans(key) || key; } catch (_) {}
+    // i18n: use translations injected from Blade (window.ThreadTranslations + window.transSafe)
+    function transSafe(key){
+        if (window.transSafe) return window.transSafe(key);
+        if (window.ThreadTranslations && window.ThreadTranslations[key]) return window.ThreadTranslations[key];
         return key;
     }
     const qs  = (sel, ctx = document) => ctx.querySelector(sel);
@@ -1046,11 +1048,16 @@ ${contentEl.innerHTML}
 
     /* ====================== Init ====================== */
 
-    function init() {
+    function initCore() {
         document.addEventListener('click', handleClick);
         document.addEventListener('submit', handleSubmit);
         initRealtime();
         scrollToCommentIfNeeded();
+    }
+
+    async function init() {
+        // Translations already injected server-side; no preload step needed.
+        initCore();
     }
 
     if (document.readyState === 'loading') {
