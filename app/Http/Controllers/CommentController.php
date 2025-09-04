@@ -173,19 +173,11 @@ class CommentController extends Controller
                 // Format attachments for frontend
                 if ($comment->attachments) {
                     $comment->attachments = $comment->attachments->map(function ($attachment) {
-                        // Tạo URL an toàn - fallback nếu getUrl() trả về null
-                        $url = $attachment->url;
-                        if (empty($url) && !empty($attachment->file_path)) {
-                            // Fallback: tạo URL từ file_path
-                            $cleanPath = ltrim($attachment->file_path, '/');
-                            $url = asset('storage/' . $cleanPath);
-                        }
-
                         return [
                             'id' => $attachment->id,
                             'name' => $attachment->name,
                             'file_name' => $attachment->file_name,
-                            'url' => $url ?: '#', // Fallback cuối cùng
+                            'url' => $attachment->url, // Sử dụng accessor từ Media model
                             'mime_type' => $attachment->mime_type,
                         ];
                     });

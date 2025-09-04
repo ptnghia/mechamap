@@ -117,15 +117,26 @@ window.showConfirm = function(title, text = '', onConfirmOrOptions = {}, onCance
 
 /**
  * Show a delete confirmation dialog
- * @param {string} itemName - Name of item to delete
+ * @param {string} messageOrItemName - Full message or item name to delete
  * @param {object} options - Additional options
  * @returns {Promise} - Resolves with result object
  */
-window.showDeleteConfirm = function(itemName = 'mục này', options = {}) {
+window.showDeleteConfirm = function(messageOrItemName = 'mục này', options = {}) {
+    // Check if the parameter is a full message (contains spaces or special characters)
+    // or just an item name
+    let text;
+    if (messageOrItemName.includes(' ') || messageOrItemName.includes('?')) {
+        // It's a full message, use as is
+        text = messageOrItemName;
+    } else {
+        // It's just an item name, create the full message
+        text = `Bạn có chắc chắn muốn xóa ${messageOrItemName}? Hành động này không thể hoàn tác.`;
+    }
+
     return Swal.fire({
         ...defaultSwalConfig,
         title: 'Xác nhận xóa',
-        text: `Bạn có chắc chắn muốn xóa ${itemName}? Hành động này không thể hoàn tác.`,
+        text: text,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Xóa',

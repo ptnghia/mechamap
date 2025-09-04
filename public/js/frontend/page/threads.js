@@ -386,6 +386,9 @@ function initializeThreadActions() {
 
     // Function to initialize delete image buttons
     initializeDeleteImageButtons();
+
+    // Initialize delete comment buttons
+    initializeDeleteCommentButtons();
 }
 // Function to initialize delete image buttons
 function initializeDeleteImageButtons() {
@@ -425,11 +428,16 @@ function initializeDeleteImageButtons() {
                     setTimeout(() => {
                         imageWrapper.remove();
 
+                        const col = imageWrapper.closest('.col');
+                        if (col && !col.querySelector('.comment-image-wrapper')) {
+                            col.remove();
+                        }
+
                         const attachmentsContainer = document.querySelector(`#comment-${commentId} .comment-attachments`);
-                        if (attachmentsContainer && !attachmentsContainer.querySelector('.col')) {
+                        if (attachmentsContainer && !attachmentsContainer.querySelector('.comment-image-wrapper')) {
                             attachmentsContainer.remove();
                         }
-                    }, 300);
+                    }, 200);
                 } else {
                     window.showError('Lỗi!', data.message || trans('ui.messages.delete_image_error'));
                     resetButton();

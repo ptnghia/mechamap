@@ -92,6 +92,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset_versioned('js/showcase-actions.js') }}"></script>
 <script>
     // Biến dịch cho JavaScript
     const translations = {

@@ -700,13 +700,13 @@ function initializeFormSubmission() {
 
         // Show loading state
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>{{ __('thread.sending') }}';
+        //submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>{{ __('thread.sending') }}';
 
         // Prepare form data
         const formData = new FormData(form);
 
         // Debug: Log FormData contents
-        console.log('FormData contents:');
+        //console.log('FormData contents:');
         for (let [key, value] of formData.entries()) {
             console.log(key, value);
         }
@@ -766,6 +766,7 @@ function initializeFormSubmission() {
 
                 // Add new comment to DOM instead of reloading page
                 if (data.comment) {
+                    console.log('New comment data:', data.comment);
                     addNewCommentToDOM(data.comment);
 
                     // Update comment count
@@ -1482,74 +1483,9 @@ function initializeCommentInteractions() {
         });
     });
 
-    // Re-initialize delete comment buttons
+    // Initialize delete comment buttons using the centralized function
     document.querySelectorAll('.delete-comment-btn').forEach(button => {
-        // Remove existing event listeners by cloning the element
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-
-        newButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const commentId = this.dataset.commentId;
-            const commentType = this.dataset.commentType;
-            const confirmMessage = commentType === 'reply' ?
-                '{{ __("thread.delete_reply_message") }}' :
-                '{{ __("thread.delete_comment_message") }}';
-
-            // Use SweetAlert2 for confirmation
-            window.showDeleteConfirm(confirmMessage).then((result) => {
-                if (!result.isConfirmed) {
-                    return;
-                }
-
-                // Proceed with deletion
-                const button = this;
-
-                // Disable button during request
-                button.disabled = true;
-                const originalContent = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
-                // Make AJAX request
-                fetch(`/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Remove comment element from DOM
-                        const commentElement = document.querySelector(`#comment-${commentId}`);
-                        if (commentElement) {
-                            commentElement.style.transition = 'opacity 0.3s ease';
-                            commentElement.style.opacity = '0';
-
-                            setTimeout(() => {
-                                commentElement.remove();
-                            }, 300);
-                        }
-
-                        // Show success message
-                        showToast(data.message, 'success');
-                    } else {
-                        throw new Error(data.message || 'Server error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Delete comment error:', error);
-                    showToast(error.message || '{{ __("thread.request_error") }}', 'error');
-
-                    // Reset button state
-                    button.disabled = false;
-                    button.innerHTML = originalContent;
-                });
-            });
-        });
+        initializeDeleteButton(button);
     });
 }
 
@@ -1824,8 +1760,8 @@ function createCommentHtml(comment) {
                             ${comment.attachments.map(attachment => `
                                 <div class="col">
                                     <div class="comment-image-wrapper position-relative">
-                                        <a href="${attachment.url}" class="d-block" data-fancybox="comment-${comment.id}-images" data-caption="${attachment.file_name}">
-                                            <img src="${attachment.url}" alt="${attachment.file_name}" class="img-fluid rounded">
+                                        <a href="../${attachment.file_path}" class="d-block" data-fancybox="comment-${comment.id}-images" data-caption="${attachment.file_name}">
+                                            <img src="../${attachment.file_path}" alt="${attachment.file_name}" class="img-fluid rounded">
                                         </a>
                                         ${comment.user.id === currentUserId ? `
                                         <button type="button" class="btn btn-danger btn-sm delete-image-btn position-absolute"
@@ -1833,7 +1769,7 @@ function createCommentHtml(comment) {
                                                 data-comment-id="${comment.id}"
                                                 style="top: 5px; right: 5px; padding: 2px 6px; font-size: 10px;"
                                                 title="{{ __('thread.delete_image') }}">
-                                            <i class="fas fa-times"></i>
+                                                <i class="fa-regular fa-trash-can"></i>
                                         </button>
                                         ` : ''}
                                     </div>
@@ -2148,13 +2084,19 @@ function initializeInlineEditButton(editBtn) {
 function initializeDeleteButton(deleteBtn) {
     if (!deleteBtn) return;
 
-    deleteBtn.addEventListener('click', function(e) {
+    // Remove existing event listeners by cloning the element
+    const newButton = deleteBtn.cloneNode(true);
+    deleteBtn.parentNode.replaceChild(newButton, deleteBtn);
+
+    newButton.addEventListener('click', function(e) {
         e.preventDefault();
         const commentId = this.dataset.commentId;
         const commentType = this.dataset.commentType;
+
+        // Use proper translation keys for confirmation message
         const confirmMessage = commentType === 'reply' ?
-            '{{ __("thread.delete_reply_message") }}' :
-            '{{ __("thread.delete_comment_message") }}';
+            '{{ __("features.threads.delete_reply_message") }}' :
+            '{{ __("features.threads.delete_comment_message") }}';
 
         // Use SweetAlert2 for confirmation
         window.showDeleteConfirm(confirmMessage).then((result) => {
@@ -2180,15 +2122,19 @@ function initializeDeleteButton(deleteBtn) {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    // Remove comment element from DOM
+                    // Remove comment element from DOM - try multiple selectors
                     let commentElement = document.querySelector(`#comment-${commentId}`);
 
-                    // If not found by ID, find by closest .comment_item containing this button
                     if (!commentElement) {
-                        commentElement = button.closest('.comment_item');
+                        commentElement = button.closest('.comment_item, .comment-item, .reply-item, [id^="comment-"]');
                     }
 
                     if (commentElement) {
@@ -2201,7 +2147,12 @@ function initializeDeleteButton(deleteBtn) {
                     }
 
                     // Show success message
-                    showToast(data.message, 'success');
+                    showToast(data.message || '{{ __("thread.comment_deleted_successfully") }}', 'success');
+
+                    // Update comment count if provided
+                    if (data.comment_count !== undefined) {
+                        updateCommentCount(data.comment_count);
+                    }
                 } else {
                     throw new Error(data.message || 'Server error');
                 }

@@ -179,8 +179,10 @@ function clearAllFilters() {
 </script>
 @endpush
 @push('scripts')
+<script src="{{ asset_versioned('js/showcase-actions.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Featured Showcases Swiper
     const featuredSwiper = new Swiper('.showcases-swiper', {

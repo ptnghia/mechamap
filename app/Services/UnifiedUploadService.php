@@ -38,8 +38,15 @@ class UnifiedUploadService
 
             // Move file to destination
             $fullPath = public_path($filePath);
-            if (!$file->move(dirname($fullPath), basename($fullPath))) {
-                throw new \Exception('Failed to move uploaded file');
+            $destinationDir = dirname($fullPath);
+
+            // Check if destination directory is writable
+            if (!is_writable($destinationDir)) {
+                throw new \Exception('Unable to write in the "' . $destinationDir . '" directory.');
+            }
+
+            if (!$file->move($destinationDir, basename($fullPath))) {
+                throw new \Exception('Failed to move uploaded file to: ' . $fullPath);
             }
 
             // Create media record with pre-captured file info
@@ -116,7 +123,7 @@ class UnifiedUploadService
         $dirPath = public_path("uploads/{$userId}/{$category}");
 
         if (!File::exists($dirPath)) {
-            File::makeDirectory($dirPath, 0755, true);
+            File::makeDirectory($dirPath, 0777, true);
         }
     }
 
