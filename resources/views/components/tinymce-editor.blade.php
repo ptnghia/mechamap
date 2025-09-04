@@ -1,4 +1,4 @@
-{{-- TinyMCE Editor Component for MechaMap --}}
+{{-- TinyMCE Editor Component (Refactored: batch & lazy initialization) --}}
 @props([
     'name',
     'id' => '',
@@ -12,222 +12,48 @@
 ])
 
 @php
-    $editorId = $id ?: $name;
-    $editorClass = 'form-control tinymce-editor ' . $class;
-
-    // Generate unique ID if needed
-    if (!$id) {
-        $editorId = $name . '_' . uniqid();
-    }
+    $editorId = $id ?: ($name . '_' . uniqid());
+    $editorClass = trim('form-control tinymce-editor tinymce-auto ' . $class);
 @endphp
 
 <div class="tinymce-editor-wrapper" data-context="{{ $context }}">
-    {{-- Textarea for TinyMCE editor --}}
     <textarea
         name="{{ $name }}"
         id="{{ $editorId }}"
         class="{{ $editorClass }}"
+        data-editor-id="{{ $editorId }}"
+        data-context="{{ $context }}"
+        data-height="{{ $height }}"
+        data-placeholder="{{ $placeholder }}"
+        data-required="{{ $required ? '1' : '0' }}"
         placeholder="{{ $placeholder }}"
         @if($required) required @endif
         @if($disabled) disabled @endif
         {{ $attributes }}
     >{{ old($name, $value) }}</textarea>
 
-    {{-- Error display --}}
     @error($name)
         <div class="invalid-feedback d-block" id="{{ $editorId }}-error">
             {{ $message }}
         </div>
     @enderror
 
-    {{-- Loading indicator --}}
-    <div class="tinymce-loading" id="{{ $editorId }}-loading" style="display: none;">
+    <div class="tinymce-loading" id="{{ $editorId }}-loading" style="display:none;">
         <div class="d-flex align-items-center justify-content-center p-3">
             <div class="spinner-border spinner-border-sm me-2" role="status">
-                <span class="visually-hidden">Đang tải...</span>
+                <span class="visually-hidden">Loading...</span>
             </div>
             <span class="text-muted">Đang khởi tạo editor...</span>
         </div>
     </div>
 </div>
 
-{{-- Push TinyMCE scripts to the end of the page (only once) --}}
 @once
 @push('scripts')
-{{-- TinyMCE Self-hosted --}}
 <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-
-{{-- TinyMCE Configuration and Uploader --}}
 <script src="{{ asset('js/tinymce-config.js') }}"></script>
 <script src="{{ asset('js/tinymce-uploader.js') }}"></script>
+<script src="{{ asset('js/tinymce-batch-init.js') }}"></script>
 @endpush
 @endonce
-
-{{-- Initialize this specific editor --}}
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTinyMCEEditor('{{ $editorId }}', '{{ $context }}', {
-        height: {{ $height }},
-        placeholder: '{{ $placeholder }}',
-        required: {{ $required ? 'true' : 'false' }}
-    });
-});
-
-/**
- * Initialize TinyMCE editor with unified configuration
- */
-function initializeTinyMCEEditor(editorId, context, options = {}) {
-    const textarea = document.getElementById(editorId);
-    const loadingDiv = document.getElementById(editorId + '-loading');
-
-    if (!textarea) {
-        console.error('TinyMCE: Textarea not found:', editorId);
-        return;
-    }
-
-    // Show loading indicator
-    if (loadingDiv) {
-        loadingDiv.style.display = 'block';
-    }
-
-    // Get configuration from TinyMCEConfig class
-    const config = new TinyMCEConfig();
-    let editorConfig;
-
-    switch(context) {
-        case 'admin':
-            editorConfig = config.getAdminConfig(`#${editorId}`, options);
-            break;
-        case 'showcase':
-            editorConfig = config.getShowcaseConfig(`#${editorId}`, options);
-            break;
-        case 'minimal':
-            editorConfig = config.getMinimalConfig(`#${editorId}`, options);
-            break;
-        default:
-            editorConfig = config.getCommentConfig(`#${editorId}`, options);
-    }
-
-    // Add custom setup function
-    editorConfig.setup = function(editor) {
-        // Add custom buttons
-        TinyMCEConfig.addCustomButtons(editor);
-
-        // Add event handlers
-        TinyMCEConfig.addEventHandlers(editor);
-
-        // Handle initialization
-        editor.on('init', function() {
-            // Hide loading indicator
-            if (loadingDiv) {
-                loadingDiv.style.display = 'none';
-            }
-
-            // Hide the original textarea (TinyMCE replaces it)
-            textarea.style.display = 'none';
-
-            // TinyMCE initialized successfully
-
-            // Initialize drag & drop and paste handlers
-            TinyMCEUploader.initDragDrop(editorId);
-            TinyMCEUploader.initPasteHandler(editorId);
-        });
-
-        // Handle content change for validation
-        editor.on('input keyup change', function() {
-            const content = editor.getContent().trim();
-
-            // Update hidden textarea
-            textarea.value = content;
-
-            // Trigger validation
-            const event = new Event('input', { bubbles: true });
-            textarea.dispatchEvent(event);
-
-            // Remove validation errors if content exists
-            if (content && options.required) {
-                textarea.classList.remove('is-invalid');
-                const errorDiv = document.getElementById(editorId + '-error');
-                if (errorDiv) {
-                    errorDiv.style.display = 'none';
-                }
-
-                // Remove error styling from TinyMCE container
-                const tinyMCEContainer = editor.getContainer();
-                if (tinyMCEContainer) {
-                    tinyMCEContainer.classList.remove('is-invalid');
-                }
-            }
-        });
-
-        // Handle form submission
-        editor.on('submit', function() {
-            textarea.value = editor.getContent();
-        });
-    };
-
-    // Add image upload handler
-    editorConfig.images_upload_handler = function(blobInfo, success, failure, progress) {
-        return TinyMCEUploader.uploadImage(blobInfo, success, failure, progress);
-    };
-
-    // Add file picker
-    editorConfig.file_picker_callback = function(callback, value, meta) {
-        TinyMCEUploader.filePicker(callback, value, meta);
-    };
-
-    // Initialize TinyMCE
-    tinymce.init(editorConfig).catch(function(error) {
-        console.error('TinyMCE initialization failed:', error);
-
-        // Hide loading indicator on error
-        if (loadingDiv) {
-            loadingDiv.style.display = 'none';
-        }
-
-        // Show textarea as fallback
-        textarea.style.display = 'block';
-    });
-}
-
-/**
- * Destroy TinyMCE editor instance
- */
-function destroyTinyMCEEditor(editorId) {
-    const editor = tinymce.get(editorId);
-    if (editor) {
-        editor.destroy();
-    }
-}
-
-/**
- * Get content from TinyMCE editor
- */
-function getTinyMCEContent(editorId) {
-    const editor = tinymce.get(editorId);
-    return editor ? editor.getContent() : '';
-}
-
-/**
- * Set content to TinyMCE editor
- */
-function setTinyMCEContent(editorId, content) {
-    const editor = tinymce.get(editorId);
-    if (editor) {
-        editor.setContent(content);
-    }
-}
-
-/**
- * Focus TinyMCE editor
- */
-function focusTinyMCEEditor(editorId) {
-    const editor = tinymce.get(editorId);
-    if (editor) {
-        editor.focus();
-    }
-}
-</script>
-@endpush
 
