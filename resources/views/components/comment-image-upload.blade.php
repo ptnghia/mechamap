@@ -219,8 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedFiles.length === 0) return [];
 
         const formData = new FormData();
-        selectedFiles.forEach(file => {
-            formData.append('images[]', file);
+        selectedFiles.forEach((file, index) => {
+            formData.append(`images[${index}]`, file);
         });
         formData.append('context', '{{ $context }}');
 
@@ -237,6 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: formData
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Upload response error:', errorData);
+                throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+            }
 
             const data = await response.json();
 

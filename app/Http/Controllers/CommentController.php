@@ -104,11 +104,17 @@ class CommentController extends Controller
             if ($request->has('uploaded_images') && is_array($request->uploaded_images)) {
                 foreach ($request->uploaded_images as $imageUrl) {
                     if (!empty($imageUrl)) {
+                        // Corrected parameter order and options array
                         $this->uploadService->createMediaFromUrl(
                             $imageUrl,
                             Auth::user(),
-                            $comment,
-                            'comments'
+                            'comments',
+                            [
+                                'mediable_type' => Comment::class,
+                                'mediable_id' => $comment->id,
+                                'is_public' => true,
+                                'is_approved' => true,
+                            ]
                         );
                     }
                 }

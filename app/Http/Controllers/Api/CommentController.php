@@ -173,7 +173,6 @@ class CommentController extends Controller
 
                     foreach ($request->uploaded_images as $imageUrl) {
                         if (!empty($imageUrl)) {
-                            // Create media record for pre-uploaded image
                             $uploadService->createMediaFromUrl(
                                 $imageUrl,
                                 Auth::user(),

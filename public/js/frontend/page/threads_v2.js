@@ -1,1000 +1,658 @@
-/**
- * Thread Page Unified Script (Refactored + Edit Image Upload)
- * - Thread actions: like, save, follow
- * - Comment: create, inline reply, edit (hidden form), delete, like
- * - Add NEW images while editing (images[] + uploaded_images[])
- * - Image delete
- * - Sort comments (AJAX)
- * - Real-time updates
- * - I18n via ThreadPageConfig.i18n
- * - Event delegation
- */
 
-(function() {
-    'use strict';
 
-    if (!window.ThreadPageConfig) {
-        console.warn('ThreadPageConfig not found');
-        return;
-    }
+function initializeThreadActions() {
+    // Handle like button clicks
+    document.querySelectorAll('.btn-like').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
 
-    const CFG  = window.ThreadPageConfig;
-    const I18N = CFG.i18n || {};
-    const isAuth = !!CFG.userId;
+            const threadId = this.dataset.threadId;
+            const threadSlug = this.dataset.threadSlug;
+            const isLiked = this.dataset.liked === 'true';
 
-    /* ===================== Utilities ===================== */
-    function t(key, fallback='') {
-        if (I18N[key]) return I18N[key];
-        if (typeof window.trans === 'function') {
-            try { return window.trans(key) || fallback || key; } catch(_) {}
-        }
-        return fallback || key;
-    }
-    function qs(sel, ctx=document)  { return ctx.querySelector(sel); }
-    function qsa(sel, ctx=document) { return Array.from(ctx.querySelectorAll(sel)); }
+            // Disable button during request
+            this.disabled = true;
+            const oldHtml = this.innerHTML;
+            //this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + trans('ui.status.processing');
 
-    function showToast(message, type='info') {
-        const kind = type === 'error' ? 'danger' : type;
-        const el = document.createElement('div');
-        el.className = `alert alert-${kind} alert-dismissible fade show position-fixed`;
-        el.style.cssText = 'top:20px;right:20px;z-index:9999;min-width:300px;';
-        el.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 5000);
-    }
-
-    function showLoginModalOrRedirect() {
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal && window.bootstrap) {
-            new bootstrap.Modal(loginModal).show();
-        } else {
-            window.location.href = '/login?redirect=' + encodeURIComponent(location.href);
-        }
-    }
-    window.__threadLogin = showLoginModalOrRedirect;
-
-    function buildUrl(pattern, replacements) {
-        return Object.entries(replacements).reduce((acc,[k,v]) => acc.replace(`{${k}}`, v), pattern);
-    }
-
-    function setCSRF(headers={}) {
-        headers['X-CSRF-TOKEN'] = CFG.csrf;
-        return headers;
-    }
-
-    function formatTimeAgo(date) {
-        if (!(date instanceof Date)) date = new Date(date);
-        const diff = (Date.now() - date.getTime()) / 1000;
-        if (diff < 60) return 'vừa xong';
-        if (diff < 3600) return Math.floor(diff/60) + ' phút trước';
-        if (diff < 86400) return Math.floor(diff/3600) + ' giờ trước';
-        return Math.floor(diff/86400) + ' ngày trước';
-    }
-
-    function applyCommentCountDelta(delta) {
-        qsa('[data-type="replies"], .comment-count, .comments-count').forEach(el => {
-            const raw = el.textContent;
-            const numMatch = raw.match(/\d+/);
-            if (numMatch) {
-                const newNum = Math.max(parseInt(numMatch[0],10) + delta, 0);
-                el.textContent = raw.replace(/\d+/, newNum);
-            }
-        });
-        const header = qs('[data-type="replies-header"]');
-        if (header) {
-            const m = header.textContent.match(/\d+/);
-            if (m) {
-                const val = Math.max(parseInt(m[0],10) + delta, 0);
-                header.innerHTML = header.innerHTML.replace(/\d+/, val);
-            }
-        }
-    }
-
-    /* ===================== Templates ===================== */
-    function userProfileUrl(user) {
-        return user.username ? `/users/${user.username}` : `/users/${user.id}`;
-    }
-
-    function attachmentsHTML(attachments, commentId, canEdit, isReply) {
-        if (!attachments || !attachments.length) return '';
-        const wrapperClass = isReply ? 'reply-attachments mt-2' : 'comment-attachments mt-3';
-        return `
-            <div class="${wrapperClass}">
-                <div class="row g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
-                    ${attachments.map(a => `
-                        <div class="col">
-                          <div class="comment-image-wrapper position-relative">
-                            <a href="${a.url}" class="d-block" data-fancybox="comment-${commentId}-images" data-caption="${a.file_name}">
-                              <img src="${a.url}" alt="${a.file_name}" class="img-fluid rounded">
-                            </a>
-                            ${canEdit ? `
-                              <button type="button"
-                                  class="btn btn-danger btn-sm delete-image-btn position-absolute"
-                                  data-image-id="${a.id}"
-                                  data-comment-id="${commentId}"
-                                  style="top:5px;right:5px;">
-                                <i class="fas fa-trash"></i>
-                              </button>` : ''}
-                          </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    function renderComment(comment) {
-        const isReply = !!comment.parent_id;
-        const canEdit = isAuth && Number(comment.user.id) === Number(CFG.userId);
-        const avatar = comment.user.avatar_url || CFG.userAvatar || '/images/placeholders/avatar.png';
-        const timeAgo = formatTimeAgo(comment.created_at);
-        const attach = attachmentsHTML(comment.attachments, comment.id, canEdit, isReply);
-
-        return `
-        <div class="comment_item mb-3" id="comment-${comment.id}">
-          <div class="d-flex">
-            <div class="comment_item_avatar">
-              <img src="${avatar}" alt="${comment.user.name}" class="rounded-circle me-2"
-                   width="${isReply ? 30 : 40}" height="${isReply ? 30 : 40}">
-            </div>
-            <div class="comment_item_body ${isReply ? 'sub' : ''}">
-              <div class="comment_item_user">
-                <a href="${userProfileUrl(comment.user)}" class="fw-bold text-decoration-none">
-                  ${comment.user.name}
-                </a>
-                <div class="text-muted small">
-                  <span>${comment.user.comments_count || 0} ${t('reply','replies')}</span> ·
-                  <span>Joined ${new Date(comment.user.created_at).toLocaleDateString('vi-VN', {month:'short', year:'numeric'})}</span>
-                </div>
-              </div>
-              <div class="comment_item_content" id="comment-content-${comment.id}">
-                ${comment.content}
-              </div>
-              ${attach}
-              <div class="comment_item_meta d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                  <span class="btn btn-sm btn_meta text-muted">
-                    <i class="fa-regular fa-clock me-1"></i>${timeAgo}
-                  </span>
-                  ${isAuth ? `
-                    <button type="button"
-                        class="btn text-muted btn-sm no-border btn_meta comment-like-btn ${comment.is_liked ? 'active':''}"
-                        data-comment-id="${comment.id}"
-                        data-liked="${comment.is_liked ? 'true':'false'}"
-                        title="${comment.is_liked ? t('unlike'):t('like')}">
-                      <i class="fas fa-thumbs-up me-1"></i>
-                      <span class="comment-like-count-${comment.id} me-1">${comment.like_count || 0}</span>
-                      <span class="text">${t('like')}</span>
-                    </button>` : `
-                    <button type="button"
-                        class="btn text-muted btn-sm no-border btn_meta comment-like-btn"
-                        onclick="window.__threadLogin()"
-                        title="${t('login_to_like')}">
-                      <i class="fas fa-thumbs-up me-1"></i>
-                      <span class="comment-like-count-${comment.id} me-1">${comment.like_count || 0}</span>
-                      <span class="text">${t('like')}</span>
-                    </button>`}
-                </div>
-                <div class="d-flex">
-                  <button class="btn btn-sm text-muted no-border btn_meta quote-button"
-                      data-comment-id="${comment.id}" data-user-name="${comment.user.name}">
-                    <i class="fa-solid fa-quote-left me-1"></i><span class="text">${t('quote')}</span>
-                  </button>
-                  <button class="btn text-muted btn-sm no-border btn_meta reply-button ms-2"
-                      data-parent-id="${comment.id}">
-                    <i class="fas a-reply me-1"></i><span class="text">${t('reply')}</span>
-                  </button>
-                  ${canEdit ? `
-                    <button class="btn text-warning btn-sm no-border btn_meta inline-edit-comment-btn"
-                        data-comment-id="${comment.id}" title="${t('edit')}">
-                      <i class="fas fa-edit me-1"></i><span class="text">${t('edit')}</span>
-                    </button>
-                    <button type="button"
-                        class="btn text-danger btn-sm no-border btn_meta delete-comment-btn"
-                        data-comment-id="${comment.id}"
-                        data-comment-type="${isReply ? 'reply':'comment'}"
-                        title="${t('delete')}">
-                      <i class="fas fa-trash me-1"></i><span class="text">${t('delete')}</span>
-                    </button>` : ''}
-                </div>
-              </div>
-              ${!isReply ? '<div class="comment_sub"></div>' : ''}
-            </div>
-          </div>
-        </div>`;
-    }
-
-    /* ================= Thread Actions ================= */
-    function handleThreadLike(button) {
-        const slug = button.dataset.threadSlug;
-        const isLiked = button.dataset.liked === 'true';
-        button.disabled = true;
-
-        fetch(`/threads/${slug}/like`, {
-            method:'POST',
-            headers:setCSRF({
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-Requested-With':'XMLHttpRequest'
+            // Make AJAX request
+            fetch(`/threads/${threadSlug}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             })
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('error'));
-            const newLiked = !isLiked;
-            button.dataset.liked = newLiked ? 'true':'false';
-            button.classList.toggle('active', newLiked);
-            const countEl = button.querySelector('.like-count');
-            if (countEl) countEl.textContent = data.like_count;
-            button.title = newLiked ? t('unlike') : t('like');
-            showToast(data.message,'success');
-        })
-        .catch(e => showToast(e.message || t('request_error'),'error'))
-        .finally(()=> button.disabled = false);
-    }
-
-    function handleThreadSave(button) {
-        const slug = button.dataset.threadSlug;
-        const isSaved = button.dataset.saved === 'true';
-        button.disabled = true;
-        const oldHtml = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> '+t('processing');
-
-        fetch(`/threads/${slug}/save`, {
-            method:'POST',
-            headers:setCSRF({
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-Requested-With':'XMLHttpRequest'
-            })
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('error'));
-            const newSaved = !isSaved;
-            button.dataset.saved = newSaved ? 'true':'false';
-
-            if (newSaved) {
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-primary');
-                button.innerHTML = `
-                    <i class="fa-solid fa-bookmark me-1"></i>
-                    <span class="save-text">${t('saved')}</span>
-                    ${data.saves_count>0?`<span class="badge bg-danger text-dark ms-1 save-count">${data.saves_count}</span>`:''}
-                `;
-            } else {
-                button.classList.remove('btn-primary');
-                button.classList.add('btn-outline-primary');
-                button.innerHTML = `
-                    <i class="fa-regular fa-bookmark me-1"></i>
-                    <span class="save-text">${t('save')}</span>
-                    ${data.saves_count>0?`<span class="badge bg-danger text-dark ms-1 save-count">${data.saves_count}</span>`:''}
-                `;
-            }
-            button.title = newSaved ? t('saved') : t('unsave');
-            showToast(data.message,'success');
-        })
-        .catch(e => {
-            showToast(e.message || t('request_error'),'error');
-            button.innerHTML = oldHtml;
-        })
-        .finally(()=> button.disabled = false);
-    }
-
-    function handleThreadFollow(button) {
-        const slug = button.dataset.threadSlug;
-        const isFollowing = button.dataset.following === 'true';
-        const method = isFollowing ? 'DELETE':'POST';
-        const threadId = button.dataset.threadId;
-
-        button.disabled = true;
-        const old = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>'+t('processing');
-
-        fetch(`/ajax/threads/${slug}/follow`, {
-            method,
-            headers:setCSRF({
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-Requested-With':'XMLHttpRequest'
-            })
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('error'));
-            button.dataset.following = data.is_following ? 'true':'false';
-            const count = data.follower_count ?? 0;
-
-            if (data.is_following) {
-                button.classList.remove('btn-outline-primary');
-                button.classList.add('btn-success');
-                button.innerHTML =
-                    `<i class="fas fa-bell me-1"></i><span class="follow-text">${t('saved','Following')}</span>` +
-                    `<span class="follower-count badge bg-light text-dark ms-1">${count}</span>`;
-                button.title = t('unsave','Unfollow');
-            } else {
-                button.classList.remove('btn-success');
-                button.classList.add('btn-outline-primary');
-                button.innerHTML =
-                    `<i class="fas fa-bell-slash me-1"></i><span class="follow-text">${t('save','Follow')}</span>` +
-                    `<span class="follower-count badge bg-light text-dark ms-1">${count}</span>`;
-                button.title = t('save','Follow');
-            }
-
-            qsa(`[data-thread-id="${threadId}"] .follower-count`).forEach(el => el.textContent = count);
-            showToast(data.message,'success');
-        })
-        .catch(e => {
-            showToast(e.message || t('request_error'),'error');
-            button.innerHTML = old;
-        })
-        .finally(()=> button.disabled = false);
-    }
-
-    /* ================= Comment Create (Main Form) ================= */
-    function initMainReplyForm() {
-        const form = qs('#reply-form-element');
-        if (!form) return;
-
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            if (!isAuth) return showLoginModalOrRedirect();
-
-            const btn = qs('#submit-reply-btn', form);
-            const textarea = qs('#content', form);
-            const editor = window.tinymce ? tinymce.get('content') : null;
-            let content = editor ? editor.getContent().trim() : (textarea.value||'').trim();
-
-            const contentError = qs('#content-error');
-            textarea.classList.remove('is-invalid');
-            if (contentError) contentError.style.display = 'none';
-
-            if (!content || content === '<p></p>' || content === '<p><br></p>') {
-                textarea.classList.add('is-invalid');
-                if (contentError) contentError.style.display='block';
-                if (editor) editor.focus();
-                return;
-            }
-
-            btn.disabled = true;
-            const fd = new FormData(form);
-
-            fetch(CFG.routes.commentStore, {
-                method:'POST',
-                body: fd,
-                headers:setCSRF({'X-Requested-With':'XMLHttpRequest','Accept':'application/json'})
-            })
-            .then(r=>r.json())
+            .then(response => response.json())
             .then(data => {
-                if (!data.success) throw new Error(data.message || t('request_error'));
-                showToast(data.message || t('reply_posted_successfully'),'success');
-                if (editor) editor.setContent('');
-                textarea.value='';
-                const pid = qs('#parent_id');
-                if (pid) pid.value='';
+                if (data.success) {
+                    const newLiked = !isLiked;
+                    this.dataset.liked = newLiked ? 'true' : 'false';
 
-                if (data.comment) {
-                    insertNewComment(data.comment);
-                    applyCommentCountDelta(1);
+                    // Toggle trạng thái
+                    if (newLiked) {
+                        this.classList.add('active');
+                        this.title = trans('ui.actions.unlike');
+                    } else {
+                        this.classList.remove('active');
+                        this.title = trans('ui.actions.like');
+                    }
+
+                    // Cập nhật số lượt thích
+                    const likeCountElement = this.querySelector('.like-count');
+                    if (likeCountElement) {
+                        likeCountElement.textContent = data.like_count;
+                    }
+
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || trans('ui.messages.error_occurred'), 'error');
+                    this.innerHTML = oldHtml; // khôi phục nếu thất bại
                 }
             })
-            .catch(e => showToast(e.message || t('request_error'),'error'))
-            .finally(()=> btn.disabled = false);
-        });
-    }
-
-    function insertNewComment(comment) {
-        const container = qs('#comments-container');
-        if (!container) return;
-        const html = renderComment(comment);
-        const sort = new URLSearchParams(location.search).get('sort') || 'newest';
-        const pagination = qs('#comments-pagination', container);
-
-        if (sort === 'newest') {
-            container.insertAdjacentHTML('afterbegin', html);
-        } else if (pagination) {
-            pagination.insertAdjacentHTML('beforebegin', html);
-        } else {
-            container.insertAdjacentHTML('beforeend', html);
-        }
-    }
-
-    /* ================= Inline Reply ================= */
-    function showInlineReplyForm(parentId) {
-        qsa('.inline-reply-form').forEach(f => f.style.display='none');
-        const form = document.getElementById(`inline-reply-${parentId}`);
-        if (form) {
-            form.style.display='block';
-            setTimeout(() => {
-                const edId = `inline-reply-content-${parentId}`;
-                if (window.tinymce && tinymce.get(edId)) tinymce.get(edId).focus();
-            },80);
-        }
-    }
-
-    function submitInlineReply(form) {
-        const parentId = form.getAttribute('data-comment-id');
-        const btn = form.querySelector('.submit-inline-reply');
-        const edId = `inline-reply-content-${parentId}`;
-        const editor = window.tinymce ? tinymce.get(edId) : null;
-        const content = editor ? editor.getContent().trim() : '';
-
-        if (!content || content === '<p></p>' || content === '<p><br></p>') {
-            showToast(t('reply_required'),'error');
-            return;
-        }
-
-        btn.disabled = true;
-        const fd = new FormData();
-        fd.append('_token', CFG.csrf);
-        fd.append('content', content);
-        fd.append('parent_id', parentId);
-
-        fetch(`/threads/${CFG.threadId}/comments`, {
-            method:'POST',
-            body: fd,
-            headers:{'X-Requested-With':'XMLHttpRequest'}
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('request_error'));
-            if (editor) editor.setContent('');
-            form.style.display='none';
-            if (data.comment) {
-                addReplyToDOM(data.comment);
-                applyCommentCountDelta(1);
-            }
-            showToast(t('reply_posted_successfully'),'success');
-        })
-        .catch(e => showToast(e.message || t('request_error'),'error'))
-        .finally(()=> btn.disabled = false);
-    }
-
-    function addReplyToDOM(reply) {
-        const parent = document.getElementById(`comment-${reply.parent_id}`);
-        if (!parent) return;
-        const sub = parent.querySelector('.comment_sub') || (() => {
-            const div = document.createElement('div');
-            div.className='comment_sub';
-            parent.appendChild(div);
-            return div;
-        })();
-        sub.insertAdjacentHTML('beforeend', renderComment(reply));
-        setTimeout(() => {
-            const el = document.getElementById(`comment-${reply.id}`);
-            if (el) el.scrollIntoView({behavior:'smooth', block:'center'});
-        },120);
-    }
-
-    /* ================= Comment Like ================= */
-    function toggleCommentLike(button) {
-        const id = button.dataset.commentId;
-        const isLiked = button.dataset.liked === 'true';
-        button.disabled = true;
-
-        fetch(buildUrl(CFG.routes.commentLike, {id}), {
-            method:'POST',
-            headers:setCSRF({
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-Requested-With':'XMLHttpRequest'
+            .catch(error => {
+                console.error('Like error:', error);
+                showToast(trans('ui.messages.request_error'), 'error');
+                this.innerHTML = oldHtml; // khôi phục nếu lỗi
             })
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('request_error'));
-            const newLiked = !isLiked;
-            button.dataset.liked = newLiked ? 'true':'false';
-            button.classList.toggle('active', newLiked);
-            const countEl = button.querySelector(`.comment-like-count-${id}`);
-            if (countEl) countEl.textContent = data.like_count;
-            button.title = newLiked ? t('unlike'):t('like');
-        })
-        .catch(e => showToast(e.message || t('request_error'),'error'))
-        .finally(()=> button.disabled = false);
-    }
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
 
-    /* ================= Delete Comment / Image ================= */
-    function confirmDeleteComment(btn) {
-        const id = btn.dataset.commentId;
-        const type = btn.dataset.commentType;
-        const msg = type === 'reply' ? t('delete_reply_confirm') : t('delete_comment_confirm');
-        if (window.showDeleteConfirm) {
-            window.showDeleteConfirm(msg).then(res => res.isConfirmed && executeDeleteComment(id, btn));
-        } else if (confirm(msg)) {
-            executeDeleteComment(id, btn);
-        }
-    }
+    // Handle save button clicks
+    document.querySelectorAll('.btn-save').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
 
-    function executeDeleteComment(id, btn) {
-        btn.disabled = true;
-        const old = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            const threadId = this.dataset.threadId;
+            const threadSlug = this.dataset.threadSlug;
+            const isSaved = this.dataset.saved === 'true';
 
-        fetch(buildUrl(CFG.routes.commentDelete, {id}), {
-            method:'DELETE',
-            headers:setCSRF({
-                'Content-Type':'application/json',
-                'Accept':'application/json',
-                'X-Requested-With':'XMLHttpRequest'
+            // Disable button during request
+            this.disabled = true;
+            const oldHtml = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + trans('ui.status.processing');
+
+            // Make AJAX request
+            fetch(`/threads/${threadSlug}/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             })
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('request_error'));
-            const el = document.getElementById(`comment-${id}`);
-            if (el) {
-                el.style.opacity='0';
-                setTimeout(()=> el.remove(),300);
-            }
-            applyCommentCountDelta(-1);
-            showToast(t('comment_deleted'),'success');
-        })
-        .catch(e => {
-            showToast(e.message || t('request_error'),'error');
-            btn.innerHTML = old;
-            btn.disabled = false;
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const newSaved = !isSaved;
+                    this.dataset.saved = newSaved ? 'true' : 'false';
+
+                    if (newSaved) {
+                        this.className = this.className.replace('btn-outline-primary', 'btn-primary');
+                        this.innerHTML = `
+                            <i class="fa-solid fa-bookmark me-1"></i>
+                            <span class="save-text">${trans('ui.actions.saved')}</span>
+                            ${data.saves_count > 0 ? `<span class="badge bg-danger text-dark ms-1 save-count">${data.saves_count}</span>` : ''}
+                        `;
+                        this.title = trans('ui.actions.saved');
+                    } else {
+                        this.className = this.className.replace('btn-primary', 'btn-outline-primary');
+                        this.innerHTML = `
+                            <i class="fa-regular fa-bookmark me-1"></i>
+                            <span class="save-text">${trans('ui.actions.save')}</span>
+                            ${data.saves_count > 0 ? `<span class="badge bg-danger text-dark ms-1 save-count">${data.saves_count}</span>` : ''}
+                        `;
+                        this.title = trans('ui.actions.unsave');
+                    }
+
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || trans('ui.messages.error_occurred'), 'error');
+                    this.innerHTML = oldHtml; // khôi phục lại nếu thất bại
+                }
+            })
+            .catch(error => {
+                console.error('Save error:', error);
+                showToast(trans('ui.messages.request_error'), 'error');
+                this.innerHTML = oldHtml; // khôi phục lại nếu lỗi
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
+
+    // Thread follow functionality
+    document.querySelectorAll('.thread-follow-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const threadSlug = this.dataset.threadSlug;
+            const isFollowing = this.dataset.following === 'true';
+            const action = isFollowing ? 'unfollow' : 'follow';
+
+            // Disable button during request
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> ' + trans('ui.status.processing');
+
+            // Make AJAX request
+            const url = `/ajax/threads/${threadSlug}/follow`;
+            const method = isFollowing ? 'DELETE' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button state
+                    const newFollowing = data.is_following;
+                    this.dataset.following = newFollowing ? 'true' : 'false';
+
+                    // Update button appearance
+                    if (newFollowing) {
+                        this.className = this.className.replace('btn-outline-primary', 'btn-success');
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">' + trans('ui.actions.following') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = trans('ui.actions.unfollow');
+                    } else {
+                        this.className = this.className.replace('btn-success', 'btn-outline-primary');
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">' + trans('ui.actions.follow') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + data.follower_count + '</span>';
+                        this.title = trans('ui.actions.follow');
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+
+                    // Update all follower counts on page
+                    const threadId = this.dataset.threadId;
+                    document.querySelectorAll(`[data-thread-id="${threadId}"] .follower-count`).forEach(el => {
+                        el.textContent = data.follower_count;
+                    });
+
+                } else {
+                    showToast(data.message || trans('ui.messages.error_occurred'), 'error');
+
+                    // Reset button state
+                    const originalFollowing = this.dataset.following === 'true';
+                    if (originalFollowing) {
+                        this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">' + trans('ui.actions.following') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + (data.follower_count || 0) + '</span>';
+                    } else {
+                        this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">' + trans('ui.actions.follow') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + (data.follower_count || 0) + '</span>';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Thread follow error:', error);
+                showToast(trans('ui.messages.request_error'), 'error');
+
+                // Reset button state
+                const originalFollowing = this.dataset.following === 'true';
+                const followerCount = this.querySelector('.follower-count')?.textContent || '0';
+                if (originalFollowing) {
+                    this.innerHTML = '<i class="fas fa-bell me-1"></i><span class="follow-text">' + trans('ui.actions.following') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + followerCount + '</span>';
+                } else {
+                    this.innerHTML = '<i class="fas fa-bell-slash me-1"></i><span class="follow-text">' + trans('ui.actions.follow') + '</span><span class="follower-count badge bg-light text-dark ms-1">' + followerCount + '</span>';
+                }
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        });
+    });
+
+    // Handle comment like button clicks
+    document.querySelectorAll('.comment-like-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.onclick) return; // Skip if it's a login button
+
+            const commentId = this.dataset.commentId;
+            const isLiked = this.dataset.liked === 'true';
+
+            // Disable button during request
+            this.disabled = true;
+            const originalContent = this.innerHTML;
+            //this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + trans('ui.status.processing');
+
+            // Make AJAX request
+            fetch(`/comments/${commentId}/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle like state
+                    const newLiked = !isLiked;
+                    this.dataset.liked = newLiked ? 'true' : 'false';
+
+                    // Update button appearance
+                    if (newLiked) {
+                        this.classList.add('active');
+                        this.title = trans('ui.actions.unlike');
+                    } else {
+                        this.classList.remove('active');
+                        this.title = trans('ui.actions.like');
+                    }
+
+                    // Update like count
+                    const likeCountElement = $('.comment-like-count-'+commentId);
+                    if (likeCountElement) {
+                        console.log('Like count: ', data.like_count);
+                        likeCountElement.text(data.like_count);
+                    }
+
+                    // Show success message
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message || trans('ui.messages.error_occurred'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Comment like error:', error);
+                showToast(trans('ui.messages.request_error'), 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                //this.innerHTML = originalContent;
+            });
+        });
+    });
+
+    // Handle delete comment button clicks
+    function initializeDeleteCommentButtons() {
+        document.addEventListener('click', function (e) {
+            const deleteButton = e.target.closest('.delete-comment-btn');
+            if (!deleteButton) return;
+
+            e.preventDefault();
+
+            const commentId = deleteButton.dataset.commentId;
+            const commentType = deleteButton.dataset.commentType;
+            const confirmMessage = commentType === 'reply'
+                ? trans('features.threads.delete_reply_message')
+                : trans('features.threads.delete_comment_message');
+
+            window.showDeleteConfirm(confirmMessage).then((result) => {
+                if (!result.isConfirmed) return;
+
+                const oldHtml = deleteButton.innerHTML;
+                deleteButton.disabled = true;
+                deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                fetch(`/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) throw new Error(data.message || 'Server error');
+
+                    const commentElement = document.querySelector(`#comment-${commentId}`);
+                    if (commentElement) {
+                        commentElement.style.transition = 'opacity 0.3s ease';
+                        commentElement.style.opacity = '0';
+                        setTimeout(() => commentElement.remove(), 300);
+                    }
+
+                    showToast(data.message, 'success');
+                })
+                .catch(err => {
+                    console.error('Delete comment error:', err);
+                    showToast(err.message || trans('ui.messages.request_error'), 'error');
+                    deleteButton.innerHTML = oldHtml;
+                    deleteButton.disabled = false;
+                });
+            });
         });
     }
 
-    function confirmDeleteImage(btn) {
-        const imageId = btn.dataset.imageId;
-        const commentId = btn.dataset.commentId;
-        const msg = t('delete_image_confirm');
-        if (window.showDeleteConfirm) {
-            window.showDeleteConfirm(msg).then(res => res.isConfirmed && executeDeleteImage(commentId, imageId, btn));
-        } else if (confirm(msg)) {
-            executeDeleteImage(commentId, imageId, btn);
-        }
-    }
 
-    function executeDeleteImage(commentId, imageId, btn) {
-        const wrapper = btn.closest('.comment-image-wrapper');
-        btn.disabled = true;
-        const old = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    // Handle sort button clicks
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.sort-btn');
+        if (!btn) return;
 
-        const url = CFG.routes.commentImageDelete
-            .replace('{comment_id}', commentId)
-            .replace('{image_id}', imageId);
-
-        fetch(url, {
-            method:'DELETE',
-            headers:setCSRF({'Content-Type':'application/json','Accept':'application/json'})
-        })
-        .then(r=>r.json())
-        .then(data => {
-            if (!data.success) throw new Error(data.message || t('request_error'));
-            if (wrapper) {
-                wrapper.style.opacity='0';
-                setTimeout(() => {
-                    const col = wrapper.closest('.col');
-                    if (col) col.remove();
-                },200);
-            }
-        })
-        .catch(e => {
-            showToast(e.message || t('request_error'),'error');
-            btn.innerHTML = old;
-            btn.disabled = false;
-        });
-    }
-
-    /* ================= Edit Comment (Hidden Form + New Image Upload) ================= */
-    function showEditForm(commentId) {
-        const contentEl   = document.getElementById(`comment-content-${commentId}`);
-        const formWrapper = document.getElementById(`edit-form-${commentId}`);
-        if (!contentEl || !formWrapper) return;
-        if (formWrapper.style.display === 'block') return;
-
-        contentEl.style.display = 'none';
-        formWrapper.style.display = 'block';
-
-        const textarea = formWrapper.querySelector(`#edit-content-${commentId}`);
-        if (!textarea) {
-            console.warn('Edit textarea not found for comment', commentId);
-            return;
-        }
-
-        // Khởi tạo TinyMCE nếu chưa tồn tại
-        if (window.tinymce && !tinymce.get(`edit-content-${commentId}`)) {
-            tinymce.init({
-                selector: `#edit-content-${commentId}`,
-                height: 200,
-                menubar: false,
-                branding: false,
-                plugins: 'link lists code emoticons image table',
-                toolbar: 'undo redo | bold italic underline | bullist numlist | link emoticons | code',
-                setup: ed => ed.on('init', () => ed.focus())
-            });
-        }
-
-        // Gắn submit 1 lần
-        const form = formWrapper.querySelector('form.comment-edit-form');
-        if (form && !form.dataset.boundSubmit) {
-            form.addEventListener('submit', e => {
-                e.preventDefault();
-                submitEditComment(form, commentId);
-            });
-            form.dataset.boundSubmit = '1';
-        }
-
-        // Gắn cancel
-        const cancelBtn = formWrapper.querySelector('.cancel-edit-btn');
-        if (cancelBtn && !cancelBtn.dataset.boundCancel) {
-            cancelBtn.addEventListener('click', () => hideEditForm(commentId));
-            cancelBtn.dataset.boundCancel = '1';
-        }
-    }
-
-    function hideEditForm(commentId) {
-        const contentEl   = document.getElementById(`comment-content-${commentId}`);
-        const formWrapper = document.getElementById(`edit-form-${commentId}`);
-        if (!contentEl || !formWrapper) return;
-        formWrapper.style.display = 'none';
-        contentEl.style.display = 'block';
-
-        if (window.tinymce) {
-            const ed = tinymce.get(`edit-content-${commentId}`);
-            if (ed) ed.remove();
-        }
-    }
-
-    async function submitEditComment(form, commentId) {
-        const submitBtn = form.querySelector('.save-comment-btn');
-        const editorId  = `edit-content-${commentId}`;
-        const editor    = window.tinymce ? tinymce.get(editorId) : null;
-        const newContent = editor ? editor.getContent().trim() : (form.querySelector(`#${editorId}`)?.value || '').trim();
-
-        if (!newContent) {
-            showToast(t('reply_required','Content required'),'error');
-            return;
-        }
-
-        submitBtn.disabled = true;
-        const originalHtml = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>'+t('processing');
-
-        const fd = new FormData();
-        fd.append('_method','PUT');
-        fd.append('_token', CFG.csrf);
-        fd.append('content', newContent);
-
-        /* --- Bổ sung upload ảnh mới trong lúc edit --- */
-
-        // 1. Thu thập file inputs (giả định component dùng input[name="images[]"])
-        const fileInputs = form.querySelectorAll('input[type="file"]');
-        const ALLOWED = ['image/png','image/jpeg','image/jpg','image/gif','image/webp','image/svg+xml'];
-        const MAX_SIZE_MB = 5;
-
-        fileInputs.forEach(input => {
-            if (!input.files) return;
-            Array.from(input.files).forEach(file => {
-                if (!ALLOWED.includes(file.type)) {
-                    showToast('File không hợp lệ: ' + file.name, 'error');
-                    return;
-                }
-                if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-                    showToast(`Ảnh ${file.name} vượt quá ${MAX_SIZE_MB}MB`, 'error');
-                    return;
-                }
-                fd.append('images[]', file);
-            });
-        });
-
-        // 2. Nếu component đã upload tạm & tạo hidden inputs uploaded_images[]
-        const tempUploaded = form.querySelectorAll('input[name="uploaded_images[]"]');
-        tempUploaded.forEach(h => fd.append('uploaded_images[]', h.value));
-
-        // 3. Nếu component của bạn có JS API (vd: commentImageUpload.uploadFiles()), có thể gọi trước
-        //    và append các URL nhận được vào fd (ví dụ).
-        // const comp = form.querySelector('.comment-image-upload');
-        // if (comp && comp.commentImageUpload && comp.commentImageUpload.hasFiles()) {
-        //     const uploaded = await comp.commentImageUpload.uploadFiles();
-        //     uploaded.forEach(u => fd.append('uploaded_images[]', u.url));
-        // }
-
-        try {
-            const res  = await fetch(`/api/comments/${commentId}`, {
-                method:'POST',
-                body: fd,
-                headers:{'X-Requested-With':'XMLHttpRequest','Accept':'application/json'}
-            });
-            const data = await res.json();
-            if (!data.success) throw new Error(data.message || t('request_error'));
-
-            // Cập nhật nội dung
-            const contentEl = document.getElementById(`comment-content-${commentId}`);
-            if (contentEl) contentEl.innerHTML = data.comment.content;
-
-            // Cập nhật attachments
-            if (data.comment.attachments) {
-                const commentBody = contentEl.parentNode;
-                const oldAttach = commentBody.querySelector('.comment-attachments, .reply-attachments');
-                if (oldAttach) oldAttach.remove();
-
-                if (data.comment.attachments.length > 0) {
-                    const isReply = !!data.comment.parent_id;
-                    const wrapperClass = isReply ? 'reply-attachments mt-2' : 'comment-attachments mt-3';
-                    const html = `
-                        <div class="${wrapperClass}">
-                          <div class="row g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
-                            ${data.comment.attachments.map(a => `
-                              <div class="col">
-                                <div class="comment-image-wrapper position-relative">
-                                  <a href="${a.url}" class="d-block" data-fancybox="comment-${commentId}-images" data-caption="${a.file_name}">
-                                    <img src="${a.url}" alt="${a.file_name}" class="img-fluid rounded">
-                                  </a>
-                                  <button type="button"
-                                      class="btn btn-danger btn-sm delete-image-btn position-absolute"
-                                      data-image-id="${a.id}"
-                                      data-comment-id="${commentId}"
-                                      style="top:5px;right:5px;">
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            `).join('')}
-                          </div>
-                        </div>`;
-                    contentEl.insertAdjacentHTML('afterend', html);
-                }
-            }
-
-            showToast(t('comment_updated','Updated'),'success');
-            hideEditForm(commentId);
-
-            // Reset file inputs (nếu muốn)
-            fileInputs.forEach(inp => { inp.value=''; });
-
-        } catch (err) {
-            showToast(err.message || t('request_error'),'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalHtml;
-        }
-    }
-
-    /* ================= Quote ================= */
-    function quoteComment(commentId, userName) {
-        const original = document.getElementById(`comment-content-${commentId}`);
-        const html = original ? original.innerHTML : '';
-        const block = `
-            <blockquote>
-              <p><strong>${userName}:</strong></p>
-              ${html}
-            </blockquote><p></p>`;
-        if (window.tinymce && tinymce.get('content')) {
-            tinymce.get('content').insertContent(block);
-            const replyForm = document.getElementById('reply-form');
-            if (replyForm) replyForm.scrollIntoView({behavior:'smooth'});
-            setTimeout(()=> tinymce.get('content').focus(),80);
-        }
-    }
-
-    /* ================= Sort Comments ================= */
-    function handleSort(btn) {
         const sortType = btn.dataset.sort;
-        const container = qs('#comments-container');
-        if (!container) return;
+        const threadId = btn.dataset.threadId;
 
-        qsa('.sort-btn').forEach(b => {
+        // Toggle button states
+        document.querySelectorAll('.sort-btn').forEach(b => {
             b.classList.toggle('btn-primary', b === btn);
             b.classList.toggle('btn-outline-primary', b !== btn);
         });
 
-        container.innerHTML = `
-            <div class="text-center py-4">
-              <i class="fas fa-spinner fa-spin fa-2x"></i><br>${t('processing','Loading...')}
-            </div>`;
+        // Show loading state
+        const commentsContainer = document.getElementById('comments-container');
+        if (commentsContainer) {
+            commentsContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i><br>
+                    ${trans('ui.status.loading_comments')}
+                </div>`;
+        }
 
-        const url = new URL(location.href);
+        // Update URL
+        const url = new URL(window.location.href);
         url.searchParams.set('sort', sortType);
 
         fetch(url.toString(), {
-            method:'GET',
-            headers:{'X-Requested-With':'XMLHttpRequest','Accept':'text/html'}
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            }
         })
-        .then(r => {
-            if (!r.ok) throw new Error('Server error');
-            return r.text();
+        .then(res => {
+            if (!res.ok) throw new Error('Server error');
+            return res.text();
         })
         .then(html => {
             const parser = new DOMParser();
-            const doc = parser.parseFromString(html,'text/html');
-            const newBlock = doc.getElementById('comments-container');
-            if (newBlock) {
-                container.innerHTML = newBlock.innerHTML;
-                history.pushState({},'',url.toString());
-                showToast('Comments sorted','success');
+            const doc = parser.parseFromString(html, 'text/html');
+            const newComments = doc.getElementById('comments-container');
+
+            if (newComments && commentsContainer) {
+                commentsContainer.innerHTML = newComments.innerHTML;
+                initializeCommentInteractions(); // re-init events
+                window.history.pushState({}, '', url.toString());
+                showToast(trans('ui.messages.comments_sorted'), 'success');
             }
         })
-        .catch(e => {
-            console.error(e);
-            showToast(t('request_error'),'error');
-            location.href = url.toString(); // fallback
-        });
-    }
-
-    /* ================= Real-time ================= */
-    function initRealtime() {
-        if (!window.notificationService || !window.notificationService.socket) return;
-        const socket = window.notificationService.socket;
-        socket.emit('subscribe_request', {channel:`thread.${CFG.threadId}`});
-
-        socket.on('comment.created', d => {
-            const c = d.comment;
-            if (Number(c.user.id) === Number(CFG.userId)) return;
-            if (c.parent_id) {
-                addReplyToDOM(c);
-            } else {
-                insertNewComment(c);
-                applyCommentCountDelta(1);
-            }
-            showToast(`${c.user.name} bình luận mới`,'success');
-        });
-
-        socket.on('comment.updated', d => {
-            const c = d.comment;
-            const el = document.getElementById(`comment-content-${c.id}`);
-            if (el) el.innerHTML = c.content;
-        });
-
-        socket.on('comment.deleted', d => {
-            const el = document.getElementById(`comment-${d.comment_id}`);
-            if (el) {
-                el.style.opacity='0';
-                setTimeout(()=> el.remove(),300);
-                applyCommentCountDelta(-1);
-            }
-        });
-
-        socket.on('thread.like.updated', data => {
-            if (Number(data.user_id) === Number(CFG.userId)) return;
-            qsa('.like-count').forEach(el => el.textContent = data.like_count);
-        });
-
-        socket.on('comment.like.updated', data => {
-            if (Number(data.user_id) === Number(CFG.userId)) return;
-            const countEl = qs(`#comment-${data.comment_id} .comment-like-count-${data.comment_id}`);
-            if (countEl) countEl.textContent = data.like_count;
-        });
-
-        socket.on('thread.stats.updated', data => {
-            const stats = data.stats;
-            if (stats.comments_count !== undefined) {
-                qsa('[data-type="replies"]').forEach(el => {
-                    const icon = el.querySelector('i');
-                    el.innerHTML = `${icon?icon.outerHTML:'<i class="fas fa-comment"></i>'} ${stats.comments_count.toLocaleString()} ${t('reply','replies')}`;
-                });
-                const header = qs('[data-type="replies-header"]');
-                if (header) {
-                    const icon = header.querySelector('i');
-                    header.innerHTML = `${icon?icon.outerHTML:''}${stats.comments_count.toLocaleString()} ${t('reply','replies')}`;
-                }
-            }
-            if (stats.participants_count !== undefined) {
-                qsa('[data-type="participants"]').forEach(el => {
-                    const icon = el.querySelector('i');
-                    el.innerHTML = `${icon?icon.outerHTML:'<i class="fas fa-users"></i>'} ${stats.participants_count.toLocaleString()} ${t('participants','Participants')}`;
-                });
-            }
-        });
-    }
-
-    /* ================= Language Change ================= */
-    document.addEventListener('languageChanged', () => {
-        qsa('.btn-like').forEach(b => {
-            b.title = b.dataset.liked === 'true' ? t('unlike') : t('like');
-        });
-        qsa('.btn-save').forEach(b => {
-            const saved = b.dataset.saved === 'true';
-            const span = b.querySelector('.save-text');
-            if (span) span.textContent = saved ? t('saved'):t('save');
-            b.title = saved ? t('saved'):t('unsave');
-        });
-        qsa('.comment-like-btn').forEach(b => {
-            b.title = b.dataset.liked === 'true' ? t('unlike') : t('like');
+        .catch(err => {
+            console.error('Sort comments error:', err);
+            showToast(trans('ui.messages.request_error'), 'error');
+            window.location.href = url.toString(); // fallback
         });
     });
 
-    /* ================= Global Event Delegation ================= */
-    function bindGlobalEvents() {
-        document.addEventListener('click', e => {
-            const likeThreadBtn = e.target.closest('.btn-like');
-            if (likeThreadBtn && likeThreadBtn.dataset.threadSlug) {
-                if (!isAuth && !likeThreadBtn.hasAttribute('onclick')) return showLoginModalOrRedirect();
-                handleThreadLike(likeThreadBtn); return;
-            }
+    // Function to initialize delete image buttons
+    initializeDeleteImageButtons();
 
-            const saveBtn = e.target.closest('.btn-save');
-            if (saveBtn && saveBtn.dataset.threadSlug) {
-                if (!isAuth && !saveBtn.hasAttribute('onclick')) return showLoginModalOrRedirect();
-                handleThreadSave(saveBtn); return;
-            }
+    // Initialize delete comment buttons
+    initializeDeleteCommentButtons();
+}
+// Function to initialize delete image buttons
+function initializeDeleteImageButtons() {
+        // Event delegation: chỉ gán 1 listener cho toàn bộ document
+    document.addEventListener('click', function(e) {
+        const deleteButton = e.target.closest('.delete-image-btn');
+        if (!deleteButton) return; // không phải nút xóa thì bỏ qua
 
-            const followBtn = e.target.closest('.thread-follow-btn');
-            if (followBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                handleThreadFollow(followBtn); return;
-            }
+        e.preventDefault();
+        e.stopPropagation();
 
-            const sortBtn = e.target.closest('.sort-btn');
-            if (sortBtn) { handleSort(sortBtn); return; }
+        const imageId = deleteButton.dataset.imageId;
+        const commentId = deleteButton.dataset.commentId;
+        const imageWrapper = deleteButton.closest('.comment-image-wrapper');
+        const oldHtml = deleteButton.innerHTML;
 
-            const cLike = e.target.closest('.comment-like-btn');
-            if (cLike && cLike.dataset.commentId) {
-                if (!isAuth && !cLike.hasAttribute('onclick')) return showLoginModalOrRedirect();
-                toggleCommentLike(cLike); return;
-            }
+        window.showDeleteConfirm(trans('ui.confirmations.delete_image')).then((result) => {
+            if (!result.isConfirmed) return;
 
-            const replyBtn = e.target.closest('.reply-button');
-            if (replyBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                showInlineReplyForm(replyBtn.dataset.parentId); return;
-            }
+            // Disable button trong lúc request
+            deleteButton.disabled = true;
+            deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-            const quoteBtn = e.target.closest('.quote-button');
-            if (quoteBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                quoteComment(quoteBtn.dataset.commentId, quoteBtn.dataset.userName); return;
-            }
+            fetch(`/comments/${commentId}/images/${imageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Animation remove
+                    imageWrapper.style.transition = 'opacity 0.3s ease';
+                    imageWrapper.style.opacity = '0';
+                    setTimeout(() => {
+                        imageWrapper.remove();
 
-            const delCommentBtn = e.target.closest('.delete-comment-btn');
-            if (delCommentBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                confirmDeleteComment(delCommentBtn); return;
-            }
+                        const col = imageWrapper.closest('.col');
+                        if (col && !col.querySelector('.comment-image-wrapper')) {
+                            col.remove();
+                        }
 
-            const delImageBtn = e.target.closest('.delete-image-btn');
-            if (delImageBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                confirmDeleteImage(delImageBtn); return;
-            }
+                        const attachmentsContainer = document.querySelector(`#comment-${commentId} .comment-attachments`);
+                        if (attachmentsContainer && !attachmentsContainer.querySelector('.comment-image-wrapper')) {
+                            attachmentsContainer.remove();
+                        }
+                    }, 200);
+                } else {
+                    window.showError('Lỗi!', data.message || trans('ui.messages.delete_image_error'));
+                    resetButton();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.showError('Lỗi!', trans('ui.messages.delete_image_error'));
+                resetButton();
+            });
 
-            const editBtn = e.target.closest('.inline-edit-comment-btn');
-            if (editBtn) {
-                if (!isAuth) return showLoginModalOrRedirect();
-                showEditForm(editBtn.dataset.commentId); return;
-            }
-
-            const cancelInlineReply = e.target.closest('.cancel-inline-reply');
-            if (cancelInlineReply) {
-                const id = cancelInlineReply.dataset.commentId;
-                const f = document.getElementById(`inline-reply-${id}`);
-                if (f) f.style.display='none';
-            }
-        });
-
-        document.addEventListener('submit', e => {
-            const inlineForm = e.target.closest('.inline-reply-form-element');
-            if (inlineForm) {
-                e.preventDefault();
-                if (!isAuth) return showLoginModalOrRedirect();
-                submitInlineReply(inlineForm);
+            function resetButton() {
+                deleteButton.disabled = false;
+                deleteButton.innerHTML = oldHtml;
             }
         });
+    });
+}
+
+
+// Load translations for threads functionality
+function loadThreadsTranslations() {
+    if (window.translationService) {
+        // Load UI and features translations needed for threads
+        return window.translationService.loadTranslations(['ui', 'features'])
+            .then(() => {
+                console.log('Threads translations loaded successfully');
+                return true;
+            })
+            .catch(error => {
+                console.error('Failed to load threads translations:', error);
+                return false;
+            });
     }
+    return Promise.resolve(false);
+}
 
-    /* ================= Scroll to Comment if Needed ================= */
-    function maybeScrollTo() {
-        if (!CFG.scrollToCommentId) return;
-        const el = document.getElementById(`comment-${CFG.scrollToCommentId}`);
-        if (el) {
-            setTimeout(() => {
-                el.scrollIntoView({behavior:'smooth', block:'center'});
-                el.classList.add('highlight-comment');
-                setTimeout(()=> el.classList.remove('highlight-comment'),3000);
-            },400);
+// Initialize threads functionality when translations are ready
+function initializeThreadsWithTranslations() {
+    loadThreadsTranslations().then(success => {
+        if (success) {
+            // Translations loaded, initialize thread actions
+            initializeThreadActions();
+        } else {
+            // Fallback: initialize without translations (will use keys as fallback)
+            console.warn('Initializing threads without translations');
+            initializeThreadActions();
+        }
+    });
+}
+
+// Listen for language change events
+document.addEventListener('languageChanged', function(event) {
+    console.log('Language changed to:', event.detail.locale);
+    // Reload translations and update UI elements
+    loadThreadsTranslations().then(() => {
+        // Update any visible UI elements with new translations
+        updateThreadsUILanguage();
+    });
+});
+
+// Handle real-time thread like updates
+function handleThreadLikeUpdate(data) {
+    const currentUserId = window.appConfig.userId;
+
+    if (Number(data.user_id) === Number(currentUserId)) return;
+
+    document.querySelectorAll('.like-count').forEach(el => {
+        el.textContent = data.like_count;
+    });
+
+    if (data.is_liked) {
+        showCommentNotification(`${data.user_name} ${trans('thread.liked_thread')}`, 'info');
+    }
+}
+
+// Handle real-time comment like updates
+function handleCommentLikeUpdate(data) {
+    const currentUserId = window.appConfig.userId;
+
+    if (Number(data.user_id) === Number(currentUserId)) return;
+
+    const commentElement = document.querySelector(`#comment-${data.comment_id}`);
+    if (commentElement) {
+        const likeCountElement = commentElement.querySelector(`.comment-like-count-${data.comment_id}`);
+        if (likeCountElement) {
+            likeCountElement.textContent = data.like_count;
         }
     }
 
-    /* ================= Init ================= */
-    document.addEventListener('DOMContentLoaded', () => {
-        initMainReplyForm();
-        bindGlobalEvents();
-        initRealtime();
-        maybeScrollTo();
+    if (data.is_liked) {
+        showCommentNotification(`${data.user_name} ${trans('thread.liked_comment')}`, 'info');
+    }
+}
+
+// Handle real-time thread stats updates
+function handleThreadStatsUpdate(data) {
+    const stats = data.stats;
+
+    if (stats.comments_count !== undefined) {
+        const repliesElements = document.querySelectorAll('[data-type="replies"]');
+        repliesElements.forEach(el => {
+            const icon = el.querySelector('i');
+            const iconHtml = icon ? icon.outerHTML : '<i class="fas fa-comment"></i>';
+            el.innerHTML = `${iconHtml} ${stats.comments_count.toLocaleString()} ${trans('thread.replies')}`;
+        });
+
+        const repliesHeader = document.querySelector('[data-type="replies-header"]');
+        if (repliesHeader) {
+            const icon = repliesHeader.querySelector('i');
+            const iconHtml = icon ? icon.outerHTML : '<i class="fa-regular fa-comment-dots me-1"></i>';
+            repliesHeader.innerHTML = `${iconHtml}${stats.comments_count.toLocaleString()} ${trans('thread.replies')}`;
+        }
+    }
+
+    if (stats.participants_count !== undefined) {
+        const participantElements = document.querySelectorAll('[data-type="participants"]');
+        participantElements.forEach(el => {
+            const icon = el.querySelector('i');
+            const iconHtml = icon ? icon.outerHTML : '<i class="fas fa-users"></i>';
+            el.innerHTML = `${iconHtml} ${stats.participants_count.toLocaleString()} ${trans('thread.participants')}`;
+        });
+    }
+
+    if (stats.last_activity) {
+        const lastActivityElements = document.querySelectorAll('[data-type="last-activity"]');
+        lastActivityElements.forEach(el => {
+            const icon = el.querySelector('i');
+            const iconHtml = icon ? icon.outerHTML : '<i class="fas fa-clock"></i>';
+            el.innerHTML = `${iconHtml} ${stats.last_activity}`;
+        });
+    }
+}
+
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) return 'vừa xong';
+    if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' phút trước';
+    if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' giờ trước';
+    return Math.floor(diffInSeconds / 86400) + ' ngày trước';
+}
+
+// Update UI elements with current language
+function updateThreadsUILanguage() {
+    // Update like button titles
+    document.querySelectorAll('.btn-like').forEach(button => {
+        const isLiked = button.dataset.liked === 'true';
+        button.title = isLiked ? trans('ui.actions.unlike') : trans('ui.actions.like');
     });
 
-})();
+    // Update save button text and titles
+    document.querySelectorAll('.btn-save').forEach(button => {
+        const isSaved = button.dataset.saved === 'true';
+        const saveText = button.querySelector('.save-text');
+        if (saveText) {
+            saveText.textContent = isSaved ? trans('ui.actions.saved') : trans('ui.actions.save');
+        }
+        button.title = isSaved ? trans('ui.actions.saved') : trans('ui.actions.unsave');
+    });
+
+    // Update follow button text and titles
+    document.querySelectorAll('.thread-follow-btn').forEach(button => {
+        const isFollowing = button.dataset.following === 'true';
+        const followText = button.querySelector('.follow-text');
+        if (followText) {
+            followText.textContent = isFollowing ? trans('ui.actions.following') : trans('ui.actions.follow');
+        }
+        button.title = isFollowing ? trans('ui.actions.unfollow') : trans('ui.actions.follow');
+    });
+
+    // Update comment like button titles
+    document.querySelectorAll('.comment-like-btn').forEach(button => {
+        const isLiked = button.dataset.liked === 'true';
+        button.title = isLiked ? trans('ui.actions.unlike') : trans('ui.actions.like');
+    });
+}
+
+// Auto-initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize threads with translations
+    initializeThreadsWithTranslations();
+});
+
+// Also initialize if DOM is already loaded
+if (document.readyState === 'loading') {
+    // DOM is still loading, wait for DOMContentLoaded
+} else {
+    // DOM is already loaded, initialize immediately
+    initializeThreadsWithTranslations();
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeEventHandlers();
+    initializeRealTimeComments();
+
+    // Nếu Laravel trả về comment cần scroll thì gọi hàm tiện ích
+    if (window.appConfig && window.appConfig.scrollToCommentId) {
+        scrollToAndHighlight(`comment-${window.appConfig.scrollToCommentId}`);
+    }
+});
+
+/**
+ * Cuộn tới phần tử và highlight trong 3 giây
+ * @param {string} elementId
+ */
+function scrollToAndHighlight(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    setTimeout(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("highlight-comment");
+        setTimeout(() => el.classList.remove("highlight-comment"), 3000);
+    }, 500);
+}

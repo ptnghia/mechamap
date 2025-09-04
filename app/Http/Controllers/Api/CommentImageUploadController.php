@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CommentImageUploadController extends Controller
 {
@@ -27,15 +28,75 @@ class CommentImageUploadController extends Controller
     public function upload(Request $request)
     {
         try {
-            // Validate request
-            $validator = Validator::make($request->all(), [
-                'images' => 'required|array|max:5',
-                'images.*' => 'required|file|mimes:jpeg,jpg,png,gif,webp|max:5120', // 5MB max
-                'context' => 'nullable|string|in:comment,reply,showcase-rating',
-                'comment_id' => 'nullable|integer|exists:comments,id'
+            // Log incoming request for debugging
+            Log::info('Comment image upload request received', [
+                'user_id' => Auth::id(),
+                'files' => $request->hasFile('images') ? count($request->file('images')) : 'no files',
+                'context' => $request->input('context'),
+                'all_data' => $request->all()
             ]);
 
+            // Collect uploaded files in a unified way (supports images[], images[0], FormData append patterns)
+            $rawFiles = [];
+
+            // 1. Standard multiple input name="images[]" (Laravel exposes as 'images')
+            if ($request->hasFile('images')) {
+                $candidate = $request->file('images');
+                if (is_array($candidate)) {
+                    $rawFiles = array_merge($rawFiles, $candidate);
+                } elseif ($candidate) {
+                    $rawFiles[] = $candidate; // single file edge case
+                }
+            }
+
+            // 2. Indexed keys images.0, images.1 (some JS libs append this way)
+            if (empty($rawFiles)) { // only scan if not already populated
+                foreach ($request->allFiles() as $key => $file) {
+                    // allFiles flattens nested arrays already; we still check key names for safety
+                    if ($file && (Str::startsWith($key, 'images') || preg_match('/^images(\.|\[)/', $key))) {
+                        if (is_array($file)) {
+                            $rawFiles = array_merge($rawFiles, $file);
+                        } else {
+                            $rawFiles[] = $file;
+                        }
+                    }
+                }
+            }
+
+            // Build a synthetic structure for validator so we can always use images.*
+            $prepared = $request->all();
+            if (!empty($rawFiles)) {
+                $prepared['images'] = $rawFiles; // override / inject
+            }
+
+            $rules = [
+                'context' => 'nullable|string|in:comment,reply,showcase-rating,inline-reply',
+                'comment_id' => 'nullable|integer|exists:comments,id',
+                'images' => 'required|array|min:1|max:5',
+                'images.*' => 'file|mimes:jpeg,jpg,png,gif,webp|max:5120'
+            ];
+
+            if (empty($rawFiles)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No images found in request',
+                    'debug_info' => [
+                        'all_files_keys' => array_keys($request->allFiles()),
+                        'all_input_keys' => array_keys($request->all()),
+                        'php_files_superglobal' => array_keys($_FILES ?? []),
+                    ]
+                ], 422);
+            }
+
+            $validator = Validator::make($prepared, $rules);
+
             if ($validator->fails()) {
+                Log::error('Comment image upload validation failed', [
+                    'user_id' => Auth::id(),
+                    'errors' => $validator->errors()->toArray(),
+                    'request_data' => $request->all()
+                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Validation failed',
@@ -47,9 +108,19 @@ class CommentImageUploadController extends Controller
             $context = $request->input('context', 'comment');
             $commentId = $request->input('comment_id');
 
+            // Use the unified collected files
+            $files = $rawFiles;
+
+            if (empty($files)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No valid files found'
+                ], 400);
+            }
+
             // Upload files
             $uploadedFiles = $this->uploadService->uploadMultipleFiles(
-                $request->file('images'),
+                $files,
                 $user,
                 'comments', // Category for comment images
                 [
@@ -97,7 +168,8 @@ class CommentImageUploadController extends Controller
             Log::error('Comment image upload failed', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
             ]);
 
             return response()->json([
